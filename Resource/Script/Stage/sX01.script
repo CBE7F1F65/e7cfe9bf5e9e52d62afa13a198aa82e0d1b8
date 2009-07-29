@@ -1,0 +1,23 @@
+DES_TH_TOB_SCRIPTFILE 0x073
+
+STAGEFILE
+
+// ///////////////////////////////////////// //
+
+// Spell 1200
+# 1200
+
+@ @@> 0
+SETPBINFI
+
+@ 1
+
+BGSETUP $LayerNormal $EnemyID_01 true 0xffff
+
+SPELLUP $EnemyID_01 CenterBossX CenterBossY
+
+EB 0x1200 0 $EnemyID_01
+	TX $EnemyID_01 TY $EnemyID_01 9000 0.0
+	$EnemyID_01 1200 180 0x00000040
+
+BOSSUP
