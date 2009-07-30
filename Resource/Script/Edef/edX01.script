@@ -12,7 +12,7 @@ EDEFFILE
 EA 5 ENAC_OVERPLAYER_CXYT
 	120 CenterBossX CenterBossY 120
 
-@ @@>%<% 120 1800 600 3
+@ @@>% 120  3
 
 SD [tangle] ENAMAP 0
 
@@ -25,7 +25,7 @@ BC 10 tangle + ttimefactor 0
 	1 6 8 0
 A 0
 
-@ @@>%<%<% 120 1800 600 60 35 5
+@ @@>%<% 120 60 35 5
 
 SD [toffset] 60
 SD [i] 4

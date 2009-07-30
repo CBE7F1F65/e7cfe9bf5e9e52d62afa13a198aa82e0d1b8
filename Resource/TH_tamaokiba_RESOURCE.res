@@ -22,10 +22,10 @@ PlayerBulletDefineFile=TH_tamaokiba_PLAYERBULLETDEFINE.table
 PlayerShootDefineFile=TH_tamaokiba_PLAYERSHOOTDEFINE.table
 PlayerGhostDefineFile=TH_tamaokiba_PLAYERGHOSTDEFINE.table
 [Package]
-//Type_1=Effectsys/Effectsys.pck
-//Type_2=Graphic/Graphic.pck
+Type_1=Effectsys/Effectsys.pck
+Type_2=Graphic/Graphic.pck
 //Type_3=Music/Music.pck
-//Type_4=SE/SE.pck
+Type_4=SE/SE.pck
 
 [Effectsys]
 Type_1=EffectSystem_000.effect

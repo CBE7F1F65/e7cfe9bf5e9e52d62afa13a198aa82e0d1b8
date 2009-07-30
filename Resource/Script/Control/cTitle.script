@@ -53,14 +53,15 @@ SD [i] 8
 LOOP [i]
 {
 	SD [j] 7 - i
-/*	IF j - 1 !
+	SD [tspell] j - 2
+	IF j * tspell !
 	{
 		SD [tselflag] SEL_NONACTIVE + SEL_GRAY
 	}
 	ELSE
-	{*/
+	{
 		SD [tselflag] SEL_NULL
-//	}
+	}
 	SELBUILD j SI_Title_Start + j
 		560 0 1 0 8
 		560 32 * j + 100

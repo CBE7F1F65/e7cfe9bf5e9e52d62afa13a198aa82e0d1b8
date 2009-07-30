@@ -57,4 +57,4 @@ Spell	SpellNumber	SpellName	TimeLimit	Remain	UserID	Bonus	TurnToScene	SpellFlag	
 330	55	Never Discard	47	2	22	2000000	334	0	5
 334	56	Confused	50	1	22	2000000	338	0	5
 342	57	Gravitational Stars	32	0	22	2000000	200000	14	5
-1200	58	Unknown	128	0	20	10000000	200000	0	0
+1204	58	Unknown	128	0	20	10000000	200000	14	0
