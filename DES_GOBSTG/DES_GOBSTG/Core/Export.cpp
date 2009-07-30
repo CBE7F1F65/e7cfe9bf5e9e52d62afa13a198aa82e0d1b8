@@ -244,7 +244,7 @@ bool Export::packFile(const char * zipname, const char * filename)
 	return ret;
 }
 
-bool Export::packFolder(const char * zipname, const char * foldername)
+bool Export::packFolder(const char * zipname, const char * foldername, const char * filterstr, int * initcount)
 {
 	bool ret = true;
 	WIN32_FIND_DATA SearchData;
@@ -259,6 +259,36 @@ bool Export::packFolder(const char * zipname, const char * foldername)
 
 	HANDLE hSearch = FindFirstFile(buffer, &SearchData);
 
+	char filenamebuffer[M_STRMAX];
+	char filter[M_STRITOAMAX][M_STRMAX];
+	ZeroMemory(filter, sizeof(char) * M_STRITOAMAX * M_STRMAX);
+	int filtercount = 0;
+
+	int tfiltercount = 0;
+	for (int i=0; i<strlen(filterstr); i++)
+	{
+		if (filtercount >= M_STRITOAMAX)
+		{
+			break;
+		}
+		if (filterstr[i] == ';')
+		{
+			filtercount++;
+			tfiltercount = 0;
+			continue;
+		}
+		if (isspace(filterstr[i]) || filterstr[i] == '*')
+		{
+			continue;
+		}
+		filter[filtercount][tfiltercount] = tolower(filterstr[i]);
+		if (filter[filtercount][tfiltercount] == '/')
+		{
+			filter[filtercount][tfiltercount] = '\\';
+		}
+		tfiltercount++;
+	}
+
 #ifdef __UNPACK
 	int packagenum = 0;
 	char sec[M_STRMAX];
@@ -266,6 +296,10 @@ bool Export::packFolder(const char * zipname, const char * foldername)
 	char inifilename[M_STRMAX];
 	char packnamebuffer[M_STRMAX];
 	int typecount = 0;
+	if (initcount)
+	{
+		typecount = *initcount;
+	}
 
 	strcpy(inifilename, hge->Resource_MakePath(UNPACK_INIFILENAME));
 	strcpy(name, UNPACK_PACKNAME);
@@ -287,62 +321,103 @@ bool Export::packFolder(const char * zipname, const char * foldername)
 				{
 					break;
 				}
-				WritePrivateProfileString(sec, name, "", inifilename);
+				if (initcount && !(*initcount))
+				{
+					WritePrivateProfileString(sec, name, "", inifilename);
+				}
 				typecount++;
 			}
 			break;
 		}
 		packagenum++;
 	}
-	typecount = 0;
+	if (initcount)
+	{
+		typecount = *initcount;
+	}
+	else
+	{
+		typecount = 0;
+	}
+
 #endif
 
 	while(hSearch != INVALID_HANDLE_VALUE)
 	{
-		if((SearchData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) &&
-			strcmp(SearchData.cFileName,".") && strcmp(SearchData.cFileName,".."))
+		bool filtered = false;
+		strcpy(filenamebuffer, SearchData.cFileName);
+		for (int i=0; i<strlen(filenamebuffer); i++)
 		{
-			strcpy(buffer, foldername);
-			if(buffer[strlen(buffer)-1]!='\\' && buffer[strlen(buffer)-1]!='/')
+			filenamebuffer[i] = tolower(filenamebuffer[i]);
+			if (filenamebuffer[i] == '/')
 			{
-				strcat(buffer, "\\");
+				filenamebuffer[i] = '\\';
 			}
-			strcat(buffer, SearchData.cFileName);
-			if(!packFolder(zipname, buffer))
+		}
+		for (int i=0; i<M_STRITOAMAX; i++)
+		{
+			if (!strlen(filter[i]))
 			{
-				ret = false;
 				break;
 			}
-			strcpy(buffer, foldername);
-		}
-		else if(!(SearchData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY))
-		{
-			strcpy(buffer, foldername);
-			if(buffer[strlen(buffer)-1]!='\\' && buffer[strlen(buffer)-1]!='/')
+			string tstr = filenamebuffer;
+			if (tstr.find(filter[i]) != string::npos)
 			{
-				strcat(buffer, "\\");
+				filtered = true;
+				break;
 			}
-			strcat(buffer, SearchData.cFileName);
-			BYTE * _content;
-			DWORD _size;
-			_content = hge->Resource_Load(buffer, &_size);
-			if(_content)
+		}
+		if (!filtered)
+		{
+			if((SearchData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) &&
+				strcmp(filenamebuffer,".") && strcmp(filenamebuffer,".."))
 			{
-				hgeMemoryFile memfile;
-				memfile.data = _content;
-				memfile.filename = buffer;
-				memfile.size = _size;
-				if(!hge->Resource_AddFileInPack(zipname, password, &memfile))
+				strcpy(buffer, foldername);
+				if(buffer[strlen(buffer)-1]!='\\' && buffer[strlen(buffer)-1]!='/')
+				{
+					strcat(buffer, "\\");
+				}
+				strcat(buffer, filenamebuffer);
+				if(!packFolder(zipname, buffer, filterstr 
+#ifdef __UNPACK	
+					, &typecount
+#endif
+					))
 				{
 					ret = false;
 					break;
 				}
+				strcpy(buffer, foldername);
+			}
+			else if(!(SearchData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY))
+			{
+				strcpy(buffer, foldername);
+				if(buffer[strlen(buffer)-1]!='\\' && buffer[strlen(buffer)-1]!='/')
+				{
+					strcat(buffer, "\\");
+				}
+				strcat(buffer, filenamebuffer);
+				BYTE * _content;
+				DWORD _size;
+				_content = hge->Resource_Load(buffer, &_size);
+				if(_content)
+				{
+					hgeMemoryFile memfile;
+					memfile.data = _content;
+					memfile.filename = buffer;
+					memfile.size = _size;
+					if(!hge->Resource_AddFileInPack(zipname, password, &memfile))
+					{
+						ret = false;
+						break;
+					}
 #ifdef __UNPACK
-				sprintf(name, "%s%d", UNPACK_TYPE, typecount);
-				WritePrivateProfileString(sec, name, buffer, inifilename);
-				typecount++;
+					sprintf(name, "%s%d", UNPACK_TYPE, typecount);
+					WritePrivateProfileString(sec, name, buffer, inifilename);
+					typecount++;
 #endif
-				hge->Resource_Free(_content);
+					hge->Resource_Free(_content);
+				}
 			}
 		}
 		if(!FindNextFile(hSearch, &SearchData))
@@ -352,6 +427,10 @@ bool Export::packFolder(const char * zipname, const char * foldername)
 #ifdef __UNPACK
 	if (ret)
 	{
+		if (initcount)
+		{
+			*initcount = typecount;
+		}
 		strcpy(name, UNPACK_PACKNAME);
 		WritePrivateProfileString(sec, name, zipname, inifilename);
 	}

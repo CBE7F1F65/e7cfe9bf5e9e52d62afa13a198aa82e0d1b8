@@ -7,6 +7,7 @@
 #define IDC_OPEN                        1000
 #define IDC_FOLDERNAME                  1001
 #define IDPACK                          1002
+#define IDC_FOLDERNAME2                 1005
 
 // Next default values for new objects
 // 

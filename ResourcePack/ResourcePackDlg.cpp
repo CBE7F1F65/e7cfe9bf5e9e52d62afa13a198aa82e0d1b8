@@ -28,6 +28,7 @@ void CResourcePackDlg::DoDataExchange(CDataExchange* pDX)
 	CDialog::DoDataExchange(pDX);
 	DDX_Control(pDX, IDPACK, packButton);
 	DDX_Control(pDX, IDC_FOLDERNAME, foldernameText);
+	DDX_Control(pDX, IDC_FOLDERNAME2, filteredit);
 }
 
 BEGIN_MESSAGE_MAP(CResourcePackDlg, CDialog)
@@ -160,7 +161,9 @@ void CResourcePackDlg::OnBnClickedPack()
 	strcpy(packname, &szPath[i]);
 	strcat(packname, M_PACKEXTENSION);
 
-	if (Export::packFolder(packname, foldername))
+	filteredit.GetWindowText(filterstr, MAX_PATH);
+
+	if (Export::packFolder(packname, foldername, filterstr))
 	{
 		MessageBox(STR_MSG_SUCCEED);
 		OnOK();

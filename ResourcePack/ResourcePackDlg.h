@@ -5,6 +5,7 @@
 #include "afxwin.h"
 
 #define M_PACKEXTENSION ".pck"
+#define MAX_PATHNUMBER	16
 
 
 // CResourcePackDlg ¶Ô»°¿ò
@@ -35,9 +36,11 @@ public:
 	CEdit foldernameText;
 	TCHAR foldername[M_PATHMAX];
 	TCHAR packname[M_PATHMAX];
+	TCHAR filterstr[M_PATHMAX];
 	TCHAR szPath[M_PATHMAX];
 	afx_msg void OnBnClickedOpen();
 	afx_msg void OnBnClickedPack();
 	afx_msg void OnEnChangeFoldername();
 	afx_msg BOOL OnHelpInfo(HELPINFO* pHelpInfo);
+	CEdit filteredit;
 };
