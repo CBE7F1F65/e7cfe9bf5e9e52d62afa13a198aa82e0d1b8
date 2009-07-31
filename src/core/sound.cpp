@@ -554,8 +554,11 @@ void HGE_Impl::_SoundDone()
 	
 	if(hBass)
 	{
-		BASS_Stop();
-		BASS_Free();
+		if (HIWORD(BASS_GetVersion()) == BASSVERSION)
+		{
+			BASS_Stop();
+			BASS_Free();
+		}
 
 		//int err = BASS_ErrorGetCode(); 
 
