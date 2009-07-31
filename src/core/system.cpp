@@ -157,8 +157,6 @@ bool CALL HGE_Impl::System_Initiate()
 	timeBeginPeriod(1);
 	Random_Seed();
 	_InputInit();
-	if(!_GfxInit()) { System_Shutdown(); return false; }
-	if(!_SoundInit()) { System_Shutdown(); return false; }
 	//add by Thor/h5nc
 	//begin
 	haveJoy = true;
@@ -176,6 +174,8 @@ bool CALL HGE_Impl::System_Initiate()
 		haveJoy = false;
 		break;
 	}
+	if(!_GfxInit()) { System_Shutdown(); return false; }
+	if(!_SoundInit()) { System_Shutdown(); return false; }
 	//end
 	System_Log("Init done.\n");
 
