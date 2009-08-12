@@ -137,6 +137,14 @@ typedef DWORD HD3DFONT;
 /*
 ** HGE System state constants
 */
+
+#define HGE_STATE_MASK		0xff00
+#define HGE_STATE_BOOLTEST		0x0100
+#define HGE_STATE_FUNCTEST		0x0200
+#define HGE_STATE_HWNDTEST		0x0300
+#define HGE_STATE_INTTEST		0x0400
+#define HGE_STATE_STRINGTEST	0x0500
+
 enum hgeBoolState
 {
 	HGE_WINDOWED		= 0x0101,    // bool		run in window?		(default: false)
@@ -159,7 +167,7 @@ enum hgeFuncState
 	HGE_RENDERFUNC		= 0x0202,    // bool*()	render function		(default: NULL)
 	HGE_FOCUSLOSTFUNC	= 0x0203,   // bool*()	focus lost function	(default: NULL)
 	HGE_FOCUSGAINFUNC	= 0x0204,   // bool*()	focus gain function	(default: NULL)
-	HGE_GFXRESTOREFUNC	= 0x0205,   // bool*()	exit function		(default: NULL)
+	HGE_GFXRESTOREFUNC	= 0x0205,   // bool*()	graphics restore function		(default: NULL)
 	HGE_EXITFUNC		= 0x0206,   // bool*()	exit function		(default: NULL)
 	
 	HGEFUNCSTATE_FORCE_DWORD = 0x7FFFFFFF

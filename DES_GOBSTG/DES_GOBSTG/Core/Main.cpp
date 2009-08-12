@@ -43,7 +43,7 @@ bool FrameFunc()
 	return false;
 }
 
-bool ForcusGainFunc()
+bool FocusGainFunc()
 {
 	Fontsys::FocusChanged();
 	return false;
@@ -55,7 +55,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	
 	hge->System_SetState(HGE_FRAMEFUNC, FrameFunc);
 	hge->System_SetState(HGE_RENDERFUNC, RenderFunc);
-	hge->System_SetState(HGE_FOCUSGAINFUNC, ForcusGainFunc);
+	hge->System_SetState(HGE_FOCUSGAINFUNC, FocusGainFunc);
 
 	Export::clientInitial(true);
 

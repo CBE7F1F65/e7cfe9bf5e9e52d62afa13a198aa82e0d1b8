@@ -60,7 +60,7 @@
 				HeaderFileName=""/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="call &quot;..\..\DES_GOBSTG_GROUP\PostBuildEvent.bat&quot; &quot;..\..\Resource\Debug\ &quot; &quot;..\..\..\LuaEngine\LuaEngine\Debug&quot;"/>
+				CommandLine="call &quot;..\..\DES_GOBSTG_GROUP\PostBuildEvent.bat&quot; &quot;..\..\Resource\Debug\ &quot; &quot;..\..\..\LuaEngine\Resource\Debug&quot;"/>
 			<Tool
 				Name="VCPreBuildEventTool"/>
 			<Tool
@@ -143,7 +143,7 @@
 				HeaderFileName=""/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="call &quot;..\..\DES_GOBSTG_GROUP\PostBuildEvent.bat&quot; &quot;..\..\Resource\&quot; &quot;..\..\..\LuaEngine\LuaEngine\Release&quot;"/>
+				CommandLine="call &quot;..\..\DES_GOBSTG_GROUP\PostBuildEvent.bat&quot; &quot;..\..\Resource\&quot; &quot;..\..\..\LuaEngine\Resource&quot;"/>
 			<Tool
 				Name="VCPreBuildEventTool"/>
 			<Tool
