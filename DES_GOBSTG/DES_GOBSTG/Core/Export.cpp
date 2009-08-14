@@ -440,77 +440,18 @@ bool Export::packFolder(const char * zipname, const char * foldername, const cha
 
 bool Export::effSave(const char * filename, hgeEffectSystem * eff, int texnum)
 {
-	if(!filename || !eff || texnum < 0)
-		return false;
-	FILE * efffile = fopen(hge->Resource_MakePath(filename), "wb");
-	HTEXTURE _tex = eff->ebi.tex;
-	eff->ebi.tex = (HTEXTURE)texnum;
-	fwrite(&(eff->ebi), sizeof(hgeEffectBasicInfo), 1, efffile);
-	eff->ebi.tex = _tex;
-
-	WORD _eID = 0;
-	WORD _aID = 0;
-
-	CEmitterList * emitterItem = eff->eiList;
-	while(emitterItem)
+	if (!eff || texnum < 0)
 	{
-		_eID = (emitterItem->emitter.ID) << 8;
-		fwrite(&_eID, sizeof(WORD), 1, efffile);
-		fwrite(&(emitterItem->emitter.eei), sizeof(hgeEffectEmitterInfo), 1, efffile);
-
-		CAffectorList * affectorItem = emitterItem->emitter.eaiList;
-		while(affectorItem)
-		{
-			_aID = _eID | (affectorItem->affector.ID);
-			fwrite(&_aID, sizeof(WORD), 1, efffile);
-			fwrite(&(affectorItem->affector.eai), sizeof(hgeEffectAffectorInfo), 1, efffile);
-			affectorItem = affectorItem->next;
-		}
-		emitterItem = emitterItem->next;
+		return false;
 	}
-
-	fclose(efffile);
-	return true;
+	return eff->Save(filename, texnum);
 }
 
 int Export::effLoad(const char * filename, hgeEffectSystem * eff, HTEXTURE * tex)
 {
-	if(!filename || !eff)
+	if(!eff)
 		return -1;
-	int texnum = -1;
-	BYTE * _content;
-	DWORD _size;
-	DWORD _offset = 0;
-	WORD _ID = 0;
-	_content = hge->Resource_Load(filename, &_size);
-	if(!_content)
-		return -1;
-	memcpy(&(eff->ebi), _content + _offset, sizeof(hgeEffectBasicInfo));
-	texnum = eff->ebi.tex;
-	if(texnum < 0 || !tex[texnum])
-	{
-		hge->Resource_Free(_content);
-		return texnum;
-	}
-	eff->ebi.tex = tex[texnum];
-	_offset += sizeof(hgeEffectBasicInfo);
-	while(_offset < _size)
-	{
-		memcpy(&_ID, _content + _offset, sizeof(WORD));
-		_offset += sizeof(WORD);
-		if((_ID & 0xff) == 0)
-		{
-			eff->AddEmitter(_ID>>8, (hgeEffectEmitterInfo *)(_content + _offset));
-			_offset += sizeof(hgeEffectEmitterInfo);
-		}
-		else
-		{
-			eff->AddAffector(_ID>>8, _ID & 0xff, (hgeEffectAffectorInfo *)(_content + _offset));
-			_offset += sizeof(hgeEffectAffectorInfo);
-		}
-	}
-	hge->Resource_Free(_content);
-	return texnum;
+	return eff->Load(filename, 0, tex);
 }
 
 #ifdef __UNPACK

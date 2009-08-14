@@ -1,22 +1,27 @@
 #include "hgeEffectSystem.h"
+#include <stdio.h>
 
 HGE * hgeEffectSystem::hge = NULL;
 
-hgeEffectSystem::hgeEffectSystem()
+void hgeEffectSystem::_EffectSystemInit()
 {
 	ZeroMemory(this, sizeof(hgeEffectSystem));
 	hge = hgeCreate(HGE_VERSION);
 
 	nAge = HGEEFFECT_AGE_STOP;
+	texnum = -1;
+}
+
+hgeEffectSystem::hgeEffectSystem()
+{
+	_EffectSystemInit();
 }
 
 hgeEffectSystem::hgeEffectSystem(const hgeEffectSystem &eff)
 {
-	ZeroMemory(this, sizeof(hgeEffectSystem));
-	hge = hgeCreate(HGE_VERSION);
+	_EffectSystemInit();
 
 	memcpy(&ebi, &(eff.ebi), sizeof(hgeEffectBasicInfo));
-	nAge = HGEEFFECT_AGE_STOP;
 
 	CEmitterList * emitterItem = eff.eiList;
 	while (emitterItem)
@@ -37,10 +42,103 @@ hgeEffectSystem::hgeEffectSystem(const hgeEffectSystem &eff)
 	}
 }
 
+hgeEffectSystem::hgeEffectSystem(const char * filename, HTEXTURE tex, HTEXTURE * texset)
+{
+	_EffectSystemInit();
+	texnum = Load(filename, tex, texset);
+}
+
 hgeEffectSystem::~hgeEffectSystem()
 {
 	FreeList();
 	hge->Release();
+}
+
+int hgeEffectSystem::Load(const char * filename, HTEXTURE tex /* = 0 */, HTEXTURE * texset /* = 0 */)
+{
+	if (!filename)
+	{
+		return -1;
+	}
+	BYTE * _content;
+	DWORD _size;
+	DWORD _offset = 0;
+	WORD _ID = 0;
+	_content = hge->Resource_Load(filename, &_size);
+	if(!_content)
+		return -1;
+	memcpy(&(ebi), _content + _offset, sizeof(hgeEffectBasicInfo));
+	texnum = ebi.tex;
+	if (tex == 0)
+	{
+		if(texnum < 0 || !texset[texnum])
+		{
+			hge->Resource_Free(_content);
+			return texnum;
+		}
+		ebi.tex = texset[texnum];
+	}
+	else
+	{
+		ebi.tex = tex;
+	}
+	_offset += sizeof(hgeEffectBasicInfo);
+	while(_offset < _size)
+	{
+		memcpy(&_ID, _content + _offset, sizeof(WORD));
+		_offset += sizeof(WORD);
+		if((_ID & 0xff) == 0)
+		{
+			AddEmitter(_ID>>8, (hgeEffectEmitterInfo *)(_content + _offset));
+			_offset += sizeof(hgeEffectEmitterInfo);
+		}
+		else
+		{
+			AddAffector(_ID>>8, _ID & 0xff, (hgeEffectAffectorInfo *)(_content + _offset));
+			_offset += sizeof(hgeEffectAffectorInfo);
+		}
+	}
+	hge->Resource_Free(_content);
+	return texnum;
+}
+
+bool hgeEffectSystem::Save(const char * filename, int _texnum /* = -1 */)
+{
+	if (_texnum >= 0)
+	{
+		texnum = _texnum;
+	}
+	if(!filename || texnum < 0)
+		return false;
+	FILE * efffile = fopen(hge->Resource_MakePath(filename), "wb");
+	HTEXTURE _tex = ebi.tex;
+	ebi.tex = (HTEXTURE)texnum;
+	fwrite(&(ebi), sizeof(hgeEffectBasicInfo), 1, efffile);
+	ebi.tex = _tex;
+
+	WORD _eID = 0;
+	WORD _aID = 0;
+
+	CEmitterList * emitterItem = eiList;
+	while(emitterItem)
+	{
+		_eID = (emitterItem->emitter.ID) << 8;
+		fwrite(&_eID, sizeof(WORD), 1, efffile);
+		fwrite(&(emitterItem->emitter.eei), sizeof(hgeEffectEmitterInfo), 1, efffile);
+
+		CAffectorList * affectorItem = emitterItem->emitter.eaiList;
+		while(affectorItem)
+		{
+			_aID = _eID | (affectorItem->affector.ID);
+			fwrite(&_aID, sizeof(WORD), 1, efffile);
+			fwrite(&(affectorItem->affector.eai), sizeof(hgeEffectAffectorInfo), 1, efffile);
+			affectorItem = affectorItem->next;
+		}
+		emitterItem = emitterItem->next;
+	}
+
+	fclose(efffile);
+	return true;
 }
 
 void hgeEffectSystem::FreeList()

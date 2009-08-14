@@ -75,6 +75,11 @@ void hgeSprite::NewSprite(HTEXTURE texture, float texx, float texy, float w, flo
 	quad.v[3].tx = texx1; quad.v[3].ty = texy2;
 }
 
+hgeSprite::hgeSprite()
+{
+	_SpriteInit();
+}
+
 hgeSprite::hgeSprite(HTEXTURE texture, float texx, float texy, float w, float h)
 {
 	_SpriteInit();

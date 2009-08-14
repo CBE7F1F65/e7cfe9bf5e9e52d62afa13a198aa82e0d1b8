@@ -184,8 +184,12 @@ class hgeEffectSystem
 {
 public:
 	hgeEffectSystem();
+	hgeEffectSystem(const char * filename, HTEXTURE tex = 0, HTEXTURE * texset = 0);
 	hgeEffectSystem(const hgeEffectSystem & eff);
 	~hgeEffectSystem();
+
+	int Load(const char * filename, HTEXTURE tex = 0, HTEXTURE * texset = 0);
+	bool Save(const char * filename, int _texnum = -1);
 
 	void FreeList();
 	void Render();
@@ -214,6 +218,9 @@ public:
 	int GetAffectorAge(BYTE emitterID, BYTE affectorID);
 	int GetEffectObjectAlive(BYTE emitterID = 0);
 
+private:
+	void _EffectSystemInit();
+
 public:
 	hgeEffectBasicInfo	ebi;
 	CEmitterList *		eiList;
@@ -221,6 +228,7 @@ public:
 	int		nDelayCounter;
 	float	x, y, z;
 	float	lastx, lasty, lastz;
+	int		texnum;
 
 	static HGE	*	hge;
 };
