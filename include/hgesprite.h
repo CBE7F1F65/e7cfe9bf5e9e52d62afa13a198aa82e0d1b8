@@ -21,10 +21,12 @@
 class hgeSprite
 {
 public:
+	hgeSprite();
 	hgeSprite(HTEXTURE tex, float x, float y, float w, float h);
 	hgeSprite(const hgeSprite &spr);
 	~hgeSprite() { hge->Release(); }
 	
+	void		NewSprite(HTEXTURE tex, float x, float y, float w, float h);
 	
 	void		Render(float x, float y);
 	void		RenderEx(float x, float y, float rot, float hscale=1.0f, float vscale=0.0f);
@@ -54,8 +56,10 @@ public:
 	hgeRect*	GetBoundingBox(float x, float y, hgeRect *rect) const { rect->Set(x-hotX, y-hotY, x-hotX+width, y-hotY+height); return rect; }
 	hgeRect*	GetBoundingBoxEx(float x, float y, float rot, float hscale, float vscale,  hgeRect *rect) const;
 
+private:
+	void		_SpriteInit();
+
 public:
-	hgeSprite();
 	static HGE	*hge;
 
 	hgeQuad		quad;

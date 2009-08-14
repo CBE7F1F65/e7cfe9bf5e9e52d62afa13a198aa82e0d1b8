@@ -13,7 +13,6 @@ using namespace std;
 #include "hge.h"
 #include "hgefont.h"
 #include "hgesprite.h"
-#include "hgeparticle.h"
 #include "hgeeffectsystem.h"
 
 #include "BMath.h"

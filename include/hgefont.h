@@ -35,6 +35,7 @@ public:
 	hgeFont(const char *filename, bool bMipmap=false);
 	~hgeFont();
 
+	void		NewFont(const char *filename, bool bMipmap=false);
 	void		Render(float x, float y, int align, const char *string);
 	void		printf(float x, float y, int align, const char *format, ...);
 	void		printfb(float x, float y, float w, float h, int align, const char *format, ...);

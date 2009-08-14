@@ -40,12 +40,7 @@ void hgeFont::_FontInit()
 	ZeroMemory( &post, sizeof(letters) );
 }
 
-hgeFont::hgeFont()
-{
-	_FontInit();
-}
-
-hgeFont::hgeFont(const char *szFont, bool bMipmap)
+void hgeFont::NewFont(const char *szFont, bool bMipmap/* =false */)
 {
 	void	*data;
 	DWORD	size;
@@ -56,7 +51,6 @@ hgeFont::hgeFont(const char *szFont, bool bMipmap)
 	int		i, x, y, w, h, a, c;
 
 	// Setup variables
-	_FontInit();
 	
 	// Load font description
 
@@ -138,6 +132,17 @@ hgeFont::hgeFont(const char *szFont, bool bMipmap)
 	}
 
 	delete[] desc;	
+}
+
+hgeFont::hgeFont()
+{
+	_FontInit();
+}
+
+hgeFont::hgeFont(const char *szFont, bool bMipmap)
+{
+	_FontInit();
+	NewFont(szFont, bMipmap);
 }
 
 hgeFont::hgeFont(const hgeFont &fnt)

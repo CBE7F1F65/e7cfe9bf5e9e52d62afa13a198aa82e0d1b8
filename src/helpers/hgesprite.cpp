@@ -12,13 +12,35 @@
 
 HGE *hgeSprite::hge=0;
 
+void hgeSprite::_SpriteInit()
+{
+	hge=hgeCreate(HGE_VERSION);
 
-hgeSprite::hgeSprite(HTEXTURE texture, float texx, float texy, float w, float h)
+	tx=0;	ty=0;
+	width=0;	height=0;
+	hotX=0;	hotY=0;
+	tex_width = 1.0f;
+	tex_height = 1.0f;
+
+	scale3d = 1.0f;
+	bXFlip=false; bYFlip=false;
+	bHSFlip=false;
+
+	ZeroMemory(&quad, sizeof(hgeQuad));
+
+	quad.v[0].col = 
+		quad.v[1].col = 
+		quad.v[2].col = 
+		quad.v[3].col = 0xffffffff;
+
+	quad.blend=BLEND_DEFAULT;
+
+}
+
+void hgeSprite::NewSprite(HTEXTURE texture, float texx, float texy, float w, float h)
 {
 	float texx1, texy1, texx2, texy2;
 
-	hge=hgeCreate(HGE_VERSION);
-	
 	if(texture)
 	{
 		tex_width = (float)hge->Texture_GetWidth(texture);
@@ -39,11 +61,7 @@ hgeSprite::hgeSprite(HTEXTURE texture, float texx, float texy, float w, float h)
 	tx=texx; ty=texy;
 	width=w; height=h;
 
-	scale3d = 1.0f;
-
 	hotX=w/2; hotY=h/2;
-	bXFlip=false; bYFlip=false;
-	bHSFlip=false;
 	quad.tex=texture;
 
 	texx1=texx/tex_width;
@@ -55,18 +73,12 @@ hgeSprite::hgeSprite(HTEXTURE texture, float texx, float texy, float w, float h)
 	quad.v[1].tx = texx2; quad.v[1].ty = texy1;
 	quad.v[2].tx = texx2; quad.v[2].ty = texy2;
 	quad.v[3].tx = texx1; quad.v[3].ty = texy2;
+}
 
-	quad.v[0].z = 
-	quad.v[1].z = 
-	quad.v[2].z = 
-	quad.v[3].z = 0.0f;
-
-	quad.v[0].col = 
-	quad.v[1].col = 
-	quad.v[2].col = 
-	quad.v[3].col = 0xffffffff;
-
-	quad.blend=BLEND_DEFAULT;
+hgeSprite::hgeSprite(HTEXTURE texture, float texx, float texy, float w, float h)
+{
+	_SpriteInit();
+	NewSprite(texture, texx, texy, w, h);
 }
 
 hgeSprite::hgeSprite(const hgeSprite &spr)
