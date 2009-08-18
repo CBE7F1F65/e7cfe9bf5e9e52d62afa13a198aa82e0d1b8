@@ -53,6 +53,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	}
 	eres.Release();
 
-	hge->System_Shutdown();
+//	hge->System_Shutdown();
 	hge->Release();
 }

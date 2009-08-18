@@ -69,7 +69,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	//
 	mp.Realease();
 
-	hge->System_Shutdown();
+//	hge->System_Shutdown();
 	hge->Release();
 	
 	return 0;
