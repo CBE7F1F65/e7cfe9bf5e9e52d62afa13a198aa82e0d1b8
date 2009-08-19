@@ -2,18 +2,18 @@
 /L13"Lua" Line Comment = -- Block Comment On = --[[ Block Comment Off = ]] String Chars = "' File Extensions = LUA
 /Delimiters = ~!@%^&*()-+=|\/{}[]:;"'<> ,	.?
 /Function String = "%[a-zA-Z]*)"
-/Indent Strings =  "{" "(" "[" "elseif","function","if"
-/Unindent Strings =  "}" ")" "]" "end"
-/Open Brace Strings =  "{" "(" "[" "elseif","function","if"
-/Close Brace Strings = "}" ")" "]" "end"
-/Open Fold Strings =  "{" "(" "[" "elseif","function","if"
-/Close Fold Strings = "}" ")" "]" "end"
+/Open Brace Strings =  "function","if","elseif","for","{"
+/Close Brace Strings = "end","}"
+/Open Fold Strings = "function","if","elseif","for","{"
+/Close Fold Strings = "end","}"
+/Indent Strings = "function","if","elseif","for","{"
+/Unindent Strings = "end","}"
 /C1 "key words"
 and
 do
 else elseif end
-function
-if
+for function
+if in
 local
 nil not
 or
@@ -26,7 +26,7 @@ abs acos appendto ascii asin assert atan atan2
 call ceil clock collectgarbage copytagmethods cos
 date deg dofile dostring
 error execute exit
-floor foreach foreachvar format frexp
+false floor foreach foreachvar format frexp
 getbinmethod getenv getglobal gettagmethod gsub
 ldexp log log10
 max min mod
@@ -36,7 +36,7 @@ rad random randomseed rawgetglobal rawgettable rawsetglobal rawsettable read
 readfrom remove rename
 seterrormethod setglobal setlocale settag settagmethod sin sqrt strbyte
 strchar strfind strlen strlower strrep strsub strupper
-tag tan tmpname tonumber tostring type
+tag tan tmpname tonumber tostring true type
 write writeto
 /C3
 $debug
@@ -88,6 +88,7 @@ saveluavar savestate script_path script_pdir script_vdir stateerrormethod
 statefile stdin strsplit
 unescape
 /C8
+** LuaFn_
 DBClose DBExec DBOpen DBRow
 
 
