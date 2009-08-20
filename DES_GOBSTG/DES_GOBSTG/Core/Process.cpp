@@ -39,6 +39,7 @@ Process::Process()
 	keyEscape	= RESCONFIGDEFAULT_KEYESCAPE;
 	keyCapture	= RESCONFIGDEFAULT_KEYCAPTURE;
 	musicID = -1;
+	screenmode = 0;
 
 	texInit = NULL;
 }
