@@ -151,8 +151,7 @@ int Process::processInit()
 
 	if (time == 1)
 	{
-		processPreInitial();
-		return PGO;
+		return processPreInitial();
 	}
 
 	if (texInit)
