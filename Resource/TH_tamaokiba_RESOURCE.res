@@ -1,4 +1,4 @@
-ing[Header]
+[Header]
 GameVersion=115
 Signature=h5nc
 FileType=129
