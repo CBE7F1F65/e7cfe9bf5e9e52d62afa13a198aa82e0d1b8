@@ -175,10 +175,7 @@ void Process::musicChange(BYTE ID, bool force)
 		channelsyncinfo.allLength = res.musdata[musicID].alllength;
 		if (channel)
 		{
-			if (hge->Channel_IsSliding(channel))
-			{
-				hge->Channel_SlideTo(channel, 0, bgmvol, -1, -1);
-			}
+			musicSlide(0, bgmvol);
 			hge->Channel_Stop(channel);
 		}
 		channel = hge->Stream_Play(stream, true, bgmvol);
