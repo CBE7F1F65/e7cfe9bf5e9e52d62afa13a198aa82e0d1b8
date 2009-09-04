@@ -217,7 +217,7 @@ public:
 
 	static bool Build(float x, float y, bool absolute, int angle, float speed, BYTE type, BYTE color, int fadeinTime, float avoid, BYTE tarID);
 	static void BuildCircle(int num, int baseangle, float baser, float x, float y, float speed, BYTE type, BYTE color, int fadeinTime, float avoid);
-	static void BuildLine(int num, int baseangle, float space, int baseindex, float x, float y, float angle, float speed, BYTE type, BYTE color, int fadeinTime, float avoid);
+	static void BuildLine(int num, int baseangle, float space, int baseindex, float x, float y, int angle, float anglefactor, float speed, float speedfactor, BYTE type, BYTE color, int fadeinTime, float avoid);
 
 	void matchFadeInColorType();
 	void matchFadeOutColorType();

@@ -319,9 +319,9 @@ bool Scripter::Parse(int varcount)
 					}
 					break;
 				case SCR_BUBUILDLINE:
-					if (rv = Copy(&i, 12))
+					if (rv = Copy(&i, 14))
 					{
-						Bullet::BuildLine(CAST(d[0]), CAST(d[1]), CAST(d[2]), CAST(d[3]), CAST(d[4]), CAST(d[5]), CAST(d[6]), CAST(d[7]), CAST(d[8]), CAST(d[9]), CAST(d[10]), CAST(d[11]));
+						Bullet::BuildLine(CAST(d[0]), CAST(d[1]), CAST(d[2]), CAST(d[3]), CAST(d[4]), CAST(d[5]), CAST(d[6]), CAST(d[7]), CAST(d[8]), CAST(d[9]), CAST(d[10]), CAST(d[11]), CAST(d[12]), CAST(d[13]));
 					}
 					break;
 				case SCR_BUDECANCEL:

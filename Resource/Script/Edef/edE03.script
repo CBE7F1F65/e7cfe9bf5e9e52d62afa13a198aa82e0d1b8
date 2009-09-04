@@ -193,7 +193,7 @@ SD [ttimemod] EN@ % 500 < 250
 A 3
 	TIMEREQUAL 90 FADEOUT
 BL 15 0 45 8
-	ENX ENY 9000 0.0
+	ENX ENY 9000 0 0.0 0
 	3 SIGN ttimemod * 2 + 4 8 0
 A 0
 
@@ -210,7 +210,7 @@ LOOP [i]
 		TIMERLESS 80 ANGLESETADD i * 10 + 200 * ttimemod
 		TIMERLESS 160 SPEEDSETADD i / 3 + 2
 	BL 13 0 50 8
-		i * 1.2f +f ENX + trandx ENY + trandy -9000 i *f 0.15
+		i * 1.2f +f ENX + trandx ENY + trandy -9000 0 i *f 0.15 0
 		1 ttimemod * 2 + 4 8 0
 }
 A 0
@@ -241,7 +241,7 @@ SD [ttimemod] SIGN ttimemod
 A 3
 	TIMEREQUAL 90 FADEOUT
 BL 13 0 50 8
-	ttimemod *f 8.0 +f ENX ENY 9000 0.0
+	ttimemod *f 8.0 +f ENX ENY 9000 0 0.0 0
 	3 ttimemod * 2 + 4 8 0
 A 0
 
@@ -258,7 +258,7 @@ LOOP [i]
 		TIMERLESS 80 ANGLESETADD i * 11 + 200 * ttimemod
 		TIMERLESS 105 SPEEDSETADD i / 4 + 2
 	BL 15 0 45 8
-		i *f 1.2 +f ENX + trandx ENY + trandy -9000 i *f 0.15
+		i *f 1.2 +f ENX + trandx ENY + trandy -9000 0 i *f 0.15 0
 		1 ttimemod * 2 + 4 8 0
 }
 A 0
@@ -350,7 +350,7 @@ SD [_0] ENAMAP 0
 A 5
 	TIMERRANGE 60 90 SPEEDSETADD 8
 BL 3 _0 tdist /f 4.0 -1
-	ENX ENY _0 0.0
+	ENX ENY _0 0 0.0 0
 	3 tmod * 4 + 2 8 0
 A 0
 
@@ -376,7 +376,7 @@ SD [i] 7
 LOOP [i]
 {
 	BL 12 _0 18.0 -1
-		i * 50 + trandx + 24 RANDR 30 + 80 _0 0.1
+		i * 50 + trandx + 24 RANDR 30 + 80 _0 0 0.1 0
 		3 tmod * 4 + 2 8 0
 }
 A 0

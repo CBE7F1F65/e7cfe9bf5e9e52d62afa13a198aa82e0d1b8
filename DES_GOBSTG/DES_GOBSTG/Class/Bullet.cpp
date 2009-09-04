@@ -85,7 +85,7 @@ void Bullet::BuildCircle(int num, int baseangle, float baser, float x, float y, 
 	}
 }
 
-void Bullet::BuildLine(int num, int baseangle, float space, int baseindex, float x, float y, float angle, float speed, BYTE type, BYTE color, int fadeinTime, float avoid)
+void Bullet::BuildLine(int num, int baseangle, float space, int baseindex, float x, float y, int angle, float anglefactor, float speed, float speedfactor, BYTE type, BYTE color, int fadeinTime, float avoid)
 {
 	if (num <= 0)
 	{
@@ -96,7 +96,7 @@ void Bullet::BuildLine(int num, int baseangle, float space, int baseindex, float
 		int tindex = i - baseindex;
 		float tx = x + tindex * cost(baseangle) * space;
 		float ty = y + tindex * sint(baseangle) * space;
-		Bullet::Build(tx, ty, true, angle, speed, type, color, fadeinTime, avoid, 0xff);
+		Bullet::Build(tx, ty, true, angle + anglefactor * tindex, speed + speedfactor * abs(tindex), type, color, fadeinTime, avoid, 0xff);
 	}
 }
 

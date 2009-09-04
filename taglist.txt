@@ -213,7 +213,7 @@ ActiveGroup=DES_GOBSTG
 209="SPELLUSERNAME :UEDS:SPELLUSERNAME ValueI_sno^p"						
 210="SPELLUSERENAME :UEDS:SPELLUSERENAME ValueI_sno^p"						
 211="SNOUSER: UEDS:SNOUSER ValueI_sno^p"						
-212="BL :UEDS:BL ValueI_num ValueI_baseAngle ValueF_space ValueI_index^p	ValueF_x ValueF_y ValueI_angle ValueF_speed^p	ValueI_type ValueI_color ValueI_fadein ValueF_avoid^p"				
+212="BL :UEDS:BL ValueI_num ValueI_baseAngle ValueF_space ValueI_index^p	ValueF_x ValueF_y ValueI_angle ValueF_anglefactor ValueF_speed ValueF_speedfactor^p	ValueI_type ValueI_color ValueI_fadein ValueF_avoid^p"
 110="SETCHARA :UEDS:SETCHARA ValueI_chara_1 ValueI_chara_2 ValueI_chara_3^p"						
 
 
