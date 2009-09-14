@@ -122,7 +122,7 @@ public:
 	virtual	void		CALL	Ini_SetString(const char *section, const char *name, const char *value);
 	virtual	char*		CALL	Ini_GetString(const char *section, const char *name, const char *def_val);
 
-	virtual void		CALL	Random_Seed(int seed=0);
+	virtual int			CALL	Random_Seed(int seed=0);
 	virtual int			CALL	Random_Int(int min, int max);
 	virtual float		CALL	Random_Float(float min, float max);
 

@@ -93,6 +93,9 @@ typedef unsigned __int64	QWORD;
 #define M_SQRT1_2  0.707106781186547524401f
 #endif
 
+// Texture Offset
+#define HGE_TEXTUREOFFSET	0.5f
+
 /*
 ** HGE Handle types
 */
@@ -551,7 +554,7 @@ public:
 	virtual	void		CALL	Ini_SetString(const char *section, const char *name, const char *value) = 0;
 	virtual	char*		CALL	Ini_GetString(const char *section, const char *name, const char *def_val) = 0;
 
-	virtual void		CALL	Random_Seed(int seed=0) = 0;
+	virtual int			CALL	Random_Seed(int seed=0) = 0;
 	virtual int			CALL	Random_Int(int min, int max) = 0;
 	virtual float		CALL	Random_Float(float min, float max) = 0;
 

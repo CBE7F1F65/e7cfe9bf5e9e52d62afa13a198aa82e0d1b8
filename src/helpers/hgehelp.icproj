@@ -5,7 +5,7 @@
 	Name="hgehelp"
 	ProjectGUID="{1F75C075-6CD9-41D2-A771-F12556414E93}"
 	VCNestedProjectGUID="{FA197D84-4A1A-4FD4-92FA-536A84867C25}"
-	VCNestedProjectCRC32="837819054"
+	VCNestedProjectCRC32="997844271"
 	VCNestedProjectFileName="hgehelp.vcproj">
 	<Configurations>
 		<Configuration 
@@ -95,7 +95,7 @@
 				DelayImpLib=""/>
 			<Tool 
 				Name="LibrarianTool"
-				OutputFile=".\../../lib/vc\hgehelp.lib"
+				OutputFile=".\../../lib/vc\hgehelp_d.lib"
 				SuppressStartupBanner="1"/>
 			<Tool 
 				Name="ResCmplrTool"
@@ -136,6 +136,8 @@
 					BasicRuntimeChecks="3"/>
 			</FileConfiguration>
 		</File>
+		<File 
+			RelativePath=".\hgecolor.cpp"/>
 		<File 
 			RelativePath=".\hgedistort.cpp">
 			<FileConfiguration 
@@ -372,8 +374,6 @@
 					BasicRuntimeChecks="3"/>
 			</FileConfiguration>
 		</File>
-		<File 
-			RelativePath=".\hgecolor.cpp"/>
 		<File 
 			RelativePath="..\..\include\hgeanim.h"/>
 		<File 

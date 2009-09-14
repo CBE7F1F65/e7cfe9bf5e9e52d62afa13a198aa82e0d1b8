@@ -48,7 +48,7 @@
 				ModuleDefinitionFile=".\hge.def"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile=".\Debug/hge.pdb"
-				ImportLibrary="..\..\lib\vc\hge.lib"
+				ImportLibrary="..\..\lib\vc\hge_d.lib"
 				TargetMachine="0"/>
 			<Tool
 				Name="VCMIDLTool"

@@ -5,7 +5,7 @@
 	Name="hge"
 	ProjectGUID="{9F8AACB6-5F1B-463C-ADF0-CD0ADA749A06}"
 	VCNestedProjectGUID="{32B00EEA-7CF8-44B6-82B4-0EA67C7C4E54}"
-	VCNestedProjectCRC32="1922189621"
+	VCNestedProjectCRC32="481902811"
 	VCNestedProjectFileName="hge.vcproj">
 	<Configurations>
 		<Configuration 
@@ -42,7 +42,7 @@
 				ModuleDefinitionFile=".\hge.def"
 				GenerateDebugInformation="1"
 				ProgramDatabaseFile=".\Debug/hge.pdb"
-				ImportLibrary="..\..\lib\vc\hge.lib"
+				ImportLibrary="..\..\lib\vc\hge_d.lib"
 				AdditionalOptions=""/>
 			<Tool 
 				Name="LibrarianTool"/>

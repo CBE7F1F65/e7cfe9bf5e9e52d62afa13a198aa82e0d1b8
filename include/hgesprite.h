@@ -44,7 +44,7 @@ public:
 	void		SetFlip(bool bX, bool bY, bool bHotSpot = false);
 
 	HTEXTURE	GetTexture() const { return quad.tex; }
-	void		GetTextureRect(float *x, float *y, float *w, float *h) const { *x=tx; *y=ty; *w=width; *h=height; }
+	void		GetTextureRect(float *x, float *y, float *w, float *h) const { *x=tx-HGE_TEXTUREOFFSET; *y=ty-HGE_TEXTUREOFFSET; *w=width; *h=height; }
 	DWORD		GetColor(int i=0) const { return quad.v[i].col; }
 	float		GetZ(int i=0) const { return quad.v[i].z; }
 	int			GetBlendMode() const { return quad.blend; }

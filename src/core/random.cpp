@@ -12,10 +12,17 @@
 
 unsigned int g_seed=0;
 
-void CALL HGE_Impl::Random_Seed(int seed)
+int CALL HGE_Impl::Random_Seed(int seed)
 {
-	if(!seed) g_seed=timeGetTime();
-	else g_seed=seed;
+	if (!seed)
+	{
+		g_seed=timeGetTime();
+	}
+	else
+	{
+		g_seed=seed;
+	}
+	return g_seed;
 }
 
 int CALL HGE_Impl::Random_Int(int min, int max)

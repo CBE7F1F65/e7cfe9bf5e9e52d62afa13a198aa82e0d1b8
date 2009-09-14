@@ -57,12 +57,13 @@ void hgeSprite::NewSprite(HTEXTURE texture, float texx, float texy, float w, flo
 		w = tex_width;
 		h = tex_height;
 	}
-
+	quad.tex=texture;
+	SetTextureRect(texx, texy, w, h);
+/*
 	tx=texx; ty=texy;
 	width=w; height=h;
 
 	hotX=w/2; hotY=h/2;
-	quad.tex=texture;
 
 	texx1=texx/tex_width;
 	texy1=texy/tex_height;
@@ -73,6 +74,7 @@ void hgeSprite::NewSprite(HTEXTURE texture, float texx, float texy, float w, flo
 	quad.v[1].tx = texx2; quad.v[1].ty = texy1;
 	quad.v[2].tx = texx2; quad.v[2].ty = texy2;
 	quad.v[3].tx = texx1; quad.v[3].ty = texy2;
+*/
 }
 
 hgeSprite::hgeSprite()
@@ -295,8 +297,8 @@ void hgeSprite::SetTextureRect(float x, float y, float w, float h, bool adjSize)
 	float tx1, ty1, tx2, ty2;
 	bool bX,bY,bHS;
 
-	tx=x;
-	ty=y;
+	tx=x+HGE_TEXTUREOFFSET;
+	ty=y+HGE_TEXTUREOFFSET;
 
 	if (w < 0 || h < 0)
 	{
