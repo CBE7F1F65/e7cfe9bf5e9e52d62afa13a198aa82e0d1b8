@@ -21,7 +21,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				OptimizeForWindowsApplication="TRUE"
-				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG;__DEBUG;__UNPACK"
+				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG;__DEBUG"
 				StringPooling="TRUE"
 				MinimalRebuild="FALSE"
 				BasicRuntimeChecks="3"
@@ -39,7 +39,7 @@
 				AdditionalDependencies="nafxcwd.lib"
 				LinkIncremental="0"
 				IgnoreDefaultLibraryNames=""
-				DelayLoadDLLs="hge.dll"
+				DelayLoadDLLs="hge_d.dll"
 				GenerateDebugInformation="TRUE"
 				SubSystem="2"
 				TargetMachine="0"/>

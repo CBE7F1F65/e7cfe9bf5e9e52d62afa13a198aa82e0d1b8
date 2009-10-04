@@ -12,9 +12,15 @@
 #define NOCRYPT
 //#define NOUNCRYPT
 #include "ZLIB\unzip.h"
+/************************************************************************/
+/* This header file is added by h5nc (h5nc@yahoo.com.cn)                */
+/************************************************************************/
 #include "ZLIB\zip.h"
 
 
+/************************************************************************/
+/* This function is modified by h5nc (h5nc@yahoo.com.cn)                */
+/************************************************************************/
 bool CALL HGE_Impl::Resource_AttachPack(const char *filename, int password)
 {
 	char *szName;
@@ -44,7 +50,11 @@ bool CALL HGE_Impl::Resource_AttachPack(const char *filename, int password)
 
 	return true;
 }
-//Added by Thor/h5nc 2008-02-05
+
+/************************************************************************/
+/* These functions are added by h5nc (h5nc@yahoo.com.cn)                */
+/************************************************************************/
+// begin
 bool CALL HGE_Impl::Resource_AddFileInPack(const char * filename, int password, hgeMemoryFile * memfile)
 {
 	if(!Resource_AttachPack(filename, password))
@@ -63,7 +73,7 @@ bool CALL HGE_Impl::Resource_AddFileInPack(const char * filename, int password, 
 		NULL, 0, NULL, 0, NULL,
 		Z_DEFLATED, Z_DEFAULT_COMPRESSION, 0,
 		-MAX_WBITS, DEF_MEM_LEVEL, Z_DEFAULT_STRATEGY,
-		password, Resource_GetCRC(memfile->data, memfile->size)
+		Resource_GetPSW(password), Resource_GetCRC(memfile->data, memfile->size)
 		))
 	{
 		zipClose(zip, NULL);
@@ -104,7 +114,7 @@ bool CALL HGE_Impl::Resource_CreatePack(const char * filename, int password, hge
 			NULL, 0, NULL, 0, NULL,
 			Z_DEFLATED, Z_DEFAULT_COMPRESSION, 0,
 			-MAX_WBITS, DEF_MEM_LEVEL, Z_DEFAULT_STRATEGY,
-			password, Resource_GetCRC(vai->data, vai->size)
+			Resource_GetPSW(password), Resource_GetCRC(vai->data, vai->size)
 			))
 		{
 			zipClose(zip, NULL);
@@ -127,6 +137,7 @@ bool CALL HGE_Impl::Resource_CreatePack(const char * filename, int password, hge
 
 	return Resource_AttachPack(filename, password);
 }
+// end
 
 void CALL HGE_Impl::Resource_RemovePack(const char *filename)
 {
@@ -166,10 +177,45 @@ void CALL HGE_Impl::Resource_RemoveAllPacks()
 }
 
 
+/************************************************************************/
+/* These functions are added by h5nc (h5nc@yahoo.com.cn)                */
+/************************************************************************/
+// begin
 DWORD CALL HGE_Impl::Resource_GetCRC(const BYTE * content, DWORD size)
 {
 	return crc32(0, (Bytef *)content, size);
 }
+
+#ifdef ZLIB_USEPSW
+int CALL HGE_Impl::Resource_GetPSW(int psw)
+{
+	return psw;
+}
+#else
+char * CALL HGE_Impl::Resource_GetPSW(int psw)
+{
+	static char szPSWBuffer[20];
+	strcpy(szPSWBuffer, "PSW");
+	for (int i=0; i<4; i++)
+	{
+		psw = psw * 214013 + 2531011;
+		szPSWBuffer[i*4+3] = (psw & 0xFF000000) >> 24;
+		szPSWBuffer[i*4+1+3] = (psw & 0x00FF0000) >> 16;
+		szPSWBuffer[i*4+2+3] = (psw & 0x0000FF00) >> 8;
+		szPSWBuffer[i*4+3+3] = (psw & 0x000000FF);
+	}
+	szPSWBuffer[19] = 0;
+	for (int i=3; i<19; i++)
+	{
+		if (szPSWBuffer[i] == 0)
+		{
+			szPSWBuffer[i] = szPSWBuffer[i-1];
+		}
+	}
+	return szPSWBuffer;
+	return (char *)psw;
+}
+#endif
 
 char * CALL HGE_Impl::Resource_GetPackFirstFileName(const char * packfilename)
 {
@@ -184,7 +230,11 @@ char * CALL HGE_Impl::Resource_GetPackFirstFileName(const char * packfilename)
 	unzClose(zip);
 	return NULL;
 }
+// end
 
+/************************************************************************/
+/* This function is modified by h5nc (h5nc@yahoo.com.cn)                */
+/************************************************************************/
 BYTE * CALL HGE_Impl::Resource_Load(const char *filename, DWORD *size)
 {
 	static char *res_err="Can't load resource: %s";
@@ -220,7 +270,7 @@ BYTE * CALL HGE_Impl::Resource_Load(const char *filename, DWORD *size)
 			for(i=0; szZipName[i]; i++)	{ if(szZipName[i]=='/') szZipName[i]='\\'; }
 			if(!strcmp(szName,szZipName))
 			{
-				if(unzOpenCurrentFilePassword(zip, resItem->password ? resItem->password : 0) != UNZ_OK)
+				if(unzOpenCurrentFilePassword(zip, Resource_GetPSW(resItem->password)/* ? resItem->password : 0*/) != UNZ_OK)
 				{
 					unzClose(zip);
 					sprintf(szName, res_err, filename);
@@ -300,6 +350,9 @@ void CALL HGE_Impl::Resource_Free(void *res)
 }
 
 
+/************************************************************************/
+/* This function is added by h5nc (h5nc@yahoo.com.cn)                   */
+/************************************************************************/
 char* CALL HGE_Impl::Resource_SetPath(const char *filename)
 {
 	int i;
@@ -342,6 +395,9 @@ char* CALL HGE_Impl::Resource_SetPath(const char *filename)
 }
 
 
+/************************************************************************/
+/* This function is modified by h5nc (h5nc@yahoo.com.cn)                */
+/************************************************************************/
 char* CALL HGE_Impl::Resource_MakePath(const char *filename)
 {
 	int i;

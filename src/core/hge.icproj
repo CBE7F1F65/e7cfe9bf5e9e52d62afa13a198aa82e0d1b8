@@ -5,7 +5,7 @@
 	Name="hge"
 	ProjectGUID="{9F8AACB6-5F1B-463C-ADF0-CD0ADA749A06}"
 	VCNestedProjectGUID="{32B00EEA-7CF8-44B6-82B4-0EA67C7C4E54}"
-	VCNestedProjectCRC32="481902811"
+	VCNestedProjectCRC32="1501213400"
 	VCNestedProjectFileName="hge.vcproj">
 	<Configurations>
 		<Configuration 
@@ -37,7 +37,7 @@
 				Name="LinkerTool"
 				DelayImpLib=""
 				AdditionalDependencies="winmm.lib d3d9.lib d3dx9.lib"
-				OutputFile="..\..\lib\vc\hge.dll"
+				OutputFile="..\..\lib\vc\hge_d.dll"
 				SuppressStartupBanner="1"
 				ModuleDefinitionFile=".\hge.def"
 				GenerateDebugInformation="1"
@@ -66,7 +66,7 @@
 				Name="PreLinkEventTool"/>
 			<Tool 
 				Name="PostBuildEventTool"
-				CommandLine="call &quot;..\..\DES_GOBSTG_GROUP\PostBuildEvent.bat&quot; &quot;..\..\Resource\Debug\ &quot; &quot;..\..\..\LuaEngine\Resource\Debug&quot;"/>
+				CommandLine="call &quot;..\..\DES_GOBSTG_GROUP\PostBuildEvent.bat&quot; ..\..\Resource\Debug\ ..\..\..\LuaEngine\Resource\Debug\ ..\..\Resource\ ..\..\..\LuaEngine\Resource\"/>
 			<Tool 
 				Name="CustomTool"/>
 			<Tool 
@@ -141,7 +141,7 @@
 				Name="PreLinkEventTool"/>
 			<Tool 
 				Name="PostBuildEventTool"
-				CommandLine="call &quot;..\..\DES_GOBSTG_GROUP\PostBuildEvent.bat&quot; &quot;..\..\Resource\&quot; &quot;..\..\..\LuaEngine\Resource&quot;"/>
+				CommandLine="call &quot;..\..\DES_GOBSTG_GROUP\PostBuildEvent.bat&quot; ..\..\Resource\Debug\ ..\..\..\LuaEngine\Resource\Debug\ ..\..\Resource\ ..\..\..\LuaEngine\Resource\"/>
 			<Tool 
 				Name="CustomTool"/>
 			<Tool 

@@ -42,7 +42,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	hge->System_SetState(HGE_FRAMEFUNC, FrameFunc);
 	hge->System_SetState(HGE_RENDERFUNC, RenderFunc);
 
-	Export::clientInitial();
+	if (!Export::clientInitial(false, true))
+	{
+		hge->System_SetState(HGE_TITLE, "HGE Effect System Editor by h5nc");
+	}
 
 	if(hge->System_Initiate())
 	{

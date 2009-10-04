@@ -45,7 +45,7 @@
 				OutputFile="$(OutDir)/$(ProjectName).exe"
 				LinkIncremental="0"
 				SuppressStartupBanner="TRUE"
-				DelayLoadDLLs="hge.dll"
+				DelayLoadDLLs="hge_d.dll"
 				GenerateDebugInformation="TRUE"
 				AssemblyDebug="1"
 				SubSystem="2"

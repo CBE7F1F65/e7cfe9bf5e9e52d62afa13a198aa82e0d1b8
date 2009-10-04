@@ -12,6 +12,9 @@
 
 unsigned int g_seed=0;
 
+/************************************************************************/
+/* This function is modified by h5nc (h5nc@yahoo.com.cn)                */
+/************************************************************************/
 int CALL HGE_Impl::Random_Seed(int seed)
 {
 	if (!seed)

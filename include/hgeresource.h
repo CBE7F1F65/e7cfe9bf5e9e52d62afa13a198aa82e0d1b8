@@ -59,6 +59,10 @@ public:
 	void*				GetResource(const char *name, int resgroup=0);
 	HTEXTURE			GetTexture(const char *name, int resgroup=0);
 	HEFFECT				GetEffect(const char *name, int resgroup=0);
+
+	/************************************************************************/
+	/* This function is deleted by h5nc (h5nc@yahoo.com.cn)                 */
+	/************************************************************************/
 //	HMUSIC				GetMusic(const char *name, int resgroup=0);
 	HSTREAM				GetStream(const char *name, int resgroup=0);
 	HTARGET				GetTarget(const char *name);

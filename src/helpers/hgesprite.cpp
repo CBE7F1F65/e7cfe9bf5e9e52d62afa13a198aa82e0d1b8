@@ -12,6 +12,9 @@
 
 HGE *hgeSprite::hge=0;
 
+/************************************************************************/
+/* This function is added by h5nc (h5nc@yahoo.com.cn)                   */
+/************************************************************************/
 void hgeSprite::_SpriteInit()
 {
 	hge=hgeCreate(HGE_VERSION);
@@ -37,6 +40,9 @@ void hgeSprite::_SpriteInit()
 
 }
 
+/************************************************************************/
+/* This function is added by h5nc (h5nc@yahoo.com.cn)                   */
+/************************************************************************/
 void hgeSprite::NewSprite(HTEXTURE texture, float texx, float texy, float w, float h)
 {
 	float texx1, texy1, texx2, texy2;
@@ -77,11 +83,17 @@ void hgeSprite::NewSprite(HTEXTURE texture, float texx, float texy, float w, flo
 */
 }
 
+/************************************************************************/
+/* This function is modified by h5nc (h5nc@yahoo.com.cn)                */
+/************************************************************************/
 hgeSprite::hgeSprite()
 {
 	_SpriteInit();
 }
 
+/************************************************************************/
+/* This function is modified by h5nc (h5nc@yahoo.com.cn)                */
+/************************************************************************/
 hgeSprite::hgeSprite(HTEXTURE texture, float texx, float texy, float w, float h)
 {
 	_SpriteInit();
@@ -96,6 +108,9 @@ hgeSprite::hgeSprite(const hgeSprite &spr)
 
 void hgeSprite::Render(float x, float y)
 {
+	/************************************************************************/
+	/* This condition is added by h5nc (h5nc@yahoo.com.cn)                  */
+	/************************************************************************/
 	if (hge->System_Is2DMode())
 	{
 		RenderEx(x, y, 0);
@@ -292,6 +307,9 @@ void hgeSprite::SetTexture(HTEXTURE tex)
 }
 
 
+/************************************************************************/
+/* This function is modified by h5nc (h5nc@yahoo.com.cn)                */
+/************************************************************************/
 void hgeSprite::SetTextureRect(float x, float y, float w, float h, bool adjSize)
 {
 	float tx1, ty1, tx2, ty2;
@@ -329,12 +347,18 @@ void hgeSprite::SetTextureRect(float x, float y, float w, float h, bool adjSize)
 }
 
 
+/************************************************************************/
+/* This function is modified by h5nc (h5nc@yahoo.com.cn)                */
+/************************************************************************/
 void hgeSprite::SetColor(DWORD col, int i)
 {
 	if(i!=-1) quad.v[i].col=col;
 	else { quad.v[0].col=quad.v[1].col=quad.v[2].col=quad.v[3].col=col; }
 }
 
+/************************************************************************/
+/* This function is added by h5nc (h5nc@yahoo.com.cn)                   */
+/************************************************************************/
 void hgeSprite::SetColor(DWORD col0, DWORD col1, DWORD col2, DWORD col3)
 {
 	quad.v[0].col = col0;
@@ -343,6 +367,9 @@ void hgeSprite::SetColor(DWORD col0, DWORD col1, DWORD col2, DWORD col3)
 	quad.v[3].col = col3;
 }
 
+/************************************************************************/
+/* This function is modified by h5nc (h5nc@yahoo.com.cn)                */
+/************************************************************************/
 void hgeSprite::SetZ(float z, int i)
 {
 	if(i == -1 || hge->System_Is2DMode())
@@ -355,6 +382,9 @@ void hgeSprite::SetZ(float z, int i)
 	}
 }
 
+/************************************************************************/
+/* This function is added by h5nc (h5nc@yahoo.com.cn)                   */
+/************************************************************************/
 void hgeSprite::SetZ(float z0, float z1, float z2, float z3)
 {
 	quad.v[0].z = z0;

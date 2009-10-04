@@ -6,6 +6,10 @@
 ** Core functions implementation: graphics
 */
 
+/************************************************************************/
+/* Part of this file is modified by h5nc (h5nc@yahoo.com.cn)            */
+/* Changes of adjusting from d3d8 to d3d9 will not be marked in detail  */
+/************************************************************************/
 
 #include "hge_impl.h"
 #include <d3d9.h>
@@ -79,6 +83,9 @@ void CALL HGE_Impl::Gfx_SetClipping(int x, int y, int w, int h)
 	pD3DDevice->SetTransform(D3DTS_PROJECTION, &matProj);
 }
 
+/************************************************************************/
+/* This function is added by h5nc (h5nc@yahoo.com.cn)                   */
+/************************************************************************/
 void CALL HGE_Impl::Gfx_SetTransform(float x, float y, float dx, float dy, float rot, float hscale, float vscale)
 {
 	D3DXMATRIX tmp;
@@ -108,11 +115,24 @@ bool CALL HGE_Impl::Gfx_BeginScene(HTARGET targ)
 {
 	LPDIRECT3DSURFACE9 pSurf=0, pDepth=0;
 	CRenderTargetList *target=(CRenderTargetList *)targ;
+	D3DDISPLAYMODE Mode;
 
 	HRESULT hr = pD3DDevice->TestCooperativeLevel();
 	if (hr == D3DERR_DEVICELOST) return false;
 	else if (hr == D3DERR_DEVICENOTRESET)
 	{
+		if(bWindowed)
+		{
+			if(FAILED(pD3D->GetAdapterDisplayMode(D3DADAPTER_DEFAULT, &Mode)) || Mode.Format==D3DFMT_UNKNOWN) 
+			{
+				_PostError("Can't determine desktop video mode");
+				return false;
+			}
+
+			d3dppW.BackBufferFormat = Mode.Format;
+			if(_format_id(Mode.Format) < 4) nScreenBPP=16;
+			else nScreenBPP=32;
+		}
 	    if(!_GfxRestore()) return false; 
 	}
     
@@ -148,6 +168,10 @@ bool CALL HGE_Impl::Gfx_BeginScene(HTARGET targ)
 				pD3DDevice->SetRenderState( D3DRS_ZENABLE, D3DZB_TRUE ); 
 			else 
 				pD3DDevice->SetRenderState( D3DRS_ZENABLE, D3DZB_FALSE ); 
+
+			/************************************************************************/
+			/* This line is deleted by h5nc (h5nc@yahoo.com.cn)                     */
+			/************************************************************************/
 //			_SetProjectionMatrix(target->width, target->height);
 		}
 		else
@@ -156,10 +180,14 @@ bool CALL HGE_Impl::Gfx_BeginScene(HTARGET targ)
 			else pD3DDevice->SetRenderState( D3DRS_ZENABLE, D3DZB_FALSE );
 			_SetProjectionMatrix(nScreenWidth, nScreenHeight);
 
-//			pD3DDevice->SetTransform(D3DTS_PROJECTION, &matProj);
-//			D3DXMatrixIdentity(&matView);
-//			pD3DDevice->SetTransform(D3DTS_VIEW, &matView);
 		}
+
+		/************************************************************************/
+		/* These 3 lines are deleted by h5nc (h5nc@yahoo.com.cn)                 */
+		/************************************************************************/
+//		pD3DDevice->SetTransform(D3DTS_PROJECTION, &matProj);
+//		D3DXMatrixIdentity(&matView);
+//		pD3DDevice->SetTransform(D3DTS_VIEW, &matView);
 
 		pCurTarget=target;
 	}
@@ -200,6 +228,10 @@ void CALL HGE_Impl::Gfx_RenderLine(float x1, float y1, float x2, float y2, DWORD
 		nPrim++;
 	}
 }
+
+/************************************************************************/
+/* These 2 functions are added by h5nc (h5nc@yahoo.com.cn) for later use */
+/************************************************************************/
 /*
 void CALL HGE_Impl::Gfx_3DRenderStart()
 {
@@ -307,6 +339,10 @@ HTARGET CALL HGE_Impl::Target_Create(int width, int height, bool zbuffer)
 	pTarget->pTex=0;
 	pTarget->pDepth=0;
 
+
+	/************************************************************************/
+	/* This parameter in comment is changed by h5nc (h5nc@yahoo.com.cn)     */
+	/************************************************************************/
 	if(FAILED(D3DXCreateTexture(pD3DDevice, width, height, 1, D3DUSAGE_RENDERTARGET,
 						/*d3dpp->BackBufferFormat*/D3DFMT_A8R8G8B8, D3DPOOL_DEFAULT, &pTarget->pTex)))
 	{
@@ -640,8 +676,11 @@ bool HGE_Impl::_GfxInit()
 	UINT nModes, i;
 	
 // Init D3D
-							
-	pD3D=Direct3DCreate9(D3D_SDK_VERSION); // D3D_SDK_VERSION
+
+	/************************************************************************/
+	/* This parameter is changed by h5nc (h5nc@yahoo.com.cn)                */
+	/************************************************************************/
+	pD3D=Direct3DCreate9(D3D_SDK_VERSION/* 120 */); // D3D_SDK_VERSION
 	if(pD3D==NULL)
 	{
 		_PostError("Can't create D3D interface");
@@ -678,6 +717,10 @@ bool HGE_Impl::_GfxInit()
 	d3dppW.hDeviceWindow    = hwnd;
 	d3dppW.Windowed         = TRUE;
 
+
+	/************************************************************************/
+	/* This parameter is changed by h5nc (h5nc@yahoo.com.cn)                */
+	/************************************************************************/
 	d3dppW.SwapEffect		= D3DSWAPEFFECT_DISCARD;
 
 	if(bZBuffer)
@@ -686,6 +729,10 @@ bool HGE_Impl::_GfxInit()
 		d3dppW.AutoDepthStencilFormat = D3DFMT_D16;
 	}
 
+
+	/************************************************************************/
+	/* The following blocks are modified by h5nc (h5nc@yahoo.com.cn)        */
+	/************************************************************************/
 	if(nScreenBPP == 32)
 	{
 		nModes=pD3D->GetAdapterModeCount(D3DADAPTER_DEFAULT, D3DFMT_X8R8G8B8);
@@ -723,6 +770,10 @@ bool HGE_Impl::_GfxInit()
 	d3dppFS.hDeviceWindow    = hwnd;
 	d3dppFS.Windowed         = FALSE;
 
+
+	/************************************************************************/
+	/* This parameter is changed by h5nc (h5nc@yahoo.com.cn)                */
+	/************************************************************************/
 	d3dppFS.SwapEffect       = D3DSWAPEFFECT_DISCARD;
 	d3dppFS.FullScreen_RefreshRateInHz = D3DPRESENT_RATE_DEFAULT;
 
@@ -740,6 +791,10 @@ bool HGE_Impl::_GfxInit()
 	if(_format_id(d3dpp->BackBufferFormat) < 4) nScreenBPP=16;
 	else nScreenBPP=32;
 
+
+	/************************************************************************/
+	/* These blocks are added by h5nc (h5nc@yahoo.com.cn)                   */
+	/************************************************************************/
 // Get D3D caps
 	D3DCAPS9 d3dcaps;
 	if(FAILED(pD3D->GetDeviceCaps(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, &d3dcaps)))
@@ -756,7 +811,11 @@ bool HGE_Impl::_GfxInit()
 	
 // Create D3D Device
 
+		/************************************************************************/
+		/* This parameter is changed by h5nc (h5nc@yahoo.com.cn)                */
+		/************************************************************************/
 	if( FAILED( pD3D->CreateDevice( D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, hwnd,
+								/*D3DCREATE_SOFTWARE_VERTEXPROCESSING,*/
                                   d3dvp,
                                   d3dpp, &pD3DDevice ) ) )
 	{
@@ -893,6 +952,10 @@ bool HGE_Impl::_GfxRestore()
 		target=target->next;
 	}
 
+	/************************************************************************/
+	/* Blocks marked with "Yuki" are originally her codes                   */
+	/* h5nc (h5nc@yahoo.com.cn) copied these codes under her permission     */
+	/************************************************************************/
 	/* add by Yuki */
 	// begin 
 	CFontList * listIterator = fontList;
@@ -918,6 +981,10 @@ bool HGE_Impl::_GfxRestore()
 
 	if(!_init_lost()) return false;
 
+	/************************************************************************/
+	/* Blocks marked with "Yuki" are originally her codes                   */
+	/* h5nc (h5nc@yahoo.com.cn) copied these codes under her permission     */
+	/************************************************************************/
 	/* add by Yuki */
 	// begin
 	listIterator = fontList;

@@ -5,7 +5,7 @@
 	Name="hgeParticleEditor"
 	ProjectGUID="{5AEB2D47-89F2-47BB-A9D6-6708204001F0}"
 	VCNestedProjectGUID="{FDA21157-179D-444D-877B-DC7A20668803}"
-	VCNestedProjectCRC32="2176820322"
+	VCNestedProjectCRC32="3839711315"
 	VCNestedProjectFileName="hgeParticleEditor.vcproj"
 	Keyword="Win32Proj">
 	<Configurations>
@@ -31,7 +31,7 @@
 				AdditionalDependencies=""
 				OutputFile="$(OutDir)/EffectEditor.exe"
 				IgnoreDefaultLibraryNames=""
-				DelayLoadDLLs="hge.dll"
+				DelayLoadDLLs="hge_d.dll"
 				GenerateDebugInformation="1"
 				SubSystem="2"
 				AdditionalOptions="/NODEFAULTLIB:LIBCMT.LIB"/>
@@ -169,6 +169,8 @@
 		<File 
 			RelativePath="..\Des_gobstg\Des_gobstg\Core\DataMap.cpp"/>
 		<File 
+			RelativePath="..\Des_gobstg\Des_gobstg\Core\DataTable.cpp"/>
+		<File 
 			RelativePath=".\EditorRes.cpp"/>
 		<File 
 			RelativePath=".\EditorUI.cpp"/>
@@ -178,8 +180,6 @@
 			RelativePath=".\hgeParticleEditor.cpp"/>
 		<File 
 			RelativePath="..\Des_gobstg\Des_gobstg\Core\InitDllLoader.cpp"/>
-		<File 
-			RelativePath="..\Des_gobstg\Des_gobstg\Core\DataTable.cpp"/>
 		<File 
 			RelativePath=".\EditorRes.h"/>
 		<File 

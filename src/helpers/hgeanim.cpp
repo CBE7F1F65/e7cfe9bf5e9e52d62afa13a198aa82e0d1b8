@@ -86,35 +86,35 @@ void hgeAnimation::Update(float fDeltaTime)
 	{
 		fSinceLastFrame -= fSpeed;
 
-		if(nCurFrame+nDelta == nFrames)
+		if(nCurFrame + nDelta == nFrames)
 		{
 			switch(Mode)
 			{
 				case HGEANIM_FWD:
 				case HGEANIM_REV | HGEANIM_PINGPONG:
-					bPlaying=false;
+					bPlaying = false;
 					break;
 
 				case HGEANIM_FWD | HGEANIM_PINGPONG:
 				case HGEANIM_FWD | HGEANIM_PINGPONG | HGEANIM_LOOP:
 				case HGEANIM_REV | HGEANIM_PINGPONG | HGEANIM_LOOP:
-					nDelta=-nDelta;
+					nDelta = -nDelta;
 					break;
 			}
 		}
-		else if(nCurFrame+nDelta < 0)
+		else if(nCurFrame + nDelta < 0)
 		{
 			switch(Mode)
 			{
 				case HGEANIM_REV:
 				case HGEANIM_FWD | HGEANIM_PINGPONG:
-					bPlaying=false;
+					bPlaying = false;
 					break;
 
 				case HGEANIM_REV | HGEANIM_PINGPONG:
 				case HGEANIM_REV | HGEANIM_PINGPONG | HGEANIM_LOOP:
 				case HGEANIM_FWD | HGEANIM_PINGPONG | HGEANIM_LOOP:
-					nDelta=-nDelta;
+					nDelta = -nDelta;
 					break;
 			}
 		}
@@ -130,9 +130,9 @@ void hgeAnimation::SetFrame(int n)
 	int ncols = int(orig_width) / int(width);
 
 
-	n=n%nFrames;
-	if(n<0) n=nFrames+n;
-	nCurFrame=n;
+	n = n % nFrames;
+	if(n < 0) n = nFrames + n;
+	nCurFrame = n;
 
 	// calculate texture coords for frame n
 	ty1 = ty;

@@ -14,14 +14,15 @@ float CALL HGE_Impl::Timer_GetTime()
 {
 	return fTime;
 }
-//edit by Thor/h5nc
-//begin
+
 float CALL HGE_Impl::Timer_GetDelta()
 {
 	return fDeltaTime;
 }
-//end
 
+/************************************************************************/
+/* This function is modified by h5nc (h5nc@yahoo.com.cn)                */
+/************************************************************************/
 float CALL HGE_Impl::Timer_GetFPS(int mod)
 {
 	if(mod < 1)
@@ -45,6 +46,9 @@ float CALL HGE_Impl::Timer_GetFPS(int mod)
 	}
 }
 
+/************************************************************************/
+/* This function is added by h5nc (h5nc@yahoo.com.cn)                   */
+/************************************************************************/
 float CALL HGE_Impl::Timer_GetWorstFPS(int mod)
 {
 	if(mod <= 1)

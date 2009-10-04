@@ -21,11 +21,17 @@
 class hgeSprite
 {
 public:
+	/************************************************************************/
+	/* This function is added by h5nc (h5nc@yahoo.com.cn)                   */
+	/************************************************************************/
 	hgeSprite();
 	hgeSprite(HTEXTURE tex, float x, float y, float w, float h);
 	hgeSprite(const hgeSprite &spr);
 	~hgeSprite() { hge->Release(); }
 	
+	/************************************************************************/
+	/* This function is added by h5nc (h5nc@yahoo.com.cn)                   */
+	/************************************************************************/
 	void		NewSprite(HTEXTURE tex, float x, float y, float w, float h);
 	
 	void		Render(float x, float y);
@@ -36,14 +42,23 @@ public:
 	void		SetTexture(HTEXTURE tex);
 	void		SetTextureRect(float x, float y, float w, float h, bool adjSize = true);
 	void		SetColor(DWORD col, int i=-1);
+	/************************************************************************/
+	/* This function is added by h5nc (h5nc@yahoo.com.cn)                   */
+	/************************************************************************/
 	void		SetColor(DWORD col0, DWORD col1, DWORD col2, DWORD col3);
 	void		SetZ(float z, int i = -1);
+	/************************************************************************/
+	/* This function is added by h5nc (h5nc@yahoo.com.cn)                   */
+	/************************************************************************/
 	void		SetZ(float z0, float z1, float z2, float z3);
 	void		SetBlendMode(int blend) { quad.blend=blend; }
 	void		SetHotSpot(float x, float y) { hotX=x; hotY=y; }
 	void		SetFlip(bool bX, bool bY, bool bHotSpot = false);
 
 	HTEXTURE	GetTexture() const { return quad.tex; }
+	/************************************************************************/
+	/* This function is modified by h5nc (h5nc@yahoo.com.cn)                */
+	/************************************************************************/
 	void		GetTextureRect(float *x, float *y, float *w, float *h) const { *x=tx-HGE_TEXTUREOFFSET; *y=ty-HGE_TEXTUREOFFSET; *w=width; *h=height; }
 	DWORD		GetColor(int i=0) const { return quad.v[i].col; }
 	float		GetZ(int i=0) const { return quad.v[i].z; }
@@ -57,6 +72,9 @@ public:
 	hgeRect*	GetBoundingBoxEx(float x, float y, float rot, float hscale, float vscale,  hgeRect *rect) const;
 
 private:
+	/************************************************************************/
+	/* This function is added by h5nc (h5nc@yahoo.com.cn)                   */
+	/************************************************************************/
 	void		_SpriteInit();
 
 public:
@@ -66,6 +84,9 @@ public:
 	float		tx, ty, width, height;
 	float		tex_width, tex_height;
 	float		hotX, hotY;
+	/************************************************************************/
+	/* This member is added by h5nc (h5nc@yahoo.com.cn)                     */
+	/************************************************************************/
 	float		scale3d;
 	bool		bXFlip, bYFlip, bHSFlip;
 };

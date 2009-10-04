@@ -185,6 +185,10 @@ HEFFECT hgeResourceManager::GetEffect(const char *name, int resgroup)
 
 	return 0;
 }
+
+/************************************************************************/
+/* This function is deleted by h5nc (h5nc@yahoo.com.cn)                 */
+/************************************************************************/
 /*
 HMUSIC hgeResourceManager::GetMusic(const char *name, int resgroup)
 {

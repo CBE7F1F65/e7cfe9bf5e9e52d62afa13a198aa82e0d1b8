@@ -8,7 +8,18 @@
 
 
 #include "..\..\include\hgerect.h"
-#include "hge.h"
+
+/************************************************************************/
+/* This header is modified by h5nc (h5nc@yahoo.com.cn)                  */
+/************************************************************************/
+
+#ifdef __INTEL_COMPILER
+	#ifdef __USE_INTEL_MATH_LAB
+		#include <mathimf.h>
+	#endif
+#endif
+
+#include <math.h>
 
 
 void hgeRect::Encapsulate(float x, float y)

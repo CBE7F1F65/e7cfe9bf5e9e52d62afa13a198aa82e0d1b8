@@ -56,7 +56,7 @@ BOOL CResourceUnpackDlg::OnInitDialog()
 	SetIcon(m_hIcon, TRUE);			// 设置大图标
 	SetIcon(m_hIcon, FALSE);		// 设置小图标
 
-	Export::SetIni();
+	Export::SetIni(true);
 	hge->System_SetState(HGE_LOGFILE, LOG_STR_FILENAME);
 	Export::GetPassword();
 	unpackButton.EnableWindow(FALSE);

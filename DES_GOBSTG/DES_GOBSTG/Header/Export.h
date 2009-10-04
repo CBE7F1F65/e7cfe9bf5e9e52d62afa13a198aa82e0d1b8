@@ -97,13 +97,13 @@ public:
 	Export();
 	~Export();
 
-	static void clientInitial(bool usesound = false);
+	static bool clientInitial(bool usesound = false, bool extuse = false);
 	static void clientSetMatrix(float worldx = 0, float worldy = 0, float worldz = 0);
 	static bool clientSet2DMode(float x=M_ACTIVECLIENT_CENTER_X, float y=M_ACTIVECLIENT_CENTER_Y, float z=M_ACTIVECLIENT_CENTER_Y);
 	static bool clientSet3DMode();
 	static void clientAdjustWindow();
 	static void Release();
-	static void SetIni();
+	static bool SetIni(bool extuse = false);
 	static bool GetResourceFile(bool readbin = false);
 	static int GetPassword();
 	static bool rpyLoad(const char * filename, replayInfo * _rpyinfo = NULL, partInfo * _partinfo = NULL, replayFrame * _replayframe = NULL);

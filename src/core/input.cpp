@@ -5,9 +5,16 @@
 **
 ** Core functions implementation: input
 */
+
+/************************************************************************/
+/* This define is added by h5nc (h5nc@yahoo.com.cn)                     */
+/************************************************************************/
 #define INITGUID
 
 #include "hge_impl.h"
+/************************************************************************/
+/* These header files are added by h5nc (h5nc@yahoo.com.cn)             */
+/************************************************************************/
 #include <dinput.h>
 #include <objbase.h>
 
@@ -91,6 +98,9 @@ bool CALL HGE_Impl::Input_IsMouseOver()
 
 bool CALL HGE_Impl::Input_GetKeyState(int key)
 {
+	/************************************************************************/
+	/* This condition is added by h5nc (h5nc@yahoo.com.cn)                  */
+	/************************************************************************/
 	if(bActive)
 		return ((GetKeyState(key) & 0x8000) != 0);
 	return false;
@@ -98,6 +108,9 @@ bool CALL HGE_Impl::Input_GetKeyState(int key)
 
 bool CALL HGE_Impl::Input_KeyDown(int key)
 {
+	/************************************************************************/
+	/* This condition is added by h5nc (h5nc@yahoo.com.cn)                  */
+	/************************************************************************/
 	if(bActive)
 		return (keyz[key] & 1) != 0;
 	return false;
@@ -105,6 +118,9 @@ bool CALL HGE_Impl::Input_KeyDown(int key)
 
 bool CALL HGE_Impl::Input_KeyUp(int key)
 {
+	/************************************************************************/
+	/* This condition is added by h5nc (h5nc@yahoo.com.cn)                  */
+	/************************************************************************/
 	if(bActive)
 		return (keyz[key] & 2) != 0;
 	return false;
@@ -140,8 +156,10 @@ void HGE_Impl::_InputInit()
 	memset(&keyz, 0, sizeof(keyz));
 }
 
-//add by Thor/h5nc
-//begin
+/************************************************************************/
+/* These functions are added by h5nc (h5nc@yahoo.com.cn)                */
+/************************************************************************/
+// begin
 bool CALL HGE_Impl::Input_GetDIKey(int key, BYTE stateType)
 {
 	if(key >= 0 && key < 256)
@@ -287,6 +305,7 @@ bool CALL HGE_Impl::Input_GetDIJoy(int joy, BYTE stateType)
 	}
 	return false;
 }
+// end
 
 void HGE_Impl::_UpdateMouse()
 {
@@ -406,8 +425,10 @@ void HGE_Impl::_ClearQueue()
 	queue=0; VKey=0; Char=0; Zpos=0;
 }
 
-//add by Thor/h5nc
-//begin
+/************************************************************************/
+/* These functions are added by h5nc (h5nc@yahoo.com.cn)                */
+/************************************************************************/
+// begin
 BOOL CALLBACK EnumJoysticksCallback (const DIDEVICEINSTANCE * pdidInstance, VOID* pContext)
 {
  	*(GUID*)pContext = pdidInstance->guidInstance; 
@@ -625,5 +646,4 @@ int HGE_Impl::_DIUpdate()
 
 	return (joyable?0:ERROR_NOJOYSTICK) | (keyable?0:ERROR_NOKEYBOARD);
 }
-//end
-
+// end

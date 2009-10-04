@@ -39,7 +39,7 @@
 				AdditionalDependencies="nafxcwd.lib"
 				LinkIncremental="0"
 				IgnoreDefaultLibraryNames=""
-				DelayLoadDLLs="hge.dll"
+				DelayLoadDLLs="hge_d.dll"
 				GenerateDebugInformation="TRUE"
 				SubSystem="2"
 				TargetMachine="0"/>

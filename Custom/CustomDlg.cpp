@@ -476,9 +476,9 @@ BOOL CCustomDlg::OnInitDialog()
 
 	// TODO: 在此添加额外的初始化代码
 
-	Export::clientInitial();
+	Export::clientInitial(false, true);
 	SetWindowText(hge->System_GetState(HGE_TITLE));
-	Export::SetIni();
+	Export::SetIni(true);
 
 	JOYINFO joyinfo;
 	UINT wNumDevs, wDeviceID;

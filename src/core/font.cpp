@@ -1,3 +1,9 @@
+/************************************************************************/
+/* This file is originally Yuki Izayoi's codes                          */
+/* h5nc (h5nc@yahoo.com.cn) copied these codes under her permission     */
+/* Some changes are made by h5nc                                        */
+/************************************************************************/
+
 /* 
 Font implemention 
 Yuki Izayoi 2007.2.16

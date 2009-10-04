@@ -5,7 +5,7 @@
 	Name="ReplayView"
 	ProjectGUID="{EF267EDC-A6F8-41D8-A350-0092EE4A2AEB}"
 	VCNestedProjectGUID="{997877FE-1AB7-4AF1-8E33-505A99E4FD82}"
-	VCNestedProjectCRC32="1392488982"
+	VCNestedProjectCRC32="2212553925"
 	VCNestedProjectFileName="ReplayView.vcproj"
 	Keyword="MFCProj">
 	<Configurations>
@@ -30,7 +30,7 @@
 				DelayImpLib="DelayImp.lib"
 				AdditionalDependencies="nafxcwd.lib"
 				IgnoreDefaultLibraryNames=""
-				DelayLoadDLLs="hge.dll"
+				DelayLoadDLLs="hge_d.dll"
 				GenerateDebugInformation="1"
 				SubSystem="2"
 				AdditionalOptions=""/>
@@ -185,6 +185,8 @@
 		<File 
 			RelativePath="..\Des_gobstg\Des_gobstg\Core\DataPrinter.cpp"/>
 		<File 
+			RelativePath="..\Des_gobstg\Des_gobstg\Core\DataTable.cpp"/>
+		<File 
 			RelativePath="..\Des_gobstg\Des_gobstg\Core\Export.cpp"/>
 		<File 
 			RelativePath="..\Des_gobstg\Des_gobstg\Core\InitDllLoader.cpp"/>
@@ -213,8 +215,6 @@
 					UsePrecompiledHeader="1"/>
 			</FileConfiguration>
 		</File>
-		<File 
-			RelativePath="..\Des_gobstg\Des_gobstg\Core\DataTable.cpp"/>
 		<File 
 			RelativePath=".\ReplayView.h"/>
 		<File 

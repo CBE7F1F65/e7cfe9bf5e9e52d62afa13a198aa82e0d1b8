@@ -20,7 +20,7 @@ void Export::Release()
 	hge->Release();
 }
 
-void Export::clientInitial(bool usesound)
+bool Export::clientInitial(bool usesound /* = false */, bool extuse /* = false */)
 {
 	hge->Resource_SetPath(DEFAULT_RESOURCEPATH);
 	char respath[_MAX_PATH];
@@ -31,18 +31,12 @@ void Export::clientInitial(bool usesound)
 	}
 	SetCurrentDirectory(hge->Resource_MakePath(""));
 	
-	hge->System_SetState(HGE_LOGFILE, LOG_STR_FILENAME);
 	hge->System_SetState(HGE_FPS, M_DEFAULT_FPS);
 	hge->System_SetState(HGE_FRAMESKIP, M_DEFAULT_FRAMESKIP);
 	hge->System_SetState(HGE_RENDERSKIP, M_DEFAULT_RENDERSKIP);
 
 	hge->System_SetState(HGE_WINDOWED, true);
 
-	char strtitle[M_STRMAX];
-	strcpy(strtitle, GAME_TITLE);
-	strcat(strtitle, "  ");
-	strcat(strtitle, GAME_VERSION_STR);
-	hge->System_SetState(HGE_TITLE, strtitle);
 	hge->System_SetState(HGE_SCREENWIDTH, M_CLIENT_WIDTH);
 	hge->System_SetState(HGE_SCREENHEIGHT, M_CLIENT_HEIGHT);
 	hge->System_SetState(HGE_ZBUFFER, true);
@@ -52,12 +46,22 @@ void Export::clientInitial(bool usesound)
 	hge->System_SetState(HGE_HIDEMOUSE, false);
 
 	SetCurrentDirectory(hge->Resource_MakePath(""));
-	SetIni();
+	bool bret = SetIni(extuse);
+	if (bret)
+	{
+		char strtitle[M_STRMAX];
+		strcpy(strtitle, GAME_TITLE);
+		strcat(strtitle, "  ");
+		strcat(strtitle, GAME_VERSION_STR);
+		hge->System_SetState(HGE_TITLE, strtitle);
+		hge->System_SetState(HGE_LOGFILE, LOG_STR_FILENAME);
+	}
 
 	if (!hge->Ini_GetInt(RESCONFIGS_SYSTEM, RESCONFIGN_USE3DMODE, RESCONFIGDEFAULT_USE3DMODE))
 	{
 		clientSet2DMode();
 	}
+	return bret;
 }
 
 void Export::clientSetMatrix(float _worldx, float _worldy, float _worldz)
@@ -123,9 +127,15 @@ bool Export::clientSet3DMode()
 	return hge->System_Set3DMode();
 }
 
-void Export::SetIni()
+bool Export::SetIni(bool extuse)
 {
+	if (extuse && _access(hge->Resource_MakePath(CONFIG_STR_FILENAME), 00) == -1)
+	{
+		hge->System_SetState(HGE_INIFILE, CONFIG_STR_DEFAULTFILENAME);
+		return false;
+	}
 	hge->System_SetState(HGE_INIFILE, CONFIG_STR_FILENAME);
+	return true;
 }
 
 void Export::clientAdjustWindow()

@@ -10,7 +10,7 @@
 #ifndef HGE_IMPL_H
 #define HGE_IMPL_H
 
-#include "hge.h"
+#include "..\..\include\hge.h"
 #include <stdio.h>
 #include <d3d9.h>
 #include <d3dx9.h>
@@ -39,6 +39,9 @@ struct CTextureList
 struct CResourceList
 {
 	char				filename[_MAX_PATH];
+	/************************************************************************/
+	/* This member is changed by h5nc (h5nc@yahoo.com.cn)                   */
+	/************************************************************************/
 	int					password;
 	CResourceList*		next;
 };
@@ -56,6 +59,9 @@ struct CInputEventList
 	CInputEventList*	next;
 };
 
+/************************************************************************/
+/* This structure is added by Yuki                                      */
+/************************************************************************/
 /* add by Yuki*/
 struct CFontList
 {
@@ -73,6 +79,11 @@ bool DFrame();
 */
 class HGE_Impl : public HGE
 {
+
+	/************************************************************************/
+	/* These functions are modified by h5nc (h5nc@yahoo.com.cn)             */
+	/* Details are marked in hge.h                                          */
+	/************************************************************************/
 public:
 	virtual	void		CALL	Release();
 
@@ -113,6 +124,11 @@ public:
 	virtual bool		CALL	Resource_CreatePack(const char * filename, int password, hgeMemoryFile * first, ...);
 	virtual bool		CALL	Resource_AddFileInPack(const char * filename, int password, hgeMemoryFile * memfile);
 	virtual DWORD		CALL	Resource_GetCRC(const BYTE * content, DWORD size);
+#ifdef ZLIB_USEPSW
+	virtual int			CALL	Resource_GetPSW(int psw);
+#else
+	virtual char*		CALL	Resource_GetPSW(int psw);
+#endif // ZLIB_USEPSW
 	virtual char*		CALL	Resource_GetPackFirstFileName(const char * packfilename);
 
 	virtual	void		CALL	Ini_SetInt(const char *section, const char *name, int value);
@@ -235,13 +251,20 @@ public:
 	bool				bActive;
 	char				szError[256];
 	char				szAppPath[_MAX_PATH];
+	/************************************************************************/
+	/* This member is added by h5nc (h5nc@yahoo.com.cn)                     */
+	/************************************************************************/
 	char				szResourcePath[_MAX_PATH];
 	char				szIniString[256];
 
 
-	//Add by Thor/h5nc
+	/************************************************************************/
+	/* These members are added by h5nc (h5nc@yahoo.com.cn)                  */
+	/************************************************************************/
+	// begin
 	bool				b2DMode;
 	hge3DPoint			ptfar;
+	// end
 
 	// System States
 	bool				(*procFrameFunc)();
@@ -260,6 +283,9 @@ public:
 	bool				bTextureFilter;
 	char				szIniFile[_MAX_PATH];
 	char				szLogFile[_MAX_PATH];
+	/************************************************************************/
+	/* This member is added by h5nc (h5nc@yahoo.com.cn)                     */
+	/************************************************************************/
 	char				szBassDllFile[_MAX_PATH];
 	bool				bUseSound;
 	int					nSampleRate;
@@ -269,8 +295,13 @@ public:
 	int					nHGEFPS;
 	bool				bHideMouse;
 	bool				bDontSuspend;
+	/************************************************************************/
+	/* These members are added by h5nc (h5nc@yahoo.com.cn)                  */
+	/************************************************************************/
+	// begin
 	HINSTANCE			hInstance;
 	HWND				hwnd;
+	// end
 	HWND				hwndParent;
 
 	// Graphics
@@ -342,8 +373,11 @@ public:
 	void				_InputInit();
 	void				_ClearQueue();
 	void				_BuildEvent(int type, int key, int scan, int flags, int x, int y);
-	//add by Thor/h5nc
-	//begin
+
+	/************************************************************************/
+	/* These lines are added by h5nc (h5nc@yahoo.com.cn)                    */
+	/************************************************************************/
+	// begin
 	#define	ERROR_NOKEYBOARD	0x10
 	#define ERROR_NOJOYSTICK	0x20
 
@@ -360,11 +394,14 @@ public:
 	int					_DIInit();
 	void				_DIRelease();
 	int					_DIUpdate();
-	//end
+	// end
 
 
 	// Resources
 	char				szTmpFilename[_MAX_PATH];
+	/************************************************************************/
+	/* This member is added by h5nc (h5nc@yahoo.com.cn)                     */
+	/************************************************************************/
 	char				szPackFirstFilename[_MAX_PATH];
 	CResourceList*		res;
 	HANDLE				hSearch;
@@ -373,12 +410,33 @@ public:
 
 	// Timer
 	float				fTime;
-	float				fDeltaTime;			//change by Thor/h5nc
-	float				fFPS;				//change by Thor/h5nc
+	float				fDeltaTime;
+	/************************************************************************/
+	/* This member is added by h5nc (h5nc@yahoo.com.cn)                     */
+	/************************************************************************/
+	float				fFPS;
+	/************************************************************************/
+	/* These members are deleted by h5nc (h5nc@yahoo.com.cn)                */
+	/************************************************************************/
+	/*
+	DWORD				nFixedDelta;
+	int					nFPS;
+	DWORD				t0, t0fps, dt;
+	int					cfps;
+	*/
+
+
+	/************************************************************************/
+	/* These members are added by h5nc (h5nc@yahoo.com.cn)                  */
+	/************************************************************************/
 	int					nFrameCounter;
 	int					nFrameSkip;
 	int					nRenderSkip;
 
+
+	/************************************************************************/
+	/* These lines are added by Yuki                                        */
+	/************************************************************************/
 	/* font 
 	add by Yuki */
 	void				_FontDone();

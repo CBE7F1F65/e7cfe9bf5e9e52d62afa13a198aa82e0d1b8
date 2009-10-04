@@ -5,7 +5,7 @@
 	Name="DES_GOBSTG"
 	ProjectGUID="{A4938EF7-0CE1-47A3-BC8D-4D0B54F94F6D}"
 	VCNestedProjectGUID="{7329E15F-F0AE-44EE-BC64-27B9038C76D7}"
-	VCNestedProjectCRC32="1117844933"
+	VCNestedProjectCRC32="1625362026"
 	VCNestedProjectFileName="DES_GOBSTG.vcproj"
 	Keyword="Win32Proj">
 	<Configurations>
@@ -30,7 +30,7 @@
 			<Tool 
 				Name="LinkerTool"
 				DelayImpLib="DelayImp.lib"
-				DelayLoadDLLs="hge.dll"
+				DelayLoadDLLs="hge_d.dll"
 				GenerateDebugInformation="1"
 				SubSystem="2"
 				AdditionalOptions=""/>
@@ -294,6 +294,8 @@
 		<File 
 			RelativePath=".\Header\Const.h"/>
 		<File 
+			RelativePath=".\Header\ConstResource.h"/>
+		<File 
 			RelativePath=".\Header\Data.h"/>
 		<File 
 			RelativePath=".\Header\DataConnector.h"/>
@@ -319,8 +321,6 @@
 			RelativePath=".\Header\SpriteItemManager.h"/>
 		<File 
 			RelativePath=".\Header\VectorList.h"/>
-		<File 
-			RelativePath=".\Header\ConstResource.h"/>
 		<File 
 			RelativePath=".\Header\Beam.h"/>
 		<File 

@@ -42,7 +42,7 @@
 				Name="VCLinkerTool"
 				AdditionalOptions=""
 				AdditionalDependencies="winmm.lib d3d9.lib d3dx9.lib"
-				OutputFile="..\..\lib\vc\hge.dll"
+				OutputFile="..\..\lib\vc\hge_d.dll"
 				LinkIncremental="0"
 				SuppressStartupBanner="TRUE"
 				ModuleDefinitionFile=".\hge.def"
@@ -60,7 +60,7 @@
 				HeaderFileName=""/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="call &quot;..\..\DES_GOBSTG_GROUP\PostBuildEvent.bat&quot; &quot;..\..\Resource\Debug\ &quot; &quot;..\..\..\LuaEngine\Resource\Debug&quot;"/>
+				CommandLine="call &quot;..\..\DES_GOBSTG_GROUP\PostBuildEvent.bat&quot; ..\..\Resource\Debug\ ..\..\..\LuaEngine\Resource\Debug\ ..\..\Resource\ ..\..\..\LuaEngine\Resource\"/>
 			<Tool
 				Name="VCPreBuildEventTool"/>
 			<Tool
@@ -143,7 +143,7 @@
 				HeaderFileName=""/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="call &quot;..\..\DES_GOBSTG_GROUP\PostBuildEvent.bat&quot; &quot;..\..\Resource\&quot; &quot;..\..\..\LuaEngine\Resource&quot;"/>
+				CommandLine="call &quot;..\..\DES_GOBSTG_GROUP\PostBuildEvent.bat&quot; ..\..\Resource\Debug\ ..\..\..\LuaEngine\Resource\Debug\ ..\..\Resource\ ..\..\..\LuaEngine\Resource\"/>
 			<Tool
 				Name="VCPreBuildEventTool"/>
 			<Tool

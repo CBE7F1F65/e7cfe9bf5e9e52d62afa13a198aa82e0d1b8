@@ -6,6 +6,11 @@
 ** Core functions implementation: audio routines
 */
 
+/************************************************************************/
+/* This file is modified by h5nc (h5nc@yahoo.com.cn)                    */
+/* Changes of using higher version of BASS will not be marked in detail */
+/* Anything of Music is removed                                         */
+/************************************************************************/
 
 #include "hge_impl.h"
 
@@ -413,6 +418,10 @@ void CALL HGE_Impl::Channel_SetPos(HCHANNEL chn, QWORD pos) {
 	}
 }
 
+
+/************************************************************************/
+/* This function is added by h5nc (h5nc@yahoo.com.cn)                   */
+/************************************************************************/
 void CALL HGE_Impl::Channel_SetStartPos(HCHANNEL chn, hgeChannelSyncInfo * pcsi)
 {
 	if (pcsi != NULL && hBass)
@@ -421,6 +430,9 @@ void CALL HGE_Impl::Channel_SetStartPos(HCHANNEL chn, hgeChannelSyncInfo * pcsi)
 	}
 }
 
+/************************************************************************/
+/* This function is modified by h5nc (h5nc@yahoo.com.cn)                */
+/************************************************************************/
 void CALL HGE_Impl::Channel_SlideTo(HCHANNEL channel, float _time, int volume, int pan, float pitch)
 {
 	if(hBass)
@@ -479,6 +491,9 @@ bool HGE_Impl::_SoundInit()
 		return false;
 	}
 
+	/************************************************************************/
+	/* Some functions are deleted or added by h5nc (h5nc@yahoo.com.cn)      */
+	/************************************************************************/
 //	LOADBASSFUNCTION(BASS_GetDeviceDescription);
 	LOADBASSFUNCTION(BASS_Init);
 	LOADBASSFUNCTION(BASS_Free);
@@ -554,6 +569,10 @@ void HGE_Impl::_SoundDone()
 	
 	if(hBass)
 	{
+
+		/************************************************************************/
+		/* This condition is added by h5nc (h5nc@yahoo.com.cn)                  */
+		/************************************************************************/
 		if (HIWORD(BASS_GetVersion()) == BASSVERSION)
 		{
 			BASS_Stop();
@@ -591,6 +610,9 @@ void HGE_Impl::_SetFXVolume(int vol)
 	if(hBass) BASS_SetConfig(BASS_CONFIG_GVOL_SAMPLE, vol);
 }
 
+/************************************************************************/
+/* These functions are added by h5nc (h5nc@yahoo.com.cn)                */
+/************************************************************************/
 void CALLBACK _BASS_Sync_Func(HSYNC handle, DWORD channel, DWORD data, void * _pcsi)
 {
 	hgeChannelSyncInfo * pcsi = (hgeChannelSyncInfo *)_pcsi;

@@ -308,7 +308,7 @@ typedef struct tagTarget
 	#define DEFAULT_HGEDLLPATH		"Resource/hge.dll"
 #else
 	#ifdef _DEBUG
-		#define DEFAULT_HGEDLLPATH		"../../Resource/Debug/hge.dll"
+		#define DEFAULT_HGEDLLPATH		"../../Resource/Debug/hge_d.dll"
 	#else
 		#define DEFAULT_HGEDLLPATH		"../../Resource/hge.dll"
 	#endif // _DEBUG

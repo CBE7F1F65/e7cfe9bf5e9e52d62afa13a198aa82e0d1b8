@@ -31,16 +31,28 @@
 class hgeFont
 {
 public:
+	/************************************************************************/
+	/* This function is added by h5nc (h5nc@yahoo.com.cn)                   */
+	/************************************************************************/
 	hgeFont();
 	hgeFont(const char *filename, bool bMipmap=false);
 	~hgeFont();
 
+	/************************************************************************/
+	/* This function is added by h5nc (h5nc@yahoo.com.cn)                   */
+	/************************************************************************/
 	void		NewFont(const char *filename, bool bMipmap=false);
 	void		Render(float x, float y, int align, const char *string);
 	void		printf(float x, float y, int align, const char *format, ...);
 	void		printfb(float x, float y, float w, float h, int align, const char *format, ...);
 
+	/************************************************************************/
+	/* This function is modified by h5nc (h5nc@yahoo.com.cn)                */
+	/************************************************************************/
 	void		SetColor(DWORD col){col0 = col1 = col2 = col3 = col;};
+	/************************************************************************/
+	/* This function is added by h5nc (h5nc@yahoo.com.cn)                   */
+	/************************************************************************/
 	void		SetColor(DWORD col0, DWORD col1, DWORD col2, DWORD col3);
 	void		SetZ(float z);
 	void		SetBlendMode(int blend);
@@ -50,6 +62,9 @@ public:
 	void		SetTracking(float tracking) {fTracking=tracking;}
 	void		SetSpacing(float spacing) {fSpacing=spacing;}
 
+	/************************************************************************/
+	/* This function is modified by h5nc (h5nc@yahoo.com.cn)                */
+	/************************************************************************/
 	DWORD		GetColor(int i=0);
 	float		GetZ() const {return fZ;}
 	int			GetBlendMode() const {return nBlend;}
@@ -59,8 +74,13 @@ public:
 	float		GetTracking() const {return fTracking;}
 	float		GetSpacing() const {return fSpacing;}
 
+	/************************************************************************/
+	/* These functions are added by h5nc (h5nc@yahoo.com.cn)                */
+	/************************************************************************/
+	// begin
 	void		ChangeSprite(BYTE chr, HTEXTURE tex, float tex_x, float tex_y, float tex_w, float tex_h, float pre_a=-1, float post_c=-1);
 	void		ChangeSprite(BYTE chr, hgeSprite * sprite, float pre_a=-1, float post_c=-1);
+	// end
 	hgeSprite*	GetSprite(BYTE chr) const { return letters[chr]; }
 	float		GetPreWidth(BYTE chr) const { return pre[chr]; }
 	float		GetPostWidth(BYTE chr) const { return post[chr]; }
@@ -72,6 +92,9 @@ private:
 	hgeFont&	operator= (const hgeFont &fnt);
 
 	char*		_get_line(char *file, char *line);
+	/************************************************************************/
+	/* These functions are added by h5nc (h5nc@yahoo.com.cn)                */
+	/************************************************************************/
 	void		_FontInit();
 
 	static HGE	*hge;
@@ -81,6 +104,9 @@ private:
 	HTEXTURE	hTexture;
 public:
 	hgeSprite*	letters[256];
+	/************************************************************************/
+	/* These members are added by h5nc (h5nc@yahoo.com.cn)                  */
+	/************************************************************************/
 	DWORD		col0, col1, col2, col3;
 private:
 	float		pre[256];
@@ -92,6 +118,9 @@ private:
 	float		fTracking;
 	float		fSpacing;
 
+	/************************************************************************/
+	/* This member is deleted by h5nc (h5nc@yahoo.com.cn)                   */
+	/************************************************************************/
 //	DWORD		dwCol;
 	float		fZ;
 	int			nBlend;

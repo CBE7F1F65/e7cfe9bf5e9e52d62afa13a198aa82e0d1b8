@@ -53,7 +53,7 @@ BOOL CResourcePackDlg::OnInitDialog()
 	SetIcon(m_hIcon, TRUE);			// 设置大图标
 	SetIcon(m_hIcon, FALSE);		// 设置小图标
 
-	Export::SetIni();
+	Export::SetIni(true);
 	Export::GetPassword();
 	packButton.EnableWindow(FALSE);
 

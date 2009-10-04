@@ -19,6 +19,10 @@
 #define RES_RESOURCE	1
 #define RES_TEXTURE		2
 #define RES_EFFECT		3
+
+/************************************************************************/
+/* This define is deleted by h5nc (h5nc@yahoo.com.cn)                   */
+/************************************************************************/
 //#define RES_MUSIC		4
 #define RES_STREAM		5
 #define RES_TARGET		6
@@ -68,6 +72,10 @@ struct REffect : public ResDesc
 	virtual DWORD Get(hgeResourceManager *rm);
 	virtual void  Free();
 };
+
+/************************************************************************/
+/* This struct is deleted by h5nc (h5nc@yahoo.com.cn)                   */
+/************************************************************************/
 /*
 struct RMusic : public ResDesc
 {

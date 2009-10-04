@@ -6,8 +6,6 @@
 ** Core system functions
 */
 
-//edit by Thor/h5nc 2007.2.16
-
 #include "hge_impl.h"
 
 
@@ -113,6 +111,10 @@ bool CALL HGE_Impl::System_Initiate()
 	width=nScreenWidth + GetSystemMetrics(SM_CXFIXEDFRAME)*2;
 	height=nScreenHeight + GetSystemMetrics(SM_CYFIXEDFRAME)*2 + GetSystemMetrics(SM_CYCAPTION);
 
+
+	/************************************************************************/
+	/* These parameters are changed by h5nc (h5nc@yahoo.com.cn)             */
+	/************************************************************************/
 	rectW.left=(GetSystemMetrics(SM_CXSCREEN)-width)/4;
 	rectW.top=(GetSystemMetrics(SM_CYSCREEN)-height)/4;
 	rectW.right=rectW.left+width;
@@ -157,8 +159,11 @@ bool CALL HGE_Impl::System_Initiate()
 	timeBeginPeriod(1);
 	Random_Seed();
 	_InputInit();
-	//add by Thor/h5nc
-	//begin
+
+	/************************************************************************/
+	/* These lines are added by h5nc (h5nc@yahoo.com.cn)                    */
+	/************************************************************************/
+	// begin
 	haveJoy = true;
 	
 	ZeroMemory(&joyState, sizeof(DIJOYSTATE));
@@ -176,9 +181,12 @@ bool CALL HGE_Impl::System_Initiate()
 	}
 	if(!_GfxInit()) { System_Shutdown(); return false; }
 	if(!_SoundInit()) { System_Shutdown(); return false; }
-	//end
+	// end
 	System_Log("Init done.\n");
 
+	/************************************************************************/
+	/* These parameters are changed by h5nc (h5nc@yahoo.com.cn)             */
+	/************************************************************************/
 	fTime=0.0f;
 	fFPS=0;
 	nFrameCounter = 0;
@@ -197,15 +205,19 @@ void CALL HGE_Impl::System_Shutdown()
 	_ClearQueue();
 	_SoundDone();
 
+	/************************************************************************/
+	/* Blocks marked with "Yuki" are originally her codes                   */
+	/* h5nc (h5nc@yahoo.com.cn) copied these codes under her permission     */
+	/************************************************************************/
 	/* add by Yuki */
 	// begin
 	_FontDone();
     // end
 
-	//add by Thor/h5nc
-	//begin
+	/************************************************************************/
+	/* This call is added by h5nc (h5nc@yahoo.com.cn)                       */
+	/************************************************************************/
 	_DIRelease();
-	//end
 
 	_GfxDone();
 
@@ -225,6 +237,10 @@ void CALL HGE_Impl::System_Shutdown()
 bool CALL HGE_Impl::System_Start()
 {
 	MSG		msg;
+
+	/************************************************************************/
+	/* These parameters are added by h5nc (h5nc@yahoo.com.cn)               */
+	/************************************************************************/
 	POINT	pt;
 	RECT	rc;
 
@@ -270,6 +286,12 @@ bool CALL HGE_Impl::System_Start()
 		// If HGE window is focused or we have the "don't suspend" state - process the main loop
 
 
+		/************************************************************************/
+		/* These lines are changed by h5nc (h5nc@yahoo.com.cn)                  */
+		/* The core algorithm is based on LOVEHINA-AVC's code                   */
+		/* h5nc copied his codes with his permission                            */
+		/************************************************************************/
+		// begin
 		GetCursorPos(&pt);
 		GetClientRect(hwnd, &rc);
 		MapWindowPoints(hwnd, NULL, (LPPOINT)&rc, 2);
@@ -277,9 +299,6 @@ bool CALL HGE_Impl::System_Start()
 		else bMouseOver=false;
 
 		if(bActive || bDontSuspend) {
-			//edit by Thor/h5nc 
-			//based on LOVEHINA-AVC's algorithm
-			//begin
 			int DI_retv = 0;
 			if(nFrameSkip < 0)
 			{
@@ -392,6 +411,7 @@ bool CALL HGE_Impl::System_Start()
 			fTime += fDeltaTime;
 			fFPS = 1.0f / fDeltaTime;
 		}
+		// end
 
 		// If main loop is suspended - just sleep a bit
 		// (though not too much to allow instant window
@@ -406,7 +426,10 @@ bool CALL HGE_Impl::System_Start()
 
 	return true;
 }
-
+/************************************************************************/
+/* These functions are added by h5nc (h5nc@yahoo.com.cn)                */
+/************************************************************************/
+// begin
 bool CALL HGE_Impl::System_Set2DMode(float x, float y, float z)
 {
 	if (z == 0.0f)
@@ -439,6 +462,7 @@ bool CALL HGE_Impl::System_Is2DMode()
 {
 	return b2DMode;
 }
+// end
 
 float CALL HGE_Impl::System_Transform3DPoint(float &x, float &y, float &z)
 {
@@ -462,6 +486,9 @@ void CALL HGE_Impl::System_SetStateBool(hgeBoolState state, bool value)
 								{
 									if(d3dppW.BackBufferFormat==D3DFMT_UNKNOWN || d3dppFS.BackBufferFormat==D3DFMT_UNKNOWN) break;
 
+									/************************************************************************/
+									/* Theis cakk is added by h5nc (h5nc@yahoo.com.cn)                      */
+									/************************************************************************/
 									if(procFocusLostFunc) procFocusLostFunc();
 
 									if(bWindowed) GetWindowRect(hwnd, &rectW);
@@ -515,6 +542,10 @@ void CALL HGE_Impl::System_SetStateBool(hgeBoolState state, bool value)
 		case HGE_HIDEMOUSE:		bHideMouse=value; break;
 
 		case HGE_DONTSUSPEND:	bDontSuspend=value; break;
+
+			/************************************************************************/
+			/* HGE_SHOWSPLASH case is deleted by h5nc (h5nc@yahoo.com.cn)           */
+			/************************************************************************/
 	}
 }
 
@@ -570,6 +601,10 @@ void CALL HGE_Impl::System_SetStateInt(hgeIntState state, int value)
 								{
 									if((nHGEFPS>=0 && value <0) || (nHGEFPS<0 && value>=0))
 									{
+
+										/************************************************************************/
+										/* These blocks are added by h5nc (h5nc@yahoo.com.cn)                   */
+										/************************************************************************/
 										if(value==HGEFPS_VSYNC)
 										{
 //											d3dppW.SwapEffect = D3DSWAPEFFECT_COPY_VSYNC;
@@ -593,6 +628,9 @@ void CALL HGE_Impl::System_SetStateInt(hgeIntState state, int value)
 								nHGEFPS=value;
 								break;
 
+								/************************************************************************/
+								/* These cases are added by h5nc (h5nc@yahoo.com.cn)                    */
+								/************************************************************************/
 		case HGE_FRAMESKIP:		nFrameSkip = value;
 								break;
 		case HGE_RENDERSKIP:	nRenderSkip = value;
@@ -624,6 +662,10 @@ void CALL HGE_Impl::System_SetStateString(hgeStringState state, const char *valu
 								}
 								else szLogFile[0]=0;
 								break;
+
+								/************************************************************************/
+								/* This case is added by h5nc (h5nc@yahoo.com.cn)                       */
+								/************************************************************************/
 		case HGE_BASSDLLFILE:	if (value)
 								{
 									strcpy(szBassDllFile,Resource_MakePath(value));
@@ -642,6 +684,10 @@ bool CALL HGE_Impl::System_GetStateBool(hgeBoolState state)
 		case HGE_USESOUND:		return bUseSound;
 		case HGE_DONTSUSPEND:	return bDontSuspend;
 		case HGE_HIDEMOUSE:		return bHideMouse;
+
+			/************************************************************************/
+			/* HGE_SHOWSPLASH case is deleted by h5nc (h5nc@yahoo.com.cn)           */
+			/************************************************************************/
 	}
 	return false;
 }
@@ -683,6 +729,10 @@ int CALL HGE_Impl::System_GetStateInt(hgeIntState state)
 		case HGE_SAMPLEVOLUME:	return nSampleVolume;
 		case HGE_STREAMVOLUME:	return nStreamVolume;
 		case HGE_FPS:			return nHGEFPS;
+
+			/************************************************************************/
+			/* These cases are added by h5nc (h5nc@yahoo.com.cn)                    */
+			/************************************************************************/
 		case HGE_FRAMECOUNTER:	return nFrameCounter;
 		case HGE_FRAMESKIP:		return nFrameSkip;
 		case HGE_RENDERSKIP:	return nRenderSkip;
@@ -769,6 +819,10 @@ HGE_Impl::HGE_Impl()
 {
 	hInstance=GetModuleHandle(0);
 	hwnd=0;
+
+	/************************************************************************/
+	/* This parameter is changed by h5nc (h5nc@yahoo.com.cn)                */
+	/************************************************************************/
 	bActive=true;
 	szError[0]=0;
 
@@ -800,8 +854,14 @@ HGE_Impl::HGE_Impl()
 	nHGEFPS=HGEFPS_UNLIMITED;
 	fTime=0.0f;
 	fDeltaTime=0.0f;
+	/************************************************************************/
+	/* This parameter is changed by h5nc (h5nc@yahoo.com.cn)                */
+	/************************************************************************/
 	fFPS=0;
 
+	/************************************************************************/
+	/* This parameter is added by h5nc (h5nc@yahoo.com.cn)                  */
+	/************************************************************************/
 	b2DMode = false;
 	
 	procFrameFunc=0;
@@ -820,6 +880,10 @@ HGE_Impl::HGE_Impl()
 	bTextureFilter=true;
 	szLogFile[0]=0;
 	szIniFile[0]=0;
+
+	/************************************************************************/
+	/* This parameter is added by h5nc (h5nc@yahoo.com.cn)                  */
+	/************************************************************************/
 	strcpy(szBassDllFile, "BASS.dll");
 	bUseSound=true;
 	nSampleRate=44100;
@@ -836,8 +900,14 @@ HGE_Impl::HGE_Impl()
 	int i;
 	for(i=strlen(szAppPath)-1; i>0; i--) if(szAppPath[i]=='\\') break;
 	szAppPath[i+1]=0;
+	/************************************************************************/
+	/* This parameter is added by h5nc (h5nc@yahoo.com.cn)                  */
+	/************************************************************************/
 	strcpy(szResourcePath, szAppPath);
 
+	/************************************************************************/
+	/* This parameter is added by Yuki                                      */
+	/************************************************************************/
 	/* add by Yuki */
 	fontList = 0;
 	
@@ -852,6 +922,10 @@ void HGE_Impl::_PostError(char *error)
 void HGE_Impl::_FocusChange(bool bAct)
 {
 	bActive=bAct;
+
+	/************************************************************************/
+	/* These blocks are modified by h5nc (h5nc@yahoo.com.cn)                */
+	/************************************************************************/
 	if(bActive) {
 		_GfxRestore();
 		if(procFocusGainFunc) procFocusGainFunc();
@@ -899,6 +973,10 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 				if(pHGE->procExitFunc && !pHGE->procExitFunc()) return FALSE;
 						return DefWindowProc(hwnd, msg, wparam, lparam);
 				}
+
+			/************************************************************************/
+			/* This block is deleted by h5nc (h5nc@yahoo.com.cn)                    */
+			/************************************************************************/
 			/*
 			else if(wparam == VK_RETURN)
 			{

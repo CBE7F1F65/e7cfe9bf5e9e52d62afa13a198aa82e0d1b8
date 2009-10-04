@@ -19,6 +19,10 @@ const char FNTCHARTAG[]="Char";
 HGE *hgeFont::hge=0;
 char hgeFont::buffer[1024];
 
+
+/************************************************************************/
+/* This function is added by h5nc (h5nc@yahoo.com.cn)                   */
+/************************************************************************/
 void hgeFont::_FontInit()
 {
 	hge=hgeCreate(HGE_VERSION);
@@ -40,6 +44,9 @@ void hgeFont::_FontInit()
 	ZeroMemory( &post, sizeof(letters) );
 }
 
+/************************************************************************/
+/* This function is added by h5nc (h5nc@yahoo.com.cn)                   */
+/************************************************************************/
 void hgeFont::NewFont(const char *szFont, bool bMipmap/* =false */)
 {
 	void	*data;
@@ -134,17 +141,26 @@ void hgeFont::NewFont(const char *szFont, bool bMipmap/* =false */)
 	delete[] desc;	
 }
 
+/************************************************************************/
+/* This function is modified by h5nc (h5nc@yahoo.com.cn)                */
+/************************************************************************/
 hgeFont::hgeFont()
 {
 	_FontInit();
 }
 
+/************************************************************************/
+/* This function is modified by h5nc (h5nc@yahoo.com.cn)                */
+/************************************************************************/
 hgeFont::hgeFont(const char *szFont, bool bMipmap)
 {
 	_FontInit();
 	NewFont(szFont, bMipmap);
 }
 
+/************************************************************************/
+/* This function is modified by h5nc (h5nc@yahoo.com.cn)                */
+/************************************************************************/
 hgeFont::hgeFont(const hgeFont &fnt)
 {
 	int i;
@@ -173,6 +189,9 @@ hgeFont::hgeFont(const hgeFont &fnt)
 	}
 }
 
+/************************************************************************/
+/* This function is modified by h5nc (h5nc@yahoo.com.cn)                */
+/************************************************************************/
 hgeFont& hgeFont::operator= (const hgeFont &fnt)
 {
 	int i;
@@ -213,6 +232,10 @@ hgeFont::~hgeFont()
 	hge->Release();
 }
 
+/************************************************************************/
+/* These functions are added by h5nc (h5nc@yahoo.com.cn)                */
+/************************************************************************/
+// begin
 void hgeFont::ChangeSprite(BYTE chr, hgeSprite * sprite, float pre_a, float post_c)
 {
 	if (!sprite)
@@ -243,7 +266,11 @@ void hgeFont::ChangeSprite(BYTE chr, HTEXTURE tex, float tex_x, float tex_y, flo
 	post[chr]=post_c;
 	if(tex_h>fHeight) fHeight=tex_h;
 }
+// end
 
+/************************************************************************/
+/* This function is modified by h5nc (h5nc@yahoo.com.cn)                */
+/************************************************************************/
 void hgeFont::Render(float x, float y, int align, const char *string)
 {
 	int i;
@@ -289,6 +316,9 @@ void hgeFont::printf(float x, float y, int align, const char *format, ...)
 	Render(x,y,align,buffer);
 }
 
+/************************************************************************/
+/* This function is modified by h5nc (h5nc@yahoo.com.cn)                */
+/************************************************************************/
 void hgeFont::printfb(float x, float y, float w, float h, int align, const char *format, ...)
 {
 	char	chr, *pbuf, *prevword, *linestart;
@@ -400,6 +430,9 @@ float hgeFont::GetStringWidth(const char *string, bool bMultiline) const
 }
 
 
+/************************************************************************/
+/* This function is added by h5nc (h5nc@yahoo.com.cn)                   */
+/************************************************************************/
 DWORD hgeFont::GetColor(int i)
 {
 	switch(i)
@@ -415,6 +448,10 @@ DWORD hgeFont::GetColor(int i)
 	}
 	return 0;
 }
+
+/************************************************************************/
+/* This function is modified by h5nc (h5nc@yahoo.com.cn)                */
+/************************************************************************/
 /*
 void hgeFont::SetColor(DWORD col)
 {
@@ -440,18 +477,27 @@ void hgeFont::SetColor(DWORD _col0, DWORD _col1, DWORD _col2, DWORD _col3)
 	*/
 }
 
+/************************************************************************/
+/* This function is modified by h5nc (h5nc@yahoo.com.cn)                */
+/************************************************************************/
 void hgeFont::SetZ(float z)
 {
 	fZ=z;
 	for(int i=0;i<256;i++) if(letters[i]) letters[i]->SetZ(z, z, z, z);
 }
 
+/************************************************************************/
+/* This function is modified by h5nc (h5nc@yahoo.com.cn)                */
+/************************************************************************/
 void hgeFont::SetBlendMode(int blend)
 {
 	nBlend=blend;
 	for(int i=0;i<256;i++) if(letters[i]) letters[i]->SetBlendMode(blend);
 }
 
+/************************************************************************/
+/* This function is modified by h5nc (h5nc@yahoo.com.cn)                */
+/************************************************************************/
 char *hgeFont::_get_line(char *file, char *line)
 {
 	int i=0;

@@ -10,23 +10,35 @@
 #ifndef HGE_H
 #define HGE_H
 
+/************************************************************************/
+/* This header is added by h5nc (h5nc@yahoo.com.cn)                     */
+/************************************************************************/
 #ifdef __INTEL_COMPILER
 	#ifdef __USE_INTEL_MATH_LAB
 		#include <mathimf.h>
 	#endif
 #endif
 
+/************************************************************************/
+/* For h5nc use only                                                    */
+/************************************************************************/
+#define ZLIB_USEPSW
+
 #include <math.h>
 
 #include <windows.h>
 
+/************************************************************************/
+/* These lines is added by h5nc (h5nc@yahoo.com.cn)                     */
+/************************************************************************/
+// begin
 #define DIRECTINPUT_VERSION 0x0800
 
 #include <dinput.h>			//add by Thor/h5nc
 #include <d3d9.h>			//add by Thor/h5nc
 #include <d3dx9.h>			//add by Thor/h5nc
 #pragma comment(lib,"dinput8.lib")
-
+// end
 
 #define HGE_VERSION 0x180
 
@@ -62,6 +74,9 @@ typedef unsigned short      WORD;
 typedef unsigned char       BYTE;
 #endif
 
+/************************************************************************/
+/* This define is added by h5nc (h5nc@yahoo.com.cn)                     */
+/************************************************************************/
 #ifndef QWORD
 typedef unsigned __int64	QWORD;
 #endif
@@ -77,22 +92,23 @@ typedef unsigned __int64	QWORD;
 #define M_2_PI	0.636619772367581343076f
 #endif
 
+/************************************************************************/
+/* These defines are added by h5nc (h5nc@yahoo.com.cn)                  */
+/************************************************************************/
 #ifndef M_E
 #define M_E        2.71828182845904523536f
 #define M_LOG2E    1.44269504088896340736f
 #define M_LOG10E   0.434294481903251827651f
 #define M_LN2      0.693147180559945309417f
 #define M_LN10     2.30258509299404568402f
-#define M_PI       3.14159265358979323846f
-#define M_PI_2     1.57079632679489661923f
-#define M_PI_4     0.785398163397448309616f
-#define M_1_PI     0.318309886183790671538f
-#define M_2_PI     0.636619772367581343076f
 #define M_2_SQRTPI 1.12837916709551257390f
 #define M_SQRT2    1.41421356237309504880f
 #define M_SQRT1_2  0.707106781186547524401f
 #endif
 
+/************************************************************************/
+/* This define is added by h5nc (h5nc@yahoo.com.cn)                     */
+/************************************************************************/
 // Texture Offset
 #define HGE_TEXTUREOFFSET	0.5f
 
@@ -106,6 +122,10 @@ typedef DWORD HMUSIC;
 typedef DWORD HSTREAM;
 typedef DWORD HCHANNEL;
 
+/************************************************************************/
+/* This define is added by Yuki                                         */
+/* h5nc (h5nc@yahoo.com.cn) copied her codes with her permission        */
+/************************************************************************/
 /* add by Yuki */
 typedef DWORD HD3DFONT;
 
@@ -141,6 +161,9 @@ typedef DWORD HD3DFONT;
 ** HGE System state constants
 */
 
+/************************************************************************/
+/* This defines are added by h5nc (h5nc@yahoo.com.cn)                   */
+/************************************************************************/
 #define HGE_STATE_MASK		0xff00
 #define HGE_STATE_BOOLTEST		0x0100
 #define HGE_STATE_FUNCTEST		0x0200
@@ -148,6 +171,10 @@ typedef DWORD HD3DFONT;
 #define HGE_STATE_INTTEST		0x0400
 #define HGE_STATE_STRINGTEST	0x0500
 
+
+/************************************************************************/
+/* Thes defines are modified by h5nc (h5nc@yahoo.com.cn)                */
+/************************************************************************/
 enum hgeBoolState
 {
 	HGE_WINDOWED		= 0x0101,    // bool		run in window?		(default: false)
@@ -197,7 +224,9 @@ enum hgeIntState
 	HGE_STREAMVOLUME	= 0x0407,   // int		global music volume	(default: 10000)	
 	HGE_FPS				= 0x0408,	// int		fixed fps			(default: HGEFPS_UNLIMITED)
 
-	//Add by Thor/h5nc
+	/************************************************************************/
+	/* These defines are added by h5nc (h5nc@yahoo.com.cn)                  */
+	/************************************************************************/
 	//Begin
 	HGE_FRAMECOUNTER	= 0x0409,	//int		frame counter;	read only
 	HGE_FRAMESKIP		= 0x040A,	//int		frame skip			(default: 0)
@@ -215,6 +244,9 @@ enum hgeStringState
 	HGE_INIFILE			= 0x0503,   // char*	ini file			(default: NULL) (meaning no file)
 	HGE_LOGFILE			= 0x0504,   // char*	log file			(default: NULL) (meaning no file)
 
+	/************************************************************************/
+	/* This define is added by h5nc (h5nc@yahoo.com.cn)                     */
+	/************************************************************************/
 	HGE_BASSDLLFILE		= 0x0505,	// char*	bass.dll file		(default: "BASS.dll")
 
 	HGESTRINGSTATE_FORCE_DWORD = 0x7FFFFFFF
@@ -232,6 +264,9 @@ typedef bool (*hgeCallback)();
 #define HGEFPS_UNLIMITED	0
 #define HGEFPS_VSYNC		-1
 //
+/************************************************************************/
+/* This define is added by h5nc (h5nc@yahoo.com.cn)                     */
+/************************************************************************/
 #define HGEFPS_MAX			1000
 
 /*
@@ -313,9 +348,11 @@ struct hgeInputEvent
 #define HGEINP_NUMLOCK		32
 #define HGEINP_REPEAT		64
 
+/************************************************************************/
+/* This define is added by h5nc (h5nc@yahoo.com.cn)                     */
+/************************************************************************/
 /*
 **HGE Memory File Info
-**Add by Thor/h5nc 2008-02-05
 */
 struct hgeMemoryFile
 {
@@ -324,9 +361,11 @@ struct hgeMemoryFile
 	DWORD size;
 };
 
+/************************************************************************/
+/* This define is added by h5nc (h5nc@yahoo.com.cn)                     */
+/************************************************************************/
 /*
 **HGE Channel Sync Info
-**Add by Thor/h5nc 2008-02-05
 */
 
 struct hgeChannelSyncInfo 
@@ -337,9 +376,11 @@ struct hgeChannelSyncInfo
 	DWORD/*HSYNC*/ sync;
 };
 
+/************************************************************************/
+/* These defines are added by h5nc (h5nc@yahoo.com.cn)                  */
+/************************************************************************/
 /*
 **HGE Point
-**Add by Thor/h5nc 2008-09-12
 */
 
 struct hge2DPoint 
@@ -358,8 +399,10 @@ struct hge3DPoint
 	};
 };
 
-//add by Thor/h5nc
-//begin
+/************************************************************************/
+/* These defines are added by h5nc (h5nc@yahoo.com.cn)                  */
+/************************************************************************/
+// begin
 #define DIKEY_PRESSED	0x0
 #define DIKEY_UP		0x10
 #define DIKEY_DOWN		0x20
@@ -368,6 +411,7 @@ struct hge3DPoint
 #define JOY_RIGHT		0x50
 #define JOY_UP			0x60
 #define JOY_DOWN		0x70
+// end
 
 /*
 ** HGE Virtual-key codes
@@ -503,12 +547,17 @@ public:
 	virtual bool		CALL	System_Launch(const char *url) = 0;
 	virtual void		CALL	System_Snapshot(const char *filename=0) = 0;
 
+	/************************************************************************/
+	/* These functions are added by h5nc (h5nc@yahoo.com.cn)                */
+	/************************************************************************/
+	// begin
 	virtual bool			CALL	System_Set2DMode(hge3DPoint ptfar) = 0;
 	virtual bool			CALL	System_Set3DMode() = 0;
 	virtual hge3DPoint *	CALL	System_GetFarPoint() = 0;
 	virtual bool			CALL	System_Is2DMode() = 0;
 	virtual float			CALL	System_Transform3DPoint(hge3DPoint * pt) = 0;
 	virtual float			CALL	System_Transform3DPoint(float &x, float &y, float &z) = 0;
+	// end
 
 private:
 	virtual void		CALL	System_SetStateBool  (hgeBoolState   state, bool        value) = 0;
@@ -532,20 +581,42 @@ public:
 	inline HWND					System_GetState(hgeHwndState   state) { return System_GetStateHwnd  (state); }
 	inline int					System_GetState(hgeIntState    state) { return System_GetStateInt   (state); }
 	inline const char*			System_GetState(hgeStringState state) { return System_GetStateString(state); }
-	
+
+	/************************************************************************/
+	/* This function is modified by h5nc (h5nc@yahoo.com.cn)                */
+	/************************************************************************/
 	virtual BYTE*		CALL	Resource_Load(const char *filename, DWORD *size=0) = 0;
 	virtual void		CALL	Resource_Free(void *res) = 0;
+	/************************************************************************/
+	/* This function is modified by h5nc (h5nc@yahoo.com.cn)                */
+	/************************************************************************/
 	virtual bool		CALL	Resource_AttachPack(const char *filename, int password=0) = 0;
 	virtual void		CALL	Resource_RemovePack(const char *filename) = 0;
 	virtual void		CALL	Resource_RemoveAllPacks() = 0;
+	/************************************************************************/
+	/* This function is added by h5nc (h5nc@yahoo.com.cn)                   */
+	/************************************************************************/
 	virtual char*		CALL	Resource_SetPath(const char *filename) = 0;
+	/************************************************************************/
+	/* This function is modified by h5nc (h5nc@yahoo.com.cn)                */
+	/************************************************************************/
 	virtual char*		CALL	Resource_MakePath(const char *filename) = 0;
 	virtual char*		CALL	Resource_EnumFiles(const char *wildcard=0) = 0;
 	virtual char*		CALL	Resource_EnumFolders(const char *wildcard=0) = 0;
+	/************************************************************************/
+	/* These functions are added by h5nc (h5nc@yahoo.com.cn)                */
+	/************************************************************************/
+	// begin
 	virtual bool		CALL	Resource_CreatePack(const char * filename, int password, hgeMemoryFile * first, ...) = 0;
 	virtual bool		CALL	Resource_AddFileInPack(const char * filename, int password, hgeMemoryFile * memfile) = 0;
 	virtual DWORD		CALL	Resource_GetCRC(const BYTE * content, DWORD size) = 0;
+#ifdef ZLIB_USEPSW
+	virtual int			CALL	Resource_GetPSW(int psw) = 0;
+#else
+	virtual char*		CALL	Resource_GetPSW(int psw) = 0;
+#endif // ZLIB_USEPSW
 	virtual char*		CALL	Resource_GetPackFirstFileName(const char * packfilename) = 0;
+	// end
 
 	virtual	void		CALL	Ini_SetInt(const char *section, const char *name, int value) = 0;
 	virtual	int			CALL	Ini_GetInt(const char *section, const char *name, int def_val) = 0;
@@ -554,20 +625,35 @@ public:
 	virtual	void		CALL	Ini_SetString(const char *section, const char *name, const char *value) = 0;
 	virtual	char*		CALL	Ini_GetString(const char *section, const char *name, const char *def_val) = 0;
 
+	/************************************************************************/
+	/* This function is modified by h5nc (h5nc@yahoo.com.cn)                */
+	/************************************************************************/
 	virtual int			CALL	Random_Seed(int seed=0) = 0;
 	virtual int			CALL	Random_Int(int min, int max) = 0;
 	virtual float		CALL	Random_Float(float min, float max) = 0;
 
 	virtual float		CALL	Timer_GetTime() = 0;
 	virtual float		CALL	Timer_GetDelta() = 0;
+	/************************************************************************/
+	/* This function is modified by h5nc (h5nc@yahoo.com.cn)                */
+	/************************************************************************/
 	virtual float		CALL	Timer_GetFPS(int mod = 0) = 0;
+	/************************************************************************/
+	/* These functions are added by h5nc (h5nc@yahoo.com.cn)                */
+	/************************************************************************/
+	// begin
 	virtual float		CALL	Timer_GetWorstFPS(int mod) = 0;
 	inline	LONGLONG			Timer_GetCurrentSystemTime(){LARGE_INTEGER Counter; QueryPerformanceCounter(&Counter); return Counter.QuadPart;}
+	//end
 
 	virtual HEFFECT		CALL	Effect_Load(const char *filename, DWORD size=0) = 0;
 	virtual void		CALL	Effect_Free(HEFFECT eff) = 0;
 	virtual HCHANNEL	CALL 	Effect_Play(HEFFECT eff) = 0;
 	virtual HCHANNEL	CALL	Effect_PlayEx(HEFFECT eff, int volume=100, int pan=0, float pitch=1.0f, bool loop=false) = 0;
+
+	/************************************************************************/
+	/* These functions are deleted by h5nc (h5nc@yahoo.com.cn)              */
+	/************************************************************************/
 /*
 	virtual HMUSIC		CALL	Music_Load(const char *filename, DWORD size=0) = 0;
 	virtual void		CALL	Music_Free(HMUSIC mus) = 0;
@@ -599,11 +685,20 @@ public:
 	virtual QWORD		CALL	Channel_GetLength(HCHANNEL chn) = 0;
 	virtual QWORD		CALL	Channel_GetPos(HCHANNEL chn) = 0;
 	virtual void		CALL	Channel_SetPos(HCHANNEL chn, QWORD pos) = 0;
+	/************************************************************************/
+	/* This function is added by h5nc (h5nc@yahoo.com.cn)                   */
+	/************************************************************************/
 	virtual void		CALL	Channel_SetStartPos(HCHANNEL chn, hgeChannelSyncInfo * pcsi) = 0;
 	virtual void		CALL	Channel_SlideTo(HCHANNEL channel, float time, int volume, int pan = -101, float pitch = -1) = 0;
 	virtual bool		CALL	Channel_IsSliding(HCHANNEL channel) = 0;
+
+	/************************************************************************/
+	/* These functions are added by h5nc (h5nc@yahoo.com.cn)                */
+	/************************************************************************/
+	// begin
 	virtual void		CALL	Channel_SetLoop(HCHANNEL channel, hgeChannelSyncInfo * pcsi) = 0;
 	virtual void		CALL	Channel_RemoveLoop(HCHANNEL channel, hgeChannelSyncInfo * pcsi) = 0;
+	// end
 
 	virtual void		CALL	Input_GetMousePos(float *x, float *y) = 0;
 	virtual void		CALL	Input_SetMousePos(float x, float y) = 0;
@@ -617,12 +712,16 @@ public:
 	virtual int			CALL	Input_GetChar() = 0;
 	virtual bool		CALL	Input_GetEvent(hgeInputEvent *event) = 0;
 
+	/************************************************************************/
+	/* These functions are added by h5nc (h5nc@yahoo.com.cn)                */
+	/************************************************************************/
+	// begin
 	virtual LPDIRECTINPUT8 CALL Input_GetDevice() = 0;
 	virtual bool		CALL	Input_GetDIKey(int key, BYTE stateType = DIKEY_PRESSED) = 0;
 	virtual bool		CALL	Input_SetDIKey(int key, bool set = true) = 0;
 	virtual bool		CALL	Input_GetDIJoy(int joy, BYTE stateType = DIKEY_PRESSED) = 0;
 	virtual bool		CALL	Input_HaveJoy() = 0;
-	//end
+	// end
 
 	virtual bool		CALL	Gfx_BeginScene(HTARGET target=0) = 0;
 	virtual void		CALL	Gfx_EndScene() = 0;
@@ -634,6 +733,9 @@ public:
 	virtual void		CALL	Gfx_FinishBatch(int nprim) = 0;
 	virtual void		CALL	Gfx_SetClipping(int x=0, int y=0, int w=0, int h=0) = 0;
 	virtual void		CALL	Gfx_SetTransform(float x=0, float y=0, float dx=0, float dy=0, float rot=0, float hscale=0, float vscale=0) = 0;
+	/************************************************************************/
+	/* This function is added by h5nc (h5nc@yahoo.com.cn)                   */
+	/************************************************************************/
 	virtual void		CALL	Gfx_SetTransform(D3DTRANSFORMSTATETYPE State, CONST D3DMATRIX * pMatrix) = 0;
 
 	virtual HTARGET		CALL	Target_Create(int width, int height, bool zbuffer) = 0;
@@ -648,8 +750,10 @@ public:
 	virtual DWORD*		CALL	Texture_Lock(HTEXTURE tex, bool bReadOnly=true, int left=0, int top=0, int width=0, int height=0) = 0;
 	virtual void		CALL	Texture_Unlock(HTEXTURE tex) = 0;
 
-	/* font support 
-	add by Yuki */
+	/************************************************************************/
+	/* These functions are added by Yuki                                    */
+	/************************************************************************/
+	/* add by Yuki */
 	// begin
 	virtual HD3DFONT    CALL	Font_Load(const char * fontStyle,int height) = 0;
 	virtual void		CALL	Font_Free(HD3DFONT font) = 0;

@@ -345,6 +345,10 @@ void RScript::Parse(hgeResourceManager *rm, RScriptParser *sp, const char *sname
 							case RES_RESOURCE:	RResource::Parse(rm, np, name, basename); break;
 							case RES_TEXTURE:	RTexture::Parse(rm, np, name, basename); break;
 							case RES_EFFECT:	REffect::Parse(rm, np, name, basename); break;
+
+								/************************************************************************/
+								/* This case is deleted by h5nc (h5nc@yahoo.com.cn)                     */
+								/************************************************************************/
 //							case RES_MUSIC:		RMusic::Parse(rm, np, name, basename); break;
 							case RES_STREAM:	RStream::Parse(rm, np, name, basename); break;
 							case RES_TARGET:	RTarget::Parse(rm, np, name, basename);	break;

@@ -62,7 +62,7 @@ BOOL CReplayViewDlg::OnInitDialog()
 
 	CWnd::DragAcceptFiles();
 
-	Export::clientInitial();
+	Export::clientInitial(false, true);
 	SetWindowText(hge->System_GetState(HGE_TITLE));
 	data.GetIni();
 	Export::GetResourceFile(true);
