@@ -98,6 +98,11 @@ struct resourceData
 	char playerbulletdefinefilename[M_PATHMAX];
 	char playershootdefinefilename[M_PATHMAX];
 	char playerghostdefinefilename[M_PATHMAX];
+	char datadefinefilename[M_PATHMAX];
+	char packagedefinefilename[M_PATHMAX];
+	char texturedefinefilename[M_PATHMAX];
+	char effectdefinefilename[M_PATHMAX];
+	char sedefinefilename[M_PATHMAX];
 
 	//folder
 	char scriptfoldername[M_SCRIPTFOLDERMAX][M_PATHMAX];

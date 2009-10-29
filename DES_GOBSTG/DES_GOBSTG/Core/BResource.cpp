@@ -89,81 +89,107 @@ bool BResource::Fill()
 	//copy to data
 	//
 
+	strcpy(resdata.datadefinefilename, resdata.datafoldername);
+	strcat(resdata.datadefinefilename, data.sRead(DATA_RESOURCEFILE, sec, data.nLinkType(RESDATAN_DATADEFINEFILE), RESDEFAULT_DATADATADEFINE));
+	//copy to data
+	//
+	strcpy(resdata.packagedefinefilename, resdata.datafoldername);
+	strcat(resdata.packagedefinefilename, data.sRead(DATA_RESOURCEFILE, sec, data.nLinkType(RESDATAN_PACKAGEDEFINEFILE), RESDEFAULT_DATAPACKAGEDEFINE));
+	//copy to data
+	//
+	strcpy(resdata.texturedefinefilename, resdata.datafoldername);
+	strcat(resdata.texturedefinefilename, data.sRead(DATA_RESOURCEFILE, sec, data.nLinkType(RESDATAN_TEXTUREDEFINEFILE), RESDEFAULT_DATATEXTUREDEFINE));
+	//copy to data
+	//
+	strcpy(resdata.effectdefinefilename, resdata.datafoldername);
+	strcat(resdata.effectdefinefilename, data.sRead(DATA_RESOURCEFILE, sec, data.nLinkType(RESDATAN_EFFECTDEFINEFILE), RESDEFAULT_DATAEFFECTDEFINE));
+	//copy to data
+	//
+	strcpy(resdata.sedefinefilename, resdata.datafoldername);
+	strcat(resdata.sedefinefilename, data.sRead(DATA_RESOURCEFILE, sec, data.nLinkType(RESDATAN_SEDEFINEFILE), RESDEFAULT_DATASEDEFINE));
+	//copy to data
+	//
+
+/*
 	strcpy(resdata.customconstfilename, resdata.datafoldername);
-	strcat(resdata.customconstfilename, data.sRead(DATA_RESOURCEFILE, sec, data.nLinkType(RESDATAN_CUSTOMCONSTFILE), RESDEFAULT_DATACUSTOMCONST));
+//	strcat(resdata.customconstfilename, data.sRead(DATA_RESOURCEFILE, sec, data.nLinkType(RESDATAN_CUSTOMCONSTFILE), RESDEFAULT_DATACUSTOMCONST));
 	//copy to data
 	//
 
 	strcpy(resdata.spelldefinefilename, resdata.datafoldername);
-	strcat(resdata.spelldefinefilename, data.sRead(DATA_RESOURCEFILE, sec, data.nLinkType(RESDATAN_SPELLDEFINEFILE), RESDEFAULT_DATASPELLDEFINE));
+//	strcat(resdata.spelldefinefilename, data.sRead(DATA_RESOURCEFILE, sec, data.nLinkType(RESDATAN_SPELLDEFINEFILE), RESDEFAULT_DATASPELLDEFINE));
 	//copy to data
 	//
 
 	strcpy(resdata.musicdefinefilename, resdata.datafoldername);
-	strcat(resdata.musicdefinefilename, data.sRead(DATA_RESOURCEFILE, sec, data.nLinkType(RESDATAN_MUSICDEFINEFILE), RESDEFAULT_DATAMUSICDEFINE));
+//	strcat(resdata.musicdefinefilename, data.sRead(DATA_RESOURCEFILE, sec, data.nLinkType(RESDATAN_MUSICDEFINEFILE), RESDEFAULT_DATAMUSICDEFINE));
 	//copy to data
 	//
 
 	strcpy(resdata.bulletdefinefilename, resdata.datafoldername);
-	strcat(resdata.bulletdefinefilename, data.sRead(DATA_RESOURCEFILE, sec, data.nLinkType(RESDATAN_BULLETDEFINEFILE), RESDEFAULT_DATABULLETDEFINE));
+//	strcat(resdata.bulletdefinefilename, data.sRead(DATA_RESOURCEFILE, sec, data.nLinkType(RESDATAN_BULLETDEFINEFILE), RESDEFAULT_DATABULLETDEFINE));
 	//copy to data
 	//
 
 	strcpy(resdata.enemydefinefilename, resdata.datafoldername);
-	strcat(resdata.enemydefinefilename, data.sRead(DATA_RESOURCEFILE, sec, data.nLinkType(RESDATAN_ENEMYDEFINEFILE), RESDEFAULT_ENEMYDEFINE));
+//	strcat(resdata.enemydefinefilename, data.sRead(DATA_RESOURCEFILE, sec, data.nLinkType(RESDATAN_ENEMYDEFINEFILE), RESDEFAULT_ENEMYDEFINE));
 	//copy to data
 	//
 
 	strcpy(resdata.playerdefinefilename, resdata.datafoldername);
-	strcat(resdata.playerdefinefilename, data.sRead(DATA_RESOURCEFILE, sec, data.nLinkType(RESDATAN_PLAYERDEFINEFILE), RESDEFAULT_DATAPLAYERDEFINE));
+//	strcat(resdata.playerdefinefilename, data.sRead(DATA_RESOURCEFILE, sec, data.nLinkType(RESDATAN_PLAYERDEFINEFILE), RESDEFAULT_DATAPLAYERDEFINE));
 	//copy to data
 	//
 
 	strcpy(resdata.spritedefinefilename, resdata.datafoldername);
-	strcat(resdata.spritedefinefilename, data.sRead(DATA_RESOURCEFILE, sec, data.nLinkType(RESDATAN_SPRITEDEFINEFILE), RESDEFAULT_DATASPRITEDEFINE));
+//	strcat(resdata.spritedefinefilename, data.sRead(DATA_RESOURCEFILE, sec, data.nLinkType(RESDATAN_SPRITEDEFINEFILE), RESDEFAULT_DATASPRITEDEFINE));
 	//copy to data
 	//
 
 	strcpy(resdata.playerbulletdefinefilename, resdata.datafoldername);
-	strcat(resdata.playerbulletdefinefilename, data.sRead(DATA_RESOURCEFILE, sec, data.nLinkType(RESDATAN_PLAYERBULLETDEFINEFILE), RESDEFAULT_DATAPLAYERBULLETDEFINE));
+//	strcat(resdata.playerbulletdefinefilename, data.sRead(DATA_RESOURCEFILE, sec, data.nLinkType(RESDATAN_PLAYERBULLETDEFINEFILE), RESDEFAULT_DATAPLAYERBULLETDEFINE));
 	//copy to data
 	//
 
 	strcpy(resdata.playershootdefinefilename, resdata.datafoldername);
-	strcat(resdata.playershootdefinefilename, data.sRead(DATA_RESOURCEFILE, sec, data.nLinkType(RESDATAN_PLAYERSHOOTDEFINEFILE), RESDEFAULT_DATAPLAYERSHOOTDEFINE));
+//	strcat(resdata.playershootdefinefilename, data.sRead(DATA_RESOURCEFILE, sec, data.nLinkType(RESDATAN_PLAYERSHOOTDEFINEFILE), RESDEFAULT_DATAPLAYERSHOOTDEFINE));
 	//copy to data
 	//
 
 	strcpy(resdata.playerghostdefinefilename, resdata.datafoldername);
-	strcat(resdata.playerghostdefinefilename, data.sRead(DATA_RESOURCEFILE, sec, data.nLinkType(RESDATAN_PLAYERGHOSTDEFINEFILE), RESDEFAULT_DATAPLAYERGHOSTDEFINE));
+//	strcat(resdata.playerghostdefinefilename, data.sRead(DATA_RESOURCEFILE, sec, data.nLinkType(RESDATAN_PLAYERGHOSTDEFINEFILE), RESDEFAULT_DATAPLAYERGHOSTDEFINE));
 	//copy to data
 	//
 
-	name = data.nLinkType(RESDATAN_TYPE);
+//	name = data.nLinkType(RESDATAN_TYPE);
 	for(int i=0;i<PACKAGEMAX;i++)
 	{
-		name = data.nLinkNum(name, i+1);
-		strcpy(resdata.packagefilename[i], data.sRead(DATA_RESOURCEFILE, data.sLinkType(RESDATAS_PACKAGE), name, ""));
+//		name = data.nLinkNum(name, i+1);
+//		strcpy(resdata.packagefilename[i], data.sRead(DATA_RESOURCEFILE, data.sLinkType(RESDATAS_PACKAGE), name, ""));
+		strcpy(resdata.packagefilename[i], "");
 	}
 
 	for(int i=0;i<TEXMAX;i++)
 	{
-		name = data.nLinkNum(name, i+1);
-		strcpy(resdata.texfilename[i], data.sRead(DATA_RESOURCEFILE, data.sLinkType(RESDATAS_TEXTURE), name, ""));
+//		name = data.nLinkNum(name, i+1);
+//		strcpy(resdata.texfilename[i], data.sRead(DATA_RESOURCEFILE, data.sLinkType(RESDATAS_TEXTURE), name, ""));
+		strcpy(resdata.texfilename[i], "");
 	}
 
 	for(int i=0;i<SEMAX;i++)
 	{
-		name = data.nLinkNum(name, i+1);
-		strcpy(resdata.sefilename[i], data.sRead(DATA_RESOURCEFILE, data.sLinkType(RESDATAS_SE), name, ""));
+//		name = data.nLinkNum(name, i+1);
+//		strcpy(resdata.sefilename[i], data.sRead(DATA_RESOURCEFILE, data.sLinkType(RESDATAS_SE), name, ""));
+		strcpy(resdata.sefilename[i], "");
 	}
 
 	for(int i=0; i<EFFECTSYSTYPEMAX; i++)
 	{
-		name = data.nLinkNum(name, i+1);
-		strcpy(resdata.effectsysfilename[i], data.sRead(DATA_RESOURCEFILE, data.sLinkType(RESDATAS_EFFECTSYS), name, ""));
+//		name = data.nLinkNum(name, i+1);
+//		strcpy(resdata.effectsysfilename[i], data.sRead(DATA_RESOURCEFILE, data.sLinkType(RESDATAS_EFFECTSYS), name, ""));
+		strcpy(resdata.effectsysfilename[i], "");
 	}
-
+*/
 	strcpy(buffer, data.sRead(DATA_RESOURCEFILE, data.sLinkType(RESDATAS_EXTENSION), data.nLinkType(RESDATAN_SCRIPTEXT7), RESDEFAULT_SCRIPTEXT7));
 	if(strlen(buffer) > 8)
 	{
@@ -430,6 +456,11 @@ void BResource::CopyData()
 		data.playerbulletdefinefilename = resdata.playerbulletdefinefilename;
 		data.playershootdefinefilename = resdata.playershootdefinefilename;
 		data.playerghostdefinefilename = resdata.playerghostdefinefilename;
+		data.datadefinefilename = resdata.datadefinefilename;
+		data.packagedefinefilename = resdata.packagedefinefilename;
+		data.texturedefinefilename = resdata.texturedefinefilename;
+		data.effectdefinefilename = resdata.effectdefinefilename;
+		data.sedefinefilename = resdata.sedefinefilename;
 	}
 }
 
@@ -462,6 +493,17 @@ bool BResource::SetDataFile()
 		if (!data.SetFile(data.playershootdefinefilename, DATA_PLAYERSHOOTDEFINE))
 			return false;
 		if (!data.SetFile(data.playerghostdefinefilename, DATA_PLAYERGHOSTDEFINE))
+			return false;
+
+		if (!data.SetFile(data.datadefinefilename, DATA_DATATABLEDEFINE))
+			return false;
+		if (!data.SetFile(data.packagedefinefilename, DATA_PACKAGETABLEDEFINE))
+			return false;
+		if (!data.SetFile(data.texturedefinefilename, DATA_TEXTURETABLEDEFINE))
+			return false;
+		if (!data.SetFile(data.effectdefinefilename, DATA_EFFECTTABLEDEFINE))
+			return false;
+		if (!data.SetFile(data.sedefinefilename, DATA_SETABLEDEFINE))
 			return false;
 	}
 	return true;

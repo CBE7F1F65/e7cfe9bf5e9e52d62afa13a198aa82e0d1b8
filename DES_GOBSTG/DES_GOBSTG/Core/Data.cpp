@@ -7,7 +7,7 @@ Data data;
 
 Data::Data()
 {
-	filename = NULL;
+	nowfilename = NULL;
 
 	password = NULL;
 
@@ -32,6 +32,12 @@ Data::Data()
 	playerbulletdefinefilename = NULL;
 	playershootdefinefilename = NULL;
 	playerghostdefinefilename = NULL;
+
+	datadefinefilename = NULL;
+	packagedefinefilename = NULL;
+	texturedefinefilename = NULL;
+	effectdefinefilename = NULL;
+	sedefinefilename = NULL;
 
 	bin.clear();
 }
@@ -370,63 +376,79 @@ void Data::getFile(BYTE type)
 	switch(type)
 	{
 	case DATA_RESOURCEFILE:
-		filename = resourcefilename;
+		nowfilename = resourcefilename;
 		break;
 
 	case DATA_SCRIPTFILE:
-		filename = scriptfilename;
+		nowfilename = scriptfilename;
 		break;
 
 	case DATA_CUSTOMCONSTFILE:
-		filename = customconstfilename;
+		nowfilename = customconstfilename;
 		break;
 		
 	case DATA_SPELLACCESSFILE:
-		filename = spellaccessfilename;
+		nowfilename = spellaccessfilename;
 		break;
 	case DATA_SPELLDEFINEFILE:
-		filename = spelldefinefilename;
+		nowfilename = spelldefinefilename;
 		break;
 
 	case DATA_MUSICDEFINEFILE:
-		filename = musicdefinefilename;
+		nowfilename = musicdefinefilename;
 		break;
 
 	case DATA_BULLETDEFINEFILE:
-		filename = bulletdefinefilename;
+		nowfilename = bulletdefinefilename;
 		break;
 	case DATA_ENEMYDEFINEFILE:
-		filename = enemydefinefilename;
+		nowfilename = enemydefinefilename;
 		break;
 	case DATA_PLAYERDEFINEFILE:
-		filename = playerdefinefilename;
+		nowfilename = playerdefinefilename;
 		break;
 	case DATA_SPRITEDEFINEFILE:
-		filename = spritedefinefilename;
+		nowfilename = spritedefinefilename;
 		break;
 	case DATA_PLAYERBULLETDEFINE:
-		filename = playerbulletdefinefilename;
+		nowfilename = playerbulletdefinefilename;
 		break;
 	case DATA_PLAYERSHOOTDEFINE:
-		filename = playershootdefinefilename;
+		nowfilename = playershootdefinefilename;
 		break;
 	case DATA_PLAYERGHOSTDEFINE:
-		filename = playerghostdefinefilename;
+		nowfilename = playerghostdefinefilename;
+		break;
+
+	case DATA_DATATABLEDEFINE:
+		nowfilename = datadefinefilename;
+		break;
+	case DATA_PACKAGETABLEDEFINE:
+		nowfilename = packagedefinefilename;
+		break;
+	case DATA_TEXTURETABLEDEFINE:
+		nowfilename = texturedefinefilename;
+		break;
+	case DATA_EFFECTTABLEDEFINE:
+		nowfilename = effectdefinefilename;
+		break;
+	case DATA_SETABLEDEFINE:
+		nowfilename = sedefinefilename;
 		break;
 
 	case DATA_BINFILE:
-		filename = binfilename;
+		nowfilename = binfilename;
 		break;
 
 	default:
-		filename = NULL;
+		nowfilename = NULL;
 	}
 }
 
 bool Data::Init(BYTE type)
 {
 	if(binmode && (type & DATA_TABLEHEADER) ||
-		(type & DATA_BOTHHEADER))
+		(type == DATA_RESOURCEFILE))
 	{
 		return true;
 	}
@@ -435,16 +457,16 @@ bool Data::Init(BYTE type)
 	FILETIME filetime;
 
 	getFile(type);
-	if(!filename)
+	if(!nowfilename)
 		return false;
 
-	DeleteFile(filename);
+	DeleteFile(nowfilename);
 
 	if(type == DATA_BINFILE)
 		bin.clear();
 
 	if((type & DATA_MEMORYHEADER) ||
-		(type & DATA_BOTHHEADER) && binmode)
+		(type == DATA_RESOURCEFILE) && binmode)
 	{
 		char * fname;
 		char * bname;
@@ -502,14 +524,14 @@ bool Data::Init(BYTE type)
 		free(_content);
 	}
 	
-	if(type & DATA_BINHEADER)
+	if(type == DATA_BINFILE)
 	{
 		hgeMemoryFile memfile;
 		memfile.filename = binname;
 		memfile.data = NULL;
 		memfile.size = 0;
 
-		hge->Resource_CreatePack(filename, password, &memfile, NULL);
+		hge->Resource_CreatePack(nowfilename, password, &memfile, NULL);
 
 		GetLocalTime(&systime);
 		SystemTimeToFileTime(&systime, &filetime);
@@ -519,7 +541,7 @@ bool Data::Init(BYTE type)
 		lWrite(DATA_BINFILE, sLinkType(DATAS_TOTAL), nLinkType(DATAN_FIRSTRUNTIME), (((LONGLONG)filetime.dwHighDateTime)<<32)|filetime.dwLowDateTime);
 	}
 #ifdef __DEBUG
-	HGELOG("Succeeded in rebuilding Data File %s.", filename);
+	HGELOG("Succeeded in rebuilding Data File %s.", nowfilename);
 #endif
 	return true;
 }
@@ -527,13 +549,13 @@ bool Data::Init(BYTE type)
 bool Data::SetFile(const char * _filename, BYTE type)
 {
 	getFile(type);
-	if(!filename)
+	if(!nowfilename)
 		return false;
-	strcpy(filename, hge->Resource_MakePath(_filename));
+	strcpy(nowfilename, hge->Resource_MakePath(_filename));
 
-	if(type & DATA_BINHEADER)
+	if(type == DATA_BINFILE)
 	{
-		hge->Resource_AttachPack(filename, password);
+		hge->Resource_AttachPack(nowfilename, password);
 		BYTE * content;
 		DWORD size;
 		content = hge->Resource_Load(binname, &size);
@@ -543,7 +565,7 @@ bool Data::SetFile(const char * _filename, BYTE type)
 		}
 		hge->Resource_Free(content);
 	}
-	if(_access(filename, 00) == -1 ||
+	if(_access(nowfilename, 00) == -1 ||
 		!CheckHeader(type))
 	{
 		if(type == DATA_BINFILE || type == DATA_SPELLACCESSFILE)
@@ -557,17 +579,17 @@ bool Data::SetFile(const char * _filename, BYTE type)
 		{
 failed:
 #ifdef __DEBUG
-				HGELOG("%s\nFailed in Getting Data File %s.", HGELOG_ERRSTR, filename);
+				HGELOG("%s\nFailed in Getting Data File %s.", HGELOG_ERRSTR, nowfilename);
 #endif
-				strcpy(filename, "");
-				filename = NULL;
+				strcpy(nowfilename, "");
+				nowfilename = NULL;
 				return false;
 		}
 	}
 
 	if(type == DATA_SPELLACCESSFILE)
 	{
-		hge->Resource_AttachPack(filename, password);
+		hge->Resource_AttachPack(nowfilename, password);
 		BYTE * content;
 		DWORD size;
 		content = hge->Resource_Load(rabinname, &size);
@@ -588,6 +610,48 @@ failed:
 
 bool Data::GetAllTable()
 {
+	//data
+	if (!GetTableFile(DATA_DATATABLEDEFINE))
+	{
+#ifdef __DEBUG
+		HGELOG("%s\nFailed in loading DataDefineFile %s.", HGELOG_ERRSTR, datadefinefilename);
+#endif // __DEBUG
+		return false;
+	}
+	//package
+	if (!GetTableFile(DATA_PACKAGETABLEDEFINE))
+	{
+#ifdef __DEBUG
+		HGELOG("%s\nFailed in loading PackageDefineFile %s.", HGELOG_ERRSTR, packagedefinefilename);
+#endif // __DEBUG
+		return false;
+	}
+	//texture
+	if (!GetTableFile(DATA_TEXTURETABLEDEFINE))
+	{
+#ifdef __DEBUG
+		HGELOG("%s\nFailed in loading TextureDefineFile %s.", HGELOG_ERRSTR, texturedefinefilename);
+#endif // __DEBUG
+		return false;
+	}
+	//effect
+	if (!GetTableFile(DATA_EFFECTTABLEDEFINE))
+	{
+#ifdef __DEBUG
+		HGELOG("%s\nFailed in loading EffectDefineFile %s.", HGELOG_ERRSTR, effectdefinefilename);
+#endif // __DEBUG
+		return false;
+	}
+	//se
+	if (!GetTableFile(DATA_SETABLEDEFINE))
+	{
+#ifdef __DEBUG
+		HGELOG("%s\nFailed in loading SEDefineFile %s.", HGELOG_ERRSTR, sedefinefilename);
+#endif // __DEBUG
+		return false;
+	}
+
+
 	//music
 	if (!GetTableFile(DATA_MUSICDEFINEFILE))
 	{
@@ -730,7 +794,7 @@ bool Data::SaveBin()
 	memfile.data = _bin;
 	memfile.size = _size;
 
-	if (!hge->Resource_CreatePack(filename, password, &memfile, NULL))
+	if (!hge->Resource_CreatePack(nowfilename, password, &memfile, NULL))
 	{
 		ret = false;
 	}
@@ -769,7 +833,7 @@ bool Data::SaveBin()
 	memfile.data = _radata;
 	memfile.size = _size;
 
-	if (!hge->Resource_CreatePack(filename, password, &memfile, NULL))
+	if (!hge->Resource_CreatePack(nowfilename, password, &memfile, NULL))
 	{
 		ret = false;
 	}
@@ -881,7 +945,7 @@ BYTE * Data::ListToMem(DWORD * size)
 bool Data::iWrite(BYTE type, DWORD section, DWORD name, int value)
 {
 	getFile(type);
-	if(filename)
+	if(nowfilename)
 	{
 		if(type == DATA_BINFILE)
 		{
@@ -891,7 +955,7 @@ bool Data::iWrite(BYTE type, DWORD section, DWORD name, int value)
 		else
 		{
 			sprintf(buf, "%d", value);
-			if(WritePrivateProfileString(translateSection(section), translateName(name), buf, filename))
+			if(WritePrivateProfileString(translateSection(section), translateName(name), buf, nowfilename))
 				return true;
 		}
 	}
@@ -900,7 +964,7 @@ bool Data::iWrite(BYTE type, DWORD section, DWORD name, int value)
 int Data::iRead(BYTE type, DWORD section, DWORD name, int def_val)
 {
 	getFile(type);
-	if(filename)
+	if(nowfilename)
 	{
 		if(type == DATA_BINFILE)
 		{
@@ -908,7 +972,7 @@ int Data::iRead(BYTE type, DWORD section, DWORD name, int def_val)
 		}
 		else
 		{
-			if(GetPrivateProfileString(translateSection(section), translateName(name), "", buf, sizeof(buf), filename))
+			if(GetPrivateProfileString(translateSection(section), translateName(name), "", buf, sizeof(buf), nowfilename))
 			{
 				return atoi(buf);
 			}
@@ -919,7 +983,7 @@ int Data::iRead(BYTE type, DWORD section, DWORD name, int def_val)
 bool Data::lWrite(BYTE type, DWORD section, DWORD name, LONGLONG value)
 {
 	getFile(type);
-	if(filename)
+	if(nowfilename)
 	{
 		if(type == DATA_BINFILE)
 		{
@@ -929,7 +993,7 @@ bool Data::lWrite(BYTE type, DWORD section, DWORD name, LONGLONG value)
 		else
 		{
 			_i64toa(value, buf, 10);
-			if(WritePrivateProfileString(translateSection(section), translateName(name), buf, filename))
+			if(WritePrivateProfileString(translateSection(section), translateName(name), buf, nowfilename))
 				return true;
 		}
 	}
@@ -938,7 +1002,7 @@ bool Data::lWrite(BYTE type, DWORD section, DWORD name, LONGLONG value)
 LONGLONG Data::lRead(BYTE type, DWORD section, DWORD name, LONGLONG def_val)
 {
 	getFile(type);
-	if(filename)
+	if(nowfilename)
 	{
 		if(type == DATA_BINFILE)
 		{
@@ -946,7 +1010,7 @@ LONGLONG Data::lRead(BYTE type, DWORD section, DWORD name, LONGLONG def_val)
 		}
 		else
 		{
-			if(GetPrivateProfileString(translateSection(section), translateName(name), "", buf, sizeof(buf), filename))
+			if(GetPrivateProfileString(translateSection(section), translateName(name), "", buf, sizeof(buf), nowfilename))
 			{
 				return _atoi64(buf);
 			}
@@ -957,7 +1021,7 @@ LONGLONG Data::lRead(BYTE type, DWORD section, DWORD name, LONGLONG def_val)
 bool Data::fWrite(BYTE type, DWORD section, DWORD name, float value)
 {
 	getFile(type);
-	if(filename)
+	if(nowfilename)
 	{
 		if(type == DATA_BINFILE)
 		{
@@ -967,7 +1031,7 @@ bool Data::fWrite(BYTE type, DWORD section, DWORD name, float value)
 		else
 		{
 			sprintf(buf, "%f", value);
-			if(WritePrivateProfileString(translateSection(section), translateName(name), buf, filename))
+			if(WritePrivateProfileString(translateSection(section), translateName(name), buf, nowfilename))
 				return true;
 		}
 	}
@@ -976,7 +1040,7 @@ bool Data::fWrite(BYTE type, DWORD section, DWORD name, float value)
 float Data::fRead(BYTE type, DWORD section, DWORD name, float def_val)
 {
 	getFile(type);
-	if(filename)
+	if(nowfilename)
 	{
 		if(type == DATA_BINFILE)
 		{
@@ -984,7 +1048,7 @@ float Data::fRead(BYTE type, DWORD section, DWORD name, float def_val)
 		}
 		else
 		{
-			if(GetPrivateProfileString(translateSection(section), translateName(name), "", buf, sizeof(buf), filename))
+			if(GetPrivateProfileString(translateSection(section), translateName(name), "", buf, sizeof(buf), nowfilename))
 			{
 				return float(atof(buf));
 			}
@@ -995,7 +1059,7 @@ float Data::fRead(BYTE type, DWORD section, DWORD name, float def_val)
 bool Data::sWrite(BYTE type, DWORD section, DWORD name, const char * value)
 {
 	getFile(type);
-	if(filename)
+	if(nowfilename)
 	{
 		if(type == DATA_BINFILE)
 		{
@@ -1004,7 +1068,7 @@ bool Data::sWrite(BYTE type, DWORD section, DWORD name, const char * value)
 		}
 		else
 		{
-			if(WritePrivateProfileString(translateSection(section), translateName(name), value, filename))
+			if(WritePrivateProfileString(translateSection(section), translateName(name), value, nowfilename))
 				return true;
 		}
 	}
@@ -1013,7 +1077,7 @@ bool Data::sWrite(BYTE type, DWORD section, DWORD name, const char * value)
 char * Data::sRead(BYTE type, DWORD section, DWORD name, const char * def_val)
 {
 	getFile(type);
-	if(filename)
+	if(nowfilename)
 	{
 		if(type == DATA_BINFILE)
 		{
@@ -1021,7 +1085,7 @@ char * Data::sRead(BYTE type, DWORD section, DWORD name, const char * def_val)
 		}
 		else
 		{
-			GetPrivateProfileString(translateSection(section), translateName(name), def_val, buf, sizeof(buf), filename);
+			GetPrivateProfileString(translateSection(section), translateName(name), def_val, buf, sizeof(buf), nowfilename);
 		}
 	}
 	else
@@ -1032,8 +1096,37 @@ char * Data::sRead(BYTE type, DWORD section, DWORD name, const char * def_val)
 //
 bool Data::SetEffectSystemResourceName(int effi, const char * filename)
 {
-	if(effi < 0 || effi > EFFECTSYSTYPEMAX)
+	if(effi < 0 || effi >= EFFECTSYSTYPEMAX)
 		return false;
+	strcpy(res.resdata.effectsysfilename[effi], filename);
+	FILE * file = checkTableFile(DATA_EFFECTTABLEDEFINE);
+	if (file == NULL)
+	{
+		return false;
+	}
+	char comment[2][M_STRMAX];
+	fscanf(file, "%s%s", comment[0], comment[1]);
+	fclose(file);
+	file = NULL;
+
+	getFile(DATA_EFFECTTABLEDEFINE);
+	file = fopen(nowfilename, "wb");
+	if (!file)
+	{
+		return false;
+	}
+	fprintf(file, "%x\t%s\t%x\r\n", GAME_VERSION, GAME_SIGNATURE, DATA_EFFECTTABLEDEFINE);
+	fprintf(file, "%s\t%s\r\n", comment[0], comment[1]);
+	for (int i=0; i<EFFECTSYSTYPEMAX; i++)
+	{
+		if (strlen(res.resdata.effectsysfilename[i]))
+		{
+			fprintf(file, "%d\t%s\r\n", i, res.resdata.effectsysfilename[i]);
+		}
+	}
+	fclose(file);
+
+	/*
 	DWORD sec = sLinkType(RESDATAS_EFFECTSYS);
 	DWORD name = nLinkNum(nLinkType(RESDATAN_TYPE), effi+1);
 	if(!filename)
@@ -1044,13 +1137,20 @@ bool Data::SetEffectSystemResourceName(int effi, const char * filename)
 	{
 		sWrite(DATA_RESOURCEFILE, sec, name, filename);
 	}
+	*/
 	return true;
 }
 
 bool Data::GetEffectSystemResourceName(int effi, char * filename)
 {
-	if(!filename || effi < 0 || effi > EFFECTSYSTYPEMAX)
+	if(!filename || effi < 0 || effi >= EFFECTSYSTYPEMAX)
 		return false;
+	if (!strlen(res.resdata.effectsysfilename[effi]))
+	{
+		return false;
+	}
+	strcpy(filename, res.resdata.effectsysfilename[effi]);
+	/*
 	DWORD sec = sLinkType(RESDATAS_EFFECTSYS);
 	DWORD name = nLinkNum(nLinkType(RESDATAN_TYPE), effi+1);
 	char buffer[M_STRMAX];
@@ -1058,6 +1158,7 @@ bool Data::GetEffectSystemResourceName(int effi, char * filename)
 	if(!strlen(buffer))
 		return false;
 	strcpy(filename, buffer);
+	*/
 	return true;
 }
 

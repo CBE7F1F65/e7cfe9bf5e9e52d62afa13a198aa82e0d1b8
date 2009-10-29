@@ -1,21 +1,17 @@
 #include "Data.h"
 #include "BResource.h"
 
-bool Data::GetTableFile(BYTE type)
+FILE * Data::checkTableFile(BYTE type)
 {
-	if (!(type & DATA_TABLEHEADER))
-	{
-		return false;
-	}
 	getFile(type);
-	if (!filename)
+	if (!nowfilename)
 	{
-		return false;
+		return NULL;
 	}
-	FILE * file = fopen(filename, "rb");
+	FILE * file = fopen(nowfilename, "rb");
 	if (!file)
 	{
-		return false;
+		return NULL;
 	}
 	int tgameversion = -1;
 	char tsignature[M_STRMAX];
@@ -25,6 +21,20 @@ bool Data::GetTableFile(BYTE type)
 	if (tgameversion != GAME_VERSION || strcmp(tsignature, GAME_SIGNATURE) || tfiletype != type)
 	{
 		fclose(file);
+		return NULL;
+	}
+	return file;
+}
+
+bool Data::GetTableFile(BYTE type)
+{
+	if (!(type & DATA_TABLEHEADER))
+	{
+		return false;
+	}
+	FILE * file = checkTableFile(type);
+	if (file == NULL)
+	{
 		return false;
 	}
 
@@ -33,6 +43,153 @@ bool Data::GetTableFile(BYTE type)
 	int tint[32];
 	switch (type)
 	{
+	case DATA_DATATABLEDEFINE:
+		fscanf(file, "%s%s",
+			buffer, buffer);
+		if (feof(file))
+		{
+			break;
+		}
+
+		strcpy(res.resdata.customconstfilename, res.resdata.datafoldername);
+		fscanf(file, "%s%s",
+			buffer, buffer);
+		strcat(res.resdata.customconstfilename, buffer);
+		if (feof(file))
+		{
+			break;
+		}
+		strcpy(res.resdata.spelldefinefilename, res.resdata.datafoldername);
+		fscanf(file, "%s%s",
+			buffer, buffer);
+		strcat(res.resdata.spelldefinefilename, buffer);
+		if (feof(file))
+		{
+			break;
+		}
+		strcpy(res.resdata.musicdefinefilename, res.resdata.datafoldername);
+		fscanf(file, "%s%s",
+			buffer, buffer);
+		strcat(res.resdata.musicdefinefilename, buffer);
+		if (feof(file))
+		{
+			break;
+		}
+		strcpy(res.resdata.bulletdefinefilename, res.resdata.datafoldername);
+		fscanf(file, "%s%s",
+			buffer, buffer);
+		strcat(res.resdata.bulletdefinefilename, buffer);
+		if (feof(file))
+		{
+			break;
+		}
+		strcpy(res.resdata.enemydefinefilename, res.resdata.datafoldername);
+		fscanf(file, "%s%s",
+			buffer, buffer);
+		strcat(res.resdata.enemydefinefilename, buffer);
+		if (feof(file))
+		{
+			break;
+		}
+		strcpy(res.resdata.playerdefinefilename, res.resdata.datafoldername);
+		fscanf(file, "%s%s",
+			buffer, buffer);
+		strcat(res.resdata.playerdefinefilename, buffer);
+		if (feof(file))
+		{
+			break;
+		}
+		strcpy(res.resdata.spritedefinefilename, res.resdata.datafoldername);
+		fscanf(file, "%s%s",
+			buffer, buffer);
+		strcat(res.resdata.spritedefinefilename, buffer);
+		if (feof(file))
+		{
+			break;
+		}
+		strcpy(res.resdata.playerbulletdefinefilename, res.resdata.datafoldername);
+		fscanf(file, "%s%s",
+			buffer, buffer);
+		strcat(res.resdata.playerbulletdefinefilename, buffer);
+		if (feof(file))
+		{
+			break;
+		}
+		strcpy(res.resdata.playershootdefinefilename, res.resdata.datafoldername);
+		fscanf(file, "%s%s",
+			buffer, buffer);
+		strcat(res.resdata.playershootdefinefilename, buffer);
+		if (feof(file))
+		{
+			break;
+		}
+		strcpy(res.resdata.playerghostdefinefilename, res.resdata.datafoldername);
+		fscanf(file, "%s%s",
+			buffer, buffer);
+		strcat(res.resdata.playerghostdefinefilename, buffer);
+		if (feof(file))
+		{
+			break;
+		}
+
+		break;
+	case DATA_PACKAGETABLEDEFINE:
+		ZeroMemory(res.resdata.packagefilename, sizeof(char) * PACKAGEMAX * M_PATHMAX);
+		fscanf(file, "%s%s",
+			buffer, buffer);
+		while (!feof(file))
+		{
+			fscanf(file, "%d", &tindex);
+			if (feof(file))
+			{
+				break;
+			}
+			fscanf(file, "%s", res.resdata.packagefilename[tindex]);
+		}
+		break;
+	case DATA_TEXTURETABLEDEFINE:
+		ZeroMemory(res.resdata.texfilename, sizeof(char) * TEXMAX * M_PATHMAX);
+		fscanf(file, "%s%s",
+			buffer, buffer);
+		while (!feof(file))
+		{
+			fscanf(file, "%d", &tindex);
+			if (feof(file))
+			{
+				break;
+			}
+			fscanf(file, "%s", res.resdata.texfilename[tindex]);
+		}
+		break;
+	case DATA_EFFECTTABLEDEFINE:
+		ZeroMemory(res.resdata.effectsysfilename, sizeof(char) * EFFECTSYSTYPEMAX * M_PATHMAX);
+		fscanf(file, "%s%s",
+			buffer, buffer);
+		while (!feof(file))
+		{
+			fscanf(file, "%d", &tindex);
+			if (feof(file))
+			{
+				break;
+			}
+			fscanf(file, "%s", res.resdata.effectsysfilename[tindex]);
+		}
+		break;
+	case DATA_SETABLEDEFINE:
+		ZeroMemory(res.resdata.sefilename, sizeof(char) * SEMAX * M_PATHMAX);
+		fscanf(file, "%s%s",
+			buffer, buffer);
+		while (!feof(file))
+		{
+			fscanf(file, "%d", &tindex);
+			if (feof(file))
+			{
+				break;
+			}
+			fscanf(file, "%s", res.resdata.sefilename[tindex]);
+		}
+		break;
+
 	case DATA_CUSTOMCONSTFILE:
 		res.ReleaseCustomConst();
 		res.customconstdata = (customconstData *)malloc(RSIZE_CUSTOMCONST);

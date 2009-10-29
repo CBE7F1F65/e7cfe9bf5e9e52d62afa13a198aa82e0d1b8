@@ -88,6 +88,11 @@ dataMapTable dataMap[] =
 	{"PlayerBulletDefineFile",0x132C0000},
 	{"PlayerShootDefineFile",0x132D0000},
 	{"PlayerGhostDefineFile",0x132E0000},
+	{"DataDefineFile",		0x13310000},
+	{"PackageDefineFile",	0x13320000},
+	{"TextureDefineFile",	0x13330000},
+	{"EffectDefineFile",	0x13340000},
+	{"SEDefineFile",		0x13350000},
 
 	{"Package",				0x20000000},
 	{"Texture",				0x21000000},

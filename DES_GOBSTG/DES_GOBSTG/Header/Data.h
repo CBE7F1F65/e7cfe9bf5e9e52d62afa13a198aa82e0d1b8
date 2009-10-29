@@ -4,9 +4,6 @@
 #include "MainDependency.h"
 #include "Const.h"
 
-#define DATA_BINHEADER			0x10
-#define DATA_BINFILE			0x11
-
 #define DATA_MEMORYHEADER		0x20
 #define DATA_SPELLACCESSFILE	0x21
 #define DATA_SCRIPTFILE			0x22
@@ -24,8 +21,14 @@
 #define DATA_PLAYERSHOOTDEFINE	0x4D
 #define DATA_PLAYERGHOSTDEFINE	0x4E
 
-#define DATA_BOTHHEADER			0x80
+#define DATA_DATATABLEDEFINE	0x51
+#define DATA_PACKAGETABLEDEFINE	0x52
+#define DATA_TEXTURETABLEDEFINE	0x53
+#define DATA_EFFECTTABLEDEFINE	0x54
+#define DATA_SETABLEDEFINE		0x55
+
 #define DATA_RESOURCEFILE		0x81
+#define DATA_BINFILE			0x82
 
 #define DATA_HEADEROFFSET		0x40
 
@@ -153,6 +156,11 @@ enum{
 	RESDATAN_PLAYERBULLETDEFINEFILE,
 	RESDATAN_PLAYERSHOOTDEFINEFILE,
 	RESDATAN_PLAYERGHOSTDEFINEFILE,
+	RESDATAN_DATADEFINEFILE,
+	RESDATAN_PACKAGEDEFINEFILE,
+	RESDATAN_TEXTUREDEFINEFILE,
+	RESDATAN_EFFECTDEFINEFILE,
+	RESDATAN_SEDEFINEFILE,
 
 	RESDATAS_PACKAGE,
 	RESDATAS_TEXTURE,
@@ -275,6 +283,7 @@ public:
 	LONGLONG * AttachValue(DWORD section, DWORD name, LONGLONG def_val = 0);
 
 	void getFile(BYTE type);
+	FILE * checkTableFile(BYTE type);
 
 	BYTE * CreateMemHeader(BYTE type);
 	bool CheckMemHeader(const BYTE * memdata, DWORD size, BYTE type);
@@ -325,7 +334,7 @@ public:
 
 	int password;
 
-	char * filename;
+	char * nowfilename;
 	char * binfilename;
 	char * binname;
 	char * spellaccessfilename;
@@ -345,6 +354,12 @@ public:
 	char * playerbulletdefinefilename;
 	char * playershootdefinefilename;
 	char * playerghostdefinefilename;
+
+	char * datadefinefilename;
+	char * packagedefinefilename;
+	char * texturedefinefilename;
+	char * effectdefinefilename;
+	char * sedefinefilename;
 };
 
 extern Data data;
