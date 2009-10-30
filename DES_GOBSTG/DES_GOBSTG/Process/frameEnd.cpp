@@ -232,11 +232,11 @@ void Process::frameEnd()
 
 						if (BGLayer::set[i].timer < BGLayer::set[i].quittime)
 						{
-							scr.sceneExecute(BGLayer::set[i].sID, BGLayer::set[i].timer);
+							scr.Execute(SCR_SCENE, BGLayer::set[i].sID, BGLayer::set[i].timer);
 						}
 						else if (BGLayer::set[i].timer == BGLayer::set[i].quittime)
 						{
-							scr.sceneExecute(BGLayer::set[i].sID, SCRIPT_CON_QUIT);
+							scr.Execute(SCR_SCENE, BGLayer::set[i].sID, SCRIPT_CON_QUIT);
 						}
 					}
 				}

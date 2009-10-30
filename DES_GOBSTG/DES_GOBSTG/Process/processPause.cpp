@@ -32,7 +32,7 @@ int Process::processPause()
 		}
 	}
 	if(scr.GetIntValue(SCR_RESERVEBEGIN) < 0x100)
-		scr.controlExecute(STATE_PAUSE, SCRIPT_CON_INIT);
+		scr.Execute(SCR_CONTROL, STATE_PAUSE, SCRIPT_CON_INIT);
 
 	if(sel.size() && hge->Input_GetDIKey(KS_SPECIAL, DIKEY_UP))
 	{

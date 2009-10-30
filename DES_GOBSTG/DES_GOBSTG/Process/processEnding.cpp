@@ -23,7 +23,7 @@ int Process::processEnding()
 		scr.SetIntValue(SCR_RESERVEBEGIN+1, 0);
 	}
 	retvalue = PGO;
-	retvalue = scr.controlExecute(STATE_ENDING, time);
+	retvalue = scr.Execute(SCR_CONTROL, STATE_ENDING, time);
 	//pushtimer depth
 	int tpushtimer = scr.GetIntValue(SCR_RESERVEBEGIN);
 	int tdepth = scr.GetIntValue(SCR_RESERVEBEGIN+1);

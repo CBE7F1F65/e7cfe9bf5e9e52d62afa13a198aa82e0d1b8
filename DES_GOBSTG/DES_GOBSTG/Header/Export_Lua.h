@@ -5,15 +5,16 @@
 
 #include "MainDependency.h"
 #include "../../../LuaPlus/LuaPlus/LuaPlus.h"
+using namespace LuaPlus;
 
 class Export_Lua
 {
 public:
-	Export();
-	~Export();
+	Export_Lua();
+	~Export_Lua();
 public:
-	static HGE * InitHGE();
-	static HGE * ReleaseHGE();
+	static void InitHGE(HGE * hge = NULL, HTEXTURE * texset = NULL);
+	static void ReleaseHGE();
 
 	static void Release(LuaState * ls = NULL);
 
@@ -26,12 +27,12 @@ public:
 	static int DoLuaFileInMemroy(LuaState * ls, const char * buffer, DWORD size, const char * name);
 
 	static bool CheckUseUnpackedFiles(LuaState * ls);
-	static int PackLuaFiles(LuaState * ls);
-	static int LoadPackedLuaFiles(LuaState * ls);
+	static int PackLuaFiles(LuaState * ls = NULL);
+	static int LoadPackedLuaFiles(LuaState * ls = NULL);
 
 	static int LuaChunkWriter(lua_State *L, const void* p, size_t sz, void* ud);
 
-	static int ReadLuaFileTableAndConst(LuaState * ls);
+	static int ReadLuaFileTable(LuaState * ls = NULL);
 
 	static void ShowError(int errortype, const char * err);
 
@@ -193,6 +194,13 @@ public:
 	static int LuaFn_hge_Target_Free(LuaState * ls);
 	static int LuaFn_hge_Target_GetTexture(LuaState * ls);
 
+	static int LuaFn_hge_Texture_Create(LuaState * ls);
+	static int LuaFn_hge_Texture_Load(LuaState * ls);
+	static int LuaFn_hge_Texture_Free(LuaState * ls);
+	static int LuaFn_hge_Texture_GetWH(LuaState * ls);
+	static int LuaFn_hge_Texture_Lock(LuaState * ls);
+	static int LuaFn_hge_Texture_Unlock(LuaState * ls);
+
 	static int LuaFn_hge_Font_Load(LuaState * ls);
 	static int LuaFn_hge_Font_Free(LuaState * ls);
 	static int LuaFn_hge_Gfx_RenderText(LuaState * ls);
@@ -297,6 +305,11 @@ public:
 	static HGE * hge;
 	static LuaStateOwner state;
 
+	static hgeChannelSyncInfo channelsyncinfo;
+	static list<hgeFont *>fontList;
+	static list<hgeSprite *>spriteList;
+	static list<hgeEffectSystem *>esList;
+	static HTEXTURE * texset;
 };
 
 #endif

@@ -47,7 +47,7 @@ int Process::processOver()
 		scr.SetIntValue(SCR_RESERVEBEGIN+3, DataConnector::Insert());
 	}
 	retvalue = PGO;
-	retvalue = scr.controlExecute(STATE_OVER, time);
+	retvalue = scr.Execute(SCR_CONTROL, STATE_OVER, time);
 	//pushtimer depth sec nowchar insert
 	int tdepth = scr.GetIntValue(SCR_RESERVEBEGIN);
 	int tsec = scr.GetIntValue(SCR_RESERVEBEGIN+1);

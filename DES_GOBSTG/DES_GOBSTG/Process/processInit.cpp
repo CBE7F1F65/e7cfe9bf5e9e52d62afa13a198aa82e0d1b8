@@ -183,7 +183,7 @@ int Process::processInit()
 			errorcode = PROC_ERROR_RESOURCE;
 			return PQUIT;
 		}
-		if(!scr.LoadAll())
+		if(!scr.LoadAll(tex))
 		{
 			errorcode = PROC_ERROR_SCRIPT;
 			return PQUIT;
@@ -210,7 +210,7 @@ int Process::processInit()
 		errorcode = PROC_ERROR_DATA;
 		return PQUIT;
 	}
-	if(scr.binmode && !scr.LoadAll())
+	if(scr.binmode && !scr.LoadAll(tex))
 	{
 		errorcode = PROC_ERROR_SCRIPT;
 		return PQUIT;

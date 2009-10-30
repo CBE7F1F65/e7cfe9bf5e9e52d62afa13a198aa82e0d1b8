@@ -288,8 +288,8 @@ void BResource::GetUIString()
 
 bool BResource::Pack(void * pStrdesc, void * pCustomConstData)
 {
-	if(pStrdesc == NULL || pCustomConstData == NULL)
-		return false;
+//	if(pStrdesc == NULL || pCustomConstData == NULL)
+//		return false;
 
 	DWORD size = M_BINHEADER_OFFSET + 
 		RSIZE_RESOURCE + 
@@ -319,9 +319,23 @@ bool BResource::Pack(void * pStrdesc, void * pCustomConstData)
 
 	memcpy(content+offset, &resdata, RSIZE_RESOURCE);
 	offset += RSIZE_RESOURCE;
-	memcpy(content+offset, pStrdesc, RSIZE_STRINGDESC);
+	if (!pStrdesc)
+	{
+		ZeroMemory(content+offset, RSIZE_STRINGDESC);
+	}
+	else
+	{
+		memcpy(content+offset, pStrdesc, RSIZE_STRINGDESC);
+	}
 	offset += RSIZE_STRINGDESC;
-	memcpy(content+offset, pCustomConstData, RSIZE_CUSTOMCONST);
+	if (!pCustomConstData)
+	{
+		ZeroMemory(content+offset, RSIZE_CUSTOMCONST);
+	}
+	else
+	{
+		memcpy(content+offset, pCustomConstData, RSIZE_CUSTOMCONST);
+	}
 	offset += RSIZE_CUSTOMCONST;
 	memcpy(content+offset, musdata, RSIZE_MUSIC);
 	offset += RSIZE_MUSIC;

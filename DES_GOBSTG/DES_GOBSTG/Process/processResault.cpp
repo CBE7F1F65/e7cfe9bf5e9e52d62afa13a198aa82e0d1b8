@@ -19,7 +19,7 @@ int Process::processResult()
 		scr.SetIntValue(SCR_RESERVEBEGIN+1, -1);
 		scr.SetIntValue(SCR_RESERVEBEGIN+2, 0);
 	}
-	scr.controlExecute(STATE_RESULT, time);
+	scr.Execute(SCR_CONTROL, STATE_RESULT, time);
 	int tsec = scr.GetIntValue(SCR_RESERVEBEGIN);
 	int tdiff = scr.GetIntValue(SCR_RESERVEBEGIN+1);
 	int tsel = scr.GetIntValue(SCR_RESERVEBEGIN+2);

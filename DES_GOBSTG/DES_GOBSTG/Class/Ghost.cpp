@@ -204,7 +204,7 @@ void Ghost::action()
 		{
 			WORD tindex = index;
 			index = ID;
-			scr.edefExecute(gID, timer);
+			scr.Execute(SCR_EDEF, gID, timer);
 			index = tindex;
 		}
 
@@ -239,7 +239,7 @@ void Ghost::action()
 		{
 			WORD tindex = index;
 			index = ID;
-			scr.edefExecute(gID, SCRIPT_CON_POST);
+			scr.Execute(SCR_EDEF, gID, SCRIPT_CON_POST);
 			index = tindex;
 
 			if (life < 0)

@@ -199,9 +199,6 @@ bool Scripter::Execute(vector<File> * ptype, DWORD name, DWORD con)
 {
 	nowName = name;
 	nowCon = con;
-#ifndef __NOTUSELUA
-	return Execute_Lua(ptype, name, con);
-#endif
 	bool bFound = false;
 	bool rv = false;
 	for(vector<File>::iterator i=ptype->begin();i!=ptype->end();i++)

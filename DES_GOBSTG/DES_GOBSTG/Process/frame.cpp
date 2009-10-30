@@ -16,7 +16,7 @@ int Process::frame()
 #ifdef __DEBUG
 	if(hge->Input_GetKeyState(HGEK_BACKSPACE))
 	{
-		scr.LoadAll();
+		scr.LoadAll(tex);
 		state = STATE_TITLE;
 		time = 0;
 		return PTURN;

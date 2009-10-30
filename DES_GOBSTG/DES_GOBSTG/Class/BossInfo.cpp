@@ -116,7 +116,7 @@ void BossInfo::quit()
 		en[ENEMY_MAINBOSSINDEX].alpha = 0xff;
 	}
 
-	scr.stageExecute(sno, SCRIPT_CON_POST);
+	scr.Execute(SCR_STAGE, sno, SCRIPT_CON_POST);
 
 	spellflag = BISF_NONE;
 	flag = 0;
@@ -165,7 +165,7 @@ bool BossInfo::action()
 		Player::p.bInfi = true;
 		if(timer == 1)
 		{
-			scr.stageExecute(sno, SCRIPT_CON_QUIT);
+			scr.Execute(SCR_STAGE, sno, SCRIPT_CON_QUIT);
 
 			if(remain)
 			{
@@ -219,7 +219,7 @@ bool BossInfo::action()
 	{
 		if(timer == 1)
 		{
-			scr.stageExecute(sno, SCRIPT_CON_QUIT);
+			scr.Execute(SCR_STAGE, sno, SCRIPT_CON_QUIT);
 			SE::push(SE_BOSS_TIMEUP);
 			if(remain)
 			{

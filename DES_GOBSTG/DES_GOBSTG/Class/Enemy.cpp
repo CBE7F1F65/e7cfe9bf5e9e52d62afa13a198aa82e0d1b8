@@ -822,7 +822,7 @@ void Enemy::DoShot()
 	{
 		WORD tindex = index;
 		index = ID;
-		scr.edefExecute(eID, SCRIPT_CON_POST);
+		scr.Execute(SCR_EDEF, eID, SCRIPT_CON_POST);
 		index = tindex;
 
 		if (life < 0)
@@ -866,7 +866,7 @@ void Enemy::action()
 		{
 			WORD tindex = index;
 			index = ID;
-			scr.edefExecute(eID, timer);
+			scr.Execute(SCR_EDEF, eID, timer);
 			index = tindex;
 		}
 		matchAction();

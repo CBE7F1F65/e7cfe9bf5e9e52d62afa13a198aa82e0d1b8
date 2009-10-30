@@ -7,9 +7,6 @@ Scripter scr;
 
 bool Scripter::stopEdefScript = false;
 
-#ifndef __NOTUSELUA
-LuaStateOwner Scripter::state;
-#endif
 
 Scripter::Scripter()
 {
@@ -230,17 +227,21 @@ bool Scripter::Resize()
 }
 
 #ifndef __NOTUSELUA
-bool Scripter::LoadAll_Lua()
+bool Scripter::LoadAll_Lua(HTEXTURE * texset)
 {
+	Export_Lua::InitHGE(hge, texset);
 	Export_Lua::LuaRegistFunction();
 	Export_Lua::LuaRegistConst();
-	int iret;
-	iret = Export_Lua::PackLuaFiles(state);
-	if (iret != 0)
+	int iret = Export_Lua::ReadLuaFileTable();
+	if (iret == 0)
 	{
-		return false;
+		iret = Export_Lua::PackLuaFiles();
+		if (iret != 0)
+		{
+			return false;
+		}
 	}
-	iret = Export_Lua::LoadPackedLuaFiles(state);
+	iret = Export_Lua::LoadPackedLuaFiles();
 	if (iret != 0)
 	{
 		return false;
@@ -249,7 +250,7 @@ bool Scripter::LoadAll_Lua()
 }
 #endif
 
-bool Scripter::LoadAll()
+bool Scripter::LoadAll(HTEXTURE * texset)
 {
 	control.clear();
 	stage.clear();
@@ -267,7 +268,7 @@ bool Scripter::LoadAll()
 #endif // __COUNT_SCRIPTSIZE
 
 #ifndef __NOTUSELUA
-	return LoadAll_Lua();
+	return LoadAll_Lua(texset);
 #endif
 
 	binoffset = 0;

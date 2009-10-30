@@ -305,7 +305,7 @@ void Bullet::DoIze()
 						{
 							if (!passedEvent(tize->eventID))
 							{
-								scr.eventExecute(SCR_EVENT_BULLETENTERIZE, tize->eventID);
+								scr.Execute(SCR_EVENT, SCR_EVENT_BULLETENTERIZE, tize->eventID);
 								passEvent(tize->eventID);
 							}
 						}
@@ -1144,7 +1144,7 @@ void Bullet::ChangeAction()
 				case CALLEVENT:
 					if (doit)
 					{
-						scr.eventExecute(actionList[i+1], actionList[i+2]);
+						scr.Execute(SCR_EVENT, actionList[i+1], actionList[i+2]);
 					}
 					i+=2;
 					doit = false;

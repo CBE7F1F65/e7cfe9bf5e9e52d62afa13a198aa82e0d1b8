@@ -20,7 +20,7 @@ int Process::processContinue()
 		hge->Channel_Pause(channel);
 	}
 
-	scr.controlExecute(STATE_CONTINUE, SCRIPT_CON_INIT);
+	scr.Execute(SCR_CONTROL, STATE_CONTINUE, SCRIPT_CON_INIT);
 	//60 sec
 	int tsec = scr.GetIntValue(SCR_RESERVEBEGIN);
 

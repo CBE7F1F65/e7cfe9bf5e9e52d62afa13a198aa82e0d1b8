@@ -61,7 +61,7 @@ bool Scripter::Parse(int varcount)
 						memcpy(idescsaved, &idesc[SCR_VARBEGIN], sizeof(int) * varcount);
 						memcpy(descsaved, &d[SCR_VARBEGIN], sizeof(TData) * varcount);
 					}
-					functionExecute(UCAST(d[0]), UCAST(d[1]));
+					Execute(SCR_FUNCTION, UCAST(d[0]), UCAST(d[1]));
 					if (varcount)
 					{
 						memcpy(&idesc[SCR_VARBEGIN], idescsaved, sizeof(int) * varcount);
@@ -90,7 +90,7 @@ bool Scripter::Parse(int varcount)
 					{
 						rv = Copy(&i, _tdi, 2);
 					}
-					functionExecute(UCAST(d[0]), UCAST(d[1]));
+					Execute(SCR_FUNCTION, UCAST(d[0]), UCAST(d[1]));
 					if (varcount)
 					{
 						memcpy(&idesc[SCR_VARBEGIN], idescsaved, sizeof(int) * varcount);
@@ -1095,7 +1095,7 @@ bool Scripter::Parse(int varcount)
 									memcpy(idescsaved, &idesc[SCR_VARBEGIN], sizeof(int) * varcount);
 									memcpy(descsaved, &d[SCR_VARBEGIN], sizeof(TData) * varcount);
 								}
-								sceneExecute(BGLayer::set[_tdi].sID, SCRIPT_CON_POST);
+								Execute(SCR_SCENE, BGLayer::set[_tdi].sID, SCRIPT_CON_POST);
 								if (varcount)
 								{
 									memcpy(&idesc[SCR_VARBEGIN], idescsaved, sizeof(int) * varcount);

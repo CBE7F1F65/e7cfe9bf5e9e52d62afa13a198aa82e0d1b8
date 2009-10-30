@@ -70,7 +70,7 @@ int Process::processStart()
 	{
 		if (!(stopflag & FRAME_STOPFLAG_ENEMYSET))
 		{
-			scr.stageExecute(scene, time);
+			scr.Execute(SCR_STAGE, scene, time);
 		}
 	}
 	return PGO;

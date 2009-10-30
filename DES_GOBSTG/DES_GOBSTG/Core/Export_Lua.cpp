@@ -1,8 +1,15 @@
 #include "Export_Lua.h"
 #include "Const.h"
 #include "LuaConstDefine.h"
+#include "ConstResource.h"
 
+LuaStateOwner Export_Lua::state;
 HGE * Export_Lua::hge = NULL;
+hgeChannelSyncInfo Export_Lua::channelsyncinfo;
+list<hgeFont *> Export_Lua::fontList;
+list<hgeSprite *> Export_Lua::spriteList;
+list<hgeEffectSystem *> Export_Lua::esList;
+HTEXTURE * Export_Lua::texset = NULL;
 
 Export_Lua::Export_Lua()
 {
@@ -10,35 +17,39 @@ Export_Lua::Export_Lua()
 
 Export_Lua::~Export_Lua()
 {
-	ReleaseHGE();
+	Release();
 }
 
 void Export_Lua::Release(LuaState * ls /* = NULL */)
 {
+	_LuaHelper_hgeFont_DeleteAllFont();
+	_LuaHelper_hgeSprite_DeleteAllSprite();
+	_LuaHelper_hgeES_DeleteAllES();
+	ReleaseHGE();
 }
 
-HGE * Export_Lua::InitHGE()
+void Export_Lua::InitHGE(HGE * _hge, HTEXTURE * _texset)
 {
-	if (!hge)
+	if (_hge != NULL)
 	{
-		hge = hgeCreate(HGE_VERSION);
-		hge->Resource_SetPath(DEFAULT_RESOURCEPATH);
+		hge = _hge;
 	}
-	return hge;
-}
-
-HGE * Export_Lua::ReleaseHGE()
-{
-	if (hge)
+	if (_texset != NULL)
 	{
-		hge->Release();
+		texset = _texset;
 	}
-	hge = NULL;
-	return hge;
 }
 
-int Export_Lua::ReadLuaFileTableAndConst(LuaState * ls)
+void Export_Lua::ReleaseHGE()
 {
+}
+
+int Export_Lua::ReadLuaFileTable(LuaState * ls)
+{
+	if (!ls)
+	{
+		ls = state;
+	}
 	if (_access(hge->Resource_MakePath(DEFAULT_LUAFILETABLEFILE), 0) == -1)
 	{
 		return -1;
@@ -74,7 +85,7 @@ int Export_Lua::_LoadLuaFile(LuaState * ls, const char * filename, bool bDoFile 
 		FILE * infile = fopen(fullfilename, "rb");
 		char buffer;
 		fseek(outputfile, 0, SEEK_END);
-		while (true)
+		while (!feof(infile))
 		{
 			fread(&buffer, 1, 1, infile);
 			if (feof(infile))
@@ -178,6 +189,10 @@ bool Export_Lua::CheckUseUnpackedFiles(LuaState * ls)
 
 int Export_Lua::PackLuaFiles(LuaState * ls)
 {
+	if (!ls)
+	{
+		ls = state;
+	}
 	int iret = 0;
 	int filecount = 0;
 	bool bUseUnpackedFiles = CheckUseUnpackedFiles(ls);
@@ -228,6 +243,10 @@ int Export_Lua::DoLuaFileInMemroy(LuaState * ls, const char * buffer, DWORD size
 
 int Export_Lua::LoadPackedLuaFiles(LuaState * ls)
 {
+	if (!ls)
+	{
+		ls = state;
+	}
 	int iret = 0;
 	if (CheckUseUnpackedFiles(ls))
 	{

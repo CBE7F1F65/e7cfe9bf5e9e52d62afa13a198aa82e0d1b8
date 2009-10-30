@@ -20,7 +20,6 @@ bool Export_Lua::_LuaRegistFunction(LuaObject * obj)
 	_globalobj.Register("MessageBox", LuaFn_Global_MessageBox);
 
 	LuaObject _luastateobj = obj->CreateTable("luastate");
-	_luastateobj.Register("Reload", LuaFn_LuaState_Reload);
 	_luastateobj.Register("DoFile", LuaFn_LuaState_DoFile);
 	_luastateobj.Register("SetConst", LuaFn_LuaState_SetConst);
 	_luastateobj.Register("GetConst", LuaFn_LuaState_GetConst);
@@ -551,21 +550,6 @@ int Export_Lua::LuaFn_Global_MessageBox(LuaState * ls)
 
 	ls->PushInteger(iret);
 	return 1;
-}
-
-BOOL CALLBACK Export_Lua::MessageBoxExProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
-{
-	switch (uMsg)
-	{
-	case WM_INITDIALOG:
-		SetWindowText(hwndDlg, mbes.title);
-		SetDlgItemText(hwndDlg, IDC_EDIT_EX, mbes.str);
-		return TRUE;
-	case WM_CLOSE:
-		EndDialog(hwndDlg, 0);
-		return TRUE;
-	}
-	return FALSE;
 }
 
 int Export_Lua::LuaFn_LuaState_DoFile(LuaState * ls)

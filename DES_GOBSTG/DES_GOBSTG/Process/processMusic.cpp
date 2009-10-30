@@ -28,7 +28,7 @@ int Process::processMusic()
 
 		InfoSelect::select = 0;
 	}
-	scr.controlExecute(STATE_MUSIC, time);
+	scr.Execute(SCR_CONTROL, STATE_MUSIC, time);
 
 	if(hge->Input_GetDIKey(KS_SPECIAL, DIKEY_DOWN))
 	{

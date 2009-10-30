@@ -18,7 +18,7 @@ int Process::processDifficultSelect()
 	time++;
 	if(time == 1)
 	{
-		scr.eventExecute(SCR_EVENT_ENTERSTATE, STATE_DIFFICULT_SELECT);
+		scr.Execute(SCR_EVENT, SCR_EVENT_ENTERSTATE, STATE_DIFFICULT_SELECT);
 		fdisp.SetState(FDISP_PANEL, 0);
 		if(nowdifflv >= M_DIFFI_EXTRA_START)
 			nowdifflv = defaultdifflv;
@@ -28,7 +28,7 @@ int Process::processDifficultSelect()
 		scr.SetIntValue(SCR_RESERVEBEGIN+2, 0);
 	}
 	retvalue = PGO;
-	scr.controlExecute(STATE_DIFFICULT_SELECT, time);
+	scr.Execute(SCR_CONTROL, STATE_DIFFICULT_SELECT, time);
 
 	int tsec = scr.GetIntValue(SCR_RESERVEBEGIN);
 	int tsnolistindex = scr.GetIntValue(SCR_RESERVEBEGIN+1);

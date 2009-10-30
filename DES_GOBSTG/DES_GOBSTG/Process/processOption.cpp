@@ -17,7 +17,7 @@ int Process::processOption()
 		scr.SetIntValue(SCR_RESERVEBEGIN+1, 0);
 		PushKey::SetPushEvent(PUSHKEY_ID_UIUSE, KS_LEFT, KS_RIGHT);
 	}
-	scr.controlExecute(STATE_OPTION, time);
+	scr.Execute(SCR_CONTROL, STATE_OPTION, time);
 	//-> pushtimer sel depth
 	int tsel = scr.GetIntValue(SCR_RESERVEBEGIN);
 	int tdepth = scr.GetIntValue(SCR_RESERVEBEGIN+1);

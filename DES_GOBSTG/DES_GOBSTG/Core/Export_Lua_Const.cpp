@@ -5,7 +5,6 @@ bool Export_Lua::_LuaRegistConst(LuaObject * obj)
 {
 	// System
 	obj->SetInteger("NULL",	NULL);
-	obj->SetString("LOG_STR_FILENAME",	LOG_STR_FILENAME);
 
 	// D3D
 	obj->SetInteger("D3DTS_WORLD", D3DTS_WORLD);

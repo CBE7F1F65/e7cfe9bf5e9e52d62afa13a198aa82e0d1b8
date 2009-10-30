@@ -52,7 +52,7 @@ int Process::processReplay()
 		InfoSelect::select = 0;
 	}
 
-	scr.controlExecute(STATE_REPLAY, time);
+	scr.Execute(SCR_CONTROL, STATE_REPLAY, time);
 
 	//-> pushtimer page depth index nrpys rpydifflv
 	int tdepth = scr.GetIntValue(SCR_RESERVEBEGIN);

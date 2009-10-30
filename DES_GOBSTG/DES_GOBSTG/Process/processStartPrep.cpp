@@ -218,6 +218,6 @@ void Process::startPrep(bool callinit)
 
 	if (callinit)
 	{
-		scr.stageExecute(SCRIPT_CON_POST, scene);
+		scr.Execute(SCR_STAGE, SCRIPT_CON_POST, scene);
 	}
 }

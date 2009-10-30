@@ -12,7 +12,7 @@ int Process::processTitle()
 		Selector::select = titleselect;
 	}
 	retvalue = PGO;
-	scr.controlExecute(STATE_TITLE, time);
+	scr.Execute(SCR_CONTROL, STATE_TITLE, time);
 	titleselect = Selector::select;
 	return retvalue;
 }

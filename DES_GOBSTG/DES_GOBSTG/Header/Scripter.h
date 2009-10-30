@@ -25,23 +25,8 @@
 #define SCR_RESERVEBEGIN	0x90
 #define SCR_VARDESCNUM		(SCR_FREEBEGIN - SCR_VARBEGIN)
 
-#define CINT(p)		(*(int *)(p))
-#define CUINT(p)	(*(DWORD *)(p))
-#define CFLOAT(p)	(*(float *)(p))
 #define CAST(p)		(((p).bfloat) ? (CFLOAT((p).value)) : (CINT((p).value)))
 #define UCAST(p)	(*(DWORD *)(p).value)
-
-#define CLONGLONG(p)	(*(LONGLONG *)(p))
-#define CULONGLONG(p)	(*(QWORD *)(p))
-#define CDOUBLE(p)		(*(double *)(p))
-
-#define CINTN(p)		(*(int *)(&(p)))
-#define CUINTN(p)		(*(DWORD *)(&(p)))
-#define CLONGLONGN(p)	(*(LONGLONG *)(&(p)))
-#define CULONGLONGN(p)	(*(QWORD *)(&(p)))
-#define CFLOATN(p)		(*(float *)(&(p)))
-#define CDOUBLEN(p)		(*(double *)(&(p)))
-
 
 #define SCRVECALL_FILE_SMALL	0x20
 #define SCRVECALL_FILE_NORMAL	0x100
@@ -122,7 +107,7 @@ public:
 
 	void FillCustomConstDesc();
 
-	bool LoadAll();
+	bool LoadAll(HTEXTURE * texset);
 	bool LoadScript(const char * filename);
 	bool Resize();
 
@@ -160,9 +145,14 @@ public:
 
 	void LogOut();
 
+private:
 	bool Execute(vector<File> * ptype, DWORD name, DWORD con);
+public:
 	bool Execute(DWORD typeflag, DWORD name, DWORD con)
 	{
+#ifndef __NOTUSELUA
+		return Execute_Lua(typeflag, name, con);
+#endif
 		switch(typeflag)
 		{
 		case SCR_CONTROL:
@@ -180,6 +170,7 @@ public:
 		}
 		return false;
 	}
+private:
 	bool controlExecute(DWORD name, DWORD con)
 	{
 		return Execute(&control, name, con);
@@ -204,7 +195,7 @@ public:
 	{
 		return Execute(&event, name, con);
 	}
-
+public:
 
 	bool Parse(int varcount);
 
@@ -264,7 +255,7 @@ public:
 
 #ifndef __NOTUSELUA
 public:
-	bool LoadAll_Lua();
+	bool LoadAll_Lua(HTEXTURE * tex);
 	bool Execute_Lua(DWORD typeflag, DWORD name, DWORD con);
 #endif
 };

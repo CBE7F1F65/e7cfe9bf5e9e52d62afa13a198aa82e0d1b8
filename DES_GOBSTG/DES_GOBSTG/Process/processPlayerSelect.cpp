@@ -13,9 +13,9 @@ int Process::processPlayerSelect()
 	time++;
 	if(time == 1)
 	{
-		scr.eventExecute(SCR_EVENT_ENTERSTATE, STATE_PLAYER_SELECT);
+		scr.Execute(SCR_EVENT, SCR_EVENT_ENTERSTATE, STATE_PLAYER_SELECT);
 	}
 	retvalue = PGO;
-	scr.controlExecute(STATE_PLAYER_SELECT, time);
+	scr.Execute(SCR_CONTROL, STATE_PLAYER_SELECT, time);
 	return retvalue;
 }
