@@ -5,6 +5,10 @@
 #include "Const.h"
 #include "keytable.h"
 
+#ifndef __NOTUSELUA
+#include "Export_Lua.h"
+#endif
+
 #ifdef __DEBUG
 	#define __COUNT_SCRIPTSIZE
 #endif
@@ -26,6 +30,17 @@
 #define CFLOAT(p)	(*(float *)(p))
 #define CAST(p)		(((p).bfloat) ? (CFLOAT((p).value)) : (CINT((p).value)))
 #define UCAST(p)	(*(DWORD *)(p).value)
+
+#define CLONGLONG(p)	(*(LONGLONG *)(p))
+#define CULONGLONG(p)	(*(QWORD *)(p))
+#define CDOUBLE(p)		(*(double *)(p))
+
+#define CINTN(p)		(*(int *)(&(p)))
+#define CUINTN(p)		(*(DWORD *)(&(p)))
+#define CLONGLONGN(p)	(*(LONGLONG *)(&(p)))
+#define CULONGLONGN(p)	(*(QWORD *)(&(p)))
+#define CFLOATN(p)		(*(float *)(&(p)))
+#define CDOUBLEN(p)		(*(double *)(&(p)))
 
 
 #define SCRVECALL_FILE_SMALL	0x20
@@ -201,6 +216,7 @@ public:
 	void ReleaseVarName();
 
 public:
+
 //	char varName[SCR_FREEBEGIN-SCR_VARBEGIN][M_STRMAX];
 	char ** varName;
 
@@ -245,6 +261,12 @@ public:
 	DWORD strdescIndex;
 
 	static bool stopEdefScript;
+
+#ifndef __NOTUSELUA
+public:
+	bool LoadAll_Lua();
+	bool Execute_Lua(DWORD typeflag, DWORD name, DWORD con);
+#endif
 };
 
 extern Scripter scr;

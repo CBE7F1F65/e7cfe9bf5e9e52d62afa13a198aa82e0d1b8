@@ -188,12 +188,22 @@ bool Scripter::Copy(vector<Script>::iterator * p, BYTE num, BYTE dstart)
 	return true;
 }
 
+#ifndef __NOTUSELUA
+bool Scripter::Execute_Lua(DWORD typeflag, DWORD name, DWORD con)
+{
+	return true;
+}
+#endif
+
 bool Scripter::Execute(vector<File> * ptype, DWORD name, DWORD con)
 {
-	bool bFound = false;
-	bool rv = false;
 	nowName = name;
 	nowCon = con;
+#ifndef __NOTUSELUA
+	return Execute_Lua(ptype, name, con);
+#endif
+	bool bFound = false;
+	bool rv = false;
 	for(vector<File>::iterator i=ptype->begin();i!=ptype->end();i++)
 	{
 		if(i->name == name)

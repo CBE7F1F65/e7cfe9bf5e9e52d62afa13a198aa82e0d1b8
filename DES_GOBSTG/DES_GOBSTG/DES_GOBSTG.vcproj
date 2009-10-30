@@ -256,6 +256,21 @@
 					RelativePath=".\Core\Export.cpp">
 				</File>
 				<File
+					RelativePath=".\Core\Export_Lua.cpp">
+				</File>
+				<File
+					RelativePath=".\Core\Export_Lua_Const.cpp">
+				</File>
+				<File
+					RelativePath=".\Core\Export_Lua_Function.cpp">
+				</File>
+				<File
+					RelativePath=".\Core\Export_Lua_HGE.cpp">
+				</File>
+				<File
+					RelativePath=".\Core\Export_Lua_HGEHelper.cpp">
+				</File>
+				<File
 					RelativePath=".\Core\InitDllLoader.cpp">
 				</File>
 				<File
@@ -468,7 +483,13 @@
 					RelativePath=".\Header\Export.h">
 				</File>
 				<File
+					RelativePath=".\Header\Export_Lua.h">
+				</File>
+				<File
 					RelativePath=".\Header\keytable.h">
+				</File>
+				<File
+					RelativePath=".\Header\LuaConstDefine.h">
 				</File>
 				<File
 					RelativePath=".\Header\Main.h">

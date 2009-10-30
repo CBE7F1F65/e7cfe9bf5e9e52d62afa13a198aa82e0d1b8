@@ -5,7 +5,7 @@
 	Name="DES_GOBSTG"
 	ProjectGUID="{A4938EF7-0CE1-47A3-BC8D-4D0B54F94F6D}"
 	VCNestedProjectGUID="{7329E15F-F0AE-44EE-BC64-27B9038C76D7}"
-	VCNestedProjectCRC32="1625362026"
+	VCNestedProjectCRC32="29152851"
 	VCNestedProjectFileName="DES_GOBSTG.vcproj"
 	Keyword="Win32Proj">
 	<Configurations>
@@ -192,6 +192,16 @@
 		<File 
 			RelativePath=".\Core\SpriteItemManager.cpp"/>
 		<File 
+			RelativePath=".\Core\Export_Lua.cpp"/>
+		<File 
+			RelativePath=".\Core\Export_Lua_Const.cpp"/>
+		<File 
+			RelativePath=".\Core\Export_Lua_Function.cpp"/>
+		<File 
+			RelativePath=".\Core\Export_Lua_HGE.cpp"/>
+		<File 
+			RelativePath=".\Core\Export_Lua_HGEHelper.cpp"/>
+		<File 
 			RelativePath=".\Process\frame.cpp"/>
 		<File 
 			RelativePath=".\Process\frameEnd.cpp"/>
@@ -321,6 +331,10 @@
 			RelativePath=".\Header\SpriteItemManager.h"/>
 		<File 
 			RelativePath=".\Header\VectorList.h"/>
+		<File 
+			RelativePath=".\Header\Export_Lua.h"/>
+		<File 
+			RelativePath=".\Header\LuaConstDefine.h"/>
 		<File 
 			RelativePath=".\Header\Beam.h"/>
 		<File 

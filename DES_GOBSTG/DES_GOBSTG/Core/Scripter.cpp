@@ -7,6 +7,10 @@ Scripter scr;
 
 bool Scripter::stopEdefScript = false;
 
+#ifndef __NOTUSELUA
+LuaStateOwner Scripter::state;
+#endif
+
 Scripter::Scripter()
 {
 	file = NULL;
@@ -225,6 +229,26 @@ bool Scripter::Resize()
 	return true;
 }
 
+#ifndef __NOTUSELUA
+bool Scripter::LoadAll_Lua()
+{
+	Export_Lua::LuaRegistFunction();
+	Export_Lua::LuaRegistConst();
+	int iret;
+	iret = Export_Lua::PackLuaFiles(state);
+	if (iret != 0)
+	{
+		return false;
+	}
+	iret = Export_Lua::LoadPackedLuaFiles(state);
+	if (iret != 0)
+	{
+		return false;
+	}
+	return true;
+}
+#endif
+
 bool Scripter::LoadAll()
 {
 	control.clear();
@@ -241,6 +265,10 @@ bool Scripter::LoadAll()
 	_functionsize = 0;
 	_eventsize = 0;
 #endif // __COUNT_SCRIPTSIZE
+
+#ifndef __NOTUSELUA
+	return LoadAll_Lua();
+#endif
 
 	binoffset = 0;
 
