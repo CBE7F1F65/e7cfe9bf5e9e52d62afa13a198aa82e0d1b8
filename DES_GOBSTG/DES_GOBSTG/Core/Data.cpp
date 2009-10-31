@@ -568,7 +568,7 @@ bool Data::SetFile(const char * _filename, BYTE type)
 	if(_access(nowfilename, 00) == -1 ||
 		!CheckHeader(type))
 	{
-		if(type == DATA_BINFILE || type == DATA_SPELLACCESSFILE)
+		if(type == DATA_BINFILE || (type & DATA_MEMORYHEADER))
 		{
 			if(!Init(type))
 			{
