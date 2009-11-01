@@ -53,6 +53,12 @@ bool Export_Lua::LuaRegistFunction()
 	{
 		return false;
 	}
+#ifndef __NOTUSEHDSS
+	if (!_LuaRegistHDSSFunction(&obj))
+	{
+		return false;
+	}
+#endif
 
 	return true;
 }

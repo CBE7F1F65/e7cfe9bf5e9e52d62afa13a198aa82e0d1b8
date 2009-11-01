@@ -310,6 +310,15 @@ public:
 	static list<hgeSprite *>spriteList;
 	static list<hgeEffectSystem *>esList;
 	static HTEXTURE * texset;
+
+	/************************************************************************/
+	/* HDSS                                                                 */
+	/************************************************************************/
+#ifndef __NOTUSEHDSS
+public:
+	static bool _LuaRegistHDSSFunction(LuaObject * obj);
+	static int LuaFn_HDSS(LuaState * ls);
+#endif
 };
 
 #endif
