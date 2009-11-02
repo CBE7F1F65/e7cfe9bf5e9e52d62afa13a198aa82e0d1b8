@@ -1,3 +1,5 @@
+#ifndef __NOTUSELUA
+
 #include "../Header/Export_Lua.h"
 #include "../Header/LuaConstDefine.h"
 
@@ -803,3 +805,5 @@ int Export_Lua::LuaFn_LuaState_ReadLineInContent(LuaState * ls)
 	_LuaHelper_PushDWORD(ls, size);
 	return 3;
 }
+
+#endif

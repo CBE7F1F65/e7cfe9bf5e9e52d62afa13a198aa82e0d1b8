@@ -1,3 +1,5 @@
+#ifndef __NOTUSELUA
+
 #include "../Header/Export_Lua.h"
 #include "../Header/LuaConstDefine.h"
 
@@ -1206,3 +1208,5 @@ int Export_Lua::LuaFn_hgeSprite_GetBoundingBox(LuaState * ls)
 	ls->PushNumber(rect.y2-rect.y1);
 	return 4;
 }
+
+#endif

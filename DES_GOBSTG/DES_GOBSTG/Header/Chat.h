@@ -4,6 +4,7 @@
 #include "MainDependency.h"
 #include "Const.h"
 #include "BGLayer.h"
+#include "Fontsys.h"
 
 #define CHATTERMAX	5
 
@@ -58,6 +59,7 @@ public:
 	static bool chatting;
 	static BYTE timer;
 	static BYTE chati;
+	static Fontsys fschat;
 };
 
 extern Chat chat;

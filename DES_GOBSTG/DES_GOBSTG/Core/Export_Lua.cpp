@@ -1,3 +1,5 @@
+#ifndef __NOTUSELUA
+
 #include "Export_Lua.h"
 #include "Const.h"
 #include "LuaConstDefine.h"
@@ -293,3 +295,5 @@ void Export_Lua::ShowError(int errortype, const char * err)
 	}
 	hge->System_Log("%s: %s", msgtitle, err);
 }
+
+#endif

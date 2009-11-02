@@ -6,7 +6,7 @@ Index	Texture
 3	Graphic/Sprite/Ghost/ghost.png	
 4	Graphic/Sprite/Enemy/enemy.png	
 5	Graphic/Other/panel.png	
-6	Graphic/Other/other.png	
+6	Graphic/th09/front.png	
 7	Graphic/Other/border.png	
 10	Graphic/Sprite/Player/pl_01.png	
 11	Graphic/Sprite/Player/pl_02.png	
@@ -36,7 +36,7 @@ Index	Texture
 113	Graphic/Sprite/Boss/boss_18.png	
 127	Graphic/Sprite/Boss/boss_32.png	
 144	Graphic/Sprite/Boss/boss_31_ex.png	
-160	Graphic/UI/select.png	
+160	Graphic/th09/title00.png	
 161	Graphic/UI/select.png	
 162	Graphic/UI/battle.png	
 163	Graphic/UI/musiclist.png	

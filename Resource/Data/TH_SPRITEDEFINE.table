@@ -1,14 +1,14 @@
 73	h5nc	4B				
 Index	SI_Name	Tex	Tex_x	Tex_y	Tex_w	Tex_h
 0	SI_Null	1	0	0	1	1
-1	SI_Title_Start	0	0	0	128	32
+1	SI_Title_Start	6	0	432	128	32
 2	SI_Title_Extra	0	128	0	128	32
 3	SI_Title_Spell	0	256	0	128	32
-4	SI_Title_Replay	0	384	0	128	32
+4	SI_Title_Replay	6	128	432	72	32
 5	SI_Title_Result	0	512	0	128	32
 6	SI_Title_Music	0	640	0	128	32
 7	SI_Title_Option	0	768	0	128	32
-8	SI_Title_Quit	0	896	0	128	32
+8	SI_Title_Quit	6	200	432	52	32
 9	SI_TopContent_BattleSelect	0	0	96	256	32
 10	SI_TopContent_PlayerSelect	0	256	96	256	32
 11	SI_TopContent_Spell	0	512	96	128	32

@@ -163,6 +163,75 @@
 			<Tool
 				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
 		</Configuration>
+		<Configuration
+			Name="DebugNotUseLua|Win32"
+			OutputDirectory="..\..\lib\vc\"
+			IntermediateDirectory=".\Debug"
+			ConfigurationType="2"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="FALSE"
+			CharacterSet="2">
+			<Tool
+				Name="VCCLCompilerTool"
+				AdditionalOptions="/QIfist "
+				Optimization="0"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;HGEDLL"
+				StringPooling="TRUE"
+				BasicRuntimeChecks="3"
+				RuntimeLibrary="1"
+				EnableFunctionLevelLinking="TRUE"
+				UsePrecompiledHeader="0"
+				PrecompiledHeaderFile=".\Debug/hge.pch"
+				AssemblerListingLocation=".\Debug/"
+				ObjectFile=".\Debug/"
+				ProgramDataBaseFileName=".\Debug/"
+				WarningLevel="1"
+				SuppressStartupBanner="TRUE"
+				DebugInformationFormat="4"/>
+			<Tool
+				Name="VCCustomBuildTool"/>
+			<Tool
+				Name="VCLinkerTool"
+				AdditionalOptions=""
+				AdditionalDependencies="winmm.lib d3d9.lib d3dx9.lib"
+				OutputFile="..\..\lib\vc\hge_d.dll"
+				LinkIncremental="0"
+				SuppressStartupBanner="TRUE"
+				ModuleDefinitionFile=".\hge.def"
+				GenerateDebugInformation="TRUE"
+				ProgramDatabaseFile=".\Debug/hge.pdb"
+				ImportLibrary="..\..\lib\vc\hge_d.lib"
+				TargetMachine="0"/>
+			<Tool
+				Name="VCMIDLTool"
+				PreprocessorDefinitions="_DEBUG"
+				MkTypLibCompatible="TRUE"
+				SuppressStartupBanner="TRUE"
+				TargetEnvironment="1"
+				TypeLibraryName=".\Debug/hge.tlb"
+				HeaderFileName=""/>
+			<Tool
+				Name="VCPostBuildEventTool"
+				CommandLine="call &quot;..\..\DES_GOBSTG_GROUP\PostBuildEvent.bat&quot; ..\..\Resource\Debug\ ..\..\..\LuaEngine\Resource\Debug\ ..\..\Resource\ ..\..\..\LuaEngine\Resource\"/>
+			<Tool
+				Name="VCPreBuildEventTool"/>
+			<Tool
+				Name="VCPreLinkEventTool"/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="_DEBUG"
+				Culture="1049"/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"/>
+			<Tool
+				Name="VCWebDeploymentTool"/>
+			<Tool
+				Name="VCManagedWrapperGeneratorTool"/>
+			<Tool
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+		</Configuration>
 	</Configurations>
 	<References>
 	</References>
@@ -187,6 +256,14 @@
 						Optimization="2"
 						PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_MBCS;_USRDLL;HGEDLL;$(NoInherit)"/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="DebugNotUseLua|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_MBCS;_USRDLL;HGEDLL;$(NoInherit)"
+						BasicRuntimeChecks="3"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="graphics.cpp">
@@ -204,6 +281,14 @@
 						Name="VCCLCompilerTool"
 						Optimization="2"
 						PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_MBCS;_USRDLL;HGEDLL;$(NoInherit)"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="DebugNotUseLua|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_MBCS;_USRDLL;HGEDLL;$(NoInherit)"
+						BasicRuntimeChecks="3"/>
 				</FileConfiguration>
 			</File>
 			<File
@@ -226,6 +311,14 @@
 						Optimization="2"
 						PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_MBCS;_USRDLL;HGEDLL;$(NoInherit)"/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="DebugNotUseLua|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_MBCS;_USRDLL;HGEDLL;$(NoInherit)"
+						BasicRuntimeChecks="3"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="input.cpp">
@@ -243,6 +336,14 @@
 						Name="VCCLCompilerTool"
 						Optimization="2"
 						PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_MBCS;_USRDLL;HGEDLL;$(NoInherit)"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="DebugNotUseLua|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_MBCS;_USRDLL;HGEDLL;$(NoInherit)"
+						BasicRuntimeChecks="3"/>
 				</FileConfiguration>
 			</File>
 			<File
@@ -262,6 +363,14 @@
 						Optimization="2"
 						PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_MBCS;_USRDLL;HGEDLL;$(NoInherit)"/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="DebugNotUseLua|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_MBCS;_USRDLL;HGEDLL;$(NoInherit)"
+						BasicRuntimeChecks="3"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="resource.cpp">
@@ -279,6 +388,14 @@
 						Name="VCCLCompilerTool"
 						Optimization="2"
 						PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_MBCS;_USRDLL;HGEDLL;$(NoInherit)"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="DebugNotUseLua|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_MBCS;_USRDLL;HGEDLL;$(NoInherit)"
+						BasicRuntimeChecks="3"/>
 				</FileConfiguration>
 			</File>
 			<File
@@ -301,6 +418,14 @@
 						Optimization="2"
 						PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_MBCS;_USRDLL;HGEDLL;$(NoInherit)"/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="DebugNotUseLua|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_MBCS;_USRDLL;HGEDLL;$(NoInherit)"
+						BasicRuntimeChecks="3"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="timer.cpp">
@@ -318,6 +443,14 @@
 						Name="VCCLCompilerTool"
 						Optimization="2"
 						PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_MBCS;_USRDLL;HGEDLL;$(NoInherit)"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="DebugNotUseLua|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_MBCS;_USRDLL;HGEDLL;$(NoInherit)"
+						BasicRuntimeChecks="3"/>
 				</FileConfiguration>
 			</File>
 			<Filter

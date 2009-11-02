@@ -1,3 +1,4 @@
+#ifndef __NOTUSELUA
 #ifndef __NOTUSEHDSS
 
 #include "../Header/Export_Lua.h"
@@ -76,6 +77,18 @@ int Export_Lua::LuaFn_HDSS(LuaState * ls)
 	LuaStack args(ls);
 
 	DWORD nowval = args[1].GetInteger();
+	int argscount = args.Count();
+	if (argscount != 2)
+	{
+		ShowError(LUAERROR_LUAERROR, "HDSS args count error.");
+		return 0;
+	}
+	LuaObject _para = args[2];
+	if (!_para.IsTable())
+	{
+		ShowError(LUAERROR_LUAERROR, "HDSS arg must be a table.");
+		return 0;
+	}
 
 	switch (nowval & SCRKWMASK_TYPE)
 	{
@@ -83,13 +96,73 @@ int Export_Lua::LuaFn_HDSS(LuaState * ls)
 		switch (nowval)
 		{
 		case SCR_BGVALUE:
-			if (args.Count() == 8)
+			if (true)
 			{
-				LuaObject _obj = args[8];
-				DWORD _col = _LuaHelper_GetColor(&_obj);
-				ubg[args[2].GetInteger()]->valueSet(mp.tex, args[3].GetInteger(), args[4].GetFloat(), args[5].GetFloat(), args[6].GetFloat(), args[7].GetFloat(), _col);
+				int _index = _para.GetByIndex(1).GetInteger();
+				int _siid = _para.GetByIndex(2).GetInteger();
+				float _cenx = _para.GetByIndex(3).GetFloat();
+				float _ceny = _para.GetByIndex(4).GetFloat();
+				float _w = _para.GetByIndex(5).GetFloat();
+				float _h = _para.GetByIndex(6).GetFloat();
+
+				LuaObject _obj = _para.GetByIndex(7);
+				DWORD _col = 0xffffffff;
+				if (!_obj.IsNil())
+				{
+					_col = _LuaHelper_GetColor(&_obj);
+				}
+
+				ubg[_index]->valueSet(mp.tex, _siid, _cenx, _ceny, _w, _h, _col);
 			}
 			return 0;
+		case SCR_BGVALEX:
+			if (true)
+			{
+				int _index = _para.GetByIndex(1).GetInteger();
+				int _siid = _para.GetByIndex(2).GetInteger();
+				float _x = _para.GetByIndex(3).GetFloat();
+				float _y = _para.GetByIndex(4).GetFloat();
+				float _z = _para.GetByIndex(5).GetFloat();
+				float _w = _para.GetByIndex(6).GetFloat();
+				float _h = _para.GetByIndex(7).GetFloat();
+				int _rotx = _para.GetByIndex(8).GetInteger();
+				int _roty = _para.GetByIndex(9).GetInteger();
+				int _rotz = _para.GetByIndex(10).GetInteger();
+
+				LuaObject _obj = _para.GetByIndex(11);
+				float _paral = 0;
+				float _speed = 0;
+				float _angle = 0;
+				bool _move = false;
+				bool _rotate = false;
+				DWORD _col = 0xffffffff;
+				if (!_obj.IsNil())
+				{
+					_paral = _obj.GetFloat();
+					_obj = _para.GetByIndex(12);
+					if (!_obj.IsNil())
+					{
+						_speed = _obj.GetFloat();
+						_obj = _para.GetByIndex(13);
+						if (!_obj.IsNil())
+						{
+							_move = _obj.GetBoolean();
+							_obj = _para.GetByIndex(14);
+							if (!_obj.IsNil())
+							{
+								_rotate = _para.GetBoolean();
+								_obj = _para.GetByIndex(15);
+								if (!_obj.IsNil())
+								{
+									_col = _LuaHelper_GetColor(&_obj);
+								}
+							}
+						}
+					}
+				}
+
+				ubg[_index]->valueSet(mp.tex, _siid, _x, _y, _z, _w, _h, _rotx, _roty, _rotz, _paral, _speed, _angle, _move, _rotate, _col);
+			}
 		}
 		break;
 	}
@@ -184,4 +257,5 @@ bool Export_Lua::Execute(DWORD typeflag, DWORD name, DWORD con)
 	return (*_f)(name, con);
 }
 
+#endif
 #endif

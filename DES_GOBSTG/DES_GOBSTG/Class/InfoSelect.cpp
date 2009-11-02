@@ -147,12 +147,12 @@ void InfoSelect::shift(int nshift)
 
 void InfoSelect::Render()
 {
-	for(list<InfoSelect>::iterator i=infoselect.begin();i!=infoselect.end();i++)
+	for(list<InfoSelect>::iterator it=infoselect.begin();it!=infoselect.end();it++)
 	{
-		if(InfoSelect::select == i->ID && !(i->flag & SEL_NONACTIVE))
-			Fontsys::Render(i->ID, i->x-2, i->y-2, i->ucol, i->dcol, 0.8f, 3, 1);
+		if(InfoSelect::select == it->ID && !(it->flag & SEL_NONACTIVE))
+			it->fsinfo.Render(it->x-2, it->y-2, it->ucol, it->dcol, 0.8f, 3, 1);
 		else
-			Fontsys::Render(i->ID, i->x, i->y, i->ucol, i->dcol, 0.8f);
+			it->fsinfo.Render(it->x, it->y, it->ucol, it->dcol, 0.8f);
 	}
 }
 
@@ -178,7 +178,7 @@ void InfoSelect::valueSet(BYTE _ID, const char * _info, float _x, float _y, BYTE
 {
 	ID = _ID;
 	strcpy(info, _info);
-	Fontsys::SignUp(ID, info);
+	fsinfo.SignUp(info);
 	x = _x;
 	y = _y;
 	coltype = _coltype;

@@ -3,29 +3,47 @@
 #include "Scripter.h"
 #include "Data.h"
 
-char Fontsys::text[FONTSYSMAX][M_STRMAX];
-HD3DFONT Fontsys::usingfont[FONTSYSMAX];
-HTARGET Fontsys::tar[FONTSYSMAX];
-hgeQuad Fontsys::quad[FONTSYSMAX];
-int Fontsys::lines[FONTSYSMAX];
-int Fontsys::changeID;
-
+list<Fontsys *> Fontsys::fontsys;
 HD3DFONT Fontsys::font = NULL;
+
+Fontsys::Fontsys()
+{
+	tar = NULL;
+}
+
+Fontsys::~Fontsys()
+{
+	SignOff();
+}
+
+void Fontsys::SignOff()
+{
+	if (tar)
+	{
+		hge->Target_Free(tar);
+		tar = NULL;
+	}
+	for (list<Fontsys *>::iterator it=fontsys.begin(); it!= fontsys.end(); it++)
+	{
+		if (*it == this)
+		{
+			it = fontsys.erase(it);
+		}
+	}
+}
 
 void Fontsys::Release()
 {
-	for(int i=0; i<FONTSYSMAX; i++)
+	for (list<Fontsys *>::iterator it=fontsys.begin(); it!=fontsys.end(); it++)
 	{
-		if(tar[i])
-			hge->Target_Free(tar[i]);
-		tar[i] = NULL;
+		(*it)->SignOff();
 	}
+	fontsys.clear();
 }
 
 void Fontsys::Init()
 {
 	Release();
-	changeID = -1;
 }
 
 void Fontsys::HeatUp()
@@ -36,27 +54,24 @@ void Fontsys::HeatUp()
 		SignUp(FONTSYS_CHATUSE, strdesc[i]);
 	}
 	*/
+	Fontsys _fs;
 	for (int i=0; i<PLAYERTYPEMAX; i++)
 	{
-		SignUp(i%FONTSYSMAX, data.getPlayerName(i));
+		_fs.SignUp(data.getPlayerName(i));
 	}
 	for (int i=0; i<ENEMYTYPEMAX; i++)
 	{
-		SignUp(i%FONTSYSMAX, data.getEnemyName(i));
+		_fs.SignUp(data.getEnemyName(i));
 	}
+	_fs.SignOff();
 }
 
 void Fontsys::FocusChanged()
 {
-	Release();
-	SignUp(FONTSYS_CHATUSE, NULL, usingfont[FONTSYS_CHATUSE]);
-	SignUp(FONTSYS_SPELLNAMEUSE, NULL, usingfont[FONTSYS_SPELLNAMEUSE]);
-	if (changeID >= 0)
+	for (list<Fontsys *>::iterator it=fontsys.begin(); it!=fontsys.end(); it++)
 	{
-		for (int i=0; i<=changeID; i++)
-		{
-			SignUp(i, NULL, usingfont[i]);
-		}
+		HD3DFONT _usingfont = (*it)->usingfont;
+		(*it)->SignUp(NULL, _usingfont);
 	}
 }
 
@@ -142,67 +157,72 @@ int Fontsys::strTranslate(char * dtext, const char * stext)
 	return ret;
 }
 
-void Fontsys::SignUp(BYTE ID, const char * _text, HD3DFONT _font)
+void Fontsys::SignUp(const char * _text, HD3DFONT _font)
 {
 	HTEXTURE tex;
 
 	if (_text != NULL)
 	{
-		lines[ID] = strTranslate(text[ID], _text);
+		SignOff();
+		lines = strTranslate(text, _text);
 	}
-	if (!tar[ID])
+	if (!tar)
 	{
-		tar[ID] = hge->Target_Create(FONTSYS_TARGETWIDTH, FONTSYS_TARGETHEIGHT, false);
+		tar = hge->Target_Create(FONTSYS_TARGETWIDTH, FONTSYS_TARGETHEIGHT, false);
 	}
-
 	if (!_font)
 	{
 		_font = font;
 	}
-	usingfont[ID] = _font;
+	usingfont = _font;
 
-	tex = hge->Gfx_RenderTextToTarget(tar[ID], _font, text[ID], 0, 0, FONTSYS_TARGETWIDTH, FONTSYS_TARGETHEIGHT);
+	tex = hge->Gfx_RenderTextToTarget(tar, _font, text, 0, 0, FONTSYS_TARGETWIDTH, FONTSYS_TARGETHEIGHT);
 
-	float h = lines[ID] * M_FONTHEIGHT;
+	float h = lines * M_FONTHEIGHT;
 
-	quad[ID].tex = tex;
-	quad[ID].blend = BLEND_DEFAULT;
-	quad[ID].v[0].tx = 0;	quad[ID].v[0].ty = 0;
-	quad[ID].v[1].tx = 1;	quad[ID].v[1].ty = 0;
-	quad[ID].v[2].tx = 1;	quad[ID].v[2].ty = h / FONTSYS_TARGETHEIGHT;
-	quad[ID].v[3].tx = 0;	quad[ID].v[3].ty = h / FONTSYS_TARGETHEIGHT;
-	quad[ID].v[0].z = quad[ID].v[1].z = quad[ID].v[2].z = quad[ID].v[3].z = 0;
-	quad[ID].v[0].x = 0;					quad[ID].v[0].y = 0;
-	quad[ID].v[1].x = FONTSYS_TARGETWIDTH;	quad[ID].v[1].y = 0;
-	quad[ID].v[2].x = FONTSYS_TARGETWIDTH;	quad[ID].v[2].y = h;
-	quad[ID].v[3].x = 0;					quad[ID].v[3].y = h;
+	quad.tex = tex;
+	quad.blend = BLEND_DEFAULT;
+	quad.v[0].tx = 0;	quad.v[0].ty = 0;
+	quad.v[1].tx = 1;	quad.v[1].ty = 0;
+	quad.v[2].tx = 1;	quad.v[2].ty = h / FONTSYS_TARGETHEIGHT;
+	quad.v[3].tx = 0;	quad.v[3].ty = h / FONTSYS_TARGETHEIGHT;
+	quad.v[0].z = quad.v[1].z = quad.v[2].z = quad.v[3].z = 0;
+	quad.v[0].x = 0;					quad.v[0].y = 0;
+	quad.v[1].x = FONTSYS_TARGETWIDTH;	quad.v[1].y = 0;
+	quad.v[2].x = FONTSYS_TARGETWIDTH;	quad.v[2].y = h;
+	quad.v[3].x = 0;					quad.v[3].y = h;
+
+	if (_text)
+	{
+		fontsys.push_back(this);
+	}
 }
 
-void Fontsys::Render(BYTE ID, float x, float y, DWORD ucol, DWORD dcol, float shadow, float hext, float vext)
+void Fontsys::Render(float x, float y, DWORD ucol, DWORD dcol, float shadow, float hext, float vext)
 {
 	if (shadow)
 	{
-		Render(ID, x+shadow*2, y+shadow*2, ucol&0xff000000, dcol&0xff000000, false, hext, vext);
-		Render(ID, x+shadow, y+shadow, ucol, dcol, false, hext, vext);
-		Render(ID, x+shadow, y-shadow, ucol, dcol, false, hext, vext);
-		Render(ID, x-shadow, y-shadow, ucol, dcol, false, hext, vext);
-		Render(ID, x-shadow, y+shadow, ucol, dcol, false, hext, vext);
+		Render(x+shadow*2, y+shadow*2, ucol&0xff000000, dcol&0xff000000, false, hext, vext);
+		Render(x+shadow, y+shadow, ucol, dcol, false, hext, vext);
+		Render(x+shadow, y-shadow, ucol, dcol, false, hext, vext);
+		Render(x-shadow, y-shadow, ucol, dcol, false, hext, vext);
+		Render(x-shadow, y+shadow, ucol, dcol, false, hext, vext);
 	}
-	float w = quad[ID].v[1].x - quad[ID].v[0].x;
-	float h = quad[ID].v[2].y - quad[ID].v[0].y;
+	float w = quad.v[1].x - quad.v[0].x;
+	float h = quad.v[2].y - quad.v[0].y;
 
-	quad[ID].v[0].col = quad[ID].v[1].col = ucol;
-	quad[ID].v[2].col = quad[ID].v[3].col = dcol;
+	quad.v[0].col = quad.v[1].col = ucol;
+	quad.v[2].col = quad.v[3].col = dcol;
 
-	quad[ID].v[0].x = x - hext;		quad[ID].v[0].y = y - vext;
-	quad[ID].v[1].x = x + w + hext;	quad[ID].v[1].y = y - vext;
-	quad[ID].v[2].x = x + w + hext;	quad[ID].v[2].y = y + h + vext;
-	quad[ID].v[3].x = x - hext;		quad[ID].v[3].y = y + h + vext;
+	quad.v[0].x = x - hext;		quad.v[0].y = y - vext;
+	quad.v[1].x = x + w + hext;	quad.v[1].y = y - vext;
+	quad.v[2].x = x + w + hext;	quad.v[2].y = y + h + vext;
+	quad.v[3].x = x - hext;		quad.v[3].y = y + h + vext;
 
-	hge->Gfx_RenderQuad(&quad[ID]);
+	hge->Gfx_RenderQuad(&quad);
 
-	quad[ID].v[0].x = x;		quad[ID].v[0].y = y;
-	quad[ID].v[1].x = x + w;	quad[ID].v[1].y = y;
-	quad[ID].v[2].x = x + w;	quad[ID].v[2].y = y + h;
-	quad[ID].v[3].x = x;		quad[ID].v[3].y = y + h;
+	quad.v[0].x = x;		quad.v[0].y = y;
+	quad.v[1].x = x + w;	quad.v[1].y = y;
+	quad.v[2].x = x + w;	quad.v[2].y = y + h;
+	quad.v[3].x = x;		quad.v[3].y = y + h;
 }

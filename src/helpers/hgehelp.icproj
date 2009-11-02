@@ -5,7 +5,7 @@
 	Name="hgehelp"
 	ProjectGUID="{1F75C075-6CD9-41D2-A771-F12556414E93}"
 	VCNestedProjectGUID="{FA197D84-4A1A-4FD4-92FA-536A84867C25}"
-	VCNestedProjectCRC32="997844271"
+	VCNestedProjectCRC32="3064065633"
 	VCNestedProjectFileName="hgehelp.vcproj">
 	<Configurations>
 		<Configuration 
@@ -116,6 +116,55 @@
 			<Tool 
 				Name="CustomNodeTool"/>
 		</Configuration>
+		<Configuration 
+			Name="DebugNotUseLua|Win32">
+			<Tool 
+				Name="GeneralTool"
+				OutputDirectory=".\../../lib/vc"
+				IntermediateDirectory=".\Debug"
+				ConfigurationType="4"
+				CharacterSet="2"/>
+			<Tool 
+				Name="CppCmplrTool"
+				Optimization="0"
+				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
+				StringPooling="1"
+				BasicRuntimeChecks="3"
+				RuntimeLibrary="1"
+				EnableFunctionLevelLinking="1"
+				UsePrecompiledHeader="0"
+				PrecompiledHeaderFile=".\Debug/hgehelp.pch"
+				AssemblerListingLocation=".\Debug/"
+				ObjectFile=".\Debug/"
+				SuppressStartupBanner="1"
+				DebugInformationFormat="4"
+				AdditionalOptions="/QIfist "/>
+			<Tool 
+				Name="LinkerTool"
+				DelayImpLib=""/>
+			<Tool 
+				Name="LibrarianTool"
+				OutputFile=".\../../lib/vc\hgehelp_d.lib"
+				SuppressStartupBanner="1"/>
+			<Tool 
+				Name="ResCmplrTool"
+				PreprocessorDefinitions="_DEBUG"
+				Culture="1049"/>
+			<Tool 
+				Name="MidlCmplrTool"/>
+			<Tool 
+				Name="BscMakeTool"/>
+			<Tool 
+				Name="PreBuildEventTool"/>
+			<Tool 
+				Name="PreLinkEventTool"/>
+			<Tool 
+				Name="PostBuildEventTool"/>
+			<Tool 
+				Name="CustomTool"/>
+			<Tool 
+				Name="CustomNodeTool"/>
+		</Configuration>
 	</Configurations>
 	<Files>
 		<File 
@@ -129,6 +178,14 @@
 			</FileConfiguration>
 			<FileConfiguration 
 				Name="Debug|Win32">
+				<Tool 
+					Name="CppCmplrTool"
+					Optimization="0"
+					PreprocessorDefinitions=""
+					BasicRuntimeChecks="3"/>
+			</FileConfiguration>
+			<FileConfiguration 
+				Name="DebugNotUseLua|Win32">
 				<Tool 
 					Name="CppCmplrTool"
 					Optimization="0"
@@ -155,6 +212,14 @@
 					PreprocessorDefinitions=""
 					BasicRuntimeChecks="3"/>
 			</FileConfiguration>
+			<FileConfiguration 
+				Name="DebugNotUseLua|Win32">
+				<Tool 
+					Name="CppCmplrTool"
+					Optimization="0"
+					PreprocessorDefinitions=""
+					BasicRuntimeChecks="3"/>
+			</FileConfiguration>
 		</File>
 		<File 
 			RelativePath=".\hgeEffectSystem.cpp"/>
@@ -169,6 +234,14 @@
 			</FileConfiguration>
 			<FileConfiguration 
 				Name="Debug|Win32">
+				<Tool 
+					Name="CppCmplrTool"
+					Optimization="0"
+					PreprocessorDefinitions=""
+					BasicRuntimeChecks="3"/>
+			</FileConfiguration>
+			<FileConfiguration 
+				Name="DebugNotUseLua|Win32">
 				<Tool 
 					Name="CppCmplrTool"
 					Optimization="0"
@@ -193,6 +266,14 @@
 					PreprocessorDefinitions=""
 					BasicRuntimeChecks="3"/>
 			</FileConfiguration>
+			<FileConfiguration 
+				Name="DebugNotUseLua|Win32">
+				<Tool 
+					Name="CppCmplrTool"
+					Optimization="0"
+					PreprocessorDefinitions=""
+					BasicRuntimeChecks="3"/>
+			</FileConfiguration>
 		</File>
 		<File 
 			RelativePath=".\hgeguictrls.cpp">
@@ -205,6 +286,14 @@
 			</FileConfiguration>
 			<FileConfiguration 
 				Name="Debug|Win32">
+				<Tool 
+					Name="CppCmplrTool"
+					Optimization="0"
+					PreprocessorDefinitions=""
+					BasicRuntimeChecks="3"/>
+			</FileConfiguration>
+			<FileConfiguration 
+				Name="DebugNotUseLua|Win32">
 				<Tool 
 					Name="CppCmplrTool"
 					Optimization="0"
@@ -229,6 +318,14 @@
 					PreprocessorDefinitions=""
 					BasicRuntimeChecks="3"/>
 			</FileConfiguration>
+			<FileConfiguration 
+				Name="DebugNotUseLua|Win32">
+				<Tool 
+					Name="CppCmplrTool"
+					Optimization="0"
+					PreprocessorDefinitions=""
+					BasicRuntimeChecks="3"/>
+			</FileConfiguration>
 		</File>
 		<File 
 			RelativePath=".\hgepmanager.cpp">
@@ -241,6 +338,14 @@
 			</FileConfiguration>
 			<FileConfiguration 
 				Name="Debug|Win32">
+				<Tool 
+					Name="CppCmplrTool"
+					Optimization="0"
+					PreprocessorDefinitions=""
+					BasicRuntimeChecks="3"/>
+			</FileConfiguration>
+			<FileConfiguration 
+				Name="DebugNotUseLua|Win32">
 				<Tool 
 					Name="CppCmplrTool"
 					Optimization="0"
@@ -265,6 +370,14 @@
 					PreprocessorDefinitions=""
 					BasicRuntimeChecks="3"/>
 			</FileConfiguration>
+			<FileConfiguration 
+				Name="DebugNotUseLua|Win32">
+				<Tool 
+					Name="CppCmplrTool"
+					Optimization="0"
+					PreprocessorDefinitions=""
+					BasicRuntimeChecks="3"/>
+			</FileConfiguration>
 		</File>
 		<File 
 			RelativePath=".\hgeresource.cpp">
@@ -277,6 +390,14 @@
 			</FileConfiguration>
 			<FileConfiguration 
 				Name="Debug|Win32">
+				<Tool 
+					Name="CppCmplrTool"
+					Optimization="0"
+					PreprocessorDefinitions=""
+					BasicRuntimeChecks="3"/>
+			</FileConfiguration>
+			<FileConfiguration 
+				Name="DebugNotUseLua|Win32">
 				<Tool 
 					Name="CppCmplrTool"
 					Optimization="0"
@@ -301,6 +422,14 @@
 					PreprocessorDefinitions=""
 					BasicRuntimeChecks="3"/>
 			</FileConfiguration>
+			<FileConfiguration 
+				Name="DebugNotUseLua|Win32">
+				<Tool 
+					Name="CppCmplrTool"
+					Optimization="0"
+					PreprocessorDefinitions=""
+					BasicRuntimeChecks="3"/>
+			</FileConfiguration>
 		</File>
 		<File 
 			RelativePath=".\hgestrings.cpp">
@@ -313,6 +442,14 @@
 			</FileConfiguration>
 			<FileConfiguration 
 				Name="Debug|Win32">
+				<Tool 
+					Name="CppCmplrTool"
+					Optimization="0"
+					PreprocessorDefinitions=""
+					BasicRuntimeChecks="3"/>
+			</FileConfiguration>
+			<FileConfiguration 
+				Name="DebugNotUseLua|Win32">
 				<Tool 
 					Name="CppCmplrTool"
 					Optimization="0"
@@ -337,6 +474,14 @@
 					PreprocessorDefinitions=""
 					BasicRuntimeChecks="3"/>
 			</FileConfiguration>
+			<FileConfiguration 
+				Name="DebugNotUseLua|Win32">
+				<Tool 
+					Name="CppCmplrTool"
+					Optimization="0"
+					PreprocessorDefinitions=""
+					BasicRuntimeChecks="3"/>
+			</FileConfiguration>
 		</File>
 		<File 
 			RelativePath=".\parser.cpp">
@@ -355,6 +500,14 @@
 					PreprocessorDefinitions=""
 					BasicRuntimeChecks="3"/>
 			</FileConfiguration>
+			<FileConfiguration 
+				Name="DebugNotUseLua|Win32">
+				<Tool 
+					Name="CppCmplrTool"
+					Optimization="0"
+					PreprocessorDefinitions=""
+					BasicRuntimeChecks="3"/>
+			</FileConfiguration>
 		</File>
 		<File 
 			RelativePath=".\resources.cpp">
@@ -367,6 +520,14 @@
 			</FileConfiguration>
 			<FileConfiguration 
 				Name="Debug|Win32">
+				<Tool 
+					Name="CppCmplrTool"
+					Optimization="0"
+					PreprocessorDefinitions=""
+					BasicRuntimeChecks="3"/>
+			</FileConfiguration>
+			<FileConfiguration 
+				Name="DebugNotUseLua|Win32">
 				<Tool 
 					Name="CppCmplrTool"
 					Optimization="0"

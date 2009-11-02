@@ -18,6 +18,7 @@ bool Chat::chatting;
 bool Chat::chatinit;
 BYTE Chat::timer;
 BYTE Chat::chati;
+Fontsys Chat::fschat;
 
 Chat::Chat()
 {
@@ -65,7 +66,7 @@ void Chat::Render()
 		chatter[i]->RenderEx(x[i], y[i], 0, 0.8f);
 	}
 	textbox->RenderEx(x[CHATTER_TEXTBOX], y[CHATTER_TEXTBOX], ARC(9000), 1.5f, 1.0f);
-	Fontsys::Render(FONTSYS_CHATUSE, M_ACTIVECLIENT_LEFT+70, M_ACTIVECLIENT_CENTER_Y+138, 0xffffffff, col, 0.4f);
+	fschat.Render(M_ACTIVECLIENT_LEFT+70, M_ACTIVECLIENT_CENTER_Y+138, 0xffffffff, col, 0.4f);
 }
 
 bool Chat::chat(BYTE ID, BYTE chatsprite, const char * _text)
@@ -134,7 +135,7 @@ bool Chat::chat(BYTE ID, BYTE chatsprite, const char * _text)
 			}
 			text[i+line] = _text[i];
 		}
-		Fontsys::SignUp(FONTSYS_CHATUSE, text, fdisp.info.smallfont);
+		fschat.SignUp(text, fdisp.info.smallfont);
 		if(chatsprite & CHATSPRITE_LEFT)
 		{
 			col = 0xff6699ff;
@@ -180,7 +181,7 @@ bool Chat::chatOn(BYTE leftID, BYTE rightID, BYTE chatsprite)
 		pushtimer = 0xff;
 
 		strcpy(text, "");
-		Fontsys::SignUp(FONTSYS_CHATUSE, text);
+		fschat.SignUp(text);
 		
 		Bullet::IzeBuild(BULLETIZE_FAITH, Player::p.x, Player::p.y);
 
@@ -263,8 +264,9 @@ bool Chat::chatOff()
 
 	if(timer == 1)
 	{
-		strcpy(text, "");
-		Fontsys::SignUp(FONTSYS_CHATUSE, text);
+//		strcpy(text, "");
+//		fschat.SignUp(text);
+		fschat.SignOff();
 		SpriteItemManager::ptName(-1, leftname);
 		SpriteItemManager::ptName(-1, rightname);
 	}

@@ -1,3 +1,5 @@
+#ifndef __NOTUSELUA
+
 #include "../Header/Export_Lua.h"
 #include "../Header/LuaConstDefine.h"
 
@@ -1727,3 +1729,5 @@ int Export_Lua::LuaFn_hge_Gfx_RenderTextToTarget(LuaState * ls)
 	_LuaHelper_PushDWORD(ls, dret);
 	return 1;
 }
+
+#endif

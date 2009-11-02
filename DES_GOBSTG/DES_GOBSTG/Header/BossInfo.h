@@ -5,6 +5,7 @@
 #include "InfoQuad.h"
 #include "Const.h"
 #include "Effectsys.h"
+#include "Fontsys.h"
 
 #define BOSSINFO_ENABLE		1
 #define BOSSINFO_UP			2
@@ -61,6 +62,7 @@ public:
 
 	static BYTE flag;
 	static BYTE spellflag;
+	static Fontsys fsspellname;
 };
 
 extern BossInfo bossinfo;

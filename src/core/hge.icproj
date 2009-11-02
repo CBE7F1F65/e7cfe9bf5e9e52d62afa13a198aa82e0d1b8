@@ -5,7 +5,7 @@
 	Name="hge"
 	ProjectGUID="{9F8AACB6-5F1B-463C-ADF0-CD0ADA749A06}"
 	VCNestedProjectGUID="{32B00EEA-7CF8-44B6-82B4-0EA67C7C4E54}"
-	VCNestedProjectCRC32="1501213400"
+	VCNestedProjectCRC32="3672145743"
 	VCNestedProjectFileName="hge.vcproj">
 	<Configurations>
 		<Configuration 
@@ -147,6 +147,70 @@
 			<Tool 
 				Name="CustomNodeTool"/>
 		</Configuration>
+		<Configuration 
+			Name="DebugNotUseLua|Win32">
+			<Tool 
+				Name="GeneralTool"
+				OutputDirectory="..\..\lib\vc\"
+				IntermediateDirectory=".\Debug"
+				ConfigurationType="2"
+				UseOfMFC="0"
+				ATLMinimizesCRunTimeLibraryUsage="0"
+				CharacterSet="2"/>
+			<Tool 
+				Name="CppCmplrTool"
+				Optimization="0"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;HGEDLL"
+				StringPooling="1"
+				BasicRuntimeChecks="3"
+				RuntimeLibrary="1"
+				EnableFunctionLevelLinking="1"
+				UsePrecompiledHeader="0"
+				PrecompiledHeaderFile=".\Debug/hge.pch"
+				AssemblerListingLocation=".\Debug/"
+				ObjectFile=".\Debug/"
+				SuppressStartupBanner="1"
+				DebugInformationFormat="4"
+				AdditionalOptions="/QIfist "/>
+			<Tool 
+				Name="LinkerTool"
+				DelayImpLib=""
+				AdditionalDependencies="winmm.lib d3d9.lib d3dx9.lib"
+				OutputFile="..\..\lib\vc\hge_d.dll"
+				SuppressStartupBanner="1"
+				ModuleDefinitionFile=".\hge.def"
+				GenerateDebugInformation="1"
+				ProgramDatabaseFile=".\Debug/hge.pdb"
+				ImportLibrary="..\..\lib\vc\hge_d.lib"
+				AdditionalOptions=""/>
+			<Tool 
+				Name="LibrarianTool"/>
+			<Tool 
+				Name="ResCmplrTool"
+				PreprocessorDefinitions="_DEBUG"
+				Culture="1049"/>
+			<Tool 
+				Name="MidlCmplrTool"
+				PreprocessorDefinitions="_DEBUG"
+				MkTypLibCompatible="1"
+				SuppressStartupBanner="1"
+				TargetEnvironment="1"
+				TypeLibraryName=".\Debug/hge.tlb"
+				HeaderFileName=""/>
+			<Tool 
+				Name="BscMakeTool"/>
+			<Tool 
+				Name="PreBuildEventTool"/>
+			<Tool 
+				Name="PreLinkEventTool"/>
+			<Tool 
+				Name="PostBuildEventTool"
+				CommandLine="call &quot;..\..\DES_GOBSTG_GROUP\PostBuildEvent.bat&quot; ..\..\Resource\Debug\ ..\..\..\LuaEngine\Resource\Debug\ ..\..\Resource\ ..\..\..\LuaEngine\Resource\"/>
+			<Tool 
+				Name="CustomTool"/>
+			<Tool 
+				Name="CustomNodeTool"/>
+		</Configuration>
 	</Configurations>
 	<Files>
 		<File 
@@ -166,6 +230,14 @@
 					Optimization="2"
 					PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_MBCS;_USRDLL;HGEDLL;$(NoInherit)"/>
 			</FileConfiguration>
+			<FileConfiguration 
+				Name="DebugNotUseLua|Win32">
+				<Tool 
+					Name="CppCmplrTool"
+					Optimization="0"
+					PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_MBCS;_USRDLL;HGEDLL;$(NoInherit)"
+					BasicRuntimeChecks="3"/>
+			</FileConfiguration>
 		</File>
 		<File 
 			RelativePath=".\graphics.cpp">
@@ -183,6 +255,14 @@
 					Name="CppCmplrTool"
 					Optimization="2"
 					PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_MBCS;_USRDLL;HGEDLL;$(NoInherit)"/>
+			</FileConfiguration>
+			<FileConfiguration 
+				Name="DebugNotUseLua|Win32">
+				<Tool 
+					Name="CppCmplrTool"
+					Optimization="0"
+					PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_MBCS;_USRDLL;HGEDLL;$(NoInherit)"
+					BasicRuntimeChecks="3"/>
 			</FileConfiguration>
 		</File>
 		<File 
@@ -204,6 +284,14 @@
 					Optimization="2"
 					PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_MBCS;_USRDLL;HGEDLL;$(NoInherit)"/>
 			</FileConfiguration>
+			<FileConfiguration 
+				Name="DebugNotUseLua|Win32">
+				<Tool 
+					Name="CppCmplrTool"
+					Optimization="0"
+					PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_MBCS;_USRDLL;HGEDLL;$(NoInherit)"
+					BasicRuntimeChecks="3"/>
+			</FileConfiguration>
 		</File>
 		<File 
 			RelativePath=".\input.cpp">
@@ -221,6 +309,14 @@
 					Name="CppCmplrTool"
 					Optimization="2"
 					PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_MBCS;_USRDLL;HGEDLL;$(NoInherit)"/>
+			</FileConfiguration>
+			<FileConfiguration 
+				Name="DebugNotUseLua|Win32">
+				<Tool 
+					Name="CppCmplrTool"
+					Optimization="0"
+					PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_MBCS;_USRDLL;HGEDLL;$(NoInherit)"
+					BasicRuntimeChecks="3"/>
 			</FileConfiguration>
 		</File>
 		<File 
@@ -240,6 +336,14 @@
 					Optimization="2"
 					PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_MBCS;_USRDLL;HGEDLL;$(NoInherit)"/>
 			</FileConfiguration>
+			<FileConfiguration 
+				Name="DebugNotUseLua|Win32">
+				<Tool 
+					Name="CppCmplrTool"
+					Optimization="0"
+					PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_MBCS;_USRDLL;HGEDLL;$(NoInherit)"
+					BasicRuntimeChecks="3"/>
+			</FileConfiguration>
 		</File>
 		<File 
 			RelativePath=".\resource.cpp">
@@ -257,6 +361,14 @@
 					Name="CppCmplrTool"
 					Optimization="2"
 					PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_MBCS;_USRDLL;HGEDLL;$(NoInherit)"/>
+			</FileConfiguration>
+			<FileConfiguration 
+				Name="DebugNotUseLua|Win32">
+				<Tool 
+					Name="CppCmplrTool"
+					Optimization="0"
+					PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_MBCS;_USRDLL;HGEDLL;$(NoInherit)"
+					BasicRuntimeChecks="3"/>
 			</FileConfiguration>
 		</File>
 		<File 
@@ -278,6 +390,14 @@
 					Optimization="2"
 					PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_MBCS;_USRDLL;HGEDLL;$(NoInherit)"/>
 			</FileConfiguration>
+			<FileConfiguration 
+				Name="DebugNotUseLua|Win32">
+				<Tool 
+					Name="CppCmplrTool"
+					Optimization="0"
+					PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_MBCS;_USRDLL;HGEDLL;$(NoInherit)"
+					BasicRuntimeChecks="3"/>
+			</FileConfiguration>
 		</File>
 		<File 
 			RelativePath=".\timer.cpp">
@@ -295,6 +415,14 @@
 					Name="CppCmplrTool"
 					Optimization="2"
 					PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_MBCS;_USRDLL;HGEDLL;$(NoInherit)"/>
+			</FileConfiguration>
+			<FileConfiguration 
+				Name="DebugNotUseLua|Win32">
+				<Tool 
+					Name="CppCmplrTool"
+					Optimization="0"
+					PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_MBCS;_USRDLL;HGEDLL;$(NoInherit)"
+					BasicRuntimeChecks="3"/>
 			</FileConfiguration>
 		</File>
 		<File 

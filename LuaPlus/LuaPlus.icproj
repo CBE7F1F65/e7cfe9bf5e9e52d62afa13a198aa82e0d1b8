@@ -5,7 +5,7 @@
 	Name="LuaPlus"
 	ProjectGUID="{ACB58A18-DE6E-4C2F-BC64-93C8673CBEBE}"
 	VCNestedProjectGUID="{9C233F9B-D3AF-4C38-8743-45898A100640}"
-	VCNestedProjectCRC32="2396473941"
+	VCNestedProjectCRC32="77194954"
 	VCNestedProjectFileName="LuaPlus.vcproj"
 	Keyword="Win32Proj">
 	<Configurations>
@@ -127,6 +127,48 @@
 				WarningLevel="1"
 				Detect64BitPortabilityProblems="0"
 				DebugInformationFormat="0"/>
+			<Tool 
+				Name="LinkerTool"
+				DelayImpLib=""/>
+			<Tool 
+				Name="LibrarianTool"
+				OutputFile="$(OutDir)/LuaPlus.lib"/>
+			<Tool 
+				Name="ResCmplrTool"/>
+			<Tool 
+				Name="MidlCmplrTool"/>
+			<Tool 
+				Name="BscMakeTool"/>
+			<Tool 
+				Name="PreBuildEventTool"/>
+			<Tool 
+				Name="PreLinkEventTool"/>
+			<Tool 
+				Name="PostBuildEventTool"/>
+			<Tool 
+				Name="CustomTool"/>
+			<Tool 
+				Name="CustomNodeTool"/>
+		</Configuration>
+		<Configuration 
+			Name="DebugNotUseLua|Win32">
+			<Tool 
+				Name="GeneralTool"
+				OutputDirectory="Debug"
+				IntermediateDirectory="Debug"
+				ConfigurationType="4"
+				CharacterSet="2"/>
+			<Tool 
+				Name="CppCmplrTool"
+				Optimization="0"
+				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
+				MinimalRebuild="0"
+				BasicRuntimeChecks="3"
+				RuntimeLibrary="1"
+				UsePrecompiledHeader="0"
+				WarningLevel="1"
+				Detect64BitPortabilityProblems="0"
+				DebugInformationFormat="4"/>
 			<Tool 
 				Name="LinkerTool"
 				DelayImpLib=""/>

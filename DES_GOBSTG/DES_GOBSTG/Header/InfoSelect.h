@@ -3,6 +3,7 @@
 
 #include "MainDependency.h"
 #include "Const.h"
+#include "Fontsys.h"
 
 //infoselect colortype
 #define	INFO_GREEN		0
@@ -48,6 +49,8 @@ public:
 	BYTE coltype;
 	BYTE ID;
 	BYTE flag;
+
+	Fontsys fsinfo;
 
 	static int nPageNum;
 	static int firstID;

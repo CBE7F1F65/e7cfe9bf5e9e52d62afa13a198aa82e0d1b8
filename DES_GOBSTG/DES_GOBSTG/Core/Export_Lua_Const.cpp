@@ -1,3 +1,5 @@
+#ifndef __NOTUSELUA
+
 #include "../Header/Export_Lua.h"
 #include "../Header/LuaConstDefine.h"
 
@@ -389,3 +391,5 @@ bool Export_Lua::_LuaRegistHGEHelpConst(LuaObject * obj)
 
 	return true;
 }
+
+#endif

@@ -22,6 +22,7 @@ bool BossInfo::failed;
 bool BossInfo::allover;
 BYTE BossInfo::flag;
 BYTE BossInfo::spellflag;
+Fontsys BossInfo::fsspellname;
 
 bool BossInfo::Init()
 {
@@ -82,7 +83,7 @@ void BossInfo::bossUp()
 	{
 		bgmask.SetFlag(BG_WHITEFLASH, BGMT_FLASH);
 		Enemy::bossflag[ENEMY_MAINBOSSINDEX] = BOSS_SPELLUP;
-		Fontsys::SignUp(FONTSYS_SPELLNAMEUSE, spellname, fdisp.info.smallfont);
+		fsspellname.SignUp(spellname, fdisp.info.smallfont);
 		get = DataConnector::nGet();
 		meet = DataConnector::nMeet() - 1;
 		if(meet < 0)

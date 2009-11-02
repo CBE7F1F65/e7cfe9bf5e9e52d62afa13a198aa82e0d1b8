@@ -483,12 +483,12 @@ skip1:
 			goto skip2;
 		}
 
-		for(list<InfoSelect>::iterator i=infoselect.begin();i!=infoselect.end();i++)
+		for(list<InfoSelect>::iterator it=infoselect.begin();it!=infoselect.end();it++)
 		{
-			if(i->ID == 0)
+			if(it->ID == 0)
 			{
 				InfoSelect _ifs;
-				strcpy(_ifs.info, Fontsys::text[i->ID]);
+				strcpy(_ifs.info, it->fsinfo.text);
 				for(int j=0;j<RPYINFO_USERNAMEMAX-1;j++)
 				{
 					if(username[j])
@@ -501,9 +501,9 @@ skip1:
 					}
 				}
 				_ifs.info[11] = ' ';
-				_ifs.valueSet(i->ID, _ifs.info, i->x, i->y, i->coltype, i->flag);
+				_ifs.valueSet(it->ID, _ifs.info, it->x, it->y, it->coltype, it->flag);
 				infoselect.push_back(_ifs);
-				i = infoselect.erase(i);
+				it = infoselect.erase(it);
 				break;
 			}
 		}
@@ -571,10 +571,10 @@ skip1:
 			if(tnowchar <= RPYINFO_USERNAMEMAX-1)
 				tnowchar++;
 		}
-		for(int i=RPYINFO_USERNAMEMAX-2;i>=0;i--)
+		for(int it=RPYINFO_USERNAMEMAX-2;it>=0;it--)
 		{
-			if(username[i] == ' ')
-				username[i] = 0;
+			if(username[it] == ' ')
+				username[it] = 0;
 			else
 				break;
 		}
