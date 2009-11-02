@@ -191,7 +191,7 @@ bool Scripter::Copy(vector<Script>::iterator * p, BYTE num, BYTE dstart)
 #ifndef __NOTUSELUA
 bool Scripter::Execute_Lua(DWORD typeflag, DWORD name, DWORD con)
 {
-	return true;
+	return Export_Lua::Execute(typeflag, name, con);
 }
 #endif
 

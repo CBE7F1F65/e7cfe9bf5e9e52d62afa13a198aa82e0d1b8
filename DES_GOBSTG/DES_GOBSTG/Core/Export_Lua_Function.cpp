@@ -79,6 +79,12 @@ bool Export_Lua::LuaRegistConst()
 	{
 		return false;
 	}
+#ifndef __NOTUSEHDSS
+	if (!_LuaRegistHDSSConst(&obj))
+	{
+		return false;
+	}
+#endif
 
 	return true;
 }

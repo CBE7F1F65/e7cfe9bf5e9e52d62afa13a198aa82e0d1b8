@@ -7,6 +7,16 @@
 #include "../../../LuaPlus/LuaPlus/LuaPlus.h"
 using namespace LuaPlus;
 
+#ifndef __NOTUSEHDSS
+#define HDSS_PREFIX	"HDSS_"
+#define LUAFN_CONTROLEXECUTE	"ControlExecute"
+#define LUAFN_STAGEEXECUTE		"StageExecute"
+#define LUAFN_EDEFEXECUTE		"EdefExecute"
+#define LUAFN_SCENEEXECUTE		"SceneExecute"
+#define LUAFN_FUNCTIONEXECUTE	"FunctionExecute"
+#define LUAFN_EVENTEXECUTE		"EventExecute"
+#endif
+
 class Export_Lua
 {
 public:
@@ -316,8 +326,19 @@ public:
 	/************************************************************************/
 #ifndef __NOTUSEHDSS
 public:
+	static bool _LuaRegistHDSSConst(LuaObject * obj);
 	static bool _LuaRegistHDSSFunction(LuaObject * obj);
 	static int LuaFn_HDSS(LuaState * ls);
+	static void _ChangeSpecialChar(char * str);
+
+	static bool InitCallbacks();
+	static bool Execute(DWORD typeflag, DWORD name, DWORD con);
+	static LuaFunction<bool> * controlExecute;
+	static LuaFunction<bool> * stageExecute;
+	static LuaFunction<bool> * edefExecute;
+	static LuaFunction<bool> * sceneExecute;
+	static LuaFunction<bool> * functionExecute;
+	static LuaFunction<bool> * eventExecute;
 #endif
 };
 

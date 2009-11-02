@@ -5,7 +5,64 @@
 #include "../Header/keytable.h"
 #include "../Header/BGLayer.h"
 #include "../Header/Process.h"
+#include "../Header/BResource.h"
+LuaFunction<bool> * Export_Lua::controlExecute;
+LuaFunction<bool> * Export_Lua::stageExecute;
+LuaFunction<bool> * Export_Lua::edefExecute;
+LuaFunction<bool> * Export_Lua::sceneExecute;
+LuaFunction<bool> * Export_Lua::functionExecute;
+LuaFunction<bool> * Export_Lua::eventExecute;
 
+void Export_Lua::_ChangeSpecialChar(char * str)
+{
+	int length = strlen(str);
+	if (str[length-1] == '#')
+	{
+		str[length-1] = '_';
+		str[length] = '3';
+		str[length+1] = 0;
+	}
+	else if (str[length-1] == '@')
+	{
+		str[length-1] = '_';
+		str[length] = '2';
+		str[length+1] = 0;
+	}
+}
+
+bool Export_Lua::_LuaRegistHDSSConst(LuaObject * obj)
+{
+	int i = 0;
+	char str[M_STRMAX];
+	for (; scrKeyTable[i].code != SCR_CONST || strcmp(scrKeyTable[i].word, SCR_CONST_STR); i++)
+	{
+		sprintf(str, "%s%s", HDSS_PREFIX, scrKeyTable[i].word);
+		_ChangeSpecialChar(str);
+		obj->SetInteger(str, scrKeyTable[i].code);
+	}
+	i++;
+	i++;	//true
+	i++;	//false
+	for (; scrKeyTable[i].code != SCR_KEYSTATE || strcmp(scrKeyTable[i].word, SCR_KEYSTATE_STR); i++)
+	{
+		obj->SetInteger(scrKeyTable[i].word, scrKeyTable[i].code);
+	}
+	i++;
+	for (; scrKeyTable[i].code != SCR_NULL || strcmp(scrKeyTable[i].word, SCR_NULL_STR); i++)
+	{
+		obj->SetNumber(scrKeyTable[i].word, CDOUBLEN(scrKeyTable[i].code));
+	}
+
+	//SI
+	for (i=0; i<SPRITEITEMMAX; i++)
+	{
+		if (strlen(res.spritedata[i].spritename))
+		{
+			obj->SetInteger(res.spritedata[i].spritename, i);
+		}
+	}
+	return true;
+}
 
 bool Export_Lua::_LuaRegistHDSSFunction(LuaObject * obj)
 {
@@ -18,18 +75,17 @@ int Export_Lua::LuaFn_HDSS(LuaState * ls)
 {
 	LuaStack args(ls);
 
-	LuaObject _obj = args[1];
-	DWORD nowval = _LuaHelper_GetDWORD(&_obj);
+	DWORD nowval = args[1].GetInteger();
 
 	switch (nowval & SCRKWMASK_TYPE)
 	{
-	case SCRKW_CLASS_LAYER:
+	case SCRKW_BASIC:
 		switch (nowval)
 		{
 		case SCR_BGVALUE:
 			if (args.Count() == 8)
 			{
-				_obj = args[8];
+				LuaObject _obj = args[8];
 				DWORD _col = _LuaHelper_GetColor(&_obj);
 				ubg[args[2].GetInteger()]->valueSet(mp.tex, args[3].GetInteger(), args[4].GetFloat(), args[5].GetFloat(), args[6].GetFloat(), args[7].GetFloat(), _col);
 			}
@@ -38,6 +94,94 @@ int Export_Lua::LuaFn_HDSS(LuaState * ls)
 		break;
 	}
 	return 0;
+}
+
+bool Export_Lua::InitCallbacks()
+{
+	LuaState * ls = state;
+	LuaObject _obj = ls->GetGlobal(LUAFN_CONTROLEXECUTE);
+	if (!_obj.IsFunction())
+	{
+		ShowError(LUAERROR_NOTFUNCTION, LUAFN_CONTROLEXECUTE);
+		return false;
+	}
+	static LuaFunction<bool> _fcontrol = _obj;
+	_fcontrol = _obj;
+	controlExecute = &_fcontrol;
+	_obj = ls->GetGlobal(LUAFN_STAGEEXECUTE);
+	if (!_obj.IsFunction())
+	{
+		ShowError(LUAERROR_NOTFUNCTION, LUAFN_STAGEEXECUTE);
+		return false;
+	}
+	static LuaFunction<bool> _fstage = _obj;
+	_fstage = _obj;
+	stageExecute = &_fstage;
+	_obj = ls->GetGlobal(LUAFN_EDEFEXECUTE);
+	if (!_obj.IsFunction())
+	{
+		ShowError(LUAERROR_NOTFUNCTION, LUAFN_EDEFEXECUTE);
+		return false;
+	}
+	static LuaFunction<bool> _fedef = _obj;
+	_fedef = _obj;
+	edefExecute = &_fedef;
+	_obj = ls->GetGlobal(LUAFN_SCENEEXECUTE);
+	if (!_obj.IsFunction())
+	{
+		ShowError(LUAERROR_NOTFUNCTION, LUAFN_SCENEEXECUTE);
+		return false;
+	}
+	static LuaFunction<bool> _fscene = _obj;
+	_fscene = _obj;
+	sceneExecute = &_fscene;
+	_obj = ls->GetGlobal(LUAFN_FUNCTIONEXECUTE);
+	if (!_obj.IsFunction())
+	{
+		ShowError(LUAERROR_NOTFUNCTION, LUAFN_FUNCTIONEXECUTE);
+		return false;
+	}
+	static LuaFunction<bool> _ffunction = _obj;
+	_ffunction = _obj;
+	functionExecute = &_ffunction;
+	_obj = ls->GetGlobal(LUAFN_EVENTEXECUTE);
+	if (!_obj.IsFunction())
+	{
+		ShowError(LUAERROR_NOTFUNCTION, LUAFN_EVENTEXECUTE);
+		return false;
+	}
+	static LuaFunction<bool> _fevent = _obj;
+	_fevent = _obj;
+	eventExecute = &_fevent;
+	return true;
+}
+
+bool Export_Lua::Execute(DWORD typeflag, DWORD name, DWORD con)
+{
+	LuaState * ls = state;
+	LuaFunction<bool> *_f;
+	switch (typeflag)
+	{
+	case SCR_CONTROL:
+		_f = controlExecute;
+		break;
+	case SCR_STAGE:
+		_f = stageExecute;
+		break;
+	case SCR_EDEF:
+		_f = edefExecute;
+		break;
+	case SCR_SCENE:
+		_f = sceneExecute;
+		break;
+	case SCR_FUNCTION:
+		_f = functionExecute;
+		break;
+	case SCR_EVENT:
+		_f = eventExecute;
+		break;
+	}
+	return (*_f)(name, con);
 }
 
 #endif

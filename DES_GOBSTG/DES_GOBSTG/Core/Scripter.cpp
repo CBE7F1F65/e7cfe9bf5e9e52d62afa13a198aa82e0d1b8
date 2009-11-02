@@ -246,6 +246,10 @@ bool Scripter::LoadAll_Lua(HTEXTURE * texset)
 	{
 		return false;
 	}
+	if (!Export_Lua::InitCallbacks())
+	{
+		return false;
+	}
 	return true;
 }
 #endif
