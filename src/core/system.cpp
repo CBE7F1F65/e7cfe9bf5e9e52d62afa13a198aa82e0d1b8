@@ -121,10 +121,10 @@ bool CALL HGE_Impl::System_Initiate()
 	rectW.bottom=rectW.top+height;
 	styleW=WS_POPUP|WS_CAPTION|WS_SYSMENU|WS_MINIMIZEBOX|WS_VISIBLE; //WS_OVERLAPPED | WS_SYSMENU | WS_MINIMIZEBOX;
 
-	rectFS.left=(GetSystemMetrics(SM_CXFULLSCREEN)-width)/4;
-	rectFS.top=(GetSystemMetrics(SM_CYFULLSCREEN)-height)/4;
-	rectFS.right=rectFS.left+width;
-	rectFS.bottom=rectFS.top+height;
+	rectFS.left=(GetSystemMetrics(SM_CXFULLSCREEN)-nScreenWidth)/2;
+	rectFS.top=(GetSystemMetrics(SM_CYFULLSCREEN)-nScreenHeight)/2;
+	rectFS.right=rectFS.left+nScreenWidth;
+	rectFS.bottom=rectFS.top+nScreenHeight;
 	styleFS=WS_POPUP|WS_VISIBLE; //WS_POPUP
 
 	if(hwndParent)
@@ -830,8 +830,8 @@ HGE_Impl::HGE_Impl()
 	pCurTarget=0;
 	pScreenSurf=0;
 	pScreenDepth=0;
-	pVB=0;
-	pIB=0;
+	pVB=NULL;
+	pIB=NULL;
 	VertArray=0;
 	textures=0;
 

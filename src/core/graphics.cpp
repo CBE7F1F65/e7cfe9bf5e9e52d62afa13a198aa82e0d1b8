@@ -920,7 +920,7 @@ void HGE_Impl::_GfxDone()
 		//-2nd
 		pD3DDevice->SetIndices(NULL);
 		pIB->Release();
-		pIB=0;
+		pIB = NULL;
 	}
 	if(pVB)
 	{
@@ -928,7 +928,7 @@ void HGE_Impl::_GfxDone()
 		//+2nd
 		pD3DDevice->SetStreamSource( 0, pVB, 0, sizeof(hgeVertex) );
 		pVB->Release();
-		pVB=0;
+		pVB = NULL;
 	}
 	if(pD3DDevice) { pD3DDevice->Release(); pD3DDevice=0; }
 	if(pD3D) { pD3D->Release(); pD3D=0; }
@@ -969,12 +969,14 @@ bool HGE_Impl::_GfxRestore()
 	{
 		pD3DDevice->SetIndices(NULL);
 		pIB->Release();
+		pIB = NULL;
 	}
 	if(pVB)
 	{
 		//+2nd
 		pD3DDevice->SetStreamSource( 0, pVB, 0, sizeof(hgeVertex) );
 		pVB->Release();
+		pVB = NULL;
 	}
 
 	pD3DDevice->Reset(d3dpp);
@@ -993,7 +995,9 @@ bool HGE_Impl::_GfxRestore()
 		if (listIterator->font) ((ID3DXFont *)(listIterator->font))->OnResetDevice();
 		listIterator = listIterator->next;
 	}
-    // end
+	// end
+
+	if(procGfxRestoreFunc) return procGfxRestoreFunc();
 
 	return true;
 }
