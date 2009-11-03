@@ -98,6 +98,10 @@ void InfoSelect::linkf(const char * linkcode, BYTE tail, float num)
 
 void InfoSelect::Clear()
 {
+	for (list<InfoSelect>::iterator it=infoselect.begin(); it!=infoselect.end(); it++)
+	{
+		it->fsinfo.SignOff();
+	}
 	infoselect.clear();
 	nPageNum = 0;
 }
@@ -193,8 +197,8 @@ void InfoSelect::Build(BYTE ID, const char * info, float x, float y, BYTE coltyp
 {
 	InfoSelect _infoselect;
 
-	_infoselect.valueSet(ID, info, x, y, coltype, flag);
 	infoselect.push_back(_infoselect);
+	infoselect.rbegin()->valueSet(ID, info, x, y, coltype, flag);
 }
 
 bool InfoSelect::SetPageNum(BYTE _nPageNum, float _fadebegin, float _offset, int initshift)

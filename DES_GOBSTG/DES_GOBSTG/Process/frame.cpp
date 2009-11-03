@@ -11,6 +11,10 @@ int Process::frame()
 		screenmode = 1 - screenmode;
 		hge->System_SetState(HGE_WINDOWED, !(bool)screenmode);
 		hge->System_SetState(HGE_HIDEMOUSE, (bool)screenmode);
+		if(!screenmode)
+		{
+			Export::clientAdjustWindow();
+		}
 		return PSKIP;
 	}
 #ifdef __DEBUG

@@ -131,13 +131,14 @@ void Selector::Build(BYTE _ID, int siID, float cenx, float ceny, float _hscale, 
 		BYTE flag)
 {
 	Selector _sel;
-	_sel.valueSet(_ID, siID, cenx, ceny, _hscale, _vscale, _maxtime);
-	_sel.actionSet(SEL_NONE, xadj0, yadj0);
-	_sel.actionSet(SEL_OVER, xadj1+xadj0, yadj1+yadj0);
-	_sel.actionSet(SEL_ENTER, xadj2+xadj0, yadj2+yadj0);
-	_sel.actionSet(SEL_LEAVE, xadj3+xadj0, yadj3+yadj0);
-	_sel.flag = flag;
 	sel.push_back(_sel);
+	Selector * _psel = &(*(sel.rbegin()));
+	_psel->valueSet(_ID, siID, cenx, ceny, _hscale, _vscale, _maxtime);
+	_psel->actionSet(SEL_NONE, xadj0, yadj0);
+	_psel->actionSet(SEL_OVER, xadj1+xadj0, yadj1+yadj0);
+	_psel->actionSet(SEL_ENTER, xadj2+xadj0, yadj2+yadj0);
+	_psel->actionSet(SEL_LEAVE, xadj3+xadj0, yadj3+yadj0);
+	_psel->flag = flag;
 }
 
 bool Selector::SetPageNum(BYTE _nPageNum, float _fadebegin, float _offset, int initshift)

@@ -212,8 +212,8 @@ int Process::processOver()
 
 		for(int i=0;i<11;i++)
 		{
-			_ifs[i].valueSet(i+10, _ifs[i].info, 50, 90+i*25, INFO_GREEN, SEL_NONACTIVE);
 			infoselect.push_back(_ifs[i]);
+			infoselect.rbegin()->valueSet(i+10, _ifs[i].info, 50, 90+i*25, INFO_GREEN, SEL_NONACTIVE);
 		}
 
 		if(!strcmp(savefilename, ""))
@@ -232,8 +232,8 @@ int Process::processOver()
 			}while(_access(hge->Resource_MakePath(savefilename), 00) != -1);
 		}
 
-		_ifs[12].valueSet(2, res.resdata.uistr.confirm, 320, 410, INFO_GREEN);
 		infoselect.push_back(_ifs[12]);
+		infoselect.rbegin()->valueSet(2, res.resdata.uistr.confirm, 320, 410, INFO_GREEN);
 
 		InfoSelect::Setup(3, 0);
 
@@ -335,14 +335,14 @@ skip1:
 		strcpy(_ifs[0].info, res.resdata.uistr.username);
 		strcat(_ifs[0].info, "|006");
 		strcat(_ifs[0].info, username);
-		_ifs[0].valueSet(0, _ifs[0].info, 345, 90, INFO_RED);
 		infoselect.push_back(_ifs[0]);
+		infoselect.rbegin()->valueSet(0, _ifs[0].info, 345, 90, INFO_RED);
 
 		strcpy(_ifs[1].info, res.resdata.uistr.filename);
 		strcat(_ifs[1].info, "|010");
 		strcat(_ifs[1].info, savefilename);
-		_ifs[1].valueSet(1, _ifs[1].info, 215, 380, INFO_RED);
 		infoselect.push_back(_ifs[1]);
+		infoselect.rbegin()->valueSet(1, _ifs[1].info, 215, 380, INFO_RED);
 
 		if(tsec == 2)
 		{
@@ -460,16 +460,16 @@ skip1:
 			_ifs[i].linkf("|24550", 2, data.fRead(DATA_BINFILE, sec, data.nLinkType(DATAN_LOST), 0));
 			strcat(_ifs[i].info, "%");
 
-			_ifs[i].valueSet(i == tinsert-1 ? 0 : i+2, _ifs[i].info, 30, 120+24*i, INFO_GREEN, i == tinsert-1 ? SEL_NULL : SEL_NONACTIVE);
 			infoselect.push_back(_ifs[i]);
+			infoselect.rbegin()->valueSet(i == tinsert-1 ? 0 : i+2, _ifs[i].info, 30, 120+24*i, INFO_GREEN, i == tinsert-1 ? SEL_NULL : SEL_NONACTIVE);
 		}
 
 		if(!tinsert)
 			InfoSelect::Setup(0, 0);
 		else
 		{
-			_ifs[10].valueSet(1, res.resdata.uistr.confirm, 300, 380, INFO_GREEN);
 			infoselect.push_back(_ifs[10]);
+			infoselect.rbegin()->valueSet(1, res.resdata.uistr.confirm, 300, 380, INFO_GREEN);
 			InfoSelect::Setup(2, 0);
 		}
 
@@ -501,8 +501,8 @@ skip1:
 					}
 				}
 				_ifs.info[11] = ' ';
-				_ifs.valueSet(it->ID, _ifs.info, it->x, it->y, it->coltype, it->flag);
 				infoselect.push_back(_ifs);
+				infoselect.rbegin()->valueSet(it->ID, _ifs.info, it->x, it->y, it->coltype, it->flag);
 				it = infoselect.erase(it);
 				break;
 			}

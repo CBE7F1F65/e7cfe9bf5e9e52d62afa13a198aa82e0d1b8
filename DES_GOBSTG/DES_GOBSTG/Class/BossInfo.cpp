@@ -118,6 +118,7 @@ void BossInfo::quit()
 	}
 
 	scr.Execute(SCR_STAGE, sno, SCRIPT_CON_POST);
+	fsspellname.SignOff();
 
 	spellflag = BISF_NONE;
 	flag = 0;

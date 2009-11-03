@@ -53,10 +53,9 @@ void PlayerBullet::Build(int shootdataID)
 {
 	PlayerBullet _pb;
 	playershootData * item = &(res.playershootdata[shootdataID]);
-	_pb.valueSet(item->ID, item->arrange, item->xbias, item->ybias, 
+	pb.push_back(_pb)->valueSet(item->ID, item->arrange, item->xbias, item->ybias, 
 		item->scale, item->angle, item->speed, item->accelspeed, 
 		item->power, item->hitonfactor, item->flag, item->seID);
-	pb.push_back(_pb);
 }
 
 void PlayerBullet::valueSet(WORD _ID, BYTE _arrange, float _xbias, float _ybias, float _scale, int _angle, float _speed, float _accelspeed, float _power, int _hitonfactor, WORD _flag, BYTE seID)

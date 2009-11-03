@@ -13,30 +13,37 @@ Fontsys::Fontsys()
 
 Fontsys::~Fontsys()
 {
-	SignOff();
+	ReleaseTarget();
 }
 
-void Fontsys::SignOff()
+void Fontsys::ReleaseTarget()
 {
 	if (tar)
 	{
 		hge->Target_Free(tar);
 		tar = NULL;
 	}
+}
+
+list<Fontsys *>::iterator Fontsys::SignOff()
+{
+	ReleaseTarget();
 	for (list<Fontsys *>::iterator it=fontsys.begin(); it!= fontsys.end(); it++)
 	{
 		if (*it == this)
 		{
 			it = fontsys.erase(it);
+			return it;
 		}
 	}
+	return fontsys.end();
 }
 
 void Fontsys::Release()
 {
 	for (list<Fontsys *>::iterator it=fontsys.begin(); it!=fontsys.end(); it++)
 	{
-		(*it)->SignOff();
+		it = (*it)->SignOff();
 	}
 	fontsys.clear();
 }
@@ -166,10 +173,8 @@ void Fontsys::SignUp(const char * _text, HD3DFONT _font)
 		SignOff();
 		lines = strTranslate(text, _text);
 	}
-	if (!tar)
-	{
-		tar = hge->Target_Create(FONTSYS_TARGETWIDTH, FONTSYS_TARGETHEIGHT, false);
-	}
+	ReleaseTarget();
+	tar = hge->Target_Create(FONTSYS_TARGETWIDTH, FONTSYS_TARGETHEIGHT, false);
 	if (!_font)
 	{
 		_font = font;

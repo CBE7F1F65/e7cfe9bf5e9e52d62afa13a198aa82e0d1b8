@@ -113,8 +113,8 @@ int Process::processDifficultSelect()
 				strcat(_ifs.info, "(Get/Meet)|035MaxBonus:");
 				_ifs.linkl("|14252", tmaxbonus);
 
-				_ifs.valueSet(i, _ifs.info, 80, i*40+160, _ifs.coltype, _ifs.flag);
 				infoselect.push_back(_ifs);
+				infoselect.rbegin()->valueSet(i, _ifs.info, 80, i*40+160, _ifs.coltype, _ifs.flag);
 
 				i++;
 			}

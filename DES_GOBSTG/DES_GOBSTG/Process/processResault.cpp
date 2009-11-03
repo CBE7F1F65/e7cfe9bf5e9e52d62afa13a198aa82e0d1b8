@@ -103,8 +103,8 @@ int Process::processResult()
 				strcat(_ifs[i].info, "\n¡¡");
 				strcat(_ifs[i].info, data.getPlayerName(data.iRead(DATA_BINFILE, sec, data.nLinkNum(data.nLinkType(DATAN_CHARA), 3), 0)));
 
-				_ifs[i].valueSet(i, _ifs[i].info, 30, 210+80*i, INFO_GREEN);
 				infoselect.push_back(_ifs[i]);
+				infoselect.rbegin()->valueSet(i, _ifs[i].info, 30, 210+80*i, INFO_GREEN);
 			}
 
 			char buff[M_STRITOAMAX];
@@ -130,8 +130,8 @@ int Process::processResult()
 
 			for (int i=0; i<3; i++)
 			{
-				_ifs[10+i].valueSet(10+i, _ifs[10+i].info, M_CLIENT_CENTER_X, 365+i*25, INFO_BLUE, SEL_NONACTIVE | SEL_STAY);
 				infoselect.push_back(_ifs[10+i]);
+				infoselect.rbegin()->valueSet(10+i, _ifs[10+i].info, M_CLIENT_CENTER_X, 365+i*25, INFO_BLUE, SEL_NONACTIVE | SEL_STAY);
 			}
 
 			InfoSelect::Setup(10, 0);
@@ -214,8 +214,8 @@ int Process::processResult()
 					strcat(_ifs.info, "(Get/Meet)|035MaxBonus:");
 					_ifs.linkl("|14252", tmaxbonus);
 
-					_ifs.valueSet(i, _ifs.info, 80, i*40+160, _ifs.coltype, SEL_NULL);
 					infoselect.push_back(_ifs);
+					infoselect.rbegin()->valueSet(i, _ifs.info, 80, i*40+160, _ifs.coltype, SEL_NULL);
 
 					i++;
 				}

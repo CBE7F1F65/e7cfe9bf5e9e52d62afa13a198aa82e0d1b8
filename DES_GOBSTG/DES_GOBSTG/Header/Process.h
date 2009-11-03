@@ -97,7 +97,7 @@ public:
 	Process();
 	virtual ~Process();
 
-	void	Realease();
+	void	Release();
 
 	bool	reload();
 

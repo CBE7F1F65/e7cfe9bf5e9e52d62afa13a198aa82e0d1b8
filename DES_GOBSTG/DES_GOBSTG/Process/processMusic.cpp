@@ -82,7 +82,8 @@ int Process::processMusic()
 	}
 	if(!infoselect.size())
 	{
-		InfoSelect * _ifs = (InfoSelect *)malloc(tmaxmusic * sizeof(InfoSelect));
+		InfoSelect * _ifs = new InfoSelect[tmaxmusic];
+//		InfoSelect * _ifs = (InfoSelect *)malloc(tmaxmusic * sizeof(InfoSelect));
 		for(int i=0;i<tmaxmusic;i++)
 		{
 			strcpy(_ifs[i].info, "No.");
@@ -90,10 +91,11 @@ int Process::processMusic()
 			strcat(_ifs[i].info, "|008");	
 			strcat(_ifs[i].info, res.musdata[i].musicname);
 
-			_ifs[i].valueSet(i, _ifs[i].info, 70, i*22+100, INFO_GREEN);
 			infoselect.push_back(_ifs[i]);
+			infoselect.rbegin()->valueSet(i, _ifs[i].info, 70, i*22+100, INFO_GREEN);
 		}
-		free(_ifs);
+		delete [] _ifs;
+//		free(_ifs);
 
 		if (tmusicsel >= tmaxmusic)
 		{

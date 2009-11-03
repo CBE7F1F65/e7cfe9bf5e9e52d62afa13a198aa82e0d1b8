@@ -169,8 +169,8 @@ int Process::processReplay()
 			strcat(_ifs[i].info, _rpyfilename[tindex]);
 			_ifs[i].info[strlen(_ifs[i].info) - 4] = 0;
 
-			_ifs[i].valueSet(i, _ifs[i].info, 30, 120+i*22, _ifs[i].coltype);
 			infoselect.push_back(_ifs[i]);
+			infoselect.rbegin()->valueSet(i, _ifs[i].info, 30, 120+i*22, _ifs[i].coltype);
 		}
 
 		InfoSelect::Setup(i, InfoSelect::select);
@@ -284,8 +284,8 @@ int Process::processReplay()
 			}
 			for(int i=0;i<7;i++)
 			{
-				_ifs[i].valueSet(i, _ifs[i].info, 390, 120+22*i, _ifs[i].coltype, _ifs[i].flag);
 				infoselect.push_back(_ifs[i]);
+				infoselect.rbegin()->valueSet(i, _ifs[i].info, 390, 120+22*i, _ifs[i].coltype, _ifs[i].flag);
 			}
 			InfoSelect::Setup(7, 0);
 		}
@@ -296,14 +296,14 @@ int Process::processReplay()
 
 			strcat(_ifs[0].info, "\n");
 			strcat(_ifs[0].info, data.getSpellName((int)(_rpy[tindex].rpyinfo.startscene)));
-			_ifs[0].valueSet(0, _ifs[0].info, 160, 80, INFO_RED);
 			infoselect.push_back(_ifs[0]);
+			infoselect.rbegin()->valueSet(0, _ifs[0].info, 160, 80, INFO_RED);
 
 			strcpy(_ifs[1].info, res.resdata.uistr.score);
 			_ifs[1].linkl("|10216", _rpy[tindex].rpyinfo.score);
 
-			_ifs[1].valueSet(1, _ifs[1].info, 320, 75, INFO_RED, SEL_NONACTIVE);
 			infoselect.push_back(_ifs[1]);
+			infoselect.rbegin()->valueSet(1, _ifs[1].info, 320, 75, INFO_RED, SEL_NONACTIVE);
 
 			InfoSelect::Setup(1, 0);
 		}
@@ -368,8 +368,8 @@ int Process::processReplay()
 
 		for(int i=10;i<23;i++)
 		{
-			_ifs[i].valueSet(i, _ifs[i].info, 40, 125+(i-10)*25, INFO_GREEN, SEL_NONACTIVE);
 			infoselect.push_back(_ifs[i]);
+			infoselect.rbegin()->valueSet(i, _ifs[i].info, 40, 125+(i-10)*25, INFO_GREEN, SEL_NONACTIVE);
 		}
 
 		tdepth = 3;

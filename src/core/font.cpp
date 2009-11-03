@@ -112,7 +112,7 @@ void CALL HGE_Impl::Gfx_RenderText(HD3DFONT font, const char * text, float x, fl
 	rect.bottom = (LONG)(y + h);
 
 	ID3DXFont * pFont = (ID3DXFont * )font;
-	if (!pFont)
+	if (pFont)
 	{
 		pFont->DrawText(NULL, text, -1, &rect, DT_NOCLIP, color);
 	}

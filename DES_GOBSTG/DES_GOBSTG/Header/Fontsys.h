@@ -29,7 +29,8 @@ public:
 	static void Release();
 
 	void SignUp(const char * text = NULL, HD3DFONT font=NULL);
-	void SignOff();
+	list<Fontsys *>::iterator SignOff();
+	void ReleaseTarget();
 	void Render(float x, float y, DWORD ucol, DWORD dcol, float shadow = 0, float hext = 0, float vext = 0);
 
 	static int strTranslate(char * dtext, const char * stext);

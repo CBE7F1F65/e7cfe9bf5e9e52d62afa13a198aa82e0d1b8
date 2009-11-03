@@ -486,9 +486,6 @@ void CALL HGE_Impl::System_SetStateBool(hgeBoolState state, bool value)
 								{
 									if(d3dppW.BackBufferFormat==D3DFMT_UNKNOWN || d3dppFS.BackBufferFormat==D3DFMT_UNKNOWN) break;
 
-									/************************************************************************/
-									/* Theis cakk is added by h5nc (h5nc@yahoo.com.cn)                      */
-									/************************************************************************/
 									if(procFocusLostFunc) procFocusLostFunc();
 
 									if(bWindowed) GetWindowRect(hwnd, &rectW);

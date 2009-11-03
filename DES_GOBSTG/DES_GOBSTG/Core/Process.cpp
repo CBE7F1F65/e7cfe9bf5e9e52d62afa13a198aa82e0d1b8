@@ -48,7 +48,7 @@ Process::~Process()
 {
 }
 
-void Process::Realease()
+void Process::Release()
 {
 	if (!errorcode)
 	{
