@@ -33,7 +33,7 @@ bool BossInfo::Init()
 	return true;
 }
 
-void BossInfo::empty()
+void BossInfo::Clear()
 {
 	turntoscene = S0;
 	spellflag = BISF_NONE;

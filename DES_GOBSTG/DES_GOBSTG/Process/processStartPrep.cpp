@@ -2,7 +2,7 @@
 
 void Process::clearPrep(bool bclearkey)
 {
-	Selector::Clear();
+	SelectSystem::ClearAll();
 	for(int i=0; i<EFFECTSYSMAX; i++)
 	{
 		effsys[i].exist = false;
@@ -64,7 +64,7 @@ void Process::clearPrep(bool bclearkey)
 	Chat::timer = 0;
 	Chat::chati = 0;
 	Chat::chatinit = false;
-	BossInfo::empty();
+	BossInfo::Clear();
 	pauseinit = false;
 
 	worldx = 0;
@@ -140,11 +140,7 @@ void Process::startPrep(bool callinit)
 
 	srandt(seed);
 
-	Player::ncCont = 0;
-	Player::ncGet = 0;
-	Player::ncBorder = 0;
-	Player::ncMiss = 0;
-	Player::ncPause = 0;
+	Player::p.ClearNC();
 
 	//set
 

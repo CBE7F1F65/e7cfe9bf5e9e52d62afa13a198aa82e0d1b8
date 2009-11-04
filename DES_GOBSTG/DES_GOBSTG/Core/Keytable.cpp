@@ -6,7 +6,7 @@
 #include "Process.h"
 #include "BGLayer.h"
 #include "Data.h"
-#include "Selector.h"
+#include "SelectSystem.h"
 #include "PushKey.h"
 #include "Beam.h"
 #include "Player.h"

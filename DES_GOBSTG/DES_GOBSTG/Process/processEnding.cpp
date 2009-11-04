@@ -3,7 +3,7 @@
 #include "Player.h"
 #include "Scripter.h"
 #include "Data.h"
-#include "Selector.h"
+#include "SelectSystem.h"
 #include "InfoSelect.h"
 #include "FrontDisplay.h"
 
@@ -33,7 +33,7 @@ int Process::processEnding()
 	}
 	else if (tdepth == 0xff)
 	{
-		Selector::Clear();
+		SelectSystem::ClearAll();
 		InfoSelect::Clear();
 		time = 0;
 		state = STATE_OVER;

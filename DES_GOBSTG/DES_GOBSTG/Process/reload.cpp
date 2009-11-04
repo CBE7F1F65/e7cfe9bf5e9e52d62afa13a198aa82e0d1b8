@@ -9,7 +9,6 @@ bool Process::reload()
 	strcpy(rpyfilename, "");
 	replayIndex = 0;
 
-	Selector::Clear();
 	Player::p.exist = false;
 	for(int i=0; i<BGLAYERSETMAX; i++)
 	{
@@ -38,19 +37,13 @@ bool Process::reload()
 		tar[i].x = 0;
 		tar[i].y = 0;
 	}
+	SelectSystem::Init();
 	InfoSelect::Clear();
-	Chat::chatting = false;
-	Chat::timer = 0;
-	Chat::chati = 0;
-	Chat::chatinit = false;
-	BossInfo::empty();
-	Player::ncCont = 0;
-	Player::ncGet = 0;
-	Player::ncBorder = 0;
-	Player::ncMiss = 0;
-	Player::ncPause = 0;
-	pauseinit = false;
+	chat.Clear();
+	BossInfo::Clear();
+	Player::p.ClearNC();
 
+	pauseinit = false;
 	practicemode = false;
 	spellmode = false;
 	replaymode = false;
@@ -76,8 +69,7 @@ bool Process::reload()
 	InfoQuad::tex = tex[TEX_WHITE];
 
 	fdisp.Init();
-	Fontsys::font = fdisp.info.normalfont;
-	//Heatup
+	Fontsys::Init(fdisp.info.normalfont);
 	Fontsys::HeatUp();
 
 #ifdef __DEBUG

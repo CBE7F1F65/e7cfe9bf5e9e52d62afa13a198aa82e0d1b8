@@ -1122,41 +1122,49 @@ bool Scripter::Parse(int varcount)
 				case SCR_SELBUILD:
 					if(rv = Copy(&i, 16))
 					{
+						/*
 						Selector::Build(CAST(d[0]), CAST(d[1]), CAST(d[2]), CAST(d[3]), CAST(d[4]), CAST(d[5]), CAST(d[6]),
 							CAST(d[7]), CAST(d[8]),
 							CAST(d[9]), CAST(d[10]),
 							CAST(d[11]), CAST(d[12]),
 							CAST(d[13]), CAST(d[14]),
 							(CAST(d[15])));
+							*/
 					}
 					break;
 				case SCR_SELCLEAR:
-					Selector::Clear();
+//					Selector::Clear();
 					rv = true;
 					break;
 				case SCR_SELCONFIRM:
 					if(rv = Copy(&i, 4))
 					{
+						/*
 						int _tdi = CAST(d[3]);
 						CINT(d[_tdi].value) = Selector::confirm(CAST(d[0]), CAST(d[1]), CAST(d[2]));
 						d[_tdi].bfloat = false;
+						*/
 					}
 					break;
 				case SCR_SELSET:
 					if(rv = Copy(&i, 7))
 					{
+						/*
 						Selector::Setup(CAST(d[0]), CAST(d[1]), (bool)CAST(d[2]));
 						Selector::SetPageNum(CAST(d[3]), CAST(d[4]), CAST(d[5]), CAST(d[6]));
+						*/
 					}
 					break;
 				case SCR_SELFLAG:
 					if (rv = Copy(&i, 2))
 					{
+						/*
 						Selector * _sel = Selector::GetPointer(CAST(d[0]));
                         if (_sel)
                         {
 							_sel->flag = CAST(d[1]);
                         }
+						*/
 					}
 					break;
 

@@ -1,7 +1,7 @@
 #include "Process.h"
 #include "Scripter.h"
 #include "BGLayer.h"
-#include "Selector.h"
+#include "SelectSystem.h"
 #include "BGLayer.h"
 #include "InfoSelect.h"
 #include "Player.h"
@@ -19,7 +19,7 @@ int Process::processStart()
 		time = 0;
 //		musicChange(0, true);
 		BGLayer::KillOtherLayer();
-		Selector::Clear();
+		SelectSystem::ClearAll();
 		InfoSelect::Clear();
 		bgmask.exist = false;
 		fdisp.SetState(FDISP_PANEL, 0);

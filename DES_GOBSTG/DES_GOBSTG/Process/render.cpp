@@ -175,7 +175,10 @@ int Process::render()
 	{
 		fgpause.Render();
 	}
-	Selector::Render();
+	for (int i=0; i<SELSYSTEMMAX; i++)
+	{
+		selsys[i].Render();
+	}
 	InfoSelect::Render();
 
 	Export::clientSetMatrix();

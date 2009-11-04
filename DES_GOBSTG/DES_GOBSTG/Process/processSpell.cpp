@@ -1,6 +1,6 @@
 #include "Process.h"
 #include "Scripter.h"
-#include "Selector.h"
+#include "SelectSystem.h"
 #include "SE.h"
 
 int Process::processSpell()

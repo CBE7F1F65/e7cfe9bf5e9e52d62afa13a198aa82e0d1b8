@@ -4,7 +4,7 @@
 #include "Data.h"
 #include "DataConnector.h"
 #include "InfoSelect.h"
-#include "Selector.h"
+#include "SelectSystem.h"
 #include "SE.h"
 #include "DataPrinter.h"
 #include "BossInfo.h"
@@ -23,6 +23,7 @@ int Process::processResult()
 	int tsec = scr.GetIntValue(SCR_RESERVEBEGIN);
 	int tdiff = scr.GetIntValue(SCR_RESERVEBEGIN+1);
 	int tsel = scr.GetIntValue(SCR_RESERVEBEGIN+2);
+	int tselsys = scr.GetIntValue(SCR_RESERVEBEGIN+3);
 
 	if(hge->Input_GetDIKey(KS_SPECIAL, DIKEY_DOWN))
 	{
@@ -48,7 +49,7 @@ int Process::processResult()
 		if (tdiff < 0)
 		{
 			InfoSelect::Clear();
-			tdiff = Selector::select;
+			tdiff = selsys[tselsys].select;
 			InfoSelect _ifs[13];
 			DWORD sec;
 			for (int i=0; i<10; i++)
@@ -143,7 +144,7 @@ int Process::processResult()
 		if (tdiff < 0)
 		{
 			InfoSelect::Clear();
-			tdiff = Selector::select;
+			tdiff = selsys[tselsys].select;
 			int i = 0;
 			for (vector<spellData>::iterator it = res.spelldata.begin(); it!= res.spelldata.end(); it++)
 			{

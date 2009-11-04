@@ -3,7 +3,7 @@
 #include "Player.h"
 #include "Scripter.h"
 #include "BGLayer.h"
-#include "Selector.h"
+#include "SelectSystem.h"
 #include "Replay.h"
 
 int Process::processContinue()
@@ -23,6 +23,7 @@ int Process::processContinue()
 	scr.Execute(SCR_CONTROL, STATE_CONTINUE, SCRIPT_CON_INIT);
 	//60 sec
 	int tsec = scr.GetIntValue(SCR_RESERVEBEGIN);
+	int tselsys = scr.GetIntValue(SCR_RESERVEBEGIN+2);
 
 	if(hge->Input_GetDIKey(KS_FIRE, DIKEY_DOWN))
 	{
@@ -30,7 +31,7 @@ int Process::processContinue()
 	}
 	else if(hge->Input_GetDIKey(KS_SPECIAL, DIKEY_DOWN))
 	{
-		Selector::select = 1;
+		selsys[tselsys].select = 1;
 	}
 
 	if(tsec == 0x10)
@@ -39,7 +40,7 @@ int Process::processContinue()
 		if(!spellmode && scene < S1200)
 		{
 			Player::p.valueSet(mainchara, subchara_1, subchara_2, PL_DEFAULTNPLAYER, true);
-			Player::ncCont++;
+			Player::p.ncCont++;
 
 			Bullet::IzeBuild(BULLETIZE_FADEOUT, Player::p.x, Player::p.y);
 

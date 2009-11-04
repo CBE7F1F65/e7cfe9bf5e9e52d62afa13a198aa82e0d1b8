@@ -23,7 +23,7 @@ public:
 	Fontsys();
 	~Fontsys();
 
-	static void Init();
+	static void Init(HD3DFONT font = NULL);
 	static void HeatUp();
 	static void FocusChanged();
 	static void Release();

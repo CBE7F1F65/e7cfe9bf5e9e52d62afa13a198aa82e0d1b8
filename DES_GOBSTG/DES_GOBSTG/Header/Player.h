@@ -65,6 +65,7 @@ public:
 
 	void valueSet(WORD ID, WORD ID_sub_1, WORD ID_sub_2, BYTE nLife=PL_DEFAULTNPLAYER, bool bContinue = false);
 	void ClearSet();
+	void ClearNC();
 	void UpdatePlayerData();
 
 	virtual void action();
@@ -219,11 +220,11 @@ public:
 	BYTE	bonusflag;
 
 	static Player p;
-	static	int		ncBorder;
-	static	BYTE	ncMiss;
-	static	BYTE	ncCont;
-	static	BYTE	ncGet;
-	static	BYTE	ncPause;
+	int		ncBorder;
+	BYTE	ncMiss;
+	BYTE	ncCont;
+	BYTE	ncGet;
+	BYTE	ncPause;
 
 };
 #endif

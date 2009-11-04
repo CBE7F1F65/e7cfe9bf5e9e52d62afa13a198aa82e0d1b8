@@ -5,7 +5,7 @@
 	Name="DES_GOBSTG"
 	ProjectGUID="{A4938EF7-0CE1-47A3-BC8D-4D0B54F94F6D}"
 	VCNestedProjectGUID="{7329E15F-F0AE-44EE-BC64-27B9038C76D7}"
-	VCNestedProjectCRC32="3265569946"
+	VCNestedProjectCRC32="4105259278"
 	VCNestedProjectFileName="DES_GOBSTG.vcproj"
 	Keyword="Win32Proj">
 	<Configurations>
@@ -344,6 +344,8 @@
 		<File 
 			RelativePath=".\Class\Selector.cpp"/>
 		<File 
+			RelativePath=".\Core\SelectSystem.cpp"/>
+		<File 
 			RelativePath=".\Header\BMath.h"/>
 		<File 
 			RelativePath=".\Header\BResource.h"/>
@@ -427,6 +429,8 @@
 			RelativePath=".\Header\SE.h"/>
 		<File 
 			RelativePath=".\Header\Selector.h"/>
+		<File 
+			RelativePath=".\Header\SelectSystem.h"/>
 	</Files>
 </VisualStudioProject>
 

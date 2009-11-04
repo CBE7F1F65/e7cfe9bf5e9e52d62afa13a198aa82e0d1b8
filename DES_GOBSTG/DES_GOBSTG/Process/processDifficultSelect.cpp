@@ -1,7 +1,7 @@
 #include "Process.h"
 #include "BGLayer.h"
 #include "SE.h"
-#include "Selector.h"
+#include "SelectSystem.h"
 #include "InfoSelect.h"
 #include "Scripter.h"
 #include "FrontDisplay.h"
@@ -32,12 +32,13 @@ int Process::processDifficultSelect()
 
 	int tsec = scr.GetIntValue(SCR_RESERVEBEGIN);
 	int tsnolistindex = scr.GetIntValue(SCR_RESERVEBEGIN+1);
+	int tselsys = scr.GetIntValue(SCR_RESERVEBEGIN+3);
 	int tspmode = scr.GetIntValue(SCR_RESERVEBEGIN+16);
 
 	if (tsec == 0)
 	{
 		tsnolistindex = 0;
-		int tsel = Selector::select;
+		int tsel = selsys[tselsys].select;
 		int i = 0;
 		for (vector<spellData>::iterator it = res.spelldata.begin(); it!= res.spelldata.end(); it++)
 		{

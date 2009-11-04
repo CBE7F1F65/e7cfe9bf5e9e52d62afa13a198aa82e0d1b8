@@ -28,6 +28,7 @@ InfoSelect::InfoSelect()
 
 InfoSelect::~InfoSelect()
 {
+	fsinfo.SignOff();
 }
 
 void InfoSelect::linki(const char * linkcode, int num)

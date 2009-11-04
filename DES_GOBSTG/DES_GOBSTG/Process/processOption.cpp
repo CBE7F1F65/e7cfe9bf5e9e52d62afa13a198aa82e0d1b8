@@ -1,6 +1,6 @@
 #include "Process.h"
 #include "Scripter.h"
-#include "Selector.h"
+#include "SelectSystem.h"
 #include "InfoSelect.h"
 #include "SpriteItemManager.h"
 #include "FrontDisplayName.h"
@@ -21,19 +21,20 @@ int Process::processOption()
 	//-> pushtimer sel depth
 	int tsel = scr.GetIntValue(SCR_RESERVEBEGIN);
 	int tdepth = scr.GetIntValue(SCR_RESERVEBEGIN+1);
+	int tselsys = scr.GetIntValue(SCR_RESERVEBEGIN+2);
 
-	tsel = Selector::select;
+	tsel = selsys[tselsys].select;
 	if(!tdepth)
 	{
 		if(hge->Input_GetDIKey(KS_SPECIAL, DIKEY_DOWN))
 		{
 			SE::push(SE_SYSTEM_CANCEL);
-			Selector::select = Selector::nselect-1;
+			selsys[tselsys].select = selsys[tselsys].nselect-1;
 		}
-		if((hge->Input_GetDIKey(KS_SPECIAL, DIKEY_DOWN) || hge->Input_GetDIKey(KS_FIRE, DIKEY_DOWN)) && tsel == Selector::nselect-1)
+		if((hge->Input_GetDIKey(KS_SPECIAL, DIKEY_DOWN) || hge->Input_GetDIKey(KS_FIRE, DIKEY_DOWN)) && tsel == selsys[tselsys].nselect-1)
 		{
 			SE::push(SE_SYSTEM_CANCEL);
-			Selector::Clear();
+			SelectSystem::ClearAll();
 			time = 0;
 			state = STATE_TITLE;
 			return PTURN;
@@ -48,20 +49,20 @@ int Process::processOption()
 			SE::push(SE_SYSTEM_OK);
 			tdepth = 1;
 
-			for(list<Selector>::iterator i=sel.begin();i!=sel.end();i++)
+			for(list<Selector>::iterator it=selsys[tselsys].sel.begin();it!=selsys[tselsys].sel.end();it++)
 			{
-				if(i->ID < 0x10)
+				if(it->ID < 0x10)
 				{
-					i->changeState(SEL_NONACTIVE|SEL_GRAY, SELOP_SET);
-					i->ID += 0x10;
+					it->ChangeState(SEL_NONACTIVE|SEL_GRAY, SELOP_SET);
+					it->ID += 0x10;
 				}
-				else if(i->ID < 0x20)
+				else if(it->ID < 0x20)
 				{
-					i->changeState(SEL_NONACTIVE|SEL_GRAY, SELOP_UNSET);
-					i->ID -= 0x10;
+					it->ChangeState(SEL_NONACTIVE|SEL_GRAY, SELOP_UNSET);
+					it->ID -= 0x10;
 				}
 			}
-			Selector::Setup(6, 0);
+			selsys[tselsys].Setup(6, 0, KS_UP, KS_DOWN, KS_FIRE, KS_SPECIAL, tselsys);
 		}
 		else if(tsel == 1)
 		{
@@ -178,20 +179,20 @@ int Process::processOption()
 		{
 			SE::push(SE_SYSTEM_OK);
 			tdepth = 0;
-			for(list<Selector>::iterator i=sel.begin();i!=sel.end();i++)
+			for(list<Selector>::iterator it=selsys[tselsys].sel.begin();it!=selsys[tselsys].sel.end();it++)
 			{
-				if(i->ID < 0x10)
+				if(it->ID < 0x10)
 				{
-					i->changeState(SEL_NONACTIVE|SEL_GRAY, SELOP_SET);
-					i->ID += 0x10;
+					it->ChangeState(SEL_NONACTIVE|SEL_GRAY, SELOP_SET);
+					it->ID += 0x10;
 				}
-				else if(i->ID < 0x20)
+				else if(it->ID < 0x20)
 				{
-					i->changeState(SEL_NONACTIVE|SEL_GRAY, SELOP_UNSET);
-					i->ID -= 0x10;
+					it->ChangeState(SEL_NONACTIVE|SEL_GRAY, SELOP_UNSET);
+					it->ID -= 0x10;
 				}
 			}
-			Selector::Setup(6, 0);
+			selsys[tselsys].Setup(6, 0, KS_UP, KS_DOWN, KS_FIRE, KS_SPECIAL, tselsys);
 
 			InfoSelect::Clear();
 		}
@@ -200,34 +201,34 @@ int Process::processOption()
 	SE::vol = sevol;
 	hge->Channel_SetVolume(channel, bgmvol);
 
-	for(list<Selector>::iterator i=sel.begin();i!=sel.end();i++)
+	for(list<Selector>::iterator it=selsys[tselsys].sel.begin();it!=selsys[tselsys].sel.end();it++)
 	{
-		if((i->ID & 0xf0) == 0x80)
+		if((it->ID & 0xf0) == 0x80)
 		{
-			int tjk = joyKey[(i->ID & 0x0f) >> 1];
-			if(i->ID & 1)
-				SpriteItemManager::SetSprite(SpriteItemManager::digituiIndex+tjk%10, i->sprite, tex);
+			int tjk = joyKey[(it->ID & 0x0f) >> 1];
+			if(it->ID & 1)
+				SpriteItemManager::SetSprite(SpriteItemManager::digituiIndex+tjk%10, it->sprite, tex);
 			else
-				SpriteItemManager::SetSprite(SpriteItemManager::digituiIndex+tjk/10, i->sprite, tex);
+				SpriteItemManager::SetSprite(SpriteItemManager::digituiIndex+tjk/10, it->sprite, tex);
 		}
-		else if(i->ID == 0x90)
+		else if(it->ID == 0x90)
 		{
 			if (screenmode)
 			{
-				SpriteItemManager::SetSprite(SpriteItemManager::GetIndexByName(SI_OPTIONGRAPH_FULL), i->sprite, tex);
+				SpriteItemManager::SetSprite(SpriteItemManager::GetIndexByName(SI_OPTIONGRAPH_FULL), it->sprite, tex);
 			}
 			else
 			{
-				SpriteItemManager::SetSprite(SpriteItemManager::GetIndexByName(SI_OPTIONGRAPH_WINDOW), i->sprite, tex);
+				SpriteItemManager::SetSprite(SpriteItemManager::GetIndexByName(SI_OPTIONGRAPH_WINDOW), it->sprite, tex);
 			}
 		}
-		else if(i->ID == 0xA0)
+		else if(it->ID == 0xA0)
 		{
 		}
-		else if((i->ID & 0xf0) == 0xB0 || (i->ID & 0xf0) == 0xC0)
+		else if((it->ID & 0xf0) == 0xB0 || (it->ID & 0xf0) == 0xC0)
 		{
 			int tvol;
-			if((i->ID & 0xf0) == 0xB0)
+			if((it->ID & 0xf0) == 0xB0)
 			{
 				tvol = bgmvol;
 			}
@@ -235,49 +236,49 @@ int Process::processOption()
 			{
 				tvol = sevol;
 			}
-			switch(i->ID & 0x0f)
+			switch(it->ID & 0x0f)
 			{
 			case 0x00:
 				if(tvol < 100)
-					SpriteItemManager::SetSprite(-1, i->sprite, tex);
+					SpriteItemManager::SetSprite(-1, it->sprite, tex);
 				else
-					SpriteItemManager::SetSprite(SpriteItemManager::digituiIndex+1, i->sprite, tex);
+					SpriteItemManager::SetSprite(SpriteItemManager::digituiIndex+1, it->sprite, tex);
 				break;
 			case 0x01:
 				if(tvol < 10)
-					SpriteItemManager::SetSprite(-1, i->sprite, tex);
+					SpriteItemManager::SetSprite(-1, it->sprite, tex);
 				else
-					SpriteItemManager::SetSprite(SpriteItemManager::digituiIndex+((tvol / 10) % 10), i->sprite, tex);
+					SpriteItemManager::SetSprite(SpriteItemManager::digituiIndex+((tvol / 10) % 10), it->sprite, tex);
 				break;
 			case 0x02:
-				SpriteItemManager::SetSprite(SpriteItemManager::digituiIndex+(tvol % 10), i->sprite, tex);
+				SpriteItemManager::SetSprite(SpriteItemManager::digituiIndex+(tvol % 10), it->sprite, tex);
 				break;
 			case 0x03:
-				SpriteItemManager::SetSprite(SpriteItemManager::digituiIndex+SIDIGITUI_MODPLUS, i->sprite, tex);
+				SpriteItemManager::SetSprite(SpriteItemManager::digituiIndex+SIDIGITUI_MODPLUS, it->sprite, tex);
 				break;
 			}
 		}
 
-		if(i->ID < 0x10)
+		if(it->ID < 0x10)
 		{
-			if(i->flag & SEL_ENTER)
+			if(it->flag & SEL_ENTER)
 			{
-				i->changeState(SEL_ENTER, SELOP_UNSET);
-				i->changeState(SEL_OVER, SELOP_SET);
+				it->ChangeState(SEL_ENTER, SELOP_UNSET);
+				it->ChangeState(SEL_OVER, SELOP_SET);
 			}
-			else if(i->flag & SEL_LEAVE)
+			else if(it->flag & SEL_LEAVE)
 			{
-				i->changeState(SEL_LEAVE, SELOP_UNSET);
-				i->changeState(SEL_NONE, SELOP_SET);
+				it->ChangeState(SEL_LEAVE, SELOP_UNSET);
+				it->ChangeState(SEL_NONE, SELOP_SET);
 			}
 		}
-		else if (i->ID < 0x20 || !(tdepth ^ ((i->ID & 0xf0) != 0x80)))
+		else if (it->ID < 0x20 || !(tdepth ^ ((it->ID & 0xf0) != 0x80)))
 		{
-			i->changeState(SEL_NONACTIVE|SEL_GRAY, SELOP_EQUAL);
+			it->ChangeState(SEL_NONACTIVE|SEL_GRAY, SELOP_EQUAL);
 		}
 		else
 		{
-			i->changeState(SEL_NONACTIVE, SELOP_EQUAL);
+			it->ChangeState(SEL_NONACTIVE, SELOP_EQUAL);
 		}
 	}
 

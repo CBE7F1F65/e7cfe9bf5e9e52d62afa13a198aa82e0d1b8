@@ -9,21 +9,48 @@ function ControlExecute(name, con)
 				}
 			)
 			hdss.Call(
-				HDSS_BGVALUE,
+				HDSS_SELBUILD,
 				{
-					1, SI_Title_Start, 480, 240, -1, -1
+					0, 0, SI_Title_Start, 480, 240
+				},
+				{
+					0, 0,
+					-4, -4,
+					-8, 0,
+					8, 8
 				}
 			)
 			hdss.Call(
-				HDSS_BGVALUE,
+				HDSS_SELBUILD,
 				{
-					2, SI_Title_Replay, 480, 270, -1, -1
+					0, 1, SI_Title_Replay, 480, 270
+				},
+				{
+					0, 0,
+					-4, -4,
+					-8, 0,
+					8, 8
 				}
 			)
 			hdss.Call(
-				HDSS_BGVALUE,
+				HDSS_SELBUILD,
 				{
-					3, SI_Title_Quit, 480, 300, -1, -1
+					0, 2, SI_Title_Quit, 480, 300
+				},
+				{
+					0, 0,
+					-4, -4,
+					-8, 0,
+					8, 8
+				}
+			)
+			hdss.Call(
+				HDSS_SELSET,
+				{
+					0, 3, 0, KS_UP, KS_DOWN, KS_FIRE, KS_SPECIAL
+				},
+				{
+					0, 0, 0
 				}
 			)
 		end

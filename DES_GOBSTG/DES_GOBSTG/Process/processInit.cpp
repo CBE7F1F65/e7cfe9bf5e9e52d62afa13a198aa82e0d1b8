@@ -306,7 +306,7 @@ int Process::processInit()
 
 	chat.Init();
 
-	Selector::Clear();
+	SelectSystem::ClearAll();
 	InfoSelect::Clear();
 
 	mainchara	= 0;

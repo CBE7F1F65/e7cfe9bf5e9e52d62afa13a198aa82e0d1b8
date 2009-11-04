@@ -3,6 +3,7 @@
 
 #include "MainDependency.h"
 #include "Const.h"
+#include "Fontsys.h"
 
 #define SEL_STATEMAX	0x04
 
@@ -29,7 +30,7 @@
 #define SELFADE_RIGHT	8
 
 
-struct selinfo
+struct seladj
 {
 	float xadj;
 	float yadj;
@@ -41,38 +42,34 @@ public:
 	Selector();
 	~Selector();
 
-	void valueSet(BYTE ID, int siID, float cenx, float ceny, float hscale, float vscale, BYTE maxtime);
+	void valueSet(BYTE ID, int siID, float cenx, float ceny,
+		char * info = NULL,
+		float hscale = 1, float vscale = 0,
+		BYTE flag = SEL_NULL);
 	void actionSet(BYTE setflag, float xadj, float yadj);
+	void actionSet(BYTE setflag, seladj * adj=NULL);
+	int getAdjIndex(BYTE setflag);
+	void setAdj(int i, float xadj, float yadj);
+	void SetMaxtime(int maxtime);
+	void Complete();
 
-	static void Build(BYTE ID, int siID, float cenx, float ceny, float hscale, float vscale, BYTE maxtime,
-		float xadj0, float yadj0,
-		float xadj1, float yadj1,
-		float xadj2, float yadj2,
-		float xadj3, float yadj3,
-		BYTE flag=SEL_NULL);
+	bool checkSub();
+	void PreAction(int nselect, int select, int * fvID, Selector * fvselector);
+	bool PostAction(int * select, int sellock, int nPageNum, float fadebegin, float offset, int shiftangle);
+	bool checkFVState();
+	void ChangeState(BYTE state, BYTE op);
 
-	static bool confirm(float cenx=M_ACTIVECLIENT_CENTER_X, float ceny=M_ACTIVECLIENT_CENTER_Y, bool settrue=false);
-	static void Clear();
-
-	void action();
-	void changeState(BYTE state, BYTE op);
-	void matchSelect();
-
-	static void Setup(int nselect, int select, bool updown=true);
-
-	static void shift(int nshift);
-	static bool SetPageNum(BYTE nPageNum, float fadebegin, float offset, int initshift=0);
-	static void Render();
-
-	static Selector * GetPointer(int index);
+	void Render();
 
 public:
-	selinfo	info[SEL_STATEMAX];
+	seladj	adj[SEL_STATEMAX];
 
+	Fontsys fsinfo;
 	float	x;
 	float	y;
 	float	hscale;
 	float	vscale;
+	bool	sub;
 
 	hgeSprite * sprite;
 
@@ -81,26 +78,6 @@ public:
 	BYTE	timer;
 	BYTE	maxtime;
 	BYTE	alpha;
-
-	static int nselect;
-	static int select;
-	static bool updown;
-
-	static int sellock;
-	static bool complete;
-	static bool plus;
-
-	static int nPageNum;
-	static int firstID;
-	static int lastID;
-	static float fadebegin;
-	static float offset;
-
-	static bool confirminit;
-
-	static bool avoid;
 };
-
-extern list<Selector> sel;
 
 #endif

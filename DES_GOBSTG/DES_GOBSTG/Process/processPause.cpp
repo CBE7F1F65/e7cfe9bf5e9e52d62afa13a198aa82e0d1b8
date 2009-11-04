@@ -1,6 +1,6 @@
 #include "Process.h"
 #include "Scripter.h"
-#include "Selector.h"
+#include "SelectSystem.h"
 #include "Player.h"
 #include "InfoSelect.h"
 #include "SE.h"
@@ -26,17 +26,17 @@ int Process::processPause()
 				time = 0;
 			}
 		}
-		else if (Player::p.exist && Player::ncPause < 0xff)
+		else if (Player::p.exist && Player::p.ncPause < 0xff)
 		{
-			Player::ncPause++;
+			Player::p.ncPause++;
 		}
 	}
 	if(scr.GetIntValue(SCR_RESERVEBEGIN) < 0x100)
 		scr.Execute(SCR_CONTROL, STATE_PAUSE, SCRIPT_CON_INIT);
 
-	if(sel.size() && hge->Input_GetDIKey(KS_SPECIAL, DIKEY_UP))
+	if(selsys[scr.GetIntValue(SCR_RESERVEBEGIN+1)].sel.size() && hge->Input_GetDIKey(KS_SPECIAL, DIKEY_UP))
 	{
-		Selector::Clear();
+		SelectSystem::ClearAll();
 		if(scr.GetIntValue(SCR_RESERVEBEGIN) == 0x10)
 		{
 			scr.SetIntValue(SCR_RESERVEBEGIN, 0xff);
@@ -52,7 +52,7 @@ int Process::processPause()
 	}
 	if(hge->Input_GetDIKey(KS_PAUSE, DIKEY_DOWN))
 	{
-		Selector::Clear();
+		SelectSystem::ClearAll();
 		scr.SetIntValue(SCR_RESERVEBEGIN, 0xff);
 		SE::push(SE_SYSTEM_CANCEL);
 		if(replaymode && replayend)
@@ -104,12 +104,12 @@ int Process::processPause()
 			if(replaymode)
 			{
 				BGLayer::KillOtherLayer();
-				Selector::Clear();
+				SelectSystem::ClearAll();
 				InfoSelect::Clear();
 				bgmask.exist = false;
 				fdisp.SetState(FDISP_PANEL, 0);
 				Player::p.exist = false;
-				BossInfo::empty();
+				BossInfo::Clear();
 				getInput();
 				replaymode = false;
 				state = STATE_REPLAY;
@@ -118,11 +118,11 @@ int Process::processPause()
 			if(practicemode || spellmode)
 			{
 				BGLayer::KillOtherLayer();
-				Selector::Clear();
+				SelectSystem::ClearAll();
 				InfoSelect::Clear();
 				bgmask.exist = false;
 				fdisp.SetState(FDISP_PANEL, 0);
-				BossInfo::empty();
+				BossInfo::Clear();
 				if(spellmode && !replaymode && time == 0)
 					state = STATE_CONTINUE;
 				else

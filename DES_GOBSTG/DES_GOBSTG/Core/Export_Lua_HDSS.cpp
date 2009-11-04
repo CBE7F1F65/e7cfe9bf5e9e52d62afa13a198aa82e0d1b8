@@ -3,10 +3,8 @@
 
 #include "../Header/Export_Lua.h"
 #include "../Header/LuaConstDefine.h"
-#include "../Header/keytable.h"
-#include "../Header/BGLayer.h"
-#include "../Header/Process.h"
-#include "../Header/BResource.h"
+#include "../Header/Processprep.h"
+
 LuaFunction<bool> * Export_Lua::controlExecute;
 LuaFunction<bool> * Export_Lua::stageExecute;
 LuaFunction<bool> * Export_Lua::edefExecute;
@@ -72,99 +70,274 @@ bool Export_Lua::_LuaRegistHDSSFunction(LuaObject * obj)
 	return true;
 }
 
+bool Export_Lua::_Helper_HDSS_GetPara(LuaStack * args, int i, LuaObject * _para)
+{
+	*_para = (*args)[i];
+	if (!_para->IsTable())
+	{
+		ShowError(LUAERROR_LUAERROR, "HDSS arg must be a table.");
+		return false;
+	}
+	return true;
+}
+
 int Export_Lua::LuaFn_HDSS(LuaState * ls)
 {
 	LuaStack args(ls);
 
 	DWORD nowval = args[1].GetInteger();
 	int argscount = args.Count();
-	if (argscount != 2)
+	if (argscount < 2)
 	{
 		ShowError(LUAERROR_LUAERROR, "HDSS args count error.");
 		return 0;
 	}
-	LuaObject _para = args[2];
-	if (!_para.IsTable())
-	{
-		ShowError(LUAERROR_LUAERROR, "HDSS arg must be a table.");
-		return 0;
-	}
 
+	LuaObject _para;
+	int ii;
+	LuaObject _obj;
+	bool bhavenext;
+
+#define _NEXT_LUAPARA		(_para.GetByIndex(++ii))
+#define _IOBJ_LUAPARA		(_obj.GetInteger())
+#define _FOBJ_LUAPARA		(_obj.GetFloat())
+#define _INEXT_LUAPARA		(_NEXT_LUAPARA.GetInteger())
+#define _FNEXT_LUAPARA		(_NEXT_LUAPARA.GetFloat())
+#define _NILCHECK_LUAPARA	(!_obj.IsNil())
+#define _JNEXT_LUAPARA		_obj = _NEXT_LUAPARA;	bhavenext = _NILCHECK_LUAPARA
+#define _GETPARAS(X)		if (!_Helper_HDSS_GetPara(&args, (X), &_para))	return false;	ii = 0
+
+	_GETPARAS(2);
 	switch (nowval & SCRKWMASK_TYPE)
 	{
+		/************************************************************************/
+		/* BASIC                                                                */
+		/************************************************************************/
 	case SCRKW_BASIC:
-		switch (nowval)
+		switch (nowval & SCRKWMASK_CLASS)
 		{
-		case SCR_BGVALUE:
-			if (true)
+			/************************************************************************/
+			/* LAYER                                                                */
+			/************************************************************************/
+		case SCRKW_CLASS_LAYER:
+			switch (nowval)
 			{
-				int _index = _para.GetByIndex(1).GetInteger();
-				int _siid = _para.GetByIndex(2).GetInteger();
-				float _cenx = _para.GetByIndex(3).GetFloat();
-				float _ceny = _para.GetByIndex(4).GetFloat();
-				float _w = _para.GetByIndex(5).GetFloat();
-				float _h = _para.GetByIndex(6).GetFloat();
-
-				LuaObject _obj = _para.GetByIndex(7);
-				DWORD _col = 0xffffffff;
-				if (!_obj.IsNil())
+			case SCR_BGVALUE:
+				if (argscount == 2)
 				{
-					_col = _LuaHelper_GetColor(&_obj);
-				}
+					int _index = _INEXT_LUAPARA;
+					int _siid = _INEXT_LUAPARA;
+					float _cenx = _FNEXT_LUAPARA;
+					float _ceny = _FNEXT_LUAPARA;
+					float _w = _FNEXT_LUAPARA;
+					float _h = _FNEXT_LUAPARA;
 
-				ubg[_index]->valueSet(mp.tex, _siid, _cenx, _ceny, _w, _h, _col);
-			}
-			return 0;
-		case SCR_BGVALEX:
-			if (true)
-			{
-				int _index = _para.GetByIndex(1).GetInteger();
-				int _siid = _para.GetByIndex(2).GetInteger();
-				float _x = _para.GetByIndex(3).GetFloat();
-				float _y = _para.GetByIndex(4).GetFloat();
-				float _z = _para.GetByIndex(5).GetFloat();
-				float _w = _para.GetByIndex(6).GetFloat();
-				float _h = _para.GetByIndex(7).GetFloat();
-				int _rotx = _para.GetByIndex(8).GetInteger();
-				int _roty = _para.GetByIndex(9).GetInteger();
-				int _rotz = _para.GetByIndex(10).GetInteger();
-
-				LuaObject _obj = _para.GetByIndex(11);
-				float _paral = 0;
-				float _speed = 0;
-				float _angle = 0;
-				bool _move = false;
-				bool _rotate = false;
-				DWORD _col = 0xffffffff;
-				if (!_obj.IsNil())
-				{
-					_paral = _obj.GetFloat();
-					_obj = _para.GetByIndex(12);
-					if (!_obj.IsNil())
+					DWORD _col = 0xffffffff;
+					_JNEXT_LUAPARA;
+					if (bhavenext)
 					{
-						_speed = _obj.GetFloat();
-						_obj = _para.GetByIndex(13);
-						if (!_obj.IsNil())
+						_col = _LuaHelper_GetColor(&_obj);
+					}
+
+					ubg[_index]->valueSet(mp.tex, _siid, _cenx, _ceny, _w, _h, _col);
+				}
+				return 0;
+			case SCR_BGVALEX:
+				if (argscount == 2)
+				{
+					int _index = _INEXT_LUAPARA;
+					int _siid = _INEXT_LUAPARA;
+					float _x = _FNEXT_LUAPARA;
+					float _y = _FNEXT_LUAPARA;
+					float _z = _FNEXT_LUAPARA;
+					float _w = _FNEXT_LUAPARA;
+					float _h = _FNEXT_LUAPARA;
+					int _rotx = _INEXT_LUAPARA;
+					int _roty = _INEXT_LUAPARA;
+					int _rotz = _INEXT_LUAPARA;
+
+					float _paral = 0;
+					float _speed = 0;
+					float _angle = 0;
+					bool _move = false;
+					bool _rotate = false;
+					DWORD _col = 0xffffffff;
+					_JNEXT_LUAPARA;
+					if (bhavenext)
+					{
+						_paral = _obj.GetFloat();
+						_JNEXT_LUAPARA;
+						if (bhavenext)
 						{
-							_move = _obj.GetBoolean();
-							_obj = _para.GetByIndex(14);
-							if (!_obj.IsNil())
+							_speed = _obj.GetFloat();
+							_JNEXT_LUAPARA;
+							if (bhavenext)
 							{
-								_rotate = _para.GetBoolean();
-								_obj = _para.GetByIndex(15);
-								if (!_obj.IsNil())
+								_move = _obj.GetBoolean();
+								_JNEXT_LUAPARA;
+								if (bhavenext)
 								{
-									_col = _LuaHelper_GetColor(&_obj);
+									_rotate = _para.GetBoolean();
+									_JNEXT_LUAPARA;
+									if (bhavenext)
+									{
+										_col = _LuaHelper_GetColor(&_obj);
+									}
 								}
 							}
 						}
 					}
-				}
 
-				ubg[_index]->valueSet(mp.tex, _siid, _x, _y, _z, _w, _h, _rotx, _roty, _rotz, _paral, _speed, _angle, _move, _rotate, _col);
+					ubg[_index]->valueSet(mp.tex, _siid, _x, _y, _z, _w, _h, _rotx, _roty, _rotz, _paral, _speed, _angle, _move, _rotate, _col);
+				}
+				return 0;
+			}
+			break;
+			/************************************************************************/
+			/* SELECT                                                               */
+			/************************************************************************/
+		case SCRKW_CLASS_SELECT:
+			switch (nowval)
+			{
+			case SCR_SELBUILD:
+				if (argscount == 2 || argscount == 3)
+				{
+					int _selsys = _INEXT_LUAPARA;
+					int _id = _INEXT_LUAPARA;
+					int _siid = _INEXT_LUAPARA;
+					float _cenx = _FNEXT_LUAPARA;
+					float _ceny = _FNEXT_LUAPARA;
+
+					char * _info = NULL;
+					float _hscale = 1.0f;
+					float _vscale = 0.0f;
+					BYTE _flag = SEL_NULL;
+					_JNEXT_LUAPARA;
+					if (bhavenext)
+					{
+						_info = (char *)(_obj.GetString());
+						_JNEXT_LUAPARA;
+						if (bhavenext)
+						{
+							_hscale = _obj.GetFloat();
+							_JNEXT_LUAPARA;
+							if (bhavenext)
+							{
+								_vscale = _obj.GetFloat();
+								_JNEXT_LUAPARA;
+								if (bhavenext)
+								{
+									_flag = _obj.GetInteger();
+								}
+							}
+						}
+					}
+
+					Selector * _selector = selsys[_selsys].BuildSelector(_id, _siid, _cenx, _ceny, _info, _hscale, _vscale, _flag);
+					if (argscount == 3)
+					{
+						_GETPARAS(3);
+						seladj _adj[SEL_STATEMAX];
+						ZeroMemory(_adj, sizeof(seladj)*SEL_STATEMAX);
+						bool _havestate[SEL_STATEMAX];
+						_JNEXT_LUAPARA;
+						if (bhavenext)
+						{
+							_havestate[0] = true;
+							_adj[0].xadj = _obj.GetFloat() + _cenx;
+							_JNEXT_LUAPARA;
+							if (bhavenext)
+							{
+								_adj[0].yadj = _obj.GetFloat() + _ceny;
+								_JNEXT_LUAPARA;
+								if (bhavenext)
+								{
+									_havestate[1] = true;
+									_adj[1].xadj = _obj.GetFloat() + _cenx;
+									_JNEXT_LUAPARA;
+									if (bhavenext)
+									{
+										_adj[1].yadj = _obj.GetFloat() + _ceny;
+										_JNEXT_LUAPARA;
+										if (bhavenext)
+										{
+											_havestate[2] = true;
+											_adj[2].xadj = _obj.GetFloat() + _cenx;
+											_JNEXT_LUAPARA;
+											if (bhavenext)
+											{
+												_adj[2].yadj = _obj.GetFloat() + _ceny;
+												_JNEXT_LUAPARA;
+												if (bhavenext)
+												{
+													_havestate[3] = true;
+													_adj[3].xadj = _obj.GetFloat() + _cenx;
+													_JNEXT_LUAPARA;
+													if (bhavenext)
+													{
+														_adj[3].yadj = _obj.GetFloat() + _ceny;
+														_JNEXT_LUAPARA;
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+						for (int i=0; i<SEL_STATEMAX; i++)
+						{
+							if (_havestate[i])
+							{
+								_selector->actionSet(i, _adj);
+							}
+						}
+					}
+				}
+				break;
+			case SCR_SELSET:
+				if (argscount == 2 || argscount == 3)
+				{
+					int _selsys = _INEXT_LUAPARA;
+					int _nselect = _INEXT_LUAPARA;
+					int _select = _INEXT_LUAPARA;
+					BYTE _keyplus = _INEXT_LUAPARA;
+					BYTE _keyminus = _INEXT_LUAPARA;
+					BYTE _keyok = _INEXT_LUAPARA;
+					BYTE _keycancel = _INEXT_LUAPARA;
+
+					int _maxtime = SELSYS_DEFAULTMAXTIME;
+					_JNEXT_LUAPARA;
+					if (bhavenext)
+					{
+						_maxtime = _obj.GetInteger();
+					}
+					selsys[_selsys].Setup(_nselect, _select, _keyplus, _keyminus, _keyok, _keycancel, _selsys, _maxtime);
+
+					if (argscount == 3)
+					{
+						_GETPARAS(3);
+						int _nPageNumber = _INEXT_LUAPARA;
+						float _fadebegin = _FNEXT_LUAPARA;
+						float _offset = _FNEXT_LUAPARA;
+
+						int _initshift = 0;
+						int _shiftangle = 9000;
+						_JNEXT_LUAPARA;
+						if (bhavenext)
+						{
+							_initshift = _obj.GetInteger();
+							_JNEXT_LUAPARA;
+							if (bhavenext)
+							{
+								_shiftangle = _obj.GetInteger();
+							}
+						}
+						selsys[_selsys].SetPageNumber(_nPageNumber, _fadebegin, _offset, _initshift, _shiftangle);
+					}
+				}
 			}
 		}
-		break;
 	}
 	return 0;
 }

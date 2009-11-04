@@ -1,6 +1,6 @@
 #include "Process.h"
 #include "Scripter.h"
-#include "Selector.h"
+#include "SelectSystem.h"
 #include "SE.h"
 
 int Process::processTitle()
@@ -9,10 +9,14 @@ int Process::processTitle()
 	if(time == 1)
 	{
 		reload();
-		Selector::select = titleselect;
+		for (int i=0; i<SELSYSTEMMAX; i++)
+		{
+			selsys[i].select = titleselect;
+		}
 	}
 	retvalue = PGO;
 	scr.Execute(SCR_CONTROL, STATE_TITLE, time);
-	titleselect = Selector::select;
+	int tselsys = scr.GetIntValue(SCR_RESERVEBEGIN);
+	titleselect = selsys[tselsys].select;
 	return retvalue;
 }

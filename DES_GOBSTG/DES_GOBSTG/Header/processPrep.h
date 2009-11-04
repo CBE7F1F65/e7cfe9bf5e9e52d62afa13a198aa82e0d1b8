@@ -8,7 +8,7 @@
 #include "Scripter.h"
 #include "BGLayer.h"
 #include "Replay.h"
-#include "Selector.h"
+#include "SelectSystem.h"
 #include "InfoSelect.h"
 #include "SE.h"
 #include "Player.h"

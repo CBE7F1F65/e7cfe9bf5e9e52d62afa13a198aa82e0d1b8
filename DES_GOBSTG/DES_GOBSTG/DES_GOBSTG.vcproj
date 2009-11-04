@@ -509,6 +509,9 @@
 				<File
 					RelativePath=".\Class\Selector.cpp">
 				</File>
+				<File
+					RelativePath=".\Core\SelectSystem.cpp">
+				</File>
 			</Filter>
 		</Filter>
 		<Filter
@@ -647,6 +650,9 @@
 				</File>
 				<File
 					RelativePath=".\Header\Selector.h">
+				</File>
+				<File
+					RelativePath=".\Header\SelectSystem.h">
 				</File>
 			</Filter>
 		</Filter>

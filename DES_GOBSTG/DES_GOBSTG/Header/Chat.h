@@ -27,6 +27,7 @@ public:
 
 	void Init();
 	void Release();
+	void Clear();
 
 	void Render();
 

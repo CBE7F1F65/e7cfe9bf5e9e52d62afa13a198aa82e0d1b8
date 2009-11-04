@@ -22,12 +22,7 @@ Fontsys Chat::fschat;
 
 Chat::Chat()
 {
-	col = 0x00000000;
-	chatting = false;
-	chatinit = false;
-	timer = 0;
-	pushtimer = 0xff;
-
+	Clear();
 	for (int i=0; i<CHATTERMAX; i++)
 	{
 		chatter[i] = NULL;
@@ -36,6 +31,16 @@ Chat::Chat()
 
 Chat::~Chat()
 {
+}
+
+void Chat::Clear()
+{
+	col = 0x00000000;
+	pushtimer = 0xff;
+	chatting = false;
+	chatinit = false;
+	timer = 0;
+	chati = 0;
 }
 
 void Chat::Init()
@@ -50,6 +55,7 @@ void Chat::Init()
 
 void Chat::Release()
 {
+	Clear();
 	for (int i=0; i<CHATTERMAX; i++)
 	{
 		if (chatter[i])

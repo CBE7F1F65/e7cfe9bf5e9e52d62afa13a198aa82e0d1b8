@@ -3,7 +3,7 @@
 #include "BGLayer.h"
 #include "Player.h"
 #include "DataConnector.h"
-#include "Selector.h"
+#include "SelectSystem.h"
 #include "InfoSelect.h"
 #include "SE.h"
 #include "Data.h"
@@ -53,6 +53,7 @@ int Process::processOver()
 	int tsec = scr.GetIntValue(SCR_RESERVEBEGIN+1);
 	int tnowchar = scr.GetIntValue(SCR_RESERVEBEGIN+2);
 	int tinsert = scr.GetIntValue(SCR_RESERVEBEGIN+3);
+	int tselsys = scr.GetIntValue(SCR_RESERVEBEGIN+4);
 
 	if(tdepth == 0)
 	{
@@ -64,89 +65,89 @@ int Process::processOver()
 		sprintf(lostbuffer, "%.2f", rpy.rpyinfo.lost);
 		strcat(lostbuffer, "%");
 
-		for(list<Selector>::iterator i=sel.begin();i!=sel.end();i++)
+		for(list<Selector>::iterator it=selsys[tselsys].sel.begin();it!=selsys[tselsys].sel.end();it++)
 		{
-			if(i->ID < 0x10)
+			if(it->ID < 0x10)
 			{
 				if(rpy.rpyinfo.cont)
 				{
-					if(i->ID == 2)
+					if(it->ID == 2)
 					{
-						SpriteItemManager::SetSprite(SpriteItemManager::GetIndexByName(SI_RESULT_CANNOTSAVE), i->sprite, tex);
-						Selector::Setup(1, 1);
+						SpriteItemManager::SetSprite(SpriteItemManager::GetIndexByName(SI_RESULT_CANNOTSAVE), it->sprite, tex);
+						selsys[tselsys].Setup(1, 1, KS_UP, KS_DOWN, KS_FIRE, KS_SPECIAL, tselsys);
 					}
 					else
 					{
-						if(i->ID == 0)
-							i->flag |= SEL_NONACTIVE;
-						SpriteItemManager::SetSprite(-1, i->sprite, tex);
+						if(it->ID == 0)
+							it->flag |= SEL_NONACTIVE;
+						SpriteItemManager::SetSprite(-1, it->sprite, tex);
 					}
 				}
 			}
-			else if((i->ID & 0xf0) == 0x20)
+			else if((it->ID & 0xf0) == 0x20)
 			{
-				if(i->ID < strlen(scorebuffer) + 0x20)
+				if(it->ID < strlen(scorebuffer) + 0x20)
 				{
-					SpriteItemManager::SetSprite(SpriteItemManager::digituiIndex+(scorebuffer[i->ID-0x20]-'0'), i->sprite, tex);
+					SpriteItemManager::SetSprite(SpriteItemManager::digituiIndex+(scorebuffer[it->ID-0x20]-'0'), it->sprite, tex);
 				}
 				else
 				{
-					SpriteItemManager::SetSprite(-1, i->sprite, tex);
+					SpriteItemManager::SetSprite(-1, it->sprite, tex);
 				}
 			}
-			else if((i->ID & 0xf0) == 0x30)
+			else if((it->ID & 0xf0) == 0x30)
 			{
-				if(i->ID < strlen(alivenessbuffer) + 0x30)
+				if(it->ID < strlen(alivenessbuffer) + 0x30)
 				{
-					SpriteItemManager::SetSprite(SpriteItemManager::digituiIndex+(alivenessbuffer[i->ID-0x30]-'0'), i->sprite, tex);
-				}
-				else
-				{
-					SpriteItemManager::SetSprite(-1, i->sprite, tex);
-				}
-			}
-			else if((i->ID & 0xf0) == 0x40)
-			{
-				if(i->ID & 1)
-					SpriteItemManager::SetSprite(SpriteItemManager::digituiIndex+(rpy.rpyinfo.miss%10), i->sprite, tex);
-				else
-					SpriteItemManager::SetSprite(SpriteItemManager::digituiIndex+(rpy.rpyinfo.miss/10), i->sprite, tex);
-			}
-			else if((i->ID & 0xf0) == 0x50)
-			{
-				if(i->ID & 1)
-					SpriteItemManager::SetSprite(SpriteItemManager::digituiIndex+(rpy.rpyinfo.cont%10), i->sprite, tex);
-				else
-					SpriteItemManager::SetSprite(SpriteItemManager::digituiIndex+(rpy.rpyinfo.cont/10), i->sprite, tex);
-			}
-			else if((i->ID & 0xf0) == 0x60)
-			{
-				if(i->ID < strlen(lostbuffer) + 0x60)
-				{
-					if(lostbuffer[i->ID-0x60] == '.')
-						lostbuffer[i->ID-0x60] = '0' + SIDIGITUI_POINTPLUS;
-					else if(lostbuffer[i->ID-0x60] == '%')
-						lostbuffer[i->ID-0x60] = '0' + SIDIGITUI_MODPLUS;
-					SpriteItemManager::SetSprite(SpriteItemManager::digituiIndex+(lostbuffer[i->ID-0x60]-'0'), i->sprite, tex);
+					SpriteItemManager::SetSprite(SpriteItemManager::digituiIndex+(alivenessbuffer[it->ID-0x30]-'0'), it->sprite, tex);
 				}
 				else
 				{
-					SpriteItemManager::SetSprite(-1, i->sprite, tex);
+					SpriteItemManager::SetSprite(-1, it->sprite, tex);
 				}
 			}
-			else if((i->ID & 0xf0) == 0x70)
+			else if((it->ID & 0xf0) == 0x40)
 			{
-				if(i->ID & 1)
-					SpriteItemManager::SetSprite(SpriteItemManager::digituiIndex+(rpy.rpyinfo.border%10), i->sprite, tex);
+				if(it->ID & 1)
+					SpriteItemManager::SetSprite(SpriteItemManager::digituiIndex+(rpy.rpyinfo.miss%10), it->sprite, tex);
 				else
-					SpriteItemManager::SetSprite(SpriteItemManager::digituiIndex+(rpy.rpyinfo.border/10), i->sprite, tex);
+					SpriteItemManager::SetSprite(SpriteItemManager::digituiIndex+(rpy.rpyinfo.miss/10), it->sprite, tex);
 			}
-			else if((i->ID & 0xf0) == 0x80)
+			else if((it->ID & 0xf0) == 0x50)
 			{
-				if(i->ID & 1)
-					SpriteItemManager::SetSprite(SpriteItemManager::digituiIndex+(rpy.rpyinfo.get%10), i->sprite, tex);
+				if(it->ID & 1)
+					SpriteItemManager::SetSprite(SpriteItemManager::digituiIndex+(rpy.rpyinfo.cont%10), it->sprite, tex);
 				else
-					SpriteItemManager::SetSprite(SpriteItemManager::digituiIndex+(rpy.rpyinfo.get/10), i->sprite, tex);
+					SpriteItemManager::SetSprite(SpriteItemManager::digituiIndex+(rpy.rpyinfo.cont/10), it->sprite, tex);
+			}
+			else if((it->ID & 0xf0) == 0x60)
+			{
+				if(it->ID < strlen(lostbuffer) + 0x60)
+				{
+					if(lostbuffer[it->ID-0x60] == '.')
+						lostbuffer[it->ID-0x60] = '0' + SIDIGITUI_POINTPLUS;
+					else if(lostbuffer[it->ID-0x60] == '%')
+						lostbuffer[it->ID-0x60] = '0' + SIDIGITUI_MODPLUS;
+					SpriteItemManager::SetSprite(SpriteItemManager::digituiIndex+(lostbuffer[it->ID-0x60]-'0'), it->sprite, tex);
+				}
+				else
+				{
+					SpriteItemManager::SetSprite(-1, it->sprite, tex);
+				}
+			}
+			else if((it->ID & 0xf0) == 0x70)
+			{
+				if(it->ID & 1)
+					SpriteItemManager::SetSprite(SpriteItemManager::digituiIndex+(rpy.rpyinfo.border%10), it->sprite, tex);
+				else
+					SpriteItemManager::SetSprite(SpriteItemManager::digituiIndex+(rpy.rpyinfo.border/10), it->sprite, tex);
+			}
+			else if((it->ID & 0xf0) == 0x80)
+			{
+				if(it->ID & 1)
+					SpriteItemManager::SetSprite(SpriteItemManager::digituiIndex+(rpy.rpyinfo.get%10), it->sprite, tex);
+				else
+					SpriteItemManager::SetSprite(SpriteItemManager::digituiIndex+(rpy.rpyinfo.get/10), it->sprite, tex);
 			}
 		}
 		tdepth = 1;

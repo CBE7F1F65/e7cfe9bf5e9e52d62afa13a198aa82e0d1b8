@@ -91,7 +91,7 @@ void Process::Release()
 	}
 
 	//
-	Selector::Clear();
+	SelectSystem::ClearAll();
 	Bullet::Release();
 	PlayerBullet::Release();
 	Item::Release();

@@ -2,7 +2,7 @@
 #include "Scripter.h"
 #include "Player.h"
 #include "InfoSelect.h"
-#include "Selector.h"
+#include "SelectSystem.h"
 #include "Data.h"
 #include "DataConnector.h"
 #include "SE.h"

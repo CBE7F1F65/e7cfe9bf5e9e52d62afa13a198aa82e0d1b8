@@ -298,6 +298,8 @@ typedef struct tagTarget
 
 #define M_SAVEINPUTMAX		0x36000
 
+#define SELSYSTEMMAX		4
+
 #ifdef __RELEASE
 	#define DEFAULT_RESOURCEPATH	"Resource"
 #else

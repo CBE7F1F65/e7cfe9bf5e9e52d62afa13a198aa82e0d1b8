@@ -35,7 +35,7 @@ public:
 
 	bool isSpell();
 
-	static void empty();
+	static void Clear();
 	static bool Init();
 	static void Release();
 

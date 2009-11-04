@@ -627,15 +627,15 @@ void * Scripter::Value(vector<Script>::iterator * p, int i, BYTE force)
 			switch (nowval)
 			{
 			case SCR_SELCOMPLETE:
-				idesc[i] = Selector::complete;
+				idesc[i] = false;//SelectSystem::complete;
 				d[i].bfloat = false;
 				break;
 			case SCR_SEL:
-				idesc[i] = Selector::select;
+				idesc[i] = 0;//SelectSystem::select;
 				d[i].bfloat = false;
 				break;
 			case SCR_SELFIRSTID:
-				idesc[i] = Selector::firstID;
+				idesc[i] = 0;//SelectSystem::firstID;
 				d[i].bfloat = false;
 				break;
 			case SCR_ISELCOMPLETE:

@@ -8,7 +8,10 @@ HD3DFONT Fontsys::font = NULL;
 
 Fontsys::Fontsys()
 {
+	font = NULL;
 	tar = NULL;
+	ZeroMemory(&quad, sizeof(hgeQuad));
+	strcpy(text, "");
 }
 
 Fontsys::~Fontsys()
@@ -36,6 +39,8 @@ list<Fontsys *>::iterator Fontsys::SignOff()
 			return it;
 		}
 	}
+	ZeroMemory(&quad, sizeof(hgeQuad));
+	strcpy(text, "");
 	return fontsys.end();
 }
 
@@ -48,8 +53,12 @@ void Fontsys::Release()
 	fontsys.clear();
 }
 
-void Fontsys::Init()
+void Fontsys::Init(HD3DFONT _font)
 {
+	if (_font != NULL)
+	{
+		font = _font;
+	}
 	Release();
 }
 
@@ -205,6 +214,10 @@ void Fontsys::SignUp(const char * _text, HD3DFONT _font)
 
 void Fontsys::Render(float x, float y, DWORD ucol, DWORD dcol, float shadow, float hext, float vext)
 {
+	if (!quad.tex)
+	{
+		return;
+	}
 	if (shadow)
 	{
 		Render(x+shadow*2, y+shadow*2, ucol&0xff000000, dcol&0xff000000, false, hext, vext);

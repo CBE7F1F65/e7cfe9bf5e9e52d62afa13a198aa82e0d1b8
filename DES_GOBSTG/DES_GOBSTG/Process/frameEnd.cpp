@@ -268,9 +268,9 @@ void Process::frameEnd()
 		fgpause.action();
 	if(bgmask.exist)
 		bgmask.action();
-	for(list<Selector>::iterator i = sel.begin();i != sel.end(); i++)
+	for (int i=0; i<SELSYSTEMMAX; i++)
 	{
-		i->action();
+		selsys[i].action();
 	}
 	for(list<InfoSelect>::iterator i=infoselect.begin();i!=infoselect.end();i++)
 	{

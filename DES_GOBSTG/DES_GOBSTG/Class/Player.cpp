@@ -15,12 +15,6 @@
 
 Player Player::p;
 
-int Player::ncBorder = 0;
-BYTE Player::ncCont = 0;
-BYTE Player::ncGet = 0;
-BYTE Player::ncMiss = 0;
-BYTE Player::ncPause = 0;
-
 #define _PL_ITEMDRAINNPOP	(PL_NPOPMAX * 4 / 5)
 
 #define _PL_HITONSCOREADD	40
@@ -64,6 +58,7 @@ Player::Player()
 	nowID			= 0;
 	ID_sub_1		= 0;
 	ID_sub_2		= 0;
+	ClearNC();
 }
 
 Player::~Player()
@@ -347,6 +342,15 @@ bool Player::HavePlayer(WORD _ID)
 		return true;
 	}
 	return false;
+}
+
+void Player::ClearNC()
+{
+	ncCont = 0;
+	ncGet = 0;
+	ncBorder = 0;
+	ncMiss = 0;
+	ncPause = 0;
 }
 
 void Player::ClearSet()
