@@ -510,7 +510,7 @@
 					RelativePath=".\Class\Selector.cpp">
 				</File>
 				<File
-					RelativePath=".\Core\SelectSystem.cpp">
+					RelativePath=".\Class\SelectSystem.cpp">
 				</File>
 			</Filter>
 		</Filter>

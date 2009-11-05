@@ -61,7 +61,7 @@ Selector * SelectSystem::BuildSelector(BYTE ID, int siID, float cenx, float ceny
 	return _pselector;
 }
 
-void SelectSystem::Setup(int _nselect, int _select, BYTE _keyplus, BYTE _keyminus, BYTE _keyok, BYTE _keycancel, BYTE _pushid, int maxtime/* =-1 */)
+void SelectSystem::Setup(int _nselect, int _select, BYTE _keyminus, BYTE _keyplus, BYTE _keyok, BYTE _keycancel, BYTE _pushid, int maxtime/* =-1 */)
 {
 	nselect = _nselect;
 	select = _select;
@@ -195,7 +195,7 @@ void SelectSystem::action()
 	Selector * fvselector = NULL;
 	for(list<Selector>::iterator it=sel.begin();it!=sel.end();it++)
 	{
-		it->PreAction(nselect, select, &fvID, fvselector);
+		it->PreAction(nselect, select, &fvID, &fvselector);
 	}
 
 	if(fvselector != NULL)
@@ -276,7 +276,7 @@ void SelectSystem::Render()
 	}
 }
 
-bool SelectSystem::Confirm(BYTE _keyplus, BYTE _keyminus, BYTE _keyok, BYTE _keycancel, BYTE _pushid, float cenx/* =M_ACTIVECLIENT_CENTER_X */, float ceny/* =M_ACTIVECLIENT_CENTER_Y */, bool settrue/* =false */)
+bool SelectSystem::Confirm(BYTE _keyminus, BYTE _keyplus, BYTE _keyok, BYTE _keycancel, BYTE _pushid, float cenx/* =M_ACTIVECLIENT_CENTER_X */, float ceny/* =M_ACTIVECLIENT_CENTER_Y */, bool settrue/* =false */)
 {
 	if(!confirminit)
 	{

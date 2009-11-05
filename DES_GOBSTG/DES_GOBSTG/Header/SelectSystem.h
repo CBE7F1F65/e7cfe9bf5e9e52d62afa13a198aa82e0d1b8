@@ -18,11 +18,11 @@ public:
 		float hscale = 1, float vscale = 0,
 		BYTE flag = SEL_NULL);
 	void Clear();
-	void Setup(int nselect, int select, BYTE keyplus, BYTE keyminus, BYTE keyok, BYTE keycancel, BYTE pushid, int maxtime=SELSYS_DEFAULTMAXTIME);
+	void Setup(int nselect, int select, BYTE keyminus, BYTE keyplus, BYTE keyok, BYTE keycancel, BYTE pushid, int maxtime=SELSYS_DEFAULTMAXTIME);
 	bool SetPageNumber(BYTE nPageNum, float fadebegin, float offset, int initshift=0, int shiftangle=9000);
 	void SetAction(BYTE typeflag, float xadj, float yadj);
 
-	bool Confirm(BYTE keyplus, BYTE keyminus, BYTE keyok, BYTE keycancel, BYTE pushid, float cenx=M_ACTIVECLIENT_CENTER_X, float ceny=M_ACTIVECLIENT_CENTER_Y, bool settrue=false);
+	bool Confirm(BYTE keyminus, BYTE keyplus, BYTE keyok, BYTE keycancel, BYTE pushid, float cenx=M_ACTIVECLIENT_CENTER_X, float ceny=M_ACTIVECLIENT_CENTER_Y, bool settrue=false);
 
 	void shift(int nshift);
 	void action();

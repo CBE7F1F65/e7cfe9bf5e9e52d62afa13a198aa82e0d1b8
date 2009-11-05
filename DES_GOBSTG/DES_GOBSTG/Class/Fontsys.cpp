@@ -8,7 +8,6 @@ HD3DFONT Fontsys::font = NULL;
 
 Fontsys::Fontsys()
 {
-	font = NULL;
 	tar = NULL;
 	ZeroMemory(&quad, sizeof(hgeQuad));
 	strcpy(text, "");

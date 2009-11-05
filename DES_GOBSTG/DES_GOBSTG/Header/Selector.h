@@ -54,7 +54,7 @@ public:
 	void Complete();
 
 	bool checkSub();
-	void PreAction(int nselect, int select, int * fvID, Selector * fvselector);
+	void PreAction(int nselect, int select, int * fvID, Selector ** fvselector);
 	bool PostAction(int * select, int sellock, int nPageNum, float fadebegin, float offset, int shiftangle);
 	bool checkFVState();
 	void ChangeState(BYTE state, BYTE op);

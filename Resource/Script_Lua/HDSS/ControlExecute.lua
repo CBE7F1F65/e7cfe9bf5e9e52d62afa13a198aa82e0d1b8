@@ -11,7 +11,7 @@ function ControlExecute(name, con)
 			hdss.Call(
 				HDSS_SELBUILD,
 				{
-					0, 0, SI_Title_Start, 480, 240
+					0, 0, SI_Title_Start, 480, 240, "a"
 				},
 				{
 					0, 0,
@@ -48,9 +48,6 @@ function ControlExecute(name, con)
 				HDSS_SELSET,
 				{
 					0, 3, 0, KS_UP, KS_DOWN, KS_FIRE, KS_SPECIAL
-				},
-				{
-					0, 0, 0
 				}
 			)
 		end

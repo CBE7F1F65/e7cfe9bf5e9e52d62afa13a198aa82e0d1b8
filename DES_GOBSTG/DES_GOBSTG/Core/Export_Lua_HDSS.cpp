@@ -49,7 +49,7 @@ bool Export_Lua::_LuaRegistHDSSConst(LuaObject * obj)
 	i++;
 	for (; scrKeyTable[i].code != SCR_NULL || strcmp(scrKeyTable[i].word, SCR_NULL_STR); i++)
 	{
-		obj->SetNumber(scrKeyTable[i].word, CDOUBLEN(scrKeyTable[i].code));
+		obj->SetNumber(scrKeyTable[i].word, CUINT(scrKeyTable[i].code));
 	}
 
 	//SI
@@ -285,11 +285,20 @@ int Export_Lua::LuaFn_HDSS(LuaState * ls)
 								}
 							}
 						}
-						for (int i=0; i<SEL_STATEMAX; i++)
+						if (_havestate[0])
 						{
-							if (_havestate[i])
+							_selector->actionSet(SEL_NONE, _adj);
+							if (_havestate[1])
 							{
-								_selector->actionSet(i, _adj);
+								_selector->actionSet(SEL_OVER, _adj);
+								if (_havestate[2])
+								{
+									_selector->actionSet(SEL_ENTER, _adj);
+									if (_havestate[3])
+									{
+										_selector->actionSet(SEL_LEAVE, _adj);
+									}
+								}
 							}
 						}
 					}

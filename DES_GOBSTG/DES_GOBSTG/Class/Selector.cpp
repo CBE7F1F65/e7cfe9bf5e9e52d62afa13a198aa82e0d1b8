@@ -8,6 +8,7 @@ Selector::Selector()
 {
 	sprite = NULL;
 	flag	= SEL_NONE;
+	sub = false;
 }
 
 Selector::~Selector()
@@ -30,6 +31,7 @@ void Selector::valueSet(BYTE _ID, int siID, float cenx, float ceny, char * info,
 
 	timer	=	0;
 	flag	=	SEL_NONE;
+	sub		=	false;
 
 	if (info && strlen(info))
 	{
@@ -143,12 +145,13 @@ bool Selector::checkFVState()
 	return false;
 }
 
-void Selector::PreAction(int nselect, int select, int * fvID, Selector * fvselector)
+void Selector::PreAction(int nselect, int select, int * fvID, Selector ** fvselector)
 {
 	if (checkSub())
 	{
 		flag &= ~SEL_GRAY;
 	}
+
 	if(!((flag & SEL_INFOMASK)>>1) && ID < nselect)
 	{
 		if(ID == select)
@@ -161,14 +164,14 @@ void Selector::PreAction(int nselect, int select, int * fvID, Selector * fvselec
 		}
 	}
 
-	if(!flag && *fvID < 0)
+	if(!(flag>>1) && !sub && *fvID < 0)
 	{
 		*fvID = ID;
 	}
 
-	if (ID == *fvID && !fvselector && checkFVState())
+	if (ID == *fvID && !(*fvselector) && checkFVState())
 	{
-		fvselector = this;
+		*fvselector = this;
 	}
 }
 
@@ -273,7 +276,7 @@ bool Selector::PostAction(int * select, int sellock, int nPageNum, float fadebeg
 		{
 			shiftangle -= 18000;
 		}
-		while (shiftangle <= 18000)
+		while (shiftangle <= 0)
 		{
 			shiftangle += 18000;
 		}
