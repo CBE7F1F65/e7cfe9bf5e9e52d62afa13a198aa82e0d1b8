@@ -48,12 +48,12 @@ void SelectSystem::Clear()
 	plus = true;
 }
 
-Selector * SelectSystem::BuildSelector(BYTE ID, int siID, float cenx, float ceny, char * info, float hscale, float vscale, BYTE flag /* = SEL_NULL */)
+Selector * SelectSystem::BuildSelector(BYTE ID, int siID, float cenx, float ceny, float hscale, float vscale, BYTE flag /* = SEL_NULL */)
 {
 	Selector _selector;
 	sel.push_back(_selector);
 	Selector * _pselector = &(*(sel.rbegin()));
-	_pselector->valueSet(ID, siID, cenx, ceny, info, hscale, vscale, flag);
+	_pselector->valueSet(ID, siID, cenx, ceny, hscale, vscale, flag);
 	_pselector->actionSet(SEL_NONE, adj);
 	_pselector->actionSet(SEL_OVER, adj);
 	_pselector->actionSet(SEL_ENTER, adj);
@@ -274,6 +274,10 @@ void SelectSystem::Render()
 	{
 		it->Render();
 	}
+	for(list<Selector>::iterator it=sel.begin(); it!=sel.end(); it++)
+	{
+		it->RenderInfo();
+	}
 }
 
 bool SelectSystem::Confirm(BYTE _keyminus, BYTE _keyplus, BYTE _keyok, BYTE _keycancel, BYTE _pushid, float cenx/* =M_ACTIVECLIENT_CENTER_X */, float ceny/* =M_ACTIVECLIENT_CENTER_Y */, bool settrue/* =false */)
@@ -287,7 +291,7 @@ bool SelectSystem::Confirm(BYTE _keyminus, BYTE _keyplus, BYTE _keyok, BYTE _key
 
 		BuildSelector(0, SpriteItemManager::yesIndex, cenx, ceny)->actionSet(SEL_NONE, -30, 45);
 		BuildSelector(0, SpriteItemManager::noIndex, cenx, ceny)->actionSet(SEL_NONE, 30, 45);
-		BuildSelector(0, SpriteItemManager::confirmIndex, cenx, ceny, NULL, 1, 0, SEL_NONACTIVE)->actionSet(SEL_NONE, 0, 0);
+		BuildSelector(0, SpriteItemManager::confirmIndex, cenx, ceny, 1, 0, SEL_NONACTIVE)->actionSet(SEL_NONE, 0, 0);
 
 		Setup(2, settrue?0:1, _keyplus, _keyminus, _keyok, _keycancel, _pushid);
 		confirminit = true;

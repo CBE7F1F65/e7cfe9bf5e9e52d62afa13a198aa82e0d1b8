@@ -43,9 +43,9 @@ public:
 	~Selector();
 
 	void valueSet(BYTE ID, int siID, float cenx, float ceny,
-		char * info = NULL,
 		float hscale = 1, float vscale = 0,
 		BYTE flag = SEL_NULL);
+	void infoSet(char * info, DWORD ucol = 0xffffffff, DWORD dcol = 0xffffffff, float shadow = FONTSYS_DEFAULT_SHADOW, float xoffset=0, float yoffset=0, float hscale=1.0f, float vscale=0.0f, BYTE alignflag=HGETEXT_CENTER|HGETEXT_MIDDLE, bool sync=false);
 	void actionSet(BYTE setflag, float xadj, float yadj);
 	void actionSet(BYTE setflag, seladj * adj=NULL);
 	int getAdjIndex(BYTE setflag);
@@ -60,11 +60,22 @@ public:
 	void ChangeState(BYTE state, BYTE op);
 
 	void Render();
+	void RenderInfo();
 
 public:
 	seladj	adj[SEL_STATEMAX];
 
 	Fontsys fsinfo;
+	DWORD infoucol;
+	DWORD infodcol;
+	float infoshadow;
+	float infoxoffset;
+	float infoyoffset;
+	float infohscale;
+	float infovscale;
+	float infoalignflag;
+	bool infosync;
+
 	float	x;
 	float	y;
 	float	hscale;

@@ -72,7 +72,7 @@ void Chat::Render()
 		chatter[i]->RenderEx(x[i], y[i], 0, 0.8f);
 	}
 	textbox->RenderEx(x[CHATTER_TEXTBOX], y[CHATTER_TEXTBOX], ARC(9000), 1.5f, 1.0f);
-	fschat.Render(M_ACTIVECLIENT_LEFT+70, M_ACTIVECLIENT_CENTER_Y+138, 0xffffffff, col, 0.4f);
+	fschat.Render(M_ACTIVECLIENT_LEFT+70, M_ACTIVECLIENT_CENTER_Y+138, 0xffffffff, col);
 }
 
 bool Chat::chat(BYTE ID, BYTE chatsprite, const char * _text)

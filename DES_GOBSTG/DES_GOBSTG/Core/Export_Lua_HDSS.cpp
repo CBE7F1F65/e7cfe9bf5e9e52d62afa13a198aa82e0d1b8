@@ -200,7 +200,7 @@ int Export_Lua::LuaFn_HDSS(LuaState * ls)
 			switch (nowval)
 			{
 			case SCR_SELBUILD:
-				if (argscount == 2 || argscount == 3)
+				if (argscount > 1 && argscount <= 4)
 				{
 					int _selsys = _INEXT_LUAPARA;
 					int _id = _INEXT_LUAPARA;
@@ -208,35 +208,31 @@ int Export_Lua::LuaFn_HDSS(LuaState * ls)
 					float _cenx = _FNEXT_LUAPARA;
 					float _ceny = _FNEXT_LUAPARA;
 
-					char * _info = NULL;
 					float _hscale = 1.0f;
 					float _vscale = 0.0f;
 					BYTE _flag = SEL_NULL;
 					_JNEXT_LUAPARA;
 					if (bhavenext)
 					{
-						_info = (char *)(_obj.GetString());
+						_hscale = _obj.GetFloat();
 						_JNEXT_LUAPARA;
 						if (bhavenext)
 						{
-							_hscale = _obj.GetFloat();
+							_vscale = _obj.GetFloat();
 							_JNEXT_LUAPARA;
 							if (bhavenext)
 							{
-								_vscale = _obj.GetFloat();
-								_JNEXT_LUAPARA;
-								if (bhavenext)
-								{
-									_flag = _obj.GetInteger();
-								}
+								_flag = _obj.GetInteger();
 							}
 						}
 					}
 
-					Selector * _selector = selsys[_selsys].BuildSelector(_id, _siid, _cenx, _ceny, _info, _hscale, _vscale, _flag);
-					if (argscount == 3)
+					Selector * _selector = selsys[_selsys].BuildSelector(_id, _siid, _cenx, _ceny, _hscale, _vscale, _flag);
+
+					if (argscount > 2)
 					{
 						_GETPARAS(3);
+
 						seladj _adj[SEL_STATEMAX];
 						ZeroMemory(_adj, sizeof(seladj)*SEL_STATEMAX);
 						bool _havestate[SEL_STATEMAX];
@@ -301,11 +297,79 @@ int Export_Lua::LuaFn_HDSS(LuaState * ls)
 								}
 							}
 						}
+
+						if (argscount > 3)
+						{
+							_GETPARAS(4);
+
+							char * _info = NULL;
+							DWORD _ucol = 0xFFFFFFFF;
+							DWORD _dcol = 0xFFFFFFFF;
+							float _shadow = FONTSYS_DEFAULT_SHADOW;
+							float _xoffset = 0;
+							float _yoffset = 0;
+							_hscale = 1.0f;
+							_vscale = 0.0f;
+							BYTE _alignflag = HGETEXT_CENTER|HGETEXT_MIDDLE;
+							bool _sync = false;
+
+							_JNEXT_LUAPARA;
+							if (bhavenext)
+							{
+								_info = (char *)_obj.GetString();
+								_JNEXT_LUAPARA;
+								if (bhavenext)
+								{
+									_ucol = _LuaHelper_GetColor(&_obj);
+									_JNEXT_LUAPARA;
+									if (bhavenext)
+									{
+										_dcol = _LuaHelper_GetColor(&_obj);
+										_JNEXT_LUAPARA;
+										if (bhavenext)
+										{
+											_shadow = _obj.GetFloat();
+											_JNEXT_LUAPARA;
+											if (bhavenext)
+											{
+												_xoffset = _obj.GetFloat();
+												_JNEXT_LUAPARA;
+												if (bhavenext)
+												{
+													_yoffset = _obj.GetFloat();
+													_JNEXT_LUAPARA;
+													if (bhavenext)
+													{
+														_hscale = _obj.GetFloat();
+														_JNEXT_LUAPARA;
+														if (bhavenext)
+														{
+															_vscale = _obj.GetFloat();
+															_JNEXT_LUAPARA;
+															if (bhavenext)
+															{
+																_alignflag = _obj.GetInteger();
+																_JNEXT_LUAPARA;
+																if (bhavenext)
+																{
+																	_sync = _obj.GetBoolean();
+																}
+															}
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+							_selector->infoSet(_info, _ucol, _dcol, _shadow, _xoffset, _yoffset, _hscale, _vscale, _alignflag, _sync);
+						}
 					}
 				}
 				break;
 			case SCR_SELSET:
-				if (argscount == 2 || argscount == 3)
+				if (argscount > 1 && argscount <= 3)
 				{
 					int _selsys = _INEXT_LUAPARA;
 					int _nselect = _INEXT_LUAPARA;
@@ -323,7 +387,7 @@ int Export_Lua::LuaFn_HDSS(LuaState * ls)
 					}
 					selsys[_selsys].Setup(_nselect, _select, _keyplus, _keyminus, _keyok, _keycancel, _selsys, _maxtime);
 
-					if (argscount == 3)
+					if (argscount > 2)
 					{
 						_GETPARAS(3);
 						int _nPageNumber = _INEXT_LUAPARA;

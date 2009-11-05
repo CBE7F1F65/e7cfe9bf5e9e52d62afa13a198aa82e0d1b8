@@ -21,7 +21,7 @@ void Selector::Complete()
 	fsinfo.SignOff();
 }
 
-void Selector::valueSet(BYTE _ID, int siID, float cenx, float ceny, char * info, float _hscale, float _vscale, BYTE _flag /* = SEL_NULL */)
+void Selector::valueSet(BYTE _ID, int siID, float cenx, float ceny, float _hscale, float _vscale, BYTE _flag /* = SEL_NULL */)
 {
 	ID		=	_ID;
 	x		=	cenx;
@@ -32,11 +32,6 @@ void Selector::valueSet(BYTE _ID, int siID, float cenx, float ceny, char * info,
 	timer	=	0;
 	flag	=	SEL_NONE;
 	sub		=	false;
-
-	if (info && strlen(info))
-	{
-		fsinfo.SignUp(info);
-	}
 
 	if(sprite)
 	{
@@ -55,6 +50,24 @@ void Selector::valueSet(BYTE _ID, int siID, float cenx, float ceny, char * info,
 		adj[i].xadj = x;
 		adj[i].yadj = y;
 	}
+}
+
+void Selector::infoSet(char * info, DWORD ucol /* = 0xffffffff */, DWORD dcol /* = 0xffffffff */, float shadow /* = FONTSYS_DEFAULT_SHADOW */, float xoffset/* =0 */, float yoffset/* =0 */, float hscale/* =1.0f */, float vscale/* =0.0f */, BYTE alignflag/* =HGETEXT_CENTER|HGETEXT_MIDDLE */, bool sync /* = false*/)
+{
+	if (!info || !strlen(info))
+	{
+		return;
+	}
+	fsinfo.SignUp(info);
+	infoucol = ucol;
+	infodcol = dcol;
+	infoshadow = shadow;
+	infoxoffset = xoffset;
+	infoyoffset = yoffset;
+	infohscale = hscale;
+	infovscale = vscale;
+	infoalignflag = alignflag;
+	infosync = sync;
 }
 
 int Selector::getAdjIndex(BYTE setflag)
@@ -102,7 +115,15 @@ void Selector::Render()
 	{
 		sprite->RenderEx(x, y, 0, hscale, vscale);
 	}
-	fsinfo.Render(x, y, 0xFFFFFFFF, 0xFFFFFFFF);
+}
+
+void Selector::RenderInfo()
+{
+	if (infosync && (!(flag & SEL_OVER) && !(flag & SEL_ENTER)))
+	{
+		return;
+	}
+	fsinfo.Render(x+infoxoffset, y+infoyoffset, infoucol, infodcol, infoshadow, infohscale, infovscale, infoalignflag);
 }
 
 void Selector::ChangeState(BYTE state, BYTE op)

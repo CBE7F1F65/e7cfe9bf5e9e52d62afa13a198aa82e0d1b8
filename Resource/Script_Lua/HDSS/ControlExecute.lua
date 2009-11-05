@@ -8,42 +8,47 @@ function ControlExecute(name, con)
 					0, SI_TitleScene, TotalCenterX, TotalCenterY, TotalW, TotalH
 				}
 			)
-			hdss.Call(
-				HDSS_SELBUILD,
-				{
-					0, 0, SI_Title_Start, 480, 240, "a"
-				},
-				{
+			
+			local tableSelectOffset =
+			{
 					0, 0,
 					-4, -4,
 					-8, 0,
 					8, 8
-				}
-			)
-			hdss.Call(
-				HDSS_SELBUILD,
-				{
-					0, 1, SI_Title_Replay, 480, 270
-				},
-				{
-					0, 0,
-					-4, -4,
-					-8, 0,
-					8, 8
-				}
-			)
-			hdss.Call(
-				HDSS_SELBUILD,
-				{
-					0, 2, SI_Title_Quit, 480, 300
-				},
-				{
-					0, 0,
-					-4, -4,
-					-8, 0,
-					8, 8
-				}
-			)
+			}
+			local ucol = global.ARGB(0xFF, 0xFFFFFF);
+			local dcol = global.ARGB(0xFF, 0xFF3333);
+			local shadow = 0.4
+			local align = HGETEXT_CENTER + HGETEXT_MIDDLE;
+			
+			local x = 480;
+			local ystart = 240;
+			local yoffset = 30;
+			local infox = 320;
+			local infoy = 400;
+			
+			local _siusetable =
+			{
+				{SI_Title_Start,	"åùëÈ§ÚÈ_ º§∑§ﬁ§π°£"},
+				{SI_Title_Replay,	"•Í•◊•Ï•§§ÚËaŸp§∑§ﬁ§π°£"},
+				{SI_Title_Quit,		"§§§Ì§§§Ì§»ΩK¡À§∑§ﬁ§π°£"}
+			}
+			local selsysid = 0;
+			for j=1, 3 do
+				local i = j-1;
+				local y = ystart + i * yoffset;
+				hdss.Call(
+					HDSS_SELBUILD,
+					{
+						selsysid, i, _siusetable[j][1], x, y
+					},
+					tableSelectOffset,
+					{
+						_siusetable[j][2], ucol, dcol, shadow, infox - x, infoy - y, 1, 0, align, true
+					}
+				)
+			end
+			
 			hdss.Call(
 				HDSS_SELSET,
 				{

@@ -155,9 +155,9 @@ void InfoSelect::Render()
 	for(list<InfoSelect>::iterator it=infoselect.begin();it!=infoselect.end();it++)
 	{
 		if(InfoSelect::select == it->ID && !(it->flag & SEL_NONACTIVE))
-			it->fsinfo.Render(it->x-2, it->y-2, it->ucol, it->dcol, 0.8f, 3, 1);
+			it->fsinfo.Render(it->x-2, it->y-2, it->ucol, it->dcol, FONTSYS_DEFAULT_SHADOW, 1.15f, 1.05f);
 		else
-			it->fsinfo.Render(it->x, it->y, it->ucol, it->dcol, 0.8f);
+			it->fsinfo.Render(it->x, it->y, it->ucol, it->dcol);
 	}
 }
 

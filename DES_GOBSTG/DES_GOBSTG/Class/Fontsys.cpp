@@ -9,27 +9,33 @@ HD3DFONT Fontsys::font = NULL;
 Fontsys::Fontsys()
 {
 	tar = NULL;
-	ZeroMemory(&quad, sizeof(hgeQuad));
+	sprite = NULL;
+//	ZeroMemory(&quad, sizeof(hgeQuad));
 	strcpy(text, "");
 }
 
 Fontsys::~Fontsys()
 {
-	ReleaseTarget();
+	ReleaseTargetAndSprite();
 }
 
-void Fontsys::ReleaseTarget()
+void Fontsys::ReleaseTargetAndSprite()
 {
 	if (tar)
 	{
 		hge->Target_Free(tar);
 		tar = NULL;
 	}
+	if (sprite)
+	{
+		delete sprite;
+		sprite = NULL;
+	}
 }
 
 list<Fontsys *>::iterator Fontsys::SignOff()
 {
-	ReleaseTarget();
+	ReleaseTargetAndSprite();
 	for (list<Fontsys *>::iterator it=fontsys.begin(); it!= fontsys.end(); it++)
 	{
 		if (*it == this)
@@ -38,7 +44,7 @@ list<Fontsys *>::iterator Fontsys::SignOff()
 			return it;
 		}
 	}
-	ZeroMemory(&quad, sizeof(hgeQuad));
+//	ZeroMemory(&quad, sizeof(hgeQuad));
 	strcpy(text, "");
 	return fontsys.end();
 }
@@ -90,16 +96,23 @@ void Fontsys::FocusChanged()
 	}
 }
 
-int Fontsys::strTranslate(char * dtext, const char * stext)
+int Fontsys::strTranslate(char * dtext, const char * stext, int * maxchar)
 {
-	int ret = 1;
+	int _lines = 1;
+	int _maxcharinline = -1;
+	int lastj = 0;
 	int j=0;
 	strcpy(dtext, "");
-	for(int i=0;i<(int)strlen(stext);i++)
+	for(int i=0; i<(int)strlen(stext); i++)
 	{
 		if (stext[i] == '\n')
 		{
-			ret++;
+			if (_maxcharinline < j - lastj)
+			{
+				_maxcharinline = j - lastj;
+			}
+			lastj = j;
+			_lines++;
 		}
 		if (stext[i]<0)
 		{
@@ -169,7 +182,15 @@ int Fontsys::strTranslate(char * dtext, const char * stext)
 		strcat(dtext, tbuff);
 		j++;
 	}
-	return ret;
+	if (_maxcharinline < j - lastj)
+	{
+		_maxcharinline = j - lastj;
+	}
+	if (maxchar)
+	{
+		*maxchar = _maxcharinline;
+	}
+	return _lines;
 }
 
 void Fontsys::SignUp(const char * _text, HD3DFONT _font)
@@ -179,9 +200,9 @@ void Fontsys::SignUp(const char * _text, HD3DFONT _font)
 	if (_text != NULL)
 	{
 		SignOff();
-		lines = strTranslate(text, _text);
+		lines = strTranslate(text, _text, &maxcharinline);
 	}
-	ReleaseTarget();
+	ReleaseTargetAndSprite();
 	tar = hge->Target_Create(FONTSYS_TARGETWIDTH, FONTSYS_TARGETHEIGHT, false);
 	if (!_font)
 	{
@@ -189,21 +210,42 @@ void Fontsys::SignUp(const char * _text, HD3DFONT _font)
 	}
 	usingfont = _font;
 
-	tex = hge->Gfx_RenderTextToTarget(tar, _font, text, 0, 0, FONTSYS_TARGETWIDTH, FONTSYS_TARGETHEIGHT);
+	int fontheight = hge->Gfx_RenderTextToTarget(&tex, tar, _font, text, 0, 0, FONTSYS_TARGETWIDTH, FONTSYS_TARGETHEIGHT);
 
-	float h = lines * M_FONTHEIGHT;
+//	float w = strlen(text) * M_FONTWIDTH;
+//	float h = lines * M_FONTHEIGHT;
+	float w = (fontheight / lines) * 0.55f * maxcharinline;
+	float h = fontheight;
+	if (w > FONTSYS_TARGETWIDTH)
+	{
+		w = FONTSYS_TARGETWIDTH;
+	}
+	if (h > FONTSYS_TARGETHEIGHT)
+	{
+		h = FONTSYS_TARGETHEIGHT;
+	}
+//	float tx = w / FONTSYS_TARGETWIDTH;
+//	float ty = h / FONTSYS_TARGETHEIGHT;
 
+	if (tex)
+	{
+		sprite = new hgeSprite(tex, 0, 0, w, h);
+		sprite->SetBlendMode(BLEND_DEFAULT);
+	}
+
+	/*
 	quad.tex = tex;
 	quad.blend = BLEND_DEFAULT;
 	quad.v[0].tx = 0;	quad.v[0].ty = 0;
-	quad.v[1].tx = 1;	quad.v[1].ty = 0;
-	quad.v[2].tx = 1;	quad.v[2].ty = h / FONTSYS_TARGETHEIGHT;
-	quad.v[3].tx = 0;	quad.v[3].ty = h / FONTSYS_TARGETHEIGHT;
+	quad.v[1].tx = tx;	quad.v[1].ty = 0;
+	quad.v[2].tx = tx;	quad.v[2].ty = ty;
+	quad.v[3].tx = 0;	quad.v[3].ty = ty;
 	quad.v[0].z = quad.v[1].z = quad.v[2].z = quad.v[3].z = 0;
 	quad.v[0].x = 0;					quad.v[0].y = 0;
-	quad.v[1].x = FONTSYS_TARGETWIDTH;	quad.v[1].y = 0;
-	quad.v[2].x = FONTSYS_TARGETWIDTH;	quad.v[2].y = h;
-	quad.v[3].x = 0;					quad.v[3].y = h;
+	quad.v[1].x = w;	quad.v[1].y = 0;
+	quad.v[2].x = w;	quad.v[2].y = h;
+	quad.v[3].x = 0;	quad.v[3].y = h;
+	*/
 
 	if (_text)
 	{
@@ -211,20 +253,52 @@ void Fontsys::SignUp(const char * _text, HD3DFONT _font)
 	}
 }
 
-void Fontsys::Render(float x, float y, DWORD ucol, DWORD dcol, float shadow, float hext, float vext)
+void Fontsys::Render(float x, float y, DWORD ucol, DWORD dcol, float shadow, float hscale, float vscale, BYTE alignflag)
 {
-	if (!quad.tex)
+	if (!sprite)
 	{
 		return;
 	}
 	if (shadow)
 	{
-		Render(x+shadow*2, y+shadow*2, ucol&0xff000000, dcol&0xff000000, false, hext, vext);
-		Render(x+shadow, y+shadow, ucol, dcol, false, hext, vext);
-		Render(x+shadow, y-shadow, ucol, dcol, false, hext, vext);
-		Render(x-shadow, y-shadow, ucol, dcol, false, hext, vext);
-		Render(x-shadow, y+shadow, ucol, dcol, false, hext, vext);
+		Render(x+shadow*2, y+shadow*2, ucol&0xff000000, dcol&0xff000000, 0, hscale, vscale, alignflag);
+		Render(x+shadow, y+shadow, ucol, dcol, 0, hscale, vscale, alignflag);
+		Render(x+shadow, y-shadow, ucol, dcol, 0, hscale, vscale, alignflag);
+		Render(x-shadow, y-shadow, ucol, dcol, 0, hscale, vscale, alignflag);
+		Render(x-shadow, y+shadow, ucol, dcol, 0, hscale, vscale, alignflag);
 	}
+	sprite->SetColor(ucol, ucol, dcol, dcol);
+	float hotx;
+	float hoty;
+	float w = sprite->GetWidth();
+	float h = sprite->GetHeight();
+	switch (alignflag & HGETEXT_HORZMASK)
+	{
+	case HGETEXT_LEFT:
+		hotx = 0;
+		break;
+	case HGETEXT_CENTER:
+		hotx = w / 2;
+		break;
+	case HGETEXT_RIGHT:
+		hotx = w;
+		break;
+	}
+	switch (alignflag & HGETEXT_VERTMASK)
+	{
+	case HGETEXT_TOP:
+		hoty = 0;
+		break;
+	case HGETEXT_MIDDLE:
+		hoty = h / 2;
+		break;
+	case HGETEXT_BOTTOM:
+		hoty = h;
+		break;
+	}
+	sprite->SetHotSpot(hotx, hoty);
+	sprite->RenderEx(x, y, 0, hscale, vscale);
+	/*
 	float w = quad.v[1].x - quad.v[0].x;
 	float h = quad.v[2].y - quad.v[0].y;
 
@@ -242,4 +316,5 @@ void Fontsys::Render(float x, float y, DWORD ucol, DWORD dcol, float shadow, flo
 	quad.v[1].x = x + w;	quad.v[1].y = y;
 	quad.v[2].x = x + w;	quad.v[2].y = y + h;
 	quad.v[3].x = x;		quad.v[3].y = y + h;
+	*/
 }

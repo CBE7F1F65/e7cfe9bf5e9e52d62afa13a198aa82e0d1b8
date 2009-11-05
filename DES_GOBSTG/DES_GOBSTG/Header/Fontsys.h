@@ -17,6 +17,8 @@
 #define FONTSYS_CHATTEXTWIDTH	300
 #define FONTSYS_CHATTEXTHEIGHT	80
 
+#define FONTSYS_DEFAULT_SHADOW	0.4f
+
 class Fontsys
 {
 public:
@@ -30,17 +32,19 @@ public:
 
 	void SignUp(const char * text = NULL, HD3DFONT font=NULL);
 	list<Fontsys *>::iterator SignOff();
-	void ReleaseTarget();
-	void Render(float x, float y, DWORD ucol, DWORD dcol, float shadow = 0, float hext = 0, float vext = 0);
+	void ReleaseTargetAndSprite();
+	void Render(float x, float y, DWORD ucol, DWORD dcol, float shadow = FONTSYS_DEFAULT_SHADOW, float hscale = 1, float vscale = 0, BYTE alignflag=HGETEXT_CENTER|HGETEXT_MIDDLE);
 
-	static int strTranslate(char * dtext, const char * stext);
+	static int strTranslate(char * dtext, const char * stext, int * maxchar);
 
 public:
 	char text[M_STRMAX];
 	HD3DFONT usingfont;
-	hgeQuad quad;
+//	hgeQuad quad;
+	hgeSprite * sprite;
 	HTARGET tar;
 	int lines;
+	int maxcharinline;
 
 	static list<Fontsys *> fontsys;
 	static HD3DFONT font;

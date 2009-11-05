@@ -757,8 +757,8 @@ public:
 	// begin
 	virtual HD3DFONT    CALL	Font_Load(const char * fontStyle,int height) = 0;
 	virtual void		CALL	Font_Free(HD3DFONT font) = 0;
-	virtual void		CALL	Gfx_RenderText(HD3DFONT font, const char * text, float x, float y, float w, float h, DWORD color = 0xffffffff) = 0;
-	virtual HTEXTURE	CALL	Gfx_RenderTextToTarget(HTARGET tar, HD3DFONT font, const char * text, float x, float y, float w, float h, DWORD color = 0xffffffff) = 0;
+	virtual int			CALL	Gfx_RenderText(HD3DFONT font, const char * text, float x, float y, float w, float h, DWORD color = 0xffffffff) = 0;
+	virtual int			CALL	Gfx_RenderTextToTarget(HTEXTURE * tex, HTARGET tar, HD3DFONT font, const char * text, float x, float y, float w, float h, DWORD color = 0xffffffff) = 0;
 	// end
 
 };

@@ -85,17 +85,21 @@ void CALL HGE_Impl::Font_Free(HD3DFONT font)
 	}
 }
 
-HTEXTURE CALL HGE_Impl::Gfx_RenderTextToTarget(HTARGET tar, HD3DFONT font, const char * text, float x, float y, float w, float h, DWORD color /* = 0xffffffff */)
+int CALL HGE_Impl::Gfx_RenderTextToTarget(HTEXTURE * tex, HTARGET tar, HD3DFONT font, const char * text, float x, float y, float w, float h, DWORD color /* = 0xffffffff */)
 {
 	Gfx_BeginScene(tar);
 	Gfx_Clear(0x00000000);
-	Gfx_RenderText(font, text, x, y, w, h, color);
+	int height = Gfx_RenderText(font, text, x, y, w, h, color);
 	Gfx_EndScene();
 
-	return Target_GetTexture(tar);
+	if (tex)
+	{
+		*tex = Target_GetTexture(tar);
+	}
+	return height;
 }
 
-void CALL HGE_Impl::Gfx_RenderText(HD3DFONT font, const char * text, float x, float y, float w, float h, DWORD color)
+int CALL HGE_Impl::Gfx_RenderText(HD3DFONT font, const char * text, float x, float y, float w, float h, DWORD color)
 {
 	/*
 	if(shadow)
@@ -103,7 +107,7 @@ void CALL HGE_Impl::Gfx_RenderText(HD3DFONT font, const char * text, float x, fl
 		*/
 	if (font == NULL)
 	{
-		return;
+		return 0;
 	}
 	RECT rect;
 	rect.left = (LONG)x;
@@ -114,8 +118,9 @@ void CALL HGE_Impl::Gfx_RenderText(HD3DFONT font, const char * text, float x, fl
 	ID3DXFont * pFont = (ID3DXFont * )font;
 	if (pFont)
 	{
-		pFont->DrawText(NULL, text, -1, &rect, DT_NOCLIP, color);
+		return pFont->DrawText(NULL, text, -1, &rect, DT_NOCLIP, color);
 	}
+	return 0;
 }
 /*
 //add by Thor/h5nc

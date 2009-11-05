@@ -1712,7 +1712,7 @@ int Export_Lua::LuaFn_hge_Gfx_RenderText(LuaState * ls)
 int Export_Lua::LuaFn_hge_Gfx_RenderTextToTarget(LuaState * ls)
 {
 	LuaStack args(ls);
-	DWORD dret;
+	HTEXTURE tex;
 	DWORD col = 0xffffffff;
 
 	if (args.Count() > 7)
@@ -1724,10 +1724,11 @@ int Export_Lua::LuaFn_hge_Gfx_RenderTextToTarget(LuaState * ls)
 	HTARGET _htarget = (HTARGET)_LuaHelper_GetDWORD(&_obj);
 	_obj = args[2];
 	HD3DFONT _hd3dfont = (HD3DFONT)_LuaHelper_GetDWORD(&_obj);
-	dret = (DWORD)(hge->Gfx_RenderTextToTarget(_htarget, _hd3dfont, args[3].GetString(), args[4].GetFloat(), args[5].GetFloat(), args[6].GetFloat(), args[7].GetFloat(), col));
+	int height = hge->Gfx_RenderTextToTarget(&tex, _htarget, _hd3dfont, args[3].GetString(), args[4].GetFloat(), args[5].GetFloat(), args[6].GetFloat(), args[7].GetFloat(), col);
 
-	_LuaHelper_PushDWORD(ls, dret);
-	return 1;
+	_LuaHelper_PushDWORD(ls, (DWORD)tex);
+	ls->PushInteger(height);
+	return 2;
 }
 
 #endif
