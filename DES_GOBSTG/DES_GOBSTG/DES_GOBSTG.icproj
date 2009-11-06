@@ -5,7 +5,7 @@
 	Name="DES_GOBSTG"
 	ProjectGUID="{A4938EF7-0CE1-47A3-BC8D-4D0B54F94F6D}"
 	VCNestedProjectGUID="{7329E15F-F0AE-44EE-BC64-27B9038C76D7}"
-	VCNestedProjectCRC32="2153543197"
+	VCNestedProjectCRC32="4278999207"
 	VCNestedProjectFileName="DES_GOBSTG.vcproj"
 	Keyword="Win32Proj">
 	<Configurations>
@@ -247,6 +247,10 @@
 			RelativePath=".\Core\Scripter.cpp"/>
 		<File 
 			RelativePath=".\Core\SpriteItemManager.cpp"/>
+		<File 
+			RelativePath=".\Core\Export_Lua_HDSS_Call.cpp"/>
+		<File 
+			RelativePath=".\Core\Export_Lua_HDSS_Get.cpp"/>
 		<File 
 			RelativePath=".\Process\frame.cpp"/>
 		<File 

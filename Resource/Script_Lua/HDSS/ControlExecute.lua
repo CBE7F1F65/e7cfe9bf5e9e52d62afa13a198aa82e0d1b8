@@ -1,6 +1,7 @@
 function ControlExecute(name, con)
 
 	if name == STATE_TITLE then
+		local selsysid = 0;
 		if con == 1 then
 			hdss.Call(
 				HDSS_BGVALUE, 
@@ -33,7 +34,6 @@ function ControlExecute(name, con)
 				{SI_Title_Replay,	"¥ê¥×¥ì¥¤¤òèaÙp¤·¤Þ¤¹¡£"},
 				{SI_Title_Quit,		"¤¤¤í¤¤¤í¤È½KÁË¤·¤Þ¤¹¡£"}
 			}
-			local selsysid = 0;
 			for j=1, 3 do
 				local i = j-1;
 				local y = ystart + i * yoffset;
@@ -52,7 +52,16 @@ function ControlExecute(name, con)
 			hdss.Call(
 				HDSS_SELSET,
 				{
-					0, 3, 0, KS_UP, KS_DOWN, KS_FIRE, KS_SPECIAL
+					selsysid, 3, 0, KS_UP, KS_DOWN, KS_FIRE, KS_SPECIAL
+				}
+			)
+		end
+		local complete, select = hdss.Get(HDSS_SELCOMPLETE, selsysid);
+		if complete then
+			hdss.Call(
+				HDSS_SETTIME,
+				{
+					0
 				}
 			)
 		end

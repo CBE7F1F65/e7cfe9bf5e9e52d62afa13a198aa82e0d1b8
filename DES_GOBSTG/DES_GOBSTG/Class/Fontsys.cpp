@@ -36,6 +36,7 @@ void Fontsys::ReleaseTargetAndSprite()
 list<Fontsys *>::iterator Fontsys::SignOff()
 {
 	ReleaseTargetAndSprite();
+	strcpy(text, "");
 	for (list<Fontsys *>::iterator it=fontsys.begin(); it!= fontsys.end(); it++)
 	{
 		if (*it == this)
@@ -45,7 +46,6 @@ list<Fontsys *>::iterator Fontsys::SignOff()
 		}
 	}
 //	ZeroMemory(&quad, sizeof(hgeQuad));
-	strcpy(text, "");
 	return fontsys.end();
 }
 
@@ -75,6 +75,7 @@ void Fontsys::HeatUp()
 		SignUp(FONTSYS_CHATUSE, strdesc[i]);
 	}
 	*/
+	/*
 	Fontsys _fs;
 	for (int i=0; i<PLAYERTYPEMAX; i++)
 	{
@@ -85,6 +86,7 @@ void Fontsys::HeatUp()
 		_fs.SignUp(data.getEnemyName(i));
 	}
 	_fs.SignOff();
+	*/
 }
 
 void Fontsys::FocusChanged()

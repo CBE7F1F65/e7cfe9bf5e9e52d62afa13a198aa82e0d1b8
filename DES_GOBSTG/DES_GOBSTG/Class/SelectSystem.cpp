@@ -264,7 +264,11 @@ void SelectSystem::action()
 
 	for (list<Selector>::iterator it=sel.begin(); it!=sel.end(); it++)
 	{
-		it->PostAction(&select, sellock, nPageNum, fadebegin, offset, shiftangle);
+		bool bret = it->PostAction(&select, sellock, nPageNum, fadebegin, offset, shiftangle);
+		if (bret && !complete)
+		{
+			complete = true;
+		}
 	}
 }
 

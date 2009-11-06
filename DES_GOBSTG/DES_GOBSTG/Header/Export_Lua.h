@@ -328,7 +328,8 @@ public:
 public:
 	static bool _LuaRegistHDSSConst(LuaObject * obj);
 	static bool _LuaRegistHDSSFunction(LuaObject * obj);
-	static int LuaFn_HDSS(LuaState * ls);
+	static int LuaFn_HDSS_Call(LuaState * ls);
+	static int LuaFn_HDSS_Get(LuaState * ls);
 	static bool _Helper_HDSS_GetPara(LuaStack * args, int i, LuaObject * _para);
 	static void _ChangeSpecialChar(char * str);
 
