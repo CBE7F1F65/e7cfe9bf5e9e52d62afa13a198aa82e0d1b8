@@ -262,14 +262,28 @@ void SelectSystem::action()
 		}
 	}
 
-	for (list<Selector>::iterator it=sel.begin(); it!=sel.end(); it++)
+	if (hge->Input_GetDIKey(keycancel, DIKEY_UP))
 	{
-		bool bret = it->PostAction(&select, sellock, nPageNum, fadebegin, offset, shiftangle);
-		if (bret && !complete)
+		SE::push(SE_SYSTEM_CANCEL);
+		for(list<Selector>::iterator it = sel.begin(); it != sel.end(); it++)
 		{
-			complete = true;
+			it->ChangeState(SEL_LEAVE, SELOP_SET);
+		}
+		select = -1;
+		complete = true;
+	}
+	else
+	{
+		for (list<Selector>::iterator it=sel.begin(); it!=sel.end(); it++)
+		{
+			bool bret = it->PostAction(&select, sellock, nPageNum, fadebegin, offset, shiftangle);
+			if (bret && !complete)
+			{
+				complete = true;
+			}
 		}
 	}
+
 }
 
 void SelectSystem::Render()
