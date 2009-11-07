@@ -33,6 +33,7 @@ void Export_Lua::Release(LuaState * ls /* = NULL */)
 void Export_Lua::InitHGE(HGE * _hge, HTEXTURE * _texset)
 {
 	Release();
+	state->OpenLibs();
 	if (_hge != NULL)
 	{
 		hge = _hge;

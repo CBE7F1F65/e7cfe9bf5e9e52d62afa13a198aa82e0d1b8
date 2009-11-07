@@ -62,7 +62,7 @@ int Process::processOption()
 					it->ID -= 0x10;
 				}
 			}
-			selsys[tselsys].Setup(6, 0, KS_UP, KS_DOWN, KS_FIRE, KS_SPECIAL, tselsys);
+			selsys[tselsys].Setup(tselsys, 6, 0, KS_UP, KS_DOWN, KS_FIRE, KS_SPECIAL);
 		}
 		else if(tsel == 1)
 		{
@@ -192,7 +192,7 @@ int Process::processOption()
 					it->ID -= 0x10;
 				}
 			}
-			selsys[tselsys].Setup(6, 0, KS_UP, KS_DOWN, KS_FIRE, KS_SPECIAL, tselsys);
+			selsys[tselsys].Setup(tselsys, 6, 0, KS_UP, KS_DOWN, KS_FIRE, KS_SPECIAL);
 
 			InfoSelect::Clear();
 		}

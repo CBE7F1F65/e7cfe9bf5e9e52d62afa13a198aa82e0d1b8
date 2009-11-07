@@ -3,33 +3,15 @@
 
 #include "../Header/Export_Lua.h"
 #include "../Header/LuaConstDefine.h"
-#include "../Header/Processprep.h"
+#include "../Header/Scripter.h"
 
-#define _NEXT_HDSS_LUAFUNC	(args[++ii])
-#define _INEXT_HDSS_LUAFUNC	(_NEXT_HDSS_LUAFUNC.GetInteger())
-#define _FNEXT_HDSS_LUAFUNC	(_NEXT_HDSS_LUAFUNC.GetFloat())
-#define _BNEXT_HDSS_LUAFUNC	(_NEXT_HDSS_LUAFUNC.GetBoolean())
-#define _SNEXT_HDSS_LUAFUNC	((char *)(_NEXT_HDSS_LUAFUNC.GetString()))
-#define _ONEXT_HDSS_LUAFUNC	(_obj = _NEXT_HDSS_LUAFUNC)
-
-#define _COBJ_HDSS_LUAFUNC	(_LuaHelper_GetColor(&_obj));
-#define _DOBJ_HDSS_LUAFUNC	(_LuaHelper_GetDWORD(&_obj));
-
-#define _PI_HDSS_LUAFUUNC(X)	(ls->PushInteger(X))
-#define _PF_HDSS_LUAFUUNC(X)	(ls->PushNumber(X))
-#define _PB_HDSS_LUAFUUNC(X)	(ls->PushBoolean(X))
-#define _PS_HDSS_LUAFUUNC(X)	(_LuaHelper_PushString(ls, X))
-#define _PD_HDSS_LUAFUUNC(X)	(_LuaHelper_PushDWORD(ls, X))
+#include "../Header/Export_Lua_HDSS_CallGet.h"
 
 int Export_Lua::LuaFn_HDSS_Get(LuaState * ls)
 {
 	LuaStack args(ls);
 
 	DWORD nowval = args[1].GetInteger();
-	int argscount = args.Count();
-	LuaObject _obj;
-
-	int ii = 1;
 
 	switch (nowval & SCRKWMASK_CLASS)
 	{
@@ -308,45 +290,11 @@ int Export_Lua::LuaFn_HDSS_Get(LuaState * ls)
 		switch (nowval)
 		{
 		case SCR_SELCOMPLETE:
-			if (argscount > 0)
-			{
-				int _selsys = _INEXT_HDSS_LUAFUNC;
-				if (_selsys >= 0 && _selsys < SELSYSTEMMAX)
-				{
-					if (selsys[_selsys].complete)
-					{
-						_PB_HDSS_LUAFUUNC(true);
-						_PI_HDSS_LUAFUUNC(selsys[_selsys].select);
-						return 2;
-					}
-				}
-				return 0;
-			}
-			break;
+			return hdsscallget.Get_SELCOMPLETE(ls);
 		case SCR_SEL:
-			if (argscount > 0)
-			{
-				int _selsys = _INEXT_HDSS_LUAFUNC;
-				if (_selsys >= 0 && _selsys < SELSYSTEMMAX)
-				{
-					_PI_HDSS_LUAFUUNC(selsys[_selsys].select);
-					return 1;
-				}
-				return 0;
-			}
-			break;
+			return hdsscallget.Get_SEL(ls);
 		case SCR_SELFIRSTID:
-			if (argscount > 0)
-			{
-				int _selsys = _INEXT_HDSS_LUAFUNC;
-				if (_selsys >= 0 && _selsys < SELSYSTEMMAX)
-				{
-					_PI_HDSS_LUAFUUNC(selsys[_selsys].firstID);
-					return 1;
-				}
-				return 0;
-			}
-			break;
+			return hdsscallget.Get_SELFIRSTID(ls);
 		case SCR_ISELCOMPLETE:
 			break;
 		case SCR_ISEL:

@@ -74,7 +74,7 @@ int Process::processOver()
 					if(it->ID == 2)
 					{
 						SpriteItemManager::SetSprite(SpriteItemManager::GetIndexByName(SI_RESULT_CANNOTSAVE), it->sprite, tex);
-						selsys[tselsys].Setup(1, 1, KS_UP, KS_DOWN, KS_FIRE, KS_SPECIAL, tselsys);
+						selsys[tselsys].Setup(tselsys, 1, 1, KS_UP, KS_DOWN, KS_FIRE, KS_SPECIAL);
 					}
 					else
 					{

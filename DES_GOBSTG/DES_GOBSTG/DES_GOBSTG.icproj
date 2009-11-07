@@ -5,7 +5,7 @@
 	Name="DES_GOBSTG"
 	ProjectGUID="{A4938EF7-0CE1-47A3-BC8D-4D0B54F94F6D}"
 	VCNestedProjectGUID="{7329E15F-F0AE-44EE-BC64-27B9038C76D7}"
-	VCNestedProjectCRC32="4278999207"
+	VCNestedProjectCRC32="3589061903"
 	VCNestedProjectFileName="DES_GOBSTG.vcproj"
 	Keyword="Win32Proj">
 	<Configurations>
@@ -228,6 +228,14 @@
 		<File 
 			RelativePath=".\Core\Export_Lua_HDSS.cpp"/>
 		<File 
+			RelativePath=".\Core\Export_Lua_HDSS_Call.cpp"/>
+		<File 
+			RelativePath=".\Core\Export_Lua_HDSS_CallFunctions.cpp"/>
+		<File 
+			RelativePath=".\Core\Export_Lua_HDSS_Get.cpp"/>
+		<File 
+			RelativePath=".\Core\Export_Lua_HDSS_GetFunctions.cpp"/>
+		<File 
 			RelativePath=".\Core\Export_Lua_HGE.cpp"/>
 		<File 
 			RelativePath=".\Core\Export_Lua_HGEHelper.cpp"/>
@@ -247,10 +255,6 @@
 			RelativePath=".\Core\Scripter.cpp"/>
 		<File 
 			RelativePath=".\Core\SpriteItemManager.cpp"/>
-		<File 
-			RelativePath=".\Core\Export_Lua_HDSS_Call.cpp"/>
-		<File 
-			RelativePath=".\Core\Export_Lua_HDSS_Get.cpp"/>
 		<File 
 			RelativePath=".\Process\frame.cpp"/>
 		<File 
@@ -370,6 +374,8 @@
 		<File 
 			RelativePath=".\Header\Export_Lua.h"/>
 		<File 
+			RelativePath=".\Header\Export_Lua_HDSS_CallGetDefine.h"/>
+		<File 
 			RelativePath=".\Header\keytable.h"/>
 		<File 
 			RelativePath=".\Header\LuaConstDefine.h"/>
@@ -387,6 +393,8 @@
 			RelativePath=".\Header\SpriteItemManager.h"/>
 		<File 
 			RelativePath=".\Header\VectorList.h"/>
+		<File 
+			RelativePath=".\Header\Export_Lua_HDSS_CallGet.h"/>
 		<File 
 			RelativePath=".\Header\Beam.h"/>
 		<File 

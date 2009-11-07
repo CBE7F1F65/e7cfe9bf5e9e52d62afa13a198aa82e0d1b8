@@ -4,6 +4,7 @@
 #include "SpriteItemManager.h"
 #include "PushKey.h"
 #include "SE.h"
+#include "PushKey.h"
 
 SelectSystem selsys[SELSYSTEMMAX];
 
@@ -46,6 +47,10 @@ void SelectSystem::Clear()
 	complete = false;
 	confirminit = false;
 	plus = true;
+	keyplus = PUSHKEY_KEYNULL;
+	keyminus = PUSHKEY_KEYNULL;
+	keyok = PUSHKEY_KEYNULL;
+	keycancel = PUSHKEY_KEYNULL;
 }
 
 Selector * SelectSystem::BuildSelector(BYTE ID, int siID, float cenx, float ceny, float hscale, float vscale, BYTE flag /* = SEL_NULL */)
@@ -61,20 +66,27 @@ Selector * SelectSystem::BuildSelector(BYTE ID, int siID, float cenx, float ceny
 	return _pselector;
 }
 
-void SelectSystem::Setup(int _nselect, int _select, BYTE _keyminus, BYTE _keyplus, BYTE _keyok, BYTE _keycancel, BYTE _pushid, int maxtime/* =-1 */)
+void SelectSystem::Setup(BYTE _pushid, int _nselect, int _select, int _keyminus, int _keyplus, int _keyok, int _keycancel, int maxtime/* =-1 */)
 {
 	nselect = _nselect;
 	select = _select;
-	keyplus = _keyplus;
-	keyminus = _keyminus;
-	keyok = _keyok;
-	keycancel = _keycancel;
+	if (keyplus == PUSHKEY_KEYNULL && _keyplus != PUSHKEY_KEYNULL)
+		keyplus = _keyplus;
+	if (keyminus == PUSHKEY_KEYNULL && _keyminus != PUSHKEY_KEYNULL)
+		keyminus = _keyminus;
+	if (keyok == PUSHKEY_KEYNULL && _keyok != PUSHKEY_KEYNULL)
+		keyok = _keyok;
+	if (keycancel == PUSHKEY_KEYNULL && _keycancel != PUSHKEY_KEYNULL)
+		keycancel = _keycancel;
 	pushid = _pushid;
 	for (list<Selector>::iterator it=sel.begin(); it!=sel.end(); it++)
 	{
 		it->SetMaxtime(maxtime);
 	}
-	PushKey::SetPushEvent(pushid, keyplus, keyminus);
+	if (_keyplus != PUSHKEY_KEYNULL || _keyminus != PUSHKEY_KEYNULL)
+	{
+		PushKey::SetPushEvent(pushid, keyplus, keyminus);
+	}
 }
 
 bool SelectSystem::SetPageNumber(BYTE _nPageNum, float _fadebegin, float _offset, int initshift/* =0 */, int _shiftangle/* =9000 */)
@@ -201,21 +213,27 @@ void SelectSystem::action()
 	if(fvselector != NULL)
 	{
 		PushKey::UpdatePushEvent(pushid);
-		if(hge->Input_GetDIKey(keyplus, DIKEY_DOWN))
+		if (keyplus != PUSHKEY_KEYNULL)
 		{
-			plus = true;
-			SE::push(SE_SYSTEM_SELECT);
-			select++;
-			if(select == nselect)
-				select = 0;
+			if(hge->Input_GetDIKey(keyplus, DIKEY_DOWN))
+			{
+				plus = true;
+				SE::push(SE_SYSTEM_SELECT);
+				select++;
+				if(select == nselect)
+					select = 0;
+			}
 		}
-		else if(hge->Input_GetDIKey(keyminus, DIKEY_DOWN))
+		if (keyminus != PUSHKEY_KEYNULL)
 		{
-			plus = false;
-			SE::push(SE_SYSTEM_SELECT);
-			select--;
-			if(select == -1)
-				select = nselect - 1;
+			if(hge->Input_GetDIKey(keyminus, DIKEY_DOWN))
+			{
+				plus = false;
+				SE::push(SE_SYSTEM_SELECT);
+				select--;
+				if(select == -1)
+					select = nselect - 1;
+			}
 		}
 		matchSelect();
 		if (nPageNum)
@@ -229,7 +247,7 @@ void SelectSystem::action()
 				shift(select - lastID);
 			}
 		}
-		if(hge->Input_GetDIKey(keyok, DIKEY_DOWN))
+		if(keyok != PUSHKEY_KEYNULL && hge->Input_GetDIKey(keyok, DIKEY_DOWN))
 		{
 			bool benter = false;
 			for(list<Selector>::iterator it = sel.begin(); it != sel.end(); it++)
@@ -262,7 +280,7 @@ void SelectSystem::action()
 		}
 	}
 
-	if (hge->Input_GetDIKey(keycancel, DIKEY_UP))
+	if (keycancel != PUSHKEY_KEYNULL && hge->Input_GetDIKey(keycancel, DIKEY_UP))
 	{
 		SE::push(SE_SYSTEM_CANCEL);
 		for(list<Selector>::iterator it = sel.begin(); it != sel.end(); it++)
@@ -298,7 +316,7 @@ void SelectSystem::Render()
 	}
 }
 
-bool SelectSystem::Confirm(BYTE _keyminus, BYTE _keyplus, BYTE _keyok, BYTE _keycancel, BYTE _pushid, float cenx/* =M_ACTIVECLIENT_CENTER_X */, float ceny/* =M_ACTIVECLIENT_CENTER_Y */, bool settrue/* =false */)
+bool SelectSystem::Confirm(BYTE _pushid, int _keyminus, int _keyplus, int _keyok, int _keycancel, float cenx/* =M_ACTIVECLIENT_CENTER_X */, float ceny/* =M_ACTIVECLIENT_CENTER_Y */, bool settrue/* =false */)
 {
 	if(!confirminit)
 	{
@@ -311,14 +329,8 @@ bool SelectSystem::Confirm(BYTE _keyminus, BYTE _keyplus, BYTE _keyok, BYTE _key
 		BuildSelector(0, SpriteItemManager::noIndex, cenx, ceny)->actionSet(SEL_NONE, 30, 45);
 		BuildSelector(0, SpriteItemManager::confirmIndex, cenx, ceny, 1, 0, SEL_NONACTIVE)->actionSet(SEL_NONE, 0, 0);
 
-		Setup(2, settrue?0:1, _keyplus, _keyminus, _keyok, _keycancel, _pushid);
+		Setup(_pushid, 2, settrue?0:1, _keyplus, _keyminus, _keyok, _keycancel);
 		confirminit = true;
-	}
-
-	if(hge->Input_GetDIKey(_keycancel, DIKEY_UP))
-	{
-		SE::push(SE_SYSTEM_CANCEL);
-		confirminit = false;
 	}
 	if(complete)
 	{

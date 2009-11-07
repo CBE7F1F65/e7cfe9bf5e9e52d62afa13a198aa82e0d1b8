@@ -34,17 +34,17 @@ function ControlExecute(name, con)
 				{SI_Title_Replay,	"¥ê¥×¥ì¥¤¤òèaÙp¤·¤Þ¤¹¡£"},
 				{SI_Title_Quit,		"¤¤¤í¤¤¤í¤È½KÁË¤·¤Þ¤¹¡£"}
 			}
-			for j=1, 3 do
+			for j, it in pairs(_siusetable) do
 				local i = j-1;
 				local y = ystart + i * yoffset;
 				hdss.Call(
 					HDSS_SELBUILD,
 					{
-						selsysid, i, _siusetable[j][1], x, y
+						selsysid, i, it[1], x, y
 					},
 					tableSelectOffset,
 					{
-						_siusetable[j][2], ucol, dcol, shadow, infox - x, infoy - y, 1, 0, align, true
+						it[2], ucol, dcol, shadow, infox - x, infoy - y, 1, 0, align, true
 					}
 				)
 			end
@@ -52,10 +52,11 @@ function ControlExecute(name, con)
 			hdss.Call(
 				HDSS_SELSET,
 				{
-					selsysid, 3, 0, KS_UP, KS_DOWN, KS_FIRE, KS_SPECIAL
+					selsysid, 3, 0, KS_UP, KS_DOWN, KS_FIRE
 				}
 			)
 		end
+		
 		local complete, select = hdss.Get(HDSS_SELCOMPLETE, selsysid);
 		if complete then
 			hdss.Call(
@@ -64,6 +65,24 @@ function ControlExecute(name, con)
 					0
 				}
 			)
+		else
+			if hge.Input_GetDIKey(KS_SPECIAL, DIKEY_DOWN) then
+				if select == 2 then
+					hdss.Call(
+						HDSS_RETURN,
+						{
+							PQUIT
+						}
+					)
+				else
+					hdss.Call(
+						HDSS_SELSET,
+						{
+							selsysid, 3, 2
+						}
+					)
+				end
+			end
 		end
 	end
 	
