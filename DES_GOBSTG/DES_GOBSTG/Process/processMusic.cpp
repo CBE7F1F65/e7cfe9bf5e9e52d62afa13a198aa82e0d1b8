@@ -30,7 +30,7 @@ int Process::processMusic()
 	}
 	scr.Execute(SCR_CONTROL, STATE_MUSIC, time);
 
-	if(hge->Input_GetDIKey(KS_SPECIAL, DIKEY_DOWN))
+	if(hge->Input_GetDIKey(KS_QUICK, DIKEY_DOWN))
 	{
 		SE::push(SE_SYSTEM_CANCEL);
 		time = 0;
@@ -56,7 +56,7 @@ int Process::processMusic()
 			musicChange(musicID+1, true);
 		}
 	}
-	else if(hge->Input_GetDIKey(KS_CHANGE, DIKEY_DOWN))
+	else if(hge->Input_GetDIKey(KS_CHARGE, DIKEY_DOWN))
 	{
 		if(hge->Channel_IsPlaying(channel))
 		{

@@ -34,7 +34,7 @@ int Process::processPause()
 	if(scr.GetIntValue(SCR_RESERVEBEGIN) < 0x100)
 		scr.Execute(SCR_CONTROL, STATE_PAUSE, SCRIPT_CON_INIT);
 
-	if(selsys[scr.GetIntValue(SCR_RESERVEBEGIN+1)].sel.size() && hge->Input_GetDIKey(KS_SPECIAL, DIKEY_UP))
+	if(selsys[scr.GetIntValue(SCR_RESERVEBEGIN+1)].sel.size() && hge->Input_GetDIKey(KS_QUICK, DIKEY_UP))
 	{
 		SelectSystem::ClearAll();
 		if(scr.GetIntValue(SCR_RESERVEBEGIN) == 0x10)
@@ -85,8 +85,8 @@ int Process::processPause()
 			hge->Input_SetDIKey(KS_UP, (bool)(saveInput & 0x4));
 			hge->Input_SetDIKey(KS_DOWN, (bool)(saveInput & 0x8));
 			hge->Input_SetDIKey(KS_FIRE, (bool)(saveInput & 0x10));
-			hge->Input_SetDIKey(KS_SPECIAL, (bool)(saveInput & 0x20));
-			hge->Input_SetDIKey(KS_CHANGE, (bool)(saveInput & 0x40));
+			hge->Input_SetDIKey(KS_QUICK, (bool)(saveInput & 0x20));
+			hge->Input_SetDIKey(KS_CHARGE, (bool)(saveInput & 0x40));
 			hge->Input_SetDIKey(KS_SLOW, (bool)(saveInput & 0x80));
 
 			if (musicID >= 0)

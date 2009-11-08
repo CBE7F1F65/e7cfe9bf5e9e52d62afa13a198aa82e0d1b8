@@ -29,7 +29,7 @@ int Process::processContinue()
 	{
 		fgpause.SetFlag(FG_PAUSEOUT, FGMT_PAUSE);
 	}
-	else if(hge->Input_GetDIKey(KS_SPECIAL, DIKEY_DOWN))
+	else if(hge->Input_GetDIKey(KS_QUICK, DIKEY_DOWN))
 	{
 		selsys[tselsys].select = 1;
 	}

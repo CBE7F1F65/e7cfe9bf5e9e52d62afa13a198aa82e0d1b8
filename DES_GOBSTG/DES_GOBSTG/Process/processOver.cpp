@@ -74,7 +74,7 @@ int Process::processOver()
 					if(it->ID == 2)
 					{
 						SpriteItemManager::SetSprite(SpriteItemManager::GetIndexByName(SI_RESULT_CANNOTSAVE), it->sprite, tex);
-						selsys[tselsys].Setup(tselsys, 1, 1, KS_UP, KS_DOWN, KS_FIRE, KS_SPECIAL);
+						selsys[tselsys].Setup(tselsys, 1, 1, KS_UP, KS_DOWN, KS_FIRE, KS_QUICK);
 					}
 					else
 					{
@@ -282,7 +282,7 @@ int Process::processOver()
 			if(tnowchar < RPYFILENAME_CONTENTMAX-1)
 				tnowchar++;
 		}
-		if(hge->Input_GetDIKey(KS_ENTER, DIKEY_DOWN) || hge->Input_GetDIJoy(joyFire, DIKEY_DOWN))
+		if(hge->Input_GetDIKey(KS_ENTER, DIKEY_DOWN) || hge->Input_GetDIJoy(JS_FIRE, DIKEY_DOWN))
 		{
 			SE::push(SE_SYSTEM_OK);
 			tsec++;
@@ -376,7 +376,7 @@ skip1:
 					InfoSelect::avoid = true;
 
 			}
-			else if(hge->Input_GetDIKey(KS_SPECIAL, DIKEY_DOWN))
+			else if(hge->Input_GetDIKey(KS_QUICK, DIKEY_DOWN))
 			{
 				SE::push(SE_SYSTEM_CANCEL);
 				tdepth = 7;
@@ -519,7 +519,7 @@ skip1:
 
 		if(tsec == 1)
 		{
-			if(hge->Input_GetDIKey(KS_SPECIAL, DIKEY_DOWN))
+			if(hge->Input_GetDIKey(KS_QUICK, DIKEY_DOWN))
 			{
 				SE::push(SE_SYSTEM_CANCEL);
 				tsec = 0;
@@ -541,7 +541,7 @@ skip1:
 			if(tnowchar <= RPYINFO_USERNAMEMAX-1)
 				tnowchar++;
 		}
-		if(hge->Input_GetDIKey(KS_ENTER, DIKEY_DOWN) || hge->Input_GetDIJoy(joyFire, DIKEY_DOWN))
+		if(hge->Input_GetDIKey(KS_ENTER, DIKEY_DOWN) || hge->Input_GetDIJoy(JS_FIRE, DIKEY_DOWN))
 		{
 			SE::push(SE_SYSTEM_OK);
 			tsec++;
@@ -581,7 +581,7 @@ skip1:
 		}
 skip2:
 		if((tsec == 1 || !tinsert) && hge->Input_GetDIKey(KS_FIRE, DIKEY_DOWN) ||
-			tsec == 0 && hge->Input_GetDIJoy(joyFire, DIKEY_DOWN))
+			tsec == 0 && hge->Input_GetDIJoy(JS_FIRE, DIKEY_DOWN))
 		{
 			DWORD sec;
 			sec = data.sLinkType(DATAS_TOP);

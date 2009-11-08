@@ -30,7 +30,7 @@ int Process::frame()
 		hge->Input_GetDIKey(KS_SKIP)
 #ifdef __DEBUG
 		|| hge->Input_GetKeyState(HGEK_CTRL)
-		|| hge->Input_GetDIJoy(debug_joySpeedUp)
+		|| hge->Input_GetDIJoy(JS_DEBUG_SPEEDUP)
 #endif
 		)
 	{

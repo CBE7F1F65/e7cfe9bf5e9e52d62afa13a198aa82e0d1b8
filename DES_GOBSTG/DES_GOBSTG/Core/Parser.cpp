@@ -196,8 +196,8 @@ bool Scripter::Parse(int varcount)
 				if (rv = true)
 				{
 					hge->Input_SetDIKey(KS_FIRE_MP, false);
-					hge->Input_SetDIKey(KS_SPECIAL_MP, false);
-					hge->Input_SetDIKey(KS_CHANGE_MP, false);
+					hge->Input_SetDIKey(KS_QUICK_MP, false);
+					hge->Input_SetDIKey(KS_CHARGE_MP, false);
 					hge->Input_SetDIKey(KS_SLOW_MP, false);
 					hge->Input_SetDIKey(KS_UP_MP, false);
 					hge->Input_SetDIKey(KS_DOWN_MP, false);

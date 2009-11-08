@@ -48,9 +48,9 @@ void Process::frameStart()
 			if(nowInput & 0x10)
 				hge->Input_SetDIKey(KS_FIRE);
 			if(nowInput & 0x20)
-				hge->Input_SetDIKey(KS_SPECIAL);
+				hge->Input_SetDIKey(KS_QUICK);
 			if(nowInput & 0x40)
-				hge->Input_SetDIKey(KS_CHANGE);
+				hge->Input_SetDIKey(KS_CHARGE);
 			if(nowInput & 0x80)
 				hge->Input_SetDIKey(KS_SLOW);
 		}

@@ -697,7 +697,7 @@ void Player::action()
 		speedfactor = 1.0f;
 		if(!(flag & PLAYER_BORDER || flag & PLAYER_BOMB))
 		{
-			if(hge->Input_GetDIKey(KS_CHANGE_MP, DIKEY_DOWN))
+			if(hge->Input_GetDIKey(KS_CHARGE_MP, DIKEY_DOWN))
 			{
 				if (!(flag & PLAYER_PLAYERCHANGE))
 				{
@@ -737,7 +737,7 @@ void Player::action()
 		if(hge->Input_GetDIKey(KS_FIRE_MP) && !Chat::chatting)
 			flag |= PLAYER_SHOOT;
 	}
-	if(hge->Input_GetDIKey(KS_SPECIAL_MP) && !(flag & PLAYER_MERGE))
+	if(hge->Input_GetDIKey(KS_QUICK_MP) && !(flag & PLAYER_MERGE))
 	{
 		callBomb(mp.spellmode);
 	}
@@ -989,7 +989,7 @@ bool Player::callBomb(bool onlyborder)
 
 	if (flag & PLAYER_BORDER)
 	{
-		if (!hge->Input_GetDIKey(KS_SPECIAL_MP, DIKEY_DOWN) && hge->Input_GetDIKey(KS_SPECIAL_MP))
+		if (!hge->Input_GetDIKey(KS_QUICK_MP, DIKEY_DOWN) && hge->Input_GetDIKey(KS_QUICK_MP))
 		{
 			return false;
 		}
@@ -1355,7 +1355,7 @@ bool Player::FastChange()
 
 bool Player::PlayerChange()
 {
-	if(hge->Input_GetDIKey(KS_CHANGE_MP, DIKEY_DOWN))
+	if(hge->Input_GetDIKey(KS_CHARGE_MP, DIKEY_DOWN))
 		playerchangetimer = 0;
 	playerchangetimer++;
 	if(playerchangetimer == 1)

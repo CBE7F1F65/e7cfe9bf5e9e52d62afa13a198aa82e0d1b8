@@ -66,7 +66,7 @@ function ControlExecute(name, con)
 				}
 			)
 		else
-			if hge.Input_GetDIKey(KS_SPECIAL, DIKEY_DOWN) then
+			if hge.Input_GetDIKey(KS_QUICK, DIKEY_DOWN) then
 				if select == 2 then
 					hdss.Call(
 						HDSS_RETURN,

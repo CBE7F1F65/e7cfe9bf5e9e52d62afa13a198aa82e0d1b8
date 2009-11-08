@@ -60,7 +60,7 @@ int Process::processReplay()
 	int trpydifflv = scr.GetIntValue(SCR_RESERVEBEGIN+2);
 	int tnrpys = scr.GetIntValue(SCR_RESERVEBEGIN+3);
 
-	if(hge->Input_GetDIKey(KS_SPECIAL, DIKEY_DOWN) && tdepth < 2)
+	if(hge->Input_GetDIKey(KS_QUICK, DIKEY_DOWN) && tdepth < 2)
 	{
 		SE::push(SE_SYSTEM_CANCEL);
 		for (int i=0; i<tnrpys; i++)
@@ -376,7 +376,7 @@ int Process::processReplay()
 	}
 	if(tdepth == 3)
 	{
-		if(hge->Input_GetDIKey(KS_SPECIAL, DIKEY_DOWN))
+		if(hge->Input_GetDIKey(KS_QUICK, DIKEY_DOWN))
 		{
 			SE::push(SE_SYSTEM_CANCEL);
 			tdepth = 0;

@@ -100,8 +100,8 @@ void Process::clearPrep(bool bclearkey)
 	hge->Input_SetDIKey(KS_LEFT, false);
 	hge->Input_SetDIKey(KS_RIGHT, false);
 	hge->Input_SetDIKey(KS_FIRE, false);
-	hge->Input_SetDIKey(KS_SPECIAL, false);
-	hge->Input_SetDIKey(KS_CHANGE, false);
+	hge->Input_SetDIKey(KS_QUICK, false);
+	hge->Input_SetDIKey(KS_CHARGE, false);
 	hge->Input_SetDIKey(KS_SLOW, false);
 }
 

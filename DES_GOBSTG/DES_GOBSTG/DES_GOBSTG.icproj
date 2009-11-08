@@ -5,7 +5,7 @@
 	Name="DES_GOBSTG"
 	ProjectGUID="{A4938EF7-0CE1-47A3-BC8D-4D0B54F94F6D}"
 	VCNestedProjectGUID="{7329E15F-F0AE-44EE-BC64-27B9038C76D7}"
-	VCNestedProjectCRC32="3589061903"
+	VCNestedProjectCRC32="3565969959"
 	VCNestedProjectFileName="DES_GOBSTG.vcproj"
 	Keyword="Win32Proj">
 	<Configurations>
@@ -374,6 +374,8 @@
 		<File 
 			RelativePath=".\Header\Export_Lua.h"/>
 		<File 
+			RelativePath=".\Header\Export_Lua_HDSS_CallGet.h"/>
+		<File 
 			RelativePath=".\Header\Export_Lua_HDSS_CallGetDefine.h"/>
 		<File 
 			RelativePath=".\Header\keytable.h"/>
@@ -394,7 +396,7 @@
 		<File 
 			RelativePath=".\Header\VectorList.h"/>
 		<File 
-			RelativePath=".\Header\Export_Lua_HDSS_CallGet.h"/>
+			RelativePath=".\Header\ProcessDefine.h"/>
 		<File 
 			RelativePath=".\Header\Beam.h"/>
 		<File 

@@ -25,7 +25,7 @@ int Process::processResult()
 	int tsel = scr.GetIntValue(SCR_RESERVEBEGIN+2);
 	int tselsys = scr.GetIntValue(SCR_RESERVEBEGIN+3);
 
-	if(hge->Input_GetDIKey(KS_SPECIAL, DIKEY_DOWN))
+	if(hge->Input_GetDIKey(KS_QUICK, DIKEY_DOWN))
 	{
 		SE::push(SE_SYSTEM_CANCEL);
 		if (tsec < 0)

@@ -51,7 +51,7 @@ protected:
 			int keyEscape;
 			int keyCapture;
 		};
-		int keyKey[13];
+		int keyKey[2][13];
 	};
 	union{
 		struct{
@@ -61,7 +61,7 @@ protected:
 			int	joyChange;
 			int	joyPause;
 		};
-		int		joyKey[5];
+		int		joyKey[2][5];
 	};
 	int screenmode;
 	int renderskip;

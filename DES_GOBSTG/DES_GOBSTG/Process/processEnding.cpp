@@ -39,7 +39,7 @@ int Process::processEnding()
 		state = STATE_OVER;
 		return PTURN;
 	}
-	if(hge->Input_GetDIKey(KS_FIRE) || hge->Input_GetDIKey(KS_SPECIAL))
+	if(hge->Input_GetDIKey(KS_FIRE) || hge->Input_GetDIKey(KS_QUICK))
 	{
 		tpushtimer++;
 		if(tpushtimer == 120)

@@ -93,6 +93,8 @@ typedef struct tagTarget
 
 #define M_PL_ONESETPLAYER		3
 
+#define M_PL_MATCHMAXPLAYER	2
+
 #define M_NDIFFI		6
 #define M_NSTAGEDIFFI	11
 #define M_DIFFI_EASY		0

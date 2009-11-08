@@ -26,12 +26,12 @@ int Process::processOption()
 	tsel = selsys[tselsys].select;
 	if(!tdepth)
 	{
-		if(hge->Input_GetDIKey(KS_SPECIAL, DIKEY_DOWN))
+		if(hge->Input_GetDIKey(KS_QUICK, DIKEY_DOWN))
 		{
 			SE::push(SE_SYSTEM_CANCEL);
 			selsys[tselsys].select = selsys[tselsys].nselect-1;
 		}
-		if((hge->Input_GetDIKey(KS_SPECIAL, DIKEY_DOWN) || hge->Input_GetDIKey(KS_FIRE, DIKEY_DOWN)) && tsel == selsys[tselsys].nselect-1)
+		if((hge->Input_GetDIKey(KS_QUICK, DIKEY_DOWN) || hge->Input_GetDIKey(KS_FIRE, DIKEY_DOWN)) && tsel == selsys[tselsys].nselect-1)
 		{
 			SE::push(SE_SYSTEM_CANCEL);
 			SelectSystem::ClearAll();
@@ -62,7 +62,7 @@ int Process::processOption()
 					it->ID -= 0x10;
 				}
 			}
-			selsys[tselsys].Setup(tselsys, 6, 0, KS_UP, KS_DOWN, KS_FIRE, KS_SPECIAL);
+			selsys[tselsys].Setup(tselsys, 6, 0, KS_UP, KS_DOWN, KS_FIRE, KS_QUICK);
 		}
 		else if(tsel == 1)
 		{
@@ -122,11 +122,16 @@ int Process::processOption()
 		}
 		else if(tsel == 4 && hge->Input_GetDIKey(KS_FIRE, DIKEY_DOWN))
 		{
-			joyFire = RESCONFIGDEFAULT_JOYFIRE;
-			joySpecial = RESCONFIGDEFAULT_JOYSPECIAL;
-			joySlow = RESCONFIGDEFAULT_JOYSLOW;
-			joyChange = RESCONFIGDEFAULT_JOYCHANGE;
-			joyPause = RESCONFIGDEFAULT_JOYPAUSE;
+			JS_FIRE_(0) = RESCONFIGDEFAULT_JOYFIRE;
+			JS_QUICK_(0) = RESCONFIGDEFAULT_JOYQUICK;
+			JS_SLOW_(0) = RESCONFIGDEFAULT_JOYSLOW;
+			JS_CHARGE_(0) = RESCONFIGDEFAULT_JOYCHARGE;
+			JS_PAUSE_(0) = RESCONFIGDEFAULT_JOYPAUSE;
+			JS_FIRE_(1) = RESCONFIGDEFAULT_JOYFIRE;
+			JS_QUICK_(1) = RESCONFIGDEFAULT_JOYQUICK;
+			JS_SLOW_(1) = RESCONFIGDEFAULT_JOYSLOW;
+			JS_CHARGE_(1) = RESCONFIGDEFAULT_JOYCHARGE;
+			JS_PAUSE_(1) = RESCONFIGDEFAULT_JOYPAUSE;
 			screenmode = RESCONFIGDEFAULT_SCREENMODE;
 			bgmvol = RESCONFIGDEFAULT_VOLMUSIC;
 			sevol = RESCONFIGDEFAULT_VOLSE;
@@ -145,24 +150,27 @@ int Process::processOption()
 					!hge->Input_GetDIJoy(JOY_DOWN, DIKEY_DOWN))
 				{
 					SE::push(SE_SYSTEM_OK);
-					joyKey[tsel] = i;
 
-					for(int j = 0;j < 5;j++)
+					for (int l=0; l<M_PL_MATCHMAXPLAYER; l++)
 					{
-						if(j == tsel)
-							continue;
-						if(joyKey[j] == i)
+						joyKey[l][tsel] = i;
+						for(int j = 0;j < 5;j++)
 						{
-							for(int k = 0;k < M_JOYKEYMAX;k++)
+							if(j == tsel)
+								continue;
+							if(joyKey[l][j] == i)
 							{
-								if(joyKey[0]!=k && 
-									joyKey[1]!=k && 
-									joyKey[2]!=k && 
-									joyKey[3]!=k && 
-									joyKey[4]!=k)
+								for(int k = 0;k < M_JOYKEYMAX;k++)
 								{
-									joyKey[j] = k;
-									break;
+									if(joyKey[l][0]!=k && 
+										joyKey[l][1]!=k && 
+										joyKey[l][2]!=k && 
+										joyKey[l][3]!=k && 
+										joyKey[l][4]!=k)
+									{
+										joyKey[l][j] = k;
+										break;
+									}
 								}
 							}
 						}
@@ -173,9 +181,9 @@ int Process::processOption()
 		if(hge->Input_GetDIKey(KS_ENTER, DIKEY_DOWN) ||
 			hge->Input_GetDIKey(DIK_TAB, DIKEY_DOWN) ||
 			hge->Input_GetDIKey(KS_LEFT, DIKEY_DOWN) ||
-			tsel == 5 && (hge->Input_GetDIKey(KS_FIRE, DIKEY_DOWN) || hge->Input_GetDIKey(KS_SPECIAL, DIKEY_DOWN)) ||
-			hge->Input_GetDIKey(KS_SPECIAL, DIKEY_DOWN) && !hge->Input_GetDIJoy(joySpecial, DIKEY_DOWN) ||
-			hge->Input_GetDIKey(KS_FIRE, DIKEY_DOWN) && !hge->Input_GetDIJoy(joyFire, DIKEY_DOWN))
+			tsel == 5 && (hge->Input_GetDIKey(KS_FIRE, DIKEY_DOWN) || hge->Input_GetDIKey(KS_QUICK, DIKEY_DOWN)) ||
+			hge->Input_GetDIKey(KS_QUICK, DIKEY_DOWN) && !hge->Input_GetDIJoy(JS_QUICK, DIKEY_DOWN) ||
+			hge->Input_GetDIKey(KS_FIRE, DIKEY_DOWN) && !hge->Input_GetDIJoy(JS_FIRE, DIKEY_DOWN))
 		{
 			SE::push(SE_SYSTEM_OK);
 			tdepth = 0;
@@ -192,7 +200,7 @@ int Process::processOption()
 					it->ID -= 0x10;
 				}
 			}
-			selsys[tselsys].Setup(tselsys, 6, 0, KS_UP, KS_DOWN, KS_FIRE, KS_SPECIAL);
+			selsys[tselsys].Setup(tselsys, 6, 0, KS_UP, KS_DOWN, KS_FIRE, KS_QUICK);
 
 			InfoSelect::Clear();
 		}
@@ -205,7 +213,7 @@ int Process::processOption()
 	{
 		if((it->ID & 0xf0) == 0x80)
 		{
-			int tjk = joyKey[(it->ID & 0x0f) >> 1];
+			int tjk = joyKey[0][(it->ID & 0x0f) >> 1];
 			if(it->ID & 1)
 				SpriteItemManager::SetSprite(SpriteItemManager::digituiIndex+tjk%10, it->sprite, tex);
 			else

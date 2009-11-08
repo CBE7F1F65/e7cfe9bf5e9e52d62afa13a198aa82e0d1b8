@@ -164,19 +164,22 @@ bool CALL HGE_Impl::System_Initiate()
 	/* These lines are added by h5nc (h5nc@yahoo.com.cn)                    */
 	/************************************************************************/
 	// begin
-	haveJoy = true;
+	for (int i=0; i<DIJOY_MAXDEVICE; i++)
+	{
+		haveJoy[i] = true;
+	}
 	
-	ZeroMemory(&joyState, sizeof(DIJOYSTATE));
-	ZeroMemory(&lastJoyState, sizeof(DIJOYSTATE));
+	ZeroMemory(joyState, sizeof(DIJOYSTATE)*DIJOY_MAXDEVICE);
+	ZeroMemory(lastJoyState, sizeof(DIJOYSTATE)*DIJOY_MAXDEVICE);
 
-	switch(_DIInit())
+	int diinitret = _DIInit();
+	switch(diinitret)
 	{
 	case ERROR_NOKEYBOARD:
 	case ERROR_NOKEYBOARD | ERROR_NOJOYSTICK:
 		System_Shutdown();
 		return false;
 	case ERROR_NOJOYSTICK:
-		haveJoy = false;
 		break;
 	}
 	if(!_GfxInit()) { System_Shutdown(); return false; }
@@ -307,7 +310,6 @@ bool CALL HGE_Impl::System_Start()
 					DI_retv = _DIUpdate();
 					if(DI_retv & ERROR_NOJOYSTICK)
 					{
-						haveJoy = false;
 						if(DI_retv & ERROR_NOKEYBOARD)
 						{
 							break;
@@ -323,10 +325,6 @@ bool CALL HGE_Impl::System_Start()
 			else if(nFrameSkip < 2 || !(nFrameCounter % nFrameSkip))
 			{
 				DI_retv = _DIUpdate();
-				if(DI_retv & ERROR_NOJOYSTICK)
-				{
-					haveJoy = false;
-				}
 				if(procFrameFunc())
 				{
 					_ClearQueue();
