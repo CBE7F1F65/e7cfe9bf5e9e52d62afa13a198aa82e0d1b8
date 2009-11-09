@@ -87,7 +87,7 @@ struct partInfo
 };
 
 struct replayFrame{
-	BYTE input;
+	WORD input;
 	BYTE bias;
 };
 

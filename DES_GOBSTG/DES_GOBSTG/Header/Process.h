@@ -55,6 +55,8 @@ public:
 	void	SetShake(BYTE round, bool force=false);
 	void	WorldShake();
 
+	void	SyncInput();
+
 public:
 	union{
 		struct{
@@ -150,8 +152,8 @@ public:
 	BYTE	titleselect;
 	BYTE	state;
 	//input
-	BYTE	nowInput;
-	BYTE	saveInput;
+	WORD	nowInput;
+	WORD	saveInput;
 
 	//Init
 	HTEXTURE	texInit;

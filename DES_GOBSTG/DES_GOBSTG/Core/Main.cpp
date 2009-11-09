@@ -30,6 +30,7 @@ bool RenderFunc()
 
 bool FrameFunc()
 {
+	mp.SyncInput();
 	if (hge->Input_GetDIKey(KS_ESCAPE_MP))
 		return true;
 	if(hge->Input_GetDIKey(KS_CAPTURE_MP, DIKEY_DOWN))

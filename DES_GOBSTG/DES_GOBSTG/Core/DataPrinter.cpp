@@ -921,7 +921,7 @@ bool DataPrinter::PrintReplayData(const char * foldername, const char * filename
 	int index=0;
 	double sum = 0;
 	double sumsub = 0;
-	while (rpyframe[index].input != 0xff)
+	while (rpyframe[index].input != 0xffff)
 	{
 		float tfps = Export::rpyGetReplayFPS(rpyframe[index]);
 		sumsub += tfps;

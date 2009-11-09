@@ -158,7 +158,7 @@ void Replay::Save(char * filename)
 
 	replayFrame buff;
 	buff.bias = 0;
-	buff.input = 0xff;
+	buff.input = 0xffff;
 	memcpy(_rpydata + _size-sizeof(replayFrame), &buff, sizeof(replayFrame));
 
 	char treplayfilename[M_PATHMAX];

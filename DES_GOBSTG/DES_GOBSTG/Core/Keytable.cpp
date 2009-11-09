@@ -619,7 +619,7 @@ scrKeyWord scrKeyTable[] =
 	{"KS_DOWN",					(DWORD)&(KS_DOWN_MP)},
 	{"KS_LEFT",					(DWORD)&(KS_LEFT_MP)},
 	{"KS_RIGHT",				(DWORD)&(KS_RIGHT_MP)},
-	{"KS_FIRE",					(DWORD)&(KS_LEFT_MP)},
+	{"KS_FIRE",					(DWORD)&(KS_FIRE_MP)},
 	{"KS_QUICK",				(DWORD)&(KS_QUICK_MP)},
 	{"KS_SLOW",					(DWORD)&(KS_SLOW_MP)},
 	{"KS_CHANGE",				(DWORD)&(KS_CHARGE_MP)},
