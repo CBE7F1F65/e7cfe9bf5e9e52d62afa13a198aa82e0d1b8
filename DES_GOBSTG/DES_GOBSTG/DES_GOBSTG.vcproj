@@ -392,9 +392,6 @@
 					RelativePath=".\Process\processContinue.cpp">
 				</File>
 				<File
-					RelativePath=".\Process\processDifficultSelect.cpp">
-				</File>
-				<File
 					RelativePath=".\Process\processEnding.cpp">
 				</File>
 				<File
@@ -402,6 +399,9 @@
 				</File>
 				<File
 					RelativePath=".\Process\processInit.cpp">
+				</File>
+				<File
+					RelativePath=".\Process\processMatchSelect.cpp">
 				</File>
 				<File
 					RelativePath=".\Process\processMusic.cpp">

@@ -575,3 +575,14 @@ char Process::getInputNowChar(bool wide)
 	}
 	return nowchar;
 }
+
+void Process::SetState(int _state, int _time /* = 0 */)
+{
+	state = _state;
+	time = _time;
+}
+
+void Process::SetReturnValue(int _retval)
+{
+	retvalue = _retval;
+}

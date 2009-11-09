@@ -5,7 +5,7 @@
 	Name="DES_GOBSTG"
 	ProjectGUID="{A4938EF7-0CE1-47A3-BC8D-4D0B54F94F6D}"
 	VCNestedProjectGUID="{7329E15F-F0AE-44EE-BC64-27B9038C76D7}"
-	VCNestedProjectCRC32="3565969959"
+	VCNestedProjectCRC32="1155368236"
 	VCNestedProjectFileName="DES_GOBSTG.vcproj"
 	Keyword="Win32Proj">
 	<Configurations>
@@ -268,8 +268,6 @@
 		<File 
 			RelativePath=".\Process\processContinue.cpp"/>
 		<File 
-			RelativePath=".\Process\processDifficultSelect.cpp"/>
-		<File 
 			RelativePath=".\Process\processEnding.cpp"/>
 		<File 
 			RelativePath=".\Process\processGetInput.cpp"/>
@@ -301,6 +299,8 @@
 			RelativePath=".\Process\reload.cpp"/>
 		<File 
 			RelativePath=".\Process\render.cpp"/>
+		<File 
+			RelativePath=".\Process\processMatchSelect.cpp"/>
 		<File 
 			RelativePath=".\Class\Beam.cpp"/>
 		<File 
@@ -388,6 +388,8 @@
 		<File 
 			RelativePath=".\Header\Process.h"/>
 		<File 
+			RelativePath=".\Header\ProcessDefine.h"/>
+		<File 
 			RelativePath=".\Header\processPrep.h"/>
 		<File 
 			RelativePath=".\Header\Scripter.h"/>
@@ -395,8 +397,6 @@
 			RelativePath=".\Header\SpriteItemManager.h"/>
 		<File 
 			RelativePath=".\Header\VectorList.h"/>
-		<File 
-			RelativePath=".\Header\ProcessDefine.h"/>
 		<File 
 			RelativePath=".\Header\Beam.h"/>
 		<File 

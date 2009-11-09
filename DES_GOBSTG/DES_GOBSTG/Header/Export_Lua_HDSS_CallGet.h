@@ -11,7 +11,9 @@ static class _HDSSCallGet
 public:
 	_HDSSCallGet();
 	~_HDSSCallGet();
+	int Call_SETSTATE(LuaState * ls);
 	int Call_SETTIME(LuaState * ls);
+	int Call_SE(LuaState * ls);
 	int Call_RETURN(LuaState * ls);
 	int Call_BGVALUE(LuaState * ls);
 	int Call_BGVALEX(LuaState * ls);

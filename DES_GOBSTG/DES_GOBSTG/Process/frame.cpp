@@ -86,8 +86,8 @@ int Process::frame()
 	case STATE_PLAYER_SELECT:
 		rv = processPlayerSelect();
 		break;
-	case STATE_DIFFICULT_SELECT:
-		rv = processDifficultSelect();
+	case STATE_MATCH_SELECT:
+		rv = processMatchSelect();
 		break;
 	case STATE_OVER:
 		rv = processOver();

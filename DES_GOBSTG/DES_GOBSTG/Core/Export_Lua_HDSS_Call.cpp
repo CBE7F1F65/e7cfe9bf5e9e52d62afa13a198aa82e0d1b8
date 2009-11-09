@@ -35,10 +35,19 @@ int Export_Lua::LuaFn_HDSS_Call(LuaState * ls)
 		case SCRKW_CLASS_SPECIAL:
 			switch (nowval)
 			{
+			case SCR_SETSTATE:
+				return hdsscallget.Call_SETSTATE(ls);
 			case SCR_SETTIME:
 				return hdsscallget.Call_SETTIME(ls);
 			case SCR_RETURN:
 				return hdsscallget.Call_RETURN(ls);
+			}
+			break;
+		case SCRKW_CLASS_EFFECT:
+			switch (nowval)
+			{
+			case SCR_SE:
+				return hdsscallget.Call_SE(ls);
 			}
 			break;
 		}

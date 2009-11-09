@@ -408,7 +408,7 @@ skip1:
 		{
 			time = 0;
 			if(practicemode)
-				state = STATE_DIFFICULT_SELECT;
+				state = STATE_MATCH_SELECT;
 			else
 				state = STATE_TITLE;
 			return PTURN;

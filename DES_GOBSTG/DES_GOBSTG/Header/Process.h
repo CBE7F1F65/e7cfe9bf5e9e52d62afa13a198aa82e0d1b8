@@ -26,7 +26,7 @@ public:
 	int		processEnding();
 	int		processTitle();
 	int		processPlayerSelect();
-	int		processDifficultSelect();
+	int		processMatchSelect();
 	int		processOver();
 	int		processSpell();
 	int		processReplay();
@@ -56,6 +56,8 @@ public:
 	void	WorldShake();
 
 	void	SyncInput();
+	void	SetState(int state, int time = 0);
+	void	SetReturnValue(int retval);
 
 public:
 	union{

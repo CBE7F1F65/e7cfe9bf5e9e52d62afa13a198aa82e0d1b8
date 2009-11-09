@@ -135,7 +135,7 @@ int Process::processPause()
 				if(spellmode && !replaymode && time == 0)
 					state = STATE_CONTINUE;
 				else
-					state = STATE_DIFFICULT_SELECT;
+					state = STATE_MATCH_SELECT;
 			}
 			scene = startscene;
 			Player::p.exist = false;
