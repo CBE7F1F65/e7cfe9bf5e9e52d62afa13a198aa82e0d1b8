@@ -2,6 +2,7 @@
 
 #include "../Header/Export_Lua.h"
 #include "../Header/LuaConstDefine.h"
+#include "../Header/BResource.h"
 
 bool Export_Lua::_LuaRegistConst(LuaObject * obj)
 {
@@ -388,6 +389,20 @@ bool Export_Lua::_LuaRegistHGEHelpConst(LuaObject * obj)
 	obj->SetInteger("HGETEXT_BOTTOM", HGETEXT_BOTTOM);
 	obj->SetInteger("HGETEXT_MIDDLE", HGETEXT_MIDDLE);
 	obj->SetInteger("HGETEXT_VERTMASK", HGETEXT_VERTMASK);
+
+	return true;
+}
+
+bool Export_Lua::_LuaRegistCustomConst(LuaObject * obj)
+{
+	// CustomConst
+	for (int i=0; i<SCR_CUSTOMCONSTMAX; i++)
+	{
+		if (strlen(res.customconstdata[i].name))
+		{
+			obj->SetInteger(res.customconstdata[i].name, res.customconstdata[i].value);
+		}
+	}
 
 	return true;
 }

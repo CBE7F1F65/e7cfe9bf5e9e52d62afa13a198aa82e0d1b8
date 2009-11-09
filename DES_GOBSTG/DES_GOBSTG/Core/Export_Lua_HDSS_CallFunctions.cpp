@@ -18,46 +18,62 @@ _HDSSCallGet::~_HDSSCallGet()
 int _HDSSCallGet::Call_SETSTATE(LuaState * ls)
 {
 	_ENTERCALL_HDSS_LUA;
-	int _state = _INEXT_HDSS_LUAPARA;
 
-	int _time = 0;
-	_JNEXT_HDSS_LUAPARA;
-	if (bhavenext)
+	if (true)
 	{
-		_time = _IOBJ_HDSS_LUA;
-	}
+		int _state = _INEXT_HDSS_LUAPARA;
 
-	mp.SetState(_state, _time);
+		int _time = 0;
+		_JNEXT_HDSS_LUAPARA;
+		if (bhavenext)
+		{
+			_time = _IOBJ_HDSS_LUA;
+		}
+
+		mp.SetState(_state, _time);
+	}
 	return 0;
 }
 
 int _HDSSCallGet::Call_SETTIME(LuaState * ls)
 {
 	_ENTERCALL_HDSS_LUA;
-	time = _INEXT_HDSS_LUAPARA;
+
+	if (true)
+	{
+		time = _INEXT_HDSS_LUAPARA;
+	}
 	return 0;
 }
 
 int _HDSSCallGet::Call_RETURN(LuaState * ls)
 {
 	_ENTERCALL_HDSS_LUA;
-	int _retvalue = _INEXT_HDSS_LUAPARA;
-	mp.SetReturnValue(_retvalue);
+
+	if (true)
+	{
+		int _retvalue = _INEXT_HDSS_LUAPARA;
+		mp.SetReturnValue(_retvalue);
+	}
 	return 0;
 }
 
 int _HDSSCallGet::Call_SE(LuaState * ls)
 {
 	_ENTERCALL_HDSS_LUA;
-	int _type = _INEXT_HDSS_LUAPARA;
-	
-	float _x = M_ACTIVECLIENT_CENTER_X;
-	_JNEXT_HDSS_LUAPARA;
-	if (bhavenext)
+
+	if (true)
 	{
-		_x = _FOBJ_HDSS_LUA;
+		int _type = _INEXT_HDSS_LUAPARA;
+
+		float _x = M_ACTIVECLIENT_CENTER_X;
+		_JNEXT_HDSS_LUAPARA;
+		if (bhavenext)
+		{
+			_x = _FOBJ_HDSS_LUA;
+		}
+		SE::push(_type, _x);
 	}
-	SE::push(_type, _x);
 	return 0;
 }
 
@@ -379,5 +395,16 @@ int _HDSSCallGet::Call_SELSET(LuaState * ls)
 	return 0;
 }
 
+int _HDSSCallGet::Call_SELCLEAR(LuaState * ls)
+{
+	_ENTERCALL_HDSS_LUA;
+
+	if (true)
+	{
+		int _selsys = _INEXT_HDSS_LUAPARA;
+		selsys[_selsys].Clear();
+	}
+	return 0;
+}
 #endif
 #endif

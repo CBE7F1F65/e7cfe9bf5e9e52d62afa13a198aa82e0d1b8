@@ -12,10 +12,22 @@ int _HDSSCallGet::Get_SELCOMPLETE(LuaState * ls)
 	if (argscount > 1)
 	{
 		int _selsys = _INEXT_HDSS_LUAFUNC;
+
+		bool _bclearaftercomplete = true;
+		_JNEXT_HDSS_LUAFUNC;
+		if (bhavenext)
+		{
+			_bclearaftercomplete = _IOBJ_HDSS_LUA;
+		}
+
 		if (_selsys >= 0 && _selsys < SELSYSTEMMAX)
 		{
 			_PB_HDSS_LUAFUUNC(selsys[_selsys].complete);
 			_PI_HDSS_LUAFUUNC(selsys[_selsys].select);
+			if (selsys[_selsys].complete && _bclearaftercomplete)
+			{
+				selsys[_selsys].Clear();
+			}
 			return 2;
 		}
 	}

@@ -19,6 +19,7 @@ public:
 	int Call_BGVALEX(LuaState * ls);
 	int Call_SELBUILD(LuaState * ls);
 	int Call_SELSET(LuaState * ls);
+	int Call_SELCLEAR(LuaState * ls);
 
 public:
 	int Get_SELCOMPLETE(LuaState * ls);

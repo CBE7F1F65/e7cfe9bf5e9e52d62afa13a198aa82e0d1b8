@@ -271,6 +271,8 @@ bool Scripter::LoadAll(HTEXTURE * texset)
 	_eventsize = 0;
 #endif // __COUNT_SCRIPTSIZE
 
+	FillCustomConstDesc();
+
 #ifndef __NOTUSELUA
 	return LoadAll_Lua(texset);
 #endif
@@ -278,8 +280,6 @@ bool Scripter::LoadAll(HTEXTURE * texset)
 	binoffset = 0;
 
 	strdescIndex = 0;
-
-	FillCustomConstDesc();
 
 	if(!binmode)
 	{

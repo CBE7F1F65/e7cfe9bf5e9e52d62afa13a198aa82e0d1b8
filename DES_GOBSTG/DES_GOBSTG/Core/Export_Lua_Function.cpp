@@ -87,6 +87,10 @@ bool Export_Lua::LuaRegistConst()
 		return false;
 	}
 #endif
+	if (!_LuaRegistCustomConst(&obj))
+	{
+		return false;
+	}
 
 	return true;
 }

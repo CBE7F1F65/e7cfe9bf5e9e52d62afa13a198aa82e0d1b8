@@ -69,7 +69,7 @@ function ControlExecute_cTitle(con)
 			hdss.Call(
 				HDSS_SE,
 				{
-					SE_CANCEL
+					SE_SYSTEM_CANCEL
 				}
 			)
 			if select == 2 then

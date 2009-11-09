@@ -57,6 +57,7 @@ public:
 	static bool _LuaRegistConst(LuaObject * obj);
 	static bool _LuaRegistHGEConst(LuaObject * obj);
 	static bool _LuaRegistHGEHelpConst(LuaObject * obj);
+	static bool _LuaRegistCustomConst(LuaObject * obj);
 
 	static void _LuaHelper_PushDWORD(LuaState * ls, DWORD dval);
 	static DWORD _LuaHelper_GetDWORD(LuaObject * obj);

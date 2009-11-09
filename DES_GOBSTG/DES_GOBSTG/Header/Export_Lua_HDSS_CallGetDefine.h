@@ -17,9 +17,9 @@
 #define _COBJ_HDSS_LUA		(Export_Lua::_LuaHelper_GetColor(&_obj))
 #define _DOBJ_HDSS_LUA		(Export_Lua::_LuaHelper_GetDWORD(&_obj))
 
-#define _NILCHECK_HDSS_LUAPARA	(!_obj.IsNil())
+#define _NILCHECK_HDSS_LUA		(!_obj.IsNil())
 #define _JNEXT_HDSS_LUAPARA		_ONEXT_HDSS_LUAPARA;\
-								bhavenext = _NILCHECK_HDSS_LUAPARA
+								bhavenext = _NILCHECK_HDSS_LUA
 #define _GETPARAS_HDSS_LUAPARA(X)		if (!Export_Lua::_Helper_HDSS_GetPara(&args, (X), &_para))\
 										{\
 											return false;\
@@ -47,6 +47,8 @@
 #define _SNEXT_HDSS_LUAFUNC	((char *)(_NEXT_HDSS_LUAFUNC.GetString()))
 #define _ONEXT_HDSS_LUAFUNC	(_obj = _NEXT_HDSS_LUAFUNC)
 
+#define _JNEXT_HDSS_LUAFUNC		_ONEXT_HDSS_LUAFUNC;\
+								bhavenext = _NILCHECK_HDSS_LUA
 #define _PI_HDSS_LUAFUUNC(X)	(ls->PushInteger(X))
 #define _PF_HDSS_LUAFUUNC(X)	(ls->PushNumber(X))
 #define _PB_HDSS_LUAFUUNC(X)	(ls->PushBoolean(X))
