@@ -552,16 +552,14 @@ bool Scripter::Parse(int varcount)
 					if(rv = Copy(&i, 7))
 					{
 						int _tdi = CAST(d[6]);
-						BObject _tobj;
-						_tobj.x = CAST(d[1]);
-						_tobj.y = CAST(d[2]);
+						BObject _tbobj(CAST(d[1]), CAST(d[2]));
 						if(CAST(d[0]))
 						{
-							CINT(d[_tdi].value) = _tobj.rMainAngle(CAST(d[3]), CAST(d[4]), CAST(d[5]));
+							CINT(d[_tdi].value) = _tbobj.rMainAngle(CAST(d[3]), CAST(d[4]), CAST(d[5]));
 						}
 						else
 						{
-							CINT(d[_tdi].value) = _tobj.aMainAngle(CAST(d[3]), CAST(d[4]), CAST(d[5]));
+							CINT(d[_tdi].value) = _tbobj.aMainAngle(CAST(d[3]), CAST(d[4]), CAST(d[5]));
 						}
 						d[_tdi].bfloat = false;
 					}
@@ -679,7 +677,7 @@ bool Scripter::Parse(int varcount)
 				case SCR_BCONTROL:
 					if(rv = Copy(&i, 2))
 					{
-						BObject * _tobj = NULL;
+						BObject * _tpbobj = NULL;
 						int _ttype = CAST(d[0]);
 						int _tdi = CAST(d[1]);
 						int _tindex = CAST(d[_tdi]);
@@ -697,7 +695,7 @@ bool Scripter::Parse(int varcount)
 										{
 											if ((*bu).able)
 											{
-												_tobj = &(*bu);
+												_tpbobj = &(*bu);
 											}
 										}
 									}
@@ -712,7 +710,7 @@ bool Scripter::Parse(int varcount)
 										{
 											if ((*be).able)
 											{
-												_tobj = &(*be);
+												_tpbobj = &(*be);
 											}
 										}
 									}
@@ -724,7 +722,7 @@ bool Scripter::Parse(int varcount)
 									if(en[_tindex].able)
 									{
 										Enemy::index = _tindex;
-										_tobj = &en[Enemy::index];
+										_tpbobj = &en[Enemy::index];
 									}
 								}
 								break;
@@ -734,7 +732,7 @@ bool Scripter::Parse(int varcount)
 									if(gh[_tindex].able)
 									{
 										Ghost::index = _tindex;
-										_tobj = &gh[Ghost::index];
+										_tpbobj = &gh[Ghost::index];
 									}
 								}
 								break;
@@ -743,13 +741,13 @@ bool Scripter::Parse(int varcount)
 
 						if (rv = Copy(&i, 5))
 						{
-							if(_tobj)
+							if(_tpbobj)
 							{
-								_tobj->x = CAST(d[0]);
-								_tobj->y = CAST(d[1]);
-								_tobj->angle = CAST(d[2]);
-								_tobj->headangle = CAST(d[3]);
-								_tobj->speed = CAST(d[4]);
+								_tpbobj->x = CAST(d[0]);
+								_tpbobj->y = CAST(d[1]);
+								_tpbobj->angle = CAST(d[2]);
+								_tpbobj->headangle = CAST(d[3]);
+								_tpbobj->speed = CAST(d[4]);
 							}
 							else
 							{
@@ -764,10 +762,8 @@ bool Scripter::Parse(int varcount)
 					if (rv = Copy(&i, 6))
 					{
 						int _tdi = CAST(d[5]);
-						BObject _tobj;
-						_tobj.x = CAST(d[0]);
-						_tobj.y = CAST(d[1]);
-						CINT(d[_tdi].value) = _tobj.checkCollisionCircle(CAST(d[2]), CAST(d[3]), CAST(d[4]));
+						BObject _tbobj(CAST(d[0]), CAST(d[1]));
+						CINT(d[_tdi].value) = _tbobj.checkCollisionCircle(CAST(d[2]), CAST(d[3]), CAST(d[4]));
 						d[_tdi].bfloat = false;
 					}
 					break;
@@ -775,10 +771,8 @@ bool Scripter::Parse(int varcount)
 					if (rv = Copy(&i, 6))
 					{
 						int _tdi = CAST(d[5]);
-						BObject _tobj;
-						_tobj.x = CAST(d[0]);
-						_tobj.y = CAST(d[1]);
-						CINT(d[_tdi].value) = _tobj.checkCollisionSquare(CAST(d[2]), CAST(d[3]), CAST(d[4]));
+						BObject _tbobj(CAST(d[0]), CAST(d[1]));
+						CINT(d[_tdi].value) = _tbobj.checkCollisionSquare(CAST(d[2]), CAST(d[3]), CAST(d[4]));
 						d[_tdi].bfloat = false;
 					}
 					break;

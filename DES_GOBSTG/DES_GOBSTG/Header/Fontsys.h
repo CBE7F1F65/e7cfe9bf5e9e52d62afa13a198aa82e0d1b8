@@ -33,7 +33,9 @@ public:
 	void SignUp(const char * text = NULL, HD3DFONT font=NULL);
 	list<Fontsys *>::iterator SignOff();
 	void ReleaseTargetAndSprite();
-	void Render(float x, float y, DWORD ucol, DWORD dcol, float shadow = FONTSYS_DEFAULT_SHADOW, float hscale = 1, float vscale = 0, BYTE alignflag=HGETEXT_CENTER|HGETEXT_MIDDLE);
+	void SetColor(DWORD col, int i);
+	void SetColor(DWORD col0, DWORD col1, DWORD col2, DWORD col3);
+	void Render(float x, float y, float shadow = FONTSYS_DEFAULT_SHADOW, float hscale = 1, float vscale = 0, BYTE alignflag=HGETEXT_CENTER|HGETEXT_MIDDLE);
 
 	static int strTranslate(char * dtext, const char * stext, int * maxchar);
 
@@ -42,6 +44,7 @@ public:
 	HD3DFONT usingfont;
 //	hgeQuad quad;
 	hgeSprite * sprite;
+	DWORD col[4];
 	HTARGET tar;
 	int lines;
 	int maxcharinline;

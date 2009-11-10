@@ -255,7 +255,7 @@ void Fontsys::SignUp(const char * _text, HD3DFONT _font)
 	}
 }
 
-void Fontsys::Render(float x, float y, DWORD ucol, DWORD dcol, float shadow, float hscale, float vscale, BYTE alignflag)
+void Fontsys::Render(float x, float y, float shadow, float hscale, float vscale, BYTE alignflag)
 {
 	if (!sprite)
 	{
@@ -263,13 +263,35 @@ void Fontsys::Render(float x, float y, DWORD ucol, DWORD dcol, float shadow, flo
 	}
 	if (shadow)
 	{
-		Render(x+shadow*2, y+shadow*2, ucol&0xff000000, dcol&0xff000000, 0, hscale, vscale, alignflag);
-		Render(x+shadow, y+shadow, ucol, dcol, 0, hscale, vscale, alignflag);
-		Render(x+shadow, y-shadow, ucol, dcol, 0, hscale, vscale, alignflag);
-		Render(x-shadow, y-shadow, ucol, dcol, 0, hscale, vscale, alignflag);
-		Render(x-shadow, y+shadow, ucol, dcol, 0, hscale, vscale, alignflag);
+		DWORD _col[4];
+		for (int i=0; i<4; i++)
+		{
+			_col[i] = col[i];
+		}
+		DWORD __col[4];
+		for (int i=0; i<4; i++)
+		{
+			__col[i] = _col[i] & 0xFF000000;
+		}
+		SetColor(__col[0], __col[1], __col[2], __col[3]);
+		Render(x+shadow*2, y+shadow*2, 0, hscale, vscale, alignflag);
+
+		for (int i=0; i<4; i++)
+		{
+			__col[i] = (GETA(_col[i]) / 4) << 24 | (_col[i] & 0xFFFFFF);
+		}
+
+		SetColor(__col[0], __col[1], __col[2], __col[3]);
+		Render(x+shadow, y+shadow, 0, hscale, vscale, alignflag);
+		Render(x+shadow, y-shadow, 0, hscale, vscale, alignflag);
+		Render(x-shadow, y-shadow, 0, hscale, vscale, alignflag);
+		Render(x-shadow, y+shadow, 0, hscale, vscale, alignflag);
+		SetColor(_col[0], _col[1], _col[2], _col[3]);
 	}
-	sprite->SetColor(ucol, ucol, dcol, dcol);
+	else
+	{
+		SetColor(col[0], col[1], col[2], col[3]);
+	}
 	float hotx;
 	float hoty;
 	float w = sprite->GetWidth();
@@ -298,6 +320,7 @@ void Fontsys::Render(float x, float y, DWORD ucol, DWORD dcol, float shadow, flo
 		hoty = h;
 		break;
 	}
+	sprite->SetColor(col[0], col[1], col[2], col[3]);
 	sprite->SetHotSpot(hotx, hoty);
 	sprite->RenderEx(x, y, 0, hscale, vscale);
 	/*
@@ -319,4 +342,24 @@ void Fontsys::Render(float x, float y, DWORD ucol, DWORD dcol, float shadow, flo
 	quad.v[2].x = x + w;	quad.v[2].y = y + h;
 	quad.v[3].x = x;		quad.v[3].y = y + h;
 	*/
+}
+
+void Fontsys::SetColor(DWORD _col, int i)
+{
+	if (i < 0)
+	{
+		SetColor(_col, _col, _col, _col);
+	}
+	else
+	{
+		col[i] = _col;
+	}
+}
+
+void Fontsys::SetColor(DWORD col0, DWORD col1, DWORD col2, DWORD col3)
+{
+	col[0] = col0;
+	col[1] = col1;
+	col[2] = col2;
+	col[3] = col3;
 }

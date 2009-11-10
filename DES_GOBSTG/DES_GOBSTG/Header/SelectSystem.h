@@ -20,6 +20,7 @@ public:
 	void Clear();
 	void Setup(BYTE pushid, int nselect, int select, int keyminus=PUSHKEY_KEYNULL, int keyplus=PUSHKEY_KEYNULL, int keyok=PUSHKEY_KEYNULL, int keycancel=PUSHKEY_KEYNULL, int maxtime=SELSYS_DEFAULTMAXTIME);
 	bool SetPageNumber(BYTE nPageNum, float fadebegin, float offset, int initshift=0, int shiftangle=9000);
+	void SetSelectFrame(int siID, float x, float y);
 	void SetAction(BYTE typeflag, float xadj, float yadj);
 
 	bool Confirm(BYTE pushid, int keyminus=PUSHKEY_KEYNULL, int keyplus=PUSHKEY_KEYNULL, int keyok=PUSHKEY_KEYNULL, int keycancel=PUSHKEY_KEYNULL, float cenx=M_ACTIVECLIENT_CENTER_X, float ceny=M_ACTIVECLIENT_CENTER_Y, bool settrue=false);
@@ -34,6 +35,10 @@ public:
 
 public:
 	seladj	adj[SEL_STATEMAX];
+
+	hgeSprite * spselectframe;
+	float selectframex;
+	float selectframey;
 
 	int nselect;
 	int select;

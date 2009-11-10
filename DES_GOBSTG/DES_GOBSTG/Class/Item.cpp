@@ -217,8 +217,7 @@ void Item::action()
 	{
 		if(angle != 9000)
 		{
-			x += speed * cost(angle);
-			y += speed * sint(angle);
+			updateMove();
 		}
 		else
 			y += speed;

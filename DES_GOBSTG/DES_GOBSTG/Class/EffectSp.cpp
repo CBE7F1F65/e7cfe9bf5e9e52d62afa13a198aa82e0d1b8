@@ -117,8 +117,7 @@ void EffectSp::action()
 	}
 	else
 	{
-		x += speed * cost(angle);
-		y += speed * sint(angle);
+		updateMove();
 
 		if(type > 0x80)
 		{

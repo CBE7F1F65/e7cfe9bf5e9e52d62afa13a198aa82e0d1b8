@@ -154,6 +154,24 @@ int _HDSSCallGet::Call_BGVALEX(LuaState * ls)
 	return 0;
 }
 
+int _HDSSCallGet::Call_BGFLAG(LuaState * ls)
+{
+	_ENTERCALL_HDSS_LUA;
+
+	if (true)
+	{
+		int _index = _INEXT_HDSS_LUAPARA;
+		BYTE _flag = _INEXT_HDSS_LUAPARA;
+		int _maxtime = -1;
+		_JNEXT_HDSS_LUAPARA;
+		if (bhavenext)
+		{
+			_maxtime = _IOBJ_HDSS_LUA;
+		}
+		ubg[_index]->SetFlag(_flag, _maxtime);
+	}
+}
+
 int _HDSSCallGet::Call_SELBUILD(LuaState * ls)
 {
 	_ENTERCALL_HDSS_LUA;
@@ -390,6 +408,15 @@ int _HDSSCallGet::Call_SELSET(LuaState * ls)
 				}
 			}
 			selsys[_selsys].SetPageNumber(_nPageNumber, _fadebegin, _offset, _initshift, _shiftangle);
+
+			if (argscount > 3)
+			{
+				_GETPARAS_HDSS_LUAPARA(4);
+				int _selectframeSIID = _INEXT_HDSS_LUAPARA;
+				float _x = _FNEXT_HDSS_LUAPARA;
+				float _y = _FNEXT_HDSS_LUAPARA;
+				selsys[_selsys].SetSelectFrame(_selectframeSIID, _x, _y);
+			}
 		}
 	}
 	return 0;

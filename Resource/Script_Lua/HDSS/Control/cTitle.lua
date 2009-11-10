@@ -3,9 +3,21 @@ function ControlExecute_cTitle(con)
 	local selsysid = 0;
 	if con == 1 then
 		hdss.Call(
+			HDSS_BGVALUE,
+			{
+				BGMASK, SI_Null, TotalCenterX, TotalCenterY, TotalW, TotalH, global.ARGB(0xFF, 0)
+			}
+		)
+		hdss.Call(
 			HDSS_BGVALUE, 
 			{
 				0, SI_TitleScene, TotalCenterX, TotalCenterY, TotalW, TotalH
+			}
+		)
+		hdss.Call(
+			HDSS_BGFLAG,
+			{
+				BGMASK, BG_FADEOUT
 			}
 		)
 		
@@ -25,7 +37,7 @@ function ControlExecute_cTitle(con)
 		local ystart = 240;
 		local yoffset = 30;
 		local infox = 320;
-		local infoy = 400;
+		local infoy = 440;
 		
 		local _siusetable =
 		{
@@ -58,12 +70,28 @@ function ControlExecute_cTitle(con)
 	
 	local complete, select = hdss.Get(HDSS_SELCOMPLETE, selsysid);
 	if complete then
-		hdss.Call(
-			HDSS_SETSTATE,
-			{
-				STATE_MATCH_SELECT
-			}
-		)
+		if select == 0 then
+			hdss.Call(
+				HDSS_SETSTATE,
+				{
+					STATE_MATCH_SELECT
+				}
+			)
+		elseif select == 1 then
+			hdss.Call(
+				HDSS_SETSTATE,
+				{
+					STATE_REPLAY
+				}
+			)
+		elseif select == 2 then
+			hdss.Call(
+				HDSS_RETURN,
+				{
+					PQUIT
+				}
+			)
+		end
 	else
 		if hge.Input_GetDIKey(KS_QUICK, DIKEY_DOWN) then
 			hdss.Call(

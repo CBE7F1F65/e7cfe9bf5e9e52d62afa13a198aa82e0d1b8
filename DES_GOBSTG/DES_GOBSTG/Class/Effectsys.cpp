@@ -147,8 +147,7 @@ void Effectsys::action()
 
 	if (speed)
 	{
-		x += speed * cost(angle);
-		y += speed * sint(angle);
+		updateMove();
 	}
 	z += zSpeed;
 

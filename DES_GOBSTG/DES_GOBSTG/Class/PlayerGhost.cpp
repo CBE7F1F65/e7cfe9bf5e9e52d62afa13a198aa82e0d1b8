@@ -184,12 +184,12 @@ void PlayerGhost::action()
 	if (flag & PGFLAG_CHASE)
 	{
 		chasetime = 8;
-		BObject * _tobj;
-		if (PlayerBullet::GetLockAim(&_tobj) && shooting)
+		BObject * _tpbobj;
+		if (PlayerBullet::GetLockAim(&_tpbobj) && shooting)
 		{
-			aimx = _tobj->x - _pgd->xadj;
-			aimy = _tobj->y - _pgd->yadj;
-			shootangle = _tobj->aMainAngle(x, y, -9000);
+			aimx = _tpbobj->x - _pgd->xadj;
+			aimy = _tpbobj->y - _pgd->yadj;
+			shootangle = _tpbobj->aMainAngle(x, y, -9000);
 			chasing = true;
 		}
 		else
@@ -266,8 +266,7 @@ void PlayerGhost::action()
 	if (aimx != x || aimy != y)
 	{
 		chaseAim(aimx, aimy, chasetime);
-		x += speed * cost(angle);
-		y += speed * sint(angle);
+		updateMove();
 	}
 	if (flag & PGFLAG_STANDSHAKE)
 	{

@@ -2,6 +2,18 @@
 
 BObject::BObject()
 {
+	_Init();
+}
+
+BObject::BObject(float _x, float _y)
+{
+	_Init();
+	x = _x;
+	y = _y;
+}
+
+void BObject::_Init()
+{
 	exist	= false;
 	alpha	= 0xff;
 	diffuse	= 0xffffff;
@@ -88,6 +100,12 @@ int BObject::chaseAim(float destx, float desty, int chasetimer)
 	else
 		speed = BOBJ_M_CHASEAIM_SPEEDMIN;
 	return chasetimer - 1;
+}
+
+void BObject::updateMove()
+{
+	x += speed * cost(angle);
+	y += speed * sint(angle);
 }
 
 bool BObject::checkCollisionCircle(const BObject &aim, float r)

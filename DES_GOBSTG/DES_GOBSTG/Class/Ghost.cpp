@@ -278,8 +278,7 @@ void Ghost::action()
 		}
 		else
 		{
-			x += speed * cost(angle);
-			y += speed * sint(angle);
+			updateMove();
 		}
 
 		if(tarID != 0xff)

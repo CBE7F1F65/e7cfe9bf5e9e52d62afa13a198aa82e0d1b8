@@ -72,6 +72,7 @@ void Chat::Render()
 		chatter[i]->RenderEx(x[i], y[i], 0, 0.8f);
 	}
 	textbox->RenderEx(x[CHATTER_TEXTBOX], y[CHATTER_TEXTBOX], ARC(9000), 1.5f, 1.0f);
+	fschat.SetColor(0xFFFFFFFF, 0xFFFFFFFF, col, col);
 	fschat.Render(M_ACTIVECLIENT_LEFT+70, M_ACTIVECLIENT_CENTER_Y+138, 0xffffffff, col);
 }
 

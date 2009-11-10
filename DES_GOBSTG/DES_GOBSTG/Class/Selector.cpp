@@ -3,6 +3,7 @@
 #include "Main.h"
 #include "Process.h"
 #include "SpriteItemManager.h"
+#include "BObject.h"
 
 Selector::Selector()
 {
@@ -123,7 +124,7 @@ void Selector::RenderInfo()
 	{
 		return;
 	}
-	fsinfo.Render(x+infoxoffset, y+infoyoffset, infoucol, infodcol, infoshadow, infohscale, infovscale, infoalignflag);
+	fsinfo.Render(x+infoxoffset, y+infoyoffset, infoshadow, infohscale, infovscale, infoalignflag);
 }
 
 void Selector::ChangeState(BYTE state, BYTE op)
@@ -196,7 +197,7 @@ void Selector::PreAction(int nselect, int select, int * fvID, Selector ** fvsele
 	}
 }
 
-bool Selector::PostAction(int * select, int sellock, int nPageNum, float fadebegin, float offset, int shiftangle)
+bool Selector::PostAction(int * select, int sellock, int nPageNum, float fadebegin, float offset, int shiftangle, float * selectframex, float * selectframey)
 {
 	bool ret = false;
 	int tindex = SELINFO_NONE;
@@ -212,6 +213,13 @@ bool Selector::PostAction(int * select, int sellock, int nPageNum, float fadebeg
 		tindex = SELINFO_LEAVE;
 		break;
 	}
+
+	bool changeselectframe = false;
+	if (ID == *select && flag == SEL_OVER)
+	{
+		changeselectframe = true;
+	}
+
 	if (timer < maxtime)
 	{
 		x += (adj[tindex].xadj - x) / (maxtime-timer);
@@ -230,6 +238,14 @@ bool Selector::PostAction(int * select, int sellock, int nPageNum, float fadebeg
 		case SELINFO_LEAVE:
 			alpha = 0x80 * (maxtime - timer) / maxtime;
 			break;
+		}
+		if (changeselectframe)
+		{
+			BObject _bobj(*selectframex, *selectframey);
+			_bobj.chaseAim(x, y, maxtime-timer);
+			_bobj.updateMove();
+			*selectframex = _bobj.x;
+			*selectframey = _bobj.y;
 		}
 		timer++;
 	}
@@ -251,6 +267,11 @@ bool Selector::PostAction(int * select, int sellock, int nPageNum, float fadebeg
 		case SELINFO_LEAVE:
 			alpha = 0;
 			break;
+		}
+		if (changeselectframe)
+		{
+			*selectframex = x;
+			*selectframey = y;
 		}
 	}
 
@@ -334,6 +355,10 @@ bool Selector::PostAction(int * select, int sellock, int nPageNum, float fadebeg
 	}
 
 	sprite->SetColor((alpha << 24) | (0xffffff));
+	fsinfo.SetColor((alpha << 24) | (infoucol & 0xFFFFFF), 0);
+	fsinfo.SetColor((alpha << 24) | (infoucol & 0xFFFFFF), 1);
+	fsinfo.SetColor((alpha << 24) | (infodcol & 0xFFFFFF), 2);
+	fsinfo.SetColor((alpha << 24) | (infodcol & 0xFFFFFF), 3);
 
 	if (fademode)
 	{
@@ -342,18 +367,26 @@ bool Selector::PostAction(int * select, int sellock, int nPageNum, float fadebeg
 		case SELFADE_UP:
 			sprite->SetColor(0, 0);
 			sprite->SetColor(0, 1);
+			fsinfo.SetColor(0, 0);
+			fsinfo.SetColor(0, 1);
 			break;
 		case SELFADE_DOWN:
 			sprite->SetColor(0, 2);
 			sprite->SetColor(0, 3);
+			fsinfo.SetColor(0, 2);
+			fsinfo.SetColor(0, 3);
 			break;
 		case SELFADE_LEFT:
 			sprite->SetColor(0, 0);
 			sprite->SetColor(0, 3);
+			fsinfo.SetColor(0, 0);
+			fsinfo.SetColor(0, 3);
 			break;
 		case SELFADE_RIGHT:
 			sprite->SetColor(0, 1);
 			sprite->SetColor(0, 2);
+			fsinfo.SetColor(0, 1);
+			fsinfo.SetColor(0, 2);
 			break;
 		}
 	}

@@ -871,8 +871,7 @@ void Enemy::action()
 		}
 		matchAction();
 
-		x += speed * cost(angle);
-		y += speed * sint(angle);
+		updateMove();
 
 		if(type >= ENEMY_BOSSTYPEBEGIN)
 			bossAction();

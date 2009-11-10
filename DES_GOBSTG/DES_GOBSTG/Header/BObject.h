@@ -11,6 +11,8 @@ class BObject
 {
 public:
 	BObject();
+	BObject(float x, float y);
+	void _Init();
 	virtual ~BObject();
 
 	int rMainAngle(float destx, float desty, float r = 0);
@@ -31,6 +33,8 @@ public:
 	bool checkCollisionRect(const BObject &aim, float rectPrep, float rectParal, float rotCos = 0, float rotSin = 1, float rOri = 0);
 	bool checkCollisionSquare(float aimx, float aimy, float length, float height = 0);
 	bool checkCollisionSquare(const BObject &aim, float length, float height = 0);
+
+	void updateMove();
 
 	virtual void action();
 

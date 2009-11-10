@@ -11,6 +11,7 @@ SelectSystem selsys[SELSYSTEMMAX];
 SelectSystem::SelectSystem()
 {
 	select = 0;
+	spselectframe = NULL;
 	Clear();
 }
 
@@ -40,6 +41,11 @@ void SelectSystem::Clear()
 			delete it->sprite;
 		it->sprite = NULL;
 		it->fsinfo.SignOff();
+	}
+	if (spselectframe)
+	{
+		delete spselectframe;
+		spselectframe = NULL;
 	}
 	sel.clear();
 	nselect = 0;
@@ -96,7 +102,7 @@ bool SelectSystem::SetPageNumber(BYTE _nPageNum, float _fadebegin, float _offset
 		return false;
 	}
 	nPageNum = _nPageNum;
-	fadebegin = _fadebegin;
+	fadebegin = _fadebegin - _offset * 1.5f;
 	offset = _offset;
 	firstID = 0;
 	lastID = nPageNum - 1;
@@ -114,6 +120,18 @@ void SelectSystem::SetAction(BYTE typeflag, float xadj, float yadj)
 	{
 		it->actionSet(typeflag, adj);
 	}
+}
+
+void SelectSystem::SetSelectFrame(int siID, float x, float y)
+{
+	if (spselectframe)
+	{
+		delete spselectframe;
+		spselectframe = NULL;
+	}
+	spselectframe = SpriteItemManager::CreateSprite(siID);
+	selectframex = x;
+	selectframey = y;
 }
 
 void SelectSystem::shift(int nshift)
@@ -294,7 +312,7 @@ void SelectSystem::action()
 	{
 		for (list<Selector>::iterator it=sel.begin(); it!=sel.end(); it++)
 		{
-			bool bret = it->PostAction(&select, sellock, nPageNum, fadebegin, offset, shiftangle);
+			bool bret = it->PostAction(&select, sellock, nPageNum, fadebegin, offset, shiftangle, &selectframex, &selectframey);
 			if (bret && !complete)
 			{
 				complete = true;
@@ -309,6 +327,10 @@ void SelectSystem::Render()
 	for(list<Selector>::iterator it=sel.begin(); it!=sel.end(); it++)
 	{
 		it->Render();
+	}
+	if (spselectframe)
+	{
+		spselectframe->Render(selectframex, selectframey);
 	}
 	for(list<Selector>::iterator it=sel.begin(); it!=sel.end(); it++)
 	{

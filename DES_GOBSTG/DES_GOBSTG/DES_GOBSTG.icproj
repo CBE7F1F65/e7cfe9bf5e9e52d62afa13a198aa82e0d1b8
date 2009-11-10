@@ -274,6 +274,8 @@
 		<File 
 			RelativePath=".\Process\processInit.cpp"/>
 		<File 
+			RelativePath=".\Process\processMatchSelect.cpp"/>
+		<File 
 			RelativePath=".\Process\processMusic.cpp"/>
 		<File 
 			RelativePath=".\Process\processOption.cpp"/>
@@ -299,8 +301,6 @@
 			RelativePath=".\Process\reload.cpp"/>
 		<File 
 			RelativePath=".\Process\render.cpp"/>
-		<File 
-			RelativePath=".\Process\processMatchSelect.cpp"/>
 		<File 
 			RelativePath=".\Class\Beam.cpp"/>
 		<File 

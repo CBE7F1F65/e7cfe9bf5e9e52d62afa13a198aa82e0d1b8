@@ -245,9 +245,30 @@ void BGLayer::vertexSet(float x0, float y0, float z0, float x1, float y1, float 
 	
 }
 
-void BGLayer::SetFlag(BYTE _flag, BYTE maxtime)
+void BGLayer::SetFlag(BYTE _flag, int maxtime)
 {
 	flag = _flag;
+	if (maxtime < 0)
+	{
+		switch (flag & BG_FLAGMASK)
+		{
+		case BG_FLASHFLAG:
+			maxtime = BGMT_FLASH;
+			break;
+		case BG_OUTFLAG:
+			maxtime = BGMT_OUT;
+			break;
+		case BG_FADEFLAG:
+			maxtime = BGMT_FADE;
+			break;
+		case BG_LIGHTFLAG:
+			maxtime = BGMT_LIGHT;
+			break;
+		case FG_PAUSEFLAG:
+			maxtime = FGMT_PAUSE;
+			break;
+		}
+	}
 	mtimer = maxtime;
 	changetimer = 0;
 }

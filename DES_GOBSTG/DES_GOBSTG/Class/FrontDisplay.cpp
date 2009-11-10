@@ -443,7 +443,8 @@ void FrontDisplay::BossInfoDisplay()
 			DWORD spellnamealpha = 0xff000000;
 			if(Player::p.y < 100)
 				spellnamealpha = 0x40000000;
-			bossinfo.fsspellname.Render(400-spellnamew, yt-5, spellnamealpha+0xffffff, spellnamealpha+0xff0000);
+			bossinfo.fsspellname.SetColor(spellnamealpha+0xffffff, spellnamealpha+0xffffffff, spellnamealpha+0xff0000, spellnamealpha+0xff0000);
+			bossinfo.fsspellname.Render(400-spellnamew, yt-5);
 
 			if (flag & BOSSINFO_UP)
 			{

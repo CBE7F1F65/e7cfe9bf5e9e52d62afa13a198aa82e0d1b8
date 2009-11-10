@@ -175,9 +175,9 @@ bool PlayerBullet::GetLockAim(BObject ** obj)
 void PlayerBullet::Lock()
 {
 	locktimer++;
-	BObject * _tobj;
+	BObject * _tpbobj;
 
-	if (!GetLockAim(&_tobj))
+	if (!GetLockAim(&_tpbobj))
 	{
 		if(speed < oldspeed)
 			speed += _PBLOCK_ACCSPEED;
@@ -186,7 +186,7 @@ void PlayerBullet::Lock()
 		return;
 	}
 
-	int aimangle = aMainAngle(*_tobj);
+	int aimangle = aMainAngle(*_tpbobj);
 	bool clockwise = false;
 
 	if(locktimer >= _PBLOCK_LOCKTIMERMAX)
@@ -215,9 +215,9 @@ void PlayerBullet::Lock()
 
 	incangle = abs(incangle);
 
-	if(timer == 1 && incangle > 9000 && _tobj->y > y)
+	if(timer == 1 && incangle > 9000 && _tpbobj->y > y)
 	{
-		if(_tobj->x > x)
+		if(_tpbobj->x > x)
 			angle = aimangle - 9000;
 		else
 			angle = aimangle + 9000;
@@ -301,14 +301,14 @@ void PlayerBullet::DelayShoot()
 	}
 	else
 	{
-		BObject * _tobj;
+		BObject * _tpbobj;
 		if (locked < PBLOCK_GHOST)
 		{
-			_tobj = &en[locked];
+			_tpbobj = &en[locked];
 		}
 		else
 		{
-			_tobj = &gh[locked-PBLOCK_GHOST];
+			_tpbobj = &gh[locked-PBLOCK_GHOST];
 		}
 		if(timer == 1)
 		{
@@ -316,7 +316,7 @@ void PlayerBullet::DelayShoot()
 		}
 		if(timer < PB_FADEOUTTIME)
 		{
-			angle = aMainAngle(*_tobj);
+			angle = aMainAngle(*_tpbobj);
 			if (flag & PBFLAG_TURNWHILEDELAY)
 			{
 				if(arrange & 1)
@@ -328,7 +328,7 @@ void PlayerBullet::DelayShoot()
 		}
 		else if(timer == PB_FADEOUTTIME)
 		{
-			angle = aMainAngle(*_tobj);
+			angle = aMainAngle(*_tpbobj);
 			headangle = 0;
 			speed = oldspeed;
 		}
