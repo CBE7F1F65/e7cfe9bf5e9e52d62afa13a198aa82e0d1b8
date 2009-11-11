@@ -86,14 +86,24 @@ int _HDSSCallGet::Call_BGVALUE(LuaState * ls)
 		int _siid = _INEXT_HDSS_LUAPARA;
 		float _cenx = _FNEXT_HDSS_LUAPARA;
 		float _ceny = _FNEXT_HDSS_LUAPARA;
-		float _w = _FNEXT_HDSS_LUAPARA;
-		float _h = _FNEXT_HDSS_LUAPARA;
 
+		float _w = -1;
+		float _h = -1;
 		DWORD _col = 0xffffffff;
 		_JNEXT_HDSS_LUAPARA;
 		if (bhavenext)
 		{
-			_col = _COBJ_HDSS_LUA;
+			_w = _FOBJ_HDSS_LUA;
+			_JNEXT_HDSS_LUAPARA;
+			if (bhavenext)
+			{
+				_h = _FOBJ_HDSS_LUA;
+				_JNEXT_HDSS_LUAPARA;
+				if (bhavenext)
+				{
+					_col = _COBJ_HDSS_LUA;
+				}
+			}
 		}
 
 		ubg[_index]->valueSet(mp.tex, _siid, _cenx, _ceny, _w, _h, _col);
