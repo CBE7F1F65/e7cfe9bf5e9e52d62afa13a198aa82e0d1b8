@@ -15,6 +15,44 @@ _HDSSCallGet::~_HDSSCallGet()
 
 }
 
+int _HDSSCallGet::Call_SD(LuaState * ls)
+{
+	_ENTERCALL_HDSS_LUA;
+
+	if (true)
+	{
+		int _index = _INEXT_HDSS_LUAPARA;
+		int _ival = _INEXT_HDSS_LUAPARA;
+		scr.SetValue(_index, &_ival, false);
+	}
+	return 0;
+}
+
+int _HDSSCallGet::Call_SDf(LuaState * ls)
+{
+	_ENTERCALL_HDSS_LUA;
+
+	if (true)
+	{
+		int _index = _INEXT_HDSS_LUAPARA;
+		float _fval = _FNEXT_HDSS_LUAPARA;
+		scr.SetValue(_index, &_fval, true);
+	}
+	return 0;
+}
+
+int _HDSSCallGet::Call_RETURN(LuaState * ls)
+{
+	_ENTERCALL_HDSS_LUA;
+
+	if (true)
+	{
+		int _retvalue = _INEXT_HDSS_LUAPARA;
+		mp.SetReturnValue(_retvalue);
+	}
+	return 0;
+}
+
 int _HDSSCallGet::Call_SETSTATE(LuaState * ls)
 {
 	_ENTERCALL_HDSS_LUA;
@@ -46,18 +84,6 @@ int _HDSSCallGet::Call_SETTIME(LuaState * ls)
 	return 0;
 }
 
-int _HDSSCallGet::Call_RETURN(LuaState * ls)
-{
-	_ENTERCALL_HDSS_LUA;
-
-	if (true)
-	{
-		int _retvalue = _INEXT_HDSS_LUAPARA;
-		mp.SetReturnValue(_retvalue);
-	}
-	return 0;
-}
-
 int _HDSSCallGet::Call_SE(LuaState * ls)
 {
 	_ENTERCALL_HDSS_LUA;
@@ -73,6 +99,33 @@ int _HDSSCallGet::Call_SE(LuaState * ls)
 			_x = _FOBJ_HDSS_LUA;
 		}
 		SE::push(_type, _x);
+	}
+	return 0;
+}
+
+int _HDSSCallGet::Call_PRINT(LuaState * ls)
+{
+	_ENTERCALL_HDSS_LUA;
+
+	if (true)
+	{
+		float _x = _FNEXT_HDSS_LUAPARA;
+		float _y = _FNEXT_HDSS_LUAPARA;
+		char * _str = _SNEXT_HDSS_LUAPARA;
+
+		int _align = HGETEXT_CENTER | HGETEXT_MIDDLE;
+		hgeFont * _font = NULL;
+		_JNEXT_HDSS_LUAPARA;
+		if (bhavenext)
+		{
+			_align = _IOBJ_HDSS_LUA;
+			_JNEXT_HDSS_LUAPARA;
+			if (bhavenext)
+			{
+				_font = (hgeFont *)_DOBJ_HDSS_LUA;
+			}
+		}
+		fdisp.BuildPostPrint(_font, _x, _y, _str, _align);
 	}
 	return 0;
 }
@@ -180,6 +233,7 @@ int _HDSSCallGet::Call_BGFLAG(LuaState * ls)
 		}
 		ubg[_index]->SetFlag(_flag, _maxtime);
 	}
+	return 0;
 }
 
 int _HDSSCallGet::Call_SELBUILD(LuaState * ls)

@@ -13,6 +13,15 @@
 #define FDISP_ASCII_MAX			(FDISP_ASCII_END-FDISP_ASCII_BEGIN+1)
 #define FDISP_ASCIISMALL_MAX	(FDISP_ASCIISMALL_END-FDISP_ASCII_BEGIN+1)
 
+struct fdPostPrint
+{
+	char str[M_STRMAX];
+	hgeFont * font;
+	float x;
+	float y;
+	int align;
+};
+
 struct ftPanelSet 
 {
 	hgeSprite * left;
@@ -291,18 +300,21 @@ public:
 	void BossAction();
 	void BossMoveItemEffect(float x, float y);
 
-	void BossInfoDisplay();
-	void BossTimeCircleDisplay();
-	void EnemyXDisplay();
-	void NextStageDisplay();
-	void FullPowerDisplay();
-	void HiScoreGetDisplay();
-	void ExtendDisplay();
-	void DemoDisplay(int rpyindex);
-	void LoadingDisplay();
+	void RenderBossInfo();
+	void RenderBossTimeCircle();
+	void RenderEnemyX();
+	void RenderNextStage();
+	void RenderFullPower();
+	void RenderHiScoreGet();
+	void RenderExtend();
+	void RenderDemo(int rpyindex);
+	void RenderLoading();
 
 	void SetState(BYTE type, BYTE state=FDISP_STATE_COUNT);
 	void SetValue(LONGLONG llval, int ival, float fval, bool bval);
+
+	void BuildPostPrint(hgeFont * font, float x, float y, const char * str, int align=HGETEXT_CENTER|HGETEXT_MIDDLE);
+	void RenderPostPrint();
 
 	ftPanelSet panel;
 	ftInfoSet info;
@@ -314,6 +326,8 @@ public:
 	ftAscIISet asciismall;
 	ftFirstSet first;
 	ftInfoBody infobody;
+
+	list<fdPostPrint>postprintlist;
 
 	LONGLONG llval;
 	int ival;

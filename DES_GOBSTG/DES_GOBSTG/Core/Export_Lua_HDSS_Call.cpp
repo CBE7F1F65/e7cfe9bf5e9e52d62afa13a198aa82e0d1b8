@@ -30,17 +30,21 @@ int Export_Lua::LuaFn_HDSS_Call(LuaState * ls)
 		case SCRKW_CLASS_OTHER:
 			switch (nowval)
 			{
+			case SCR_SD:
+				return hdsscallget.Call_SD(ls);
+			case SCR_SDF:
+				return hdsscallget.Call_SDf(ls);
 			}
 			break;
 		case SCRKW_CLASS_SPECIAL:
 			switch (nowval)
 			{
+			case SCR_RETURN:
+				return hdsscallget.Call_RETURN(ls);
 			case SCR_SETSTATE:
 				return hdsscallget.Call_SETSTATE(ls);
 			case SCR_SETTIME:
 				return hdsscallget.Call_SETTIME(ls);
-			case SCR_RETURN:
-				return hdsscallget.Call_RETURN(ls);
 			}
 			break;
 		case SCRKW_CLASS_EFFECT:
@@ -48,6 +52,8 @@ int Export_Lua::LuaFn_HDSS_Call(LuaState * ls)
 			{
 			case SCR_SE:
 				return hdsscallget.Call_SE(ls);
+			case SCR_PRINT:
+				return hdsscallget.Call_PRINT(ls);
 			}
 			break;
 		}

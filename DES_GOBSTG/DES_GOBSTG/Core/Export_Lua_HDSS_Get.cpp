@@ -157,9 +157,9 @@ int Export_Lua::LuaFn_HDSS_Get(LuaState * ls)
 		switch (nowval)
 		{
 		case SCR_D:
-			break;
+			return hdsscallget.Get_D(ls);
 		case SCR_DU:
-			break;
+			return hdsscallget.Get_Du(ls);
 		case SCR_TX:
 			break;
 		case SCR_TY:

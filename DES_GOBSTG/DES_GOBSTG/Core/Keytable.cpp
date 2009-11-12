@@ -58,6 +58,7 @@ scrKeyWord scrKeyTable[] =
 	{"SE",						SCR_SE},
 	{"SEOFF",					SCR_SEOFF},
 	{"HSVTORGB",				SCR_HSVTORGB},
+	{"PRINT",					SCR_PRINT},
 	{"SETSHAKE",				SCR_SETSHAKE},
 
 	/************************************************************************/

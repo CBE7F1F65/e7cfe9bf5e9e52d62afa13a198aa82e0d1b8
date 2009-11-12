@@ -6,6 +6,37 @@
 
 #include "../Header/Export_Lua_HDSS_CallGetDefine.h"
 
+int _HDSSCallGet::Get_D(LuaState * ls)
+{
+	_ENTERGET_HDSS_LUA;
+	if (argscount > 1)
+	{
+		int _index = _INEXT_HDSS_LUAFUNC;
+		if (scr.d[_index].bfloat)
+		{
+			_PF_HDSS_LUAFUUNC(CAST(scr.d[_index]));
+		}
+		else
+		{
+			_PI_HDSS_LUAFUUNC(CAST(scr.d[_index]));
+		}
+		return 1;
+	}
+	return 0;
+}
+
+int _HDSSCallGet::Get_Du(LuaState * ls)
+{
+	_ENTERGET_HDSS_LUA;
+	if (argscount > 1)
+	{
+		int _index = _INEXT_HDSS_LUAFUNC;
+		_PD_HDSS_LUAFUUNC(UCAST(scr.d[_index]));
+		return 1;
+	}
+	return 0;
+}
+
 int _HDSSCallGet::Get_SELCOMPLETE(LuaState * ls)
 {
 	_ENTERGET_HDSS_LUA;

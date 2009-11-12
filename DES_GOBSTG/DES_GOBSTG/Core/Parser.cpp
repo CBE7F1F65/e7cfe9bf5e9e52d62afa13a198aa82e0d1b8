@@ -267,6 +267,12 @@ bool Scripter::Parse(int varcount)
 					CINT(d[_tdi].value) = _hsv.GetHWColor();
 				}
 				break;
+			case SCR_PRINT:
+				if (rv = Copy(&i, 4))
+				{
+					fdisp.BuildPostPrint(NULL, CAST(d[0]), CAST(d[1]), GetStringSp(2), CAST(d[3]));
+				}
+				break;
 
 			case SCR_SETSHAKE:
 				if (rv = Copy(&i, 2))

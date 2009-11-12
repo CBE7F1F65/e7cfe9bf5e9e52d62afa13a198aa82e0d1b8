@@ -19,10 +19,46 @@ FrontDisplay::FrontDisplay()
 	ZeroMemory(&ascii, sizeof(ftAscIISet));
 	ZeroMemory(&asciismall, sizeof(ftAscIISet));
 	ZeroMemory(&first, sizeof(ftFirstSet));
+	postprintlist.clear();
 }
 
 FrontDisplay::~FrontDisplay()
 {
+}
+
+void FrontDisplay::BuildPostPrint(hgeFont * font, float x, float y, const char * str, int align/* =HGETEXT_CENTER|HGETEXT_MIDDLE */)
+{
+	fdPostPrint _postprint;
+	postprintlist.push_back(_postprint);
+	fdPostPrint * _ppostprint = &(*(postprintlist.rbegin()));
+	if (!font)
+	{
+		font = info.asciifont;
+	}
+	_ppostprint->font = font;
+	_ppostprint->x = x;
+	_ppostprint->y = y;
+	_ppostprint->align = align;
+	if (str)
+	{
+		strcpy(_ppostprint->str, str);
+	}
+	else
+	{
+		strcpy(_ppostprint->str, "");
+	}
+}
+
+void FrontDisplay::RenderPostPrint()
+{
+	if (postprintlist.size())
+	{
+		for (list<fdPostPrint>::iterator it=postprintlist.begin(); it!=postprintlist.end(); it++)
+		{
+			it->font->printf(it->x, it->y, it->align, "%s", it->str);
+		}
+	}
+	postprintlist.clear();
 }
 
 void FrontDisplay::SetValue(LONGLONG _llval, int _ival, float _fval, bool _bval)
@@ -60,7 +96,7 @@ void FrontDisplay::PanelDisplay()
 	if (nextstagecount)
 	{
 		nextstagecount--;
-		NextStageDisplay();
+		RenderNextStage();
 	}
 	if (panelcountup)
 	{
@@ -197,7 +233,7 @@ void FrontDisplay::PanelDisplay()
 	}
 }
 
-void FrontDisplay::NextStageDisplay()
+void FrontDisplay::RenderNextStage()
 {
 	if (nextstagecount)
 	{
@@ -391,7 +427,7 @@ void FrontDisplay::BossMoveItemEffect(float x, float y)
 	infobody.effBossItem.MoveTo(x, y);
 }
 
-void FrontDisplay::BossInfoDisplay()
+void FrontDisplay::RenderBossInfo()
 {
 	BYTE flag = BossInfo::flag;
 	WORD timer = bossinfo.timer;
@@ -486,7 +522,7 @@ void FrontDisplay::BossInfoDisplay()
 	}
 }
 
-void FrontDisplay::BossTimeCircleDisplay()
+void FrontDisplay::RenderBossTimeCircle()
 {
 	BYTE flag = BossInfo::flag;
 	WORD timer = bossinfo.timer;
@@ -509,7 +545,7 @@ void FrontDisplay::BossTimeCircleDisplay()
 	}
 }
 
-void FrontDisplay::EnemyXDisplay()
+void FrontDisplay::RenderEnemyX()
 {
 	info.enemyx->Render(en[ENEMY_MAINBOSSINDEX].x, 472);
 }

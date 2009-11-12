@@ -28,10 +28,6 @@ function ControlExecute_cTitle(con)
 				-8, 0,
 				8, 8
 		}
-		local ucol = global.ARGB(0xFF, 0xFFFFFF);
-		local dcol = global.ARGB(0xFF, 0xFF3333);
-		local shadow = 0.4
-		local align = HGETEXT_CENTER + HGETEXT_MIDDLE;
 		
 		local x = 480;
 		local ystart = 240;
@@ -55,7 +51,7 @@ function ControlExecute_cTitle(con)
 				},
 				tableSelectOffset,
 				{
-					it[2], ucol, dcol, shadow, infox - x, infoy - y, 1, 0, align, true
+					it[2], LConst_selsys_ucol, LConst_selsys_dcol, LConst_selsys_shadow, infox - x, infoy - y, 1, 0, LConst_selsys_align, true
 				}
 			)
 		end

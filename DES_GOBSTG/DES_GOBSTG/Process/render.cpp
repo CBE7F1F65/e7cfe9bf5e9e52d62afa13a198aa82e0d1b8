@@ -24,7 +24,7 @@ int Process::render()
 	{
 		if (bossinfo.flag && bossinfo.isSpell())
 		{
-			fdisp.BossTimeCircleDisplay();
+			fdisp.RenderBossTimeCircle();
 //			bossinfo.RenderTimeCircle();
 		}
 		if(!Player::p.bBorder)
@@ -107,7 +107,7 @@ int Process::render()
 		if(BossInfo::flag)
 		{
 			bossinfo.exist = false;
-			fdisp.BossInfoDisplay();
+			fdisp.RenderBossInfo();
 		}
 
 		if(Player::p.bBorder)
@@ -187,8 +187,9 @@ int Process::render()
 
 	if(Player::p.exist && BossInfo::flag)
 	{
-		fdisp.EnemyXDisplay();
+		fdisp.RenderEnemyX();
 	}
+	fdisp.RenderPostPrint();
 	return PGO;
 }
 

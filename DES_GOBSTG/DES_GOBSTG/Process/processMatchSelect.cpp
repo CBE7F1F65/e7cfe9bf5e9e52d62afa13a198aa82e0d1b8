@@ -13,6 +13,15 @@
 
 int Process::processMatchSelect()
 {
+	time++;
+	if (time == 1)
+	{
+		scr.Execute(SCR_EVENT, SCR_EVENT_ENTERSTATE, STATE_MATCH_SELECT);
+	}
+	retvalue = PGO;
+	scr.Execute(SCR_CONTROL, STATE_MATCH_SELECT, time);
+	return retvalue;
+	/*
 	static int snolist[FONTSYSMAX];
 
 	time++;
@@ -134,4 +143,5 @@ int Process::processMatchSelect()
 	scr.SetIntValue(SCR_RESERVEBEGIN+1, tsnolistindex);
 
 	return retvalue;
+	*/
 }
