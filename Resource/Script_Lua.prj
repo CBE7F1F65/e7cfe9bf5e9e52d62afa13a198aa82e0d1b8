@@ -1,0 +1,61 @@
+[Project ID]
+Signature=UE Proj: v.1
+[Project Information]
+Compilable=0
+Use Relative Directory=1
+Relative to Project File=1
+Project Start=D9070B0005000D000B000400330000003F
+Project Directory=E:\hge\Resource
+Include Sub Directories=1
+Project Tagfile=
+Project Wordfile=
+Filter=
+Using VCS=0
+Save Account=0
+Create Tagfile=0
+CTags Legacy Support=0
+Working Time=59
+[Group]
+0=HDSS
+1=HDSS - Control
+[Folders]
+HDSS=1
+HDSS - Control=1
+[uemakeXp]
+ReleaseMode=0
+[Debug Settings]
+Program Arguments=
+Selected Debugger=0
+Source Paths=
+Symbol Paths=
+Working Directory=
+[Files - HDSS - Control]
+0=Script_Lua\HDSS\Control\cTitle.lua
+1=Script_Lua\HDSS\Control\cMatchSelect.lua
+[Files - HDSS]
+0=Script_Lua\HDSS\StageExecute.lua
+1=Script_Lua\HDSS\SceneExecute.lua
+2=Script_Lua\HDSS\FunctionExecute.lua
+3=Script_Lua\HDSS\EventExecute.lua
+4=Script_Lua\HDSS\EdefExecute.lua
+5=Script_Lua\HDSS\ControlExecute.lua
+[Files]
+0=Script_Lua\LuaFileTable.lua
+1=Script_Lua\Global.lua
+2=Script_Lua\Const.lua
+[Open Files]
+Active File Display Mode=3
+Active File Index=0
+Open File Line0=0
+Open File Line1=0
+Open File Line2=0
+Open File Pos0=0
+Open File Pos1=0
+Open File Pos2=0
+Open File Window Pos0=2,3,-1,-1,-4,-30,110,145,446,492
+Open File Window Pos1=0,1,-1,-1,-4,-30,88,116,424,463
+Open File Window Pos2=0,1,-1,-1,-4,-30,66,87,398,430
+Open File0=.\Script_Lua\LuaFileTable.lua
+Open File1=.\Script_Lua\Global.lua
+Open File2=.\Script_Lua\Const.lua
+Open File3=
