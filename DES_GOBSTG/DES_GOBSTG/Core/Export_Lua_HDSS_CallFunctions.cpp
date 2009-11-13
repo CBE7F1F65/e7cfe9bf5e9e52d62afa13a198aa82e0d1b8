@@ -35,8 +35,9 @@ int _HDSSCallGet::Call_SDf(LuaState * ls)
 	if (true)
 	{
 		int _index = _INEXT_HDSS_LUAPARA;
-		float _fval = _FNEXT_HDSS_LUAPARA;
-		scr.SetValue(_index, &_fval, true);
+		_ONEXT_HDSS_LUAPARA;
+		DWORD _dval = _DOBJ_HDSS_LUA;
+		scr.SetValue(_index, &_dval, true);
 	}
 	return 0;
 }

@@ -3,6 +3,9 @@ function ControlExecute_cMatchSelect(con)
 	local selsysid = 0;
 	local selsyssubid = 1;
 	local dselcomplete = RESERVEBEGIN;
+	local dipx = RESERVEBEGIN + 1;
+	local dipport = RESERVEBEGIN + 2;
+	
 	local ybottomcenter = 440;
 	if con == 1 then
 		--Init
@@ -10,6 +13,18 @@ function ControlExecute_cMatchSelect(con)
 			HDSS_SD,
 			{
 				dselcomplete, 0
+			}
+		)
+		hdss.Call(
+			HDSS_SDf,
+			{
+				dipx, 0
+			}
+		)
+		hdss.Call(
+			HDSS_SD,
+			{
+				dipport, 0
 			}
 		)
 		--Mask
@@ -78,6 +93,8 @@ function ControlExecute_cMatchSelect(con)
 	end
 	
 	local _selcomplete = hdss.Get(HDSS_D, dselcomplete);
+	local _ipx = hdss.Get(HDSS_D, dipx);
+	local _ipport = hdss.Get(HDSS_D, dipport);
 	
 	if _selcomplete == 0 then
 		--SelectOver
@@ -123,17 +140,74 @@ function ControlExecute_cMatchSelect(con)
 	
 	if _selcomplete == 2 then
 		if hge.Input_GetKeyState(HGEK_CTRL) and hge.Input_GetKeyState(HGEK_V) then
-			if true then
+			local strclipboard = global.GetClipBoard();
+			
+			local ipd0, ipd1, ipd2, ipd3, ipport;
+			local stristart = 1;
+			local striend = 1;
+			stristart, striend = string.find(strclipboard, "%d+", stristart);
+			if stristart ~= nil then
+				ipd0 = string.sub(strclipboard, stristart, striend);
+				stristart = striend + 1;
+				stristart, striend = string.find(strclipboard, "%d+", stristart);
+				if stristart ~= nil then
+					ipd1 = string.sub(strclipboard, stristart, striend);
+					stristart = striend + 1;
+					stristart, striend = string.find(strclipboard, "%d+", stristart);
+					if stristart ~= nil then
+						ipd2 = string.sub(strclipboard, stristart, striend);
+						stristart = striend + 1;
+						stristart, striend = string.find(strclipboard, "%d+", stristart);
+						if stristart ~= nil then
+							ipd3 = string.sub(strclipboard, stristart, striend);
+							stristart = striend + 1;
+							stristart, striend = string.find(strclipboard, "%d+", stristart);
+							if stristart ~= nil then
+								ipport = string.sub(strclipboard, stristart, striend);
+							end
+								
+							if ipport == nil then
+								ipport = M_DEFAULTIPPORT;
+							end
+							ipd0 = tonumber(ipd0);
+							ipd1 = tonumber(ipd1);
+							ipd2 = tonumber(ipd2);
+							ipd3 = tonumber(ipd3);
+							ipport = tonumber(ipport);
+						
+							if ipd0 >= 1 and ipd0 <= 0xFF and
+								ipd1 >= 0 and ipd1 <= 0xFF and
+								ipd2 >= 0 and ipd2 <= 0xFF and
+								ipd3 >= 0 and ipd3 <= 0xFF then
+								
+								if ipport >= 0 and ipport <= 0xFFFF then
+									_ipx = global.ARGB(ipd0, ipd1, ipd2, ipd3);
+									_ipport = ipport;
+									game.SetLastIP(_ipx, _ipport);
+									_selcomplete = 3;
+								end
+									
+							end
+						end
+					end
+				end
+			end
+			
+		elseif hge.Input_GetDIKey(KS_ENTER) then
+			_ipx, _ipport = game.GetLastIP();
+			if _ipx ~= 0 then
 				_selcomplete = 3;
 			end
 		end
 	end
 	
 	if _selcomplete > 2 then
+		local ipd0, ipd1, ipd2, ipd3 = global.GetARGB(_ipx);
+		local strip = string.format("%d.%d.%d.%d:%d", ipd0, ipd1, ipd2, ipd3, _ipport);
 		hdss.Call(
 			HDSS_PRINT,
 			{
-				TotalCenterX, TotalCenterY, "101.100.120.120:2351"
+				TotalCenterX, TotalCenterY, strip
 			},
 			{
 				1.5
@@ -155,6 +229,18 @@ function ControlExecute_cMatchSelect(con)
 		HDSS_SD,
 		{
 			dselcomplete, _selcomplete
+		}
+	)
+	hdss.Call(
+		HDSS_SDf,
+		{
+			dipx, _ipx
+		}
+	)
+	hdss.Call(
+		HDSS_SD,
+		{
+			dipport, _ipport
 		}
 	)
 		

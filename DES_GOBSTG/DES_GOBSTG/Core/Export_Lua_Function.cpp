@@ -17,6 +17,7 @@ bool Export_Lua::_LuaRegistFunction(LuaObject * obj)
 	_globalobj.Register("GetARGB", LuaFn_Global_GetARGB);
 	_globalobj.Register("SetARGB", LuaFn_Global_SetARGB);
 	_globalobj.Register("GetLocalTime", LuaFn_Global_GetLocalTime);
+	_globalobj.Register("GetClipBoard", LuaFn_Global_GetClipBoard);
 	_globalobj.Register("GetPrivateProfileString", LuaFn_Global_GetPrivateProfileString);
 	_globalobj.Register("WritePrivateProfileString", LuaFn_Global_WritePrivateProfileString);
 	_globalobj.Register("MessageBox", LuaFn_Global_MessageBox);
@@ -61,6 +62,12 @@ bool Export_Lua::LuaRegistFunction()
 		return false;
 	}
 #endif
+#ifndef __NOTINTHISGAME
+	if (!_LuaRegistGameFunction(&obj))
+	{
+		return false;
+	}
+#endif
 
 	return true;
 }
@@ -83,6 +90,12 @@ bool Export_Lua::LuaRegistConst()
 	}
 #ifndef __NOTUSEHDSS
 	if (!_LuaRegistHDSSConst(&obj))
+	{
+		return false;
+	}
+#endif
+#ifndef __NOTINTHISGAME
+	if (!_LuaRegistGameConst(&obj))
 	{
 		return false;
 	}
@@ -519,6 +532,22 @@ int Export_Lua::LuaFn_Global_GetLocalTime(LuaState * ls)
 	ls->PushValue(table);
 	_LuaHelper_PushQWORD(ls, qret);
 	return 2;
+}
+
+int Export_Lua::LuaFn_Global_GetClipBoard(LuaState * ls)
+{
+	LuaStack args(ls);
+
+	if (OpenClipboard(NULL))
+	{
+		HANDLE hData = GetClipboardData(CF_TEXT);
+		char * buffer = (char*)GlobalLock(hData);
+		_LuaHelper_PushString(ls, buffer);
+		GlobalUnlock(hData);
+		CloseClipboard();
+		return 1;
+	}
+	return 0;
 }
 
 int Export_Lua::LuaFn_Global_GetPrivateProfileString(LuaState * ls)

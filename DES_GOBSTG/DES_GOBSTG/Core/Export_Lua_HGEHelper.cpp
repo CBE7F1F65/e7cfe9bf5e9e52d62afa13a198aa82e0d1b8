@@ -12,6 +12,7 @@ bool Export_Lua::_LuaRegistHGEHelpFunction(LuaObject * obj)
 	_fontobj.Register("DeleteFont", LuaFn_hgeFont_DeleteFont);
 
 	_fontobj.Register("Render", LuaFn_hgeFont_Render);
+	_fontobj.Register("RenderEx", LuaFn_hgeFont_Render);
 	_fontobj.Register("printf", LuaFn_hgeFont_Render);
 	_fontobj.Register("printfb", LuaFn_hgeFont_printfb);
 
@@ -199,8 +200,24 @@ int Export_Lua::LuaFn_hgeFont_Render(LuaState * ls)
 {
 	LuaStack args(ls);
 	hgeFont * _font = _LuaHelper_hgeFont_Get(&args);
+	int argscount = args.Count();
 
-	_font->Render(args[2].GetFloat(), args[3].GetFloat(), args[4].GetInteger(), args[5].GetString());
+	float scale = 1.0f;
+	float properation = 1.0f;
+	float rotation = 0;
+	float tracking = 0;
+	float spacing = 1.0f;
+	if (argscount > 5)
+	{
+		LuaObject _obj = args[6];
+		scale = _obj.GetByIndex(1).GetFloat();
+		properation = _obj.GetByIndex(2).GetFloat();
+		rotation = _obj.GetByIndex(3).GetFloat();
+		tracking = _obj.GetByIndex(4).GetFloat();
+		spacing = _obj.GetByIndex(5).GetFloat();
+	}
+
+	_font->RenderEx(args[2].GetFloat(), args[3].GetFloat(), args[4].GetInteger(), args[5].GetString(), scale, properation, rotation, tracking, spacing);
 
 	return 0;
 }
@@ -220,8 +237,9 @@ int Export_Lua::LuaFn_hgeFont_SetColor(LuaState * ls)
 	LuaStack args(ls);
 	hgeFont * _font = _LuaHelper_hgeFont_Get(&args);
 	LuaObject _obj;
+	int argscount = args.Count();
 
-	if (args.Count() > 1)
+	if (argscount > 3)
 	{
 		DWORD col[4];
 		for (int i=0; i<4; i++)
@@ -234,9 +252,14 @@ int Export_Lua::LuaFn_hgeFont_SetColor(LuaState * ls)
 	else
 	{
 		DWORD col;
+		int i = -1;
 		_obj = args[2];
 		col = _LuaHelper_GetColor(&_obj);
-		_font->SetColor(col);
+		if (argscount > 2)
+		{
+			i = args[3];
+		}
+		_font->SetColor(col, i);
 	}
 
 	return 0;

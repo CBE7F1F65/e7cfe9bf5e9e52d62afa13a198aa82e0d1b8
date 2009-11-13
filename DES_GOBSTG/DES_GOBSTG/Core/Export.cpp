@@ -173,6 +173,23 @@ int Export::GetPassword()
 	return password;
 }
 
+void Export::SetLastIP(DWORD ipx, WORD ipport)
+{
+	hge->Ini_SetInt(RESCONFIGS_CONNECT, RESCONFIGN_LASTIPX, ipx);
+	hge->Ini_SetInt(RESCONFIGS_CONNECT, RESCONFIGN_LASTIPPORT, ipport);
+}
+
+bool Export::GetLastIP(DWORD * ipx, WORD * ipport)
+{
+	if (!ipx || !ipport)
+	{
+		return false;
+	}
+	*ipx = hge->Ini_GetInt(RESCONFIGS_CONNECT, RESCONFIGN_LASTIPX, 0);
+	*ipport = hge->Ini_GetInt(RESCONFIGS_CONNECT, RESCONFIGN_LASTIPPORT, 0);
+	return true;
+}
+
 bool Export::rpyLoad(const char * filename, replayInfo * _rpyinfo, partInfo * _partinfo, replayFrame * _replayframe)
 {
 	bool ret = false;

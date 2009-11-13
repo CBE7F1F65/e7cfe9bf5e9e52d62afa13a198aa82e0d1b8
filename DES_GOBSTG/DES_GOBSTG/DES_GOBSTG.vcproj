@@ -325,6 +325,9 @@
 					RelativePath=".\Core\Export_Lua_Function.cpp">
 				</File>
 				<File
+					RelativePath=".\Core\Export_Lua_Game.cpp">
+				</File>
+				<File
 					RelativePath=".\Core\Export_Lua_HDSS.cpp">
 				</File>
 				<File

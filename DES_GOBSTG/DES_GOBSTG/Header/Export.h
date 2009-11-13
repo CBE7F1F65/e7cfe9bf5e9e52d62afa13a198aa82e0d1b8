@@ -106,6 +106,8 @@ public:
 	static bool SetIni(bool extuse = false);
 	static bool GetResourceFile(bool readbin = false);
 	static int GetPassword();
+	static void SetLastIP(DWORD ipx, WORD ipport);
+	static bool GetLastIP(DWORD * ipx, WORD * ipport);
 	static bool rpyLoad(const char * filename, replayInfo * _rpyinfo = NULL, partInfo * _partinfo = NULL, replayFrame * _replayframe = NULL);
 	static bool rpyFree(const char * filename);
 	static bool rpySetBias(replayFrame * _replayframe);

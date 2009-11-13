@@ -14,7 +14,8 @@ int _HDSSCallGet::Get_D(LuaState * ls)
 		int _index = _INEXT_HDSS_LUAFUNC;
 		if (scr.d[_index].bfloat)
 		{
-			_PF_HDSS_LUAFUUNC(CAST(scr.d[_index]));
+			_PD_HDSS_LUAFUUNC(CUINT(scr.d[_index].value));
+//			_PF_HDSS_LUAFUUNC(CAST(scr.d[_index]));
 		}
 		else
 		{

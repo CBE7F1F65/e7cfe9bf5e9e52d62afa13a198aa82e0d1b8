@@ -79,6 +79,7 @@ public:
 	static int LuaFn_Global_GetARGB(LuaState * ls);
 	static int LuaFn_Global_SetARGB(LuaState * ls);
 	static int LuaFn_Global_GetLocalTime(LuaState * ls);
+	static int LuaFn_Global_GetClipBoard(LuaState * ls);
 	static int LuaFn_Global_GetPrivateProfileString(LuaState * ls);
 	static int LuaFn_Global_WritePrivateProfileString(LuaState * ls);
 	static int LuaFn_Global_MessageBox(LuaState * ls);
@@ -342,6 +343,17 @@ public:
 	static LuaFunction<bool> * sceneExecute;
 	static LuaFunction<bool> * functionExecute;
 	static LuaFunction<bool> * eventExecute;
+#endif
+
+	/************************************************************************/
+	/* Game Specified                                                       */
+	/************************************************************************/
+#ifndef __NOTINTHISGAME
+	static bool _LuaRegistGameConst(LuaObject * obj);
+	static bool _LuaRegistGameFunction(LuaObject * obj);
+	static int LuaFn_Game_SetLastIP(LuaState * ls);
+	static int LuaFn_Game_GetLastIP(LuaState * ls);
+public:
 #endif
 };
 

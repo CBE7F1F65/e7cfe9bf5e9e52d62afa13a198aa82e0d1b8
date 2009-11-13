@@ -46,7 +46,16 @@ void FrontDisplay::BuildPostPrint(hgeFont * font, float x, float y, const char *
 	_ppostprint->spacing = spacing;
 	if (str)
 	{
-		strcpy(_ppostprint->str, str);
+		if (strlen(str) >= M_STRMAX)
+		{
+			char buffer[M_STRMAX];
+			strncpy(buffer, str, M_STRMAX);
+			strcpy(_ppostprint->str, buffer);
+		}
+		else
+		{
+			strcpy(_ppostprint->str, str);
+		}
 	}
 	else
 	{
