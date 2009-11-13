@@ -43,13 +43,17 @@ public:
 	/************************************************************************/
 	void		NewFont(const char *filename, bool bMipmap=false);
 	void		Render(float x, float y, int align, const char *string);
+	/************************************************************************/
+	/* This function is added by h5nc (h5nc@yahoo.com.cn)                   */
+	/************************************************************************/
+	void		RenderEx(float x, float y, int align, const char *string, float scale=1.0f, float properation=1.0f, float rotation=0, float tracking=0, float spacing=1.0f);
 	void		printf(float x, float y, int align, const char *format, ...);
 	void		printfb(float x, float y, float w, float h, int align, const char *format, ...);
 
 	/************************************************************************/
 	/* This function is modified by h5nc (h5nc@yahoo.com.cn)                */
 	/************************************************************************/
-	void		SetColor(DWORD col){col0 = col1 = col2 = col3 = col;};
+	void		SetColor(DWORD col, int i=-1);
 	/************************************************************************/
 	/* This function is added by h5nc (h5nc@yahoo.com.cn)                   */
 	/************************************************************************/
@@ -107,7 +111,7 @@ public:
 	/************************************************************************/
 	/* These members are added by h5nc (h5nc@yahoo.com.cn)                  */
 	/************************************************************************/
-	DWORD		col0, col1, col2, col3;
+	DWORD		col[4];
 private:
 	float		pre[256];
 	float		post[256];

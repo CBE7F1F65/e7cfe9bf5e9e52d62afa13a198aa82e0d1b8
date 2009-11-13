@@ -268,9 +268,9 @@ bool Scripter::Parse(int varcount)
 				}
 				break;
 			case SCR_PRINT:
-				if (rv = Copy(&i, 4))
+				if (rv = Copy(&i, 9))
 				{
-					fdisp.BuildPostPrint(NULL, CAST(d[0]), CAST(d[1]), GetStringSp(2), CAST(d[3]));
+					fdisp.BuildPostPrint(NULL, CAST(d[0]), CAST(d[1]), GetStringSp(2), CAST(d[3]), CAST(d[4]), CAST(d[5]), CAST(d[6]), CAST(d[7]), CAST(d[8]));
 				}
 				break;
 

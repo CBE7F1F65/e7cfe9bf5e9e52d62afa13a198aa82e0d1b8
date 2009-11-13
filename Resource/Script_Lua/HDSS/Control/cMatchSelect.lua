@@ -3,6 +3,7 @@ function ControlExecute_cMatchSelect(con)
 	local selsysid = 0;
 	local selsyssubid = 1;
 	local dselcomplete = RESERVEBEGIN;
+	local ybottomcenter = 440;
 	if con == 1 then
 		--Init
 		hdss.Call(
@@ -44,7 +45,6 @@ function ControlExecute_cMatchSelect(con)
 		local x = TotalCenterX;
 		local yoffset = 64;
 		local ystart = TotalCenterY - yoffset;
-		local yenter = 440;
 		
 		local _siusetable =
 		{
@@ -63,7 +63,7 @@ function ControlExecute_cMatchSelect(con)
 				{
 					0, 0,
 					-4, -4,
-					0, yenter - y,
+					0, ybottomcenter - y,
 					8, 8
 				}
 			)
@@ -104,16 +104,51 @@ function ControlExecute_cMatchSelect(con)
 	end
 	
 	if _selcomplete == 1 then
+		
+		hdss.Call(
+			HDSS_BGVALUE, 
+			{
+				2, SI_MatchSelect_P2P, TotalCenterX, ybottomcenter
+			}
+		)
+		
+		hdss.Call(
+			HDSS_BGVALUE, 
+			{
+				4, SI_MatchMode_Waiting, TotalCenterX, 200, 384, 60
+			}
+		)
 		_selcomplete = 2;
 	end
 	
-	if _selcomplete > 0 then
+	if _selcomplete == 2 then
+		if hge.Input_GetKeyState(HGEK_CTRL) and hge.Input_GetKeyState(HGEK_V) then
+			if true then
+				_selcomplete = 3;
+			end
+		end
+	end
+	
+	if _selcomplete > 2 then
 		hdss.Call(
 			HDSS_PRINT,
 			{
 				TotalCenterX, TotalCenterY, "101.100.120.120:2351"
+			},
+			{
+				1.5
 			}
 		)
+	end
+	
+	if _selcomplete == 3 then
+		hdss.Call(
+			HDSS_BGVALUE,
+			{
+				4, SI_MatchMode_Accessing, TotalCenterX, 200, 384, 30
+			}
+		)
+		_selcomplete = 4;
 	end
 	
 	hdss.Call(

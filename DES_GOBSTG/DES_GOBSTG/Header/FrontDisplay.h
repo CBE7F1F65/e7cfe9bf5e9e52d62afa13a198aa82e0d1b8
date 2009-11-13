@@ -20,6 +20,11 @@ struct fdPostPrint
 	float x;
 	float y;
 	int align;
+	float scale;
+	float properation;
+	float rotation;
+	float tracking;
+	float spacing;
 };
 
 struct ftPanelSet 
@@ -313,7 +318,7 @@ public:
 	void SetState(BYTE type, BYTE state=FDISP_STATE_COUNT);
 	void SetValue(LONGLONG llval, int ival, float fval, bool bval);
 
-	void BuildPostPrint(hgeFont * font, float x, float y, const char * str, int align=HGETEXT_CENTER|HGETEXT_MIDDLE);
+	void BuildPostPrint(hgeFont * font, float x, float y, const char * str, int align=HGETEXT_CENTER|HGETEXT_MIDDLE, float scale=1.0f, float properation=1.0f, float rotation=0, float tracking=0, float spacing=1.0f);
 	void RenderPostPrint();
 
 	ftPanelSet panel;

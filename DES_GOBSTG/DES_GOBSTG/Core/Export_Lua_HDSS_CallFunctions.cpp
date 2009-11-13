@@ -115,6 +115,11 @@ int _HDSSCallGet::Call_PRINT(LuaState * ls)
 
 		int _align = HGETEXT_CENTER | HGETEXT_MIDDLE;
 		hgeFont * _font = NULL;
+		float _scale = 1.0f;
+		float _properation = 1.0f;
+		float _rotation = 0;
+		float _tracking = 0;
+		float _spacing = 1.0f;
 		_JNEXT_HDSS_LUAPARA;
 		if (bhavenext)
 		{
@@ -125,7 +130,37 @@ int _HDSSCallGet::Call_PRINT(LuaState * ls)
 				_font = (hgeFont *)_DOBJ_HDSS_LUA;
 			}
 		}
-		fdisp.BuildPostPrint(_font, _x, _y, _str, _align);
+		if (argscount > 2)
+		{
+			_GETPARAS_HDSS_LUAPARA(3);
+
+			_JNEXT_HDSS_LUAPARA;
+			if (bhavenext)
+			{
+				_scale = _FOBJ_HDSS_LUA;
+				_JNEXT_HDSS_LUAPARA;
+				if (bhavenext)
+				{
+					_properation = _FOBJ_HDSS_LUA;
+					_JNEXT_HDSS_LUAPARA;
+					if (bhavenext)
+					{
+						_rotation = _FOBJ_HDSS_LUA;
+						_JNEXT_HDSS_LUAPARA;
+						if (bhavenext)
+						{
+							_tracking = _FOBJ_HDSS_LUA;
+							_JNEXT_HDSS_LUAPARA;
+							if (bhavenext)
+							{
+								_spacing = _FOBJ_HDSS_LUA;
+							}
+						}
+					}
+				}
+			}
+		}
+		fdisp.BuildPostPrint(_font, _x, _y, _str, _align, _scale, _properation, _rotation, _tracking, _spacing);
 	}
 	return 0;
 }

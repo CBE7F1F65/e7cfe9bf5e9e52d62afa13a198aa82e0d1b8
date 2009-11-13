@@ -14,8 +14,8 @@ Index	SI_Name	Tex	Tex_x	Tex_y	Tex_w	Tex_h
 11	SI_TopContent_Spell	0	256	192	256	48
 12	SI_TopContent_Replay	0	640	96	128	32
 13	SI_TopContent_Result	0	768	96	128	32
-14	SI_TopContent_Music	0	896	96	128	32
-15	SI_TopContent_Option	0	896	32	128	32
+14	SI_MatchMode_Waiting	7	0	414	256	40
+15	SI_MatchMode_Accessing	7	0	454	256	20
 16	SI_Option_KeySet	0	0	32	128	32
 17	SI_Option_GraphMode	0	128	32	128	32
 18	SI_Option_BGMVol	0	384	32	128	32

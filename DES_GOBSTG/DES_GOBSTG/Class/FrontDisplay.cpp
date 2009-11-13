@@ -26,7 +26,7 @@ FrontDisplay::~FrontDisplay()
 {
 }
 
-void FrontDisplay::BuildPostPrint(hgeFont * font, float x, float y, const char * str, int align/* =HGETEXT_CENTER|HGETEXT_MIDDLE */)
+void FrontDisplay::BuildPostPrint(hgeFont * font, float x, float y, const char * str, int align/* =HGETEXT_CENTER|HGETEXT_MIDDLE */, float scale, float properation, float rotation, float tracking, float spacing)
 {
 	fdPostPrint _postprint;
 	postprintlist.push_back(_postprint);
@@ -39,6 +39,11 @@ void FrontDisplay::BuildPostPrint(hgeFont * font, float x, float y, const char *
 	_ppostprint->x = x;
 	_ppostprint->y = y;
 	_ppostprint->align = align;
+	_ppostprint->scale = scale;
+	_ppostprint->properation = properation;
+	_ppostprint->rotation = rotation;
+	_ppostprint->tracking = tracking;
+	_ppostprint->spacing = spacing;
 	if (str)
 	{
 		strcpy(_ppostprint->str, str);
@@ -55,7 +60,7 @@ void FrontDisplay::RenderPostPrint()
 	{
 		for (list<fdPostPrint>::iterator it=postprintlist.begin(); it!=postprintlist.end(); it++)
 		{
-			it->font->printf(it->x, it->y, it->align, "%s", it->str);
+			it->font->RenderEx(it->x, it->y, it->align, it->str, it->scale, it->properation, it->rotation, it->tracking, it->spacing);
 		}
 	}
 	postprintlist.clear();
