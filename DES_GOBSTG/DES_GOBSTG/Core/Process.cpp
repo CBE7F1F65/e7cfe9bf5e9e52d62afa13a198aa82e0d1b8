@@ -586,3 +586,12 @@ void Process::SetReturnValue(int _retval)
 {
 	retvalue = _retval;
 }
+
+int Process::AccessIP()
+{
+	DWORD ipx;
+	WORD ipport;
+	Export::GetLastIP(&ipx, &ipport);
+	//TODO:
+	return 3;
+}

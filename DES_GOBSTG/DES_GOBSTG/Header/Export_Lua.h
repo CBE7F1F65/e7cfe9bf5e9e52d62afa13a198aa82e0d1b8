@@ -353,6 +353,7 @@ public:
 	static bool _LuaRegistGameFunction(LuaObject * obj);
 	static int LuaFn_Game_SetLastIP(LuaState * ls);
 	static int LuaFn_Game_GetLastIP(LuaState * ls);
+	static int LuaFn_Game_AccessIP(LuaState * ls);
 public:
 #endif
 };

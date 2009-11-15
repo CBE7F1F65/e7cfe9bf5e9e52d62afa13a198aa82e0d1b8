@@ -76,6 +76,8 @@ int Export_Lua::LuaFn_HDSS_Call(LuaState * ls)
 				return hdsscallget.Call_BGVALEX(ls);
 			case SCR_BGFLAG:
 				return hdsscallget.Call_BGFLAG(ls);
+			case SCR_BGOFF:
+				return hdsscallget.Call_BGOFF(ls);
 			}
 			break;
 			/************************************************************************/

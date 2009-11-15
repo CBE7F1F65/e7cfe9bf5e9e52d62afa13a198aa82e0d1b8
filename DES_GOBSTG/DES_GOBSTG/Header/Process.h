@@ -59,6 +59,8 @@ public:
 	void	SetState(int state, int time = 0);
 	void	SetReturnValue(int retval);
 
+	int		AccessIP();
+
 public:
 	union{
 		struct{

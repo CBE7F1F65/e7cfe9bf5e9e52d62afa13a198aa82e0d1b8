@@ -16,6 +16,7 @@ bool Export_Lua::_LuaRegistGameFunction(LuaObject * obj)
 
 	_gameobj.Register("SetLastIP", LuaFn_Game_SetLastIP);
 	_gameobj.Register("GetLastIP", LuaFn_Game_GetLastIP);
+	_gameobj.Register("AccessIP", LuaFn_Game_AccessIP);
 
 	return true;
 }
@@ -43,6 +44,13 @@ int Export_Lua::LuaFn_Game_GetLastIP(LuaState * ls)
 		return 2;
 	}
 	return 0;
+}
+
+int Export_Lua::LuaFn_Game_AccessIP(LuaState * ls)
+{
+	int iret = mp.AccessIP();
+	ls->PushInteger(iret);
+	return 1;
 }
 
 #endif

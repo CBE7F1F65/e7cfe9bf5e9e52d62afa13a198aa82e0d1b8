@@ -272,6 +272,25 @@ int _HDSSCallGet::Call_BGFLAG(LuaState * ls)
 	return 0;
 }
 
+int _HDSSCallGet::Call_BGOFF(LuaState * ls)
+{
+	_ENTERCALL_HDSS_LUA;
+
+	if (true)
+	{
+		int _index = _INEXT_HDSS_LUAPARA;
+		if (_index < 0)
+		{
+			BGLayer::KillOtherLayer();
+		}
+		else
+		{
+			ubg[_index]->exist = false;
+		}
+	}
+	return 0;
+}
+
 int _HDSSCallGet::Call_SELBUILD(LuaState * ls)
 {
 	_ENTERCALL_HDSS_LUA;

@@ -21,6 +21,7 @@ public:
 	int Call_BGVALUE(LuaState * ls);
 	int Call_BGVALEX(LuaState * ls);
 	int Call_BGFLAG(LuaState * ls);
+	int Call_BGOFF(LuaState * ls);
 	int Call_SELBUILD(LuaState * ls);
 	int Call_SELSET(LuaState * ls);
 	int Call_SELCLEAR(LuaState * ls);
