@@ -8,6 +8,10 @@ function ControlExecute(name, con)
 		return ControlExecute_cMatchSelect(con);
 	end
 	
+	if name == STATE_PLAYER_SELECT then
+		return ControlExecute_cPlayerSelect(con);
+	end
+	
 	return true;
 
 end

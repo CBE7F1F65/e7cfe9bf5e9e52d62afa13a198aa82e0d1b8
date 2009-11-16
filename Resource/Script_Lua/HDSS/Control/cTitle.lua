@@ -1,108 +1,75 @@
-function ControlExecute_cTitle(con)
+function CETitle_Init()
+end
 
-	local selsysid = 0;
-	if con == 1 then
+function CETitle_SetBG()
+	hdssBGVALUE(BGMASK, SI_Null, TotalCenterX, TotalCenterY, TotalW, TotalH, global.ARGB(0xFF, 0));
+	hdssBGVALUE(LConst_uibg_backgroundid, SI_TitleScene, TotalCenterX, TotalCenterY, TotalW, TotalH);
+	hdssBGFLAG(BGMASK, BG_FADEOUT);
+end
+
+function CETitle_SetupSelect(selsysid)
+	local tableSelectOffset =
+	{
+			0, 0,
+			-4, -4,
+			-8, 0,
+			8, 8
+	}
+	
+	local x = 480;
+	local ystart = 240;
+	local yoffset = 30;
+	local infox = 320;
+	local infoy = 440;
+	
+	local _siusetable =
+	{
+		{SI_Title_Start,	"対戦を開始します。"},
+		{SI_Title_Replay,	"リプレイを鑑賞します。"},
+		{SI_Title_Quit,		"いろいろと終了します。"}
+	}
+	for j, it in pairs(_siusetable) do
+		local i = j-1;
+		local y = ystart + i * yoffset;
 		hdss.Call(
-			HDSS_BGVALUE,
+			HDSS_SELBUILD,
 			{
-				BGMASK, SI_Null, TotalCenterX, TotalCenterY, TotalW, TotalH, global.ARGB(0xFF, 0)
-			}
-		)
-		hdss.Call(
-			HDSS_BGVALUE, 
+				selsysid, i, it[1], x, y
+			},
+			tableSelectOffset,
 			{
-				0, SI_TitleScene, TotalCenterX, TotalCenterY, TotalW, TotalH
-			}
-		)
-		hdss.Call(
-			HDSS_BGFLAG,
-			{
-				BGMASK, BG_FADEOUT
-			}
-		)
-		
-		local tableSelectOffset =
-		{
-				0, 0,
-				-4, -4,
-				-8, 0,
-				8, 8
-		}
-		
-		local x = 480;
-		local ystart = 240;
-		local yoffset = 30;
-		local infox = 320;
-		local infoy = 440;
-		
-		local _siusetable =
-		{
-			{SI_Title_Start,	"対戦を開始します。"},
-			{SI_Title_Replay,	"リプレイを鑑賞します。"},
-			{SI_Title_Quit,		"いろいろと終了します。"}
-		}
-		for j, it in pairs(_siusetable) do
-			local i = j-1;
-			local y = ystart + i * yoffset;
-			hdss.Call(
-				HDSS_SELBUILD,
-				{
-					selsysid, i, it[1], x, y
-				},
-				tableSelectOffset,
-				{
-					it[2], LConst_selsys_ucol, LConst_selsys_dcol, LConst_selsys_shadow, infox - x, infoy - y, 1, 0, LConst_selsys_align, true
-				}
-			)
-		end
-		
-		hdss.Call(
-			HDSS_SELSET,
-			{
-				selsysid, 3, 0, KS_UP, KS_DOWN, KS_FIRE
+				it[2], LConst_selsys_ucol, LConst_selsys_dcol, LConst_selsys_shadow, infox - x, infoy - y, 1, 0, LConst_selsys_align, true
 			}
 		)
 	end
 	
+	hdss.Call(
+		HDSS_SELSET,
+		{
+			selsysid, 3, 0, KS_UP, KS_DOWN, KS_FIRE
+		}
+	)
+end
+
+function CETitle_ExitState(tostate)
+	hdssSETSTATE(tostate)
+end
+
+function CETitle_DispatchSelect(selsysid)
 	local complete, select = hdss.Get(HDSS_SELCOMPLETE, selsysid);
 	if complete then
 		if select == 0 then
-			hdss.Call(
-				HDSS_SETSTATE,
-				{
-					STATE_MATCH_SELECT
-				}
-			)
+			CETitle_ExitState(STATE_MATCH_SELECT);
 		elseif select == 1 then
-			hdss.Call(
-				HDSS_SETSTATE,
-				{
-					STATE_REPLAY
-				}
-			)
+			CETitle_ExitState(STATE_REPLAY);
 		elseif select == 2 then
-			hdss.Call(
-				HDSS_RETURN,
-				{
-					PQUIT
-				}
-			)
+			hdssRETURN(PQUIT);
 		end
 	else
 		if hge.Input_GetDIKey(KS_QUICK, DIKEY_DOWN) then
-			hdss.Call(
-				HDSS_SE,
-				{
-					SE_SYSTEM_CANCEL
-				}
-			)
+			hdssSE(SE_SYSTEM_CANCEL)
 			if select == 2 then
-				hdss.Call(
-					HDSS_RETURN,
-					{
-						PQUIT
-					}
-				)
+				hdssRETURN(PQUIT);
 			else
 				hdss.Call(
 					HDSS_SELSET,
@@ -113,6 +80,19 @@ function ControlExecute_cTitle(con)
 			end
 		end
 	end
+end
+
+function ControlExecute_cTitle(con)
+
+	local selsysid = LConst_selsys_titleid;
+	
+	if con == 1 then
+		CETitle_Init();
+		CETitle_SetBG();
+		CETitle_SetupSelect(LConst_selsys_titleid);
+	end
+	
+	CETitle_DispatchSelect(LConst_selsys_titleid);
 	
 	return true;
 

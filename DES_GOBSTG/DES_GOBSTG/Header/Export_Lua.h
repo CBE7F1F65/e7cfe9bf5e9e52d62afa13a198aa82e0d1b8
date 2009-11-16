@@ -76,6 +76,7 @@ public:
 	static int LuaFn_Global_ROLL(LuaState * ls);
 	static int LuaFn_Global_INTER(LuaState * ls);
 	static int LuaFn_Global_ARGB(LuaState * ls);
+	static int LuaFn_Global_HSVA(LuaState * ls);
 	static int LuaFn_Global_GetARGB(LuaState * ls);
 	static int LuaFn_Global_SetARGB(LuaState * ls);
 	static int LuaFn_Global_GetLocalTime(LuaState * ls);

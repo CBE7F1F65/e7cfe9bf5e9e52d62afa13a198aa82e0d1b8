@@ -1,68 +1,278 @@
+function CEMatchSelect_Init()
+end
+
+function CEMatchSelect_SetBG()
+	--Mask
+	hdssBGVALUE(BGMASK, SI_Null, TotalCenterX, TotalCenterY, TotalW, TotalH, global.ARGB(0xFF, 0));
+	--BG
+	hdssBGVALUE(LConst_uibg_backgroundid, SI_SelectScene, TotalCenterX, TotalCenterY, TotalW, TotalH);
+	--TopContent
+	hdssBGVALUE(LConst_uibg_topcontentid, SI_TopContent_MatchMode, TotalCenterX, 96);
+	--Fade
+	hdssBGFLAG(BGMASK, BG_FADEOUT);
+end
+
+function CEMatchSelect_CloseUsed(selsysmatchid, selsyslatencyid, bbottom)
+	--Close
+	if bbottom == nil then
+		bbottom = true;
+	end
+	if bbottom then
+		hdssBGOFF(LConst_uibg_bottomid);
+	end
+	hdssBGOFF(LConst_uibg_infoid);
+	--Clear
+	hdssSELCLEAR(selsysmatchid, selsyslatencyid);
+end
+
+function CEMatchSelect_SetSelect_Match(selsysmatchid)
+	--Select
+	local x = TotalCenterX;
+	local ybottomcenter = 440;
+	local yoffset = 64;
+	local ystart = TotalCenterY - yoffset;
+	
+	local _siusetable =
+	{
+		SI_MatchSelect_N2N,
+		SI_MatchSelect_P2P,
+		SI_MatchSelect_P2C,
+		SI_MatchSelect_C2P
+	}
+	for j, it in pairs(_siusetable) do
+		local i = j-1;
+		local y = ystart + i * yoffset;
+		hdss.Call(
+			HDSS_SELBUILD,
+			{
+				selsysmatchid, i, it, x, y
+			},
+			{
+				0, 0,
+				-4, -4,
+				0, ybottomcenter - y,
+				8, 8
+			}
+		)
+	end
+	
+	hdss.Call(
+		HDSS_SELSET,
+		{
+			selsysmatchid, 4, 0, KS_UP, KS_DOWN, KS_FIRE
+		}
+	)
+end
+
+function CEMatchSelect_DispatchSelect_Match(selsysmatchid)
+	--SelectOver
+	local complete, select = hdss.Get(HDSS_SELCOMPLETE, selsysmatchid);
+	if complete then
+		if select == 0 then
+			game.SetMatchMode(MatchMode_N2N);
+			return true;
+		elseif select == 1 then
+			game.SetMatchMode(MatchMode_P2P);
+		elseif select == 2 then
+			game.SetMatchMode(MatchMode_P2C);
+		elseif select == 3 then
+			game.SetMatchMode(MatchMode_C2P);
+		end
+		CEMatchSelect_ExitState(STATE_PLAYER_SELECT);
+	elseif hge.Input_GetDIKey(KS_QUICK, DIKEY_DOWN) then
+		hdssSE(SE_SYSTEM_CANCEL);
+		CEMatchSelect_ExitState(STATE_TITLE);
+	end
+	return false;
+end
+
+function CEMatchSelect_SetBG_Waiting()
+	hdssBGVALUE(LConst_uibg_bottomid, SI_MatchSelect_P2P, TotalCenterX, 440);
+	hdssBGVALUE(LConst_uibg_infoid, SI_MatchMode_Waiting, TotalCenterX, 200, 384, 60);
+end
+
+function CEMatchSelect_DispatchPasteIP(selsyslatencyid, _ipx, _ipport)
+	
+	local ret = 0;
+	local retipx = 0;
+	local retipport = 0;
+	if hge.Input_GetKeyState(HGEK_CTRL) and hge.Input_GetKeyState(HGEK_V) then
+		local strclipboard = global.GetClipBoard();
+		
+		local ipd0, ipd1, ipd2, ipd3, ipport;
+		local stristart = 1;
+		local striend = 1;
+		stristart, striend = string.find(strclipboard, "%d+", stristart);
+		if stristart ~= nil then
+			ipd0 = string.sub(strclipboard, stristart, striend);
+			stristart = striend + 1;
+			stristart, striend = string.find(strclipboard, "%d+", stristart);
+			if stristart ~= nil then
+				ipd1 = string.sub(strclipboard, stristart, striend);
+				stristart = striend + 1;
+				stristart, striend = string.find(strclipboard, "%d+", stristart);
+				if stristart ~= nil then
+					ipd2 = string.sub(strclipboard, stristart, striend);
+					stristart = striend + 1;
+					stristart, striend = string.find(strclipboard, "%d+", stristart);
+					if stristart ~= nil then
+						ipd3 = string.sub(strclipboard, stristart, striend);
+						stristart = striend + 1;
+						stristart, striend = string.find(strclipboard, "%d+", stristart);
+						if stristart ~= nil then
+							ipport = string.sub(strclipboard, stristart, striend);
+						end
+							
+						if ipport == nil then
+							ipport = M_DEFAULTIPPORT;
+						end
+						ipd0 = tonumber(ipd0);
+						ipd1 = tonumber(ipd1);
+						ipd2 = tonumber(ipd2);
+						ipd3 = tonumber(ipd3);
+						ipport = tonumber(ipport);
+					
+						if ipd0 >= 1 and ipd0 <= 0xFF and
+							ipd1 >= 0 and ipd1 <= 0xFF and
+							ipd2 >= 0 and ipd2 <= 0xFF and
+							ipd3 >= 0 and ipd3 <= 0xFF then
+							
+							if ipport >= 0 and ipport <= 0xFFFF then
+								retipx = global.ARGB(ipd0, ipd1, ipd2, ipd3);
+								retipport = ipport;
+								game.SetLastIP(retipx, retipport);
+								ret = 1;
+							end
+								
+						end
+					end
+				end
+			end
+		end
+		
+	elseif hge.Input_GetDIKey(KS_ENTER, DIKEY_DOWN) then
+		retipx, retipport = game.GetLastIP();
+		local ipd0, ipd1, ipd2, ipd3 = global.GetARGB(retipx);
+		if ipd0 ~= 0 then
+			ret = 1;
+		end
+	elseif hge.Input_GetDIKey(KS_QUICK, DIKEY_DOWN) then
+		hdssSE(SE_SYSTEM_CANCEL);
+		ret = -1;
+	end
+	return ret, retipx, retipport;
+end
+
+function CEMatchSelect_SetBG_Accessing()
+	hdss.Call(
+		HDSS_BGVALUE,
+		{
+			LConst_uibg_infoid, SI_MatchMode_Accessing, TotalCenterX, 200, 384, 30
+		}
+	)
+	hdssSE(SE_SYSTEM_OK);
+end
+
+function CEMatchSelect_DispatchAccess()
+	local latency = game.AccessIP();
+	if latency < 0 then
+		hdssSE(SE_SYSTEM_CANCEL);
+	end
+	return latency;
+end
+
+function CEMatchSelect_SetSelect_Latency(selsyslatencyid, latency)
+	
+	hdssBGVALUE(LConst_uibg_infoid, SI_MatchMode_Latency, TotalCenterX, 200, 384, 30);
+	hdssSELCLEAR(selsyslatencyid);
+	
+	local x = TotalCenterX;
+	local ystart = 320;
+	local yoffset = 20;
+	for i=0, 8 do
+		local ucol = global.HSVA((i-1) * 0.1 + 0.2, 1, 1, 1);
+		local dcol = global.HSVA(i * 0.1 + 0.2, 1, 1, 1);
+		hdss.Call(
+			HDSS_SELBUILD,
+			{
+				selsyslatencyid, i, -1, x, ystart + i * yoffset
+			},
+			{
+				0, 0,
+				-4, -4,
+				-8, 0,
+				8, 8
+			},
+			{
+				string.format("Latency:%d", i+1), ucol, dcol
+			}
+		)
+	end
+	hdss.Call(
+		HDSS_SELSET,
+		{
+			selsyslatencyid, 9, latency-1, KS_UP, KS_DOWN, KS_FIRE
+		},
+		{
+			1, ystart, yoffset, latency-1
+		}
+	)
+	hdssSE(SE_SYSTEM_OK);
+end
+
+function CEMatchSelect_DispatchSelect_Latency(selsyslatencyid, latency)
+
+	local ret = 0;
+	if hge.Input_GetDIKey(KS_QUICK, DIKEY_DOWN) then
+		hdssSELCLEAR(selsyslatencyid);
+		ret = -1;
+	hdssSE(SE_SYSTEM_CANCEL);
+	end
+	
+	--SelectOver
+	local complete, select = hdss.Get(HDSS_SELCOMPLETE, selsyslatencyid);
+	if complete then
+		latency = select + 1;
+		game.SetLatency(latency);
+		CEMatchSelect_ExitState(STATE_PLAYER_SELECT);
+		ret = 1;
+	end
+	return ret;
+end
+
+function CEMatchSelect_DisplayIP(ipx, ipport)
+	local ipd0, ipd1, ipd2, ipd3 = global.GetARGB(ipx);
+	local strip = string.format("%d.%d.%d.%d:%d", ipd0, ipd1, ipd2, ipd3, ipport);
+	hdss.Call(
+		HDSS_PRINT,
+		{
+			TotalCenterX, TotalCenterY, strip
+		},
+		{
+			1.5
+		}
+	)
+end
+
+function CEMatchSelect_ExitState(tostate)
+	hdssSETSTATE(tostate);
+	CEMatchSelect_CloseUsed(LConst_selsys_matchid, LConst_selsys_latencyid, true);
+end
+
 function ControlExecute_cMatchSelect(con)
 
-	local selsysid = 0;
-	local selsyssubid = 1;
 	local dselcomplete = RESERVEBEGIN;
 	local dipx = RESERVEBEGIN + 1;
 	local dipport = RESERVEBEGIN + 2;
 	local dlatency = RESERVEBEGIN + 3;
 	
-	local ybottomcenter = 440;
 	if con == 1 then
-		--Init
-		hdss.Call(
-			HDSS_SD,
-			{
-				dselcomplete, 0
-			}
-		)
-		hdss.Call(
-			HDSS_SDf,
-			{
-				dipx, 0
-			}
-		)
-		hdss.Call(
-			HDSS_SD,
-			{
-				dipport, 0
-			}
-		)
-		hdss.Call(
-			HDSS_SD,
-			{
-				dlatency, 0
-			}
-		)
-		--Mask
-		hdss.Call(
-			HDSS_BGVALUE,
-			{
-				BGMASK, SI_Null, TotalCenterX, TotalCenterY, TotalW, TotalH, global.ARGB(0xFF, 0)
-			}
-		)
-		--BG
-		hdss.Call(
-			HDSS_BGVALUE, 
-			{
-				0, SI_SelectScene, TotalCenterX, TotalCenterY, TotalW, TotalH
-			}
-		)
-		--TopContent
-		hdss.Call(
-			HDSS_BGVALUE, 
-			{
-				1, SI_TopContent_MatchMode, TotalCenterX, 96
-			}
-		)
-		--Fade
-		hdss.Call(
-			HDSS_BGFLAG,
-			{
-				BGMASK, BG_FADEOUT
-			}
-		)
-		
+		CEMatchSelect_Init();
+		hdssSD(dselcomplete, 0);
+		hdssSDf(dipx, 0);
+		hdssSD(dipport, 0);
+		hdssSD(dlatency, 0);
+		CEMatchSelect_SetBG();
 	end
 	
 	local _selcomplete = hdss.Get(HDSS_D, dselcomplete);
@@ -71,344 +281,61 @@ function ControlExecute_cMatchSelect(con)
 	local _latency = hdss.Get(HDSS_D, dlatency);
 	
 	if _selcomplete == 0 then
-		--Close
-		hdss.Call(
-			HDSS_BGOFF,
-			{
-				2
-			}
-		)
-		hdss.Call(
-			HDSS_BGOFF,
-			{
-				4
-			}
-		)
-		--Clear
-		hdss.Call(
-			HDSS_SELCLEAR,
-			{
-				selsysid
-			}
-		)
-		hdss.Call(
-			HDSS_SELCLEAR,
-			{
-				selsyssubid
-			}
-		)
-		
-		--Select
-		local x = TotalCenterX;
-		local yoffset = 64;
-		local ystart = TotalCenterY - yoffset;
-		
-		local _siusetable =
-		{
-			SI_MatchSelect_N2N,
-			SI_MatchSelect_P2P,
-			SI_MatchSelect_P2C,
-			SI_MatchSelect_C2P
-		}
-		for j, it in pairs(_siusetable) do
-			local i = j-1;
-			local y = ystart + i * yoffset;
-			hdss.Call(
-				HDSS_SELBUILD,
-				{
-					selsysid, i, it, x, y
-				},
-				{
-					0, 0,
-					-4, -4,
-					0, ybottomcenter - y,
-					8, 8
-				}
-			)
-		end
-		
-		hdss.Call(
-			HDSS_SELSET,
-			{
-				selsysid, 4, 0, KS_UP, KS_DOWN, KS_FIRE
-			}
-		)
+		CEMatchSelect_CloseUsed(LConst_selsys_matchid, LConst_selsys_latencyid);
+		CEMatchSelect_SetSelect_Match(LConst_selsys_matchid);
 		_selcomplete = 1;
 		
 	elseif _selcomplete == 1 then
-		--SelectOver
-		local complete, select = hdss.Get(HDSS_SELCOMPLETE, selsysid);
-		if complete then
-			if select == 0 then
-				game.SetMatchMode(MatchMode_N2N);
-				_selcomplete = 2;
-			elseif select == 1 then
-				game.SetMatchMode(MatchMode_P2P);
-				hdss.Call(
-					HDSS_SETSTATE,
-					{
-						STATE_PLAYER_SELECT
-					}
-				)
-			elseif select == 2 then
-				game.SetMatchMode(MatchMode_P2C);
-				hdss.Call(
-					HDSS_SETSTATE,
-					{
-						STATE_PLAYER_SELECT
-					}
-				)
-			elseif select == 3 then
-				game.SetMatchMode(MatchMode_C2P);
-				hdss.Call(
-					HDSS_SETSTATE,
-					{
-						STATE_PLAYER_SELECT
-					}
-				)
-			end
+		if CEMatchSelect_DispatchSelect_Match(LConst_selsys_matchid) then
+			_selcomplete = 2;
 		end
 	
 	elseif _selcomplete == 2 then
-		
-		hdss.Call(
-			HDSS_BGVALUE, 
-			{
-				2, SI_MatchSelect_P2P, TotalCenterX, ybottomcenter
-			}
-		)
-		
-		hdss.Call(
-			HDSS_BGVALUE, 
-			{
-				4, SI_MatchMode_Waiting, TotalCenterX, 200, 384, 60
-			}
-		)
+		CEMatchSelect_SetBG_Waiting();
 		_selcomplete = 3;
 	
 	elseif _selcomplete == 3 then
-		if hge.Input_GetDIKey(KS_QUICK, DIKEY_DOWN) then
-			hdss.Call(
-				HDSS_SE,
-				{
-					SE_SYSTEM_CANCEL
-				}
-			)
+		local ret, retipx, retipport = CEMatchSelect_DispatchPasteIP(LConst_selsys_latencyid);
+		if ret == -1 then
 			_selcomplete = 0;
-		elseif hge.Input_GetKeyState(HGEK_CTRL) and hge.Input_GetKeyState(HGEK_V) then
-			local strclipboard = global.GetClipBoard();
-			
-			local ipd0, ipd1, ipd2, ipd3, ipport;
-			local stristart = 1;
-			local striend = 1;
-			stristart, striend = string.find(strclipboard, "%d+", stristart);
-			if stristart ~= nil then
-				ipd0 = string.sub(strclipboard, stristart, striend);
-				stristart = striend + 1;
-				stristart, striend = string.find(strclipboard, "%d+", stristart);
-				if stristart ~= nil then
-					ipd1 = string.sub(strclipboard, stristart, striend);
-					stristart = striend + 1;
-					stristart, striend = string.find(strclipboard, "%d+", stristart);
-					if stristart ~= nil then
-						ipd2 = string.sub(strclipboard, stristart, striend);
-						stristart = striend + 1;
-						stristart, striend = string.find(strclipboard, "%d+", stristart);
-						if stristart ~= nil then
-							ipd3 = string.sub(strclipboard, stristart, striend);
-							stristart = striend + 1;
-							stristart, striend = string.find(strclipboard, "%d+", stristart);
-							if stristart ~= nil then
-								ipport = string.sub(strclipboard, stristart, striend);
-							end
-								
-							if ipport == nil then
-								ipport = M_DEFAULTIPPORT;
-							end
-							ipd0 = tonumber(ipd0);
-							ipd1 = tonumber(ipd1);
-							ipd2 = tonumber(ipd2);
-							ipd3 = tonumber(ipd3);
-							ipport = tonumber(ipport);
-						
-							if ipd0 >= 1 and ipd0 <= 0xFF and
-								ipd1 >= 0 and ipd1 <= 0xFF and
-								ipd2 >= 0 and ipd2 <= 0xFF and
-								ipd3 >= 0 and ipd3 <= 0xFF then
-								
-								if ipport >= 0 and ipport <= 0xFFFF then
-									_ipx = global.ARGB(ipd0, ipd1, ipd2, ipd3);
-									_ipport = ipport;
-									game.SetLastIP(_ipx, _ipport);
-									_selcomplete = 4;
-								end
-									
-							end
-						end
-					end
-				end
-			end
-			
-		elseif hge.Input_GetDIKey(KS_ENTER, DIKEY_DOWN) then
-			_ipx, _ipport = game.GetLastIP();
-			local ipd0, ipd1, ipd2, ipd3 = global.GetARGB(_ipx);
-			if ipd0 ~= 0 then
-				_selcomplete = 4;
-			end
+		elseif ret == 1 then
+			_ipx = retipx;
+			_ipport = retipport;
+			_selcomplete = 4;
 		end
 		
 	elseif _selcomplete == 4 then
-		hdss.Call(
-			HDSS_BGVALUE,
-			{
-				4, SI_MatchMode_Accessing, TotalCenterX, 200, 384, 30
-			}
-		)
-		hdss.Call(
-			HDSS_SE,
-			{
-				SE_SYSTEM_OK
-			}
-		)
+		CEMatchSelect_SetBG_Accessing();
 		_selcomplete = 5;
 	
 	elseif _selcomplete == 5 then
-		_latency = game.AccessIP();
-		if _latency > 0 then
+		_latency = CEMatchSelect_DispatchAccess();
+		if _latency < 0 then
+			_selcomplete = 0;
+		elseif _latency > 0 then
 			_selcomplete = 6;
 		end
 	
 	elseif _selcomplete == 6 then
-		hdss.Call(
-			HDSS_BGVALUE, 
-			{
-				4, SI_MatchMode_Latency, TotalCenterX, 200, 384, 30
-			}
-		)
-		hdss.Call(
-			HDSS_SELCLEAR,
-			{
-				selsyssubid
-			}
-		)
-		local x = TotalCenterX;
-		local ystart = 320;
-		local yoffset = 20;
-		for i=0, 8 do
-			local dcol = hdss.Call(
-				HDSS_HSVTORGB,
-				{
-					i * 0.1 + 0.2, 1, 1, 1
-				}
-			)
-			local ucol = hdss.Call(
-				HDSS_HSVTORGB,
-				{
-					(i-1) * 0.1 + 0.2, 1, 1, 1
-				}
-			)
-			hdss.Call(
-				HDSS_SELBUILD,
-				{
-					selsyssubid, i, -1, x, ystart + i * yoffset
-				},
-				{
-					0, 0,
-					-4, -4,
-					-8, 0,
-					8, 8
-				},
-				{
-					string.format("Latency:%d", i+1), ucol, dcol
-				}
-			)
-		end
-		hdss.Call(
-			HDSS_SELSET,
-			{
-				selsyssubid, 9, _latency-1, KS_UP, KS_DOWN, KS_FIRE
-			},
-			{
-				1, ystart, yoffset, _latency-1
-			}
-		)
-		hdss.Call(
-			HDSS_SE,
-			{
-				SE_SYSTEM_OK
-			}
-		)
+		CEMatchSelect_SetSelect_Latency(LConst_selsys_latencyid, _latency);
 		_selcomplete = 7;
 	
 	elseif _selcomplete == 7 then
-		if hge.Input_GetDIKey(KS_QUICK, DIKEY_DOWN) then
-			hdss.Call(
-				HDSS_SELCLEAR,
-				{
-					selsyssubid
-				}
-			)
+		local ret = CEMatchSelect_DispatchSelect_Latency(LConst_selsys_latencyid)
+		if ret == -1 then
 			_selcomplete = 2;
-		hdss.Call(
-			HDSS_SE,
-			{
-				SE_SYSTEM_CANCEL
-			}
-		)
-		end
-		
-		--SelectOver
-		local complete, select = hdss.Get(HDSS_SELCOMPLETE, selsyssubid);
-		if complete then
-			_latency = select + 1;
-			game.SetLatency(_latency);
-			hdss.Call(
-				HDSS_SETSTATE,
-				{
-					STATE_PLAYER_SELECT
-				}
-			)
 		end
 	end
 	
 	-- IP
 	if _selcomplete > 3 then
-		local ipd0, ipd1, ipd2, ipd3 = global.GetARGB(_ipx);
-		local strip = string.format("%d.%d.%d.%d:%d", ipd0, ipd1, ipd2, ipd3, _ipport);
-		hdss.Call(
-			HDSS_PRINT,
-			{
-				TotalCenterX, TotalCenterY, strip
-			},
-			{
-				1.5
-			}
-		)
+		CEMatchSelect_DisplayIP(_ipx, _ipport);
 	end
-	hdss.Call(
-		HDSS_SD,
-		{
-			dselcomplete, _selcomplete
-		}
-	)
-	hdss.Call(
-		HDSS_SDf,
-		{
-			dipx, _ipx
-		}
-	)
-	hdss.Call(
-		HDSS_SD,
-		{
-			dipport, _ipport
-		}
-	)
-	hdss.Call(
-		HDSS_SD,
-		{
-			dlatency, _latency
-		}
-	)
+	
+	hdssSD(dselcomplete, _selcomplete);
+	hdssSDf(dipx, _ipx);
+	hdssSD(dipport, _ipport);
+	hdssSD(dlatency, _latency);
 		
 	return true;
 

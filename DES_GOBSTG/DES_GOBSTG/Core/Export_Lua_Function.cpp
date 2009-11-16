@@ -14,6 +14,7 @@ bool Export_Lua::_LuaRegistFunction(LuaObject * obj)
 	_globalobj.Register("ROLL", LuaFn_Global_ROLL);
 	_globalobj.Register("INTER", LuaFn_Global_INTER);
 	_globalobj.Register("ARGB", LuaFn_Global_ARGB);
+	_globalobj.Register("HSVA", LuaFn_Global_HSVA);
 	_globalobj.Register("GetARGB", LuaFn_Global_GetARGB);
 	_globalobj.Register("SetARGB", LuaFn_Global_SetARGB);
 	_globalobj.Register("GetLocalTime", LuaFn_Global_GetLocalTime);
@@ -438,6 +439,23 @@ int Export_Lua::LuaFn_Global_ARGB(LuaState * ls)
 			dret = (((DWORD)(args[1].GetInteger()))<<24) + (DWORD)(args[2].GetInteger());
 		}
 	}
+
+	_LuaHelper_PushDWORD(ls, dret);
+	return 1;
+}
+
+int Export_Lua::LuaFn_Global_HSVA(LuaState * ls)
+{
+	LuaStack args(ls);
+	DWORD dret;
+	
+	float _a = 0;
+	if (args.Count() > 3)
+	{
+		_a = args[4].GetFloat();
+	}
+	hgeColorHSV _hsv(args[1].GetFloat(), args[2].GetFloat(), args[3].GetFloat(), _a);
+	dret = _hsv.GetHWColor();
 
 	_LuaHelper_PushDWORD(ls, dret);
 	return 1;
