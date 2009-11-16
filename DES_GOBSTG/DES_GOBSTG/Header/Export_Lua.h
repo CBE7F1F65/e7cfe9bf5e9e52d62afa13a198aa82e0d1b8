@@ -354,6 +354,9 @@ public:
 	static int LuaFn_Game_SetLastIP(LuaState * ls);
 	static int LuaFn_Game_GetLastIP(LuaState * ls);
 	static int LuaFn_Game_AccessIP(LuaState * ls);
+	static int LuaFn_Game_SetLatency(LuaState * ls);
+	static int LuaFn_Game_SetMatchMode(LuaState * ls);
+	static int LuaFn_Game_GetMatchMode(LuaState * ls);
 public:
 #endif
 };

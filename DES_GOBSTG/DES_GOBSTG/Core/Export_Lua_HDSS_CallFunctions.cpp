@@ -104,6 +104,23 @@ int _HDSSCallGet::Call_SE(LuaState * ls)
 	return 0;
 }
 
+int _HDSSCallGet::Call_HSVTORGB(LuaState * ls)
+{
+	_ENTERCALL_HDSS_LUA;
+
+	if (true)
+	{
+		float _h = _FNEXT_HDSS_LUAPARA;
+		float _s = _FNEXT_HDSS_LUAPARA;
+		float _v = _FNEXT_HDSS_LUAPARA;
+		float _a = _FNEXT_HDSS_LUAPARA;
+		hgeColorHSV _hsv(_h, _s, _v, _a);
+		_PD_HDSS_LUAFUUNC(_hsv.GetHWColor());
+		return 1;
+	}
+	return 0;
+}
+
 int _HDSSCallGet::Call_PRINT(LuaState * ls)
 {
 	_ENTERCALL_HDSS_LUA;

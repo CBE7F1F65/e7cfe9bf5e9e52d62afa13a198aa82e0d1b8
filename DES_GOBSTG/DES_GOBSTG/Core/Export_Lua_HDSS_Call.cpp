@@ -52,6 +52,8 @@ int Export_Lua::LuaFn_HDSS_Call(LuaState * ls)
 			{
 			case SCR_SE:
 				return hdsscallget.Call_SE(ls);
+			case SCR_HSVTORGB:
+				return hdsscallget.Call_HSVTORGB(ls);
 			case SCR_PRINT:
 				return hdsscallget.Call_PRINT(ls);
 			}

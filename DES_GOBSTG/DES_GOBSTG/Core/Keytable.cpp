@@ -614,6 +614,14 @@ scrKeyWord scrKeyTable[] =
 
 	{"EVENT_BULLETENTERIZE",	SCR_EVENT_BULLETENTERIZE},
 
+	//
+	{"MatchMode_N2N",			M_MATCHMODE_N2N},
+	{"MatchMode_P2P",			M_MATCHMODE_P2P},
+	{"MatchMode_P2C",			M_MATCHMODE_P2C},
+	{"MatchMode_C2P",			M_MATCHMODE_C2P},
+	{"Latency_Min",				M_LATENCY_MIN},
+	{"Latency_Max",				M_LATENCY_MAX},
+
 	{SCR_KEYSTATE_STR,			SCR_KEYSTATE},
 
 	{"KS_UP",					(DWORD)&(KS_UP_MP)},

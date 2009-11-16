@@ -147,12 +147,21 @@ typedef struct tagTarget
 #define M_MODE_STAGE	M_RPYMODE_PRACTICE
 #define M_MODE_SPELL	(M_RPYMODE_PRACTICE | M_RPYMODE_SPELL)
 
+#define M_MATCHMODE_N2N	1
+#define M_MATCHMODE_P2P	2
+#define M_MATCHMODE_P2C	4
+#define M_MATCHMODE_C2P	8
+
 #define M_PATHMAX		_MAX_PATH
 #define M_STRMAX		0x80
 #define M_STRITOAMAX	0x10
 
 #define M_FONTWIDTH		11
 #define M_FONTHEIGHT	20
+
+#define	M_LATENCY_NULL	0
+#define	M_LATENCY_MIN	1
+#define	M_LATENCY_MAX	9
 
 #define M_STAGENSCENE	100
 

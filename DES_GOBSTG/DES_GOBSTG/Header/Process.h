@@ -60,6 +60,9 @@ public:
 	void	SetReturnValue(int retval);
 
 	int		AccessIP();
+	bool	SetLatency(int latency);
+	void	SetMatchMode(BYTE mode);
+	BYTE	GetMatchMode();
 
 public:
 	union{
@@ -161,6 +164,10 @@ public:
 
 	//Init
 	HTEXTURE	texInit;
+
+	//
+	int		latency;
+	BYTE	matchmode;
 };
 
 extern Process mp;

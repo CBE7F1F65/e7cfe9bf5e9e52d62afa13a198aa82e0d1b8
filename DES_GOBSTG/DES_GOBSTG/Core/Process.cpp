@@ -18,6 +18,8 @@ Process::Process()
 	active		= false;
 	stream		= NULL;
 	channel		= NULL;
+	latency		= M_LATENCY_NULL;
+	matchmode	= 0;
 	ZeroMemory(&channelsyncinfo, sizeof(hgeChannelSyncInfo));
 	retvalue	= PGO;
 	errorcode	= PROC_ERROR_INIFILE;
@@ -594,4 +596,24 @@ int Process::AccessIP()
 	Export::GetLastIP(&ipx, &ipport);
 	//TODO:
 	return 3;
+}
+
+bool Process::SetLatency(int _latency)
+{
+	latency = _latency;
+	if (latency < M_LATENCY_MIN || latency > M_LATENCY_MAX)
+	{
+		return false;
+	}
+	return true;
+}
+
+void Process::SetMatchMode(BYTE mode)
+{
+	matchmode = mode;
+}
+
+BYTE Process::GetMatchMode()
+{
+	return matchmode;
 }

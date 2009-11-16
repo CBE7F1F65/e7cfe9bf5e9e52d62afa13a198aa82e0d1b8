@@ -105,6 +105,7 @@ function ControlExecute_cMatchSelect(con)
 		
 		local _siusetable =
 		{
+			SI_MatchSelect_N2N,
 			SI_MatchSelect_P2P,
 			SI_MatchSelect_P2C,
 			SI_MatchSelect_C2P
@@ -129,7 +130,7 @@ function ControlExecute_cMatchSelect(con)
 		hdss.Call(
 			HDSS_SELSET,
 			{
-				selsysid, 3, 0, KS_UP, KS_DOWN, KS_FIRE
+				selsysid, 4, 0, KS_UP, KS_DOWN, KS_FIRE
 			}
 		)
 		_selcomplete = 1;
@@ -139,8 +140,10 @@ function ControlExecute_cMatchSelect(con)
 		local complete, select = hdss.Get(HDSS_SELCOMPLETE, selsysid);
 		if complete then
 			if select == 0 then
+				game.SetMatchMode(MatchMode_N2N);
 				_selcomplete = 2;
 			elseif select == 1 then
+				game.SetMatchMode(MatchMode_P2P);
 				hdss.Call(
 					HDSS_SETSTATE,
 					{
@@ -148,6 +151,15 @@ function ControlExecute_cMatchSelect(con)
 					}
 				)
 			elseif select == 2 then
+				game.SetMatchMode(MatchMode_P2C);
+				hdss.Call(
+					HDSS_SETSTATE,
+					{
+						STATE_PLAYER_SELECT
+					}
+				)
+			elseif select == 3 then
+				game.SetMatchMode(MatchMode_C2P);
 				hdss.Call(
 					HDSS_SETSTATE,
 					{
@@ -283,6 +295,18 @@ function ControlExecute_cMatchSelect(con)
 		local ystart = 320;
 		local yoffset = 20;
 		for i=0, 8 do
+			local dcol = hdss.Call(
+				HDSS_HSVTORGB,
+				{
+					i * 0.1 + 0.2, 1, 1, 1
+				}
+			)
+			local ucol = hdss.Call(
+				HDSS_HSVTORGB,
+				{
+					(i-1) * 0.1 + 0.2, 1, 1, 1
+				}
+			)
 			hdss.Call(
 				HDSS_SELBUILD,
 				{
@@ -295,7 +319,7 @@ function ControlExecute_cMatchSelect(con)
 					8, 8
 				},
 				{
-					string.format("Latency:%d", i+1)
+					string.format("Latency:%d", i+1), ucol, dcol
 				}
 			)
 		end
@@ -337,6 +361,7 @@ function ControlExecute_cMatchSelect(con)
 		local complete, select = hdss.Get(HDSS_SELCOMPLETE, selsyssubid);
 		if complete then
 			_latency = select + 1;
+			game.SetLatency(_latency);
 			hdss.Call(
 				HDSS_SETSTATE,
 				{
