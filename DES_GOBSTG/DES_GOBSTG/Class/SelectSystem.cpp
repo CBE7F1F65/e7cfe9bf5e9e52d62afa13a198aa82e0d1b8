@@ -322,6 +322,19 @@ void SelectSystem::action()
 
 }
 
+int SelectSystem::SetSelect(int _select)
+{
+	if (_select < 0)
+	{
+		select = hge->Random_Int(0, nselect-1);
+	}
+	else
+	{
+		select = _select;
+	}
+	return select;
+}
+
 void SelectSystem::Render()
 {
 	for(list<Selector>::iterator it=sel.begin(); it!=sel.end(); it++)

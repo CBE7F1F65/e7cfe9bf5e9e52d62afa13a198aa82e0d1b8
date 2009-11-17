@@ -57,7 +57,7 @@ function CEMatchSelect_SetSelect_Match(selsysmatchid)
 	end
 	
 	hdss.Call(
-		HDSS_SELSET,
+		HDSS_SELSETUP,
 		{
 			selsysmatchid, 4, 0, KS_UP, KS_DOWN, KS_FIRE
 		}
@@ -209,7 +209,7 @@ function CEMatchSelect_SetSelect_Latency(selsyslatencyid, latency)
 		)
 	end
 	hdss.Call(
-		HDSS_SELSET,
+		HDSS_SELSETUP,
 		{
 			selsyslatencyid, 9, latency-1, KS_UP, KS_DOWN, KS_FIRE
 		},

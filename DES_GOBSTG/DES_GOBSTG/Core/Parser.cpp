@@ -1146,7 +1146,7 @@ bool Scripter::Parse(int varcount)
 						*/
 					}
 					break;
-				case SCR_SELSET:
+				case SCR_SELSETUP:
 					if(rv = Copy(&i, 7))
 					{
 						/*
@@ -1164,6 +1164,13 @@ bool Scripter::Parse(int varcount)
                         {
 							_sel->flag = CAST(d[1]);
                         }
+						*/
+					}
+					break;
+				case SCR_SELSET:
+					if (rv = Copy(&i, 1))
+					{
+						/*
 						*/
 					}
 					break;

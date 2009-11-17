@@ -90,10 +90,12 @@ int Export_Lua::LuaFn_HDSS_Call(LuaState * ls)
 			{
 			case SCR_SELBUILD:
 				return hdsscallget.Call_SELBUILD(ls);
-			case SCR_SELSET:
-				return hdsscallget.Call_SELSET(ls);
 			case SCR_SELCLEAR:
 				return hdsscallget.Call_SELCLEAR(ls);
+			case SCR_SELSETUP:
+				return hdsscallget.Call_SELSETUP(ls);
+			case SCR_SELSET:
+				return hdsscallget.Call_SELSET(ls);
 			}
 			break;
 		}

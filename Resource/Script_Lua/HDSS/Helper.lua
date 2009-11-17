@@ -73,6 +73,15 @@ function hdssBGOFF(index1, index2, index3, index4)
 	)
 end
 
+function hdssSELSET(index, select)
+	return hdss.Call(
+		HDSS_SELSET,
+		{
+			index, select
+		}
+	)
+end
+
 function hdssSELCLEAR(index1, index2, index3, index4)
 	if index1 == nil then
 		return;

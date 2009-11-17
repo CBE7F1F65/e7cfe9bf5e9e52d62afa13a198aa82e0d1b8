@@ -24,8 +24,9 @@ public:
 	int Call_BGFLAG(LuaState * ls);
 	int Call_BGOFF(LuaState * ls);
 	int Call_SELBUILD(LuaState * ls);
-	int Call_SELSET(LuaState * ls);
 	int Call_SELCLEAR(LuaState * ls);
+	int Call_SELSETUP(LuaState * ls);
+	int Call_SELSET(LuaState * ls);
 
 public:
 	int Get_D(LuaState * ls);

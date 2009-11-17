@@ -44,7 +44,7 @@ function CETitle_SetupSelect(selsysid)
 	end
 	
 	hdss.Call(
-		HDSS_SELSET,
+		HDSS_SELSETUP,
 		{
 			selsysid, 3, 0, KS_UP, KS_DOWN, KS_FIRE
 		}
@@ -72,7 +72,7 @@ function CETitle_DispatchSelect(selsysid)
 				hdssRETURN(PQUIT);
 			else
 				hdss.Call(
-					HDSS_SELSET,
+					HDSS_SELSETUP,
 					{
 						selsysid, 3, 2
 					}

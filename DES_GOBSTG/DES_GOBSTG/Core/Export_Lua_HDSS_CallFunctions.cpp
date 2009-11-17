@@ -482,7 +482,19 @@ int _HDSSCallGet::Call_SELBUILD(LuaState * ls)
 	return 0;
 }
 
-int _HDSSCallGet::Call_SELSET(LuaState * ls)
+int _HDSSCallGet::Call_SELCLEAR(LuaState * ls)
+{
+	_ENTERCALL_HDSS_LUA;
+
+	if (true)
+	{
+		int _selsys = _INEXT_HDSS_LUAPARA;
+		selsys[_selsys].Clear();
+	}
+	return 0;
+}
+
+int _HDSSCallGet::Call_SELSETUP(LuaState * ls)
 {
 	_ENTERCALL_HDSS_LUA;
 
@@ -558,16 +570,24 @@ int _HDSSCallGet::Call_SELSET(LuaState * ls)
 	return 0;
 }
 
-int _HDSSCallGet::Call_SELCLEAR(LuaState * ls)
+int _HDSSCallGet::Call_SELSET(LuaState * ls)
 {
 	_ENTERCALL_HDSS_LUA;
-
 	if (true)
 	{
 		int _selsys = _INEXT_HDSS_LUAPARA;
-		selsys[_selsys].Clear();
+		int _select = -1;
+		_JNEXT_HDSS_LUAPARA;
+		if (bhavenext)
+		{
+			_select = _IOBJ_HDSS_LUA;
+		}
+		_select = selsys[_selsys].SetSelect(_select);
+		ls->PushInteger(_select);
+		return 1;
 	}
 	return 0;
 }
+
 #endif
 #endif
