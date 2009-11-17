@@ -173,6 +173,7 @@ struct enemyData
 struct playerData 
 {
 	char name[M_STRMAX];
+	char ename[M_STRMAX];
 	float collision_r;
 	float fastspeed;
 	float slowspeed;

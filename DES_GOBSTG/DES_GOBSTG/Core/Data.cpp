@@ -283,6 +283,15 @@ char * Data::getPlayerName(int type)
 	return res.playerdata[type].name;
 }
 
+char * Data::getPlayerEName(int type)
+{
+	if (type < 0 || type >= PLAYERTYPEMAX)
+	{
+		return NULL;
+	}
+	return res.playerdata[type].ename;
+}
+
 void Data::MoveDown(DWORD sec, BYTE i)
 {
 	DWORD secS;

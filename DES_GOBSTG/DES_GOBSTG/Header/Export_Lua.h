@@ -358,6 +358,7 @@ public:
 	static int LuaFn_Game_SetLatency(LuaState * ls);
 	static int LuaFn_Game_SetMatchMode(LuaState * ls);
 	static int LuaFn_Game_GetMatchMode(LuaState * ls);
+	static int LuaFn_Game_GetPlayerContentTable(LuaState * ls);
 public:
 #endif
 };

@@ -297,6 +297,7 @@ public:
 	char * getEnemyName(int type);
 	char * getEnemyEName(int type);
 	char * getPlayerName(int type);
+	char * getPlayerEName(int type);
 
 	void MoveDown(DWORD sec, BYTE i);
 

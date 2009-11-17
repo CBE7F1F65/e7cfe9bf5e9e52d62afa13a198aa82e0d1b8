@@ -374,8 +374,8 @@ bool Data::GetTableFile(BYTE type)
 		break;
 	case DATA_PLAYERDEFINEFILE:
 		ZeroMemory(res.playerdata, RSIZE_PLAYER);
-		fscanf(file, "%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s", 
-			buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer);
+		fscanf(file, "%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s", 
+			buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer);
 		while (!feof(file))
 		{
 			fscanf(file, "%d", &tindex);
@@ -384,7 +384,7 @@ bool Data::GetTableFile(BYTE type)
 			{
 				break;
 			}
-			fscanf(file, "%f%f%f%f%d%d%d%d%d%d%d%d%d%d%d%d%d%d%f%f\t%[^\r\n]", 
+			fscanf(file, "%f%f%f%f%d%d%d%d%d%d%d%d%d%d%d%d%d%d%f%f\t%[^\t]\t%[^\r\n]", 
 				&(item->collision_r), 
 				&(item->fastspeed), 
 				&(item->slowspeed), 
@@ -405,7 +405,8 @@ bool Data::GetTableFile(BYTE type)
 				&(tint[12]), 
 				&(item->usetexw),
 				&(item->usetexh),
-				(item->name));
+				(item->name),
+				(item->ename));
 			item->shotdelay = tint[0];
 			item->borderlast = tint[1];
 			item->bomblast = tint[2];
