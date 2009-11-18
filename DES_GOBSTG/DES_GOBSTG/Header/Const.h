@@ -307,6 +307,8 @@ typedef struct tagTarget
 
 #define STRINGDESCMAX		0x400
 
+#define FRONTSPRITEMAX		0x40
+
 #define M_SAVEINPUTMAX		0x36000
 
 #define SELSYSTEMMAX		4

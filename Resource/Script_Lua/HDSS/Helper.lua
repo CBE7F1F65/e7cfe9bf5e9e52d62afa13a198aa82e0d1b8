@@ -165,3 +165,24 @@ function hdssSE(seid)
 		}
 	)
 end
+
+function hdssFRONTSPRITE(index, siid, x, y, angle, hscale, vscale)
+	return hdss.Call(
+		HDSS_FRONTSPRITE,
+		{
+			index, siid
+		},
+		{
+			x, y, angle, hscale, vscale
+		}
+	)
+end
+
+function hdssFREEFRONTSPRITE(index)
+	return hdss.Call(
+		HDSS_FREEFRONTSPRITE,
+		{
+			index
+		}
+	)
+end

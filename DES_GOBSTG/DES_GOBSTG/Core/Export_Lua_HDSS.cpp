@@ -1,19 +1,19 @@
 #ifndef __NOTUSELUA
 #ifndef __NOTUSEHDSS
 
-#include "../Header/Export_Lua.h"
+#include "../Header/Export_Lua_HDSS.h"
 #include "../Header/LuaConstDefine.h"
 #include "../Header/keytable.h"
 #include "../Header/BResource.h"
 
-LuaFunction<bool> * Export_Lua::controlExecute;
-LuaFunction<bool> * Export_Lua::stageExecute;
-LuaFunction<bool> * Export_Lua::edefExecute;
-LuaFunction<bool> * Export_Lua::sceneExecute;
-LuaFunction<bool> * Export_Lua::functionExecute;
-LuaFunction<bool> * Export_Lua::eventExecute;
+LuaFunction<bool> * Export_Lua_HDSS::controlExecute;
+LuaFunction<bool> * Export_Lua_HDSS::stageExecute;
+LuaFunction<bool> * Export_Lua_HDSS::edefExecute;
+LuaFunction<bool> * Export_Lua_HDSS::sceneExecute;
+LuaFunction<bool> * Export_Lua_HDSS::functionExecute;
+LuaFunction<bool> * Export_Lua_HDSS::eventExecute;
 
-void Export_Lua::_ChangeSpecialChar(char * str)
+void Export_Lua_HDSS::_ChangeSpecialChar(char * str)
 {
 	int length = strlen(str);
 	if (str[length-1] == '#')
@@ -30,7 +30,7 @@ void Export_Lua::_ChangeSpecialChar(char * str)
 	}
 }
 
-bool Export_Lua::_LuaRegistHDSSConst(LuaObject * obj)
+bool Export_Lua_HDSS::_LuaRegistConst(LuaObject * obj)
 {
 	int i = 0;
 	char str[M_STRMAX];
@@ -64,7 +64,7 @@ bool Export_Lua::_LuaRegistHDSSConst(LuaObject * obj)
 	return true;
 }
 
-bool Export_Lua::_LuaRegistHDSSFunction(LuaObject * obj)
+bool Export_Lua_HDSS::_LuaRegistFunction(LuaObject * obj)
 {
 	LuaObject _hdssobj = obj->CreateTable("hdss");
 	_hdssobj.Register("Call", LuaFn_HDSS_Call);
@@ -72,7 +72,7 @@ bool Export_Lua::_LuaRegistHDSSFunction(LuaObject * obj)
 	return true;
 }
 
-bool Export_Lua::_Helper_HDSS_GetPara(LuaStack * args, int i, LuaObject * _para)
+bool Export_Lua_HDSS::_Helper_HDSS_GetPara(LuaStack * args, int i, LuaObject * _para)
 {
 	*_para = (*args)[i];
 	if (!_para->IsTable())
@@ -83,7 +83,7 @@ bool Export_Lua::_Helper_HDSS_GetPara(LuaStack * args, int i, LuaObject * _para)
 	return true;
 }
 
-bool Export_Lua::InitCallbacks()
+bool Export_Lua_HDSS::InitCallbacks()
 {
 	LuaState * ls = state;
 	LuaObject _obj = ls->GetGlobal(LUAFN_CONTROLEXECUTE);
@@ -143,7 +143,7 @@ bool Export_Lua::InitCallbacks()
 	return true;
 }
 
-bool Export_Lua::Execute(DWORD typeflag, DWORD name, DWORD con)
+bool Export_Lua_HDSS::Execute(DWORD typeflag, DWORD name, DWORD con)
 {
 	LuaState * ls = state;
 	LuaFunction<bool> *_f;

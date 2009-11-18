@@ -23,7 +23,7 @@
 #define _NILCHECK_HDSS_LUA		(!_obj.IsNil())
 #define _JNEXT_HDSS_LUAPARA		_ONEXT_HDSS_LUAPARA;\
 								bhavenext = _NILCHECK_HDSS_LUA
-#define _GETPARAS_HDSS_LUAPARA(X)		if (!Export_Lua::_Helper_HDSS_GetPara(&args, (X), &_para))\
+#define _GETPARAS_HDSS_LUAPARA(X)		if (!Export_Lua_HDSS::_Helper_HDSS_GetPara(&args, (X), &_para))\
 										{\
 											return false;\
 										}\
@@ -52,11 +52,12 @@
 
 #define _JNEXT_HDSS_LUAFUNC		_ONEXT_HDSS_LUAFUNC;\
 								bhavenext = _NILCHECK_HDSS_LUA
-#define _PI_HDSS_LUAFUUNC(X)	(ls->PushInteger(X))
-#define _PF_HDSS_LUAFUUNC(X)	(ls->PushNumber(X))
-#define _PB_HDSS_LUAFUUNC(X)	(ls->PushBoolean(X))
-#define _PS_HDSS_LUAFUUNC(X)	(Export_Lua::_LuaHelper_PushString(ls, X))
-#define _PD_HDSS_LUAFUUNC(X)	(Export_Lua::_LuaHelper_PushDWORD(ls, X))
+
+#define _PI_HDSS_LUA(X)	(ls->PushInteger(X))
+#define _PF_HDSS_LUA(X)	(ls->PushNumber(X))
+#define _PB_HDSS_LUA(X)	(ls->PushBoolean(X))
+#define _PS_HDSS_LUA(X)	(Export_Lua::_LuaHelper_PushString(ls, X))
+#define _PD_HDSS_LUA(X)	(Export_Lua::_LuaHelper_PushDWORD(ls, X))
 
 #endif
 

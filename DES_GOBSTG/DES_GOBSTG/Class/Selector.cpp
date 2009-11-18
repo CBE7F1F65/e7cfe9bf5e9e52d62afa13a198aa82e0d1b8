@@ -36,7 +36,7 @@ void Selector::valueSet(BYTE _ID, int siID, float cenx, float ceny, float _hscal
 
 	if(sprite)
 	{
-		SpriteItemManager::FreeSprite(sprite);
+		SpriteItemManager::FreeSprite(&sprite);
 		sprite = NULL;
 	}
 	if (siID >= 0)

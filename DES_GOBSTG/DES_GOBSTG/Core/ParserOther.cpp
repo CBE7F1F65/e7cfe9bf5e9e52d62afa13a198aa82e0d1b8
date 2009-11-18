@@ -1,5 +1,6 @@
 #include "Scripter.h"
 #include "processPrep.h"
+#include "Export_Lua_HDSS.h"
 
 bool Scripter::Copy(vector<Script>::iterator * p, BYTE num, BYTE dstart)
 {
@@ -191,7 +192,7 @@ bool Scripter::Copy(vector<Script>::iterator * p, BYTE num, BYTE dstart)
 #ifndef __NOTUSELUA
 bool Scripter::Execute_Lua(DWORD typeflag, DWORD name, DWORD con)
 {
-	return Export_Lua::Execute(typeflag, name, con);
+	return Export_Lua_HDSS::Execute(typeflag, name, con);
 }
 #endif
 

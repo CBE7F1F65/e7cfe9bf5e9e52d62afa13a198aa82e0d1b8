@@ -1,15 +1,15 @@
 #ifndef __NOTUSELUA
 #ifndef __NOTINTHISGAME
 
-#include "Export_Lua.h"
+#include "Export_Lua_Game.h"
 #include "processPrep.h"
 
-bool Export_Lua::_LuaRegistGameConst(LuaObject * obj)
+bool Export_Lua_Game::_LuaRegistConst(LuaObject * obj)
 {
 	return true;
 }
 
-bool Export_Lua::_LuaRegistGameFunction(LuaObject * obj)
+bool Export_Lua_Game::_LuaRegistFunction(LuaObject * obj)
 {
 	LuaObject _gameobj;
 	_gameobj = obj->CreateTable("game");
@@ -25,7 +25,7 @@ bool Export_Lua::_LuaRegistGameFunction(LuaObject * obj)
 	return true;
 }
 
-int Export_Lua::LuaFn_Game_SetLastIP(LuaState * ls)
+int Export_Lua_Game::LuaFn_Game_SetLastIP(LuaState * ls)
 {
 	LuaStack args(ls);
 
@@ -37,7 +37,7 @@ int Export_Lua::LuaFn_Game_SetLastIP(LuaState * ls)
 	return 0;
 }
 
-int Export_Lua::LuaFn_Game_GetLastIP(LuaState * ls)
+int Export_Lua_Game::LuaFn_Game_GetLastIP(LuaState * ls)
 {
 	DWORD _ipx;
 	WORD _ipport;
@@ -50,14 +50,14 @@ int Export_Lua::LuaFn_Game_GetLastIP(LuaState * ls)
 	return 0;
 }
 
-int Export_Lua::LuaFn_Game_AccessIP(LuaState * ls)
+int Export_Lua_Game::LuaFn_Game_AccessIP(LuaState * ls)
 {
 	int iret = mp.AccessIP();
 	ls->PushInteger(iret);
 	return 1;
 }
 
-int Export_Lua::LuaFn_Game_SetLatency(LuaState * ls)
+int Export_Lua_Game::LuaFn_Game_SetLatency(LuaState * ls)
 {
 	LuaStack args(ls);
 
@@ -67,7 +67,7 @@ int Export_Lua::LuaFn_Game_SetLatency(LuaState * ls)
 	return 1;
 }
 
-int Export_Lua::LuaFn_Game_SetMatchMode(LuaState * ls)
+int Export_Lua_Game::LuaFn_Game_SetMatchMode(LuaState * ls)
 {
 	LuaStack args(ls);
 
@@ -76,14 +76,14 @@ int Export_Lua::LuaFn_Game_SetMatchMode(LuaState * ls)
 	return 0;
 }
 
-int Export_Lua::LuaFn_Game_GetMatchMode(LuaState * ls)
+int Export_Lua_Game::LuaFn_Game_GetMatchMode(LuaState * ls)
 {
 	BYTE mode = mp.GetMatchMode();
 	ls->PushInteger(mode);
 	return 1;
 }
 
-int Export_Lua::LuaFn_Game_GetPlayerContentTable(LuaState * ls)
+int Export_Lua_Game::LuaFn_Game_GetPlayerContentTable(LuaState * ls)
 {
 	LuaStackObject _table = ls->CreateTable();
 	LuaStackObject _content;

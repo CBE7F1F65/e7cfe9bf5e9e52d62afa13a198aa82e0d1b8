@@ -1,9 +1,11 @@
 #ifndef __NOTUSELUA
 
-#include "../Header/Export_Lua.h"
+#include "../Header/Export_Lua_HGE.h"
 #include "../Header/LuaConstDefine.h"
 
-bool Export_Lua::_LuaRegistHGEFunction(LuaObject * obj)
+hgeChannelSyncInfo Export_Lua_HGE::channelsyncinfo;
+
+bool Export_Lua_HGE::_LuaRegistFunction(LuaObject * obj)
 {
 	LuaObject _hgeobj = obj->CreateTable("hge");
 
@@ -131,7 +133,221 @@ bool Export_Lua::_LuaRegistHGEFunction(LuaObject * obj)
 	return true;
 }
 
-void Export_Lua::_LuaHelper_GetVertex(LuaObject * obj, hgeVertex * vertex)
+bool Export_Lua_HGE::_LuaRegistConst(LuaObject * obj)
+{
+	// Math
+	obj->SetNumber("M_PI", M_PI);
+	obj->SetNumber("M_PI_2", M_PI_2);
+	obj->SetNumber("M_PI_4", M_PI_4);
+	obj->SetNumber("M_1_PI", M_1_PI);
+	obj->SetNumber("M_2_PI", M_2_PI);
+
+	obj->SetNumber("M_E", M_E);
+	obj->SetNumber("M_LOG2E", M_LOG2E);
+	obj->SetNumber("M_LOG10E", M_LOG10E);
+	obj->SetNumber("M_LN2", M_LN2);
+	obj->SetNumber("M_LN10", M_LN10);
+	obj->SetNumber("M_PI", M_PI);
+	obj->SetNumber("M_PI_2", M_PI_2);
+	obj->SetNumber("M_PI_4", M_PI_4);
+	obj->SetNumber("M_1_PI", M_1_PI);
+	obj->SetNumber("M_2_PI", M_2_PI);
+	obj->SetNumber("M_2_SQRTPI", M_2_SQRTPI);
+	obj->SetNumber("M_SQRT2", M_SQRT2);
+	obj->SetNumber("M_SQRT1_2", M_SQRT1_2);
+
+	// Blend
+	obj->SetInteger("BLEND_COLORADD", BLEND_COLORADD);
+	obj->SetInteger("BLEND_COLORMUL", BLEND_COLORMUL);
+	obj->SetInteger("BLEND_ALPHABLEND", BLEND_ALPHABLEND);
+	obj->SetInteger("BLEND_ALPHAADD", BLEND_ALPHAADD);
+	obj->SetInteger("BLEND_ZWRITE", BLEND_ZWRITE);
+	obj->SetInteger("BLEND_NOZWRITE", BLEND_NOZWRITE);
+
+	obj->SetInteger("BLEND_DEFAULT", BLEND_DEFAULT);
+	obj->SetInteger("BLEND_DEFAULT_Z", BLEND_DEFAULT_Z);
+
+	// hgeState
+	obj->SetInteger("HGE_WINDOWED", HGE_WINDOWED);
+	obj->SetInteger("HGE_ZBUFFER", HGE_ZBUFFER);
+	obj->SetInteger("HGE_TEXTUREFILTER", HGE_TEXTUREFILTER);
+
+	obj->SetInteger("HGE_USESOUND", HGE_USESOUND);
+
+	obj->SetInteger("HGE_DONTSUSPEND", HGE_DONTSUSPEND);
+	obj->SetInteger("HGE_HIDEMOUSE", HGE_HIDEMOUSE);
+
+	obj->SetInteger("HGE_SHOWSPLASH", HGE_SHOWSPLASH);
+
+	obj->SetInteger("HGE_HWND", HGE_HWND);
+	obj->SetInteger("HGE_HWNDPARENT", HGE_HWNDPARENT);
+	obj->SetInteger("HGE_SCREENWIDTH", HGE_SCREENWIDTH);
+	obj->SetInteger("HGE_SCREENHEIGHT", HGE_SCREENHEIGHT);
+	obj->SetInteger("HGE_SCREENBPP", HGE_SCREENBPP);
+
+	obj->SetInteger("HGE_SAMPLERATE", HGE_SAMPLERATE);
+	obj->SetInteger("HGE_SAMPLEVOLUME", HGE_SAMPLEVOLUME);
+	obj->SetInteger("HGE_FXVOLUME", HGE_FXVOLUME);
+	obj->SetInteger("HGE_STREAMVOLUME", HGE_STREAMVOLUME);
+	obj->SetInteger("HGE_FPS", HGE_FPS);
+
+	obj->SetInteger("HGE_FRAMECOUNTER", HGE_FRAMECOUNTER);
+	obj->SetInteger("HGE_FRAMESKIP", HGE_FRAMESKIP);
+	obj->SetInteger("HGE_RENDERSKIP", HGE_RENDERSKIP);
+
+	obj->SetInteger("HGE_ICON", HGE_ICON);
+	obj->SetInteger("HGE_TITLE", HGE_TITLE);
+
+	obj->SetInteger("HGE_INIFILE", HGE_INIFILE);
+	obj->SetInteger("HGE_LOGFILE", HGE_LOGFILE);
+
+	obj->SetInteger("HGE_BASSDLLFILE", HGE_BASSDLLFILE);
+
+	// Input
+	obj->SetInteger("INPUT_KEYDOWN", INPUT_KEYDOWN);
+	obj->SetInteger("INPUT_KEYUP", INPUT_KEYUP);
+	obj->SetInteger("INPUT_MBUTTONDOWN", INPUT_MBUTTONDOWN);
+	obj->SetInteger("INPUT_MBUTTONUP", INPUT_MBUTTONUP);
+	obj->SetInteger("INPUT_MOUSEMOVE", INPUT_MOUSEMOVE);
+	obj->SetInteger("INPUT_MOUSEWHEEL", INPUT_MOUSEWHEEL);
+
+	obj->SetInteger("HGEINP_SHIFT", HGEINP_SHIFT);
+	obj->SetInteger("HGEINP_CTRL", HGEINP_CTRL);
+	obj->SetInteger("HGEINP_ALT", HGEINP_ALT);
+	obj->SetInteger("HGEINP_CAPSLOCK", HGEINP_CAPSLOCK);
+	obj->SetInteger("HGEINP_SCROLLLOCK", HGEINP_SCROLLLOCK);
+	obj->SetInteger("HGEINP_NUMLOCK", HGEINP_NUMLOCK);
+	obj->SetInteger("HGEINP_REPEAT", HGEINP_REPEAT);
+
+	obj->SetInteger("HGEK_LBUTTON", HGEK_LBUTTON);
+	obj->SetInteger("HGEK_RBUTTON", HGEK_RBUTTON);
+	obj->SetInteger("HGEK_MBUTTON", HGEK_MBUTTON);
+
+	obj->SetInteger("HGEK_ESCAPE", HGEK_ESCAPE);
+	obj->SetInteger("HGEK_BACKSPACE", HGEK_BACKSPACE);
+	obj->SetInteger("HGEK_TAB", HGEK_TAB);
+	obj->SetInteger("HGEK_ENTER", HGEK_ENTER);
+	obj->SetInteger("HGEK_SPACE", HGEK_SPACE);
+
+	obj->SetInteger("HGEK_SHIFT", HGEK_SHIFT);
+	obj->SetInteger("HGEK_CTRL", HGEK_CTRL);
+	obj->SetInteger("HGEK_ALT", HGEK_ALT);
+
+	obj->SetInteger("HGEK_LWIN", HGEK_LWIN);
+	obj->SetInteger("HGEK_RWIN", HGEK_RWIN);
+	obj->SetInteger("HGEK_APPS", HGEK_APPS);
+
+	obj->SetInteger("HGEK_PAUSE", HGEK_PAUSE);
+	obj->SetInteger("HGEK_CAPSLOCK", HGEK_CAPSLOCK);
+	obj->SetInteger("HGEK_NUMLOCK", HGEK_NUMLOCK);
+	obj->SetInteger("HGEK_SCROLLLOCK", HGEK_SCROLLLOCK);
+
+	obj->SetInteger("HGEK_PGUP", HGEK_PGUP);
+	obj->SetInteger("HGEK_PGDN", HGEK_PGDN);
+	obj->SetInteger("HGEK_HOME", HGEK_HOME);
+	obj->SetInteger("HGEK_END", HGEK_END);
+	obj->SetInteger("HGEK_INSERT", HGEK_INSERT);
+	obj->SetInteger("HGEK_DELETE", HGEK_DELETE);
+
+	obj->SetInteger("HGEK_LEFT", HGEK_LEFT);
+	obj->SetInteger("HGEK_UP", HGEK_UP);
+	obj->SetInteger("HGEK_RIGHT", HGEK_RIGHT);
+	obj->SetInteger("HGEK_DOWN", HGEK_DOWN);
+
+	obj->SetInteger("HGEK_0", HGEK_0);
+	obj->SetInteger("HGEK_1", HGEK_1);
+	obj->SetInteger("HGEK_2", HGEK_2);
+	obj->SetInteger("HGEK_3", HGEK_3);
+	obj->SetInteger("HGEK_4", HGEK_4);
+	obj->SetInteger("HGEK_5", HGEK_5);
+	obj->SetInteger("HGEK_6", HGEK_6);
+	obj->SetInteger("HGEK_7", HGEK_7);
+	obj->SetInteger("HGEK_8", HGEK_8);
+	obj->SetInteger("HGEK_9", HGEK_9);
+
+	obj->SetInteger("HGEK_A", HGEK_A);
+	obj->SetInteger("HGEK_B", HGEK_B);
+	obj->SetInteger("HGEK_C", HGEK_C);
+	obj->SetInteger("HGEK_D", HGEK_D);
+	obj->SetInteger("HGEK_E", HGEK_E);
+	obj->SetInteger("HGEK_F", HGEK_F);
+	obj->SetInteger("HGEK_G", HGEK_G);
+	obj->SetInteger("HGEK_H", HGEK_H);
+	obj->SetInteger("HGEK_I", HGEK_I);
+	obj->SetInteger("HGEK_J", HGEK_J);
+	obj->SetInteger("HGEK_K", HGEK_K);
+	obj->SetInteger("HGEK_L", HGEK_L);
+	obj->SetInteger("HGEK_M", HGEK_M);
+	obj->SetInteger("HGEK_N", HGEK_N);
+	obj->SetInteger("HGEK_O", HGEK_O);
+	obj->SetInteger("HGEK_P", HGEK_P);
+	obj->SetInteger("HGEK_Q", HGEK_Q);
+	obj->SetInteger("HGEK_R", HGEK_R);
+	obj->SetInteger("HGEK_S", HGEK_S);
+	obj->SetInteger("HGEK_T", HGEK_T);
+	obj->SetInteger("HGEK_U", HGEK_U);
+	obj->SetInteger("HGEK_V", HGEK_V);
+	obj->SetInteger("HGEK_W", HGEK_W);
+	obj->SetInteger("HGEK_X", HGEK_X);
+	obj->SetInteger("HGEK_Y", HGEK_Y);
+	obj->SetInteger("HGEK_Z", HGEK_Z);
+
+	obj->SetInteger("HGEK_GRAVE", HGEK_GRAVE);
+	obj->SetInteger("HGEK_MINUS", HGEK_MINUS);
+	obj->SetInteger("HGEK_EQUALS", HGEK_EQUALS);
+	obj->SetInteger("HGEK_BACKSLASH", HGEK_BACKSLASH);
+	obj->SetInteger("HGEK_LBRACKET", HGEK_LBRACKET);
+	obj->SetInteger("HGEK_RBRACKET", HGEK_RBRACKET);
+	obj->SetInteger("HGEK_SEMICOLON", HGEK_SEMICOLON);
+	obj->SetInteger("HGEK_APOSTROPHE", HGEK_APOSTROPHE);
+	obj->SetInteger("HGEK_COMMA", HGEK_COMMA);
+	obj->SetInteger("HGEK_PERIOD", HGEK_PERIOD);
+	obj->SetInteger("HGEK_SLASH", HGEK_SLASH);
+
+	obj->SetInteger("HGEK_NUMPAD0", HGEK_NUMPAD0);
+	obj->SetInteger("HGEK_NUMPAD1", HGEK_NUMPAD1);
+	obj->SetInteger("HGEK_NUMPAD2", HGEK_NUMPAD2);
+	obj->SetInteger("HGEK_NUMPAD3", HGEK_NUMPAD3);
+	obj->SetInteger("HGEK_NUMPAD4", HGEK_NUMPAD4);
+	obj->SetInteger("HGEK_NUMPAD5", HGEK_NUMPAD5);
+	obj->SetInteger("HGEK_NUMPAD6", HGEK_NUMPAD6);
+	obj->SetInteger("HGEK_NUMPAD7", HGEK_NUMPAD7);
+	obj->SetInteger("HGEK_NUMPAD8", HGEK_NUMPAD8);
+	obj->SetInteger("HGEK_NUMPAD9", HGEK_NUMPAD9);
+
+	obj->SetInteger("HGEK_MULTIPLY", HGEK_MULTIPLY);
+	obj->SetInteger("HGEK_DIVIDE", HGEK_DIVIDE);
+	obj->SetInteger("HGEK_ADD", HGEK_ADD);
+	obj->SetInteger("HGEK_SUBTRACT", HGEK_SUBTRACT);
+	obj->SetInteger("HGEK_DECIMAL", HGEK_DECIMAL);
+
+	obj->SetInteger("HGEK_F1", HGEK_F1);
+	obj->SetInteger("HGEK_F2", HGEK_F2);
+	obj->SetInteger("HGEK_F3", HGEK_F3);
+	obj->SetInteger("HGEK_F4", HGEK_F4);
+	obj->SetInteger("HGEK_F5", HGEK_F5);
+	obj->SetInteger("HGEK_F6", HGEK_F6);
+	obj->SetInteger("HGEK_F7", HGEK_F7);
+	obj->SetInteger("HGEK_F8", HGEK_F8);
+	obj->SetInteger("HGEK_F9", HGEK_F9);
+	obj->SetInteger("HGEK_F10", HGEK_F10);
+	obj->SetInteger("HGEK_F11", HGEK_F11);
+	obj->SetInteger("HGEK_F12", HGEK_F12);
+
+	// DI
+	obj->SetInteger("DIKEY_PRESSED", DIKEY_PRESSED);
+	obj->SetInteger("DIKEY_UP", DIKEY_UP);
+	obj->SetInteger("DIKEY_DOWN", DIKEY_DOWN);
+
+	obj->SetInteger("JOY_LEFT", JOY_LEFT);
+	obj->SetInteger("JOY_RIGHT", JOY_RIGHT);
+	obj->SetInteger("JOY_UP", JOY_UP);
+	obj->SetInteger("JOY_DOWN", JOY_DOWN);
+
+	return true;
+}
+
+void Export_Lua_HGE::_LuaHelper_GetVertex(LuaObject * obj, hgeVertex * vertex)
 {
 	if (obj->IsTable())
 	{
@@ -169,7 +385,7 @@ void Export_Lua::_LuaHelper_GetVertex(LuaObject * obj, hgeVertex * vertex)
 	}
 }
 
-void Export_Lua::_LuaHelper_GetTriple(LuaObject * obj, hgeTriple * triple)
+void Export_Lua_HGE::_LuaHelper_GetTriple(LuaObject * obj, hgeTriple * triple)
 {
 	if (obj->IsTable())
 	{
@@ -197,7 +413,7 @@ void Export_Lua::_LuaHelper_GetTriple(LuaObject * obj, hgeTriple * triple)
 	}
 }
 
-void Export_Lua::_LuaHelper_GetQuad(LuaObject * obj, hgeQuad * quad)
+void Export_Lua_HGE::_LuaHelper_GetQuad(LuaObject * obj, hgeQuad * quad)
 {
 	if (obj->IsTable())
 	{
@@ -225,7 +441,7 @@ void Export_Lua::_LuaHelper_GetQuad(LuaObject * obj, hgeQuad * quad)
 	}
 }
 
-int Export_Lua::LuaFn_hge_Struct_hgeQuad(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_Struct_hgeQuad(LuaState * ls)
 {
 	LuaStack args(ls);
 
@@ -249,7 +465,7 @@ int Export_Lua::LuaFn_hge_Struct_hgeQuad(LuaState * ls)
 	return 1;
 }
 
-int Export_Lua::LuaFn_hge_System_SetState(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_System_SetState(LuaState * ls)
 {
 	LuaStack args(ls);
 
@@ -278,7 +494,7 @@ int Export_Lua::LuaFn_hge_System_SetState(LuaState * ls)
 	return 0;
 }
 
-int Export_Lua::LuaFn_hge_System_GetState(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_System_GetState(LuaState * ls)
 {
 	LuaStack args(ls);
 
@@ -314,7 +530,7 @@ int Export_Lua::LuaFn_hge_System_GetState(LuaState * ls)
 	return 0;
 }
 
-int Export_Lua::LuaFn_hge_System_Log(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_System_Log(LuaState * ls)
 {
 	LuaStack args(ls);
 
@@ -323,7 +539,7 @@ int Export_Lua::LuaFn_hge_System_Log(LuaState * ls)
 	return 0;
 }
 
-int Export_Lua::LuaFn_hge_System_GetErrorMessage(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_System_GetErrorMessage(LuaState * ls)
 {
 	LuaStack args(ls);
 
@@ -332,7 +548,7 @@ int Export_Lua::LuaFn_hge_System_GetErrorMessage(LuaState * ls)
 	return 1;
 }
 
-int Export_Lua::LuaFn_hge_System_Launch(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_System_Launch(LuaState * ls)
 {
 	LuaStack args(ls);
 	bool bret;
@@ -343,7 +559,7 @@ int Export_Lua::LuaFn_hge_System_Launch(LuaState * ls)
 	return 1;
 }
 
-int Export_Lua::LuaFn_hge_System_Snapshot(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_System_Snapshot(LuaState * ls)
 {
 	LuaStack args(ls);
 	char * filename = 0;
@@ -357,7 +573,7 @@ int Export_Lua::LuaFn_hge_System_Snapshot(LuaState * ls)
 	return 0;
 }
 
-int Export_Lua::LuaFn_hge_System_Set2DMode(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_System_Set2DMode(LuaState * ls)
 {
 	LuaStack args(ls);
 	bool bret;
@@ -381,7 +597,7 @@ int Export_Lua::LuaFn_hge_System_Set2DMode(LuaState * ls)
 	return 1;
 }
 
-int Export_Lua::LuaFn_hge_System_Set3DMode(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_System_Set3DMode(LuaState * ls)
 {
 	LuaStack args(ls);
 	bool bret;
@@ -392,7 +608,7 @@ int Export_Lua::LuaFn_hge_System_Set3DMode(LuaState * ls)
 	return 1;
 }
 
-int Export_Lua::LuaFn_hge_System_GetFarPoint(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_System_GetFarPoint(LuaState * ls)
 {
 	LuaStack args(ls);
 	hge3DPoint * ptfar;
@@ -410,7 +626,7 @@ int Export_Lua::LuaFn_hge_System_GetFarPoint(LuaState * ls)
 	return 1;
 }
 
-int Export_Lua::LuaFn_hge_System_Is2DMode(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_System_Is2DMode(LuaState * ls)
 {
 	LuaStack args(ls);
 	bool bret;
@@ -421,7 +637,7 @@ int Export_Lua::LuaFn_hge_System_Is2DMode(LuaState * ls)
 	return 1;
 }
 
-int Export_Lua::LuaFn_hge_System_Transform3DPoint(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_System_Transform3DPoint(LuaState * ls)
 {
 	LuaStack args(ls);
 	float fret;
@@ -445,7 +661,7 @@ int Export_Lua::LuaFn_hge_System_Transform3DPoint(LuaState * ls)
 	return 1;
 }
 
-int Export_Lua::LuaFn_hge_Resource_Load(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_Resource_Load(LuaState * ls)
 {
 	LuaStack args(ls);
 	DWORD dret;
@@ -459,7 +675,7 @@ int Export_Lua::LuaFn_hge_Resource_Load(LuaState * ls)
 	return 2;
 }
 
-int Export_Lua::LuaFn_hge_Resource_Free(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_Resource_Free(LuaState * ls)
 {
 	LuaStack args(ls);
 
@@ -470,7 +686,7 @@ int Export_Lua::LuaFn_hge_Resource_Free(LuaState * ls)
 	return 0;
 }
 
-int Export_Lua::LuaFn_hge_Resource_AttachPack(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_Resource_AttachPack(LuaState * ls)
 {
 	LuaStack args(ls);
 	bool bret;
@@ -486,7 +702,7 @@ int Export_Lua::LuaFn_hge_Resource_AttachPack(LuaState * ls)
 	return 1;
 }
 
-int Export_Lua::LuaFn_hge_Resource_RemovePack(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_Resource_RemovePack(LuaState * ls)
 {
 	LuaStack args(ls);
 
@@ -502,7 +718,7 @@ int Export_Lua::LuaFn_hge_Resource_RemovePack(LuaState * ls)
 	return 0;
 }
 
-int Export_Lua::LuaFn_hge_Resource_SetPath(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_Resource_SetPath(LuaState * ls)
 {
 	LuaStack args(ls);
 
@@ -511,7 +727,7 @@ int Export_Lua::LuaFn_hge_Resource_SetPath(LuaState * ls)
 	return 1;
 }
 
-int Export_Lua::LuaFn_hge_Resource_MakePath(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_Resource_MakePath(LuaState * ls)
 {
 	LuaStack args(ls);
 
@@ -520,7 +736,7 @@ int Export_Lua::LuaFn_hge_Resource_MakePath(LuaState * ls)
 	return 1;
 }
 
-int Export_Lua::LuaFn_hge_Resource_EnumFiles(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_Resource_EnumFiles(LuaState * ls)
 {
 	LuaStack args(ls);
 	char * wildcard = 0;
@@ -534,7 +750,7 @@ int Export_Lua::LuaFn_hge_Resource_EnumFiles(LuaState * ls)
 	return 1;
 }
 
-int Export_Lua::LuaFn_hge_Resource_EnumFolders(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_Resource_EnumFolders(LuaState * ls)
 {
 	LuaStack args(ls);
 	char * sret;
@@ -549,7 +765,7 @@ int Export_Lua::LuaFn_hge_Resource_EnumFolders(LuaState * ls)
 	return 1;
 }
 
-int Export_Lua::LuaFn_hge_Resource_CreatePack(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_Resource_CreatePack(LuaState * ls)
 {
 	LuaStack args(ls);
 	bool bret;
@@ -569,7 +785,7 @@ int Export_Lua::LuaFn_hge_Resource_CreatePack(LuaState * ls)
 	return 1;
 }
 
-int Export_Lua::LuaFn_hge_Resource_AddFileInPack(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_Resource_AddFileInPack(LuaState * ls)
 {
 	LuaStack args(ls);
 	bool bret;
@@ -589,7 +805,7 @@ int Export_Lua::LuaFn_hge_Resource_AddFileInPack(LuaState * ls)
 	return 1;
 }
 
-int Export_Lua::LuaFn_hge_Resource_GetCRC(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_Resource_GetCRC(LuaState * ls)
 {
 	LuaStack args(ls);
 	int iret;
@@ -613,7 +829,7 @@ int Export_Lua::LuaFn_hge_Resource_GetCRC(LuaState * ls)
 	return 1;
 }
 
-int Export_Lua::LuaFn_hge_Resource_GetPackFirstFileName(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_Resource_GetPackFirstFileName(LuaState * ls)
 {
 	LuaStack args(ls);
 
@@ -622,7 +838,7 @@ int Export_Lua::LuaFn_hge_Resource_GetPackFirstFileName(LuaState * ls)
 	return 1;
 }
 
-int Export_Lua::LuaFn_hge_Ini_SetInt(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_Ini_SetInt(LuaState * ls)
 {
 	LuaStack args(ls);
 
@@ -631,7 +847,7 @@ int Export_Lua::LuaFn_hge_Ini_SetInt(LuaState * ls)
 	return 0;
 }
 
-int Export_Lua::LuaFn_hge_Ini_GetInt(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_Ini_GetInt(LuaState * ls)
 {
 	LuaStack args(ls);
 	int iret;
@@ -642,7 +858,7 @@ int Export_Lua::LuaFn_hge_Ini_GetInt(LuaState * ls)
 	return 1;
 }
 
-int Export_Lua::LuaFn_hge_Ini_SetFloat(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_Ini_SetFloat(LuaState * ls)
 {
 	LuaStack args(ls);
 
@@ -651,7 +867,7 @@ int Export_Lua::LuaFn_hge_Ini_SetFloat(LuaState * ls)
 	return 0;
 }
 
-int Export_Lua::LuaFn_hge_Ini_GetFloat(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_Ini_GetFloat(LuaState * ls)
 {
 	LuaStack args(ls);
 	float fret;
@@ -662,7 +878,7 @@ int Export_Lua::LuaFn_hge_Ini_GetFloat(LuaState * ls)
 	return 1;
 }
 
-int Export_Lua::LuaFn_hge_Ini_SetString(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_Ini_SetString(LuaState * ls)
 {
 	LuaStack args(ls);
 
@@ -671,7 +887,7 @@ int Export_Lua::LuaFn_hge_Ini_SetString(LuaState * ls)
 	return 0;
 }
 
-int Export_Lua::LuaFn_hge_Ini_GetString(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_Ini_GetString(LuaState * ls)
 {
 	LuaStack args(ls);
 
@@ -680,7 +896,7 @@ int Export_Lua::LuaFn_hge_Ini_GetString(LuaState * ls)
 	return 1;
 }
 
-int Export_Lua::LuaFn_hge_Random_Seed(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_Random_Seed(LuaState * ls)
 {
 	LuaStack args(ls);
 	int seed = 0;
@@ -695,7 +911,7 @@ int Export_Lua::LuaFn_hge_Random_Seed(LuaState * ls)
 	return 1;
 }
 
-int Export_Lua::LuaFn_hge_Random_Int(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_Random_Int(LuaState * ls)
 {
 	LuaStack args(ls);
 	int iret;
@@ -706,7 +922,7 @@ int Export_Lua::LuaFn_hge_Random_Int(LuaState * ls)
 	return 1;
 }
 
-int Export_Lua::LuaFn_hge_Random_Float(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_Random_Float(LuaState * ls)
 {
 	LuaStack args(ls);
 	float fret;
@@ -717,7 +933,7 @@ int Export_Lua::LuaFn_hge_Random_Float(LuaState * ls)
 	return 1;
 }
 
-int Export_Lua::LuaFn_hge_Timer_GetTime(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_Timer_GetTime(LuaState * ls)
 {
 	LuaStack args(ls);
 	float fret;
@@ -728,7 +944,7 @@ int Export_Lua::LuaFn_hge_Timer_GetTime(LuaState * ls)
 	return 1;
 }
 
-int Export_Lua::LuaFn_hge_Timer_GetDelta(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_Timer_GetDelta(LuaState * ls)
 {
 	LuaStack args(ls);
 	float fret;
@@ -739,7 +955,7 @@ int Export_Lua::LuaFn_hge_Timer_GetDelta(LuaState * ls)
 	return 1;
 }
 
-int Export_Lua::LuaFn_hge_Timer_GetFPS(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_Timer_GetFPS(LuaState * ls)
 {
 	LuaStack args(ls);
 	float fret;
@@ -755,7 +971,7 @@ int Export_Lua::LuaFn_hge_Timer_GetFPS(LuaState * ls)
 	return 1;
 }
 
-int Export_Lua::LuaFn_hge_Timer_GetWorstFPS(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_Timer_GetWorstFPS(LuaState * ls)
 {
 	LuaStack args(ls);
 	float fret;
@@ -766,7 +982,7 @@ int Export_Lua::LuaFn_hge_Timer_GetWorstFPS(LuaState * ls)
 	return 1;
 }
 
-int Export_Lua::LuaFn_hge_Timer_GetCurrentSystemTime(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_Timer_GetCurrentSystemTime(LuaState * ls)
 {
 	LuaStack args(ls);
 	LONGLONG _longlong;
@@ -777,7 +993,7 @@ int Export_Lua::LuaFn_hge_Timer_GetCurrentSystemTime(LuaState * ls)
 	return 1;
 }
 
-int Export_Lua::LuaFn_hge_Effect_Load(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_Effect_Load(LuaState * ls)
 {
 	LuaStack args(ls);
 	DWORD dret;
@@ -794,7 +1010,7 @@ int Export_Lua::LuaFn_hge_Effect_Load(LuaState * ls)
 	return 1;
 }
 
-int Export_Lua::LuaFn_hge_Effect_Free(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_Effect_Free(LuaState * ls)
 {
 	LuaStack args(ls);
 
@@ -805,7 +1021,7 @@ int Export_Lua::LuaFn_hge_Effect_Free(LuaState * ls)
 	return 0;
 }
 
-int Export_Lua::LuaFn_hge_Effect_Play(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_Effect_Play(LuaState * ls)
 {
 	LuaStack args(ls);
 	DWORD dret;
@@ -846,7 +1062,7 @@ int Export_Lua::LuaFn_hge_Effect_Play(LuaState * ls)
 	return 1;
 }
 
-int Export_Lua::LuaFn_hge_Stream_Load(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_Stream_Load(LuaState * ls)
 {
 	LuaStack args(ls);
 	DWORD dret;
@@ -869,7 +1085,7 @@ int Export_Lua::LuaFn_hge_Stream_Load(LuaState * ls)
 	return 1;
 }
 
-int Export_Lua::LuaFn_hge_Stream_Free(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_Stream_Free(LuaState * ls)
 {
 	LuaStack args(ls);
 
@@ -881,7 +1097,7 @@ int Export_Lua::LuaFn_hge_Stream_Free(LuaState * ls)
 	return 0;
 }
 
-int Export_Lua::LuaFn_hge_Stream_Play(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_Stream_Play(LuaState * ls)
 {
 	LuaStack args(ls);
 	DWORD dret;
@@ -899,7 +1115,7 @@ int Export_Lua::LuaFn_hge_Stream_Play(LuaState * ls)
 	return 1;
 }
 
-int Export_Lua::LuaFn_hge_Channel_SetPanning(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_Channel_SetPanning(LuaState * ls)
 {
 	LuaStack args(ls);
 
@@ -910,7 +1126,7 @@ int Export_Lua::LuaFn_hge_Channel_SetPanning(LuaState * ls)
 	return 0;
 }
 
-int Export_Lua::LuaFn_hge_Channel_SetVolume(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_Channel_SetVolume(LuaState * ls)
 {
 	LuaStack args(ls);
 
@@ -921,7 +1137,7 @@ int Export_Lua::LuaFn_hge_Channel_SetVolume(LuaState * ls)
 	return 0;
 }
 
-int Export_Lua::LuaFn_hge_Channel_SetPitch(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_Channel_SetPitch(LuaState * ls)
 {
 	LuaStack args(ls);
 
@@ -932,7 +1148,7 @@ int Export_Lua::LuaFn_hge_Channel_SetPitch(LuaState * ls)
 	return 0;
 }
 
-int Export_Lua::LuaFn_hge_Channel_Pause(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_Channel_Pause(LuaState * ls)
 {
 	LuaStack args(ls);
 
@@ -950,7 +1166,7 @@ int Export_Lua::LuaFn_hge_Channel_Pause(LuaState * ls)
 	return 0;
 }
 
-int Export_Lua::LuaFn_hge_Channel_Resume(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_Channel_Resume(LuaState * ls)
 {
 	LuaStack args(ls);
 
@@ -968,7 +1184,7 @@ int Export_Lua::LuaFn_hge_Channel_Resume(LuaState * ls)
 	return 0;
 }
 
-int Export_Lua::LuaFn_hge_Channel_Stop(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_Channel_Stop(LuaState * ls)
 {
 	LuaStack args(ls);
 	if (args.Count() > 0)
@@ -985,7 +1201,7 @@ int Export_Lua::LuaFn_hge_Channel_Stop(LuaState * ls)
 	return 0;
 }
 
-int Export_Lua::LuaFn_hge_Channel_IsPlaying(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_Channel_IsPlaying(LuaState * ls)
 {
 	LuaStack args(ls);
 
@@ -996,7 +1212,7 @@ int Export_Lua::LuaFn_hge_Channel_IsPlaying(LuaState * ls)
 	return 0;
 }
 
-int Export_Lua::LuaFn_hge_Channel_GetLength(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_Channel_GetLength(LuaState * ls)
 {
 	LuaStack args(ls);
 	QWORD _qword;
@@ -1009,7 +1225,7 @@ int Export_Lua::LuaFn_hge_Channel_GetLength(LuaState * ls)
 	return 1;
 }
 
-int Export_Lua::LuaFn_hge_Channel_GetPos(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_Channel_GetPos(LuaState * ls)
 {
 	LuaStack args(ls);
 	int _int;
@@ -1023,7 +1239,7 @@ int Export_Lua::LuaFn_hge_Channel_GetPos(LuaState * ls)
 	return 1;
 }
 
-int Export_Lua::LuaFn_hge_Channel_SetPos(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_Channel_SetPos(LuaState * ls)
 {
 	LuaStack args(ls);
 
@@ -1037,7 +1253,7 @@ int Export_Lua::LuaFn_hge_Channel_SetPos(LuaState * ls)
 	return 0;
 }
 
-int Export_Lua::LuaFn_hge_Channel_SetStartPos(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_Channel_SetStartPos(LuaState * ls)
 {
 	LuaStack args(ls);
 
@@ -1048,7 +1264,7 @@ int Export_Lua::LuaFn_hge_Channel_SetStartPos(LuaState * ls)
 	return 0;
 }
 
-int Export_Lua::LuaFn_hge_Channel_SlideTo(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_Channel_SlideTo(LuaState * ls)
 {
 	LuaStack args(ls);
 	int _int;
@@ -1071,7 +1287,7 @@ int Export_Lua::LuaFn_hge_Channel_SlideTo(LuaState * ls)
 	return 0;
 }
 
-int Export_Lua::LuaFn_hge_Channel_IsSliding(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_Channel_IsSliding(LuaState * ls)
 {
 	LuaStack args(ls);
 	bool bret;
@@ -1084,7 +1300,7 @@ int Export_Lua::LuaFn_hge_Channel_IsSliding(LuaState * ls)
 	return 1;
 }
 
-int Export_Lua::LuaFn_hge_Channel_SetLoop(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_Channel_SetLoop(LuaState * ls)
 {
 	LuaStack args(ls);
 
@@ -1126,7 +1342,7 @@ int Export_Lua::LuaFn_hge_Channel_SetLoop(LuaState * ls)
 	return 0;
 }
 
-int Export_Lua::LuaFn_hge_Channel_RemoveLoop(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_Channel_RemoveLoop(LuaState * ls)
 {
 	LuaStack args(ls);
 
@@ -1137,7 +1353,7 @@ int Export_Lua::LuaFn_hge_Channel_RemoveLoop(LuaState * ls)
 	return 0;
 }
 
-int Export_Lua::LuaFn_hge_Input_GetMousePos(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_Input_GetMousePos(LuaState * ls)
 {
 	LuaStack args(ls);
 	float x;
@@ -1150,7 +1366,7 @@ int Export_Lua::LuaFn_hge_Input_GetMousePos(LuaState * ls)
 	return 2;
 }
 
-int Export_Lua::LuaFn_hge_Input_SetMousePos(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_Input_SetMousePos(LuaState * ls)
 {
 	LuaStack args(ls);
 
@@ -1159,7 +1375,7 @@ int Export_Lua::LuaFn_hge_Input_SetMousePos(LuaState * ls)
 	return 0;
 }
 
-int Export_Lua::LuaFn_hge_Input_GetMouseWheel(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_Input_GetMouseWheel(LuaState * ls)
 {
 	LuaStack args(ls);
 	int iret;
@@ -1170,7 +1386,7 @@ int Export_Lua::LuaFn_hge_Input_GetMouseWheel(LuaState * ls)
 	return 1;
 }
 
-int Export_Lua::LuaFn_hge_Input_IsMouseOver(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_Input_IsMouseOver(LuaState * ls)
 {
 	LuaStack args(ls);
 	bool bret;
@@ -1181,7 +1397,7 @@ int Export_Lua::LuaFn_hge_Input_IsMouseOver(LuaState * ls)
 	return 1;
 }
 
-int Export_Lua::LuaFn_hge_Input_KeyDown(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_Input_KeyDown(LuaState * ls)
 {
 	LuaStack args(ls);
 	bool bret;
@@ -1192,7 +1408,7 @@ int Export_Lua::LuaFn_hge_Input_KeyDown(LuaState * ls)
 	return 1;
 }
 
-int Export_Lua::LuaFn_hge_Input_KeyUp(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_Input_KeyUp(LuaState * ls)
 {
 	LuaStack args(ls);
 	bool bret;
@@ -1203,7 +1419,7 @@ int Export_Lua::LuaFn_hge_Input_KeyUp(LuaState * ls)
 	return 1;
 }
 
-int Export_Lua::LuaFn_hge_Input_GetKeyState(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_Input_GetKeyState(LuaState * ls)
 {
 	LuaStack args(ls);
 	bool bret;
@@ -1214,7 +1430,7 @@ int Export_Lua::LuaFn_hge_Input_GetKeyState(LuaState * ls)
 	return 1;
 }
 
-int Export_Lua::LuaFn_hge_Input_GetKeyName(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_Input_GetKeyName(LuaState * ls)
 {
 	LuaStack args(ls);
 
@@ -1223,7 +1439,7 @@ int Export_Lua::LuaFn_hge_Input_GetKeyName(LuaState * ls)
 	return 1;
 }
 
-int Export_Lua::LuaFn_hge_Input_GetKey(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_Input_GetKey(LuaState * ls)
 {
 	LuaStack args(ls);
 	int iret;
@@ -1234,7 +1450,7 @@ int Export_Lua::LuaFn_hge_Input_GetKey(LuaState * ls)
 	return 1;
 }
 
-int Export_Lua::LuaFn_hge_Input_GetChar(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_Input_GetChar(LuaState * ls)
 {
 	LuaStack args(ls);
 	int iret;
@@ -1245,7 +1461,7 @@ int Export_Lua::LuaFn_hge_Input_GetChar(LuaState * ls)
 	return 1;
 }
 
-int Export_Lua::LuaFn_hge_Input_GetEvent(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_Input_GetEvent(LuaState * ls)
 {
 	LuaStack args(ls);
 	hgeInputEvent inputevent;
@@ -1264,7 +1480,7 @@ int Export_Lua::LuaFn_hge_Input_GetEvent(LuaState * ls)
 	return 1;
 }
 
-int Export_Lua::LuaFn_hge_Input_GetDIKey(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_Input_GetDIKey(LuaState * ls)
 {
 	LuaStack args(ls);
 	bool bret;
@@ -1280,7 +1496,7 @@ int Export_Lua::LuaFn_hge_Input_GetDIKey(LuaState * ls)
 	return 1;
 }
 
-int Export_Lua::LuaFn_hge_Input_SetDIKey(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_Input_SetDIKey(LuaState * ls)
 {
 	LuaStack args(ls);
 	bool bret;
@@ -1296,7 +1512,7 @@ int Export_Lua::LuaFn_hge_Input_SetDIKey(LuaState * ls)
 	return 1;
 }
 
-int Export_Lua::LuaFn_hge_Input_GetDIJoy(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_Input_GetDIJoy(LuaState * ls)
 {
 	LuaStack args(ls);
 	bool bret;
@@ -1312,7 +1528,7 @@ int Export_Lua::LuaFn_hge_Input_GetDIJoy(LuaState * ls)
 	return 1;
 }
 
-int Export_Lua::LuaFn_hge_Input_HaveJoy(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_Input_HaveJoy(LuaState * ls)
 {
 	LuaStack args(ls);
 	bool bret;
@@ -1323,7 +1539,7 @@ int Export_Lua::LuaFn_hge_Input_HaveJoy(LuaState * ls)
 	return 1;
 }
 
-int Export_Lua::LuaFn_hge_Gfx_BeginScene(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_Gfx_BeginScene(LuaState * ls)
 {
 	LuaStack args(ls);
 	bool bret;
@@ -1340,7 +1556,7 @@ int Export_Lua::LuaFn_hge_Gfx_BeginScene(LuaState * ls)
 	return 1;
 }
 
-int Export_Lua::LuaFn_hge_Gfx_EndScene(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_Gfx_EndScene(LuaState * ls)
 {
 	LuaStack args(ls);
 
@@ -1349,7 +1565,7 @@ int Export_Lua::LuaFn_hge_Gfx_EndScene(LuaState * ls)
 	return 0;
 }
 
-int Export_Lua::LuaFn_hge_Gfx_Clear(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_Gfx_Clear(LuaState * ls)
 {
 	LuaStack args(ls);
 	DWORD col;
@@ -1361,7 +1577,7 @@ int Export_Lua::LuaFn_hge_Gfx_Clear(LuaState * ls)
 	return 0;
 }
 
-int Export_Lua::LuaFn_hge_Gfx_RenderLine(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_Gfx_RenderLine(LuaState * ls)
 {
 	LuaStack args(ls);
 	DWORD col = 0xffffffff;
@@ -1382,7 +1598,7 @@ int Export_Lua::LuaFn_hge_Gfx_RenderLine(LuaState * ls)
 	return 0;
 }
 
-int Export_Lua::LuaFn_hge_Gfx_RenderTriple(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_Gfx_RenderTriple(LuaState * ls)
 {
 	LuaStack args(ls);
 	hgeTriple triple;
@@ -1394,7 +1610,7 @@ int Export_Lua::LuaFn_hge_Gfx_RenderTriple(LuaState * ls)
 	return 0;
 }
 
-int Export_Lua::LuaFn_hge_Gfx_RenderQuad(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_Gfx_RenderQuad(LuaState * ls)
 {
 	LuaStack args(ls);
 	hgeQuad quad;
@@ -1406,7 +1622,7 @@ int Export_Lua::LuaFn_hge_Gfx_RenderQuad(LuaState * ls)
 	return 0;
 }
 
-int Export_Lua::LuaFn_hge_Gfx_StartBatch(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_Gfx_StartBatch(LuaState * ls)
 {
 	LuaStack args(ls);
 	DWORD dret;
@@ -1421,7 +1637,7 @@ int Export_Lua::LuaFn_hge_Gfx_StartBatch(LuaState * ls)
 	return 1;
 }
 
-int Export_Lua::LuaFn_hge_Gfx_FinishBatch(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_Gfx_FinishBatch(LuaState * ls)
 {
 	LuaStack args(ls);
 
@@ -1430,7 +1646,7 @@ int Export_Lua::LuaFn_hge_Gfx_FinishBatch(LuaState * ls)
 	return 0;
 }
 
-int Export_Lua::LuaFn_hge_Gfx_SetClipping(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_Gfx_SetClipping(LuaState * ls)
 {
 	LuaStack args(ls);
 	int x = 0;
@@ -1460,7 +1676,7 @@ int Export_Lua::LuaFn_hge_Gfx_SetClipping(LuaState * ls)
 	return 0;
 }
 
-int Export_Lua::LuaFn_hge_Gfx_SetTransform(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_Gfx_SetTransform(LuaState * ls)
 {
 	LuaStack args(ls);
 
@@ -1518,7 +1734,7 @@ int Export_Lua::LuaFn_hge_Gfx_SetTransform(LuaState * ls)
 	return 0;
 }
 
-int Export_Lua::LuaFn_hge_Target_Create(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_Target_Create(LuaState * ls)
 {
 	LuaStack args(ls);
 	DWORD dret;
@@ -1529,7 +1745,7 @@ int Export_Lua::LuaFn_hge_Target_Create(LuaState * ls)
 	return 1;
 }
 
-int Export_Lua::LuaFn_hge_Target_Free(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_Target_Free(LuaState * ls)
 {
 	LuaStack args(ls);
 
@@ -1540,7 +1756,7 @@ int Export_Lua::LuaFn_hge_Target_Free(LuaState * ls)
 	return 0;
 }
 
-int Export_Lua::LuaFn_hge_Target_GetTexture(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_Target_GetTexture(LuaState * ls)
 {
 	LuaStack args(ls);
 	DWORD dret;
@@ -1553,7 +1769,7 @@ int Export_Lua::LuaFn_hge_Target_GetTexture(LuaState * ls)
 	return 1;
 }
 
-int Export_Lua::LuaFn_hge_Texture_Create(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_Texture_Create(LuaState * ls)
 {
 	LuaStack args(ls);
 	DWORD dret;
@@ -1564,7 +1780,7 @@ int Export_Lua::LuaFn_hge_Texture_Create(LuaState * ls)
 	return 1;
 }
 
-int Export_Lua::LuaFn_hge_Texture_Load(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_Texture_Load(LuaState * ls)
 {
 	LuaStack args(ls);
 	DWORD dret;
@@ -1587,7 +1803,7 @@ int Export_Lua::LuaFn_hge_Texture_Load(LuaState * ls)
 	return 1;
 }
 
-int Export_Lua::LuaFn_hge_Texture_Free(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_Texture_Free(LuaState * ls)
 {
 	LuaStack args(ls);
 
@@ -1598,7 +1814,7 @@ int Export_Lua::LuaFn_hge_Texture_Free(LuaState * ls)
 	return 0;
 }
 
-int Export_Lua::LuaFn_hge_Texture_GetWH(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_Texture_GetWH(LuaState * ls)
 {
 	LuaStack args(ls);
 	int width;
@@ -1620,7 +1836,7 @@ int Export_Lua::LuaFn_hge_Texture_GetWH(LuaState * ls)
 	return 2;
 }
 
-int Export_Lua::LuaFn_hge_Texture_Lock(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_Texture_Lock(LuaState * ls)
 {
 	LuaStack args(ls);
 	DWORD dret;
@@ -1659,7 +1875,7 @@ int Export_Lua::LuaFn_hge_Texture_Lock(LuaState * ls)
 	return 1;
 }
 
-int Export_Lua::LuaFn_hge_Texture_Unlock(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_Texture_Unlock(LuaState * ls)
 {
 	LuaStack args(ls);
 
@@ -1670,7 +1886,7 @@ int Export_Lua::LuaFn_hge_Texture_Unlock(LuaState * ls)
 	return 0;
 }
 
-int Export_Lua::LuaFn_hge_Font_Load(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_Font_Load(LuaState * ls)
 {
 	LuaStack args(ls);
 	DWORD dret;
@@ -1681,7 +1897,7 @@ int Export_Lua::LuaFn_hge_Font_Load(LuaState * ls)
 	return 1;
 }
 
-int Export_Lua::LuaFn_hge_Font_Free(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_Font_Free(LuaState * ls)
 {
 	LuaStack args(ls);
 
@@ -1692,7 +1908,7 @@ int Export_Lua::LuaFn_hge_Font_Free(LuaState * ls)
 	return 0;
 }
 
-int Export_Lua::LuaFn_hge_Gfx_RenderText(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_Gfx_RenderText(LuaState * ls)
 {
 	LuaStack args(ls);
 	DWORD col = 0xffffffff;
@@ -1709,7 +1925,7 @@ int Export_Lua::LuaFn_hge_Gfx_RenderText(LuaState * ls)
 	return 0;
 }
 
-int Export_Lua::LuaFn_hge_Gfx_RenderTextToTarget(LuaState * ls)
+int Export_Lua_HGE::LuaFn_hge_Gfx_RenderTextToTarget(LuaState * ls)
 {
 	LuaStack args(ls);
 	HTEXTURE tex;

@@ -1,13 +1,13 @@
 #ifndef __NOTUSELUA
 #ifndef __NOTUSEHDSS
 
-#include "../Header/Export_Lua.h"
+#include "../Header/Export_Lua_HDSS.h"
 #include "../Header/LuaConstDefine.h"
 #include "../Header/Scripter.h"
 
 #include "../Header/Export_Lua_HDSS_CallGet.h"
 
-int Export_Lua::LuaFn_HDSS_Get(LuaState * ls)
+int Export_Lua_HDSS::LuaFn_HDSS_Get(LuaState * ls)
 {
 	LuaStack args(ls);
 

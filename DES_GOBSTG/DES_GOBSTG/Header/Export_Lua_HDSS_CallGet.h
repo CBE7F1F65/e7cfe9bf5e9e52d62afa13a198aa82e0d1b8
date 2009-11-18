@@ -21,6 +21,8 @@ public:
 	int Call_SE(LuaState * ls);
 	int Call_HSVTORGB(LuaState * ls);
 	int Call_PRINT(LuaState * ls);
+	int Call_FRONTSPRITE(LuaState * ls);
+	int Call_FREEFRONTSPRITE(LuaState * ls);
 	int Call_BGVALUE(LuaState * ls);
 	int Call_BGVALEX(LuaState * ls);
 	int Call_BGFLAG(LuaState * ls);

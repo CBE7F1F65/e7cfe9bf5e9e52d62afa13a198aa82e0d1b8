@@ -273,6 +273,19 @@ bool Scripter::Parse(int varcount)
 					fdisp.BuildPostPrint(NULL, CAST(d[0]), CAST(d[1]), GetStringSp(2), CAST(d[3]), CAST(d[4]), CAST(d[5]), CAST(d[6]), CAST(d[7]), CAST(d[8]));
 				}
 				break;
+			case SCR_FRONTSPRITE:
+				if (rv = Copy(&i, 7))
+				{
+					int _tdi = CAST(d[0]);
+					SpriteItemManager::BuildFrontSprite(_tdi, CAST(d[1]));
+					SpriteItemManager::SetFrontSpriteValue(_tdi, CAST(d[2]), CAST(d[3]), CAST(d[4]), CAST(d[5]), CAST(d[6]));
+				}
+				break;
+			case SCR_FREEFRONTSPRITE:
+				if (rv = Copy(&i, 1))
+				{
+					SpriteItemManager::FreeFrontSprite(CAST(d[0]));
+				}
 
 			case SCR_SETSHAKE:
 				if (rv = Copy(&i, 2))

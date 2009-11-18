@@ -96,7 +96,7 @@ void Item::Release()
 	for(int i=0;i<ITEMSPRITEMAX;i++)
 	{
 		if(spItem[i])
-			SpriteItemManager::FreeSprite(spItem[i]);
+			SpriteItemManager::FreeSprite(&spItem[i]);
 	}
 	mi.clear();
 	infofont.clear();

@@ -12,9 +12,11 @@ int SpriteItemManager::noIndex = 0;
 int SpriteItemManager::cancelIndex = 0;
 int SpriteItemManager::confirmIndex = 0;
 
+FrontSprite SpriteItemManager::frontsprite[FRONTSPRITEMAX];
+
 SpriteItemManager::SpriteItemManager()
 {
-
+	ZeroMemory(frontsprite, sizeof(FrontSprite) * FRONTSPRITEMAX);
 }
 
 SpriteItemManager::~SpriteItemManager()
@@ -25,6 +27,23 @@ SpriteItemManager::~SpriteItemManager()
 void SpriteItemManager::Init(HTEXTURE * _tex)
 {
 	tex = _tex;
+	FreeFrontSprite();
+}
+
+void SpriteItemManager::Release()
+{
+	FreeFrontSprite();
+}
+
+void SpriteItemManager::RenderFrontSprite()
+{
+	for (int i=0; i<FRONTSPRITEMAX; i++)
+	{
+		if (frontsprite[i].sprite)
+		{
+			frontsprite[i].sprite->RenderEx(frontsprite[i].x, frontsprite[i].y, frontsprite[i].rot, frontsprite[i].hscale, frontsprite[i].vscale);
+		}
+	}
 }
 
 int SpriteItemManager::GetIndexByName(const char * spritename)
@@ -80,6 +99,62 @@ bool SpriteItemManager::SetSprite(int index, hgeSprite * sprite, HTEXTURE * tex)
 	return true;
 }
 
+void SpriteItemManager::FreeFrontSprite(int ID/* =-1 */)
+{
+	if (ID >= FRONTSPRITEMAX)
+	{
+		return;
+	}
+	if (ID < 0)
+	{
+		for (int i=0; i<FRONTSPRITEMAX; i++)
+		{
+			FreeFrontSprite(i);
+		}
+		return;
+	}
+	FreeSprite(&frontsprite[ID].sprite);
+	frontsprite[ID].sprite = NULL;
+}
+
+hgeSprite * SpriteItemManager::BuildFrontSprite(int ID, int index)
+{
+	if (ID < 0 || ID >= FRONTSPRITEMAX)
+	{
+		return NULL;
+	}
+	if (index >= 0)
+	{
+		FreeFrontSprite(ID);
+		CreateSprite(index, &frontsprite[ID].sprite);
+	}
+	return frontsprite[ID].sprite;
+}
+
+hgeSprite * SpriteItemManager::BuildFrontSpriteByName(int ID, const char * spritename)
+{
+	if (ID < 0 || ID >= FRONTSPRITEMAX)
+	{
+		return NULL;
+	}
+	FreeFrontSprite(ID);
+	CreateSpriteByName(spritename, &frontsprite[ID].sprite);
+	return frontsprite[ID].sprite;
+}
+
+void SpriteItemManager::SetFrontSpriteValue(int ID, float x, float y, int angle/* =0 */, float hscale/* =1.0f */, float vscale/* =0.0f */)
+{
+	if (ID < 0 || ID >= FRONTSPRITEMAX)
+	{
+		return;
+	}
+	frontsprite[ID].x = x;
+	frontsprite[ID].y = y;
+	frontsprite[ID].rot = ARC(angle);
+	frontsprite[ID].hscale = hscale;
+	frontsprite[ID].vscale = vscale;
+}
+
 hgeSprite * SpriteItemManager::CreateSprite(int index)
 {
 	hgeSprite * sprite;
@@ -94,10 +169,14 @@ hgeSprite * SpriteItemManager::CreateSprite(int index)
 	return sprite;
 }
 
-bool SpriteItemManager::CreateSprite(int index, hgeSprite * sprite)
+bool SpriteItemManager::CreateSprite(int index, hgeSprite ** sprite)
 {
-	sprite = CreateSprite(index);
-	if (sprite)
+	if (!sprite)
+	{
+		return false;
+	}
+	*sprite = CreateSprite(index);
+	if (*sprite)
 	{
 		return true;
 	}
@@ -114,22 +193,26 @@ hgeSprite * SpriteItemManager::CreateSpriteByName(const char * spritename)
 	return NULL;
 }
 
-bool SpriteItemManager::CreateSpriteByName(const char * spritename, hgeSprite * sprite)
+bool SpriteItemManager::CreateSpriteByName(const char * spritename, hgeSprite ** sprite)
 {
-	sprite = CreateSpriteByName(spritename);
-	if (sprite)
+	if (!sprite)
+	{
+		return false;
+	}
+	*sprite = CreateSpriteByName(spritename);
+	if (*sprite)
 	{
 		return true;
 	}
 	return false;
 }
 
-void SpriteItemManager::FreeSprite(hgeSprite * sprite)
+void SpriteItemManager::FreeSprite(hgeSprite ** sprite)
 {
-	if (sprite)
+	if (sprite && *sprite)
 	{
-		free(sprite);
-		sprite = NULL;
+		free(*sprite);
+		*sprite = NULL;
 	}
 }
 

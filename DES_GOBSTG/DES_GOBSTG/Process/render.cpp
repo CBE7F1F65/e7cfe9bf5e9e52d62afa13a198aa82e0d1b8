@@ -189,6 +189,7 @@ int Process::render()
 	{
 		fdisp.RenderEnemyX();
 	}
+	SpriteItemManager::RenderFrontSprite();
 	fdisp.RenderPostPrint();
 	return PGO;
 }

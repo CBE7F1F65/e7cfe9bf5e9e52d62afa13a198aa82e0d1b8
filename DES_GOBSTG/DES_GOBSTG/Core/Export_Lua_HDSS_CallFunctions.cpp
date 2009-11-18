@@ -1,6 +1,7 @@
 #ifndef __NOTUSELUA
 #ifndef __NOTUSEHDSS
 
+#include "Export_Lua_HDSS.h"
 #include "Export_Lua_HDSS_CallGet.h"
 #include "processPrep.h"
 
@@ -179,7 +180,7 @@ int _HDSSCallGet::Call_HSVTORGB(LuaState * ls)
 		float _v = _FNEXT_HDSS_LUAPARA;
 		float _a = _FNEXT_HDSS_LUAPARA;
 		hgeColorHSV _hsv(_h, _s, _v, _a);
-		_PD_HDSS_LUAFUUNC(_hsv.GetHWColor());
+		_PD_HDSS_LUA(_hsv.GetHWColor());
 		return 1;
 	}
 	return 0;
@@ -243,6 +244,67 @@ int _HDSSCallGet::Call_PRINT(LuaState * ls)
 			}
 		}
 		fdisp.BuildPostPrint(_font, _x, _y, _str, _align, _scale, _properation, _rotation, _tracking, _spacing);
+	}
+	return 0;
+}
+
+int _HDSSCallGet::Call_FRONTSPRITE(LuaState * ls)
+{
+	_ENTERCALL_HDSS_LUA;
+
+	if (true)
+	{
+		DWORD dret;
+		int _ID = _INEXT_HDSS_LUAPARA;
+		int _index = _INEXT_HDSS_LUAPARA;
+		dret = (DWORD)SpriteItemManager::BuildFrontSprite(_ID, _index);
+		
+		if (argscount > 2)
+		{
+			_GETPARAS_HDSS_LUAPARA(3);
+
+			float _x = _FNEXT_HDSS_LUAPARA;
+			float _y = _FNEXT_HDSS_LUAPARA;
+			int _angle = 0;
+			float _hscale = 1.0f;
+			float _vscale = 0.0f;
+			_JNEXT_HDSS_LUAPARA;
+			if (bhavenext)
+			{
+				_angle = _IOBJ_HDSS_LUA;
+				_JNEXT_HDSS_LUAPARA;
+				if (bhavenext)
+				{
+					_hscale = _FOBJ_HDSS_LUA;
+					_JNEXT_HDSS_LUAPARA;
+					if (bhavenext)
+					{
+						_vscale = _FOBJ_HDSS_LUA;
+					}
+				}
+			}
+			SpriteItemManager::SetFrontSpriteValue(_ID, _x, _y, _angle, _hscale, _vscale);
+		}
+
+		_PD_HDSS_LUA(dret);
+		return 1;
+	}
+	return 0;
+}
+
+int _HDSSCallGet::Call_FREEFRONTSPRITE(LuaState * ls)
+{
+	_ENTERCALL_HDSS_LUA;
+
+	if (true)
+	{
+		int _ID = -1;
+		_JNEXT_HDSS_LUAPARA;
+		if (bhavenext)
+		{
+			_ID = _IOBJ_HDSS_LUA;
+		}
+		SpriteItemManager::FreeFrontSprite(_ID);
 	}
 	return 0;
 }

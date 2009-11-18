@@ -316,39 +316,6 @@
 					RelativePath=".\Core\Export.cpp">
 				</File>
 				<File
-					RelativePath=".\Core\Export_Lua.cpp">
-				</File>
-				<File
-					RelativePath=".\Core\Export_Lua_Const.cpp">
-				</File>
-				<File
-					RelativePath=".\Core\Export_Lua_Function.cpp">
-				</File>
-				<File
-					RelativePath=".\Core\Export_Lua_Game.cpp">
-				</File>
-				<File
-					RelativePath=".\Core\Export_Lua_HDSS.cpp">
-				</File>
-				<File
-					RelativePath=".\Core\Export_Lua_HDSS_Call.cpp">
-				</File>
-				<File
-					RelativePath=".\Core\Export_Lua_HDSS_CallFunctions.cpp">
-				</File>
-				<File
-					RelativePath=".\Core\Export_Lua_HDSS_Get.cpp">
-				</File>
-				<File
-					RelativePath=".\Core\Export_Lua_HDSS_GetFunctions.cpp">
-				</File>
-				<File
-					RelativePath=".\Core\Export_Lua_HGE.cpp">
-				</File>
-				<File
-					RelativePath=".\Core\Export_Lua_HGEHelper.cpp">
-				</File>
-				<File
 					RelativePath=".\Core\InitDllLoader.cpp">
 				</File>
 				<File
@@ -372,79 +339,43 @@
 				<File
 					RelativePath=".\Core\SpriteItemManager.cpp">
 				</File>
-			</Filter>
-			<Filter
-				Name="Process"
-				Filter="">
-				<File
-					RelativePath=".\Process\frame.cpp">
-				</File>
-				<File
-					RelativePath=".\Process\frameEnd.cpp">
-				</File>
-				<File
-					RelativePath=".\Process\frameStart.cpp">
-				</File>
-				<File
-					RelativePath=".\Core\Process.cpp">
-				</File>
-				<File
-					RelativePath=".\Process\processClear.cpp">
-				</File>
-				<File
-					RelativePath=".\Process\processContinue.cpp">
-				</File>
-				<File
-					RelativePath=".\Process\processEnding.cpp">
-				</File>
-				<File
-					RelativePath=".\Process\processGetInput.cpp">
-				</File>
-				<File
-					RelativePath=".\Process\processInit.cpp">
-				</File>
-				<File
-					RelativePath=".\Process\processMatchSelect.cpp">
-				</File>
-				<File
-					RelativePath=".\Process\processMusic.cpp">
-				</File>
-				<File
-					RelativePath=".\Process\processOption.cpp">
-				</File>
-				<File
-					RelativePath=".\Process\processOver.cpp">
-				</File>
-				<File
-					RelativePath=".\Process\processPause.cpp">
-				</File>
-				<File
-					RelativePath=".\Process\processPlayerSelect.cpp">
-				</File>
-				<File
-					RelativePath=".\Process\processReplay.cpp">
-				</File>
-				<File
-					RelativePath=".\Process\processResault.cpp">
-				</File>
-				<File
-					RelativePath=".\Process\processSpell.cpp">
-				</File>
-				<File
-					RelativePath=".\Process\processStart.cpp">
-				</File>
-				<File
-					RelativePath=".\Process\processStartPrep.cpp">
-				</File>
-				<File
-					RelativePath=".\Process\processTitle.cpp">
-				</File>
-				<File
-					RelativePath=".\Process\reload.cpp">
-				</File>
-				<File
-					RelativePath=".\Process\render.cpp">
-				</File>
+				<Filter
+					Name="Export_Lua"
+					Filter="">
+					<File
+						RelativePath=".\Core\Export_Lua.cpp">
+					</File>
+					<File
+						RelativePath=".\Core\Export_Lua_Const.cpp">
+					</File>
+					<File
+						RelativePath=".\Core\Export_Lua_Function.cpp">
+					</File>
+					<File
+						RelativePath=".\Core\Export_Lua_Game.cpp">
+					</File>
+					<File
+						RelativePath=".\Core\Export_Lua_HDSS.cpp">
+					</File>
+					<File
+						RelativePath=".\Core\Export_Lua_HDSS_Call.cpp">
+					</File>
+					<File
+						RelativePath=".\Core\Export_Lua_HDSS_CallFunctions.cpp">
+					</File>
+					<File
+						RelativePath=".\Core\Export_Lua_HDSS_Get.cpp">
+					</File>
+					<File
+						RelativePath=".\Core\Export_Lua_HDSS_GetFunctions.cpp">
+					</File>
+					<File
+						RelativePath=".\Core\Export_Lua_HGE.cpp">
+					</File>
+					<File
+						RelativePath=".\Core\Export_Lua_HGEHelper.cpp">
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="Class"
@@ -528,6 +459,79 @@
 					RelativePath=".\Class\SelectSystem.cpp">
 				</File>
 			</Filter>
+			<Filter
+				Name="Process"
+				Filter="">
+				<File
+					RelativePath=".\Process\frame.cpp">
+				</File>
+				<File
+					RelativePath=".\Process\frameEnd.cpp">
+				</File>
+				<File
+					RelativePath=".\Process\frameStart.cpp">
+				</File>
+				<File
+					RelativePath=".\Core\Process.cpp">
+				</File>
+				<File
+					RelativePath=".\Process\processClear.cpp">
+				</File>
+				<File
+					RelativePath=".\Process\processContinue.cpp">
+				</File>
+				<File
+					RelativePath=".\Process\processEnding.cpp">
+				</File>
+				<File
+					RelativePath=".\Process\processGetInput.cpp">
+				</File>
+				<File
+					RelativePath=".\Process\processInit.cpp">
+				</File>
+				<File
+					RelativePath=".\Process\processMatchSelect.cpp">
+				</File>
+				<File
+					RelativePath=".\Process\processMusic.cpp">
+				</File>
+				<File
+					RelativePath=".\Process\processOption.cpp">
+				</File>
+				<File
+					RelativePath=".\Process\processOver.cpp">
+				</File>
+				<File
+					RelativePath=".\Process\processPause.cpp">
+				</File>
+				<File
+					RelativePath=".\Process\processPlayerSelect.cpp">
+				</File>
+				<File
+					RelativePath=".\Process\processReplay.cpp">
+				</File>
+				<File
+					RelativePath=".\Process\processResult.cpp">
+				</File>
+				<File
+					RelativePath=".\Process\processSpell.cpp">
+				</File>
+				<File
+					RelativePath=".\Process\processStart.cpp">
+				</File>
+				<File
+					RelativePath=".\Process\processStartPrep.cpp">
+				</File>
+				<File
+					RelativePath=".\Process\processTitle.cpp">
+				</File>
+				<File
+					RelativePath=".\Process\reload.cpp">
+				</File>
+				<File
+					RelativePath=".\Process\render.cpp">
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Í·ÎÄ¼þ"
@@ -564,15 +568,6 @@
 					RelativePath=".\Header\Export.h">
 				</File>
 				<File
-					RelativePath=".\Header\Export_Lua.h">
-				</File>
-				<File
-					RelativePath=".\Header\Export_Lua_HDSS_CallGet.h">
-				</File>
-				<File
-					RelativePath=".\Header\Export_Lua_HDSS_CallGetDefine.h">
-				</File>
-				<File
 					RelativePath=".\Header\keytable.h">
 				</File>
 				<File
@@ -602,6 +597,31 @@
 				<File
 					RelativePath=".\Header\VectorList.h">
 				</File>
+				<Filter
+					Name="Export_Lua"
+					Filter="">
+					<File
+						RelativePath=".\Header\Export_Lua.h">
+					</File>
+					<File
+						RelativePath=".\Header\Export_Lua_Game.h">
+					</File>
+					<File
+						RelativePath=".\Header\Export_Lua_HDSS.h">
+					</File>
+					<File
+						RelativePath=".\Header\Export_Lua_HDSS_CallGet.h">
+					</File>
+					<File
+						RelativePath=".\Header\Export_Lua_HDSS_CallGetDefine.h">
+					</File>
+					<File
+						RelativePath=".\Header\Export_Lua_HGE.h">
+					</File>
+					<File
+						RelativePath=".\Header\Export_Lua_HGEHelp.h">
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="Class"

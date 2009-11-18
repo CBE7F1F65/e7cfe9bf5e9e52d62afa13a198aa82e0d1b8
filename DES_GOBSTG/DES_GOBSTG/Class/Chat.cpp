@@ -60,7 +60,7 @@ void Chat::Release()
 	{
 		if (chatter[i])
 		{
-			SpriteItemManager::FreeSprite(chatter[i]);
+			SpriteItemManager::FreeSprite(&chatter[i]);
 		}
 	}
 }

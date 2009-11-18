@@ -5,7 +5,7 @@
 	Name="DES_GOBSTG"
 	ProjectGUID="{A4938EF7-0CE1-47A3-BC8D-4D0B54F94F6D}"
 	VCNestedProjectGUID="{7329E15F-F0AE-44EE-BC64-27B9038C76D7}"
-	VCNestedProjectCRC32="167972132"
+	VCNestedProjectCRC32="3332931552"
 	VCNestedProjectFileName="DES_GOBSTG.vcproj"
 	Keyword="Win32Proj">
 	<Configurations>
@@ -220,26 +220,6 @@
 		<File 
 			RelativePath=".\Core\Export.cpp"/>
 		<File 
-			RelativePath=".\Core\Export_Lua.cpp"/>
-		<File 
-			RelativePath=".\Core\Export_Lua_Const.cpp"/>
-		<File 
-			RelativePath=".\Core\Export_Lua_Function.cpp"/>
-		<File 
-			RelativePath=".\Core\Export_Lua_HDSS.cpp"/>
-		<File 
-			RelativePath=".\Core\Export_Lua_HDSS_Call.cpp"/>
-		<File 
-			RelativePath=".\Core\Export_Lua_HDSS_CallFunctions.cpp"/>
-		<File 
-			RelativePath=".\Core\Export_Lua_HDSS_Get.cpp"/>
-		<File 
-			RelativePath=".\Core\Export_Lua_HDSS_GetFunctions.cpp"/>
-		<File 
-			RelativePath=".\Core\Export_Lua_HGE.cpp"/>
-		<File 
-			RelativePath=".\Core\Export_Lua_HGEHelper.cpp"/>
-		<File 
 			RelativePath=".\Core\InitDllLoader.cpp"/>
 		<File 
 			RelativePath=".\Core\Keytable.cpp"/>
@@ -256,53 +236,27 @@
 		<File 
 			RelativePath=".\Core\SpriteItemManager.cpp"/>
 		<File 
+			RelativePath=".\Core\Export_Lua.cpp"/>
+		<File 
+			RelativePath=".\Core\Export_Lua_HGEHelper.cpp"/>
+		<File 
+			RelativePath=".\Core\Export_Lua_Const.cpp"/>
+		<File 
+			RelativePath=".\Core\Export_Lua_Function.cpp"/>
+		<File 
 			RelativePath=".\Core\Export_Lua_Game.cpp"/>
 		<File 
-			RelativePath=".\Process\frame.cpp"/>
+			RelativePath=".\Core\Export_Lua_HDSS.cpp"/>
 		<File 
-			RelativePath=".\Process\frameEnd.cpp"/>
+			RelativePath=".\Core\Export_Lua_HDSS_Call.cpp"/>
 		<File 
-			RelativePath=".\Process\frameStart.cpp"/>
+			RelativePath=".\Core\Export_Lua_HDSS_CallFunctions.cpp"/>
 		<File 
-			RelativePath=".\Core\Process.cpp"/>
+			RelativePath=".\Core\Export_Lua_HDSS_Get.cpp"/>
 		<File 
-			RelativePath=".\Process\processClear.cpp"/>
+			RelativePath=".\Core\Export_Lua_HDSS_GetFunctions.cpp"/>
 		<File 
-			RelativePath=".\Process\processContinue.cpp"/>
-		<File 
-			RelativePath=".\Process\processEnding.cpp"/>
-		<File 
-			RelativePath=".\Process\processGetInput.cpp"/>
-		<File 
-			RelativePath=".\Process\processInit.cpp"/>
-		<File 
-			RelativePath=".\Process\processMatchSelect.cpp"/>
-		<File 
-			RelativePath=".\Process\processMusic.cpp"/>
-		<File 
-			RelativePath=".\Process\processOption.cpp"/>
-		<File 
-			RelativePath=".\Process\processOver.cpp"/>
-		<File 
-			RelativePath=".\Process\processPause.cpp"/>
-		<File 
-			RelativePath=".\Process\processPlayerSelect.cpp"/>
-		<File 
-			RelativePath=".\Process\processReplay.cpp"/>
-		<File 
-			RelativePath=".\Process\processResault.cpp"/>
-		<File 
-			RelativePath=".\Process\processSpell.cpp"/>
-		<File 
-			RelativePath=".\Process\processStart.cpp"/>
-		<File 
-			RelativePath=".\Process\processStartPrep.cpp"/>
-		<File 
-			RelativePath=".\Process\processTitle.cpp"/>
-		<File 
-			RelativePath=".\Process\reload.cpp"/>
-		<File 
-			RelativePath=".\Process\render.cpp"/>
+			RelativePath=".\Core\Export_Lua_HGE.cpp"/>
 		<File 
 			RelativePath=".\Class\Beam.cpp"/>
 		<File 
@@ -356,6 +310,52 @@
 		<File 
 			RelativePath=".\Class\SelectSystem.cpp"/>
 		<File 
+			RelativePath=".\Process\frame.cpp"/>
+		<File 
+			RelativePath=".\Process\frameEnd.cpp"/>
+		<File 
+			RelativePath=".\Process\frameStart.cpp"/>
+		<File 
+			RelativePath=".\Core\Process.cpp"/>
+		<File 
+			RelativePath=".\Process\processClear.cpp"/>
+		<File 
+			RelativePath=".\Process\processContinue.cpp"/>
+		<File 
+			RelativePath=".\Process\processEnding.cpp"/>
+		<File 
+			RelativePath=".\Process\processGetInput.cpp"/>
+		<File 
+			RelativePath=".\Process\processInit.cpp"/>
+		<File 
+			RelativePath=".\Process\processMatchSelect.cpp"/>
+		<File 
+			RelativePath=".\Process\processMusic.cpp"/>
+		<File 
+			RelativePath=".\Process\processOption.cpp"/>
+		<File 
+			RelativePath=".\Process\processOver.cpp"/>
+		<File 
+			RelativePath=".\Process\processPause.cpp"/>
+		<File 
+			RelativePath=".\Process\processPlayerSelect.cpp"/>
+		<File 
+			RelativePath=".\Process\processReplay.cpp"/>
+		<File 
+			RelativePath=".\Process\processSpell.cpp"/>
+		<File 
+			RelativePath=".\Process\processStart.cpp"/>
+		<File 
+			RelativePath=".\Process\processStartPrep.cpp"/>
+		<File 
+			RelativePath=".\Process\processTitle.cpp"/>
+		<File 
+			RelativePath=".\Process\reload.cpp"/>
+		<File 
+			RelativePath=".\Process\render.cpp"/>
+		<File 
+			RelativePath=".\Process\processResult.cpp"/>
+		<File 
 			RelativePath=".\Header\BMath.h"/>
 		<File 
 			RelativePath=".\Header\BResource.h"/>
@@ -373,12 +373,6 @@
 			RelativePath=".\Header\DataStruct.h"/>
 		<File 
 			RelativePath=".\Header\Export.h"/>
-		<File 
-			RelativePath=".\Header\Export_Lua.h"/>
-		<File 
-			RelativePath=".\Header\Export_Lua_HDSS_CallGet.h"/>
-		<File 
-			RelativePath=".\Header\Export_Lua_HDSS_CallGetDefine.h"/>
 		<File 
 			RelativePath=".\Header\keytable.h"/>
 		<File 
@@ -399,6 +393,20 @@
 			RelativePath=".\Header\SpriteItemManager.h"/>
 		<File 
 			RelativePath=".\Header\VectorList.h"/>
+		<File 
+			RelativePath=".\Header\Export_Lua.h"/>
+		<File 
+			RelativePath=".\Header\Export_Lua_HDSS_CallGetDefine.h"/>
+		<File 
+			RelativePath=".\Header\Export_Lua_HDSS_CallGet.h"/>
+		<File 
+			RelativePath=".\Header\Export_Lua_HGE.h"/>
+		<File 
+			RelativePath=".\Header\Export_Lua_HGEHelp.h"/>
+		<File 
+			RelativePath=".\Header\Export_Lua_HDSS.h"/>
+		<File 
+			RelativePath=".\Header\Export_Lua_Game.h"/>
 		<File 
 			RelativePath=".\Header\Beam.h"/>
 		<File 

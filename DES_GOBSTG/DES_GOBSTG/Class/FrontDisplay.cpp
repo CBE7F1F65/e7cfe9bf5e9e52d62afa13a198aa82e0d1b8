@@ -794,24 +794,24 @@ bool FrontDisplay::Init()
 
 void FrontDisplay::Release()
 {
-	SpriteItemManager::FreeSprite(panel.left);
-	SpriteItemManager::FreeSprite(panel.top);
-	SpriteItemManager::FreeSprite(panel.bottom);
-	SpriteItemManager::FreeSprite(panel.right);
-	SpriteItemManager::FreeSprite(panel.hiscore);
-	SpriteItemManager::FreeSprite(panel.score);
-	SpriteItemManager::FreeSprite(panel.player);
-	SpriteItemManager::FreeSprite(panel.power);
-	SpriteItemManager::FreeSprite(panel.graze);
-	SpriteItemManager::FreeSprite(panel.slot);
-	SpriteItemManager::FreeSprite(panel.slotback);
+	SpriteItemManager::FreeSprite(&panel.left);
+	SpriteItemManager::FreeSprite(&panel.top);
+	SpriteItemManager::FreeSprite(&panel.bottom);
+	SpriteItemManager::FreeSprite(&panel.right);
+	SpriteItemManager::FreeSprite(&panel.hiscore);
+	SpriteItemManager::FreeSprite(&panel.score);
+	SpriteItemManager::FreeSprite(&panel.player);
+	SpriteItemManager::FreeSprite(&panel.power);
+	SpriteItemManager::FreeSprite(&panel.graze);
+	SpriteItemManager::FreeSprite(&panel.slot);
+	SpriteItemManager::FreeSprite(&panel.slotback);
 	for (int i=0; i<6; i++)
 	{
-		SpriteItemManager::FreeSprite(panel.lifeindi[i]);
+		SpriteItemManager::FreeSprite(&panel.lifeindi[i]);
 	}
-	SpriteItemManager::FreeSprite(panel.triangleindi);
-	SpriteItemManager::FreeSprite(panel.pointindi);
-	SpriteItemManager::FreeSprite(panel.borderindi);
+	SpriteItemManager::FreeSprite(&panel.triangleindi);
+	SpriteItemManager::FreeSprite(&panel.pointindi);
+	SpriteItemManager::FreeSprite(&panel.borderindi);
 
 	if (info.bossfont)
 	{
@@ -853,78 +853,78 @@ void FrontDisplay::Release()
 		hge->Font_Free(info.smallfont);
 		info.smallfont = NULL;
 	}
-	SpriteItemManager::FreeSprite(info.cutin);
-	SpriteItemManager::FreeSprite(info.namecard);
-	SpriteItemManager::FreeSprite(info.plchat_1);
-	SpriteItemManager::FreeSprite(info.plchat_2);
-	SpriteItemManager::FreeSprite(info.plchat_3);
-	SpriteItemManager::FreeSprite(info.enchat_1);
-	SpriteItemManager::FreeSprite(info.enchat_2);
-	SpriteItemManager::FreeSprite(info.enchat_3);
-	SpriteItemManager::FreeSprite(info.bossspellline);
-	SpriteItemManager::FreeSprite(info.playerspellline);
-	SpriteItemManager::FreeSprite(info.spellbonustext);
-	SpriteItemManager::FreeSprite(info.spellhistorytext);
-	SpriteItemManager::FreeSprite(info.spellfailedtext);
-	SpriteItemManager::FreeSprite(info.timecircle);
-	SpriteItemManager::FreeSprite(info.enemyx);
-	SpriteItemManager::FreeSprite(info.lifebar);
-	SpriteItemManager::FreeSprite(info.star);
-	SpriteItemManager::FreeSprite(info.getbonus);
-	SpriteItemManager::FreeSprite(info.failed);
-	SpriteItemManager::FreeSprite(info.stageclear);
-	SpriteItemManager::FreeSprite(info.nextstage);
-	SpriteItemManager::FreeSprite(info.fullpower);
-	SpriteItemManager::FreeSprite(info.hiscoreget);
-	SpriteItemManager::FreeSprite(info.extend);
-	SpriteItemManager::FreeSprite(info.textbox);
-	SpriteItemManager::FreeSprite(info.demo);
-	SpriteItemManager::FreeSprite(info.loading);
+	SpriteItemManager::FreeSprite(&info.cutin);
+	SpriteItemManager::FreeSprite(&info.namecard);
+	SpriteItemManager::FreeSprite(&info.plchat_1);
+	SpriteItemManager::FreeSprite(&info.plchat_2);
+	SpriteItemManager::FreeSprite(&info.plchat_3);
+	SpriteItemManager::FreeSprite(&info.enchat_1);
+	SpriteItemManager::FreeSprite(&info.enchat_2);
+	SpriteItemManager::FreeSprite(&info.enchat_3);
+	SpriteItemManager::FreeSprite(&info.bossspellline);
+	SpriteItemManager::FreeSprite(&info.playerspellline);
+	SpriteItemManager::FreeSprite(&info.spellbonustext);
+	SpriteItemManager::FreeSprite(&info.spellhistorytext);
+	SpriteItemManager::FreeSprite(&info.spellfailedtext);
+	SpriteItemManager::FreeSprite(&info.timecircle);
+	SpriteItemManager::FreeSprite(&info.enemyx);
+	SpriteItemManager::FreeSprite(&info.lifebar);
+	SpriteItemManager::FreeSprite(&info.star);
+	SpriteItemManager::FreeSprite(&info.getbonus);
+	SpriteItemManager::FreeSprite(&info.failed);
+	SpriteItemManager::FreeSprite(&info.stageclear);
+	SpriteItemManager::FreeSprite(&info.nextstage);
+	SpriteItemManager::FreeSprite(&info.fullpower);
+	SpriteItemManager::FreeSprite(&info.hiscoreget);
+	SpriteItemManager::FreeSprite(&info.extend);
+	SpriteItemManager::FreeSprite(&info.textbox);
+	SpriteItemManager::FreeSprite(&info.demo);
+	SpriteItemManager::FreeSprite(&info.loading);
 
 	for (int i=0; i<10; i++)
 	{
-		SpriteItemManager::FreeSprite(bignum.num[i]);
+		SpriteItemManager::FreeSprite(&bignum.num[i]);
 	}
-	SpriteItemManager::FreeSprite(bignum.num_add);
-	SpriteItemManager::FreeSprite(bignum.num_sub);
-	SpriteItemManager::FreeSprite(bignum.num_mul);
-	SpriteItemManager::FreeSprite(bignum.num_div);
-	SpriteItemManager::FreeSprite(bignum.num_mod);
-	SpriteItemManager::FreeSprite(bignum.num_dot);
+	SpriteItemManager::FreeSprite(&bignum.num_add);
+	SpriteItemManager::FreeSprite(&bignum.num_sub);
+	SpriteItemManager::FreeSprite(&bignum.num_mul);
+	SpriteItemManager::FreeSprite(&bignum.num_div);
+	SpriteItemManager::FreeSprite(&bignum.num_mod);
+	SpriteItemManager::FreeSprite(&bignum.num_dot);
 
 	for (int i=0; i<10; i++)
 	{
-		SpriteItemManager::FreeSprite(normalnum.num[i]);
+		SpriteItemManager::FreeSprite(&normalnum.num[i]);
 	}
-	SpriteItemManager::FreeSprite(normalnum.num_div);
-	SpriteItemManager::FreeSprite(normalnum.num_dot);
+	SpriteItemManager::FreeSprite(&normalnum.num_div);
+	SpriteItemManager::FreeSprite(&normalnum.num_dot);
 
 	for (int i=0; i<10; i++)
 	{
-		SpriteItemManager::FreeSprite(smallnum.num[i]);
+		SpriteItemManager::FreeSprite(&smallnum.num[i]);
 	}
-	SpriteItemManager::FreeSprite(smallnum.num_add);
-	SpriteItemManager::FreeSprite(smallnum.num_sub);
-	SpriteItemManager::FreeSprite(smallnum.num_mul);
-	SpriteItemManager::FreeSprite(smallnum.num_div);
-	SpriteItemManager::FreeSprite(smallnum.num_mod);
-	SpriteItemManager::FreeSprite(smallnum.num_dot);
+	SpriteItemManager::FreeSprite(&smallnum.num_add);
+	SpriteItemManager::FreeSprite(&smallnum.num_sub);
+	SpriteItemManager::FreeSprite(&smallnum.num_mul);
+	SpriteItemManager::FreeSprite(&smallnum.num_div);
+	SpriteItemManager::FreeSprite(&smallnum.num_mod);
+	SpriteItemManager::FreeSprite(&smallnum.num_dot);
 
 	for (int i=0; i<30; i++)
 	{
-		SpriteItemManager::FreeSprite(itemnum.itemnum[i]);
+		SpriteItemManager::FreeSprite(&itemnum.itemnum[i]);
 	}
 
 	for (int i=0; i<FDISP_ASCII_MAX; i++)
 	{
-		SpriteItemManager::FreeSprite(ascii.ascii[i]);
+		SpriteItemManager::FreeSprite(&ascii.ascii[i]);
 	}
 	for (int i=0; i<FDISP_ASCIISMALL_MAX; i++)
 	{
-		SpriteItemManager::FreeSprite(asciismall.ascii[i]);
+		SpriteItemManager::FreeSprite(&asciismall.ascii[i]);
 	}
 
-	SpriteItemManager::FreeSprite(first.face);
-	SpriteItemManager::FreeSprite(first.namecard);
+	SpriteItemManager::FreeSprite(&first.face);
+	SpriteItemManager::FreeSprite(&first.namecard);
 
 }

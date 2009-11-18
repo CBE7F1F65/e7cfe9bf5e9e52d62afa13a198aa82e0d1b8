@@ -3,6 +3,10 @@
 #include "../Header/Export_Lua.h"
 #include "../Header/LuaConstDefine.h"
 
+#include "../Header/Export_Lua_HGE.h"
+#include "../Header/Export_Lua_HGEHelp.h"
+#include "../Header/Export_Lua_HDSS.h"
+#include "../Header/Export_Lua_Game.h"
 
 bool Export_Lua::_LuaRegistFunction(LuaObject * obj)
 {
@@ -49,22 +53,22 @@ bool Export_Lua::LuaRegistFunction()
 	{
 		return false;
 	}
-	if (!_LuaRegistHGEFunction(&obj))
+	if (!Export_Lua_HGE::_LuaRegistFunction(&obj))
 	{
 		return false;
 	}
-	if (!_LuaRegistHGEHelpFunction(&obj))
+	if (!Export_Lua_HGEHelp::_LuaRegistFunction(&obj))
 	{
 		return false;
 	}
 #ifndef __NOTUSEHDSS
-	if (!_LuaRegistHDSSFunction(&obj))
+	if (!Export_Lua_HDSS::_LuaRegistFunction(&obj))
 	{
 		return false;
 	}
 #endif
 #ifndef __NOTINTHISGAME
-	if (!_LuaRegistGameFunction(&obj))
+	if (!Export_Lua_Game::_LuaRegistFunction(&obj))
 	{
 		return false;
 	}
@@ -81,22 +85,22 @@ bool Export_Lua::LuaRegistConst()
 	{
 		return false;
 	}
-	if (!_LuaRegistHGEConst(&obj))
+	if (!Export_Lua_HGE::_LuaRegistConst(&obj))
 	{
 		return false;
 	}
-	if (!_LuaRegistHGEHelpConst(&obj))
+	if (!Export_Lua_HGEHelp::_LuaRegistConst(&obj))
 	{
 		return false;
 	}
 #ifndef __NOTUSEHDSS
-	if (!_LuaRegistHDSSConst(&obj))
+	if (!Export_Lua_HDSS::_LuaRegistConst(&obj))
 	{
 		return false;
 	}
 #endif
 #ifndef __NOTINTHISGAME
-	if (!_LuaRegistGameConst(&obj))
+	if (!Export_Lua_Game::_LuaRegistConst(&obj))
 	{
 		return false;
 	}

@@ -18,7 +18,7 @@ PlayerGhost::PlayerGhost()
 PlayerGhost::~PlayerGhost()
 {
 	if(sprite)
-		SpriteItemManager::FreeSprite(sprite);
+		SpriteItemManager::FreeSprite(&sprite);
 	sprite = NULL;
 }
 

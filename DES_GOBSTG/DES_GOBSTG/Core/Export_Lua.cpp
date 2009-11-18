@@ -1,16 +1,13 @@
 #ifndef __NOTUSELUA
 
 #include "Export_Lua.h"
+#include "Export_Lua_HGEHelp.h"
 #include "Const.h"
 #include "LuaConstDefine.h"
 #include "ConstResource.h"
 
 LuaStateOwner Export_Lua::state;
 HGE * Export_Lua::hge = NULL;
-hgeChannelSyncInfo Export_Lua::channelsyncinfo;
-list<hgeFont *> Export_Lua::fontList;
-list<hgeSprite *> Export_Lua::spriteList;
-list<hgeEffectSystem *> Export_Lua::esList;
 HTEXTURE * Export_Lua::texset = NULL;
 
 Export_Lua::Export_Lua()
@@ -24,9 +21,9 @@ Export_Lua::~Export_Lua()
 
 void Export_Lua::Release(LuaState * ls /* = NULL */)
 {
-	_LuaHelper_hgeFont_DeleteAllFont();
-	_LuaHelper_hgeSprite_DeleteAllSprite();
-	_LuaHelper_hgeES_DeleteAllES();
+	Export_Lua_HGEHelp::_LuaHelper_hgeFont_DeleteAllFont();
+	Export_Lua_HGEHelp::_LuaHelper_hgeSprite_DeleteAllSprite();
+	Export_Lua_HGEHelp::_LuaHelper_hgeES_DeleteAllES();
 	ReleaseHGE();
 }
 

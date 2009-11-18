@@ -2,6 +2,7 @@
 #include "BResource.h"
 #include "Data.h"
 #include "Main.h"
+#include "Export_Lua_HDSS.h"
 
 Scripter scr;
 
@@ -246,7 +247,7 @@ bool Scripter::LoadAll_Lua(HTEXTURE * texset)
 	{
 		return false;
 	}
-	if (!Export_Lua::InitCallbacks())
+	if (!Export_Lua_HDSS::InitCallbacks())
 	{
 		return false;
 	}
