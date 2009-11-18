@@ -4,16 +4,17 @@
 #include "Const.h"
 #include "MainDependency.h"
 
-#define PUSHKEY_IDMAX	6
+#define PUSHKEY_IDMAX	8
 #define PUSHKEY_KEYCHECKMAX	4
 
 #define PUSHKEY_ID_SELUSE_0	0
 #define PUSHKEY_ID_SELUSE_1	1
 #define PUSHKEY_ID_SELUSE_2	2
 #define PUSHKEY_ID_SELUSE_3	3
-#define PUSHKEY_ID_ISELUSE	4
-#define PUSHKEY_ID_UIUSE	5
-#define PUSHKEY_ID_GAMEUSE	6
+#define PUSHKEY_ID_UIUSE_0	4
+#define PUSHKEY_ID_UIUSE_1	5
+#define PUSHKEY_ID_GAMEUSE_0	6
+#define PUSHKEY_ID_GAMEUSE_1	7
 
 #define PUSHKEY_KEYNULL	-1
 

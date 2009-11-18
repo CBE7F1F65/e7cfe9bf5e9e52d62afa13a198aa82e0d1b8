@@ -16,6 +16,8 @@ public:
 	int Call_RETURN(LuaState * ls);
 	int Call_SETSTATE(LuaState * ls);
 	int Call_SETTIME(LuaState * ls);
+	int Call_SETPUSHEVENT(LuaState * ls);
+	int Call_UPDATEPUSHEVENT(LuaState * ls);
 	int Call_SE(LuaState * ls);
 	int Call_HSVTORGB(LuaState * ls);
 	int Call_PRINT(LuaState * ls);

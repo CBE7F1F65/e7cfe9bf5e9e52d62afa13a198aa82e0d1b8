@@ -18,7 +18,25 @@ function CEPlayerSelect_SetBG()
 	hdssBGVALUE(LConst_uibg_topcontentid, SI_TopContent_Girl, TotalCenterX, 64);
 end
 
-function CEPlayerSelect_SetSelect(selsysplayerid, x, minuskey, pluskey, okkey, initid)
+function _CEPlayerSelect_GetKeys(bleft)
+	if bleft then
+		return KS_LEFT_0, KS_RIGHT_0, KS_FIRE_0, KS_QUICK_0, KS_SLOW_0, KS_CHARGE_0;
+	else
+		return KS_LEFT_1, KS_RIGHT_1, KS_FIRE_1, KS_QUICK_1, KS_SLOW_1, KS_CHARGE_1;
+	end
+end
+
+function _CEPlayerSelect_GetValues(bleft)
+	if bleft then
+		return LConst_selsys_player1id, LConst_selsys_player2id, LConst_uibg_player1id, 0, PUSHID_UIUSE_0
+	else
+		return LConst_selsys_player2id, LConst_selsys_player1id, LConst_uibg_player2id, 1, PUSHID_UIUSE_1
+	end
+end
+
+function CEPlayerSelect_SetSelect(bleft, x)
+	local selsysplayerid, selsysotherplayerid, uibgid, initid, pushkeyid = _CEPlayerSelect_GetValues(bleft);
+	local minuskey, pluskey, okkey, quickkey, slowkey, chargekey = _CEPlayerSelect_GetKeys(bleft);
 	local playercontenttable, playercount = game.GetPlayerContentTable();
 	for j, it in pairs(playercontenttable) do
 		local i = j-1;
@@ -52,6 +70,7 @@ function CEPlayerSelect_SetSelect(selsysplayerid, x, minuskey, pluskey, okkey, i
 			1, x, TotalW / 4, initid, 0
 		}
 	)
+	hdssSETPUSHEVENT(pushkeyid, chargekey, PUSHKEY_KEYNULL, PUSHKEY_KEYNULL, PUSHKEY_KEYNULL, 8, 0);
 end
 
 function CEPlayerSelect_CloseUsed()
@@ -64,27 +83,11 @@ function CEPlayerSelect_ExitState(tostate)
 	hdssSETSTATE(tostate);
 end
 
-function CEPlayerSelect_DispatchSelect(bleft, x)
-	local selsysplayerid, selsysplayerotherid, uibgid, quickkey, slowkey, leftkey, rightkey, chargekey;
-	if bleft then
-		uibgid = LConst_uibg_player1id;
-		quickkey = KS_QUICK_0;
-		slowkey = KS_SLOW_0;
-		leftkey = KS_LEFT_0;
-		rightkey = KS_RIGHT_0;
-		chargekey = KS_CHARGE_0;
-		selsysplayerid = LConst_selsys_player1id;
-		selsysplayerotherid = LConst_selsys_player2id;
-	else
-		uibgid = LConst_uibg_player2id;
-		quickkey = KS_QUICK_1;
-		slowkey = KS_SLOW_1;
-		leftkey = KS_LEFT_1;
-		rightkey = KS_RIGHT_1;
-		chargekey = KS_CHARGE_1;
-		selsysplayerid = LConst_selsys_player2id;
-		selsysplayerotherid = LConst_selsys_player1id;
-	end
+function CEPlayerSelect_DispatchSelect(bleft, x, bothercomplete)
+	local selsysplayerid, selsysotherplayerid, uibgid, initid, pushkeyid = _CEPlayerSelect_GetValues(bleft);
+	local leftkey, rightkey, okkey, quickkey, slowkey, chargekey = _CEPlayerSelect_GetKeys(bleft);
+	
+	hdssUPDATEPUSHEVENT(pushkeyid);
 	
 	local ret = 0;
 	local complete, select = hdss.Get(HDSS_SELCOMPLETE, selsysplayerid);
@@ -92,15 +95,15 @@ function CEPlayerSelect_DispatchSelect(bleft, x)
 		local playercontenttable, playercount = game.GetPlayerContentTable();
 		hdssBGVALUE(uibgid, playercontenttable[select+1].siid, x, TotalCenterY);
 		ret = 1;
-	elseif hge.Input_GetDIKey(chargekey) then
+	elseif hge.Input_GetDIKey(chargekey, DIKEY_DOWN) then
 		hdssSELSET(selsysplayerid);
 	elseif hge.Input_GetDIKey(slowkey, DIKEY_DOWN) then
 		if hge.Input_GetDIKey(leftkey, DIKEY_DOWN) then
 		elseif hge.Input_GetDIKey(rightkey, DIKEY_DOWN) then
 		end
 	elseif hge.Input_GetDIKey(quickkey, DIKEY_DOWN) then
-		local othercomplete = hdss.Get(HDSS_SELCOMPLETE, selsysplayerotherid);
-		if not othercomplete then
+		if not bothercomplete then
+			hdssSE(SE_SYSTEM_CANCEL);
 			CEPlayerSelect_ExitState(STATE_MATCH_SELECT);
 			ret = -1;
 		end
@@ -128,19 +131,19 @@ function ControlExecute_cPlayerSelect(con)
 	end
 	
 	if _sel1complete == 0 then
-		CEPlayerSelect_SetSelect(LConst_selsys_player1id, TotalW / 5, KS_LEFT_0, KS_RIGHT_0, KS_FIRE_0, 0);
+		CEPlayerSelect_SetSelect(true, TotalW / 5);
 		_sel1complete = 1;
 	elseif _sel1complete == 1 then
-		local ret = CEPlayerSelect_DispatchSelect(true, TotalW / 5);
+		local ret = CEPlayerSelect_DispatchSelect(true, TotalW / 5, _sel2complete==2);
 		if ret > 0 then
 			_sel1complete = 2;
 		end
 	end
 	if _sel2complete == 0 then
-		CEPlayerSelect_SetSelect(LConst_selsys_player2id, TotalW / 5 * 4, KS_LEFT_1, KS_RIGHT_1, KS_FIRE_1, 1);
+		CEPlayerSelect_SetSelect(false, TotalW / 5 * 4);
 		_sel2complete = 1;
 	elseif _sel2complete == 1 then
-		local ret = CEPlayerSelect_DispatchSelect(false, TotalW / 5 * 4);
+		local ret = CEPlayerSelect_DispatchSelect(false, TotalW / 5 * 4, _sel1complete==2);
 		if ret > 0 then
 			_sel2complete = 2;
 		end

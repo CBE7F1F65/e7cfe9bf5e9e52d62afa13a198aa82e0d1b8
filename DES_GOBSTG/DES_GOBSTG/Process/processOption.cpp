@@ -15,7 +15,7 @@ int Process::processOption()
 	{
 		scr.SetIntValue(SCR_RESERVEBEGIN, 0);
 		scr.SetIntValue(SCR_RESERVEBEGIN+1, 0);
-		PushKey::SetPushEvent(PUSHKEY_ID_UIUSE, KS_LEFT, KS_RIGHT);
+		PushKey::SetPushEvent(PUSHKEY_ID_UIUSE_0, KS_LEFT, KS_RIGHT);
 	}
 	scr.Execute(SCR_CONTROL, STATE_OPTION, time);
 	//-> pushtimer sel depth
@@ -40,7 +40,7 @@ int Process::processOption()
 			return PTURN;
 		}
 
-		PushKey::UpdatePushEvent(PUSHKEY_ID_UIUSE);
+		PushKey::UpdatePushEvent(PUSHKEY_ID_UIUSE_0);
 
 		if(hge->Input_HaveJoy() &&
 			(hge->Input_GetDIKey(DIK_TAB, DIKEY_DOWN) ||

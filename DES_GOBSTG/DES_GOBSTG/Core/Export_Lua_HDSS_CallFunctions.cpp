@@ -85,6 +85,70 @@ int _HDSSCallGet::Call_SETTIME(LuaState * ls)
 	return 0;
 }
 
+int _HDSSCallGet::Call_SETPUSHEVENT(LuaState * ls)
+{
+	_ENTERCALL_HDSS_LUA;
+
+	if (true)
+	{
+		BYTE _index = _INEXT_HDSS_LUAPARA;
+		int _pushkey_1 = PUSHKEY_KEYNULL;
+		int _pushkey_2 = PUSHKEY_KEYNULL;
+		int _pushkey_3 = PUSHKEY_KEYNULL;
+		int _pushkey_4 = PUSHKEY_KEYNULL;
+		int _pushfirst = M_PUSH_FIRST;
+		int _pushrollto = M_PUSH_ROLLTO;
+		_JNEXT_HDSS_LUAPARA;
+		if (bhavenext)
+		{
+			_pushkey_1 = _IOBJ_HDSS_LUA;
+			_JNEXT_HDSS_LUAPARA;
+			if (bhavenext)
+			{
+				_pushkey_2 = _IOBJ_HDSS_LUA;
+				_JNEXT_HDSS_LUAPARA;
+				if (bhavenext)
+				{
+					_pushkey_3 = _IOBJ_HDSS_LUA;
+					_JNEXT_HDSS_LUAPARA;
+					if (bhavenext)
+					{
+						_pushkey_4 = _IOBJ_HDSS_LUA;
+						_JNEXT_HDSS_LUAPARA;
+						if (bhavenext)
+						{
+							_pushfirst = _IOBJ_HDSS_LUA;
+							_JNEXT_HDSS_LUAPARA;
+							if (bhavenext)
+							{
+								_pushrollto = _IOBJ_HDSS_LUA;
+							}
+						}
+					}
+				}
+			}
+		}
+		bool bret = PushKey::SetPushEvent(_index, _pushkey_1, _pushkey_2, _pushkey_3, _pushkey_4, _pushfirst, _pushrollto);
+		ls->PushBoolean(bret);
+		return 1;
+	}
+	return 0;
+}
+
+int _HDSSCallGet::Call_UPDATEPUSHEVENT(LuaState * ls)
+{
+	_ENTERCALL_HDSS_LUA;
+
+	if (true)
+	{
+		BYTE _index = _INEXT_HDSS_LUAPARA;
+		bool bret = PushKey::UpdatePushEvent(_index);
+		ls->PushBoolean(bret);
+		return 1;
+	}
+	return 0;
+}
+
 int _HDSSCallGet::Call_SE(LuaState * ls)
 {
 	_ENTERCALL_HDSS_LUA;

@@ -19,7 +19,7 @@ int Process::processReplay()
 
 	if(time == 1)
 	{
-		PushKey::SetPushEvent(PUSHKEY_ID_UIUSE, KS_LEFT, KS_RIGHT);
+		PushKey::SetPushEvent(PUSHKEY_ID_UIUSE_0, KS_LEFT, KS_RIGHT);
 		scr.SetIntValue(SCR_RESERVEBEGIN, 0);
 		scr.SetIntValue(SCR_RESERVEBEGIN+1, 0);
 		scr.SetIntValue(SCR_RESERVEBEGIN+2, 0);
@@ -185,7 +185,7 @@ int Process::processReplay()
 		tindex = InfoSelect::select;
 		trpydifflv = _rpy[tindex].rpyinfo.difflv;
 
-		PushKey::UpdatePushEvent(PUSHKEY_ID_UIUSE);
+		PushKey::UpdatePushEvent(PUSHKEY_ID_UIUSE_0);
 
 		if(hge->Input_GetDIKey(KS_LEFT, DIKEY_DOWN))
 		{

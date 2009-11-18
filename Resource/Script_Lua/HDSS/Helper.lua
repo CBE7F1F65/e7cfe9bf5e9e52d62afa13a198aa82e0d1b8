@@ -73,6 +73,24 @@ function hdssBGOFF(index1, index2, index3, index4)
 	)
 end
 
+function hdssSETPUSHEVENT(index, key1, key2, key3, key4, pushfirst, pushrollto)
+	return hdss.Call(
+		HDSS_SETPUSHEVENT,
+		{
+			index, key1, key2, key3, key4, pushfirst, pushrollto
+		}
+	)
+end
+
+function hdssUPDATEPUSHEVENT(index)
+	return hdss.Call(
+		HDSS_UPDATEPUSHEVENT,
+		{
+			index
+		}
+	)
+end
+
 function hdssSELSET(index, select)
 	return hdss.Call(
 		HDSS_SELSET,

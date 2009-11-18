@@ -35,7 +35,7 @@ int Process::processOver()
 
 		strcpy(savefilename, "");
 
-		PushKey::SetPushEvent(PUSHKEY_ID_UIUSE, KS_LEFT, KS_RIGHT);
+		PushKey::SetPushEvent(PUSHKEY_ID_UIUSE_0, KS_LEFT, KS_RIGHT);
 		scr.SetIntValue(SCR_RESERVEBEGIN, 0);
 		scr.SetIntValue(SCR_RESERVEBEGIN+1, 0);
 		scr.SetIntValue(SCR_RESERVEBEGIN+2, 0);
@@ -268,7 +268,7 @@ int Process::processOver()
 		if(tsec == 2)
 			goto skip1;
 
-		PushKey::UpdatePushEvent(PUSHKEY_ID_UIUSE);
+		PushKey::UpdatePushEvent(PUSHKEY_ID_UIUSE_0);
 
 		if(hge->Input_GetDIKey(KS_LEFT, DIKEY_DOWN))
 		{
@@ -515,7 +515,7 @@ skip1:
 		}
 		tsec = InfoSelect::select;
 
-		PushKey::UpdatePushEvent(PUSHKEY_ID_UIUSE);
+		PushKey::UpdatePushEvent(PUSHKEY_ID_UIUSE_0);
 
 		if(tsec == 1)
 		{

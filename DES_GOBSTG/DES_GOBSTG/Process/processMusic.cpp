@@ -13,7 +13,7 @@ int Process::processMusic()
 		scr.SetIntValue(SCR_RESERVEBEGIN, 0);
 		scr.SetIntValue(SCR_RESERVEBEGIN+1, 0);
 
-		PushKey::SetPushEvent(PUSHKEY_ID_UIUSE, KS_LEFT, KS_RIGHT);
+		PushKey::SetPushEvent(PUSHKEY_ID_UIUSE_0, KS_LEFT, KS_RIGHT);
 
 		int i = 0;
 		while(true)
@@ -113,7 +113,7 @@ int Process::processMusic()
 		tmusicsel = -1;
 	}
 
-	PushKey::UpdatePushEvent(PUSHKEY_ID_UIUSE);
+	PushKey::UpdatePushEvent(PUSHKEY_ID_UIUSE_0);
 
 	if(hge->Input_GetDIKey(KS_LEFT, DIKEY_DOWN))
 	{

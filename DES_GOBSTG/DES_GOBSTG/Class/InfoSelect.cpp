@@ -112,7 +112,7 @@ void InfoSelect::Setup(int _nselect, int _select, bool _updown/* =true */)
 	nselect = _nselect;
 	select = _select;
 	updown = _updown;
-	PushKey::SetPushEvent(PUSHKEY_ID_ISELUSE, updown?KS_UP_MP:KS_LEFT_MP, updown?KS_DOWN_MP:KS_RIGHT_MP);
+//	PushKey::SetPushEvent(PUSHKEY_ID_ISELUSE, updown?KS_UP_MP:KS_LEFT_MP, updown?KS_DOWN_MP:KS_RIGHT_MP);
 }
 
 void InfoSelect::shift(int nshift)
@@ -292,7 +292,7 @@ void InfoSelect::action()
 				hge->Input_SetDIKey(KS_DOWN_MP, false);
 			}
 			*/
-			PushKey::UpdatePushEvent(PUSHKEY_ID_ISELUSE);
+//			PushKey::UpdatePushEvent(PUSHKEY_ID_ISELUSE);
 			if(hge->Input_GetDIKey(KS_DOWN_MP, DIKEY_DOWN))
 			{
 				plus = true;
@@ -327,7 +327,7 @@ void InfoSelect::action()
 				hge->Input_SetDIKey(KS_RIGHT_MP, false);
 			}
 			*/
-			PushKey::UpdatePushEvent(PUSHKEY_ID_ISELUSE);
+//			PushKey::UpdatePushEvent(PUSHKEY_ID_ISELUSE);
 			if(hge->Input_GetDIKey(KS_RIGHT_MP, DIKEY_DOWN))
 			{
 				plus = true;
