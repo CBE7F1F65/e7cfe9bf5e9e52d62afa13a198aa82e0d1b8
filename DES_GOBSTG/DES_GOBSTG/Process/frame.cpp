@@ -83,11 +83,14 @@ int Process::frame()
 	case STATE_TITLE:
 		rv = processTitle();
 		break;
+	case STATE_MATCH_SELECT:
+		rv = processMatchSelect();
+		break;
 	case STATE_PLAYER_SELECT:
 		rv = processPlayerSelect();
 		break;
-	case STATE_MATCH_SELECT:
-		rv = processMatchSelect();
+	case STATE_SCENE_SELECT:
+		rv = processSceneSelect();
 		break;
 	case STATE_OVER:
 		rv = processOver();

@@ -16,6 +16,7 @@ public:
 	static int LuaFn_Game_SetMatchMode(LuaState * ls);
 	static int LuaFn_Game_GetMatchMode(LuaState * ls);
 	static int LuaFn_Game_GetPlayerContentTable(LuaState * ls);
+	static int LuaFn_Game_GetSceneContentTable(LuaState * ls);
 };
 
 #endif

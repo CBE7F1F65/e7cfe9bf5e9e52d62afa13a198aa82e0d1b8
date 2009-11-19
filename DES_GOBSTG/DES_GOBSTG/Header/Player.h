@@ -132,6 +132,9 @@ public:
 
 	// add
 	void SetInitLife(BYTE initlife);
+	void SetChara(WORD id, WORD id_sub_1=0xffff, WORD id_sub_2=0xffff);
+
+	static void Init();
 
 public:
 	WORD	ID_sub_1;

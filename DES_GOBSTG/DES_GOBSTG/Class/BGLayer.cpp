@@ -101,12 +101,12 @@ void BGLayer::valueSet(HTEXTURE * _tex, int siID, float x, float y, float z, flo
 	}
 	if (w < 0)
 	{
-		w = tw;
+		w *= -tw;
 		x -= w / 2;
 	}
 	if (h < 0)
 	{
-		h = th;
+		h *= -th;
 		y -= h / 2;
 	}
 	width	=	w;

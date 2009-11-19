@@ -183,14 +183,14 @@ int Process::render()
 
 	Export::clientSetMatrix();
 
+	SpriteItemManager::RenderFrontSprite();
+	fdisp.RenderPostPrint();
 	fdisp.PanelDisplay();
 
 	if(Player::p[0].exist && BossInfo::flag)
 	{
 		fdisp.RenderEnemyX();
 	}
-	SpriteItemManager::RenderFrontSprite();
-	fdisp.RenderPostPrint();
 	return PGO;
 }
 

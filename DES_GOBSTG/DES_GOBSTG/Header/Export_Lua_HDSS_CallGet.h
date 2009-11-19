@@ -13,9 +13,12 @@ public:
 	~_HDSSCallGet();
 	int Call_SD(LuaState * ls);
 	int Call_SDf(LuaState * ls);
+
 	int Call_RETURN(LuaState * ls);
 	int Call_SETSTATE(LuaState * ls);
 	int Call_SETTIME(LuaState * ls);
+	int Call_SETCHARA(LuaState * ls);
+	int Call_STARTPREP(LuaState * ls);
 	int Call_SETPUSHEVENT(LuaState * ls);
 	int Call_UPDATEPUSHEVENT(LuaState * ls);
 
@@ -40,6 +43,7 @@ public:
 public:
 	int Get_D(LuaState * ls);
 	int Get_Du(LuaState * ls);
+	int Get_CHARA(LuaState * ls);
 
 	int Get_PLIFE(LuaState * ls);
 

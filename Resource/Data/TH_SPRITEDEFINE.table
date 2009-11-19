@@ -19,7 +19,7 @@ Index	SI_Name	Tex	Tex_x	Tex_y	Tex_w	Tex_h
 16	SI_InitialLife_Full	7	0	496	16	16
 17	SI_InitialLife_Half	7	16	496	16	16
 18	SI_InitialLife_Empty	7	32	496	16	16
-19	SI_Option_SEVol	0	512	32	128	32
+19	SI_Select_Frame	7	48	496	160	16
 20	SI_Option_Reset	0	640	32	128	32
 21	SI_Option_Quit	0	768	32	128	32
 22	SI_OptionKey_Shoot	0	384	64	128	32

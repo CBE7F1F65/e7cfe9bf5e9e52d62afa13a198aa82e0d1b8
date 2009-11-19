@@ -9,7 +9,6 @@ bool Process::reload()
 	strcpy(rpyfilename, "");
 	replayIndex = 0;
 
-	Player::p[0].exist = false;
 	for(int i=0; i<BGLAYERSETMAX; i++)
 	{
 		BGLayer::set[i].sID = 0;
@@ -41,7 +40,7 @@ bool Process::reload()
 	InfoSelect::Clear();
 	chat.Clear();
 	BossInfo::Clear();
-	Player::p[0].ClearNC();
+	Player::Init();
 
 	pauseinit = false;
 	practicemode = false;

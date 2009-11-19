@@ -37,6 +37,21 @@ int _HDSSCallGet::Get_Du(LuaState * ls)
 	return 0;
 }
 
+int _HDSSCallGet::Get_CHARA(LuaState * ls)
+{
+	_ENTERGET_HDSS_LUA;
+	if (argscount > 1)
+	{
+		int _index = _INEXT_HDSS_LUAFUNC;
+		_PI_HDSS_LUA(Player::p[_index].nowID);
+		_PI_HDSS_LUA(Player::p[_index].ID);
+		_PI_HDSS_LUA(Player::p[_index].ID_sub_1);
+		_PI_HDSS_LUA(Player::p[_index].ID_sub_2);
+		return 4;
+	}
+	return 0;
+}
+
 int _HDSSCallGet::Get_SELCOMPLETE(LuaState * ls)
 {
 	_ENTERGET_HDSS_LUA;

@@ -25,8 +25,9 @@ public:
 	int		processClear();
 	int		processEnding();
 	int		processTitle();
-	int		processPlayerSelect();
 	int		processMatchSelect();
+	int		processPlayerSelect();
+	int		processSceneSelect();
 	int		processOver();
 	int		processSpell();
 	int		processReplay();

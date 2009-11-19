@@ -21,6 +21,7 @@ bool Export_Lua_Game::_LuaRegistFunction(LuaObject * obj)
 	_gameobj.Register("SetMatchMode", LuaFn_Game_SetMatchMode);
 	_gameobj.Register("GetMatchMode", LuaFn_Game_GetMatchMode);
 	_gameobj.Register("GetPlayerContentTable", LuaFn_Game_GetPlayerContentTable);
+	_gameobj.Register("GetSceneContentTable", LuaFn_Game_GetSceneContentTable);
 
 	return true;
 }
@@ -85,23 +86,56 @@ int Export_Lua_Game::LuaFn_Game_GetMatchMode(LuaState * ls)
 
 int Export_Lua_Game::LuaFn_Game_GetPlayerContentTable(LuaState * ls)
 {
-	LuaStackObject _table = ls->CreateTable();
-	LuaStackObject _content;
-	int j = 0;
-	for (int i=0; i<PLAYERTYPEMAX; i++)
+	LuaStack args(ls);
+	if (!args.Count())
 	{
-		if (strlen(res.playerdata[i].name))
+		int playercount = PLAYERTYPEMAX;
+		for (int i=0; i<PLAYERTYPEMAX; i++)
 		{
-			j++;
-			_content = _table.CreateTable(j);
-			_content.SetNumber("siid", SpriteItemManager::faceIndexPlayer + res.playerdata[i].faceIndex);
-			_content.SetString("name", res.playerdata[i].name);
-			_content.SetString("ename", res.playerdata[i].ename);
+			if (!strlen(res.playerdata[i].name))
+			{
+				playercount = i;
+				break;
+			}
 		}
+		ls->PushInteger(playercount);
+		return 1;
 	}
-	ls->PushValue(_table);
-	ls->PushInteger(j);
-	return 2;
+	else
+	{
+		int index = args[1].GetInteger();
+		ls->PushInteger(SpriteItemManager::faceIndexPlayer + res.playerdata[index].faceIndex);
+		_LuaHelper_PushString(ls, res.playerdata[index].name);
+		_LuaHelper_PushString(ls, res.playerdata[index].ename);
+		return 3;
+	}
+	return 0;
+}
+
+int Export_Lua_Game::LuaFn_Game_GetSceneContentTable(LuaState * ls)
+{
+	LuaStack args(ls);
+	if (!args.Count())
+	{
+		int scenecount = SCENEMAX;
+		for (int i=0; i<SCENEMAX; i++)
+		{
+			if (!strlen(res.scenedata[i].scenename))
+			{
+				scenecount = i;
+				break;
+			}
+		}
+		ls->PushInteger(scenecount);
+		return 1;
+	}
+	else
+	{
+		int index = args[1].GetInteger();
+		ls->PushString(res.scenedata[index].scenename);
+		return 1;
+	}
+	return 0;
 }
 
 #endif

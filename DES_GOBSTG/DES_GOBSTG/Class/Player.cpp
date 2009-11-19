@@ -68,6 +68,19 @@ Player::~Player()
 	sprite = NULL;
 }
 
+void Player::Init()
+{
+	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
+	{
+		p[i].ClearNC();
+		p[i].exist = false;
+		p[i].ID = i;
+		p[i].nowID = i;
+		p[i].ID_sub_1 = 0xffff;
+		p[i].ID_sub_2 = 0xffff;
+	}
+}
+
 void Player::initFrameIndex()
 {
 	WORD _ID;
@@ -469,6 +482,14 @@ void Player::UpdatePlayerData()
 	shotdelay = pdata->shotdelay;
 	borderlast = pdata->borderlast;
 	bomblast = pdata->bomblast;
+}
+
+void Player::SetChara(WORD id, WORD id_sub_1/* =0xffff */, WORD id_sub_2/* =0xffff */)
+{
+	ID = id;
+	nowID = ID;
+	ID_sub_1 = id_sub_1;
+	ID_sub_2 = id_sub_2;
 }
 
 void Player::valueSet(WORD _ID, WORD _ID_sub_1, WORD _ID_sub_2, BYTE _nLife, bool bContinue)

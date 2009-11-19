@@ -182,7 +182,7 @@ int Export_Lua_HDSS::LuaFn_HDSS_Get(LuaState * ls)
 		case SCR_SNOUSER:
 			break;
 		case SCR_CHARA:
-			break;
+			return hdsscallget.Get_CHARA(ls);
 		case SCR_GETSCENE:
 			break;
 		case SCR_MODE:

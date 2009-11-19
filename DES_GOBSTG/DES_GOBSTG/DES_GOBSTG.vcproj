@@ -514,6 +514,9 @@
 					RelativePath=".\Process\processResult.cpp">
 				</File>
 				<File
+					RelativePath=".\Process\processSceneSelect.cpp">
+				</File>
+				<File
 					RelativePath=".\Process\processSpell.cpp">
 				</File>
 				<File
@@ -563,6 +566,9 @@
 				</File>
 				<File
 					RelativePath=".\Header\DataStruct.h">
+				</File>
+				<File
+					RelativePath=".\Header\DataTable.h">
 				</File>
 				<File
 					RelativePath=".\Header\Export.h">

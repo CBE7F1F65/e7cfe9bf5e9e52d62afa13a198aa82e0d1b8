@@ -201,6 +201,7 @@ typedef struct tagTarget
 #define M_BINHEADER_OFFSET	0x40
 
 #define PLAYERTYPEMAX		0x20
+#define SCENEMAX			(PLAYERTYPEMAX)
 
 #define SPRITEITEMMAX		0x400
 

@@ -16,6 +16,24 @@ function hdssSDf(index, value)
 	)
 end
 
+function hdssSETCHARA(index, id, id_sub_1, id_sub_2)
+	return hdss.Call(
+		HDSS_SETCHARA,
+		{
+			index, id, id_sub_1, id_sub_2
+		}
+	)
+end
+
+function hdssSTARTPREP(callinit)
+	return hdss.Call(
+		HDSS_STARTPREP,
+		{
+			callinit
+		}
+	)
+end
+
 function hdssBGVALUE(index, siid, cenx, ceny, w, h, col)
 	return hdss.Call(
 		HDSS_BGVALUE,

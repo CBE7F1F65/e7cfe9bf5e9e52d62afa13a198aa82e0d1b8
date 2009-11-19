@@ -25,6 +25,7 @@ Data::Data()
 	customconstfilename = NULL;
 	spelldefinefilename = NULL;
 	musicdefinefilename = NULL;
+	scenedefinefilename = NULL;
 	bulletdefinefilename = NULL;
 	enemydefinefilename = NULL;
 	playerdefinefilename = NULL;
@@ -406,6 +407,9 @@ void Data::getFile(BYTE type)
 	case DATA_MUSICDEFINEFILE:
 		nowfilename = musicdefinefilename;
 		break;
+	case DATA_SCENEDEFINEFILE:
+		nowfilename = scenedefinefilename;
+		break;
 
 	case DATA_BULLETDEFINEFILE:
 		nowfilename = bulletdefinefilename;
@@ -660,12 +664,19 @@ bool Data::GetAllTable()
 		return false;
 	}
 
-
 	//music
 	if (!GetTableFile(DATA_MUSICDEFINEFILE))
 	{
 #ifdef __DEBUG
 		HGELOG("%s\nFailed in loading MusicDefineFile %s.", HGELOG_ERRSTR, musicdefinefilename);
+#endif // __DEBUG
+		return false;
+	}
+	//scene
+	if (!GetTableFile(DATA_SCENEDEFINEFILE))
+	{
+#ifdef __DEBUG
+		HGELOG("%s\nFailed in loading SceneDefineFile %s.", HGELOG_ERRSTR, scenedefinefilename);
 #endif // __DEBUG
 		return false;
 	}

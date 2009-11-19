@@ -26,6 +26,10 @@ struct musicData{
 	LONGLONG alllength;
 };
 
+struct sceneData{
+	char scenename[M_STRMAX];
+};
+
 struct spellData{
 	char spellname[M_STRMAX];
 	LONGLONG bonus;
@@ -103,6 +107,7 @@ struct resourceData
 	char texturedefinefilename[M_PATHMAX];
 	char effectdefinefilename[M_PATHMAX];
 	char sedefinefilename[M_PATHMAX];
+	char scenedefinefilename[M_PATHMAX];
 
 	//folder
 	char scriptfoldername[M_SCRIPTFOLDERMAX][M_PATHMAX];

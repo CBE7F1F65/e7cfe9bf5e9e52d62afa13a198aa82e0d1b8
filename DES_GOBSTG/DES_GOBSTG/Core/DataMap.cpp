@@ -81,6 +81,7 @@ dataMapTable dataMap[] =
 	{"CustomConstFile",		0x13210000},
 	{"SpellDefineFile",		0x13220000},
 	{"MusicDefineFile",		0x13240000},
+	{"SceneDefineFile",		0x13250000},
 	{"BulletDefineFile",	0x13280000},
 	{"EnemyDefineFile",		0x13290000},
 	{"PlayerDefineFile",	0x132A0000},

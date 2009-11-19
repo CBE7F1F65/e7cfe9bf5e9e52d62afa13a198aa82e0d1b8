@@ -8,6 +8,7 @@
 #define RSIZE_STRINGDESC	(sizeof(char) * M_STRMAX * STRINGDESCMAX)
 #define RSIZE_CUSTOMCONST	(sizeof(customconstData) * SCR_CUSTOMCONSTMAX)
 #define RSIZE_MUSIC			(sizeof(musicData) * MUSICMAX)
+#define RSIZE_SCENE			(sizeof(sceneData) * SCENEMAX)
 #define RSIZE_BULLET		(sizeof(bulletData) * BULLETTYPEMAX)
 #define RSIZE_ENEMY			(sizeof(enemyData) * ENEMYTYPEMAX)
 #define RSIZE_PLAYER		(sizeof(playerData) * PLAYERTYPEMAX)
@@ -36,6 +37,7 @@ public:
 public:
 
 	musicData musdata[MUSICMAX];
+	sceneData scenedata[SCENEMAX];
 	resourceData resdata;
 	vector<spellData> spelldata;
 	bulletData bulletdata[BULLETTYPEMAX];

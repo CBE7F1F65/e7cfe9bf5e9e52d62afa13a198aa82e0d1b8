@@ -86,6 +86,48 @@ int _HDSSCallGet::Call_SETTIME(LuaState * ls)
 	return 0;
 }
 
+int _HDSSCallGet::Call_SETCHARA(LuaState * ls)
+{
+	_ENTERCALL_HDSS_LUA;
+
+	if (true)
+	{
+		int _index = _INEXT_HDSS_LUAPARA;
+		WORD _id = _INEXT_HDSS_LUAPARA;
+		WORD _id_sub_1 = 0xffff;
+		WORD _id_sub_2 = 0xffff;
+		_JNEXT_HDSS_LUAPARA;
+		if (bhavenext)
+		{
+			_id_sub_1 = _IOBJ_HDSS_LUA;
+			_JNEXT_HDSS_LUAPARA;
+			if (bhavenext)
+			{
+				_id_sub_2 = _IOBJ_HDSS_LUA;
+			}
+		}
+		Player::p[_index].SetChara(_id, _id_sub_1, _id_sub_2);
+	}
+	return 0;
+}
+
+int _HDSSCallGet::Call_STARTPREP(LuaState * ls)
+{
+	_ENTERCALL_HDSS_LUA;
+
+	if (true)
+	{
+		bool _callinit = false;
+		_JNEXT_HDSS_LUAPARA;
+		if (bhavenext)
+		{
+			_callinit = _BOBJ_HDSS_LUA;
+		}
+		mp.startPrep(_callinit);
+	}
+	return 0;
+}
+
 int _HDSSCallGet::Call_SETPUSHEVENT(LuaState * ls)
 {
 	_ENTERCALL_HDSS_LUA;

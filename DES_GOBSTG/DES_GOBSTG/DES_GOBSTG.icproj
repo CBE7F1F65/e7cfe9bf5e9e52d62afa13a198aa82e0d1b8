@@ -5,7 +5,7 @@
 	Name="DES_GOBSTG"
 	ProjectGUID="{A4938EF7-0CE1-47A3-BC8D-4D0B54F94F6D}"
 	VCNestedProjectGUID="{7329E15F-F0AE-44EE-BC64-27B9038C76D7}"
-	VCNestedProjectCRC32="3332931552"
+	VCNestedProjectCRC32="2929887311"
 	VCNestedProjectFileName="DES_GOBSTG.vcproj"
 	Keyword="Win32Proj">
 	<Configurations>
@@ -238,8 +238,6 @@
 		<File 
 			RelativePath=".\Core\Export_Lua.cpp"/>
 		<File 
-			RelativePath=".\Core\Export_Lua_HGEHelper.cpp"/>
-		<File 
 			RelativePath=".\Core\Export_Lua_Const.cpp"/>
 		<File 
 			RelativePath=".\Core\Export_Lua_Function.cpp"/>
@@ -257,6 +255,8 @@
 			RelativePath=".\Core\Export_Lua_HDSS_GetFunctions.cpp"/>
 		<File 
 			RelativePath=".\Core\Export_Lua_HGE.cpp"/>
+		<File 
+			RelativePath=".\Core\Export_Lua_HGEHelper.cpp"/>
 		<File 
 			RelativePath=".\Class\Beam.cpp"/>
 		<File 
@@ -342,6 +342,8 @@
 		<File 
 			RelativePath=".\Process\processReplay.cpp"/>
 		<File 
+			RelativePath=".\Process\processResult.cpp"/>
+		<File 
 			RelativePath=".\Process\processSpell.cpp"/>
 		<File 
 			RelativePath=".\Process\processStart.cpp"/>
@@ -354,7 +356,7 @@
 		<File 
 			RelativePath=".\Process\render.cpp"/>
 		<File 
-			RelativePath=".\Process\processResult.cpp"/>
+			RelativePath=".\Process\processSceneSelect.cpp"/>
 		<File 
 			RelativePath=".\Header\BMath.h"/>
 		<File 
@@ -396,17 +398,19 @@
 		<File 
 			RelativePath=".\Header\Export_Lua.h"/>
 		<File 
-			RelativePath=".\Header\Export_Lua_HDSS_CallGetDefine.h"/>
+			RelativePath=".\Header\Export_Lua_Game.h"/>
+		<File 
+			RelativePath=".\Header\Export_Lua_HDSS.h"/>
 		<File 
 			RelativePath=".\Header\Export_Lua_HDSS_CallGet.h"/>
+		<File 
+			RelativePath=".\Header\Export_Lua_HDSS_CallGetDefine.h"/>
 		<File 
 			RelativePath=".\Header\Export_Lua_HGE.h"/>
 		<File 
 			RelativePath=".\Header\Export_Lua_HGEHelp.h"/>
 		<File 
-			RelativePath=".\Header\Export_Lua_HDSS.h"/>
-		<File 
-			RelativePath=".\Header\Export_Lua_Game.h"/>
+			RelativePath=".\Header\DataTable.h"/>
 		<File 
 			RelativePath=".\Header\Beam.h"/>
 		<File 

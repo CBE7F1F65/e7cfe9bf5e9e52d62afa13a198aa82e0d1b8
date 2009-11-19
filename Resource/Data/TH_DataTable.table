@@ -3,6 +3,7 @@ Usage	Table
 CustomConstFile	TH_CUSTOMCONST.table	
 SpellDefineFile	TH_SPELLDEFINE.table	
 MusicDefineFile	TH_MUSICDEFINE.table	
+SceneDefine	TH_SCENEDEFINE.table	
 BulletDefineFile	TH_BULLETDEFINE.table	
 EnemyDefineFile	TH_ENEMYDEFINE.table	
 PlayerDefineFile	TH_PLAYERDEFINE.table	

@@ -45,6 +45,10 @@ int Export_Lua_HDSS::LuaFn_HDSS_Call(LuaState * ls)
 				return hdsscallget.Call_SETSTATE(ls);
 			case SCR_SETTIME:
 				return hdsscallget.Call_SETTIME(ls);
+			case SCR_SETCHARA:
+				return hdsscallget.Call_SETCHARA(ls);
+			case SCR_STARTPREP:
+				return hdsscallget.Call_STARTPREP(ls);
 			case SCR_SETPUSHEVENT:
 				return hdsscallget.Call_SETPUSHEVENT(ls);
 			case SCR_UPDATEPUSHEVENT:

@@ -12,6 +12,7 @@
 #define DATA_CUSTOMCONSTFILE	0x41
 #define DATA_SPELLDEFINEFILE	0x42
 #define DATA_MUSICDEFINEFILE	0x44
+#define DATA_SCENEDEFINEFILE	0x45
 
 #define DATA_BULLETDEFINEFILE	0x48
 #define DATA_ENEMYDEFINEFILE	0x49
@@ -149,6 +150,7 @@ enum{
 	RESDATAN_CUSTOMCONSTFILE,
 	RESDATAN_SPELLDEFINEFILE,
 	RESDATAN_MUSICDEFINEFILE,
+	RESDATAN_SCENEDEFINEFILE,
 	RESDATAN_BULLETDEFINEFILE,
 	RESDATAN_ENEMYDEFINEFILE,
 	RESDATAN_PLAYERDEFINEFILE,
@@ -348,6 +350,7 @@ public:
 	char * customconstfilename;
 	char * spelldefinefilename;
 	char * musicdefinefilename;
+	char * scenedefinefilename;
 	char * bulletdefinefilename;
 	char * enemydefinefilename;
 	char * playerdefinefilename;

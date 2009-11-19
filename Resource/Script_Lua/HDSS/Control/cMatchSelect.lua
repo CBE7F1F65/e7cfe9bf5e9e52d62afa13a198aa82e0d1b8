@@ -72,13 +72,16 @@ function CEMatchSelect_DispatchSelect_Match(selsysmatchid)
 			game.SetMatchMode(MatchMode_N2N);
 			return true;
 		elseif select == 1 then
+			hdssBGVALUE(LConst_uibg_bottomid, SI_MatchSelect_P2P, TotalCenterX, 440);
 			game.SetMatchMode(MatchMode_P2P);
 		elseif select == 2 then
+			hdssBGVALUE(LConst_uibg_bottomid, SI_MatchSelect_P2C, TotalCenterX, 440);
 			game.SetMatchMode(MatchMode_P2C);
 		elseif select == 3 then
+			hdssBGVALUE(LConst_uibg_bottomid, SI_MatchSelect_C2P, TotalCenterX, 440);
 			game.SetMatchMode(MatchMode_C2P);
 		end
-		CEMatchSelect_ExitState(STATE_PLAYER_SELECT);
+		CEMatchSelect_ExitState(STATE_PLAYER_SELECT, false);
 	elseif hge.Input_GetDIKey(KS_QUICK, DIKEY_DOWN) then
 		hdssSE(SE_SYSTEM_CANCEL);
 		CEMatchSelect_ExitState(STATE_TITLE);
@@ -87,7 +90,7 @@ function CEMatchSelect_DispatchSelect_Match(selsysmatchid)
 end
 
 function CEMatchSelect_SetBG_Waiting()
-	hdssBGVALUE(LConst_uibg_bottomid, SI_MatchSelect_P2P, TotalCenterX, 440);
+	hdssBGVALUE(LConst_uibg_bottomid, SI_MatchSelect_N2N, TotalCenterX, 440);
 	hdssBGVALUE(LConst_uibg_infoid, SI_MatchMode_Waiting, TotalCenterX, 200, 384, 60);
 end
 
@@ -234,7 +237,7 @@ function CEMatchSelect_DispatchSelect_Latency(selsyslatencyid, latency)
 	if complete then
 		latency = select + 1;
 		game.SetLatency(latency);
-		CEMatchSelect_ExitState(STATE_PLAYER_SELECT);
+		CEMatchSelect_ExitState(STATE_PLAYER_SELECT, false);
 		ret = 1;
 	end
 	return ret;
@@ -254,9 +257,9 @@ function CEMatchSelect_DisplayIP(ipx, ipport)
 	)
 end
 
-function CEMatchSelect_ExitState(tostate)
+function CEMatchSelect_ExitState(tostate, bbottom)
 	hdssSETSTATE(tostate);
-	CEMatchSelect_CloseUsed(LConst_selsys_matchid, LConst_selsys_latencyid, true);
+	CEMatchSelect_CloseUsed(LConst_selsys_matchid, LConst_selsys_latencyid, bbottom);
 end
 
 function ControlExecute_cMatchSelect(con)
