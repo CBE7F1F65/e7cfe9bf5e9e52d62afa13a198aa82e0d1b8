@@ -37,15 +37,15 @@ int Process::processClear()
 		if(islast)
 		{
 			DataConnector::Clear();
-			tscore += Player::p.getAllClearBonusLife();
-			tscore += Player::p.getAllClearBonusPower();
+			tscore += Player::p[0].getAllClearBonusLife();
+			tscore += Player::p[0].getAllClearBonusPower();
 		}
-		tscore += Player::p.getClearBonusPoint();
-		tscore += Player::p.getClearBonusGraze();
-		tscore += Player::p.getClearBonusFaith();
-		tscore += Player::p.getClearBonusStage(tstage);
+		tscore += Player::p[0].getClearBonusPoint();
+		tscore += Player::p[0].getClearBonusGraze();
+		tscore += Player::p[0].getClearBonusFaith();
+		tscore += Player::p[0].getClearBonusStage(tstage);
 
-		Player::p.nScore += tscore;
+		Player::p[0].nScore += tscore;
 
 		fdisp.SetValue(tscore, 0, 0, (!islast) && (!practicemode));
 		fdisp.SetState(FDISP_NEXTSTAGE, _PCLEAR_FDISP_TIME);

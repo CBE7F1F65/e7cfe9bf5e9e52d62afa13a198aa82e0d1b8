@@ -244,7 +244,7 @@ int Export_Lua_HDSS::LuaFn_HDSS_Get(LuaState * ls)
 		case SCR_PY:
 			break;
 		case SCR_PLIFE:
-			break;
+			return hdsscallget.Get_PLIFE(ls);
 		case SCR_PBOMB:
 			break;
 		case SCR_PPOWER:

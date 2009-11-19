@@ -13,6 +13,9 @@
 #define PLAYER_FRAME_RIGHTPRE	3
 #define PLAYER_FRAME_RIGHT		4
 
+// add
+#define PLAYER_DEFAULTINITLIFE	10
+
 #define PLSHOTDELAY_ADD		12
 #define PL_NPOPMAX			1200
 
@@ -127,6 +130,9 @@ public:
 
 	void AddPower(int power);
 
+	// add
+	void SetInitLife(BYTE initlife);
+
 public:
 	WORD	ID_sub_1;
 	WORD	ID_sub_2;
@@ -219,12 +225,16 @@ public:
 
 	BYTE	bonusflag;
 
-	static Player p;
 	int		ncBorder;
 	BYTE	ncMiss;
 	BYTE	ncCont;
 	BYTE	ncGet;
 	BYTE	ncPause;
+
+	// add
+	BYTE	initlife;
+
+	static Player p[M_PL_MATCHMAXPLAYER];
 
 };
 #endif

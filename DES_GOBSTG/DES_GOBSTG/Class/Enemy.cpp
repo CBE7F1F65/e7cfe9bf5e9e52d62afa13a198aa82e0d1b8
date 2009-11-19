@@ -192,7 +192,7 @@ void Enemy::matchAction()
 		//¿¿½üÖ÷½Ç
 		if(timer < para[0])
 		{
-			angle = aMainAngle(Player::p);
+			angle = aMainAngle(Player::p[0]);
 			speed *= para[1]/1000.0f;
 		}
 		else
@@ -279,7 +279,7 @@ void Enemy::matchAction()
 		else if(timer < para[2])
 		{
 			speed += 0.06f;
-			angle = aMainAngle(Player::p);
+			angle = aMainAngle(Player::p[0]);
 		}
 		break;
 
@@ -310,10 +310,10 @@ void Enemy::matchAction()
 		else if(timer % (int)para[3] == 0)
 		{
 			para[0] = 2 * para[3] > 120 ? 120 : 2 * para[3];
-			if(Player::p.x > x)
-				para[1] = Player::p.x + randt() % 60;
+			if(Player::p[0].x > x)
+				para[1] = Player::p[0].x + randt() % 60;
 			else
-				para[1] = Player::p.x - randt() % 60;
+				para[1] = Player::p[0].x - randt() % 60;
 			if(para[1] < M_ACTIVECLIENT_RIGHT*0.15f)
 			{
 				if(x <= M_ACTIVECLIENT_RIGHT*0.15f + 8)
@@ -706,7 +706,7 @@ void Enemy::GetCollisionRect(float * w, float * h)
 
 void Enemy::CostLife(float power)
 {
-	if (!Player::p.bBomb || !(bossinfo.spellflag & BISF_NOBOMBDAMAGE))
+	if (!Player::p[0].bBomb || !(bossinfo.spellflag & BISF_NOBOMBDAMAGE))
 	{
 		life -= power * (1 - defrate);
 	}
@@ -770,7 +770,7 @@ void Enemy::DoShot()
 				if (isInRange(tdmg->x, tdmg->y, tdmg->r))
 				{
 					CostLife(tdmg->power);
-					Player::p.DoPlayerBulletHit();
+					Player::p[0].DoPlayerBulletHit();
 				}
 			}
 		}
@@ -827,7 +827,7 @@ void Enemy::DoShot()
 
 		if (life < 0)
 		{
-			Player::p.GetScoreLife(maxlife, true);
+			Player::p[0].GetScoreLife(maxlife, true);
 
 			SE::push(SE_ENEMY_DEAD, x);
 
@@ -902,16 +902,16 @@ void Enemy::action()
 		float tw;
 		float th;
 		GetCollisionRect(&tw, &th);
-		if (!Player::p.bInfi && !Player::p.bBomb && !Player::p.bBorder)
+		if (!Player::p[0].bInfi && !Player::p[0].bBomb && !Player::p[0].bBorder)
 		{
-			if (checkCollisionSquare(Player::p, tw, th))
+			if (checkCollisionSquare(Player::p[0], tw, th))
 			{
-				Player::p.DoShot();
+				Player::p[0].DoShot();
 			}
 		}
 		if(BossInfo::flag)
 		{
-			int txdiff = fabsf(Player::p.x - x);
+			int txdiff = fabsf(Player::p[0].x - x);
 			if(txdiff < ENEMY_BOSSX_FADERANGE)
 				fdisp.info.enemyx->SetColor(((0x40 + txdiff*2) << 24) | 0xffffff);
 			else

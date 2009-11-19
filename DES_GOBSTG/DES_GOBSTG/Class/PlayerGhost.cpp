@@ -24,15 +24,15 @@ PlayerGhost::~PlayerGhost()
 
 void PlayerGhost::ResetValue(bool move/* =false */)
 {
-	int tid = Player::p.nowID;
+	int tid = Player::p[0].nowID;
 	tid *= PLAYERGHOSTMAX * 2;
-	if (Player::p.bSlow)
+	if (Player::p[0].bSlow)
 	{
 		tid += PLAYERGHOSTMAX;
 	}
 	for (int i=0; i<PLAYERGHOSTMAX; i++)
 	{
-		Player::p.pg[i].valueSet(tid+i, move);
+		Player::p[0].pg[i].valueSet(tid+i, move);
 	}
 }
 
@@ -158,7 +158,7 @@ void PlayerGhost::AntiShooter(float aimx, float aimy)
 		}
 	}
 	if((aimx != x || aimy != y) || timer < _PLAYERGHOST_ADJUSTTIME)
-		shootangle = aMainAngle(Player::p, 18000);
+		shootangle = aMainAngle(Player::p[0], 18000);
 }
 
 void PlayerGhost::action()
@@ -170,15 +170,15 @@ void PlayerGhost::action()
 
 	int chasetime = 2;
 	bool chasing = false;
-	bool shooting = Player::p.flag & PLAYER_SHOOT;
+	bool shooting = Player::p[0].flag & PLAYER_SHOOT;
 
 	playerghostData * _pgd = &(res.playerghostdata[ID]);
 
 	if (flag & PGFLAG_TRACE)
 	{
 		int _tindex = (ID%PLAYERGHOSTMAX+1)*8-1;
-		aimx = Player::p.lastmx[_tindex];
-		aimy = Player::p.lastmy[_tindex];
+		aimx = Player::p[0].lastmx[_tindex];
+		aimy = Player::p[0].lastmy[_tindex];
 	}
 
 	if (flag & PGFLAG_CHASE)
@@ -194,8 +194,8 @@ void PlayerGhost::action()
 		}
 		else
 		{
-			aimx = Player::p.lastx[_PLAYERGHOST_LASTINDEX] + _pgd->xadj;
-			aimy = Player::p.lasty[_PLAYERGHOST_LASTINDEX] + _pgd->yadj;
+			aimx = Player::p[0].lastx[_PLAYERGHOST_LASTINDEX] + _pgd->xadj;
+			aimy = Player::p[0].lasty[_PLAYERGHOST_LASTINDEX] + _pgd->yadj;
 		}
 	}
 	if (chasing != lastchasing)
@@ -211,8 +211,8 @@ void PlayerGhost::action()
 
 	if (!(flag & PGFLAG_POSTMASK))
 	{
-		aimx = Player::p.lastx[_PLAYERGHOST_LASTINDEX];
-		aimy = Player::p.lasty[_PLAYERGHOST_LASTINDEX];
+		aimx = Player::p[0].lastx[_PLAYERGHOST_LASTINDEX];
+		aimy = Player::p[0].lasty[_PLAYERGHOST_LASTINDEX];
 	}
 
 	if (_pgd->mover)
@@ -237,7 +237,7 @@ void PlayerGhost::action()
 	{
 		if (flag & PGFLAG_STAY)
 		{
-			shootangle = aMainAngle(Player::p, 18000);
+			shootangle = aMainAngle(Player::p[0], 18000);
 		}
 		else
 		{
@@ -302,7 +302,7 @@ void PlayerGhost::action()
 	if (flag & PGFLAG_SYNCPLAYER)
 	{
 		float tex_x, tex_y, tex_w, tex_h;
-		Player::p.sprite->GetTextureRect(&tex_x, &tex_y, &tex_w, &tex_h);
+		Player::p[0].sprite->GetTextureRect(&tex_x, &tex_y, &tex_w, &tex_h);
 		if (flag & PGFLAG_CHASE)
 		{
 			if (chasing)
@@ -315,7 +315,7 @@ void PlayerGhost::action()
 		}
 		sprite->SetTextureRect(tex_x, tex_y, tex_w, tex_h);
 		bool bxflip, byflip;
-		Player::p.sprite->GetFlip(&bxflip, &byflip);
+		Player::p[0].sprite->GetFlip(&bxflip, &byflip);
 		sprite->SetFlip(bxflip, byflip);
 	}
 	lastchasing = chasing;

@@ -137,7 +137,7 @@ void Effectsys::action()
 		chasetimer--;
 		if (tarAim == 0xff)
 		{
-			chaseAim(Player::p.x, Player::p.y, chasetimer);
+			chaseAim(Player::p[0].x, Player::p[0].y, chasetimer);
 		}
 		else
 		{

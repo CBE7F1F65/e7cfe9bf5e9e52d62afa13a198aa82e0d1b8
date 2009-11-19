@@ -73,7 +73,7 @@ void BossInfo::bossUp()
 	Fill(mp.scene);
 
 	failed	= false;
-	lastgraze = Player::p.nGraze;
+	lastgraze = Player::p[0].nGraze;
 
 	flag = BOSSINFO_UP | BOSSINFO_ENABLE;
 	timer = 0;
@@ -102,7 +102,7 @@ void BossInfo::quit()
 {
 	if (flag & BOSSINFO_COLLAPSE)
 	{
-		Player::p.bInfi = false;
+		Player::p[0].bInfi = false;
 	}
 	else if (flag & BOSSINFO_TIMEOVER)
 	{
@@ -164,7 +164,7 @@ bool BossInfo::action()
 	}
 	else if(flag & BOSSINFO_COLLAPSE)
 	{
-		Player::p.bInfi = true;
+		Player::p[0].bInfi = true;
 		if(timer == 1)
 		{
 			scr.Execute(SCR_STAGE, sno, SCRIPT_CON_QUIT);
@@ -176,7 +176,7 @@ bool BossInfo::action()
 				en[ENEMY_MAINBOSSINDEX].ac = 0;
 				en[ENEMY_MAINBOSSINDEX].speed = 0;
 			}
-			Player::p.nScore += bonus;
+			Player::p[0].nScore += bonus;
 			if(!(spellflag & BISF_NOTSPELL))
 			{
 				Bullet::IzeBuild(BULLETIZE_FAITH, en[ENEMY_MAINBOSSINDEX].x, en[ENEMY_MAINBOSSINDEX].y);
@@ -194,8 +194,8 @@ bool BossInfo::action()
 
 			if(!failed && !(spellflag & BISF_NOTSPELL))
 			{
-				Player::p.getspell[Player::p.ncGet] = mp.scene;
-				Player::p.ncGet++;
+				Player::p[0].getspell[Player::p[0].ncGet] = mp.scene;
+				Player::p[0].ncGet++;
 			}
 
 			if(turntoscene - SCLEAR > S1 && !mp.spellmode)
@@ -232,8 +232,8 @@ bool BossInfo::action()
 				failed = true;
 			if(!failed && !(spellflag & BISF_NOTSPELL) && (spellflag & BISF_WAIT))
 			{
-				Player::p.getspell[Player::p.ncGet] = mp.scene;
-				Player::p.ncGet++;
+				Player::p[0].getspell[Player::p[0].ncGet] = mp.scene;
+				Player::p[0].ncGet++;
 			}
 			if(spellflag & BISF_NOTSPELL)
 			{
@@ -270,11 +270,11 @@ bool BossInfo::action()
 		{
 			int minus;
 			minus = maxbonus / (limit*60);
-			minus -= Player::p.GrazeRegain(Player::p.nGraze - lastgraze);
+			minus -= Player::p[0].GrazeRegain(Player::p[0].nGraze - lastgraze);
 			bonus -= minus;
 			if(bonus > maxbonus)
 				bonus = maxbonus;
-			lastgraze = Player::p.nGraze;
+			lastgraze = Player::p[0].nGraze;
 		}
 		else if(failed)
 			bonus = maxbonus / 100;

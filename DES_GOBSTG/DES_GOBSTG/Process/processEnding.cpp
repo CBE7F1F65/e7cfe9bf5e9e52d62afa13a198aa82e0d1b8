@@ -14,7 +14,7 @@ int Process::processEnding()
 	{
 		BGLayer::KillOtherLayer();
 
-		Player::p.exist = false;
+		Player::p[0].exist = false;
 		bgmask.exist = false;
 		fdisp.SetState(FDISP_PANEL, 0);
 		musicChange(0, true);

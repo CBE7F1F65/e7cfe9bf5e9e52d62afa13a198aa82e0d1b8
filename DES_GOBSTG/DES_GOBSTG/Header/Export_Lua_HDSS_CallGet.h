@@ -18,15 +18,20 @@ public:
 	int Call_SETTIME(LuaState * ls);
 	int Call_SETPUSHEVENT(LuaState * ls);
 	int Call_UPDATEPUSHEVENT(LuaState * ls);
+
 	int Call_SE(LuaState * ls);
 	int Call_HSVTORGB(LuaState * ls);
 	int Call_PRINT(LuaState * ls);
 	int Call_FRONTSPRITE(LuaState * ls);
 	int Call_FREEFRONTSPRITE(LuaState * ls);
+
+	int Call_SETPINITLIFE(LuaState * ls);
+
 	int Call_BGVALUE(LuaState * ls);
 	int Call_BGVALEX(LuaState * ls);
 	int Call_BGFLAG(LuaState * ls);
 	int Call_BGOFF(LuaState * ls);
+
 	int Call_SELBUILD(LuaState * ls);
 	int Call_SELCLEAR(LuaState * ls);
 	int Call_SELSETUP(LuaState * ls);
@@ -35,6 +40,9 @@ public:
 public:
 	int Get_D(LuaState * ls);
 	int Get_Du(LuaState * ls);
+
+	int Get_PLIFE(LuaState * ls);
+
 	int Get_SELCOMPLETE(LuaState * ls);
 	int Get_SEL(LuaState * ls);
 	int Get_SELFIRSTID(LuaState * ls);

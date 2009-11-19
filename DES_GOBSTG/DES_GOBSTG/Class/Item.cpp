@@ -165,15 +165,15 @@ void Item::undrainAll()
 
 void Item::action()
 {
-	if(!bDrained && !(Player::p.flag & PLAYER_COLLAPSE || Player::p.flag & PLAYER_SHOT))
+	if(!bDrained && !(Player::p[0].flag & PLAYER_COLLAPSE || Player::p[0].flag & PLAYER_SHOT))
 	{
-		float rdrain = (Player::p.bSlow) ? 64 : 48;
-		if (checkCollisionSquare(Player::p, rdrain))
+		float rdrain = (Player::p[0].bSlow) ? 64 : 48;
+		if (checkCollisionSquare(Player::p[0], rdrain))
 		{
 			bDrained = true;
 			bFast = false;
 		}
-		if(Player::p.y < _ITEM_DRAINY || Player::p.fPoprate >= 1.0f)
+		if(Player::p[0].y < _ITEM_DRAINY || Player::p[0].fPoprate >= 1.0f)
 		{
 			bDrained = true;
 		}
@@ -186,9 +186,9 @@ void Item::action()
 				speed = _ITEM_DRAINFASTSPEED;
 			else
 				speed = _ITEM_DRAINSLOWSPEED;
-			float dist = DIST(x, y, Player::p.x, Player::p.y);
-			x += speed * (Player::p.x - x) / dist;
-			y += speed * (Player::p.y - y) / dist;
+			float dist = DIST(x, y, Player::p[0].x, Player::p[0].y);
+			x += speed * (Player::p[0].x - x) / dist;
+			y += speed * (Player::p[0].y - y) / dist;
 		}
 		else
 		{
@@ -223,8 +223,8 @@ void Item::action()
 			y += speed;
 	}
 
-	if (checkCollisionSquare(Player::p, _ITEM_GETR)
-		&& !(Player::p.flag & PLAYER_COLLAPSE)
+	if (checkCollisionSquare(Player::p[0], _ITEM_GETR)
+		&& !(Player::p[0].flag & PLAYER_COLLAPSE)
 		&& !((ID == ITEM_SMALLFAITH || ID == ITEM_FAITH) && timer <= _ITEM_DRAINDELAY))
 	{
 		DWORD score;
@@ -234,10 +234,10 @@ void Item::action()
 		else
 			SE::push(SE_ITEM_EXTEND, x);
 
-		score = Player::p.getItemBonus(ID);
+		score = Player::p[0].getItemBonus(ID);
 
 		exist = false;
-		Player::p.nScore += score;
+		Player::p[0].nScore += score;
 
 		struct infoFont info;
 		itoa(score, info.cScore, 10);
@@ -245,7 +245,7 @@ void Item::action()
 		info.timer = 0;
 		info.x = x;
 		info.y = y;
-		if(ID == ITEM_POINT && (Player::p.fPoprate) >= 1.0f)
+		if(ID == ITEM_POINT && (Player::p[0].fPoprate) >= 1.0f)
 			info.yellow = true;
 		else
 			info.yellow = false;

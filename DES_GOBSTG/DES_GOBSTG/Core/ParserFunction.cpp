@@ -171,13 +171,13 @@ void * Scripter::Value(vector<Script>::iterator * p, int i, BYTE force)
 			case SCR_GHAMAP:
 				++(*p);
 				_tdi = CINT(Value(&(*p), i, 0));
-				idesc[i] = gh[Ghost::index].aMainAngle(Player::p, _tdi);
+				idesc[i] = gh[Ghost::index].aMainAngle(Player::p[0], _tdi);
 				d[i].bfloat = false;
 				break;
 			case SCR_GHRMAP:
 				++(*p);
 				_tdi = CINT(Value(&(*p), i, 0));
-				idesc[i] = gh[Ghost::index].rMainAngle(Player::p, _tdi);
+				idesc[i] = gh[Ghost::index].rMainAngle(Player::p[0], _tdi);
 				d[i].bfloat = false;
 				break;
 			case SCR_GHAIMX:
@@ -231,13 +231,13 @@ void * Scripter::Value(vector<Script>::iterator * p, int i, BYTE force)
 			case SCR_ENAMAP:
 				++(*p);
 				_tdi = CINT(Value(&(*p), i, 0));
-				idesc[i] = en[Enemy::index].aMainAngle(Player::p, _tdi);
+				idesc[i] = en[Enemy::index].aMainAngle(Player::p[0], _tdi);
 				d[i].bfloat = false;
 				break;
 			case SCR_ENRMAP:
 				++(*p);
 				_tdi = CINT(Value(&(*p), i, 0));
-				idesc[i] = en[Enemy::index].rMainAngle(Player::p, _tdi);
+				idesc[i] = en[Enemy::index].rMainAngle(Player::p[0], _tdi);
 				d[i].bfloat = false;
 				break;
 			case SCR_ENAIMX:
@@ -407,19 +407,19 @@ void * Scripter::Value(vector<Script>::iterator * p, int i, BYTE force)
 				_tdi = CINT(Value(&(*p), i, 0));
 				if (_tdi == 0)
 				{
-					idesc[i] = Player::p.ID;
+					idesc[i] = Player::p[0].ID;
 				}
 				else if (_tdi == 1)
 				{
-					idesc[i] = Player::p.ID_sub_1;
+					idesc[i] = Player::p[0].ID_sub_1;
 				}
 				else if (_tdi == 2)
 				{
-					idesc[i] = Player::p.ID_sub_2;
+					idesc[i] = Player::p[0].ID_sub_2;
 				}
 				else
 				{
-					idesc[i] = Player::p.nowID;
+					idesc[i] = Player::p[0].nowID;
 				}
 				d[i].bfloat = false;
 				break;
@@ -537,69 +537,69 @@ void * Scripter::Value(vector<Script>::iterator * p, int i, BYTE force)
 			switch (nowval)
 			{
 			case SCR_PX:
-				fdesc[i] = Player::p.x;
+				fdesc[i] = Player::p[0].x;
 				d[i].bfloat = true;
 				break;
 			case SCR_PY:
-				fdesc[i] = Player::p.y;
+				fdesc[i] = Player::p[0].y;
 				d[i].bfloat = true;
 				break;
 			case SCR_PLIFE:
-				idesc[i] = Player::p.nLife;
+				idesc[i] = Player::p[0].nLife;
 				d[i].bfloat = false;
 				break;
 			case SCR_PBOMB:
-				idesc[i] = (float)Player::p.nPower / Player::p.bombperpower;
+				idesc[i] = (float)Player::p[0].nPower / Player::p[0].bombperpower;
 				d[i].bfloat = false;
 				break;
 			case SCR_PPOWER:
-				idesc[i] = Player::p.nPower;
+				idesc[i] = Player::p[0].nPower;
 				d[i].bfloat = false;
 				break;
 			case SCR_PFAITH:
-				idesc[i] = Player::p.nFaith;
+				idesc[i] = Player::p[0].nFaith;
 				d[i].bfloat =false;
 				break;
 			case SCR_PPOINT:
-				idesc[i] = Player::p.nPoint;
+				idesc[i] = Player::p[0].nPoint;
 				d[i].bfloat = false;
 				break;
 			case SCR_PBBORDER:
-				idesc[i] = (int)(Player::p.bBorder);
+				idesc[i] = (int)(Player::p[0].bBorder);
 				d[i].bfloat = false;
 				break;
 			case SCR_PBSLOW:
-				idesc[i] = (int)(Player::p.bSlow);
+				idesc[i] = (int)(Player::p[0].bSlow);
 				d[i].bfloat = false;
 				break;
 			case SCR_PBINFI:
-				idesc[i] = (int)(Player::p.bInfi);
+				idesc[i] = (int)(Player::p[0].bInfi);
 				d[i].bfloat = false;
 				break;
 			case SCR_PSPEED:
-				fdesc[i] = Player::p.speed;
+				fdesc[i] = Player::p[0].speed;
 				d[i].bfloat = true;
 				break;
 			case SCR_PSLOWSPEED:
-				fdesc[i] = Player::p.slowspeed;
+				fdesc[i] = Player::p[0].slowspeed;
 				d[i].bfloat = true;
 				break;
 			case SCR_PGX:
 				++(*p);
 				_tdi = CINT(Value(&(*p), i, 0));
-				fdesc[i] = Player::p.pg[_tdi].x;
+				fdesc[i] = Player::p[0].pg[_tdi].x;
 				d[i].bfloat = true;
 				break;
 			case SCR_PGY:
 				++(*p);
 				_tdi = CINT(Value(&(*p), i, 0));
-				fdesc[i] = Player::p.pg[_tdi].y;
+				fdesc[i] = Player::p[0].pg[_tdi].y;
 				d[i].bfloat = true;
 				break;
 			case SCR_HAVEPLAYER:
 				++(*p);
 				_tdi = CINT(Value(&(*p), i, 0));
-				idesc[i] = Player::p.HavePlayer(_tdi);
+				idesc[i] = Player::p[0].HavePlayer(_tdi);
 				d[i].bfloat = false;
 				break;
 			}

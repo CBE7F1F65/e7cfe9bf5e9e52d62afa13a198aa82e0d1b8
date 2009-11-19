@@ -160,9 +160,9 @@ bool Scripter::Parse(int varcount)
 					mp.mainchara = CAST(d[0]);
 					mp.subchara_1 = CAST(d[1]);
 					mp.subchara_2 = CAST(d[2]);
-					Player::p.ID = mp.mainchara;
-					Player::p.ID_sub_1 = mp.subchara_1;
-					Player::p.ID_sub_2 = mp.subchara_2;
+					Player::p[0].ID = mp.mainchara;
+					Player::p[0].ID_sub_1 = mp.subchara_1;
+					Player::p[0].ID_sub_2 = mp.subchara_2;
 				}
 				break;
 			case SCR_SETSCENE:
@@ -876,8 +876,8 @@ bool Scripter::Parse(int varcount)
 						_tdfx = _tdfx > PL_MOVABLE_RIGHT ? PL_MOVABLE_RIGHT : _tdfx;
 						_tdfy = _tdfy < PL_MOVABLE_TOP ? PL_MOVABLE_TOP : _tdfy;
 						_tdfy = _tdfy > PL_MOVABLE_BOTTOM ? PL_MOVABLE_BOTTOM : _tdfy;
-						Player::p.x = _tdfx;
-						Player::p.y = _tdfy;
+						Player::p[0].x = _tdfx;
+						Player::p[0].y = _tdfy;
 					}
 					break;
 				case SCR_SETPLIFE:
@@ -888,7 +888,14 @@ bool Scripter::Parse(int varcount)
 						{
 							break;
 						}
-						Player::p.nLife = _tdi > PL_NPLAYERMAX ? PL_NPLAYERMAX : _tdi;
+						Player::p[0].nLife = _tdi > PL_NPLAYERMAX ? PL_NPLAYERMAX : _tdi;
+					}
+					break;
+				case SCR_SETPINITLIFE:
+					if (rv = Copy(&i, 2))
+					{
+						int _tdi = CAST(d[0]);
+						Player::p[_tdi].SetInitLife(CAST(d[1]));
 					}
 					break;
 				case SCR_SETPPOWER:
@@ -899,7 +906,7 @@ bool Scripter::Parse(int varcount)
 						{
 							break;
 						}
-						Player::p.nPower = _tdi;
+						Player::p[0].nPower = _tdi;
 					}
 					break;
 				case SCR_SETPFAITH:
@@ -910,7 +917,7 @@ bool Scripter::Parse(int varcount)
 						{
 							break;
 						}
-						Player::p.nFaith = _tdi;
+						Player::p[0].nFaith = _tdi;
 					}
 					break;
 				case SCR_SETPPOINT:
@@ -921,53 +928,53 @@ bool Scripter::Parse(int varcount)
 						{
 							break;
 						}
-						Player::p.nPoint = _tdi;
+						Player::p[0].nPoint = _tdi;
 					}
 					break;
 				case SCR_SETPBBORDER:
 					if (rv = Copy(&i, 1))
 					{
-						if ((bool)(CAST(d[0])) ^ Player::p.bBorder)
+						if ((bool)(CAST(d[0])) ^ Player::p[0].bBorder)
 						{
-							Player::p.callBomb(true);
+							Player::p[0].callBomb(true);
 						}
 					}
 					break;
 				case SCR_SETPBSLOW:
 					if (rv = Copy(&i, 1))
 					{
-						Player::p.callSlowFastChange((bool)(CAST(d[0])));
+						Player::p[0].callSlowFastChange((bool)(CAST(d[0])));
 					}
 					break;
 				case SCR_SETPBINFI:
 					if(rv = true)
 					{
-						Player::p.bInfi = true;
+						Player::p[0].bInfi = true;
 					}
 					break;
 				case SCR_SETPSPEED:
 					if (rv = Copy(&i, 1))
 					{
-						Player::p.speed = CAST(d[0]);
+						Player::p[0].speed = CAST(d[0]);
 					}
 					break;
 				case SCR_SETPSLOWSPEED:
 					if (rv = Copy(&i, 1))
 					{
-						Player::p.slowspeed = CAST(d[0]);
+						Player::p[0].slowspeed = CAST(d[0]);
 					}
 					break;
 				case SCR_SETPSPEEDFACTOR:
 					if (rv = Copy(&i, 1))
 					{
-						Player::p.speedfactor = CAST(d[0]);
+						Player::p[0].speedfactor = CAST(d[0]);
 					}
 					break;
 
 				case SCR_COLLAPSE:
 					if (rv = true)
 					{
-						Player::p.callCollapse();
+						Player::p[0].callCollapse();
 					}
 					break;
 
@@ -980,7 +987,7 @@ bool Scripter::Parse(int varcount)
 				case SCR_BONUSFLAG:
 					if (rv = Copy(&i, 1))
 					{
-						Player::p.bonusflag = CAST(d[0]);
+						Player::p[0].bonusflag = CAST(d[0]);
 					}
 					break;
 				}
@@ -1329,7 +1336,7 @@ nest:
 				if(rv = Copy(&i, 1))
 				{
 					int _tdi = CAST(d[0]);
-					if(_tdi < 0 || _tdi > PLAYERTYPEMAX || Player::p.HavePlayer(_tdi))
+					if(_tdi < 0 || _tdi > PLAYERTYPEMAX || Player::p[0].HavePlayer(_tdi))
 					{
 						if(!chat.chati)
 						{

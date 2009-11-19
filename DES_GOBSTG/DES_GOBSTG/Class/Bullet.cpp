@@ -200,13 +200,13 @@ bool Bullet::valueSet(WORD _ID, float _x, float _y, bool absolute, int _angle, f
 	type		=	_type;
 	if(avoid)
 	{
-		if(isInRect(avoid, Player::p.x, Player::p.y))
+		if(isInRect(avoid, Player::p[0].x, Player::p[0].y))
 			return false;
 	}
 	if(absolute)
 		angle	=	_angle;
 	else
-		angle	=	rMainAngle(Player::p, _angle);
+		angle	=	rMainAngle(Player::p[0], _angle);
 	speed		=	_speed;
 	oldtype		=	type;
 	color		=	_color;
@@ -321,9 +321,9 @@ void Bullet::DoGraze()
 {
 	if(!grazed && res.bulletdata[type].collisiontype != BULLET_COLLISION_NONE)
 	{
-		if((Player::p.x - x) * (Player::p.x - x) + (Player::p.y - y) * (Player::p.y - y) < Player::p.graze_r * Player::p.graze_r)
+		if((Player::p[0].x - x) * (Player::p[0].x - x) + (Player::p[0].y - y) * (Player::p[0].y - y) < Player::p[0].graze_r * Player::p[0].graze_r)
 		{
-			Player::p.DoGraze(x, y);
+			Player::p[0].DoGraze(x, y);
 			grazed = true;
 		}
 	}
@@ -331,14 +331,14 @@ void Bullet::DoGraze()
 
 void Bullet::DoCollision()
 {
-	if(isInRect(Player::p.r, Player::p.x, Player::p.y))
+	if(isInRect(Player::p[0].r, Player::p[0].x, Player::p[0].y))
 	{
 		if (cancelable)
 		{
 			fadeout = true;
 			timer = 0;
 		}
-		Player::p.DoShot();
+		Player::p[0].DoShot();
 	}
 }
 
@@ -554,22 +554,22 @@ void Bullet::action()
 				switch(color)
 				{
 				case 0:
-					Player::p.nScore += 500;
+					Player::p[0].nScore += 500;
 					break;
 				case 1:
-					Player::p.nScore += 1000;
+					Player::p[0].nScore += 1000;
 					break;
 				case 2:
-					Player::p.nScore += 2000;
+					Player::p[0].nScore += 2000;
 					break;
 				case 3:
-					Player::p.nScore += 3000;
+					Player::p[0].nScore += 3000;
 					break;
 				case 4:
-					Player::p.nScore += 5000;
+					Player::p[0].nScore += 5000;
 					break;
 				case 5:
-					Player::p.nScore += 8000;
+					Player::p[0].nScore += 8000;
 					break;
 				}
 				type = BULLET_BONUSTYPE;
@@ -975,7 +975,7 @@ void Bullet::ChangeAction()
 				case ANGLESETRMAP:
 					if(doit)
 					{
-						angle = rMainAngle(Player::p.x,Player::p.y,actionList[i+1]*1.0f);
+						angle = rMainAngle(Player::p[0].x,Player::p[0].y,actionList[i+1]*1.0f);
 						SE::push(SE_BULLET_CHANGE_1, x);
 					}
 					++i;
@@ -1002,7 +1002,7 @@ void Bullet::ChangeAction()
 				case ANGLESETAMAP:
 					if(doit)
 					{
-						angle = aMainAngle(Player::p.x,Player::p.y,actionList[i+1]);
+						angle = aMainAngle(Player::p[0].x,Player::p[0].y,actionList[i+1]);
 						SE::push(SE_BULLET_CHANGE_1, x);
 					}
 					++i;

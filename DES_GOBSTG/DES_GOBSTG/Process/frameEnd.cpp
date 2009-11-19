@@ -11,19 +11,19 @@ void Process::frameEnd()
 			lost = 0;
 		if(lost > 100)
 			lost = 100;
-		Player::p.lostStack += lost;
+		Player::p[0].lostStack += lost;
 
 		if (!(stopflag & FRAME_STOPFLAG_WORLDSHAKE))
 		{
 			WorldShake();
 		}
 
-		if(Player::p.exist && state != STATE_CLEAR)
+		if(Player::p[0].exist && state != STATE_CLEAR)
 		{
 			alltime++;
 			if (!(stopflag & FRAME_STOPFLAG_PLAYER))
 			{
-				Player::p.action();
+				Player::p[0].action();
 			}
 		}
 		PlayerBullet::locked = PBLOCK_LOST;
@@ -211,13 +211,13 @@ void Process::frameEnd()
 					scene = BossInfo::turntoscene;
 				}
 				else
-					Player::p.exist = false;
+					Player::p[0].exist = false;
 			}
 			if(BossInfo::flag >= BOSSINFO_COLLAPSE)
 				Scripter::stopEdefScript = true;
 		}
 	}
-	if(active || !Player::p.exist && state != STATE_CONTINUE)
+	if(active || !Player::p[0].exist && state != STATE_CONTINUE)
 	{
 		if (!(stopflag & FRAME_STOPFLAG_LAYER))
 		{
@@ -284,9 +284,9 @@ void Process::frameEnd()
 			break;
 		}
 	}
-	if (Player::p.nHiScore < Player::p.nScore)
+	if (Player::p[0].nHiScore < Player::p[0].nScore)
 	{
-		Player::p.nHiScore = Player::p.nScore;
+		Player::p[0].nHiScore = Player::p[0].nScore;
 	}
 
 	SE::play();

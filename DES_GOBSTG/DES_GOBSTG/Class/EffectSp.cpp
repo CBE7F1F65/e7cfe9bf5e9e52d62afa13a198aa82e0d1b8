@@ -83,7 +83,7 @@ void EffectSp::valueSet(BYTE _type, float _x, float _y, int _angle, float _speed
 
 	case EFFECT_BOMB_CUTIN:
 		sprite = SpriteItemManager::CreateSpriteByName(SI_PLAYERFACE_01);
-		SpriteItemManager::ptFace(Player::p.nowID, sprite, false);
+		SpriteItemManager::ptFace(Player::p[0].nowID, sprite, false);
 		hscale = vscale = 1.40625f;
 		alpha = 0x7f;
 		break;
@@ -112,8 +112,8 @@ void EffectSp::action()
 	if(onplayer)
 	{
 		headangle += angle;
-		x = Player::p.x;
-		y = Player::p.y;
+		x = Player::p[0].x;
+		y = Player::p[0].y;
 	}
 	else
 	{

@@ -90,7 +90,7 @@ void Process::clearPrep(bool bclearkey)
 	fgpause.flag = 0;
 	fgpause.exist = false;
 
-	Player::p.ClearSet();
+	Player::p[0].ClearSet();
 
 	if(!bclearkey)
 		return;
@@ -149,7 +149,7 @@ void Process::startPrep(bool callinit)
 
 	srandt(seed);
 
-	Player::p.ClearNC();
+	Player::p[0].ClearNC();
 
 	//set
 
@@ -157,17 +157,17 @@ void Process::startPrep(bool callinit)
 	nowdifflv = data.getDiffi(scene);
 	if(!practicemode)
 	{
-		Player::p.valueSet(mainchara, subchara_1, subchara_2);
+		Player::p[0].valueSet(mainchara, subchara_1, subchara_2);
 	}
 	else if(!spellmode)
 	{
-		Player::p.valueSet(mainchara, subchara_1, subchara_2, PL_NPLAYERMAX);
+		Player::p[0].valueSet(mainchara, subchara_1, subchara_2, PL_NPLAYERMAX);
 	}
 	else
 	{
-		Player::p.valueSet(mainchara, subchara_1, subchara_2, 0);
+		Player::p[0].valueSet(mainchara, subchara_1, subchara_2, 0);
 	}
-	Player::p.nHiScore = DataConnector::nHiScore();
+	Player::p[0].nHiScore = DataConnector::nHiScore();
 	DataConnector::Try(true);
 
 	if(!replaymode)
@@ -197,17 +197,17 @@ void Process::startPrep(bool callinit)
 			part = data.getStage(scene) - 1;
 		if (part)
 		{
-			Player::p.nScore = rpy.partinfo[part].nowscore;
-			Player::p.nPoint = Player::p.nLastPoint = rpy.partinfo[part].nowpoint;
-			Player::p.nFaith = Player::p.nLastFaith = rpy.partinfo[part].nowfaith;
-			Player::p.nGraze = Player::p.nLastGraze = rpy.partinfo[part].nowgraze;
-			Player::p.nPower = rpy.partinfo[part].nowpower;
-			Player::p.nNext = Player::p.getnNext();
-			Player::p.changePlayerID(rpy.partinfo[part].nowID);
+			Player::p[0].nScore = rpy.partinfo[part].nowscore;
+			Player::p[0].nPoint = Player::p[0].nLastPoint = rpy.partinfo[part].nowpoint;
+			Player::p[0].nFaith = Player::p[0].nLastFaith = rpy.partinfo[part].nowfaith;
+			Player::p[0].nGraze = Player::p[0].nLastGraze = rpy.partinfo[part].nowgraze;
+			Player::p[0].nPower = rpy.partinfo[part].nowpower;
+			Player::p[0].nNext = Player::p[0].getnNext();
+			Player::p[0].changePlayerID(rpy.partinfo[part].nowID);
 		}
-		Player::p.nLife = rpy.partinfo[part].nowplayer;
-		if(Player::p.nHiScore < Player::p.nScore)
-			Player::p.nHiScore = Player::p.nScore;
+		Player::p[0].nLife = rpy.partinfo[part].nowplayer;
+		if(Player::p[0].nHiScore < Player::p[0].nScore)
+			Player::p[0].nHiScore = Player::p[0].nScore;
 	}
 
 	bgmask.valueSetByName(tex, SI_NULL, M_ACTIVECLIENT_CENTER_X, M_ACTIVECLIENT_CENTER_Y, M_ACTIVECLIENT_WIDTH, M_ACTIVECLIENT_HEIGHT, 0);

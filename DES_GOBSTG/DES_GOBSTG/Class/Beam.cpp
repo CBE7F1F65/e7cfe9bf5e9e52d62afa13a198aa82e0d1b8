@@ -190,9 +190,9 @@ void Beam::action()
 			timer = 0;
 		}
 
-		if(isInRect(Player::p.r, Player::p.x, Player::p.y))
+		if(isInRect(Player::p[0].r, Player::p[0].x, Player::p[0].y))
 		{
-			Player::p.DoShot();
+			Player::p[0].DoShot();
 		}
 
 		if (!(flag & BEAMFLAG_NOGRAZE))
@@ -206,23 +206,23 @@ void Beam::action()
 			else
 			{
 				grazetimer++;
-				if(isInRect(Player::p.graze_r, Player::p.x, Player::p.y))
+				if(isInRect(Player::p[0].graze_r, Player::p[0].x, Player::p[0].y))
 				{
 					float itemx;
 					float itemy;
 					float tk = 0;
 					if (xplus || yplus)
 					{
-						tk = - ((x - Player::p.x) * xplus + (y - Player::p.y) * yplus) / (xplus * xplus + yplus * yplus);
+						tk = - ((x - Player::p[0].x) * xplus + (y - Player::p[0].y) * yplus) / (xplus * xplus + yplus * yplus);
 						itemx = x + xplus * tk;
 						itemy = y + yplus * tk;
 					}
 					else
 					{
-						itemx = Player::p.x;
-						itemy = Player::p.y;
+						itemx = Player::p[0].x;
+						itemy = Player::p[0].y;
 					}
-					Player::p.DoGraze(itemx, itemy);
+					Player::p[0].DoGraze(itemx, itemy);
 				}
 			}
 

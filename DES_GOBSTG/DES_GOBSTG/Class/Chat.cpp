@@ -84,7 +84,7 @@ bool Chat::chat(BYTE ID, BYTE chatsprite, const char * _text)
 		timer = 0;
 		return true;
 	}
-	Player::p.bInfi = true;
+	Player::p[0].bInfi = true;
 
 	if(hge->Input_GetDIKey(KS_FIRE_MP))
 	{
@@ -174,11 +174,11 @@ bool Chat::chat(BYTE ID, BYTE chatsprite, const char * _text)
 
 bool Chat::chatOn(BYTE leftID, BYTE rightID, BYTE chatsprite)
 {
-	if(Player::p.bBomb || Player::p.bBorder)
+	if(Player::p[0].bBomb || Player::p[0].bBorder)
 		return false;
 	timer++;
 
-	Player::p.bInfi = true;
+	Player::p[0].bInfi = true;
 	chatinit = false;
 
 	rightID -= ENEMY_BOSSTYPEBEGIN;
@@ -190,7 +190,7 @@ bool Chat::chatOn(BYTE leftID, BYTE rightID, BYTE chatsprite)
 		strcpy(text, "");
 		fschat.SignUp(text);
 		
-		Bullet::IzeBuild(BULLETIZE_FAITH, Player::p.x, Player::p.y);
+		Bullet::IzeBuild(BULLETIZE_FAITH, Player::p[0].x, Player::p[0].y);
 
 		chatting = true;
 		SpriteItemManager::SetSprite(-1, leftname, mp.tex);
@@ -267,7 +267,7 @@ bool Chat::chatOff()
 {
 	timer++;
 
-	Player::p.bInfi = true;
+	Player::p[0].bInfi = true;
 
 	if(timer == 1)
 	{
@@ -286,7 +286,7 @@ bool Chat::chatOff()
 	}
 	else
 	{
-		Player::p.bInfi = false;
+		Player::p[0].bInfi = false;
 		timer = 0;
 		chatting = false;
 		return true;

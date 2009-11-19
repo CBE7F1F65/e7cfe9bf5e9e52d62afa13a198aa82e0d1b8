@@ -20,14 +20,14 @@ int Process::render()
 		bgmask.Render();
 	}
 
-	if(Player::p.exist || state == STATE_CONTINUE)
+	if(Player::p[0].exist || state == STATE_CONTINUE)
 	{
 		if (bossinfo.flag && bossinfo.isSpell())
 		{
 			fdisp.RenderBossTimeCircle();
 //			bossinfo.RenderTimeCircle();
 		}
-		if(!Player::p.bBorder)
+		if(!Player::p[0].bBorder)
 		{
 			for(int i=0;i<GHOSTMAX;i++)
 			{
@@ -58,12 +58,12 @@ int Process::render()
 
 			}
 		}
-		if(Player::p.exist)
-			Player::p.Render();
+		if(Player::p[0].exist)
+			Player::p[0].Render();
 
-		if(Player::p.exist)
+		if(Player::p[0].exist)
 		{
-			Player::p.RenderEffect();
+			Player::p[0].RenderEffect();
 		}
 
 		//3D objs
@@ -110,7 +110,7 @@ int Process::render()
 			fdisp.RenderBossInfo();
 		}
 
-		if(Player::p.bBorder)
+		if(Player::p[0].bBorder)
 		{
 			for(int i=0;i<GHOSTMAX;i++)
 			{
@@ -154,7 +154,7 @@ int Process::render()
 		}
 
 		DWORD tcolor;
-		if(Player::p.x < 170 && Player::p.y > 420)
+		if(Player::p[0].x < 170 && Player::p[0].y > 420)
 		{
 			tcolor = 0x20ffffff;
 		}
@@ -185,7 +185,7 @@ int Process::render()
 
 	fdisp.PanelDisplay();
 
-	if(Player::p.exist && BossInfo::flag)
+	if(Player::p[0].exist && BossInfo::flag)
 	{
 		fdisp.RenderEnemyX();
 	}

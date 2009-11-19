@@ -11,7 +11,7 @@
 
 int Process::processStart()
 {
-	if (replaymode && (!Player::p.exist || scene == S1))
+	if (replaymode && (!Player::p[0].exist || scene == S1))
 	{
 		replayend = true;
 		replaymode = false;
@@ -24,18 +24,18 @@ int Process::processStart()
 		bgmask.exist = false;
 		fdisp.SetState(FDISP_PANEL, 0);
 		fdisp.SetState(FDISP_NEXTSTAGE, 0);
-		Player::p.exist = false;
+		Player::p[0].exist = false;
 //		getInput();
 		state = STATE_REPLAY;
 		return PTURN;
 	}
-	if(!Player::p.exist && !replaymode)
+	if(!Player::p[0].exist && !replaymode)
 	{
 		if(spellmode && time != 0)
 		{
 			time = 0;
 			clearPrep(false);
-			Player::p.exist = false;
+			Player::p[0].exist = false;
 			hge->Input_SetDIKey(KS_PAUSE);
 		}
 		else
@@ -48,7 +48,7 @@ int Process::processStart()
 	else
 		frameStart();
 
-	if(hge->Input_GetDIKey(KS_PAUSE, DIKEY_DOWN) && !(Player::p.flag & PLAYER_SHOT) && state != STATE_CLEAR && !BossInfo::allover)
+	if(hge->Input_GetDIKey(KS_PAUSE, DIKEY_DOWN) && !(Player::p[0].flag & PLAYER_SHOT) && state != STATE_CLEAR && !BossInfo::allover)
 	{
 		saveInput = nowInput;
 		SE::push(SE_SYSTEM_PAUSE);

@@ -8,14 +8,14 @@
 
 int Process::processContinue()
 {
-	if(Player::p.ncCont >= M_PL_CONTINUEMAX || practicemode)
+	if(Player::p[0].ncCont >= M_PL_CONTINUEMAX || practicemode)
 		goto exit;
 
 	if(!scr.GetIntValue(SCR_RESERVEBEGIN))
 	{
 		fgpause.exist = true;
 		fgpause.SetFlag(FG_PAUSEIN, FGMT_PAUSE);
-		scr.SetIntValue(SCR_RESERVEBEGIN+1, M_PL_CONTINUEMAX-Player::p.ncCont);
+		scr.SetIntValue(SCR_RESERVEBEGIN+1, M_PL_CONTINUEMAX-Player::p[0].ncCont);
 
 		hge->Channel_Pause(channel);
 	}
@@ -39,10 +39,10 @@ int Process::processContinue()
 		fgpause.exist = false;
 		if(!spellmode && scene < S1200)
 		{
-			Player::p.valueSet(mainchara, subchara_1, subchara_2, PL_DEFAULTNPLAYER, true);
-			Player::p.ncCont++;
+			Player::p[0].valueSet(mainchara, subchara_1, subchara_2, PL_DEFAULTNPLAYER, true);
+			Player::p[0].ncCont++;
 
-			Bullet::IzeBuild(BULLETIZE_FADEOUT, Player::p.x, Player::p.y);
+			Bullet::IzeBuild(BULLETIZE_FADEOUT, Player::p[0].x, Player::p[0].y);
 
 			hge->Channel_Resume(channel);
 			hge->Channel_SetVolume(channel, 0);

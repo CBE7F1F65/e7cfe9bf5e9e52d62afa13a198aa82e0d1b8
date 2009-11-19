@@ -117,7 +117,7 @@ void Ghost::Render()
 
 void Ghost::actionInStop()
 {
-	if (!fadeout && !half && Player::p.bBorder)
+	if (!fadeout && !half && Player::p[0].bBorder)
 	{
 		DoShot();
 	}
@@ -152,7 +152,7 @@ void Ghost::DoShot()
 				if (checkCollisionCircle(tdmg->x, tdmg->y, tdmg->r))
 				{
 					CostLife(tdmg->power);
-					Player::p.DoPlayerBulletHit();
+					Player::p[0].DoPlayerBulletHit();
 				}
 			}
 		}
@@ -172,16 +172,16 @@ void Ghost::action()
 		}
 	}
 
-	if(!fadeout && !gave && half && (Player::p.bBorder))
+	if(!fadeout && !gave && half && (Player::p[0].bBorder))
 	{
 		Item::Build(ITEM_FAITH, x, y, true);
 
 		gave = true;
 	}
 
-	if (Player::p.bBorder ^ lastborderstate)
+	if (Player::p[0].bBorder ^ lastborderstate)
 	{
-		effghost.valueSet(EFF_GH_TYPEBEGIN + type + (Player::p.bBorder?1:0), *this);
+		effghost.valueSet(EFF_GH_TYPEBEGIN + type + (Player::p[0].bBorder?1:0), *this);
 		effghost.Fire();
 		lastborderstate ^= true;
 	}
@@ -208,11 +208,11 @@ void Ghost::action()
 			index = tindex;
 		}
 
-		if(Player::p.bBorder)
+		if(Player::p[0].bBorder)
 		{
-			if (checkCollisionSquare(Player::p, GHOST_COLLISIONR))
+			if (checkCollisionSquare(Player::p[0], GHOST_COLLISIONR))
 			{
-				Player::p.DoShot();
+				Player::p[0].DoShot();
 			}
 			DoShot();
 		}
@@ -244,7 +244,7 @@ void Ghost::action()
 
 			if (life < 0)
 			{
-				Player::p.GetScoreLife(maxlife, false);
+				Player::p[0].GetScoreLife(maxlife, false);
 
 				fadeout = true;
 				timer = 0;

@@ -65,7 +65,7 @@ void PlayerBullet::valueSet(WORD _ID, BYTE _arrange, float _xbias, float _ybias,
 	speed	=	_speed;
 	accelspeed = _accelspeed;
 	oldspeed =	speed;
-	power	=	Player::p.TranslatePower(_power);
+	power	=	Player::p[0].TranslatePower(_power);
 	hitonfactor = _hitonfactor;
 	arrange	=	_arrange;
 	flag	=	_flag;
@@ -90,13 +90,13 @@ void PlayerBullet::valueSet(WORD _ID, BYTE _arrange, float _xbias, float _ybias,
 	}
 	if (arrange)
 	{
-		angle += Player::p.pg[arrange-1].shootangle;
+		angle += Player::p[0].pg[arrange-1].shootangle;
 	}
 	if (flag & PBFLAG_ANTISHOOTER)
 	{
 		if (!arrange)
 		{
-			angle += Player::p.aMainAngle(Player::p.lastmx[0], Player::p.lastmy[0]);
+			angle += Player::p[0].aMainAngle(Player::p[0].lastmx[0], Player::p[0].lastmy[0]);
 		}
 	}
 	else
@@ -123,13 +123,13 @@ void PlayerBullet::valueSet(WORD _ID, BYTE _arrange, float _xbias, float _ybias,
 
 	if(arrange)
 	{
-		x = Player::p.pg[arrange-1].x;
-		y = Player::p.pg[arrange-1].y;
+		x = Player::p[0].pg[arrange-1].x;
+		y = Player::p[0].pg[arrange-1].y;
 	}
 	else
 	{
-		x = Player::p.x;
-		y = Player::p.y;
+		x = Player::p[0].x;
+		y = Player::p[0].y;
 	}
 
 	x += xbias;
@@ -257,7 +257,7 @@ void PlayerBullet::hitOn()
 {
 	fadeout = true;
 	able = false;
-	Player::p.DoPlayerBulletHit(hitonfactor);
+	Player::p[0].DoPlayerBulletHit(hitonfactor);
 	timer = 0;
 }
 
@@ -280,7 +280,7 @@ bool PlayerBullet::isInRange(float aimx, float aimy, float w, float h)
 		}
 		else if ((flag & PBFLAG_BEAM) && !(timer % 24))
 		{
-			Player::p.DoPlayerBulletHit(hitonfactor);
+			Player::p[0].DoPlayerBulletHit(hitonfactor);
 		}
 		return true;
 	}
@@ -350,19 +350,19 @@ void PlayerBullet::action()
 		{
 			if (arrange)
 			{
-				y = Player::p.pg[arrange-1].y;
+				y = Player::p[0].pg[arrange-1].y;
 			}
 			else
 			{
-				y = Player::p.y;
+				y = Player::p[0].y;
 			}
 			y += - M_ACTIVECLIENT_HEIGHT / 2 + ybias;
 			xplus = 0;
 			yplus = 0;
 			float extramove = 0;
-			if (!(arrange && (Player::p.pg[arrange-1].flag & PGFLAG_STAY) || (Player::p.pg[arrange-1].flag & PGFLAG_ABSSTAY)))
+			if (!(arrange && (Player::p[0].pg[arrange-1].flag & PGFLAG_STAY) || (Player::p[0].pg[arrange-1].flag & PGFLAG_ABSSTAY)))
 			{
-				extramove = (Player::p.y-Player::p.lasty[_PBBEAM_LASTINDEX]) / 2.5f;
+				extramove = (Player::p[0].y-Player::p[0].lasty[_PBBEAM_LASTINDEX]) / 2.5f;
 			}
 			float _tx, _ty, _tw, _th;
 			spPlayerBullet[ID]->GetTextureRect(&_tx, &_ty, &_tw, &_th);
@@ -461,15 +461,15 @@ void PlayerBullet::action()
 		}
 		if (flag & PBFLAG_BEAM)
 		{
-			float taimx = Player::p.x;
+			float taimx = Player::p[0].x;
 			if (arrange)
 			{
-				taimx = Player::p.pg[arrange-1].x;
+				taimx = Player::p[0].pg[arrange-1].x;
 			}
-			float taimy = Player::p.y;
+			float taimy = Player::p[0].y;
 			if (arrange)
 			{
-				taimy = Player::p.pg[arrange-1].y;
+				taimy = Player::p[0].pg[arrange-1].y;
 			}
 			taimx += xbias;
 			taimy += -M_ACTIVECLIENT_HEIGHT / 2 + ybias;

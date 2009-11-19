@@ -15,9 +15,9 @@ int DataConnector::Insert()
 		sec = data.sLinkType(DATAS_SPELL);
 		sec = data.sLinkNum(sec, rpy.rpyinfo.startscene);
 
-		if(Player::p.nScore > data.lRead(DATA_BINFILE, sec, data.nLinkType(DATAN_TOPBONUS), 0))
+		if(Player::p[0].nScore > data.lRead(DATA_BINFILE, sec, data.nLinkType(DATAN_TOPBONUS), 0))
 		{
-			data.lWrite(DATA_BINFILE, sec, data.nLinkType(DATAN_TOPBONUS), Player::p.nScore);
+			data.lWrite(DATA_BINFILE, sec, data.nLinkType(DATAN_TOPBONUS), Player::p[0].nScore);
 		}
 		return -1;
 	}
@@ -94,7 +94,7 @@ int DataConnector::Insert()
 
 
 //////////////////////////////
-//replaymode, p.ID, scene, spellmode
+//replaymode, p[0].ID, scene, spellmode
 void DataConnector::Meet()
 {
 	if(mp.replaymode)
@@ -125,7 +125,7 @@ void DataConnector::Meet()
 }
 
 ///////////////////////////
-//replaymode, p.ID, scene, spellmode
+//replaymode, p[0].ID, scene, spellmode
 void DataConnector::Get()
 {
 	if(mp.replaymode)
@@ -243,11 +243,11 @@ void DataConnector::Try(bool first)
 	{
 		name = data.nLinkType(DATAN_PLAYTIME);
 		data.iWrite(DATA_BINFILE, sec, name, data.iRead(DATA_BINFILE, sec, name, 0)+1);
-		name = data.nLinkNum(name, Player::p.ID+1);
+		name = data.nLinkNum(name, Player::p[0].ID+1);
 		data.iWrite(DATA_BINFILE, sec, name, data.iRead(DATA_BINFILE, sec, name, 0)+1);
-		name = data.nLinkNum(name, Player::p.ID_sub_1+1);
+		name = data.nLinkNum(name, Player::p[0].ID_sub_1+1);
 		data.iWrite(DATA_BINFILE, sec, name, data.iRead(DATA_BINFILE, sec, name, 0)+1);
-		name = data.nLinkNum(name, Player::p.ID_sub_2+1);
+		name = data.nLinkNum(name, Player::p[0].ID_sub_2+1);
 		data.iWrite(DATA_BINFILE, sec, name, data.iRead(DATA_BINFILE, sec, name, 0)+1);
 	}
 }

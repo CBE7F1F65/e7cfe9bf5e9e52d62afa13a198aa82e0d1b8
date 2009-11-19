@@ -44,19 +44,19 @@ void Replay::Fill()
 	rpyinfo.hour = systime.wHour;
 	rpyinfo.minute = systime.wMinute;
 
-	rpyinfo.score = Player::p.nScore;
-	rpyinfo.miss = Player::p.ncMiss;
-	rpyinfo.border = Player::p.ncBorder;
-	rpyinfo.cont = Player::p.ncCont;
-	rpyinfo.get = Player::p.ncGet;
-	rpyinfo.pause = Player::p.ncPause;
-	rpyinfo.point = Player::p.nPoint;
-	rpyinfo.faith = Player::p.nFaith;
+	rpyinfo.score = Player::p[0].nScore;
+	rpyinfo.miss = Player::p[0].ncMiss;
+	rpyinfo.border = Player::p[0].ncBorder;
+	rpyinfo.cont = Player::p[0].ncCont;
+	rpyinfo.get = Player::p[0].ncGet;
+	rpyinfo.pause = Player::p[0].ncPause;
+	rpyinfo.point = Player::p[0].nPoint;
+	rpyinfo.faith = Player::p[0].nFaith;
 	strcpy(rpyinfo.username, mp.username);
 
-	rpyinfo.lost = Player::p.lostStack / mp.framecounter;
-	rpyinfo.borderrate = (float)Player::p.borderCounter / mp.alltime;
-	rpyinfo.fastrate = (float)Player::p.fastCounter / mp.alltime;
+	rpyinfo.lost = Player::p[0].lostStack / mp.framecounter;
+	rpyinfo.borderrate = (float)Player::p[0].borderCounter / mp.alltime;
+	rpyinfo.fastrate = (float)Player::p[0].fastCounter / mp.alltime;
 
 	rpyinfo.difflv = mp.nowdifflv;
 	if(rpyinfo.endscene == S1)
@@ -66,7 +66,7 @@ void Replay::Fill()
 
 	for (int i=0; i<M_GETSPELLMAX; i++)
 	{
-		rpyinfo.getspell[i] = Player::p.getspell[i];
+		rpyinfo.getspell[i] = Player::p[0].getspell[i];
 	}
 	rpyinfo.offset = replayIndex;
 }
@@ -78,16 +78,16 @@ void Replay::partFill(BYTE part)
 		partinfo[part].offset = replayIndex + 1;
 		partinfo[part].scene = mp.scene;
 		partinfo[part].seed = mp.seed;
-		partinfo[part].nowplayer = Player::p.nLife;
-		partinfo[part].nowpower = Player::p.nPower;
+		partinfo[part].nowplayer = Player::p[0].nLife;
+		partinfo[part].nowpower = Player::p[0].nPower;
 	}
 	else
 		part = 0;
-	partinfo[part].nowfaith = Player::p.nFaith;
-	partinfo[part].nowpoint = Player::p.nPoint;
-	partinfo[part].nowgraze = Player::p.nGraze;
-	partinfo[part].nowscore = Player::p.nScore;
-	partinfo[part].nowID = Player::p.nowID;
+	partinfo[part].nowfaith = Player::p[0].nFaith;
+	partinfo[part].nowpoint = Player::p[0].nPoint;
+	partinfo[part].nowgraze = Player::p[0].nGraze;
+	partinfo[part].nowscore = Player::p[0].nScore;
+	partinfo[part].nowID = Player::p[0].nowID;
 }
 
 bool Replay::Check(char * filename)

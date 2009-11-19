@@ -75,6 +75,16 @@ int Export_Lua_HDSS::LuaFn_HDSS_Call(LuaState * ls)
 		switch (nowval & SCRKWMASK_CLASS)
 		{
 			/************************************************************************/
+			/* PLAYER                                                               */
+			/************************************************************************/
+		case SCRKW_CLASS_PLAYER:
+			switch (nowval)
+			{
+			case SCR_SETPINITLIFE:
+				return hdsscallget.Call_SETPINITLIFE(ls);
+			}
+			break;
+			/************************************************************************/
 			/* LAYER                                                                */
 			/************************************************************************/
 		case SCRKW_CLASS_LAYER:

@@ -15,10 +15,10 @@ Index	SI_Name	Tex	Tex_x	Tex_y	Tex_w	Tex_h
 12	SI_MatchMode_Waiting	7	0	414	256	40
 13	SI_MatchMode_Accessing	7	0	454	256	20
 14	SI_MatchMode_Latency	7	256	224	256	20
-15	SI_TopContent_Spell	0	256	192	256	48
-16	SI_Option_KeySet	0	0	32	128	32
-17	SI_Option_GraphMode	0	128	32	128	32
-18	SI_Option_BGMVol	0	384	32	128	32
+15	SI_InitialLife_Content	7	0	480	192	16
+16	SI_InitialLife_Full	7	0	496	16	16
+17	SI_InitialLife_Half	7	16	496	16	16
+18	SI_InitialLife_Empty	7	32	496	16	16
 19	SI_Option_SEVol	0	512	32	128	32
 20	SI_Option_Reset	0	640	32	128	32
 21	SI_Option_Quit	0	768	32	128	32

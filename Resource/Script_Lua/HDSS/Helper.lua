@@ -1,5 +1,5 @@
 function hdssSD(index, value)
-	hdss.Call(
+	return hdss.Call(
 		HDSS_SD,
 		{
 			index, value
@@ -8,7 +8,7 @@ function hdssSD(index, value)
 end
 
 function hdssSDf(index, value)
-	hdss.Call(
+	return hdss.Call(
 		HDSS_SDf,
 		{
 			index, value
@@ -17,7 +17,7 @@ function hdssSDf(index, value)
 end
 
 function hdssBGVALUE(index, siid, cenx, ceny, w, h, col)
-	hdss.Call(
+	return hdss.Call(
 		HDSS_BGVALUE,
 		{
 			index, siid, cenx, ceny, w, h, col
@@ -26,7 +26,7 @@ function hdssBGVALUE(index, siid, cenx, ceny, w, h, col)
 end
 
 function hdssBGFLAG(index, flag)
-	hdss.Call(
+	return hdss.Call(
 		HDSS_BGFLAG,
 		{
 			index, flag
@@ -140,7 +140,7 @@ function hdssSELCLEAR(index1, index2, index3, index4)
 end
 
 function hdssSETSTATE(tostate)
-	hdss.Call(
+	return hdss.Call(
 		HDSS_SETSTATE,
 		{
 			tostate
@@ -149,7 +149,7 @@ function hdssSETSTATE(tostate)
 end
 
 function hdssRETURN(ret)
-	hdss.Call(
+	return hdss.Call(
 		HDSS_RETURN,
 		{
 			ret
@@ -158,7 +158,7 @@ function hdssRETURN(ret)
 end
 
 function hdssSE(seid)
-	hdss.Call(
+	return hdss.Call(
 		HDSS_SE,
 		{
 			seid
@@ -167,15 +167,24 @@ function hdssSE(seid)
 end
 
 function hdssFRONTSPRITE(index, siid, x, y, angle, hscale, vscale)
-	return hdss.Call(
-		HDSS_FRONTSPRITE,
-		{
-			index, siid
-		},
-		{
-			x, y, angle, hscale, vscale
-		}
-	)
+	if x == nil or y == nil then
+		return hdss.Call(
+			HDSS_FRONTSPRITE,
+			{
+				index, siid
+			}
+		)
+	else
+		return hdss.Call(
+			HDSS_FRONTSPRITE,
+			{
+				index, siid
+			},
+			{
+				x, y, angle, hscale, vscale
+			}
+		)
+	end
 end
 
 function hdssFREEFRONTSPRITE(index)
@@ -183,6 +192,15 @@ function hdssFREEFRONTSPRITE(index)
 		HDSS_FREEFRONTSPRITE,
 		{
 			index
+		}
+	)
+end
+
+function hdssSETPINITLIFE(index, life)
+	return hdss.Call(
+		HDSS_SETPINITLIFE,
+		{
+			index, life
 		}
 	)
 end

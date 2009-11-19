@@ -5,7 +5,7 @@
 
 void Process::frameStart()
 {
-	if(!(Player::p.flag & PLAYER_SHOT))
+	if(!(Player::p[0].flag & PLAYER_SHOT))
 	{
 		if (!(stopflag & FRAME_STOPFLAG_ENEMYSET))
 		{
@@ -15,14 +15,14 @@ void Process::frameStart()
 	if(!replaymode)
 	{
 		playing = true;
-		if(!Player::p.ncCont)
+		if(!Player::p[0].ncCont)
 		{
 			replayIndex++;
 			replayframe[replayIndex].input = nowInput;
 			Export::rpySetBias(&(replayframe[replayIndex]));
 		}
 	}
-	else if(!Player::p.ncCont)
+	else if(!Player::p[0].ncCont)
 	{
 		replayIndex++;
 		nowInput = replayframe[replayIndex].input;

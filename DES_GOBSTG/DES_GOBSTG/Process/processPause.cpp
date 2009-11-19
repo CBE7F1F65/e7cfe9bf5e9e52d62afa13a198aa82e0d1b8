@@ -26,9 +26,9 @@ int Process::processPause()
 				time = 0;
 			}
 		}
-		else if (Player::p.exist && Player::p.ncPause < 0xff)
+		else if (Player::p[0].exist && Player::p[0].ncPause < 0xff)
 		{
-			Player::p.ncPause++;
+			Player::p[0].ncPause++;
 		}
 	}
 	if(scr.GetIntValue(SCR_RESERVEBEGIN) < 0x100)
@@ -117,7 +117,7 @@ int Process::processPause()
 				InfoSelect::Clear();
 				bgmask.exist = false;
 				fdisp.SetState(FDISP_PANEL, 0);
-				Player::p.exist = false;
+				Player::p[0].exist = false;
 				BossInfo::Clear();
 				getInput();
 				replaymode = false;
@@ -138,7 +138,7 @@ int Process::processPause()
 					state = STATE_MATCH_SELECT;
 			}
 			scene = startscene;
-			Player::p.exist = false;
+			Player::p[0].exist = false;
 //			startPrep();
 			return PTURN;
 		}

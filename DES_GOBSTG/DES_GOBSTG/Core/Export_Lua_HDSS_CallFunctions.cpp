@@ -309,6 +309,18 @@ int _HDSSCallGet::Call_FREEFRONTSPRITE(LuaState * ls)
 	return 0;
 }
 
+int _HDSSCallGet::Call_SETPINITLIFE(LuaState * ls)
+{
+	_ENTERCALL_HDSS_LUA;
+	if (true)
+	{
+		int _index = _INEXT_HDSS_LUAPARA;
+		BYTE _initlife = _INEXT_HDSS_LUAPARA;
+		Player::p[_index].SetInitLife(_initlife);
+	}
+	return 0;
+}
+
 int _HDSSCallGet::Call_BGVALUE(LuaState * ls)
 {
 	_ENTERCALL_HDSS_LUA;

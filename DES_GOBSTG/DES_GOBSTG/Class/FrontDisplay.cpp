@@ -134,7 +134,7 @@ void FrontDisplay::PanelDisplay()
 		{
 			BYTE alpha = 0xff;
 			DWORD color = 0xffffff;
-			if (Player::p.x < 128 && Player::p.y > 420)
+			if (Player::p[0].x < 128 && Player::p[0].y > 420)
 			{
 				alpha = 0x40;
 			}
@@ -144,9 +144,9 @@ void FrontDisplay::PanelDisplay()
 			float tx, ty, tw, th;
 			panel.slot->GetTextureRect(&tx, &ty, &tw, &th);
 
-			panel.slot->SetTextureRect(tx, ty, tw*(Player::p.fPoprate*0.82f+0.18f), th);
+			panel.slot->SetTextureRect(tx, ty, tw*(Player::p[0].fPoprate*0.82f+0.18f), th);
 			panel.slot->SetHotSpot(0, 0);
-			if (Player::p.fPoprate >= 1.0f)
+			if (Player::p[0].fPoprate >= 1.0f)
 			{
 				if (time % 8 < 4)
 				{
@@ -169,16 +169,16 @@ void FrontDisplay::PanelDisplay()
 			panel.slotback->Render(44, 438);
 
 			color = (alpha<<24)+0xffffff;
-			if (Player::p.bBorder)
+			if (Player::p[0].bBorder)
 			{
 				panel.borderindi->SetColor(color);
-				panel.borderindi->RenderEx(80, 448, ARC(Player::p.esBorder.angle+Player::p.esBorder.headangle), Player::p.esBorder.hscale / 2.0f);
+				panel.borderindi->RenderEx(80, 448, ARC(Player::p[0].esBorder.angle+Player::p[0].esBorder.headangle), Player::p[0].esBorder.hscale / 2.0f);
 			}
 
 			if (info.smalldigitfont)
 			{
 				info.smalldigitfont->SetColor(color);
-				info.smalldigitfont->printf(48, 454, HGETEXT_LEFT | HGETEXT_TOP, "%06d*%.2f", Player::p.nFaith, (int)((Player::p.fPoprate+Player::p.fPopratebase)*100)/100.0f);
+				info.smalldigitfont->printf(48, 454, HGETEXT_LEFT | HGETEXT_TOP, "%06d*%.2f", Player::p[0].nFaith, (int)((Player::p[0].fPoprate+Player::p[0].fPopratebase)*100)/100.0f);
 				info.smalldigitfont->SetColor(0xffffffff);
 			}
 
@@ -200,12 +200,12 @@ void FrontDisplay::PanelDisplay()
 			if(info.normaldigitfont)
 			{
 				info.normaldigitfont->SetColor(0xffffffff);
-				info.normaldigitfont->printfb(0, 45, 630, 20, HGETEXT_MIDDLE | HGETEXT_RIGHT, "%I64d", (__int64)Player::p.nHiScore);
-				info.normaldigitfont->printfb(0, 71, 630, 20, HGETEXT_MIDDLE | HGETEXT_RIGHT, "%I64d", (__int64)Player::p.nScore);
+				info.normaldigitfont->printfb(0, 45, 630, 20, HGETEXT_MIDDLE | HGETEXT_RIGHT, "%I64d", (__int64)Player::p[0].nHiScore);
+				info.normaldigitfont->printfb(0, 71, 630, 20, HGETEXT_MIDDLE | HGETEXT_RIGHT, "%I64d", (__int64)Player::p[0].nScore);
 
-				info.normaldigitfont->printf(520, 126, HGETEXT_LEFT, "%.3f", (float)Player::p.nPower / Player::p.bombperpower);
-				info.normaldigitfont->printf(520, 152, HGETEXT_LEFT, "%d", Player::p.nGraze);
-				for (int i=0; i<Player::p.nLife; i++)
+				info.normaldigitfont->printf(520, 126, HGETEXT_LEFT, "%.3f", (float)Player::p[0].nPower / Player::p[0].bombperpower);
+				info.normaldigitfont->printf(520, 152, HGETEXT_LEFT, "%d", Player::p[0].nGraze);
+				for (int i=0; i<Player::p[0].nLife; i++)
 				{
 					panel.lifeindi[5]->Render(530+i*panel.lifeindi[5]->GetWidth(), 110);
 				}
@@ -239,7 +239,7 @@ void FrontDisplay::PanelDisplay()
 			hge->Timer_GetTime()
 			);
 #ifdef __DEBUG
-		if (Player::p.exist && info.smalldigitfont)
+		if (Player::p[0].exist && info.smalldigitfont)
 		{
 			info.smalldigitfont->printf(8, 465, 0, "%d / %d", mp.scene, time);
 		}
@@ -390,7 +390,7 @@ void FrontDisplay::BossAction()
 			infobody.iqBossBlood.quad.v[2].x = 60;
 		}
 	}
-	if(Player::p.y < 100)
+	if(Player::p[0].y < 100)
 	{
 		infobody.iqBossBlood.quad.v[0].col &= (0x7fffffff);
 		infobody.iqBossBlood.quad.v[1].col &= (0x7fffffff);
@@ -491,7 +491,7 @@ void FrontDisplay::RenderBossInfo()
 			int tlenth = strlen(bossinfo.spellname);
 			float spellnamew = tlenth*8;
 			DWORD spellnamealpha = 0xff000000;
-			if(Player::p.y < 100)
+			if(Player::p[0].y < 100)
 				spellnamealpha = 0x40000000;
 			bossinfo.fsspellname.SetColor(spellnamealpha+0xffffff, spellnamealpha+0xffffffff, spellnamealpha+0xff0000, spellnamealpha+0xff0000);
 			bossinfo.fsspellname.Render(400-spellnamew, yt-5);

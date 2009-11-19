@@ -34,9 +34,55 @@ function _CEPlayerSelect_GetValues(bleft)
 	end
 end
 
+function _CEPlayerSelect_SetInitLife(bleft, x, flag)
+	local pindex;
+	if bleft then
+		pindex = 0;
+	else
+		pindex = 1;
+	end
+	
+	local y = 440;
+	
+	local fspindexstart = pindex * 6;
+	if flag == nil or flag == 0 then
+		hdssFRONTSPRITE(fspindexstart, SI_InitialLife_Content, x, y);
+		for i=1, 5 do
+			hdssFRONTSPRITE(fspindexstart + i, SI_InitialLife_Full, (i-5) * 16 + x, y + 16);
+		end
+		hdssSETPINITLIFE(pindex, 10);
+	else
+		local nowlife, nowinitlife = hdss.Get(HDSS_PLIFE, pindex);
+		if flag < 0 then
+			if nowinitlife <= 1 then
+				return;
+			end
+			hdssSETPINITLIFE(pindex, nowinitlife-1);
+			if math.mod(nowinitlife, 2) == 0 then
+				hdssFRONTSPRITE(fspindexstart + nowinitlife / 2, SI_InitialLife_Half);
+			else
+				hdssFRONTSPRITE(fspindexstart + (nowinitlife+1) / 2, SI_InitialLife_Empty);
+			end
+		else
+			if nowinitlife >= 10 then
+				return;
+			end
+			hdssSETPINITLIFE(pindex, nowinitlife+1);
+			if math.mod(nowinitlife, 2) == 0 then
+				hdssFRONTSPRITE(fspindexstart + nowinitlife / 2 + 1, SI_InitialLife_Half);
+			else
+				hdssFRONTSPRITE(fspindexstart + (nowinitlife+1) / 2, SI_InitialLife_Full);
+			end
+		end
+	end
+end
+
 function CEPlayerSelect_SetSelect(bleft, x)
 	local selsysplayerid, selsysotherplayerid, uibgid, initid, pushkeyid = _CEPlayerSelect_GetValues(bleft);
 	local minuskey, pluskey, okkey, quickkey, slowkey, chargekey = _CEPlayerSelect_GetKeys(bleft);
+	
+	_CEPlayerSelect_SetInitLife(bleft, x);
+	
 	local playercontenttable, playercount = game.GetPlayerContentTable();
 	for j, it in pairs(playercontenttable) do
 		local i = j-1;
@@ -76,6 +122,9 @@ end
 function CEPlayerSelect_CloseUsed()
 	hdssBGOFF(LConst_uibg_player1id, LConst_uibg_player2id);
 	hdssSELCLEAR(LConst_selsys_player1id, LConst_selsys_player2id);
+	for i=0, 11 do
+		hdssFREEFRONTSPRITE(i);
+	end
 end
 
 function CEPlayerSelect_ExitState(tostate)
@@ -97,9 +146,11 @@ function CEPlayerSelect_DispatchSelect(bleft, x, bothercomplete)
 		ret = 1;
 	elseif hge.Input_GetDIKey(chargekey, DIKEY_DOWN) then
 		hdssSELSET(selsysplayerid);
-	elseif hge.Input_GetDIKey(slowkey, DIKEY_DOWN) then
+	elseif hge.Input_GetDIKey(slowkey) then
 		if hge.Input_GetDIKey(leftkey, DIKEY_DOWN) then
+			_CEPlayerSelect_SetInitLife(bleft, x, -1);
 		elseif hge.Input_GetDIKey(rightkey, DIKEY_DOWN) then
+			_CEPlayerSelect_SetInitLife(bleft, x, 1);
 		end
 	elseif hge.Input_GetDIKey(quickkey, DIKEY_DOWN) then
 		if not bothercomplete then

@@ -65,6 +65,19 @@ int _HDSSCallGet::Get_SELCOMPLETE(LuaState * ls)
 	return 0;
 }
 
+int _HDSSCallGet::Get_PLIFE(LuaState * ls)
+{
+	_ENTERGET_HDSS_LUA;
+	if (argscount > 1)
+	{
+		int _index = _INEXT_HDSS_LUAFUNC;
+		_PI_HDSS_LUA(Player::p[_index].nLife);
+		_PI_HDSS_LUA(Player::p[_index].initlife);
+		return 2;
+	}
+	return 0;
+}
+
 int _HDSSCallGet::Get_SEL(LuaState * ls)
 {
 	_ENTERGET_HDSS_LUA;

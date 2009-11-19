@@ -13,7 +13,7 @@
 #include "InfoQuad.h"
 #include "BResource.h"
 
-Player Player::p;
+Player Player::p[M_PL_MATCHMAXPLAYER];
 
 #define _PL_ITEMDRAINNPOP	(PL_NPOPMAX * 4 / 5)
 
@@ -395,6 +395,9 @@ void Player::ClearSet()
 
 	speedfactor		=	1.0f;
 
+	// add
+	initlife	=	PLAYER_DEFAULTINITLIFE;
+
 	exist = true;
 
 	if (effGraze.exist)
@@ -447,6 +450,12 @@ void Player::ClearSet()
 	esBorderZone.valueSet(EFFECT_PLAYERBORDERZONE, x, y, 240, -1.5f, true);
 	esPoint.valueSet(EFFECT_PLAYERPOINT, x, y, 0, 0);
 	esCollapse.valueSet(EFFECT_PLAYERCOLLAPSE, x, y, 160 ,0, false);
+}
+
+//add
+void Player::SetInitLife(BYTE _initlife)
+{
+	initlife = _initlife;
 }
 
 void Player::UpdatePlayerData()
@@ -920,7 +929,7 @@ void Player::DoPlayerBulletHit(int hitonfactor)
 
 void Player::DoShot()
 {
-	if (!Player::p.bInfi && !(Player::p.flag & (PLAYER_SHOT | PLAYER_COLLAPSE)))
+	if (!Player::p[0].bInfi && !(Player::p[0].flag & (PLAYER_SHOT | PLAYER_COLLAPSE)))
 	{
 		if(nPower >= bombperpower)
 			flag |= PLAYER_SHOT;
@@ -1170,7 +1179,7 @@ bool Player::Collapse()
 		}
 		else
 		{
-			p.exist = false;
+			p[0].exist = false;
 			return true;
 		}
 
