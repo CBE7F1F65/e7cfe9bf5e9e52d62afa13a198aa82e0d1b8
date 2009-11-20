@@ -9,33 +9,11 @@ bool Process::reload()
 	strcpy(rpyfilename, "");
 	replayIndex = 0;
 
-	for(int i=0; i<BGLAYERSETMAX; i++)
-	{
-		BGLayer::set[i].sID = 0;
-	}
-	BGLayer::KillOtherLayer();
-	bgmask.exist = false;
-	fgpause.exist = false;
 	fdisp.SetState(FDISP_PANEL, 0);
-	for(int i=0;i<ENEMYMAX;i++)
-	{
-		en[i].exist = false;
-		en[i].able = false;
-	}
-	for(int i=0;i<GHOSTMAX;i++)
-	{
-		gh[i].exist = false;
-		gh[i].able = false;
-	}	
-	for(int i=0;i<EFFECTSPMAX;i++)
-	{
-		es[i].exist = false;
-	}
-	for(int i=0;i<TARGETMAX;i++)
-	{
-		tar[i].x = 0;
-		tar[i].y = 0;
-	}
+	BGLayer::Init();
+	Enemy::ClearAll();
+	Ghost::ClearAll();
+	Target::ClearAll();
 	SelectSystem::Init();
 	InfoSelect::Clear();
 	chat.Clear();

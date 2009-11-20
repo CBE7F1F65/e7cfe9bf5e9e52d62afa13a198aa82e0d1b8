@@ -284,11 +284,11 @@ void FrontDisplay::BossAction()
 				col1 = 0xce7f0000;
 				col2 = 0xceff0000;
 
-				SpriteItemManager::ptFace(en[ENEMY_MAINBOSSINDEX].faceindex, info.cutin);
+				SpriteItemManager::ptFace(Enemy::en[ENEMY_MAINBOSSINDEX].faceindex, info.cutin);
 				info.cutin->SetColor(0x60ffffff);
 
 				infobody.effBossUp.Stop(true);
-				infobody.effBossUp.MoveTo(en[ENEMY_MAINBOSSINDEX].x, en[ENEMY_MAINBOSSINDEX].y, 0, true);
+				infobody.effBossUp.MoveTo(Enemy::en[ENEMY_MAINBOSSINDEX].x, Enemy::en[ENEMY_MAINBOSSINDEX].y, 0, true);
 				infobody.effBossUp.Fire();
 			}
 			else
@@ -302,15 +302,15 @@ void FrontDisplay::BossAction()
 				60, 34, col2,
 				60, 34, col2);
 		}
-		if((infobody.iqBossBlood.quad.v[1].x-60) / 320.0f < en[ENEMY_MAINBOSSINDEX].life / en[ENEMY_MAINBOSSINDEX].maxlife)
+		if((infobody.iqBossBlood.quad.v[1].x-60) / 320.0f < Enemy::en[ENEMY_MAINBOSSINDEX].life / Enemy::en[ENEMY_MAINBOSSINDEX].maxlife)
 		{
 			infobody.iqBossBlood.quad.v[1].x += 2;
 			infobody.iqBossBlood.quad.v[2].x += 2;
 		}
 		else
 		{
-			infobody.iqBossBlood.quad.v[1].x = en[ENEMY_MAINBOSSINDEX].life / en[ENEMY_MAINBOSSINDEX].maxlife * 320.0f + 60;
-			infobody.iqBossBlood.quad.v[2].x = en[ENEMY_MAINBOSSINDEX].life / en[ENEMY_MAINBOSSINDEX].maxlife * 320.0f + 60;
+			infobody.iqBossBlood.quad.v[1].x = Enemy::en[ENEMY_MAINBOSSINDEX].life / Enemy::en[ENEMY_MAINBOSSINDEX].maxlife * 320.0f + 60;
+			infobody.iqBossBlood.quad.v[2].x = Enemy::en[ENEMY_MAINBOSSINDEX].life / Enemy::en[ENEMY_MAINBOSSINDEX].maxlife * 320.0f + 60;
 		}
 		//
 		if(bSpell)
@@ -322,11 +322,11 @@ void FrontDisplay::BossAction()
 			_ty += (160 - timer) * sint(timer * 400);
 			infobody.effBossUp.MoveTo(_tx, _ty);
 			*/
-			infobody.effBossUp.MoveTo(en[ENEMY_MAINBOSSINDEX].x, en[ENEMY_MAINBOSSINDEX].y);
+			infobody.effBossUp.MoveTo(Enemy::en[ENEMY_MAINBOSSINDEX].x, Enemy::en[ENEMY_MAINBOSSINDEX].y);
 			infobody.effBossUp.action();
 			if(timer == 90)
 			{
-				SE::push(SE_BOSS_UP, en[ENEMY_MAINBOSSINDEX].x);
+				SE::push(SE_BOSS_UP, Enemy::en[ENEMY_MAINBOSSINDEX].x);
 				infobody.effBossUp.Stop();
 			}
 		}
@@ -340,14 +340,14 @@ void FrontDisplay::BossAction()
 	{
 		if (timer == 1)
 		{
-			SE::push(SE_BOSS_DEAD, en[ENEMY_MAINBOSSINDEX].x);
+			SE::push(SE_BOSS_DEAD, Enemy::en[ENEMY_MAINBOSSINDEX].x);
 			infobody.effBossCollapse.Stop(true);
-			infobody.effBossCollapse.MoveTo(en[ENEMY_MAINBOSSINDEX].x, en[ENEMY_MAINBOSSINDEX].y, 0, true);
+			infobody.effBossCollapse.MoveTo(Enemy::en[ENEMY_MAINBOSSINDEX].x, Enemy::en[ENEMY_MAINBOSSINDEX].y, 0, true);
 			infobody.effBossCollapse.Fire();
 			if (bSpell)
 			{
-//				bgmask.flag = BG_REDOUT;
-				bgmask.SetFlag(BG_REDOUT, BGMT_OUT);
+//				BGLayer::ubg[UBGID_BGMASK].flag = BG_REDOUT;
+				BGLayer::ubg[UBGID_BGMASK].SetFlag(BG_REDOUT, BGMT_OUT);
 			}
 			mp.SetShake(1);
 		}
@@ -372,17 +372,17 @@ void FrontDisplay::BossAction()
 		{
 			if (bSpell)
 			{
-//				bgmask.flag = BG_WHITEFLASH;
-				bgmask.SetFlag(BG_WHITEFLASH, BGMT_FLASH);
+//				BGLayer::ubg[UBGID_BGMASK].flag = BG_WHITEFLASH;
+				BGLayer::ubg[UBGID_BGMASK].SetFlag(BG_WHITEFLASH, BGMT_FLASH);
 			}
 		}
 	}
 	else
 	{
-		if(en[ENEMY_MAINBOSSINDEX].life > 0)
+		if(Enemy::en[ENEMY_MAINBOSSINDEX].life > 0)
 		{
-			infobody.iqBossBlood.quad.v[1].x = en[ENEMY_MAINBOSSINDEX].life / en[ENEMY_MAINBOSSINDEX].maxlife * 320.0f + 60;
-			infobody.iqBossBlood.quad.v[2].x = en[ENEMY_MAINBOSSINDEX].life / en[ENEMY_MAINBOSSINDEX].maxlife * 320.0f + 60;
+			infobody.iqBossBlood.quad.v[1].x = Enemy::en[ENEMY_MAINBOSSINDEX].life / Enemy::en[ENEMY_MAINBOSSINDEX].maxlife * 320.0f + 60;
+			infobody.iqBossBlood.quad.v[2].x = Enemy::en[ENEMY_MAINBOSSINDEX].life / Enemy::en[ENEMY_MAINBOSSINDEX].maxlife * 320.0f + 60;
 		}
 		else
 		{
@@ -426,7 +426,7 @@ void FrontDisplay::BossAction()
 		if(timer == 1)
 		{
 			infobody.effBossItem.Stop(true);
-			infobody.effBossItem.MoveTo(en[ENEMY_MAINBOSSINDEX].x, en[ENEMY_MAINBOSSINDEX].y, 0, true);
+			infobody.effBossItem.MoveTo(Enemy::en[ENEMY_MAINBOSSINDEX].x, Enemy::en[ENEMY_MAINBOSSINDEX].y, 0, true);
 			infobody.effBossItem.Fire();
 		}
 		else if(timer == 90)
@@ -554,14 +554,14 @@ void FrontDisplay::RenderBossTimeCircle()
 			{
 				scale = (timer-60*limit)*0.8f / (30-15*limit);
 			}
-			info.timecircle->RenderEx(en[ENEMY_MAINBOSSINDEX].x, en[ENEMY_MAINBOSSINDEX].y, timer/15.0f, scale);
+			info.timecircle->RenderEx(Enemy::en[ENEMY_MAINBOSSINDEX].x, Enemy::en[ENEMY_MAINBOSSINDEX].y, timer/15.0f, scale);
 		}
 	}
 }
 
 void FrontDisplay::RenderEnemyX()
 {
-	info.enemyx->Render(en[ENEMY_MAINBOSSINDEX].x, 472);
+	info.enemyx->Render(Enemy::en[ENEMY_MAINBOSSINDEX].x, 472);
 }
 
 void FrontDisplay::ItemInfoDisplay(infoFont * item)

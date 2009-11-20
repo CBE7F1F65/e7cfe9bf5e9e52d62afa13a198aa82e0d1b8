@@ -8,17 +8,7 @@ int Process::render()
 		return renderInit();
 	}
 	//BGLayer
-	for(int i=0;i<BGLAYERMAX;i++)
-	{
-		if(bg[i].exist)
-		{
-			bg[i].Render();
-		}
-	}
-	if(bgmask.exist)
-	{
-		bgmask.Render();
-	}
+	BGLayer::RenderBG();
 
 	if(Player::p[0].exist || state == STATE_CONTINUE)
 	{
@@ -29,22 +19,9 @@ int Process::render()
 		}
 		if(!Player::p[0].bBorder)
 		{
-			for(int i=0;i<GHOSTMAX;i++)
-			{
-				if(gh[i].exist)
-					gh[i].Render();
-			}
+			Ghost::RenderAll();
 		}
-		for(int i=0;i<ENEMYMAX;i++)
-		{
-			if(en[i].exist)
-				en[i].Render();
-		}
-		for(int i=0;i<ENEMYMAX;i++)
-		{
-			if(en[i].exist)
-				en[i].RenderEffect();
-		}
+		Enemy::RenderAll();
 		if (pb.size)
 		{
 			DWORD i = 0;
@@ -112,11 +89,7 @@ int Process::render()
 
 		if(Player::p[0].bBorder)
 		{
-			for(int i=0;i<GHOSTMAX;i++)
-			{
-				if(gh[i].exist)
-					gh[i].Render();
-			}
+			Ghost::RenderAll();
 		}
 		if (mi.size)
 		{
@@ -164,17 +137,7 @@ int Process::render()
 		}
 	}
 
-	for(int i=0;i<FGLAYERMAX;i++)
-	{
-		if(fg[i].exist)
-		{
-			fg[i].Render();
-		}
-	}
-	if(fgpause.exist)
-	{
-		fgpause.Render();
-	}
+	BGLayer::RenderFG();
 	for (int i=0; i<SELSYSTEMMAX; i++)
 	{
 		selsys[i].Render();

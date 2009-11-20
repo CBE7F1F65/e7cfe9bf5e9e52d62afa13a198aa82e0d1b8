@@ -4,7 +4,7 @@ Signature=UE Proj: v.1
 Compilable=0
 Use Relative Directory=1
 Relative to Project File=1
-Project Start=D9070B00040013000C000B002700000040
+Project Start=D9070B0004001300160017000D0000003C
 Project Directory=E:\hge\Resource
 Include Sub Directories=1
 Project Tagfile=
@@ -14,7 +14,7 @@ Using VCS=0
 Save Account=0
 Create Tagfile=0
 CTags Legacy Support=0
-Working Time=122163
+Working Time=129375
 [Group]
 0=HDSS
 1=HDSS - Control

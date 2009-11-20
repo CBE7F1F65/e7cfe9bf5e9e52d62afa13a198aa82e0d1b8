@@ -2,7 +2,6 @@
 #include "Player.h"
 #include "SE.h"
 #include "Item.h"
-#include "EffectSp.h"
 #include "Scripter.h"
 #include "Chat.h"
 #include "BossInfo.h"
@@ -12,7 +11,7 @@
 
 #define _DAMAGEZONEMAX	0x10
 
-Enemy en[ENEMYMAX];
+Enemy Enemy::en[ENEMYMAX];
 
 VectorList<DamageZone> Enemy::dmgz;
 HTEXTURE Enemy::texmain;
@@ -92,6 +91,57 @@ bool Enemy::Build(WORD _eID, BYTE _index, BYTE _tarID, float x, float y, int ang
 	return true;
 }
 
+void Enemy::Clear()
+{
+	exist = false;
+	able = false;
+	timer = 0;
+}
+
+void Enemy::ClearAll()
+{
+	for (int i=0; i<ENEMYMAX; i++)
+	{
+		en[i].Clear();
+	}
+	index = ENEMY_INDEXSTART;
+}
+
+void Enemy::Action(bool notinstop)
+{
+	for (int i=0; i<ENEMYMAX; i++)
+	{
+		if (en[i].exist)
+		{
+			if (notinstop)
+			{
+				en[i].action();
+			}
+			else
+			{
+				en[i].actionInStop();
+			}
+		}
+	}
+}
+
+void Enemy::RenderAll()
+{
+	for (int i=0; i<ENEMYMAX; i++)
+	{
+		if (en[i].exist)
+		{
+			en[i].Render();
+		}
+	}
+	for (int i=0; i<ENEMYMAX; i++)
+	{
+		if (en[i].exist)
+		{
+			en[i].RenderEffect();
+		}
+	}
+}
 void Enemy::Render()
 {
 	sprite->SetColor(alpha<<24|diffuse);
@@ -895,8 +945,7 @@ void Enemy::action()
 
 		if(tarID != 0xff)
 		{
-			tar[tarID].x = x;
-			tar[tarID].y = y;
+			Target::SetValue(tarID, x, y);
 		}
 
 		float tw;

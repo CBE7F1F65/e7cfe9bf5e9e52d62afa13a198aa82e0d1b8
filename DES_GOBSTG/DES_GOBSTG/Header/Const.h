@@ -37,12 +37,6 @@
 #define HGELOG			hge->System_Log
 #define HGELOG_ERRSTR	"**********ERROR**********"
 
-typedef struct tagTarget
-{
-	float x;
-	float y;
-}Target;
-
 #define BTYPE_BULLET	0x10
 #define BTYPE_BEAM		0x20
 #define BTYPE_ENEMY		0x30

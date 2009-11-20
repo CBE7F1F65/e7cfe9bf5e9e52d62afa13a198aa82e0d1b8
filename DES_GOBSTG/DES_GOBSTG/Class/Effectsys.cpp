@@ -2,6 +2,7 @@
 #include "Main.h"
 #include "Export.h"
 #include "Player.h"
+#include "Target.h"
 
 Effectsys effsys[EFFECTSYSMAX];
 hgeEffectSystem Effectsys::efftype[EFFECTSYSTYPEMAX];
@@ -141,7 +142,7 @@ void Effectsys::action()
 		}
 		else
 		{
-			chaseAim(tar[tarAim].x, tar[tarAim].y, chasetimer);
+			chaseAim(Target::tar[tarAim].x, Target::tar[tarAim].y, chasetimer);
 		}
 	}
 
@@ -154,8 +155,7 @@ void Effectsys::action()
 	MoveTo(x, y, z);
 	if (tarID != 0xff)
 	{
-		tar[tarID].x = x;
-		tar[tarID].y = y;
+		Target::SetValue(tarID, x, y);
 	}
 	eff->Update();
 }

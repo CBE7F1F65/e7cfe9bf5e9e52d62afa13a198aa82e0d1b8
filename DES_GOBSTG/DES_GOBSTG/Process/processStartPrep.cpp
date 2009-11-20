@@ -7,49 +7,10 @@ void Process::clearPrep(bool bclearkey)
 	{
 		effsys[i].exist = false;
 	}
-	for(int i=0; i<BGLAYERSETMAX; i++)
-	{
-		BGLayer::set[i].sID = 0;
-	}
-	BGLayer::setindex = 0;
-	for(int i=0;i<BGLAYERMAX;i++)
-	{
-		bg[i].exist = false;
-		bg[i].changetimer = 0;
-		bg[i].timer = 0;
-		bg[i].flag = 0;
-	}
-	for(int i=0;i<FGLAYERMAX;i++)
-	{
-		fg[i].exist = false;
-		fg[i].changetimer = 0;
-		fg[i].timer = 0;
-		fg[i].flag = 0;
-	}
-	for(int i=0;i<ENEMYMAX;i++)
-	{
-		en[i].exist = false;
-		en[i].able = false;
-		en[i].timer = 0;
-	}
-	Enemy::index = ENEMY_INDEXSTART;
-	for(int i=0;i<GHOSTMAX;i++)
-	{
-		gh[i].exist = false;
-		gh[i].able = false;
-		gh[i].timer = 0;
-	}
-	Ghost::index = 0;
-	for(int i=0;i<EFFECTSPMAX;i++)
-	{
-		es[i].exist = false;
-		es[i].timer = 0;
-	}
-	for(int i=0;i<TARGETMAX;i++)
-	{
-		tar[i].x = 0;
-		tar[i].y = 0;
-	}
+	BGLayer::Init();
+	Enemy::ClearAll();
+	Ghost::ClearAll();
+	Target::ClearAll();
 	bu.clear_item();
 	Bullet::index = 0;
 	Bullet::izel.clear_item();
@@ -75,20 +36,7 @@ void Process::clearPrep(bool bclearkey)
 
 	Scripter::stopEdefScript = false;
 
-	bgmask.changetimer = 0;
-	bgmask.timer = 0;
-	bgmask.flag = 0;
-	bgmask.exist = false;
 	fdisp.SetState(FDISP_PANEL, 1);
-	/*
-	fgpanel.changetimer = 0;
-	fgpanel.timer = 0;
-	fgpanel.flag = 0;
-	*/
-	fgpause.changetimer = 0;
-	fgpause.timer = 0;
-	fgpause.flag = 0;
-	fgpause.exist = false;
 
 	Player::p[0].ClearSet();
 
@@ -210,9 +158,9 @@ void Process::startPrep(bool callinit)
 			Player::p[0].nHiScore = Player::p[0].nScore;
 	}
 
-	bgmask.valueSetByName(tex, SI_NULL, M_ACTIVECLIENT_CENTER_X, M_ACTIVECLIENT_CENTER_Y, M_ACTIVECLIENT_WIDTH, M_ACTIVECLIENT_HEIGHT, 0);
-	fgpause.valueSetByName(tex, SI_NULL, M_ACTIVECLIENT_CENTER_X, M_ACTIVECLIENT_CENTER_Y, M_ACTIVECLIENT_WIDTH, M_ACTIVECLIENT_HEIGHT, 0);
-	fgpause.exist = false;
+	BGLayer::ubg[UBGID_BGMASK].valueSetByName(tex, SI_NULL, M_ACTIVECLIENT_CENTER_X, M_ACTIVECLIENT_CENTER_Y, M_ACTIVECLIENT_WIDTH, M_ACTIVECLIENT_HEIGHT, 0);
+	BGLayer::ubg[UBGID_FGPAUSE].valueSetByName(tex, SI_NULL, M_ACTIVECLIENT_CENTER_X, M_ACTIVECLIENT_CENTER_Y, M_ACTIVECLIENT_WIDTH, M_ACTIVECLIENT_HEIGHT, 0);
+	BGLayer::ubg[UBGID_FGPAUSE].exist = false;
 
 	stopflag = 0;
 	stoptimer = 0;

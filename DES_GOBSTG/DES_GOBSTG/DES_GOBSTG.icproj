@@ -5,7 +5,7 @@
 	Name="DES_GOBSTG"
 	ProjectGUID="{A4938EF7-0CE1-47A3-BC8D-4D0B54F94F6D}"
 	VCNestedProjectGUID="{7329E15F-F0AE-44EE-BC64-27B9038C76D7}"
-	VCNestedProjectCRC32="2929887311"
+	VCNestedProjectCRC32="2368661403"
 	VCNestedProjectFileName="DES_GOBSTG.vcproj"
 	Keyword="Win32Proj">
 	<Configurations>
@@ -310,6 +310,8 @@
 		<File 
 			RelativePath=".\Class\SelectSystem.cpp"/>
 		<File 
+			RelativePath=".\Class\Target.cpp"/>
+		<File 
 			RelativePath=".\Process\frame.cpp"/>
 		<File 
 			RelativePath=".\Process\frameEnd.cpp"/>
@@ -344,6 +346,8 @@
 		<File 
 			RelativePath=".\Process\processResult.cpp"/>
 		<File 
+			RelativePath=".\Process\processSceneSelect.cpp"/>
+		<File 
 			RelativePath=".\Process\processSpell.cpp"/>
 		<File 
 			RelativePath=".\Process\processStart.cpp"/>
@@ -355,8 +359,6 @@
 			RelativePath=".\Process\reload.cpp"/>
 		<File 
 			RelativePath=".\Process\render.cpp"/>
-		<File 
-			RelativePath=".\Process\processSceneSelect.cpp"/>
 		<File 
 			RelativePath=".\Header\BMath.h"/>
 		<File 
@@ -373,6 +375,8 @@
 			RelativePath=".\Header\DataPrinter.h"/>
 		<File 
 			RelativePath=".\Header\DataStruct.h"/>
+		<File 
+			RelativePath=".\Header\DataTable.h"/>
 		<File 
 			RelativePath=".\Header\Export.h"/>
 		<File 
@@ -409,8 +413,6 @@
 			RelativePath=".\Header\Export_Lua_HGE.h"/>
 		<File 
 			RelativePath=".\Header\Export_Lua_HGEHelp.h"/>
-		<File 
-			RelativePath=".\Header\DataTable.h"/>
 		<File 
 			RelativePath=".\Header\Beam.h"/>
 		<File 
@@ -459,6 +461,8 @@
 			RelativePath=".\Header\Selector.h"/>
 		<File 
 			RelativePath=".\Header\SelectSystem.h"/>
+		<File 
+			RelativePath=".\Header\Target.h"/>
 	</Files>
 </VisualStudioProject>
 

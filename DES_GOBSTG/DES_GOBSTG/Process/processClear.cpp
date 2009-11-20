@@ -17,9 +17,8 @@ int Process::processClear()
 	{
 		frameskip = M_DEFAULT_FRAMESKIP;
 
-		fgpause.exist = true;
-		fgpause.changetimer = 0;
-		fgpause.flag = FG_PAUSEIN;
+		BGLayer::ubg[UBGID_FGPAUSE].exist = true;
+		BGLayer::ubg[UBGID_FGPAUSE].SetFlag(FG_PAUSEIN);
 
 		LONGLONG tscore = 0;
 
@@ -59,7 +58,7 @@ int Process::processClear()
 	if(time > _PCLEAR_FDISP_TIME /*&& !replaymode*/ || time > _PCLEAR_FDIPS_CANCELTIME && hge->Input_GetDIKey(KS_FIRE, DIKEY_DOWN))
 	{
 		fdisp.SetState(FDISP_NEXTSTAGE, 0);
-		fgpause.exist = false;
+		BGLayer::ubg[UBGID_FGPAUSE].exist = false;
 
 		scene -= SCLEAR;
 		InfoSelect::Clear();

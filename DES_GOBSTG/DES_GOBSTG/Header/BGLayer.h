@@ -37,6 +37,9 @@
 #define FG_PAUSEOUT		0xf1
 #define FGMT_PAUSE		0x18
 
+#define UBGID_BGMASK		UBGLAYERMAX - 2
+#define UBGID_FGPAUSE		UBGLAYERMAX - 1
+
 struct BGLayerSet
 {
 	DWORD timer;
@@ -53,11 +56,14 @@ public:
 	virtual ~BGLayer();
 
 	static void Init();
+	static void KillOtherLayer();
+	static void Action(bool active);
+	static void RenderBG();
+	static void RenderFG();
 
 	void Render();
 	void valueSet(HTEXTURE * tex, int siID, float x, float y, float z, float w, float h, int rotx, int roty, int rotz, float paral, float speed = 0, int angle = 9000, bool move = false, bool rotate = false, DWORD col = 0xffffffff);
 	void valueSet(HTEXTURE * tex, int siID, float cenx, float ceny, float width, float height, DWORD col = 0xffffffff);
-	static void KillOtherLayer();
 	void valueSetByName(HTEXTURE * tex, const char * spritename, float cenx, float ceny, float width=-1, float height=-1, DWORD col = 0xffffffff);
 	void texRectSet(float texx, float texy, float texw, float texh);
 	void rectSet(float x, float y, float z, float w, float h, int rotx, int roty, int rotz);
@@ -89,16 +95,8 @@ public:
 
 	static BGLayerSet set[BGLAYERSETMAX];
 	static WORD setindex;
+
+	static BGLayer ubg[UBGLAYERMAX];
 };
-
-extern BGLayer bg[BGLAYERMAX];
-extern BGLayer fg[FGLAYERMAX];
-
-extern BGLayer bgmask;
-//extern BGLayer fgpanel;
-extern BGLayer fgpause;
-//extern BGLayer fgdiff;
-
-extern BGLayer * ubg[UBGLAYERMAX];
 
 #endif

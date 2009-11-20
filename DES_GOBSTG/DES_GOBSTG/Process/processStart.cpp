@@ -21,7 +21,7 @@ int Process::processStart()
 		BGLayer::KillOtherLayer();
 		SelectSystem::ClearAll();
 		InfoSelect::Clear();
-		bgmask.exist = false;
+		BGLayer::ubg[UBGID_BGMASK].exist = false;
 		fdisp.SetState(FDISP_PANEL, 0);
 		fdisp.SetState(FDISP_NEXTSTAGE, 0);
 		Player::p[0].exist = false;
@@ -53,8 +53,8 @@ int Process::processStart()
 		saveInput = nowInput;
 		SE::push(SE_SYSTEM_PAUSE);
 
-		fgpause.exist = true;
-		fgpause.SetFlag(FG_PAUSEIN, FGMT_PAUSE);
+		BGLayer::ubg[UBGID_FGPAUSE].exist = true;
+		BGLayer::ubg[UBGID_FGPAUSE].SetFlag(FG_PAUSEIN, FGMT_PAUSE);
 
 		state = STATE_PAUSE;
 	}

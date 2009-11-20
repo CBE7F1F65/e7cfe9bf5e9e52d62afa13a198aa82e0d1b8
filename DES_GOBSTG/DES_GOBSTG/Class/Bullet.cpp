@@ -6,6 +6,7 @@
 #include "Scripter.h"
 #include "Main.h"
 #include "BResource.h"
+#include "Target.h"
 
 #define _IZEZONEMAX			0x20
 
@@ -524,8 +525,7 @@ void Bullet::action()
 		headangle += SIGN(color) * res.bulletdata[type].nTurnAngle;
 		if(tarID != 0xff)
 		{
-			tar[tarID].x = x;
-			tar[tarID].y = y;
+			Target::SetValue(tarID, x, y);
 		}
 
 		if(!remain)
@@ -984,7 +984,7 @@ void Bullet::ChangeAction()
 				case ANGLESETRMAT:
 					if(doit)
 					{
-						angle = rMainAngle(tar[actionList[i+1]].x,tar[actionList[i+1]].y,actionList[i+2]*1.0f);
+						angle = rMainAngle(Target::tar[actionList[i+1]].x,Target::tar[actionList[i+1]].y,actionList[i+2]*1.0f);
 						SE::push(SE_BULLET_CHANGE_1, x);
 					}
 					i+=2;
@@ -1011,7 +1011,7 @@ void Bullet::ChangeAction()
 				case ANGLESETAMAT:
 					if(doit)
 					{
-						angle = aMainAngle(tar[actionList[i+1]].x,tar[actionList[i+1]].y,actionList[i+2]);
+						angle = aMainAngle(Target::tar[actionList[i+1]].x,Target::tar[actionList[i+1]].y,actionList[i+2]);
 						SE::push(SE_BULLET_CHANGE_1, x);
 					}
 					i+=2;
@@ -1153,7 +1153,7 @@ void Bullet::ChangeAction()
 					if (doit)
 					{
 						actionList[i+2]--;
-						chaseAim(tar[actionList[i+1]].x, tar[actionList[i+1]].y, actionList[i+2]);
+						chaseAim(Target::tar[actionList[i+1]].x, Target::tar[actionList[i+1]].y, actionList[i+2]);
 					}
 					i+=2;
 					doit = false;

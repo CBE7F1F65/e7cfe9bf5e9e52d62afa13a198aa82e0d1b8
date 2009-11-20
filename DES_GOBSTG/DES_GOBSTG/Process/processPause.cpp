@@ -63,13 +63,13 @@ int Process::processPause()
 
 	if(scr.GetIntValue(SCR_RESERVEBEGIN) == 0xff)
 	{
-		fgpause.SetFlag(FG_PAUSEOUT, FGMT_PAUSE);
+		BGLayer::ubg[UBGID_FGPAUSE].SetFlag(FG_PAUSEOUT, FGMT_PAUSE);
 		scr.SetIntValue(SCR_RESERVEBEGIN, 0x100|state);
 		state = STATE_PAUSE;
 	}
-	else if(scr.GetIntValue(SCR_RESERVEBEGIN) >= 0x100 && !fgpause.flag)
+	else if(scr.GetIntValue(SCR_RESERVEBEGIN) >= 0x100 && !BGLayer::ubg[UBGID_FGPAUSE].flag)
 	{
-		fgpause.exist = false;
+		BGLayer::ubg[UBGID_FGPAUSE].exist = false;
 		pauseinit = false;
 		state = scr.GetIntValue(SCR_RESERVEBEGIN) & 0xff;
 		if(state == STATE_START)
@@ -115,7 +115,7 @@ int Process::processPause()
 				BGLayer::KillOtherLayer();
 				SelectSystem::ClearAll();
 				InfoSelect::Clear();
-				bgmask.exist = false;
+				BGLayer::ubg[UBGID_BGMASK].exist = false;
 				fdisp.SetState(FDISP_PANEL, 0);
 				Player::p[0].exist = false;
 				BossInfo::Clear();
@@ -129,7 +129,7 @@ int Process::processPause()
 				BGLayer::KillOtherLayer();
 				SelectSystem::ClearAll();
 				InfoSelect::Clear();
-				bgmask.exist = false;
+				BGLayer::ubg[UBGID_BGMASK].exist = false;
 				fdisp.SetState(FDISP_PANEL, 0);
 				BossInfo::Clear();
 				if(spellmode && !replaymode && time == 0)

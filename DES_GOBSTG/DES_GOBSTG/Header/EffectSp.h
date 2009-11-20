@@ -36,6 +36,4 @@ public:
 	static BYTE evtype;
 };
 
-extern EffectSp es[EFFECTSPMAX];
-
 #endif

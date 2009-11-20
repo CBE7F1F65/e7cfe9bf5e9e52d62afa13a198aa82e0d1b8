@@ -13,8 +13,8 @@ int Process::processContinue()
 
 	if(!scr.GetIntValue(SCR_RESERVEBEGIN))
 	{
-		fgpause.exist = true;
-		fgpause.SetFlag(FG_PAUSEIN, FGMT_PAUSE);
+		BGLayer::ubg[UBGID_FGPAUSE].exist = true;
+		BGLayer::ubg[UBGID_FGPAUSE].SetFlag(FG_PAUSEIN, FGMT_PAUSE);
 		scr.SetIntValue(SCR_RESERVEBEGIN+1, M_PL_CONTINUEMAX-Player::p[0].ncCont);
 
 		hge->Channel_Pause(channel);
@@ -27,7 +27,7 @@ int Process::processContinue()
 
 	if(hge->Input_GetDIKey(KS_FIRE, DIKEY_DOWN))
 	{
-		fgpause.SetFlag(FG_PAUSEOUT, FGMT_PAUSE);
+		BGLayer::ubg[UBGID_FGPAUSE].SetFlag(FG_PAUSEOUT, FGMT_PAUSE);
 	}
 	else if(hge->Input_GetDIKey(KS_QUICK, DIKEY_DOWN))
 	{
@@ -36,7 +36,7 @@ int Process::processContinue()
 
 	if(tsec == 0x10)
 	{
-		fgpause.exist = false;
+		BGLayer::ubg[UBGID_FGPAUSE].exist = false;
 		if(!spellmode && scene < S1200)
 		{
 			Player::p[0].valueSet(mainchara, subchara_1, subchara_2, PL_DEFAULTNPLAYER, true);
@@ -68,7 +68,7 @@ int Process::processContinue()
 	{
 exit:
 		rpy.partFill(0xff);
-		fgpause.exist = false;
+		BGLayer::ubg[UBGID_FGPAUSE].exist = false;
 //		musicChange(0);
 		time = 0;
 		state = STATE_OVER;

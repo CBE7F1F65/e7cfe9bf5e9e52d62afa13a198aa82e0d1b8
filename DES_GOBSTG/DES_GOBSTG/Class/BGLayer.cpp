@@ -2,14 +2,18 @@
 #include "Main.h"
 #include "SpriteItemManager.h"
 #include "BResource.h"
-
+#include "Scripter.h"
+/*
 BGLayer * ubg[UBGLAYERMAX];
-BGLayerSet BGLayer::set[BGLAYERSETMAX];
 BGLayer bg[BGLAYERMAX];
 BGLayer fg[FGLAYERMAX];
 
 BGLayer bgmask;
 BGLayer fgpause;
+*/
+
+BGLayerSet BGLayer::set[BGLAYERSETMAX];
+BGLayer BGLayer::ubg[UBGLAYERMAX];
 
 WORD BGLayer::setindex = 0;
 
@@ -30,34 +34,26 @@ BGLayer::~BGLayer()
 
 void BGLayer::Init()
 {
-	for(int i=0;i<BGLAYERMAX;i++)
-	{
-		ubg[i] = & bg[i];
-	}
-	for(int i=0;i<FGLAYERMAX;i++)
-	{
-		ubg[i+BGLAYERMAX] = & fg[i];
-	}
-	ubg[BGMASKINDEX] = & bgmask;
-	ubg[FGPAUSEINDEX] = & fgpause;
-
 	for(int i=0; i<BGLAYERSETMAX; i++)
 	{
 		set[i].sID = 0;
 		set[i].timer = 0;
+	}
+	for (int i=0; i<UBGLAYERMAX; i++)
+	{
+		ubg[i].exist = false;
+		ubg[i].timer = 0;
+		ubg[i].changetimer = 0;
+		ubg[i].flag = 0;
 	}
 	setindex = 0;
 }
 
 void BGLayer::KillOtherLayer()
 {
-	for (int i=0; i<BGLAYERMAX; i++)
+	for (int i=0; i<BGLAYERMAX+FGLAYERMAX; i++)
 	{
-		bg[i].exist = false;
-	}
-	for (int i=0; i<FGLAYERMAX; i++)
-	{
-		fg[i].exist = false;
+		ubg[i].exist = false;
 	}
 }
 
@@ -271,6 +267,67 @@ void BGLayer::SetFlag(BYTE _flag, int maxtime)
 	}
 	mtimer = maxtime;
 	changetimer = 0;
+}
+
+void BGLayer::Action(bool active)
+{
+	if (active)
+	{
+		for(int i=0; i<BGLAYERSETMAX; i++)
+		{
+			if(set[i].sID != 0)
+			{
+				set[i].timer++;
+				setindex = i;
+
+				if (set[i].timer < set[i].quittime)
+				{
+					scr.Execute(SCR_SCENE, set[i].sID, set[i].timer);
+				}
+				else if (set[i].timer == set[i].quittime)
+				{
+					scr.Execute(SCR_SCENE, set[i].sID, SCRIPT_CON_QUIT);
+				}
+			}
+		}
+	}
+	for (int i=0; i<UBGLAYERMAX; i++)
+	{
+		if (ubg[i].exist)
+		{
+			ubg[i].action();
+		}
+	}
+}
+
+void BGLayer::RenderBG()
+{
+	for (int i=0; i<BGLAYERMAX; i++)
+	{
+		if (ubg[i].exist)
+		{
+			ubg[i].Render();
+		}
+	}
+	if (ubg[UBGID_BGMASK].exist)
+	{
+		ubg[UBGID_BGMASK].Render();
+	}
+}
+
+void BGLayer::RenderFG()
+{
+	for (int i=0; i<FGLAYERMAX; i++)
+	{
+		if (ubg[i+BGLAYERMAX].exist)
+		{
+			ubg[i+BGLAYERMAX].Render();
+		}
+	}
+	if (ubg[UBGID_FGPAUSE].exist)
+	{
+		ubg[UBGID_FGPAUSE].Render();
+	}
 }
 
 void BGLayer::Render()

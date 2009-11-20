@@ -9,7 +9,7 @@
 #include "BossInfo.h"
 #include "Main.h"
 
-Ghost gh[GHOSTMAX];
+Ghost Ghost::gh[GHOSTMAX];
 
 WORD Ghost::index;
 
@@ -100,13 +100,13 @@ void Ghost::CostLife(float power)
 	damage = true;
 	if (belong < ENEMYMAX)
 	{
-		en[belong].CostLife(power * PB_SHOOTGHOST_ENEMYCOST);
+		Enemy::en[belong].CostLife(power * PB_SHOOTGHOST_ENEMYCOST);
 	}
 }
 
 void Ghost::valueSet(WORD ID, BYTE _belong, int angle, float speed, BYTE type, float life, int ac)
 {
-	valueSet(ID, en[_belong].x, en[_belong].y,angle, speed, type, life, ac);
+	valueSet(ID, Enemy::en[_belong].x, Enemy::en[_belong].y,angle, speed, type, life, ac);
 	belong = _belong;
 }
 
@@ -155,6 +155,51 @@ void Ghost::DoShot()
 					Player::p[0].DoPlayerBulletHit();
 				}
 			}
+		}
+	}
+}
+
+void Ghost::ClearAll()
+{
+	for (int i=0; i<GHOSTMAX; i++)
+	{
+		gh[i].Clear();
+	}
+	index = 0;
+}
+
+void Ghost::Clear()
+{
+	exist = false;
+	able = false;
+	timer = 0;
+}
+
+void Ghost::Action(bool notinstop)
+{
+	for (int i=0; i<GHOSTMAX; i++)
+	{
+		if (gh[i].exist)
+		{
+			if (notinstop)
+			{
+				gh[i].action();
+			}
+			else
+			{
+				gh[i].actionInStop();
+			}
+		}
+	}
+}
+
+void Ghost::RenderAll()
+{
+	for (int i=0; i<GHOSTMAX; i++)
+	{
+		if (gh[i].exist)
+		{
+			gh[i].Render();
 		}
 	}
 }
@@ -219,14 +264,14 @@ void Ghost::action()
 
 		if(belong != 0xff)
 		{
-			if(en[belong].exist)
+			if(Enemy::en[belong].exist)
 			{
-				cenx = en[belong].x;
-				ceny = en[belong].y;
+				cenx = Enemy::en[belong].x;
+				ceny = Enemy::en[belong].y;
 			}
 			else
 			{
-				if(en[belong].life >= 0)
+				if(Enemy::en[belong].life >= 0)
 				{
 					life = 0;
 				}
@@ -283,8 +328,7 @@ void Ghost::action()
 
 		if(tarID != 0xff)
 		{
-			tar[tarID].x = x;
-			tar[tarID].y = y;
+			Target::SetValue(tarID, x, y);
 		}
 
 		effghost.MoveTo(x, y);

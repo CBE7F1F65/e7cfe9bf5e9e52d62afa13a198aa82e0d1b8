@@ -81,7 +81,7 @@ void BossInfo::bossUp()
 
 	if(!(spellflag & BISF_NOTSPELL))
 	{
-		bgmask.SetFlag(BG_WHITEFLASH, BGMT_FLASH);
+		BGLayer::ubg[UBGID_BGMASK].SetFlag(BG_WHITEFLASH, BGMT_FLASH);
 		Enemy::bossflag[ENEMY_MAINBOSSINDEX] = BOSS_SPELLUP;
 		fsspellname.SignUp(spellname, fdisp.info.smallfont);
 		get = DataConnector::nGet();
@@ -110,11 +110,11 @@ void BossInfo::quit()
 	}
 	if(!(spellflag & BISF_NOTSPELL) && mp.spellmode)
 	{
-		bgmask.SetFlag(BG_WHITEOUT, BGMT_OUT);
+		BGLayer::ubg[UBGID_BGMASK].SetFlag(BG_WHITEOUT, BGMT_OUT);
 	}
 	if(remain)
 	{
-		en[ENEMY_MAINBOSSINDEX].alpha = 0xff;
+		Enemy::en[ENEMY_MAINBOSSINDEX].alpha = 0xff;
 	}
 
 	scr.Execute(SCR_STAGE, sno, SCRIPT_CON_POST);
@@ -134,7 +134,7 @@ bool BossInfo::action()
 
 	if(flag < BOSSINFO_COLLAPSE)
 	{
-		if (en[ENEMY_MAINBOSSINDEX].able)
+		if (Enemy::en[ENEMY_MAINBOSSINDEX].able)
 		{
 			if(timer == limit * 60)
 			{
@@ -171,19 +171,19 @@ bool BossInfo::action()
 
 			if(remain)
 			{
-				en[ENEMY_MAINBOSSINDEX].alpha = 0x7f;
-				en[ENEMY_MAINBOSSINDEX].defrate = 1.0f;
-				en[ENEMY_MAINBOSSINDEX].ac = 0;
-				en[ENEMY_MAINBOSSINDEX].speed = 0;
+				Enemy::en[ENEMY_MAINBOSSINDEX].alpha = 0x7f;
+				Enemy::en[ENEMY_MAINBOSSINDEX].defrate = 1.0f;
+				Enemy::en[ENEMY_MAINBOSSINDEX].ac = 0;
+				Enemy::en[ENEMY_MAINBOSSINDEX].speed = 0;
 			}
 			Player::p[0].nScore += bonus;
 			if(!(spellflag & BISF_NOTSPELL))
 			{
-				Bullet::IzeBuild(BULLETIZE_FAITH, en[ENEMY_MAINBOSSINDEX].x, en[ENEMY_MAINBOSSINDEX].y);
+				Bullet::IzeBuild(BULLETIZE_FAITH, Enemy::en[ENEMY_MAINBOSSINDEX].x, Enemy::en[ENEMY_MAINBOSSINDEX].y);
 			}
 			else
 			{
-				Bullet::IzeBuild(BULLETIZE_FADEOUT, en[ENEMY_MAINBOSSINDEX].x, en[ENEMY_MAINBOSSINDEX].y);
+				Bullet::IzeBuild(BULLETIZE_FADEOUT, Enemy::en[ENEMY_MAINBOSSINDEX].x, Enemy::en[ENEMY_MAINBOSSINDEX].y);
 				timer = 100;
 			}
 
@@ -208,13 +208,13 @@ bool BossInfo::action()
 			quit();
 			return true;
 		}
-		if(en[ENEMY_MAINBOSSINDEX].timer == 16 && en[ENEMY_MAINBOSSINDEX].life < 0 && !mp.spellmode && remain)
+		if(Enemy::en[ENEMY_MAINBOSSINDEX].timer == 16 && Enemy::en[ENEMY_MAINBOSSINDEX].life < 0 && !mp.spellmode && remain)
 		{
-			en[ENEMY_MAINBOSSINDEX].exist = true;
-			en[ENEMY_MAINBOSSINDEX].fadeout = false;
-			en[ENEMY_MAINBOSSINDEX].life = 0;
-			en[ENEMY_MAINBOSSINDEX].timer = 0;
-			en[ENEMY_MAINBOSSINDEX].alpha = 0xff;
+			Enemy::en[ENEMY_MAINBOSSINDEX].exist = true;
+			Enemy::en[ENEMY_MAINBOSSINDEX].fadeout = false;
+			Enemy::en[ENEMY_MAINBOSSINDEX].life = 0;
+			Enemy::en[ENEMY_MAINBOSSINDEX].timer = 0;
+			Enemy::en[ENEMY_MAINBOSSINDEX].alpha = 0xff;
 		}
 	}
 	else if(flag & BOSSINFO_TIMEOVER)
@@ -225,8 +225,8 @@ bool BossInfo::action()
 			SE::push(SE_BOSS_TIMEUP);
 			if(remain)
 			{
-				en[ENEMY_MAINBOSSINDEX].defrate = 1.0f;
-				en[ENEMY_MAINBOSSINDEX].alpha = 0x7f;
+				Enemy::en[ENEMY_MAINBOSSINDEX].defrate = 1.0f;
+				Enemy::en[ENEMY_MAINBOSSINDEX].alpha = 0x7f;
 			}
 			if(!(spellflag & BISF_WAIT))
 				failed = true;
@@ -239,10 +239,10 @@ bool BossInfo::action()
 			{
 				timer = 100;
 			}
-			Bullet::IzeBuild(BULLETIZE_FADEOUT, en[ENEMY_MAINBOSSINDEX].x, en[ENEMY_MAINBOSSINDEX].y);
+			Bullet::IzeBuild(BULLETIZE_FADEOUT, Enemy::en[ENEMY_MAINBOSSINDEX].x, Enemy::en[ENEMY_MAINBOSSINDEX].y);
 			if((spellflag & BISF_WAIT) || !remain)
 			{
-				en[ENEMY_MAINBOSSINDEX].life = -1;
+				Enemy::en[ENEMY_MAINBOSSINDEX].life = -1;
 			}
 
 			if(turntoscene - SCLEAR > S1 && !mp.spellmode)
@@ -255,13 +255,13 @@ bool BossInfo::action()
 			quit();
 			return true;
 		}
-		if(en[ENEMY_MAINBOSSINDEX].timer == 16 && en[ENEMY_MAINBOSSINDEX].life < 0 && !mp.spellmode && remain)
+		if(Enemy::en[ENEMY_MAINBOSSINDEX].timer == 16 && Enemy::en[ENEMY_MAINBOSSINDEX].life < 0 && !mp.spellmode && remain)
 		{
-			en[ENEMY_MAINBOSSINDEX].exist = true;
-			en[ENEMY_MAINBOSSINDEX].fadeout = false;
-			en[ENEMY_MAINBOSSINDEX].life = 0;
-			en[ENEMY_MAINBOSSINDEX].timer = 0;
-			en[ENEMY_MAINBOSSINDEX].alpha = 0xff;
+			Enemy::en[ENEMY_MAINBOSSINDEX].exist = true;
+			Enemy::en[ENEMY_MAINBOSSINDEX].fadeout = false;
+			Enemy::en[ENEMY_MAINBOSSINDEX].life = 0;
+			Enemy::en[ENEMY_MAINBOSSINDEX].timer = 0;
+			Enemy::en[ENEMY_MAINBOSSINDEX].alpha = 0xff;
 		}
 	}
 	if(!(spellflag & BISF_NOTSPELL) && flag < BOSSINFO_COLLAPSE)
@@ -279,7 +279,7 @@ bool BossInfo::action()
 		else if(failed)
 			bonus = maxbonus / 100;
 		else if(timer == limit * 60 - 1)
-			en[ENEMY_MAINBOSSINDEX].life = -1;
+			Enemy::en[ENEMY_MAINBOSSINDEX].life = -1;
 	}
 	if(flag < BOSSINFO_COLLAPSE)
 	{
@@ -310,8 +310,8 @@ bool BossInfo::action()
 				tr = timer;
 				tangle = timer * 1800 - 12000;
 			}
-			float tx = en[ENEMY_MAINBOSSINDEX].x + tr * cost(tangle);
-			float ty = en[ENEMY_MAINBOSSINDEX].y + tr * sint(tangle);
+			float tx = Enemy::en[ENEMY_MAINBOSSINDEX].x + tr * cost(tangle);
+			float ty = Enemy::en[ENEMY_MAINBOSSINDEX].y + tr * sint(tangle);
 
 			fdisp.BossMoveItemEffect(tx, ty);
 //			effItem.MoveTo(tx, ty);

@@ -458,6 +458,9 @@
 				<File
 					RelativePath=".\Class\SelectSystem.cpp">
 				</File>
+				<File
+					RelativePath=".\Class\Target.cpp">
+				</File>
 			</Filter>
 			<Filter
 				Name="Process"
@@ -703,6 +706,9 @@
 				</File>
 				<File
 					RelativePath=".\Header\SelectSystem.h">
+				</File>
+				<File
+					RelativePath=".\Header\Target.h">
 				</File>
 			</Filter>
 		</Filter>

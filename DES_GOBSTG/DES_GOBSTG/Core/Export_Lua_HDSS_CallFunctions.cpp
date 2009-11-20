@@ -392,7 +392,7 @@ int _HDSSCallGet::Call_BGVALUE(LuaState * ls)
 			}
 		}
 
-		ubg[_index]->valueSet(mp.tex, _siid, _cenx, _ceny, _w, _h, _col);
+		BGLayer::ubg[_index].valueSet(mp.tex, _siid, _cenx, _ceny, _w, _h, _col);
 	}
 	return 0;
 }
@@ -445,7 +445,7 @@ int _HDSSCallGet::Call_BGVALEX(LuaState * ls)
 			}
 		}
 
-		ubg[_index]->valueSet(mp.tex, _siid, _x, _y, _z, _w, _h, _rotx, _roty, _rotz, _paral, _speed, _angle, _move, _rotate, _col);
+		BGLayer::ubg[_index].valueSet(mp.tex, _siid, _x, _y, _z, _w, _h, _rotx, _roty, _rotz, _paral, _speed, _angle, _move, _rotate, _col);
 	}
 	return 0;
 }
@@ -464,7 +464,7 @@ int _HDSSCallGet::Call_BGFLAG(LuaState * ls)
 		{
 			_maxtime = _IOBJ_HDSS_LUA;
 		}
-		ubg[_index]->SetFlag(_flag, _maxtime);
+		BGLayer::ubg[_index].SetFlag(_flag, _maxtime);
 	}
 	return 0;
 }
@@ -482,7 +482,7 @@ int _HDSSCallGet::Call_BGOFF(LuaState * ls)
 		}
 		else
 		{
-			ubg[_index]->exist = false;
+			BGLayer::ubg[_index].exist = false;
 		}
 	}
 	return 0;

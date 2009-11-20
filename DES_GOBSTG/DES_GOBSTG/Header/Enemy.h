@@ -4,6 +4,7 @@
 #include "BObject.h"
 #include "EffectSp.h"
 #include "Effectsys.h"
+#include "Target.h"
 
 #define ENEMY_INDEXSTART	4
 #define ENEMY_MAINBOSSINDEX	0
@@ -72,11 +73,13 @@ public:
 	virtual ~Enemy();
 
 	static bool Build(WORD eID, BYTE index, BYTE tarID, float x, float y, int angle, float speed, BYTE type, float life, int infitimer, DWORD take);
-
 	static void Init(HTEXTURE texmain);
-
 	static void DamageZoneBuild(float x, float y, float r, float power);
+	static void Action(bool notinstop);
+	static void ClearAll();
+	static void RenderAll();
 
+	void Clear();
 	bool isInRange(float x, float y, float r);
 
 	void valueSet(WORD ID, float x, float y, int angle, float speed, BYTE type, float life, int infitimer, DWORD take,
@@ -145,8 +148,8 @@ public:
 	static BYTE spelluptimer[ENEMY_BOSSMAX];
 	static BYTE storetimer[ENEMY_BOSSMAX];
 	static WORD index;
-};
 
-extern Enemy en[ENEMYMAX];
+	static Enemy en[ENEMYMAX];
+};
 
 #endif

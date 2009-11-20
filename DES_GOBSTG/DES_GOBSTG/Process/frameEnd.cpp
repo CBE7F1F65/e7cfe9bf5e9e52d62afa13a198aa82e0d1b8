@@ -26,44 +26,50 @@ void Process::frameEnd()
 				Player::p[0].action();
 			}
 		}
+		
 		PlayerBullet::locked = PBLOCK_LOST;
+		Enemy::Action(!(stopflag & FRAME_STOPFLAG_ENEMY));
+		Ghost::Action(!(stopflag & FRAME_STOPFLAG_GHOST));
+		/*
 		for(int i=0;i<ENEMYMAX;i++)
 		{
-			if(en[i].exist)
+			if(Enemy::en[i].exist)
 			{
 				objcount ++;
 
 				if (!(stopflag & FRAME_STOPFLAG_ENEMY))
 				{
-					en[i].action();
+					Enemy::en[i].action();
 				}
 				else
 				{
-					en[i].actionInStop();
+					Enemy::en[i].actionInStop();
 				}
-				if(PlayerBullet::locked == PBLOCK_LOST && en[i].able)
+				if(PlayerBullet::locked == PBLOCK_LOST && Enemy::en[i].able)
 				{
-					if (en[i].x <= M_CLIENT_RIGHT && en[i].x >= M_CLIENT_LEFT
-						&& en[i].y <= M_CLIENT_BOTTOM && en[i].y >= M_CLIENT_TOP)
+					if (Enemy::en[i].x <= M_CLIENT_RIGHT && Enemy::en[i].x >= M_CLIENT_LEFT
+						&& Enemy::en[i].y <= M_CLIENT_BOTTOM && Enemy::en[i].y >= M_CLIENT_TOP)
 					{
 						PlayerBullet::locked = i;
 					}
 				}
 			}
 		}
+		*/
+		/*
 		for(int i=0;i<GHOSTMAX;i++)
 		{
-			if(gh[i].exist)
+			if(Ghost::gh[i].exist)
 			{
 				objcount ++;
 
 				if (!(stopflag & FRAME_STOPFLAG_GHOST))
 				{
-					gh[i].action();
+					Ghost::gh[i].action();
 				}
 				else
 				{
-					gh[i].actionInStop();
+					Ghost::gh[i].actionInStop();
 				}
 				/*
 				if(Player::p.bBorder && PlayerBullet::locked == PBLOCK_LOST && gh[i].able && !gh[i].half)
@@ -74,9 +80,10 @@ void Process::frameEnd()
 						PlayerBullet::locked = i + PBLOCK_GHOST;
 					}
 				}
-				*/
+				* /
 			}
 		}
+		*/
 		Enemy::dmgz.clear_item();
 		if (bu.size)
 		{
@@ -221,37 +228,7 @@ void Process::frameEnd()
 	{
 		if (!(stopflag & FRAME_STOPFLAG_LAYER))
 		{
-			if(active)
-			{
-				for(int i=0; i<BGLAYERSETMAX; i++)
-				{
-					if(BGLayer::set[i].sID != 0)
-					{
-						BGLayer::set[i].timer++;
-						BGLayer::setindex = i;
-
-						if (BGLayer::set[i].timer < BGLayer::set[i].quittime)
-						{
-							scr.Execute(SCR_SCENE, BGLayer::set[i].sID, BGLayer::set[i].timer);
-						}
-						else if (BGLayer::set[i].timer == BGLayer::set[i].quittime)
-						{
-							scr.Execute(SCR_SCENE, BGLayer::set[i].sID, SCRIPT_CON_QUIT);
-						}
-					}
-				}
-			}
-
-			for(int i=0; i<BGLAYERMAX; i++)
-			{
-				if(bg[i].exist)
-					bg[i].action();
-			}
-			for(int i=0;i<FGLAYERMAX;i++)
-			{
-				if(fg[i].exist)
-					fg[i].action();
-			}
+			BGLayer::Action(active);
 		}
 
 
@@ -264,10 +241,6 @@ void Process::frameEnd()
 			}
 		}
 	}
-	if(fgpause.exist)
-		fgpause.action();
-	if(bgmask.exist)
-		bgmask.action();
 	for (int i=0; i<SELSYSTEMMAX; i++)
 	{
 		selsys[i].action();

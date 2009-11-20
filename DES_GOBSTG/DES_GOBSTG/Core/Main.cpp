@@ -7,8 +7,6 @@
 
 char strdesc[STRINGDESCMAX][M_STRMAX*2];
 
-Target tar[TARGETMAX];
-
 HGE *hge = NULL;
 
 int time = 0;

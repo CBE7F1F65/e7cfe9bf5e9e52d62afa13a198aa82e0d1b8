@@ -6,6 +6,7 @@
 #include "BossInfo.h"
 #include "Item.h"
 #include "Main.h"
+#include "Target.h"
 
 VectorList<Beam> be;
 
@@ -169,19 +170,18 @@ void Beam::action()
 		{
 			if (pintar != 0xff)
 			{
-				SetVector(tar[holdtar].x, tar[holdtar].y, tar[pintar].x, tar[pintar].y);
+				SetVector(Target::tar[holdtar].x, Target::tar[holdtar].y, Target::tar[pintar].x, Target::tar[pintar].y);
 			}
 			else
 			{
 				float factor = (hscale * 16.0f - holdoffset) / speed;
-				SetVector(tar[holdtar].x, tar[holdtar].y, tar[holdtar].x + factor * xplus, tar[holdtar].y + factor * yplus);
+				SetVector(Target::tar[holdtar].x, Target::tar[holdtar].y, Target::tar[holdtar].x + factor * xplus, Target::tar[holdtar].y + factor * yplus);
 			}
 		}
 
 		if(tarID != 0xff)
 		{
-			tar[tarID].x = x;
-			tar[tarID].y = y;
+			Target::SetValue(tarID, x, y);
 		}
 
 		if(Chat::chatting)

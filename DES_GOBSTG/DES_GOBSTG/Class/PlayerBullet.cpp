@@ -163,11 +163,11 @@ bool PlayerBullet::GetLockAim(BObject ** obj)
 	}
 	if (locked < PBLOCK_GHOST)
 	{
-		*obj = &en[locked];
+		*obj = &Enemy::en[locked];
 	}
 	else
 	{
-		*obj = &gh[locked-PBLOCK_GHOST];
+		*obj = &Ghost::gh[locked-PBLOCK_GHOST];
 	}
 	return true;
 }
@@ -304,11 +304,11 @@ void PlayerBullet::DelayShoot()
 		BObject * _tpbobj;
 		if (locked < PBLOCK_GHOST)
 		{
-			_tpbobj = &en[locked];
+			_tpbobj = &Enemy::en[locked];
 		}
 		else
 		{
-			_tpbobj = &gh[locked-PBLOCK_GHOST];
+			_tpbobj = &Ghost::gh[locked-PBLOCK_GHOST];
 		}
 		if(timer == 1)
 		{
