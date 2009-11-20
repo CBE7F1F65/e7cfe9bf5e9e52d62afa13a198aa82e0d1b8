@@ -1,6 +1,6 @@
 #include "Const.h"
 
-static class _DataTable
+class _DataTable
 {
 public:
 	void SetFile(FILE * file);
@@ -26,4 +26,5 @@ public:
 	char buffer[M_STRMAX];
 	int tindex;
 	int tint[32];
-}_datatable;
+	static _DataTable datatable;
+};

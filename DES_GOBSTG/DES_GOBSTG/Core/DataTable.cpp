@@ -2,6 +2,8 @@
 #include "BResource.h"
 #include "DataTable.h"
 
+_DataTable _DataTable::datatable;
+
 void _DataTable::SetFile(FILE * _file)
 {
 	file = _file;
@@ -578,7 +580,7 @@ bool Data::GetTableFile(BYTE type)
 		return false;
 	}
 
-	_datatable.SetFile(file);
+	_DataTable::datatable.SetFile(file);
 
 	char buffer[M_STRMAX];
 	int tindex;
@@ -586,55 +588,55 @@ bool Data::GetTableFile(BYTE type)
 	switch (type)
 	{
 	case DATA_DATATABLEDEFINE:
-		_datatable.DataTableDefine();
+		_DataTable::datatable.DataTableDefine();
 		break;
 	case DATA_PACKAGETABLEDEFINE:
-		_datatable.PackageTableDefine();
+		_DataTable::datatable.PackageTableDefine();
 		break;
 	case DATA_TEXTURETABLEDEFINE:
-		_datatable.TextureTableDefine();
+		_DataTable::datatable.TextureTableDefine();
 		break;
 	case DATA_EFFECTTABLEDEFINE:
-		_datatable.EffectTableDefine();
+		_DataTable::datatable.EffectTableDefine();
 		break;
 	case DATA_SETABLEDEFINE:
-		_datatable.SETableDefine();
+		_DataTable::datatable.SETableDefine();
 		break;
 
 	case DATA_CUSTOMCONSTFILE:
-		_datatable.CustomConstFile();
+		_DataTable::datatable.CustomConstFile();
 		break;
 	case DATA_SPELLDEFINEFILE:
-		_datatable.SpellDefineFile();
+		_DataTable::datatable.SpellDefineFile();
 		break;
 	case DATA_MUSICDEFINEFILE:
-		_datatable.MusicDefineFile();
+		_DataTable::datatable.MusicDefineFile();
 		break;
 	case DATA_SCENEDEFINEFILE:
-		_datatable.SceneDefineFile();
+		_DataTable::datatable.SceneDefineFile();
 		break;
 
 	case DATA_BULLETDEFINEFILE:
-		_datatable.BulletDefineFile();
+		_DataTable::datatable.BulletDefineFile();
 		break;
 	case DATA_ENEMYDEFINEFILE:
-		_datatable.EnemyDefineFile();
+		_DataTable::datatable.EnemyDefineFile();
 		break;
 	case DATA_PLAYERDEFINEFILE:
-		_datatable.PlayerDefineFile();
+		_DataTable::datatable.PlayerDefineFile();
 		break;
 	case DATA_SPRITEDEFINEFILE:
-		_datatable.SpriteDefineFile();
+		_DataTable::datatable.SpriteDefineFile();
 		break;
 
 	case DATA_PLAYERBULLETDEFINE:
-		_datatable.PlayerBulletDefineFile();
+		_DataTable::datatable.PlayerBulletDefineFile();
 		break;
 	case DATA_PLAYERSHOOTDEFINE:
-		_datatable.PlayerShootDefineFile();
+		_DataTable::datatable.PlayerShootDefineFile();
 		break;
 	case DATA_PLAYERGHOSTDEFINE:
-		_datatable.PlayerGhostDefineFile();
+		_DataTable::datatable.PlayerGhostDefineFile();
 		break;
 	}
 	fclose(file);

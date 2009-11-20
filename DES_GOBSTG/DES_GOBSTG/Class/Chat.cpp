@@ -10,6 +10,8 @@
 #include "FrontDisplayName.h"
 #include "Enemy.h"
 
+Chat Chat::chatitem;
+
 #define _CHAT_LINECHARACTER	34
 
 Chat::Chat()
@@ -143,7 +145,7 @@ bool Chat::chat(BYTE ID, BYTE chatsprite, const char * _text)
 			}
 			text[i+line] = _text[i];
 		}
-		fschat.SignUp(text, Fdisp.info.smallfont);
+		fschat.SignUp(text, FrontDisplay::fdisp.info.smallfont);
 		if(chatsprite & CHATSPRITE_LEFT)
 		{
 			col = 0xff6699ff;

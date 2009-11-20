@@ -31,43 +31,43 @@ int Export_Lua_HDSS::LuaFn_HDSS_Call(LuaState * ls)
 			switch (nowval)
 			{
 			case SCR_SD:
-				return hdsscallget.Call_SD(ls);
+				return _HDSSCallGet::Call_SD(ls);
 			case SCR_SDF:
-				return hdsscallget.Call_SDf(ls);
+				return _HDSSCallGet::Call_SDf(ls);
 			}
 			break;
 		case SCRKW_CLASS_SPECIAL:
 			switch (nowval)
 			{
 			case SCR_RETURN:
-				return hdsscallget.Call_RETURN(ls);
+				return _HDSSCallGet::Call_RETURN(ls);
 			case SCR_SETSTATE:
-				return hdsscallget.Call_SETSTATE(ls);
+				return _HDSSCallGet::Call_SETSTATE(ls);
 			case SCR_SETTIME:
-				return hdsscallget.Call_SETTIME(ls);
+				return _HDSSCallGet::Call_SETTIME(ls);
 			case SCR_SETCHARA:
-				return hdsscallget.Call_SETCHARA(ls);
+				return _HDSSCallGet::Call_SETCHARA(ls);
 			case SCR_STARTPREP:
-				return hdsscallget.Call_STARTPREP(ls);
+				return _HDSSCallGet::Call_STARTPREP(ls);
 			case SCR_SETPUSHEVENT:
-				return hdsscallget.Call_SETPUSHEVENT(ls);
+				return _HDSSCallGet::Call_SETPUSHEVENT(ls);
 			case SCR_UPDATEPUSHEVENT:
-				return hdsscallget.Call_UPDATEPUSHEVENT(ls);
+				return _HDSSCallGet::Call_UPDATEPUSHEVENT(ls);
 			}
 			break;
 		case SCRKW_CLASS_EFFECT:
 			switch (nowval)
 			{
 			case SCR_SE:
-				return hdsscallget.Call_SE(ls);
+				return _HDSSCallGet::Call_SE(ls);
 			case SCR_HSVTORGB:
-				return hdsscallget.Call_HSVTORGB(ls);
+				return _HDSSCallGet::Call_HSVTORGB(ls);
 			case SCR_PRINT:
-				return hdsscallget.Call_PRINT(ls);
+				return _HDSSCallGet::Call_PRINT(ls);
 			case SCR_FRONTSPRITE:
-				return hdsscallget.Call_FRONTSPRITE(ls);
+				return _HDSSCallGet::Call_FRONTSPRITE(ls);
 			case SCR_FREEFRONTSPRITE:
-				return hdsscallget.Call_FREEFRONTSPRITE(ls);
+				return _HDSSCallGet::Call_FREEFRONTSPRITE(ls);
 			}
 			break;
 		}
@@ -85,7 +85,7 @@ int Export_Lua_HDSS::LuaFn_HDSS_Call(LuaState * ls)
 			switch (nowval)
 			{
 			case SCR_SETPINITLIFE:
-				return hdsscallget.Call_SETPINITLIFE(ls);
+				return _HDSSCallGet::Call_SETPINITLIFE(ls);
 			}
 			break;
 			/************************************************************************/
@@ -95,13 +95,13 @@ int Export_Lua_HDSS::LuaFn_HDSS_Call(LuaState * ls)
 			switch (nowval)
 			{
 			case SCR_BGVALUE:
-				return hdsscallget.Call_BGVALUE(ls);
+				return _HDSSCallGet::Call_BGVALUE(ls);
 			case SCR_BGVALEX:
-				return hdsscallget.Call_BGVALEX(ls);
+				return _HDSSCallGet::Call_BGVALEX(ls);
 			case SCR_BGFLAG:
-				return hdsscallget.Call_BGFLAG(ls);
+				return _HDSSCallGet::Call_BGFLAG(ls);
 			case SCR_BGOFF:
-				return hdsscallget.Call_BGOFF(ls);
+				return _HDSSCallGet::Call_BGOFF(ls);
 			}
 			break;
 			/************************************************************************/
@@ -111,13 +111,13 @@ int Export_Lua_HDSS::LuaFn_HDSS_Call(LuaState * ls)
 			switch (nowval)
 			{
 			case SCR_SELBUILD:
-				return hdsscallget.Call_SELBUILD(ls);
+				return _HDSSCallGet::Call_SELBUILD(ls);
 			case SCR_SELCLEAR:
-				return hdsscallget.Call_SELCLEAR(ls);
+				return _HDSSCallGet::Call_SELCLEAR(ls);
 			case SCR_SELSETUP:
-				return hdsscallget.Call_SELSETUP(ls);
+				return _HDSSCallGet::Call_SELSETUP(ls);
 			case SCR_SELSET:
-				return hdsscallget.Call_SELSET(ls);
+				return _HDSSCallGet::Call_SELSET(ls);
 			}
 			break;
 		}

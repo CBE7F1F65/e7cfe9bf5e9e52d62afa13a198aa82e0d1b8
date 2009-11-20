@@ -111,7 +111,7 @@ void Item::RenderAll()
 				continue;
 			}
 			infoFont * _i = &(*(infofont));
-			Fdisp.ItemInfoDisplay(_i);
+			FrontDisplay::fdisp.ItemInfoDisplay(_i);
 		}
 	}
 }

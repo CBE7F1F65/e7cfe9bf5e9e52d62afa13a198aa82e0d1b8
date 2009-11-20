@@ -7,6 +7,12 @@
 
 #include "../Header/Export_Lua_HDSS_CallGetDefine.h"
 
+bool _HDSSCallGet::bhavenext=false;
+LuaObject _HDSSCallGet::_para;
+LuaObject _HDSSCallGet::_obj;
+int _HDSSCallGet::ii=0;
+int _HDSSCallGet::argscount=0;
+
 _HDSSCallGet::_HDSSCallGet()
 {
 }
@@ -285,7 +291,7 @@ int _HDSSCallGet::Call_PRINT(LuaState * ls)
 				}
 			}
 		}
-		Fdisp.BuildPostPrint(_font, _x, _y, _str, _align, _scale, _properation, _rotation, _tracking, _spacing);
+		FrontDisplay::fdisp.BuildPostPrint(_font, _x, _y, _str, _align, _scale, _properation, _rotation, _tracking, _spacing);
 	}
 	return 0;
 }

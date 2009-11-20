@@ -229,7 +229,7 @@ void Beam::action()
 			Target::SetValue(tarID, x, y);
 		}
 
-		if(ChatItem.IsChatting())
+		if(Chat::chatitem.IsChatting())
 		{
 			fadeout = true;
 			timer = 0;

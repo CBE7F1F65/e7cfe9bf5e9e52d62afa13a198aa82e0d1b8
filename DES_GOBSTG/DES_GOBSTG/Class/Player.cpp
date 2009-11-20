@@ -751,7 +751,7 @@ void Player::action()
 				}
 			}
 		}
-		if(!ChatItem.IsChatting() && !bInfi)
+		if(!Chat::chatitem.IsChatting() && !bInfi)
 		{
 			nPop -= _PL_NPOPCOST;
 			if (nPop > _PL_EXTENDNPOP)
@@ -812,7 +812,7 @@ void Player::action()
 		{
 			updateFrame(PLAYER_FRAME_STAND);
 		}
-		if(hge->Input_GetDIKey(KS_FIRE_MP) && !ChatItem.IsChatting())
+		if(hge->Input_GetDIKey(KS_FIRE_MP) && !Chat::chatitem.IsChatting())
 			flag |= PLAYER_SHOOT;
 	}
 	if(hge->Input_GetDIKey(KS_QUICK_MP) && !(flag & PLAYER_MERGE))
@@ -1041,7 +1041,7 @@ void Player::callCollapse()
 
 bool Player::callBomb(bool onlyborder)
 {
-	if (ChatItem.IsChatting() || (flag & PLAYER_COLLAPSE) || (flag & PLAYER_BOMB))
+	if (Chat::chatitem.IsChatting() || (flag & PLAYER_COLLAPSE) || (flag & PLAYER_BOMB))
 	{
 		return false;
 	}

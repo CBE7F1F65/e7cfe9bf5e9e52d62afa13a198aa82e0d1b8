@@ -228,7 +228,7 @@ void Ghost::action()
 			SE::push(SE_GHOST_MERGE, x);
 		}
 
-		if(ChatItem.IsChatting() || BossInfo::flag >= BOSSINFO_COLLAPSE)
+		if(Chat::chatitem.IsChatting() || BossInfo::flag >= BOSSINFO_COLLAPSE)
 		{
 			life = 0;
 			fadeout = true;

@@ -6,6 +6,8 @@
 #include "BossInfo.h"
 #include "Fontsys.h"
 
+FrontDisplay FrontDisplay::fdisp;
+
 FrontDisplay::FrontDisplay()
 {
 	ZeroMemory(&panel, sizeof(ftPanelSet));

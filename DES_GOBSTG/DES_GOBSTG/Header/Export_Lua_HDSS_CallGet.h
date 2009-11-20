@@ -6,58 +6,58 @@
 
 #include "../Header/Export_Lua.h"
 
-static class _HDSSCallGet
+class _HDSSCallGet
 {
 public:
 	_HDSSCallGet();
 	~_HDSSCallGet();
-	int Call_SD(LuaState * ls);
-	int Call_SDf(LuaState * ls);
+	static int Call_SD(LuaState * ls);
+	static int Call_SDf(LuaState * ls);
 
-	int Call_RETURN(LuaState * ls);
-	int Call_SETSTATE(LuaState * ls);
-	int Call_SETTIME(LuaState * ls);
-	int Call_SETCHARA(LuaState * ls);
-	int Call_STARTPREP(LuaState * ls);
-	int Call_SETPUSHEVENT(LuaState * ls);
-	int Call_UPDATEPUSHEVENT(LuaState * ls);
+	static int Call_RETURN(LuaState * ls);
+	static int Call_SETSTATE(LuaState * ls);
+	static int Call_SETTIME(LuaState * ls);
+	static int Call_SETCHARA(LuaState * ls);
+	static int Call_STARTPREP(LuaState * ls);
+	static int Call_SETPUSHEVENT(LuaState * ls);
+	static int Call_UPDATEPUSHEVENT(LuaState * ls);
 
-	int Call_SE(LuaState * ls);
-	int Call_HSVTORGB(LuaState * ls);
-	int Call_PRINT(LuaState * ls);
-	int Call_FRONTSPRITE(LuaState * ls);
-	int Call_FREEFRONTSPRITE(LuaState * ls);
+	static int Call_SE(LuaState * ls);
+	static int Call_HSVTORGB(LuaState * ls);
+	static int Call_PRINT(LuaState * ls);
+	static int Call_FRONTSPRITE(LuaState * ls);
+	static int Call_FREEFRONTSPRITE(LuaState * ls);
 
-	int Call_SETPINITLIFE(LuaState * ls);
+	static int Call_SETPINITLIFE(LuaState * ls);
 
-	int Call_BGVALUE(LuaState * ls);
-	int Call_BGVALEX(LuaState * ls);
-	int Call_BGFLAG(LuaState * ls);
-	int Call_BGOFF(LuaState * ls);
+	static int Call_BGVALUE(LuaState * ls);
+	static int Call_BGVALEX(LuaState * ls);
+	static int Call_BGFLAG(LuaState * ls);
+	static int Call_BGOFF(LuaState * ls);
 
-	int Call_SELBUILD(LuaState * ls);
-	int Call_SELCLEAR(LuaState * ls);
-	int Call_SELSETUP(LuaState * ls);
-	int Call_SELSET(LuaState * ls);
-
-public:
-	int Get_D(LuaState * ls);
-	int Get_Du(LuaState * ls);
-	int Get_CHARA(LuaState * ls);
-
-	int Get_PLIFE(LuaState * ls);
-
-	int Get_SELCOMPLETE(LuaState * ls);
-	int Get_SEL(LuaState * ls);
-	int Get_SELFIRSTID(LuaState * ls);
+	static int Call_SELBUILD(LuaState * ls);
+	static int Call_SELCLEAR(LuaState * ls);
+	static int Call_SELSETUP(LuaState * ls);
+	static int Call_SELSET(LuaState * ls);
 
 public:
-	bool bhavenext;
-	LuaObject _para;
-	LuaObject _obj;
-	int ii;
-	int argscount;
-}hdsscallget;
+	static int Get_D(LuaState * ls);
+	static int Get_Du(LuaState * ls);
+	static int Get_CHARA(LuaState * ls);
+
+	static int Get_PLIFE(LuaState * ls);
+
+	static int Get_SELCOMPLETE(LuaState * ls);
+	static int Get_SEL(LuaState * ls);
+	static int Get_SELFIRSTID(LuaState * ls);
+
+public:
+	static bool bhavenext;
+	static LuaObject _para;
+	static LuaObject _obj;
+	static int ii;
+	static int argscount;
+};
 
 #endif
 

@@ -95,6 +95,7 @@ void Fontsys::FocusChanged()
 	{
 		HD3DFONT _usingfont = (*it)->usingfont;
 		(*it)->SignUp(NULL, _usingfont);
+//		(*it)->sprite->SetTexture(hge->Target_GetTexture((*it)->tar));
 	}
 }
 

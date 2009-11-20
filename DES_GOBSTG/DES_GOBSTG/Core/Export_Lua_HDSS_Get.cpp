@@ -157,9 +157,9 @@ int Export_Lua_HDSS::LuaFn_HDSS_Get(LuaState * ls)
 		switch (nowval)
 		{
 		case SCR_D:
-			return hdsscallget.Get_D(ls);
+			return _HDSSCallGet::Get_D(ls);
 		case SCR_DU:
-			return hdsscallget.Get_Du(ls);
+			return _HDSSCallGet::Get_Du(ls);
 		case SCR_TX:
 			break;
 		case SCR_TY:
@@ -182,7 +182,7 @@ int Export_Lua_HDSS::LuaFn_HDSS_Get(LuaState * ls)
 		case SCR_SNOUSER:
 			break;
 		case SCR_CHARA:
-			return hdsscallget.Get_CHARA(ls);
+			return _HDSSCallGet::Get_CHARA(ls);
 		case SCR_GETSCENE:
 			break;
 		case SCR_MODE:
@@ -244,7 +244,7 @@ int Export_Lua_HDSS::LuaFn_HDSS_Get(LuaState * ls)
 		case SCR_PY:
 			break;
 		case SCR_PLIFE:
-			return hdsscallget.Get_PLIFE(ls);
+			return _HDSSCallGet::Get_PLIFE(ls);
 		case SCR_PBOMB:
 			break;
 		case SCR_PPOWER:
@@ -290,11 +290,11 @@ int Export_Lua_HDSS::LuaFn_HDSS_Get(LuaState * ls)
 		switch (nowval)
 		{
 		case SCR_SELCOMPLETE:
-			return hdsscallget.Get_SELCOMPLETE(ls);
+			return _HDSSCallGet::Get_SELCOMPLETE(ls);
 		case SCR_SEL:
-			return hdsscallget.Get_SEL(ls);
+			return _HDSSCallGet::Get_SEL(ls);
 		case SCR_SELFIRSTID:
-			return hdsscallget.Get_SELFIRSTID(ls);
+			return _HDSSCallGet::Get_SELFIRSTID(ls);
 		case SCR_ISELCOMPLETE:
 			break;
 		case SCR_ISEL:

@@ -10,7 +10,7 @@ bool Process::reload()
 	Target::ClearAll();
 	SelectSystem::Init();
 	Effectsys::ClearAll();
-	ChatItem.Clear();
+	Chat::chatitem.Clear();
 	BossInfo::Clear();
 	Player::Init();
 
@@ -38,8 +38,8 @@ bool Process::reload()
 	BossInfo::Init();
 	InfoQuad::Init(tex[TEX_WHITE]);
 
-	Fdisp.Init();
-	Fontsys::Init(Fdisp.info.normalfont);
+	FrontDisplay::fdisp.Init();
+	Fontsys::Init(FrontDisplay::fdisp.info.normalfont);
 	Fontsys::HeatUp();
 
 #ifdef __DEBUG

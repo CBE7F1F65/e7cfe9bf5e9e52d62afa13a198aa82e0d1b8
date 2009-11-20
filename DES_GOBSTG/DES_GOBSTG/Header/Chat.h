@@ -19,7 +19,7 @@
 #define CHATSPRITE_RIGHT		0x10
 #define CHATSPRITE_RIGHTFLIP	0x20
 
-static class Chat
+class Chat
 {
 public:
 	Chat();
@@ -61,6 +61,8 @@ public:
 	BYTE timer;
 	BYTE chati;
 	Fontsys fschat;
-}ChatItem;
+
+	static Chat chatitem;
+};
 
 #endif

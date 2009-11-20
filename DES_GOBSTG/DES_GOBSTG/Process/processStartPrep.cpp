@@ -12,7 +12,7 @@ void Process::clearPrep(bool bclearkey)
 	Item::ClearItem();
 	PlayerBullet::ClearItem();
 	Beam::ClearItem();
-	ChatItem.Clear();
+	Chat::chatitem.Clear();
 	BossInfo::Clear();
 
 	pauseinit = false;
@@ -21,7 +21,7 @@ void Process::clearPrep(bool bclearkey)
 	worldz = 0;
 	frameskip = M_DEFAULT_FRAMESKIP;
 	Scripter::stopEdefScript = false;
-	Fdisp.SetState(FDISP_PANEL, 1);
+	FrontDisplay::fdisp.SetState(FDISP_PANEL, 1);
 
 	Player::p[0].ClearSet();
 

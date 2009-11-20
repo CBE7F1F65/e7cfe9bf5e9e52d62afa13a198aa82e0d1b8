@@ -136,8 +136,8 @@ void Process::Release()
 	Item::Release();
 	Fontsys::Release();
 	BossInfo::Release();
-	ChatItem.Release();
-	Fdisp.Release();
+	Chat::chatitem.Release();
+	FrontDisplay::fdisp.Release();
 	SpriteItemManager::Release();
 
 	for(int i=0;i<TEXMAX;i++)

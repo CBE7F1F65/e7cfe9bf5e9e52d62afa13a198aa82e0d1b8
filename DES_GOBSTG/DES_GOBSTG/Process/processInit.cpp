@@ -348,7 +348,7 @@ int Process::processInit()
 		Export::clientAdjustWindow();
 	}
 
-	ChatItem.Init();
+	Chat::chatitem.Init();
 
 	SelectSystem::ClearAll();
 

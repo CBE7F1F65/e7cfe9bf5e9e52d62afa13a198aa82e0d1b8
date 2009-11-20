@@ -14,7 +14,7 @@ int Process::render()
 	{
 		if (BossInfo::flag && bossinfo.isSpell())
 		{
-			Fdisp.RenderBossTimeCircle();
+			FrontDisplay::fdisp.RenderBossTimeCircle();
 		}
 		Ghost::RenderAll();
 		Enemy::RenderAll();
@@ -27,7 +27,7 @@ int Process::render()
 		if(BossInfo::flag)
 		{
 			bossinfo.exist = false;
-			Fdisp.RenderBossInfo();
+			FrontDisplay::fdisp.RenderBossInfo();
 		}
 /*
 		if(Player::p[0].bBorder)
@@ -36,7 +36,7 @@ int Process::render()
 		}
 */
 		Item::RenderAll();
-		ChatItem.Render();
+		Chat::chatitem.Render();
 /*
 
 		DWORD tcolor;
@@ -57,12 +57,12 @@ int Process::render()
 	Export::clientSetMatrix();
 
 	SpriteItemManager::RenderFrontSprite();
-	Fdisp.RenderPostPrint();
-	Fdisp.PanelDisplay();
+	FrontDisplay::fdisp.RenderPostPrint();
+	FrontDisplay::fdisp.PanelDisplay();
 
 	if(Player::CheckAble() && BossInfo::flag)
 	{
-		Fdisp.RenderEnemyX();
+		FrontDisplay::fdisp.RenderEnemyX();
 	}
 	return PGO;
 }

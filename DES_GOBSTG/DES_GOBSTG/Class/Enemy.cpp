@@ -624,9 +624,9 @@ void Enemy::bossAction()
 		if(storetimer[ID] == 1)
 		{
 			SE::push(SE_BOSS_POWER_1, x);
-			Fdisp.infobody.effBossStore.Stop(true);
-			Fdisp.infobody.effBossStore.Fire();
-			Fdisp.infobody.effBossStore.MoveTo(x, y, 0, true);
+			FrontDisplay::fdisp.infobody.effBossStore.Stop(true);
+			FrontDisplay::fdisp.infobody.effBossStore.Fire();
+			FrontDisplay::fdisp.infobody.effBossStore.MoveTo(x, y, 0, true);
 		}
 		else if(storetimer[ID] == 120)
 		{
@@ -636,9 +636,9 @@ void Enemy::bossAction()
 	}
 	else
 	{
-		Fdisp.infobody.effBossStore.Stop();
+		FrontDisplay::fdisp.infobody.effBossStore.Stop();
 	}
-	Fdisp.infobody.effBossStore.MoveTo(x, y);
+	FrontDisplay::fdisp.infobody.effBossStore.MoveTo(x, y);
 	if(bossflag[ID] & BOSS_SPELLUP)
 	{
 		if (!pdata->attackFrame)
@@ -827,7 +827,7 @@ void Enemy::DoShot()
 		SE::push(SE_ENEMY_DAMAGE_1, x);
 
 		if(BossInfo::flag && type >= ENEMY_BOSSTYPEBEGIN)
-			Fdisp.info.enemyx->SetColor(0xffffffff);
+			FrontDisplay::fdisp.info.enemyx->SetColor(0xffffffff);
 	}
 
 	if(damage && !damagetimer)
@@ -847,7 +847,7 @@ void Enemy::DoShot()
 			effShot.Fire();
 
 			if(BossInfo::flag && type >= ENEMY_BOSSTYPEBEGIN)
-				Fdisp.info.enemyx->SetColor(0xc0ffffff);
+				FrontDisplay::fdisp.info.enemyx->SetColor(0xc0ffffff);
 
 			if(life < maxlife / 5)
 			{
@@ -900,7 +900,7 @@ void Enemy::action()
 
 	if(!fadeout)
 	{
-		if((ChatItem.IsChatting() || (BossInfo::flag >= BOSSINFO_COLLAPSE)) && type < ENEMY_BOSSTYPEBEGIN)
+		if((Chat::chatitem.IsChatting() || (BossInfo::flag >= BOSSINFO_COLLAPSE)) && type < ENEMY_BOSSTYPEBEGIN)
 		{
 			life = 0;
 			fadeout = true;
@@ -957,9 +957,9 @@ void Enemy::action()
 		{
 			int txdiff = fabsf(Player::p[0].x - x);
 			if(txdiff < ENEMY_BOSSX_FADERANGE)
-				Fdisp.info.enemyx->SetColor(((0x40 + txdiff*2) << 24) | 0xffffff);
+				FrontDisplay::fdisp.info.enemyx->SetColor(((0x40 + txdiff*2) << 24) | 0xffffff);
 			else
-				Fdisp.info.enemyx->SetColor(0x80ffffff);
+				FrontDisplay::fdisp.info.enemyx->SetColor(0x80ffffff);
 		}
 		DoShot();
 		if(x > M_DELETECLIENT_RIGHT || x < M_DELETECLIENT_LEFT || y > M_DELETECLIENT_BOTTOM || y < M_DELETECLIENT_TOP)

@@ -36,7 +36,7 @@ int Process::frame()
 	{
 		if (!replaymode)
 		{
-			if (ChatItem.IsChatting())
+			if (Chat::chatitem.IsChatting())
 			{
 				hge->Input_SetDIKey(KS_FIRE, (bool)(time%5 == 0));
 			}

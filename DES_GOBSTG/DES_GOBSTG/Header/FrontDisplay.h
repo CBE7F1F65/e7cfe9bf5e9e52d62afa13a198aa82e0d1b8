@@ -288,7 +288,7 @@ struct ftFirstSet
 
 #define FDISP_STATE_COUNT	120
 
-static class FrontDisplay
+class FrontDisplay
 {
 public:
 	FrontDisplay();
@@ -344,6 +344,8 @@ public:
 	BYTE fullpowercount;
 	BYTE hiscorecount;
 	BYTE extendcount;
-}Fdisp;
+
+	static FrontDisplay fdisp;
+};
 
 #endif

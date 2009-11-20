@@ -83,7 +83,7 @@ void BossInfo::bossUp()
 	{
 		BGLayer::ubg[UBGID_BGMASK].SetFlag(BG_WHITEFLASH, BGMT_FLASH);
 		Enemy::bossflag[ENEMY_MAINBOSSINDEX] = BOSS_SPELLUP;
-		fsspellname.SignUp(spellname, Fdisp.info.smallfont);
+		fsspellname.SignUp(spellname, FrontDisplay::fdisp.info.smallfont);
 		get = DataConnector::nGet();
 		meet = DataConnector::nMeet() - 1;
 		if(meet < 0)
@@ -155,7 +155,7 @@ bool BossInfo::action()
 		}
 	}
 	timer++;
-	Fdisp.BossAction();
+	FrontDisplay::fdisp.BossAction();
 
 	if(flag & BOSSINFO_UP)
 	{
@@ -313,7 +313,7 @@ bool BossInfo::action()
 			float tx = Enemy::en[ENEMY_MAINBOSSINDEX].x + tr * cost(tangle);
 			float ty = Enemy::en[ENEMY_MAINBOSSINDEX].y + tr * sint(tangle);
 
-			Fdisp.BossMoveItemEffect(tx, ty);
+			FrontDisplay::fdisp.BossMoveItemEffect(tx, ty);
 //			effItem.MoveTo(tx, ty);
 
 			for(int i=0;i<tthrow;i++)

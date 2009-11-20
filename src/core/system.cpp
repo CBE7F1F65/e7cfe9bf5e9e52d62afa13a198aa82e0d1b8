@@ -484,7 +484,7 @@ void CALL HGE_Impl::System_SetStateBool(hgeBoolState state, bool value)
 								{
 									if(d3dppW.BackBufferFormat==D3DFMT_UNKNOWN || d3dppFS.BackBufferFormat==D3DFMT_UNKNOWN) break;
 
-									if(procFocusLostFunc) procFocusLostFunc();
+//									if(procFocusLostFunc) procFocusLostFunc();
 
 									if(bWindowed) GetWindowRect(hwnd, &rectW);
 									bWindowed=value;
@@ -497,7 +497,7 @@ void CALL HGE_Impl::System_SetStateBool(hgeBoolState state, bool value)
 									_GfxRestore();
 									_AdjustWindow();
 
-									if(procFocusGainFunc) procFocusGainFunc();
+//									if(procFocusGainFunc) procFocusGainFunc();
 								}
 								else bWindowed=value;
 								break;
@@ -613,10 +613,10 @@ void CALL HGE_Impl::System_SetStateInt(hgeIntState state, int value)
 //											d3dppFS.FullScreen_PresentationInterval = D3DPRESENT_INTERVAL_IMMEDIATE;
 											d3dppFS.PresentationInterval = D3DPRESENT_INTERVAL_IMMEDIATE;
 										}
-										if(procFocusLostFunc) procFocusLostFunc();
+//										if(procFocusLostFunc) procFocusLostFunc();
 										_GfxRestore();
 										_DIRelease();
-										if(procFocusGainFunc) procFocusGainFunc();
+//										if(procFocusGainFunc) procFocusGainFunc();
 										_DIInit();
 									}
 								}

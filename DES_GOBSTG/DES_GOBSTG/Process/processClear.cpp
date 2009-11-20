@@ -45,8 +45,8 @@ int Process::processClear()
 
 		Player::p[0].nScore += tscore;
 
-		Fdisp.SetValue(tscore, 0, 0, (!islast) && (!practicemode));
-		Fdisp.SetState(FDISP_NEXTSTAGE, _PCLEAR_FDISP_TIME);
+		FrontDisplay::fdisp.SetValue(tscore, 0, 0, (!islast) && (!practicemode));
+		FrontDisplay::fdisp.SetState(FDISP_NEXTSTAGE, _PCLEAR_FDISP_TIME);
 	}
 
 	if (time == _PCLEAR_FDIPS_CANCELTIME)
@@ -56,7 +56,7 @@ int Process::processClear()
 
 	if(time > _PCLEAR_FDISP_TIME /*&& !replaymode*/ || time > _PCLEAR_FDIPS_CANCELTIME && hge->Input_GetDIKey(KS_FIRE, DIKEY_DOWN))
 	{
-		Fdisp.SetState(FDISP_NEXTSTAGE, 0);
+		FrontDisplay::fdisp.SetState(FDISP_NEXTSTAGE, 0);
 		BGLayer::ubg[UBGID_FGPAUSE].exist = false;
 
 		scene -= SCLEAR;
