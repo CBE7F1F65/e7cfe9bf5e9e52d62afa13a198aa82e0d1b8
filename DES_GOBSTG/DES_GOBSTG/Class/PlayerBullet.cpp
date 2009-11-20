@@ -8,7 +8,7 @@
 #include "FrontDisplayName.h"
 #include "BResource.h"
 
-VectorList<PlayerBullet>pb;
+VectorList<PlayerBullet> PlayerBullet::pb;
 
 int PlayerBullet::locked = PBLOCK_LOST;
 
@@ -47,6 +47,52 @@ PlayerBullet::PlayerBullet()
 
 PlayerBullet::~PlayerBullet()
 {
+}
+
+void PlayerBullet::ClearItem()
+{
+	pb.clear_item();
+}
+
+void PlayerBullet::Action()
+{
+	if (pb.size)
+	{
+		DWORD i = 0;
+		DWORD size = pb.size;
+		for (pb.toBegin(); i<size; pb.toNext(), i++)
+		{
+			if (!pb.isValid())
+			{
+				continue;
+			}
+			if ((*pb).exist)
+			{
+				(*pb).action();
+			}
+			else
+			{
+				pb.pop();
+			}
+		}
+	}
+}
+
+void PlayerBullet::RenderAll()
+{
+	if (pb.size)
+	{
+		DWORD i = 0;
+		DWORD size = pb.size;
+		for (pb.toBegin(); i<size; pb.toNext(), i++)
+		{
+			if (pb.isValid())
+			{
+				(*pb).Render();
+			}
+
+		}
+	}
 }
 
 void PlayerBullet::Build(int shootdataID)
@@ -479,4 +525,25 @@ void PlayerBullet::action()
 		alpha = (32 - timer) * 0x06;
 	}
 	able = exist && !fadeout;
+}
+
+float PlayerBullet::CheckShoot(float aimx, float aimy, float aimw, float aimh)
+{
+	float totalpower = 0.0f;
+	if (pb.size)
+	{
+		DWORD i = 0;
+		DWORD size = pb.size;
+		for (pb.toBegin(); i<size; pb.toNext(), i++)
+		{
+			if (pb.isValid() && (*pb).able)
+			{
+				if ((*pb).isInRange(aimx, aimy, aimw, aimh))
+				{
+					totalpower += (*pb).power;
+				}
+			}
+		}
+	}
+	return totalpower;
 }

@@ -3,7 +3,6 @@
 #include "BGLayer.h"
 #include "SelectSystem.h"
 #include "BGLayer.h"
-#include "InfoSelect.h"
 #include "Player.h"
 #include "SE.h"
 #include "BossInfo.h"
@@ -11,6 +10,7 @@
 
 int Process::processStart()
 {
+	/*
 	if (replaymode && (!Player::p[0].exist || scene == S1))
 	{
 		replayend = true;
@@ -20,10 +20,9 @@ int Process::processStart()
 //		musicChange(0, true);
 		BGLayer::KillOtherLayer();
 		SelectSystem::ClearAll();
-		InfoSelect::Clear();
 		BGLayer::ubg[UBGID_BGMASK].exist = false;
-		fdisp.SetState(FDISP_PANEL, 0);
-		fdisp.SetState(FDISP_NEXTSTAGE, 0);
+		Fdisp.SetState(FDISP_PANEL, 0);
+		Fdisp.SetState(FDISP_NEXTSTAGE, 0);
 		Player::p[0].exist = false;
 //		getInput();
 		state = STATE_REPLAY;
@@ -73,5 +72,6 @@ int Process::processStart()
 			scr.Execute(SCR_STAGE, scene, time);
 		}
 	}
+	*/
 	return PGO;
 }

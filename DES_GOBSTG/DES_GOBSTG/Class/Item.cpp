@@ -4,11 +4,12 @@
 #include "SE.h"
 #include "SpriteItemManager.h"
 #include "FrontDisplayName.h"
+#include "FrontDisplay.h"
 
 hgeSprite * Item::spItem[ITEMSPRITEMAX];
 
-VectorList<Item> mi;
-VectorList<infoFont>Item::infofont;
+VectorList<infoFont> Item::infofont;
+VectorList<Item> Item::mi;
 
 #define _ITEM_GETR				32
 #define _ITEM_DRAINY			PL_ITEMDRAINY
@@ -26,6 +27,93 @@ Item::Item()
 
 Item::~Item()
 {
+}
+
+void Item::ClearItem()
+{
+	mi.clear_item();
+	infofont.clear_item();
+}
+
+void Item::Action(bool notinpause)
+{
+	if (mi.size)
+	{
+		DWORD i = 0;
+		DWORD size = mi.size;
+		for (mi.toBegin(); i<size; mi.toNext(), i++)
+		{
+			if (!mi.isValid())
+			{
+				continue;
+			}
+			if ((*mi).exist)
+			{
+				(*mi).action();
+			}
+			else
+			{
+				mi.pop();
+			}
+		}
+	}
+	if (infofont.size)
+	{
+		DWORD i = 0;
+		DWORD size = infofont.size;
+		for (infofont.toBegin(); i<size; infofont.toNext(), i++)
+		{
+			if (infofont.isValid())
+			{
+				infoFont * _i = &(*(infofont));
+				if(notinpause)
+				{
+					_i->timer++;
+					if(_i->timer >= 32)
+					{
+						infofont.pop();
+					}
+					if (_i->timer == 24 || _i->timer == 28)
+					{
+						for(int i=0; i<(int)strlen(_i->cScore); i++)
+						{
+							_i->cScore[i] += 10;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+void Item::RenderAll()
+{
+	if (mi.size)
+	{
+		DWORD i = 0;
+		DWORD size = mi.size;
+		for (mi.toBegin(); i<size; mi.toNext(), i++)
+		{
+			if (mi.isValid())
+			{
+				(*mi).Render();
+			}
+		}
+	}
+	if (infofont.size)
+	{
+		DWORD i = 0;
+		DWORD size = infofont.size;
+		for (infofont.toBegin(); i<size; infofont.toNext(), i++)
+		{
+			if (!infofont.isValid())
+			{
+				continue;
+			}
+			infoFont * _i = &(*(infofont));
+			Fdisp.ItemInfoDisplay(_i);
+		}
+	}
 }
 
 void Item::Init()

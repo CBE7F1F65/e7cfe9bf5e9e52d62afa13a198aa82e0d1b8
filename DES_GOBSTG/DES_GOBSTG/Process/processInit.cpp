@@ -348,10 +348,9 @@ int Process::processInit()
 		Export::clientAdjustWindow();
 	}
 
-	chat.Init();
+	ChatItem.Init();
 
 	SelectSystem::ClearAll();
-	InfoSelect::Clear();
 
 	mainchara	= 0;
 	subchara_1	= 0;

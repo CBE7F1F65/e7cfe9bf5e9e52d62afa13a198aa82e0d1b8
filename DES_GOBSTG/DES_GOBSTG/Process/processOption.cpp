@@ -1,7 +1,6 @@
 #include "Process.h"
 #include "Scripter.h"
 #include "SelectSystem.h"
-#include "InfoSelect.h"
 #include "SpriteItemManager.h"
 #include "FrontDisplayName.h"
 #include "SE.h"
@@ -11,6 +10,7 @@
 int Process::processOption()
 {
 	time++;
+	/*
 	if(time == 1)
 	{
 		scr.SetIntValue(SCR_RESERVEBEGIN, 0);
@@ -292,6 +292,6 @@ int Process::processOption()
 
 	scr.SetIntValue(SCR_RESERVEBEGIN, tsel);
 	scr.SetIntValue(SCR_RESERVEBEGIN+1, tdepth);
-
+	*/
 	return PGO;
 }

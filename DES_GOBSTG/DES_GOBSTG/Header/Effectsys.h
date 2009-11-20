@@ -14,7 +14,11 @@ public:
 	virtual ~Effectsys();
 
 	static bool Init(HTEXTURE * tex, const char * foldername, char name[][M_PATHMAX]);
+	static void ClearAll();
+	static void Action();
+	static void RenderAll();
 
+	void Clear();
 	void valueSet(WORD ID, float x, float y, int lifetime = -1);
 	void valueSet(WORD ID, int lifetime, float x, float y, float z, BYTE tarID, int angle, float speed, float zSpeed);
 	void valueSet(WORD ID, int lifetime, float x, float y, BYTE tarID, int chasetimer, BYTE tarAim);
@@ -38,8 +42,7 @@ public:
 	BYTE tarAim;
 
 	static hgeEffectSystem efftype[EFFECTSYSTYPEMAX];
+	static Effectsys effsys[EFFECTSYSMAX];
 };
-
-extern Effectsys effsys[EFFECTSYSMAX];
 
 #endif

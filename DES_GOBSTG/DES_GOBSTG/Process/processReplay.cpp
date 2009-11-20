@@ -1,7 +1,6 @@
 #include "Process.h"
 #include "Replay.h"
 #include "Scripter.h"
-#include "InfoSelect.h"
 #include "BResource.h"
 #include "SE.h"
 #include "Data.h"
@@ -13,6 +12,7 @@
 int Process::processReplay()
 {
 	time++;
+/*
 
 	static Replay _rpy[RPYENUMMAX];
 	static char _rpyfilename[RPYENUMMAX][M_PATHMAX];
@@ -409,6 +409,7 @@ int Process::processReplay()
 	scr.SetIntValue(SCR_RESERVEBEGIN, tdepth);
 	scr.SetIntValue(SCR_RESERVEBEGIN+1, tindex);
 	scr.SetIntValue(SCR_RESERVEBEGIN+2, trpydifflv);
+*/
 
 	return PGO;
 }

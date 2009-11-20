@@ -4,7 +4,7 @@
 #include "Player.h"
 #include "Target.h"
 
-Effectsys effsys[EFFECTSYSMAX];
+Effectsys Effectsys::effsys[EFFECTSYSMAX];
 hgeEffectSystem Effectsys::efftype[EFFECTSYSTYPEMAX];
 
 Effectsys::Effectsys()
@@ -15,12 +15,48 @@ Effectsys::Effectsys()
 
 Effectsys::~Effectsys()
 {
-	if(eff)
+	Clear();
+}
+
+void Effectsys::Clear()
+{
+	exist = false;
+	if (eff)
 	{
 		eff->Stop(true);
 		delete eff;
 	}
 	eff = NULL;
+}
+
+void Effectsys::ClearAll()
+{
+	for (int i=0; i<EFFECTSYSMAX; i++)
+	{
+		effsys[i].Clear();
+	}
+}
+
+void Effectsys::Action()
+{
+	for (int i=0; i<EFFECTSYSMAX; i++)
+	{
+		if (effsys[i].exist)
+		{
+			effsys[i].action();
+		}
+	}
+}
+
+void Effectsys::RenderAll()
+{
+	for (int i=0; i<EFFECTSYSMAX; i++)
+	{
+		if (effsys[i].exist)
+		{
+			effsys[i].Render();
+		}
+	}
 }
 
 bool Effectsys::Init(HTEXTURE * tex, const char * foldername, char name[][M_PATHMAX])
@@ -82,11 +118,7 @@ void Effectsys::valueSet(WORD _ID, int _lifetime, float _x, float _y, float _z, 
 	if(ID >= EFFECTSYSTYPEMAX)
 		ID = 0;
 
-	if(eff)
-	{
-		eff->Stop(true);
-		delete eff;
-	}
+	Clear();
 	eff = new hgeEffectSystem(efftype[ID]);
 
 	MoveTo(x, y, z, true);

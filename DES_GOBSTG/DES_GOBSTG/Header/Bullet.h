@@ -192,6 +192,9 @@ public:
 
 	static void Init(HTEXTURE tex);
 	static void Release();
+	static void ClearItem();
+	static void Action(bool noninstop);
+	static void RenderAll();
 	void Render();
 
 	virtual void action();
@@ -256,13 +259,14 @@ public:
 	BYTE	typechangetimer;
 	BYTE	eventID[BULLET_EVENTMAX];
 
+	static int _actionList[BULLETACTIONMAX];
+
 	static RenderDepth renderDepth[BULLETTYPEMAX];
-	static Bullet _bu;
 	static hgeSprite * sp[BULLETTYPECOLORMAX];
 	static VectorList<IzeZone> izel;
 	static HTEXTURE tex;
 	static WORD index;
+	static VectorList<Bullet>bu;
 };
-extern VectorList<Bullet>bu;
 
 #endif

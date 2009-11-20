@@ -14,6 +14,9 @@ public:
 
 	static void Init();
 	static void ClearAll();
+	static void RenderAll();
+	static void Action();
+
 	Selector * BuildSelector(BYTE ID, int siID, float cenx, float ceny,
 		float hscale = 1, float vscale = 0,
 		BYTE flag = SEL_NULL);

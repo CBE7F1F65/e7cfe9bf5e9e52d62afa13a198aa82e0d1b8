@@ -37,6 +37,9 @@ public:
 	virtual ~Item();
 
 	static void Init();
+	static void ClearItem();
+	static void Action(bool notinpause);
+	static void RenderAll();
 
 	static void Build(WORD type, float x, float y, bool bDrained = false, int angle = 9000, float speed = ITEM_STARTSPEED);
 
@@ -58,8 +61,8 @@ public:
 
 	static hgeSprite *spItem[ITEMSPRITEMAX];
 	static VectorList<infoFont>infofont;
-};
 
-extern VectorList<Item>mi;
+	static VectorList<Item>mi;
+};
 
 #endif

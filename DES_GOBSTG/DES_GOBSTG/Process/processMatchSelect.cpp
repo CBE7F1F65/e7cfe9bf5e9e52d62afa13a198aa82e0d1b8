@@ -2,7 +2,6 @@
 #include "BGLayer.h"
 #include "SE.h"
 #include "SelectSystem.h"
-#include "InfoSelect.h"
 #include "Scripter.h"
 #include "FrontDisplay.h"
 #include "BResource.h"

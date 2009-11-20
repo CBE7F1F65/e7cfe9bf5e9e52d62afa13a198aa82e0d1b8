@@ -285,7 +285,7 @@ int _HDSSCallGet::Call_PRINT(LuaState * ls)
 				}
 			}
 		}
-		fdisp.BuildPostPrint(_font, _x, _y, _str, _align, _scale, _properation, _rotation, _tracking, _spacing);
+		Fdisp.BuildPostPrint(_font, _x, _y, _str, _align, _scale, _properation, _rotation, _tracking, _spacing);
 	}
 	return 0;
 }

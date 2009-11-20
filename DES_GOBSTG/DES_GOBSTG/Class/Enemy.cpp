@@ -55,6 +55,11 @@ void Enemy::DamageZoneBuild(float _x, float _y, float _r, float _power)
 	dmgz.push_back(_dmgz);
 }
 
+void Enemy::ClearDamageZoneItem()
+{
+	dmgz.clear_item();
+}
+
 bool Enemy::Build(WORD _eID, BYTE _index, BYTE _tarID, float x, float y, int angle, float speed, BYTE type, float life, int infitimer, DWORD take)
 {
 	bool rv = false;
@@ -619,9 +624,9 @@ void Enemy::bossAction()
 		if(storetimer[ID] == 1)
 		{
 			SE::push(SE_BOSS_POWER_1, x);
-			fdisp.infobody.effBossStore.Stop(true);
-			fdisp.infobody.effBossStore.Fire();
-			fdisp.infobody.effBossStore.MoveTo(x, y, 0, true);
+			Fdisp.infobody.effBossStore.Stop(true);
+			Fdisp.infobody.effBossStore.Fire();
+			Fdisp.infobody.effBossStore.MoveTo(x, y, 0, true);
 		}
 		else if(storetimer[ID] == 120)
 		{
@@ -631,9 +636,9 @@ void Enemy::bossAction()
 	}
 	else
 	{
-		fdisp.infobody.effBossStore.Stop();
+		Fdisp.infobody.effBossStore.Stop();
 	}
-	fdisp.infobody.effBossStore.MoveTo(x, y);
+	Fdisp.infobody.effBossStore.MoveTo(x, y);
 	if(bossflag[ID] & BOSS_SPELLUP)
 	{
 		if (!pdata->attackFrame)
@@ -793,20 +798,10 @@ void Enemy::DoShot()
 	float tw;
 	float th;
 	GetCollisionRect(&tw, &th);
-	if (pb.size)
+	float costpower = PlayerBullet::CheckShoot(x, y ,tw, th);
+	if (costpower)
 	{
-		DWORD i = 0;
-		DWORD size = pb.size;
-		for (pb.toBegin(); i<size; pb.toNext(), i++)
-		{
-			if (pb.isValid() && (*pb).able)
-			{
-				if ((*pb).isInRange(x, y, tw, th))
-				{
-					CostLife((*pb).power);
-				}
-			}
-		}
+		CostLife(costpower);
 	}
 	if (dmgz.size)
 	{
@@ -832,7 +827,7 @@ void Enemy::DoShot()
 		SE::push(SE_ENEMY_DAMAGE_1, x);
 
 		if(BossInfo::flag && type >= ENEMY_BOSSTYPEBEGIN)
-			fdisp.info.enemyx->SetColor(0xffffffff);
+			Fdisp.info.enemyx->SetColor(0xffffffff);
 	}
 
 	if(damage && !damagetimer)
@@ -852,7 +847,7 @@ void Enemy::DoShot()
 			effShot.Fire();
 
 			if(BossInfo::flag && type >= ENEMY_BOSSTYPEBEGIN)
-				fdisp.info.enemyx->SetColor(0xc0ffffff);
+				Fdisp.info.enemyx->SetColor(0xc0ffffff);
 
 			if(life < maxlife / 5)
 			{
@@ -905,7 +900,7 @@ void Enemy::action()
 
 	if(!fadeout)
 	{
-		if((Chat::chatting || (BossInfo::flag >= BOSSINFO_COLLAPSE)) && type < ENEMY_BOSSTYPEBEGIN)
+		if((ChatItem.IsChatting() || (BossInfo::flag >= BOSSINFO_COLLAPSE)) && type < ENEMY_BOSSTYPEBEGIN)
 		{
 			life = 0;
 			fadeout = true;
@@ -962,9 +957,9 @@ void Enemy::action()
 		{
 			int txdiff = fabsf(Player::p[0].x - x);
 			if(txdiff < ENEMY_BOSSX_FADERANGE)
-				fdisp.info.enemyx->SetColor(((0x40 + txdiff*2) << 24) | 0xffffff);
+				Fdisp.info.enemyx->SetColor(((0x40 + txdiff*2) << 24) | 0xffffff);
 			else
-				fdisp.info.enemyx->SetColor(0x80ffffff);
+				Fdisp.info.enemyx->SetColor(0x80ffffff);
 		}
 		DoShot();
 		if(x > M_DELETECLIENT_RIGHT || x < M_DELETECLIENT_LEFT || y > M_DELETECLIENT_BOTTOM || y < M_DELETECLIENT_TOP)

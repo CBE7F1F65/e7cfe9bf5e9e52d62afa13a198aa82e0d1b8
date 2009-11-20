@@ -6,26 +6,21 @@ void Process::frameEnd()
 	if(active)
 	{
 		framecounter++;
-		float lost = (hge->Timer_GetDelta() - 1/60.0f) * 100 * 60.0f;
-		if(lost < 0)
-			lost = 0;
-		if(lost > 100)
-			lost = 100;
-		Player::p[0].lostStack += lost;
 
 		if (!(stopflag & FRAME_STOPFLAG_WORLDSHAKE))
 		{
 			WorldShake();
 		}
 
-		if(Player::p[0].exist && state != STATE_CLEAR)
+		bool notinstop[M_PL_MATCHMAXPLAYER];
+		notinstop[0] = !(stopflag & FRAME_STOPFLAG_PLAYER_0);
+		notinstop[1] = !(stopflag & FRAME_STOPFLAG_PLAYER_1);
+		if (state != STATE_CLEAR)
 		{
+			Player::Action(notinstop);
 			alltime++;
-			if (!(stopflag & FRAME_STOPFLAG_PLAYER))
-			{
-				Player::p[0].action();
-			}
 		}
+		Player::AddLostStack();
 		
 		PlayerBullet::locked = PBLOCK_LOST;
 		Enemy::Action(!(stopflag & FRAME_STOPFLAG_ENEMY));
@@ -84,127 +79,19 @@ void Process::frameEnd()
 			}
 		}
 		*/
-		Enemy::dmgz.clear_item();
-		if (bu.size)
+		Enemy::ClearDamageZoneItem();
+		Bullet::Action(!(stopflag & FRAME_STOPFLAG_BULLET));
+		if (!(stopflag & FRAME_STOPFLAG_BEAM))
 		{
-			ZeroMemory(Bullet::renderDepth, sizeof(RenderDepth) * BULLETTYPEMAX);
-			DWORD i = 0;
-			DWORD size = bu.size;
-			for (bu.toBegin(); i<size; bu.toNext(), i++)
-			{
-				if (!bu.isValid())
-				{
-					continue;
-				}
-				if ((*bu).exist)
-				{
-					objcount++;
-
-					if (!(stopflag & FRAME_STOPFLAG_BULLET))
-					{
-						(*bu).action();
-					}
-					else
-					{
-						(*bu).actionInStop();
-					}
-				}
-				else
-				{
-					bu.pop();
-				}
-			}
+			Beam::Action();
 		}
-		if (!(stopflag & FRAME_STOPFLAG_BULLET))
+		if (!(stopflag & FRAME_STOPFLAG_PLAYERBULLET))
 		{
-			if (Bullet::izel.size)
-			{
-				DWORD i = 0;
-				DWORD size = Bullet::izel.size;
-				for (Bullet::izel.toBegin(); i<size; Bullet::izel.toNext(), i++)
-				{
-					if (Bullet::izel.isValid())
-					{
-						IzeZone * tize = &(*(Bullet::izel));
-						tize->timer++;
-						if (tize->timer == tize->maxtime)
-						{
-							Bullet::izel.pop();
-						}
-					}
-				}
-			}
+			PlayerBullet::Action();
 		}
-		if (be.size)
+		if (!(stopflag & FRAME_STOPFLAG_ITEM))
 		{
-			if (!(stopflag & FRAME_STOPFLAG_BEAM))
-			{
-				DWORD i = 0;
-				DWORD size = be.size;
-				for (be.toBegin(); i<size; be.toNext(), i++)
-				{
-					if (!be.isValid())
-					{
-						continue;
-					}
-					if ((*be).exist)
-					{
-						objcount ++;
-
-						(*be).action();
-					}
-					else
-					{
-						be.pop();
-					}
-				}
-			}
-		}
-		if (pb.size)
-		{
-			if (!(stopflag & FRAME_STOPFLAG_PLAYERBULLET))
-			{
-				DWORD i = 0;
-				DWORD size = pb.size;
-				for (pb.toBegin(); i<size; pb.toNext(), i++)
-				{
-					if (!pb.isValid())
-					{
-						continue;
-					}
-					if ((*pb).exist)
-					{
-						(*pb).action();
-					}
-					else
-					{
-						pb.pop();
-					}
-				}
-			}
-		}
-		if (mi.size)
-		{
-			if (!(stopflag & FRAME_STOPFLAG_ITEM))
-			{
-				DWORD i = 0;
-				DWORD size = mi.size;
-				for (mi.toBegin(); i<size; mi.toNext(), i++)
-				{
-					if (!mi.isValid())
-					{
-						continue;
-					}
-					if ((*mi).exist)
-					{
-						(*mi).action();
-					}
-					else
-					{
-						mi.pop();
-					}
-				}
-			}
+			Item::Action(state != STATE_PAUSE);
 		}
 
 		Scripter::stopEdefScript = false;
@@ -218,13 +105,13 @@ void Process::frameEnd()
 					scene = BossInfo::turntoscene;
 				}
 				else
-					Player::p[0].exist = false;
+					Player::SetAble(false);
 			}
 			if(BossInfo::flag >= BOSSINFO_COLLAPSE)
 				Scripter::stopEdefScript = true;
 		}
 	}
-	if(active || !Player::p[0].exist && state != STATE_CONTINUE)
+	if(active || !Player::CheckAble() && state != STATE_CONTINUE)
 	{
 		if (!(stopflag & FRAME_STOPFLAG_LAYER))
 		{
@@ -234,17 +121,11 @@ void Process::frameEnd()
 
 		if (!(stopflag & FRAME_STOPFLAG_EFFECTSYS))
 		{
-			for(int i=0; i<EFFECTSYSMAX; i++)
-			{
-				if(effsys[i].exist)
-					effsys[i].action();
-			}
+			Effectsys::Action();
 		}
 	}
-	for (int i=0; i<SELSYSTEMMAX; i++)
-	{
-		selsys[i].action();
-	}
+	SelectSystem::Action();
+	/*
 	for(list<InfoSelect>::iterator i=infoselect.begin();i!=infoselect.end();i++)
 	{
 		if(!InfoSelect::complete)
@@ -257,6 +138,7 @@ void Process::frameEnd()
 			break;
 		}
 	}
+	*/
 	if (Player::p[0].nHiScore < Player::p[0].nScore)
 	{
 		Player::p[0].nHiScore = Player::p[0].nScore;

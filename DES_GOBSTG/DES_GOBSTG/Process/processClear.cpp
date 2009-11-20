@@ -1,5 +1,4 @@
 #include "Process.h"
-#include "InfoSelect.h"
 #include "Player.h"
 #include "DataConnector.h"
 #include "BGLayer.h"
@@ -46,8 +45,8 @@ int Process::processClear()
 
 		Player::p[0].nScore += tscore;
 
-		fdisp.SetValue(tscore, 0, 0, (!islast) && (!practicemode));
-		fdisp.SetState(FDISP_NEXTSTAGE, _PCLEAR_FDISP_TIME);
+		Fdisp.SetValue(tscore, 0, 0, (!islast) && (!practicemode));
+		Fdisp.SetState(FDISP_NEXTSTAGE, _PCLEAR_FDISP_TIME);
 	}
 
 	if (time == _PCLEAR_FDIPS_CANCELTIME)
@@ -57,11 +56,10 @@ int Process::processClear()
 
 	if(time > _PCLEAR_FDISP_TIME /*&& !replaymode*/ || time > _PCLEAR_FDIPS_CANCELTIME && hge->Input_GetDIKey(KS_FIRE, DIKEY_DOWN))
 	{
-		fdisp.SetState(FDISP_NEXTSTAGE, 0);
+		Fdisp.SetState(FDISP_NEXTSTAGE, 0);
 		BGLayer::ubg[UBGID_FGPAUSE].exist = false;
 
 		scene -= SCLEAR;
-		InfoSelect::Clear();
 		BYTE tpart;
 		bool islast = false;
 

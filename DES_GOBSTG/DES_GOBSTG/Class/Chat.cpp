@@ -12,14 +12,6 @@
 
 #define _CHAT_LINECHARACTER	34
 
-Chat chat;
-
-bool Chat::chatting;
-bool Chat::chatinit;
-BYTE Chat::timer;
-BYTE Chat::chati;
-Fontsys Chat::fschat;
-
 Chat::Chat()
 {
 	Clear();
@@ -31,6 +23,11 @@ Chat::Chat()
 
 Chat::~Chat()
 {
+}
+
+bool Chat::IsChatting()
+{
+	return chatting;
 }
 
 void Chat::Clear()
@@ -67,6 +64,10 @@ void Chat::Release()
 
 void Chat::Render()
 {
+	if (!IsChatting())
+	{
+		return;
+	}
 	for(int i = 0; i < CHATTERMAX-1; i++)
 	{
 		chatter[i]->RenderEx(x[i], y[i], 0, 0.8f);
@@ -142,7 +143,7 @@ bool Chat::chat(BYTE ID, BYTE chatsprite, const char * _text)
 			}
 			text[i+line] = _text[i];
 		}
-		fschat.SignUp(text, fdisp.info.smallfont);
+		fschat.SignUp(text, Fdisp.info.smallfont);
 		if(chatsprite & CHATSPRITE_LEFT)
 		{
 			col = 0xff6699ff;

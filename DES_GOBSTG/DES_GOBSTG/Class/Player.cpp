@@ -14,6 +14,8 @@
 #include "BResource.h"
 
 Player Player::p[M_PL_MATCHMAXPLAYER];
+float Player::lostStack = 0;
+bool Player::able = false;
 
 #define _PL_ITEMDRAINNPOP	(PL_NPOPMAX * 4 / 5)
 
@@ -79,6 +81,29 @@ void Player::Init()
 		p[i].ID_sub_1 = 0xffff;
 		p[i].ID_sub_2 = 0xffff;
 	}
+	SetAble(false);
+}
+
+void Player::RenderAll()
+{
+	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
+	{
+		if (p[i].exist)
+		{
+			p[i].Render();
+			p[i].RenderEffect();
+		}
+	}
+}
+
+void Player::SetAble(bool setable)
+{
+	able = setable;
+}
+
+bool Player::CheckAble()
+{
+	return able;
 }
 
 void Player::initFrameIndex()
@@ -484,6 +509,27 @@ void Player::UpdatePlayerData()
 	bomblast = pdata->bomblast;
 }
 
+void Player::AddLostStack()
+{
+	float lost = (hge->Timer_GetDelta() - 1/60.0f) * 100 * 60.0f;
+	if(lost < 0)
+		lost = 0;
+	if(lost > 100)
+		lost = 100;
+	lostStack += lost;
+}
+
+void Player::Action(bool * notinstop)
+{
+	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
+	{
+		if (p[i].exist && notinstop[i])
+		{
+			p[i].action();
+		}
+	}
+}
+
 void Player::SetChara(WORD id, WORD id_sub_1/* =0xffff */, WORD id_sub_2/* =0xffff */)
 {
 	ID = id;
@@ -546,6 +592,8 @@ void Player::valueSet(WORD _ID, WORD _ID_sub_1, WORD _ID_sub_2, BYTE _nLife, boo
 	effBorderOn.Stop();
 	effBorderOff.valueSet(EFF_PL_BORDEROFF, *this);
 	effBorderOff.Stop();
+
+	SetAble(true);
 }
 
 DWORD Player::getnNext()
@@ -703,7 +751,7 @@ void Player::action()
 				}
 			}
 		}
-		if(!chat.chatting && !bInfi)
+		if(!ChatItem.IsChatting() && !bInfi)
 		{
 			nPop -= _PL_NPOPCOST;
 			if (nPop > _PL_EXTENDNPOP)
@@ -764,7 +812,7 @@ void Player::action()
 		{
 			updateFrame(PLAYER_FRAME_STAND);
 		}
-		if(hge->Input_GetDIKey(KS_FIRE_MP) && !Chat::chatting)
+		if(hge->Input_GetDIKey(KS_FIRE_MP) && !ChatItem.IsChatting())
 			flag |= PLAYER_SHOOT;
 	}
 	if(hge->Input_GetDIKey(KS_QUICK_MP) && !(flag & PLAYER_MERGE))
@@ -993,7 +1041,7 @@ void Player::callCollapse()
 
 bool Player::callBomb(bool onlyborder)
 {
-	if (Chat::chatting || (flag & PLAYER_COLLAPSE) || (flag & PLAYER_BOMB))
+	if (ChatItem.IsChatting() || (flag & PLAYER_COLLAPSE) || (flag & PLAYER_BOMB))
 	{
 		return false;
 	}
@@ -1200,7 +1248,7 @@ bool Player::Collapse()
 		}
 		else
 		{
-			p[0].exist = false;
+			exist = false;
 			return true;
 		}
 

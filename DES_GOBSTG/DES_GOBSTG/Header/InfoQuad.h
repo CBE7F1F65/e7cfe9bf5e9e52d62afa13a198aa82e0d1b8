@@ -15,6 +15,8 @@ public:
 	InfoQuad();
 	virtual ~InfoQuad();
 
+	static void Init(HTEXTURE tex);
+
 	void valueSet(
 		BYTE type, float x, float y,
 		float x0, float y0, DWORD col0,

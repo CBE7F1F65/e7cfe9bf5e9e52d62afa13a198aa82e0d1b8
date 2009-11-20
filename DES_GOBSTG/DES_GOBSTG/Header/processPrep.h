@@ -9,7 +9,6 @@
 #include "BGLayer.h"
 #include "Replay.h"
 #include "SelectSystem.h"
-#include "InfoSelect.h"
 #include "SE.h"
 #include "Player.h"
 #include "EffectSp.h"

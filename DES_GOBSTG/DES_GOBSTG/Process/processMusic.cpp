@@ -1,5 +1,4 @@
 #include "Process.h"
-#include "InfoSelect.h"
 #include "Scripter.h"
 #include "SE.h"
 #include "BResource.h"
@@ -8,6 +7,7 @@
 int Process::processMusic()
 {
 	time++;
+	/*
 	if(time == 1)
 	{
 		scr.SetIntValue(SCR_RESERVEBEGIN, 0);
@@ -151,5 +151,6 @@ int Process::processMusic()
 	scr.SetIntValue(SCR_RESERVEBEGIN, tmusicsel);
 	scr.SetIntValue(SCR_RESERVEBEGIN+1, tiselfirstID);
 
+	*/
 	return PGO;
 }

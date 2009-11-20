@@ -19,6 +19,9 @@ public:
 
 	static void Init();
 	static bool Build(float x, float y, int angle, float speed, BYTE type, BYTE color, WORD length, BYTE flag, int fadeouttime, BYTE tarID);
+	static void ClearItem();
+	static void Action();
+	static void RenderAll();
 
 	void valueSet(WORD ID, float x, float y,int angle, float speed, BYTE type, BYTE color, WORD length, BYTE flag, int fadeouttime = 0, BYTE tarID = 0xff);
 	bool isInRect(float r, float aimx, float aimy);
@@ -53,8 +56,7 @@ public:
 	BYTE	pintar;
 
 	static WORD index;
+	static VectorList<Beam> be;
 };
-
-extern VectorList<Beam> be;
 
 #endif

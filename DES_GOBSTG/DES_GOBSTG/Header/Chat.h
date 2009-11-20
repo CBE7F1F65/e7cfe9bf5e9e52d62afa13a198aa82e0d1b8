@@ -19,7 +19,7 @@
 #define CHATSPRITE_RIGHT		0x10
 #define CHATSPRITE_RIGHTFLIP	0x20
 
-class Chat
+static class Chat
 {
 public:
 	Chat();
@@ -28,9 +28,9 @@ public:
 	void Init();
 	void Release();
 	void Clear();
-
 	void Render();
 
+	bool IsChatting();
 	bool chatOn(BYTE leftID, BYTE rightID, BYTE chatsprite);
 	bool chatOff();
 
@@ -56,13 +56,11 @@ public:
 
 	BYTE pushtimer;
 
-	static bool chatinit;
-	static bool chatting;
-	static BYTE timer;
-	static BYTE chati;
-	static Fontsys fschat;
-};
-
-extern Chat chat;
+	bool chatinit;
+	bool chatting;
+	BYTE timer;
+	BYTE chati;
+	Fontsys fschat;
+}ChatItem;
 
 #endif

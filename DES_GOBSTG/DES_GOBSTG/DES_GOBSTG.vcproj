@@ -420,9 +420,6 @@
 					RelativePath=".\Class\InfoQuad.cpp">
 				</File>
 				<File
-					RelativePath=".\Class\InfoSelect.cpp">
-				</File>
-				<File
 					RelativePath=".\Class\Item.cpp">
 				</File>
 				<File
@@ -676,9 +673,6 @@
 				</File>
 				<File
 					RelativePath=".\Header\InfoQuad.h">
-				</File>
-				<File
-					RelativePath=".\Header\InfoSelect.h">
 				</File>
 				<File
 					RelativePath=".\Header\Item.h">

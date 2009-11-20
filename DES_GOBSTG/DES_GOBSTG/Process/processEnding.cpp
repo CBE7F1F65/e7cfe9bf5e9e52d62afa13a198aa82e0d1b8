@@ -4,19 +4,20 @@
 #include "Scripter.h"
 #include "Data.h"
 #include "SelectSystem.h"
-#include "InfoSelect.h"
 #include "FrontDisplay.h"
 
 int Process::processEnding()
 {
 	time++;
+	return PGO;
+	/*
 	if (time == 1)
 	{
 		BGLayer::KillOtherLayer();
 
 		Player::p[0].exist = false;
 		BGLayer::ubg[UBGID_BGMASK].exist = false;
-		fdisp.SetState(FDISP_PANEL, 0);
+		Fdisp.SetState(FDISP_PANEL, 0);
 		musicChange(0, true);
 
 		scr.SetIntValue(SCR_RESERVEBEGIN, 0);
@@ -34,7 +35,6 @@ int Process::processEnding()
 	else if (tdepth == 0xff)
 	{
 		SelectSystem::ClearAll();
-		InfoSelect::Clear();
 		time = 0;
 		state = STATE_OVER;
 		return PTURN;
@@ -55,4 +55,5 @@ int Process::processEnding()
 	scr.SetIntValue(SCR_RESERVEBEGIN+1, tdepth);
 
 	return retvalue;
+	*/
 }

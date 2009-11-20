@@ -125,20 +125,10 @@ void Ghost::actionInStop()
 
 void Ghost::DoShot()
 {
-	if (pb.size)
+	float costpower = PlayerBullet::CheckShoot(x, y, 32);
+	if (costpower)
 	{
-		DWORD i = 0;
-		DWORD size = pb.size;
-		for (pb.toBegin(); i<size; pb.toNext(), i++)
-		{
-			if (pb.isValid() && (*pb).able)
-			{
-				if ((*pb).isInRange(x, y, 32))
-				{
-					CostLife((*pb).power);
-				}
-			}
-		}
+		CostLife(costpower);
 	}
 	if (Enemy::dmgz.size)
 	{
@@ -238,7 +228,7 @@ void Ghost::action()
 			SE::push(SE_GHOST_MERGE, x);
 		}
 
-		if(Chat::chatting || BossInfo::flag >= BOSSINFO_COLLAPSE)
+		if(ChatItem.IsChatting() || BossInfo::flag >= BOSSINFO_COLLAPSE)
 		{
 			life = 0;
 			fadeout = true;

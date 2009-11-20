@@ -6,8 +6,6 @@
 #include "BossInfo.h"
 #include "Fontsys.h"
 
-FrontDisplay fdisp;
-
 FrontDisplay::FrontDisplay()
 {
 	ZeroMemory(&panel, sizeof(ftPanelSet));
@@ -239,7 +237,7 @@ void FrontDisplay::PanelDisplay()
 			hge->Timer_GetTime()
 			);
 #ifdef __DEBUG
-		if (Player::p[0].exist && info.smalldigitfont)
+		if (Player::CheckAble() && info.smalldigitfont)
 		{
 			info.smalldigitfont->printf(8, 465, 0, "%d / %d", mp.scene, time);
 		}
@@ -570,19 +568,7 @@ void FrontDisplay::ItemInfoDisplay(infoFont * item)
 		info.itemfont->SetColor(0xafffff00);
 	else
 		info.itemfont->SetColor(0xafffffff);
-	if(item->timer < 32)
-		info.itemfont->printf(item->x, item->y-10-item->timer, HGETEXT_CENTER, "%s", item->cScore);
-	else
-	{
-		Item::infofont.pop();
-	}
-	if (item->timer == 24 || item->timer == 28)
-	{
-		for(int i=0;i<(int)strlen(item->cScore);i++)
-		{
-			item->cScore[i] += 10;
-		}
-	}
+	info.itemfont->printf(item->x, item->y-10-item->timer, HGETEXT_CENTER, "%s", item->cScore);
 }
 
 bool FrontDisplay::Init()
@@ -788,6 +774,12 @@ bool FrontDisplay::Init()
 
 	info.normalfont = hge->Font_Load(res.resdata.widefontname, 20);
 	info.smallfont = hge->Font_Load(res.resdata.widefontname, 16);
+
+	SetState(FDISP_PANEL, 0);
+	SetState(FDISP_NEXTSTAGE, 0);
+	SetState(FDISP_FULLPOWER, 0);
+	SetState(FDISP_HISCORE, 0);
+	SetState(FDISP_EXTEND, 0);
 
 	return true;
 }

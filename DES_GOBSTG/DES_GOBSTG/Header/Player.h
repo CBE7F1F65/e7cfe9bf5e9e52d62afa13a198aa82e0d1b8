@@ -133,6 +133,11 @@ public:
 	// add
 	void SetInitLife(BYTE initlife);
 	void SetChara(WORD id, WORD id_sub_1=0xffff, WORD id_sub_2=0xffff);
+	static void AddLostStack();
+	static void Action(bool * notinstop);
+	static void SetAble(bool setable);
+	static bool CheckAble();
+	static void RenderAll();
 
 	static void Init();
 
@@ -181,7 +186,6 @@ public:
 	DWORD	nLastGraze;
 	DWORD	nLastFaith;
 
-	float	lostStack;
 	DWORD	borderCounter;
 	DWORD	fastCounter;
 
@@ -236,6 +240,8 @@ public:
 
 	// add
 	BYTE	initlife;
+	static float lostStack;
+	static bool able;
 
 	static Player p[M_PL_MATCHMAXPLAYER];
 

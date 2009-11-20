@@ -33,6 +33,22 @@ void SelectSystem::ClearAll()
 	}
 }
 
+void SelectSystem::RenderAll()
+{
+	for (int i=0; i<SELSYSTEMMAX; i++)
+	{
+		selsys[i].Render();
+	}
+}
+
+void SelectSystem::Action()
+{
+	for (int i=0; i<SELSYSTEMMAX; i++)
+	{
+		selsys[i].action();
+	}
+}
+
 void SelectSystem::Clear()
 {
 	for(list<Selector>::iterator it=sel.begin();it!=sel.end();it++)

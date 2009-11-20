@@ -34,6 +34,10 @@ public:
 
 	static void Init(HTEXTURE * tex);
 	static void Build(int shootdataID);
+	static void ClearItem();
+	static void Action();
+	static void RenderAll();
+	static float CheckShoot(float aimx, float aimy, float aimw, float aimh=0.0f);
 
 	void valueSet(WORD ID, BYTE arrange, float xbias, float ybias, float scale, int angle, float speed, float accelspeed, float power, int hitonfactor, WORD flag, BYTE seID);
 
@@ -77,8 +81,7 @@ public:
 	static HTEXTURE * tex;
 	static int locked;
 	static WORD beams;
+	static VectorList<PlayerBullet>pb;
 };
-
-extern VectorList<PlayerBullet>pb;
 
 #endif

@@ -10,121 +10,34 @@ int Process::render()
 	//BGLayer
 	BGLayer::RenderBG();
 
-	if(Player::p[0].exist || state == STATE_CONTINUE)
+	if(Player::CheckAble() || state == STATE_CONTINUE)
 	{
-		if (bossinfo.flag && bossinfo.isSpell())
+		if (BossInfo::flag && bossinfo.isSpell())
 		{
-			fdisp.RenderBossTimeCircle();
-//			bossinfo.RenderTimeCircle();
+			Fdisp.RenderBossTimeCircle();
 		}
-		if(!Player::p[0].bBorder)
-		{
-			Ghost::RenderAll();
-		}
+		Ghost::RenderAll();
 		Enemy::RenderAll();
-		if (pb.size)
-		{
-			DWORD i = 0;
-			DWORD size = pb.size;
-			for (pb.toBegin(); i<size; pb.toNext(), i++)
-			{
-				if (pb.isValid())
-				{
-					(*pb).Render();
-				}
+		PlayerBullet::RenderAll();
+		Player::RenderAll();
+		Effectsys::RenderAll();
+		Beam::RenderAll();
+		Bullet::RenderAll();
 
-			}
-		}
-		if(Player::p[0].exist)
-			Player::p[0].Render();
-
-		if(Player::p[0].exist)
-		{
-			Player::p[0].RenderEffect();
-		}
-
-		//3D objs
-		for(int i=0; i<EFFECTSYSMAX; i++)
-		{
-			if(effsys[i].exist)
-			{
-				effsys[i].Render();
-			}
-		}
-
-		if (be.size)
-		{
-			DWORD i = 0;
-			DWORD size = be.size;
-			for (be.toBegin(); i<size; be.toNext(), i++)
-			{
-				if (be.isValid())
-				{
-					(*be).Render();
-				}
-			}
-		}
-
-		if (bu.size)
-		{
-			for (int i=0; i<BULLETTYPEMAX; i++)
-			{
-				if (Bullet::renderDepth[i].haveType)
-				{
-					for (bu.toIndex(Bullet::renderDepth[i].startIndex); bu.index != Bullet::renderDepth[i].endIndex; bu.toNext())
-					{
-						if (bu.isValid() && (*bu).getRenderDepth() == i)
-						{
-							(*bu).Render();
-						}
-					}
-				}
-			}
-		}
 		if(BossInfo::flag)
 		{
 			bossinfo.exist = false;
-			fdisp.RenderBossInfo();
+			Fdisp.RenderBossInfo();
 		}
-
+/*
 		if(Player::p[0].bBorder)
 		{
 			Ghost::RenderAll();
 		}
-		if (mi.size)
-		{
-			DWORD i = 0;
-			DWORD size = mi.size;
-			for (mi.toBegin(); i<size; mi.toNext(), i++)
-			{
-				if (mi.isValid())
-				{
-					(*mi).Render();
-				}
-			}
-		}
-
-		if(Chat::chatting)
-		{
-			chat.Render();
-		}
-
-		if (Item::infofont.size)
-		{
-			DWORD i = 0;
-			DWORD size = Item::infofont.size;
-			for (Item::infofont.toBegin(); i<size; Item::infofont.toNext(), i++)
-			{
-				if (!Item::infofont.isValid())
-				{
-					continue;
-				}
-				infoFont * _i = &(*(Item::infofont));
-				if(state != STATE_PAUSE)
-					_i->timer++;
-				fdisp.ItemInfoDisplay(_i);
-			}
-		}
+*/
+		Item::RenderAll();
+		ChatItem.Render();
+/*
 
 		DWORD tcolor;
 		if(Player::p[0].x < 170 && Player::p[0].y > 420)
@@ -134,25 +47,22 @@ int Process::render()
 		else
 		{
 			tcolor = 0xc0ffffff;
-		}
+		}*/
+
 	}
 
 	BGLayer::RenderFG();
-	for (int i=0; i<SELSYSTEMMAX; i++)
-	{
-		selsys[i].Render();
-	}
-	InfoSelect::Render();
+	SelectSystem::RenderAll();
 
 	Export::clientSetMatrix();
 
 	SpriteItemManager::RenderFrontSprite();
-	fdisp.RenderPostPrint();
-	fdisp.PanelDisplay();
+	Fdisp.RenderPostPrint();
+	Fdisp.PanelDisplay();
 
-	if(Player::p[0].exist && BossInfo::flag)
+	if(Player::CheckAble() && BossInfo::flag)
 	{
-		fdisp.RenderEnemyX();
+		Fdisp.RenderEnemyX();
 	}
 	return PGO;
 }

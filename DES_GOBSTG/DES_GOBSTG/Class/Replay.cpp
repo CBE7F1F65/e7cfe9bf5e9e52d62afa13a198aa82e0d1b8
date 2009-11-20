@@ -54,7 +54,7 @@ void Replay::Fill()
 	rpyinfo.faith = Player::p[0].nFaith;
 	strcpy(rpyinfo.username, mp.username);
 
-	rpyinfo.lost = Player::p[0].lostStack / mp.framecounter;
+	rpyinfo.lost = Player::lostStack / mp.framecounter;
 	rpyinfo.borderrate = (float)Player::p[0].borderCounter / mp.alltime;
 	rpyinfo.fastrate = (float)Player::p[0].fastCounter / mp.alltime;
 

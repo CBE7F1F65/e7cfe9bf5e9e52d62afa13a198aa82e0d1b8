@@ -3,40 +3,25 @@
 void Process::clearPrep(bool bclearkey)
 {
 	SelectSystem::ClearAll();
-	for(int i=0; i<EFFECTSYSMAX; i++)
-	{
-		effsys[i].exist = false;
-	}
+	Effectsys::ClearAll();
 	BGLayer::Init();
 	Enemy::ClearAll();
 	Ghost::ClearAll();
 	Target::ClearAll();
-	bu.clear_item();
-	Bullet::index = 0;
-	Bullet::izel.clear_item();
-	ZeroMemory(Bullet::_bu.actionList, sizeof(int) * BULLETACTIONMAX);
-//	Bullet::_bu.actionList[0] = 0;
-	mi.clear_item();
-	pb.clear_item();
-	be.clear_item();
-	Item::infofont.clear_item();
-	InfoSelect::Clear();
-	Chat::chatting = false;
-	Chat::timer = 0;
-	Chat::chati = 0;
-	Chat::chatinit = false;
+	Bullet::ClearItem();
+	Item::ClearItem();
+	PlayerBullet::ClearItem();
+	Beam::ClearItem();
+	ChatItem.Clear();
 	BossInfo::Clear();
-	pauseinit = false;
 
+	pauseinit = false;
 	worldx = 0;
 	worldy = 0;
 	worldz = 0;
-
 	frameskip = M_DEFAULT_FRAMESKIP;
-
 	Scripter::stopEdefScript = false;
-
-	fdisp.SetState(FDISP_PANEL, 1);
+	Fdisp.SetState(FDISP_PANEL, 1);
 
 	Player::p[0].ClearSet();
 

@@ -11,6 +11,11 @@ InfoQuad::~InfoQuad()
 {
 }
 
+void InfoQuad::Init(HTEXTURE _tex)
+{
+	tex = _tex;
+}
+
 void InfoQuad::valueSet(
 		BYTE _type, float _x, float _y,
 		float x0, float y0, DWORD col0,

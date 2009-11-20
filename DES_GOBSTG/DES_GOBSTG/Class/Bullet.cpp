@@ -12,11 +12,11 @@
 
 RenderDepth Bullet::renderDepth[BULLETTYPEMAX];
 
-Bullet Bullet::_bu;
+int Bullet::_actionList[BULLETACTIONMAX];
 hgeSprite * Bullet::sp[BULLETTYPECOLORMAX];
 VectorList<IzeZone> Bullet::izel;
 
-VectorList<Bullet>bu;
+VectorList<Bullet> Bullet::bu;
 HTEXTURE Bullet::tex;
 
 WORD Bullet::index;
@@ -111,7 +111,7 @@ bool Bullet::Build(float x, float y, bool absolute, int angle, float speed, BYTE
 		bu.pop(index);
 		return false;
 	}
-	memcpy(_tbu->actionList, _bu.actionList, BULLETACTIONMAX*sizeof(int));
+	memcpy(_tbu->actionList, _actionList, BULLETACTIONMAX*sizeof(int));
 	return true;
 }
 
@@ -123,6 +123,86 @@ void Bullet::Release()
 		if(sp[i])
 			delete sp[i];
 		sp[i] = NULL;
+	}
+}
+
+void Bullet::ClearItem()
+{
+	bu.clear_item();
+	index = 0;
+	izel.clear_item();
+	ZeroMemory(_actionList, sizeof(int) * BULLETACTIONMAX);
+}
+
+void Bullet::Action(bool notinstop)
+{
+	if (bu.size)
+	{
+		ZeroMemory(Bullet::renderDepth, sizeof(RenderDepth) * BULLETTYPEMAX);
+		DWORD i = 0;
+		DWORD size = bu.size;
+		for (bu.toBegin(); i<size; bu.toNext(), i++)
+		{
+			if (!bu.isValid())
+			{
+				continue;
+			}
+			if ((*bu).exist)
+			{
+				if (notinstop)
+				{
+					(*bu).action();
+				}
+				else
+				{
+					(*bu).actionInStop();
+				}
+			}
+			else
+			{
+				bu.pop();
+			}
+		}
+	}
+	if (notinstop)
+	{
+		if (Bullet::izel.size)
+		{
+			DWORD i = 0;
+			DWORD size = Bullet::izel.size;
+			for (Bullet::izel.toBegin(); i<size; Bullet::izel.toNext(), i++)
+			{
+				if (Bullet::izel.isValid())
+				{
+					IzeZone * tize = &(*(Bullet::izel));
+					tize->timer++;
+					if (tize->timer == tize->maxtime)
+					{
+						Bullet::izel.pop();
+					}
+				}
+			}
+		}
+	}
+}
+
+void Bullet::RenderAll()
+{
+	if (bu.size)
+	{
+		for (int i=0; i<BULLETTYPEMAX; i++)
+		{
+			if (Bullet::renderDepth[i].haveType)
+			{
+				for (bu.toIndex(Bullet::renderDepth[i].startIndex); bu.index != Bullet::renderDepth[i].endIndex; bu.toNext())
+				{
+					if (bu.isValid() && (*bu).getRenderDepth() == i)
+					{
+						(*bu).Render();
+					}
+				}
+			}
+		}
 	}
 }
 

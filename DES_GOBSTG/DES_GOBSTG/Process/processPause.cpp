@@ -2,7 +2,6 @@
 #include "Scripter.h"
 #include "SelectSystem.h"
 #include "Player.h"
-#include "InfoSelect.h"
 #include "SE.h"
 #include "BGLayer.h"
 #include "BossInfo.h"
@@ -10,6 +9,7 @@
 
 int Process::processPause()
 {
+	/*
 	BYTE tstate = state;
 	if(!pauseinit)
 	{
@@ -114,9 +114,9 @@ int Process::processPause()
 			{
 				BGLayer::KillOtherLayer();
 				SelectSystem::ClearAll();
-				InfoSelect::Clear();
+//				InfoSelect::Clear();
 				BGLayer::ubg[UBGID_BGMASK].exist = false;
-				fdisp.SetState(FDISP_PANEL, 0);
+				Fdisp.SetState(FDISP_PANEL, 0);
 				Player::p[0].exist = false;
 				BossInfo::Clear();
 				getInput();
@@ -128,9 +128,9 @@ int Process::processPause()
 			{
 				BGLayer::KillOtherLayer();
 				SelectSystem::ClearAll();
-				InfoSelect::Clear();
+//				InfoSelect::Clear();
 				BGLayer::ubg[UBGID_BGMASK].exist = false;
-				fdisp.SetState(FDISP_PANEL, 0);
+				Fdisp.SetState(FDISP_PANEL, 0);
 				BossInfo::Clear();
 				if(spellmode && !replaymode && time == 0)
 					state = STATE_CONTINUE;
@@ -143,5 +143,6 @@ int Process::processPause()
 			return PTURN;
 		}
 	}
+	*/
 	return PGO;
 }

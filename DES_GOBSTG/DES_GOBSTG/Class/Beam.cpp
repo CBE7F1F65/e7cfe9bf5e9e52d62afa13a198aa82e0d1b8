@@ -8,7 +8,7 @@
 #include "Main.h"
 #include "Target.h"
 
-VectorList<Beam> be;
+VectorList<Beam> Beam::be;
 
 WORD Beam::index;
 
@@ -25,6 +25,51 @@ void Beam::Init()
 {
 	be.init(BEAMMAX);
 	index = 0;
+}
+
+void Beam::ClearItem()
+{
+	be.clear_item();
+}
+
+void Beam::Action()
+{
+	if (be.size)
+	{
+		DWORD i = 0;
+		DWORD size = be.size;
+		for (be.toBegin(); i<size; be.toNext(), i++)
+		{
+			if (!be.isValid())
+			{
+				continue;
+			}
+			if ((*be).exist)
+			{
+				(*be).action();
+			}
+			else
+			{
+				be.pop();
+			}
+		}
+	}
+}
+
+void Beam::RenderAll()
+{
+	if (be.size)
+	{
+		DWORD i = 0;
+		DWORD size = be.size;
+		for (be.toBegin(); i<size; be.toNext(), i++)
+		{
+			if (be.isValid())
+			{
+				(*be).Render();
+			}
+		}
+	}
 }
 
 bool Beam::Build(float x, float y, int angle, float speed, BYTE type, BYTE color, WORD length, BYTE flag, int fadeouttime, BYTE tarID)
@@ -184,7 +229,7 @@ void Beam::action()
 			Target::SetValue(tarID, x, y);
 		}
 
-		if(Chat::chatting)
+		if(ChatItem.IsChatting())
 		{
 			fadeout = true;
 			timer = 0;

@@ -78,6 +78,7 @@ public:
 	static void Action(bool notinstop);
 	static void ClearAll();
 	static void RenderAll();
+	static void ClearDamageZoneItem();
 
 	void Clear();
 	bool isInRange(float x, float y, float r);
