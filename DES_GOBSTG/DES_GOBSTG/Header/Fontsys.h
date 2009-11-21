@@ -27,7 +27,7 @@ public:
 
 	static void Init(HD3DFONT font = NULL);
 	static void HeatUp();
-	static void FocusChanged();
+	static bool GfxRestore();
 	static void Release();
 
 	void SignUp(const char * text = NULL, HD3DFONT font=NULL);

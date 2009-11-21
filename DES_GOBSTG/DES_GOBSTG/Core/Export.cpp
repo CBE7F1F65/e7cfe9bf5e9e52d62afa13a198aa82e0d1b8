@@ -64,49 +64,62 @@ bool Export::clientInitial(bool usesound /* = false */, bool extuse /* = false *
 	return bret;
 }
 
-void Export::clientSetMatrix(float _worldx, float _worldy, float _worldz)
+void Export::clientSetMatrix(float _worldx, float _worldy, float _worldz, BYTE renderflag)
 {
 	D3DXMATRIXA16 matWorld;
-	D3DXMatrixTranslation(&matWorld, _worldx, _worldy, _worldz);	
+	D3DXMatrixTranslation(&matWorld, _worldx, _worldy, _worldz);
 	hge->Gfx_SetTransform( D3DTS_WORLD, &matWorld );
 
 	if (hge->System_Is2DMode())
 	{
 		return;
 	}
-	/*
-	D3DXMATRIX matView;
-	D3DXVECTOR3 vEyePt( M_ACTIVECLIENT_CENTER_X, M_ACTIVECLIENT_CENTER_Y, M_ACTIVECLIENT_HEIGHT/2);
-	D3DXVECTOR3 vLookatPt( M_ACTIVECLIENT_CENTER_X, M_ACTIVECLIENT_CENTER_Y, 0 );
-	D3DXVECTOR3 vUpVec( 0.0f, -1.0f, 0.0f );
-	D3DXMatrixLookAtLH( &matView, &vEyePt, &vLookatPt, &vUpVec );
-	*/
 
+	if (renderflag == M_RENDER_NULL)
+	{
+		D3DXMATRIX matView(
+			1.0f, 0.0f, 0.0f, 0.0f,
+			0.0f, -1.0f, 0.0f, 0.0f,
+			0.0f, 0.0f, -1.0f, 0.0f,
+			-M_CLIENT_CENTER_X, M_CLIENT_CENTER_Y, M_CLIENT_HEIGHT/2.0f, 1.0f
+			);
+		hge->Gfx_SetTransform( D3DTS_VIEW, &matView );
+
+		D3DXMATRIX matProj(
+			M_CLIENT_HEIGHT/M_CLIENT_WIDTH, 0.0f, 0.0f, 0.0f,
+			0.0f, 1.0f, 0.0f, 0.0f,
+			0.0f, 0.0f, 0.0f, 1.0f,
+			-M_PROJECTIONMATRIX_OFFSET*(M_CLIENT_HEIGHT/M_CLIENT_HEIGHT), M_PROJECTIONMATRIX_OFFSET, 0.0f, -0.55f
+			);
+		hge->Gfx_SetTransform(D3DTS_PROJECTION, &matProj);
+		return;
+	}
+
+	BYTE index;
+	if (renderflag == M_RENDER_LEFT)
+	{
+		index = 0;
+	}
+	else
+	{
+		index = 1;
+	}
+	
 	D3DXMATRIX matView(
 		1.0f, 0.0f, 0.0f, 0.0f,
 		0.0f, -1.0f, 0.0f, 0.0f,
 		0.0f, 0.0f, -1.0f, 0.0f,
-		-M_ACTIVECLIENT_CENTER_X, M_ACTIVECLIENT_CENTER_Y, M_ACTIVECLIENT_HEIGHT/2.0f, 1.0f
+		-M_GAMESQUARE_CENTER_X_(index), M_GAMESQUARE_CENTER_Y, M_GAMESQUARE_HEIGHT/2.0f, 1.0f
 		);
 	
 	hge->Gfx_SetTransform( D3DTS_VIEW, &matView );
-
-	/*
-	D3DXMATRIX matProj;
-	D3DXMATRIX tmat;
-	D3DXMatrixIdentity(&matProj);
-	D3DXMatrixTranslation(&tmat, -0.5f, 0.5f, 0.0f);
-	D3DXMatrixMultiply(&matProj, &matProj, &tmat);
-	D3DXMatrixPerspectiveOffCenterLH( &tmat, -M_ACTIVECLIENT_CENTER_X, M_ACTIVECLIENT_CENTER_X+(M_CLIENT_WIDTH-M_ACTIVECLIENT_WIDTH), -M_CLIENT_CENTER_Y, M_CLIENT_CENTER_Y, M_CLIENT_HEIGHT/2, 0 );
-	D3DXMatrixMultiply(&matProj, &matProj, &tmat);
-	*/
-
 	
+
 	D3DXMATRIX matProj(
 		M_CLIENT_HEIGHT/M_CLIENT_WIDTH, 0.0f, 0.0f, 0.0f,
 		0.0f, 1.0f, 0.0f, 0.0f,
-		(M_ACTIVECLIENT_WIDTH-M_CLIENT_WIDTH)/M_CLIENT_WIDTH, 0.0f, 0.0f, 1.0f,
-		-M_PROJECTIONMATRIX_OFFSET/*-M_PROJECTIONMATRIX_OFFSET*(M_CLIENT_HEIGHT/M_CLIENT_HEIGHT)*/, M_PROJECTIONMATRIX_OFFSET, 0.0f, -0.55f
+		(M_GAMESQUARE_CENTER_X_(index)-M_CLIENT_CENTER_X)/(M_CLIENT_WIDTH/2), 0.0f, 0.0f, 1.0f,
+		-M_PROJECTIONMATRIX_OFFSET*(M_CLIENT_HEIGHT/M_CLIENT_HEIGHT), M_PROJECTIONMATRIX_OFFSET, 0.0f, -0.55f
 		);
 
 	hge->Gfx_SetTransform(D3DTS_PROJECTION, &matProj);

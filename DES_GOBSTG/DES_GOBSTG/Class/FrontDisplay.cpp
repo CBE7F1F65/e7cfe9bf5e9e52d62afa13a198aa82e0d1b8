@@ -124,10 +124,13 @@ void FrontDisplay::PanelDisplay()
 			}
 			panelcountup = tcountup;
 			DWORD tcol = (panelcountup<<16)|(panelcountup<<8)|panelcountup|0xff000000;
-			panel.left->SetColor(tcol);
-			panel.right->SetColor(tcol);
-			panel.top->SetColor(tcol);
-			panel.bottom->SetColor(tcol);
+			for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
+			{
+				panel.leftedge[i]->SetColor(tcol);
+				panel.rightedge[i]->SetColor(tcol);
+				panel.topedge[i]->SetColor(tcol);
+				panel.bottomedge[i]->SetColor(tcol);
+			}
 		}
 
 		if (panelcountup == 0xff)
@@ -184,11 +187,20 @@ void FrontDisplay::PanelDisplay()
 
 		}
 
-		float ledge = panel.left->GetWidth();
-		panel.left->Render(M_ACTIVECLIENT_LEFT, M_ACTIVECLIENT_TOP);
-		panel.top->Render(M_ACTIVECLIENT_LEFT+ledge, M_ACTIVECLIENT_TOP);
-		panel.bottom->Render(M_ACTIVECLIENT_LEFT+ledge, M_ACTIVECLIENT_BOTTOM-panel.bottom->GetHeight());
-		panel.right->Render(M_ACTIVECLIENT_RIGHT-ledge, M_ACTIVECLIENT_TOP);
+		/*
+		float ledge = panel.leftedge->GetWidth();
+		panel.leftedge->Render(M_ACTIVECLIENT_LEFT, M_ACTIVECLIENT_TOP);
+		panel.topedge->Render(M_ACTIVECLIENT_LEFT+ledge, M_ACTIVECLIENT_TOP);
+		panel.bottomedge->Render(M_ACTIVECLIENT_LEFT+ledge, M_ACTIVECLIENT_BOTTOM-panel.bottomedge->GetHeight());
+		panel.rightedge->Render(M_ACTIVECLIENT_RIGHT-ledge, M_ACTIVECLIENT_TOP);
+		*/
+		for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
+		{
+			panel.leftedge[i]->Render(M_GAMESQUARE_LEFT_(i)-M_GAMESQUARE_EDGE/2, M_GAMESQUARE_CENTER_Y);
+			panel.rightedge[i]->Render(M_GAMESQUARE_RIGHT_(i)+M_GAMESQUARE_EDGE/2, M_GAMESQUARE_CENTER_Y);
+			panel.topedge[i]->Render(M_GAMESQUARE_CENTER_X_(i), M_GAMESQUARE_TOP-M_GAMESQUARE_EDGE/2);
+			panel.bottomedge[i]->Render(M_GAMESQUARE_CENTER_X_(i), M_GAMESQUARE_BOTTOM+M_GAMESQUARE_EDGE/2);
+		}
 
 		if (panelcountup == 0xff)
 		{
@@ -444,6 +456,9 @@ void FrontDisplay::BossMoveItemEffect(float x, float y)
 void FrontDisplay::RenderBossInfo()
 {
 	BYTE flag = BossInfo::flag;
+	if (flag)
+	{
+		bossinfo.exist = false;
 	WORD timer = bossinfo.timer;
 	bool bSpell = bossinfo.isSpell();
 	bool failed = BossInfo::failed;
@@ -534,34 +549,41 @@ void FrontDisplay::RenderBossInfo()
 		}
 		info.bossfont->printf(M_ACTIVECLIENT_CENTER_X, 120, HGETEXT_CENTER|HGETEXT_MIDDLE, "%d", bonus);
 	}
+	}
 }
 
 void FrontDisplay::RenderBossTimeCircle()
 {
 	BYTE flag = BossInfo::flag;
-	WORD timer = bossinfo.timer;
-	BYTE limit = bossinfo.limit;
-	if (flag < BOSSINFO_COLLAPSE)
+	if (flag && bossinfo.isSpell())
 	{
-		float scale;
-		if (timer >= 88)
+		WORD timer = bossinfo.timer;
+		BYTE limit = bossinfo.limit;
+		if (flag < BOSSINFO_COLLAPSE)
 		{
-			if (timer < 120)
+			float scale;
+			if (timer >= 88)
 			{
-				scale = (timer-88) * 0.1f;
+				if (timer < 120)
+				{
+					scale = (timer-88) * 0.1f;
+				}
+				else
+				{
+					scale = (timer-60*limit)*0.8f / (30-15*limit);
+				}
+				info.timecircle->RenderEx(Enemy::en[ENEMY_MAINBOSSINDEX].x, Enemy::en[ENEMY_MAINBOSSINDEX].y, timer/15.0f, scale);
 			}
-			else
-			{
-				scale = (timer-60*limit)*0.8f / (30-15*limit);
-			}
-			info.timecircle->RenderEx(Enemy::en[ENEMY_MAINBOSSINDEX].x, Enemy::en[ENEMY_MAINBOSSINDEX].y, timer/15.0f, scale);
 		}
 	}
 }
 
 void FrontDisplay::RenderEnemyX()
 {
-	info.enemyx->Render(Enemy::en[ENEMY_MAINBOSSINDEX].x, 472);
+	if (BossInfo::flag)
+	{
+		info.enemyx->Render(Enemy::en[ENEMY_MAINBOSSINDEX].x, 472);
+	}
 }
 
 void FrontDisplay::ItemInfoDisplay(infoFont * item)
@@ -587,14 +609,15 @@ bool FrontDisplay::Init()
 	SpriteItemManager::digituiIndex = SpriteItemManager::GetIndexByName(SI_DIGITBIG_0);
 
 	//panel
-	panel.left = SpriteItemManager::CreateSpriteByName(SI_FRONTPANEL_LEFT);
-	panel.left->SetHotSpot(0, 0);
-	panel.right = SpriteItemManager::CreateSpriteByName(SI_FRONTPANEL_RIGHT);
-	panel.right->SetHotSpot(0, 0);
-	panel.top = SpriteItemManager::CreateSpriteByName(SI_FRONTPANEL_TOP);
-	panel.top->SetHotSpot(0, 0);
-	panel.bottom = SpriteItemManager::CreateSpriteByName(SI_FRONTPANEL_BOTTOM);
-	panel.bottom->SetHotSpot(0, 0);
+	panel.leftedge[0] = SpriteItemManager::CreateSpriteByName(SI_FRONTPANEL_LEFT_0);
+	panel.rightedge[0] = SpriteItemManager::CreateSpriteByName(SI_FRONTPANEL_RIGHT_0);
+	panel.topedge[0] = SpriteItemManager::CreateSpriteByName(SI_FRONTPANEL_TOP_0);
+	panel.bottomedge[0] = SpriteItemManager::CreateSpriteByName(SI_FRONTPANEL_BOTTOM_0);
+	panel.leftedge[1] = SpriteItemManager::CreateSpriteByName(SI_FRONTPANEL_LEFT_1);
+	panel.rightedge[1] = SpriteItemManager::CreateSpriteByName(SI_FRONTPANEL_RIGHT_1);
+	panel.topedge[1] = SpriteItemManager::CreateSpriteByName(SI_FRONTPANEL_TOP_1);
+	panel.bottomedge[1] = SpriteItemManager::CreateSpriteByName(SI_FRONTPANEL_BOTTOM_1);
+
 	panel.hiscore = SpriteItemManager::CreateSpriteByName(SI_FRONTPANEL_HISCORE);
 	panel.score = SpriteItemManager::CreateSpriteByName(SI_FRONTPANEL_SCORE);
 	panel.player = SpriteItemManager::CreateSpriteByName(SI_FRONTPANEL_PLAYER);
@@ -788,10 +811,13 @@ bool FrontDisplay::Init()
 
 void FrontDisplay::Release()
 {
-	SpriteItemManager::FreeSprite(&panel.left);
-	SpriteItemManager::FreeSprite(&panel.top);
-	SpriteItemManager::FreeSprite(&panel.bottom);
-	SpriteItemManager::FreeSprite(&panel.right);
+	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
+	{
+		SpriteItemManager::FreeSprite(&panel.leftedge[i]);
+		SpriteItemManager::FreeSprite(&panel.rightedge[i]);
+		SpriteItemManager::FreeSprite(&panel.topedge[i]);
+		SpriteItemManager::FreeSprite(&panel.bottomedge[i]);
+	}
 	SpriteItemManager::FreeSprite(&panel.hiscore);
 	SpriteItemManager::FreeSprite(&panel.score);
 	SpriteItemManager::FreeSprite(&panel.player);

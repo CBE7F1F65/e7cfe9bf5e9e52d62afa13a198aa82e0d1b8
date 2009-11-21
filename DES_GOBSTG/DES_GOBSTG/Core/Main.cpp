@@ -15,13 +15,8 @@ DWORD strdescIndex = 0;
 
 bool RenderFunc()
 {
-//	Export::clientSetMatrix(worldx, worldy, worldz);
-
-	hge->Gfx_BeginScene();
-	hge->Gfx_Clear(0x00000000);
 
 	mp.render();
-	hge->Gfx_EndScene();
 	
 	return false;
 }
@@ -42,10 +37,9 @@ bool FrameFunc()
 	return false;
 }
 
-bool FocusGainFunc()
+bool GfxRestoreFunc()
 {
-	Fontsys::FocusChanged();
-	return false;
+	return Fontsys::GfxRestore();
 }
 
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
@@ -54,7 +48,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	
 	hge->System_SetState(HGE_FRAMEFUNC, FrameFunc);
 	hge->System_SetState(HGE_RENDERFUNC, RenderFunc);
-	hge->System_SetState(HGE_FOCUSGAINFUNC, FocusGainFunc);
+	hge->System_SetState(HGE_GFXRESTOREFUNC, GfxRestoreFunc);
 
 	Export::clientInitial(true);
 

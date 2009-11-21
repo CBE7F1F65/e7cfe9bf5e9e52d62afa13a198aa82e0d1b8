@@ -98,7 +98,7 @@ public:
 	~Export();
 
 	static bool clientInitial(bool usesound = false, bool extuse = false);
-	static void clientSetMatrix(float worldx = 0, float worldy = 0, float worldz = 0);
+	static void clientSetMatrix(float worldx = 0, float worldy = 0, float worldz = 0, BYTE renderflag=M_RENDER_NULL);
 	static bool clientSet2DMode(float x=M_ACTIVECLIENT_CENTER_X, float y=M_ACTIVECLIENT_CENTER_Y, float z=M_ACTIVECLIENT_CENTER_Y);
 	static bool clientSet3DMode();
 	static void clientAdjustWindow();

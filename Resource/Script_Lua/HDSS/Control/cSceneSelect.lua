@@ -83,6 +83,9 @@ end
 function CESceneSelect_ExitState(tostate)
 	CESceneSelect_CloseUsed();
 	hdssSETSTATE(tostate);
+	if tostate == STATE_START then
+		hdssSTARTPREP();
+	end
 end
 
 function CESceneSelect_DispatchSelect(selsyssceneid)

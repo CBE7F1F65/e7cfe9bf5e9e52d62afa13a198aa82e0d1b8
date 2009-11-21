@@ -39,6 +39,8 @@ public:
 
 	int		frame();
 	int		render();
+	void	_Render(BYTE renderflag=M_RENDER_NULL);
+	void	_RenderTar();
 	int		renderInit();
 
 	void	startPrep(bool callinit = true);
@@ -64,6 +66,7 @@ public:
 	bool	SetLatency(int latency);
 	void	SetMatchMode(BYTE mode);
 	BYTE	GetMatchMode();
+	bool	IsInGame();
 
 public:
 	union{
@@ -169,6 +172,9 @@ public:
 	//
 	int		latency;
 	BYTE	matchmode;
+	//
+	HTARGET	rendertar[M_PL_MATCHMAXPLAYER];
+	hgeSprite * sprendertar[M_PL_MATCHMAXPLAYER];
 };
 
 extern Process mp;

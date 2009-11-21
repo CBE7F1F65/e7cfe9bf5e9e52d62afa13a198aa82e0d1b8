@@ -29,10 +29,10 @@ struct fdPostPrint
 
 struct ftPanelSet 
 {
-	hgeSprite * left;
-	hgeSprite * top;
-	hgeSprite * bottom;
-	hgeSprite * right;
+	hgeSprite * leftedge[M_PL_MATCHMAXPLAYER];
+	hgeSprite * rightedge[M_PL_MATCHMAXPLAYER];
+	hgeSprite * topedge[M_PL_MATCHMAXPLAYER];
+	hgeSprite * bottomedge[M_PL_MATCHMAXPLAYER];
 	hgeSprite * hiscore;
 	hgeSprite * score;
 	hgeSprite * player;

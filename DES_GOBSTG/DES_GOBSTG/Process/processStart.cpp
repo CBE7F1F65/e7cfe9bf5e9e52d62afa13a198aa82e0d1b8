@@ -10,6 +10,15 @@
 
 int Process::processStart()
 {
+	frameStart();
+	scr.Execute(SCR_CONTROL, STATE_START, time);
+	if(time != lasttime && state != STATE_CLEAR)
+	{
+		if (!(stopflag & FRAME_STOPFLAG_ENEMYSET))
+		{
+			scr.Execute(SCR_STAGE, scene, time);
+		}
+	}
 	/*
 	if (replaymode && (!Player::p[0].exist || scene == S1))
 	{
@@ -64,7 +73,6 @@ int Process::processStart()
 		state = STATE_CLEAR;
 		return PTURN;
 	}
-
 	if(time != lasttime && state != STATE_CLEAR)
 	{
 		if (!(stopflag & FRAME_STOPFLAG_ENEMYSET))
@@ -72,6 +80,8 @@ int Process::processStart()
 			scr.Execute(SCR_STAGE, scene, time);
 		}
 	}
+
+
 	*/
 	return PGO;
 }

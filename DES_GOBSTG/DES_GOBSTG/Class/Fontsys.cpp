@@ -89,7 +89,7 @@ void Fontsys::HeatUp()
 	*/
 }
 
-void Fontsys::FocusChanged()
+bool Fontsys::GfxRestore()
 {
 	for (list<Fontsys *>::iterator it=fontsys.begin(); it!=fontsys.end(); it++)
 	{
@@ -97,6 +97,7 @@ void Fontsys::FocusChanged()
 		(*it)->SignUp(NULL, _usingfont);
 //		(*it)->sprite->SetTexture(hge->Target_GetTexture((*it)->tar));
 	}
+	return true;
 }
 
 int Fontsys::strTranslate(char * dtext, const char * stext, int * maxchar)

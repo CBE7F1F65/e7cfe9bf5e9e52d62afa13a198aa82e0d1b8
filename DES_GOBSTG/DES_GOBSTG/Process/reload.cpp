@@ -27,6 +27,19 @@ bool Process::reload()
 	worldy = 0;
 	worldz = 0;
 	worldshaketimer = 0;
+	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
+	{
+		if (rendertar[i])
+		{
+			hge->Target_Free(rendertar[i]);
+		}
+		if (sprendertar[i])
+		{
+			delete sprendertar[i];
+			sprendertar[i] = NULL;
+		}
+		rendertar[i] = hge->Target_Create(M_CLIENT_WIDTH, M_CLIENT_HEIGHT, false);
+	}
 
 	Bullet::Init(tex[TEX_BULLET]);
 	Enemy::Init(tex[TEX_ENEMY]);

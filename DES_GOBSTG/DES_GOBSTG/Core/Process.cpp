@@ -59,6 +59,12 @@ Process::Process()
 	musicID = -1;
 	screenmode = 0;
 
+	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
+	{
+		rendertar[i] = NULL;
+		sprendertar[i] = NULL;
+	}
+
 	texInit = NULL;
 }
 
@@ -140,6 +146,18 @@ void Process::Release()
 	FrontDisplay::fdisp.Release();
 	SpriteItemManager::Release();
 
+	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
+	{
+		if (rendertar[i])
+		{
+			hge->Target_Free(rendertar[i]);
+		}
+		if (sprendertar[i])
+		{
+			delete sprendertar[i];
+			sprendertar[i] = NULL;
+		}
+	}
 	for(int i=0;i<TEXMAX;i++)
 	{
 		if(tex[i])
@@ -617,4 +635,16 @@ void Process::SetMatchMode(BYTE mode)
 BYTE Process::GetMatchMode()
 {
 	return matchmode;
+}
+
+bool Process::IsInGame()
+{
+	if (state == STATE_START ||
+		state == STATE_PAUSE ||
+		state == STATE_CONTINUE ||
+		state == STATE_CLEAR)
+	{
+		return true;
+	}
+	return false;
 }

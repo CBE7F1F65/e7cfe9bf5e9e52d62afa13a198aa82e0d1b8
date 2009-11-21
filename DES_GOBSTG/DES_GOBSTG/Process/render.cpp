@@ -1,21 +1,11 @@
 #include "processPrep.h"
 
-int Process::render()
+void Process::_Render(BYTE renderflag/* =M_RENDER_NULL */)
 {
-	Export::clientSetMatrix(worldx, worldy, worldz);
-	if (state == STATE_INIT)
-	{
-		return renderInit();
-	}
-	//BGLayer
 	BGLayer::RenderBG();
-
-	if(Player::CheckAble() || state == STATE_CONTINUE)
+	if(renderflag != M_RENDER_NULL)
 	{
-		if (BossInfo::flag && bossinfo.isSpell())
-		{
-			FrontDisplay::fdisp.RenderBossTimeCircle();
-		}
+		FrontDisplay::fdisp.RenderBossTimeCircle();
 		Ghost::RenderAll();
 		Enemy::RenderAll();
 		PlayerBullet::RenderAll();
@@ -23,47 +13,73 @@ int Process::render()
 		Effectsys::RenderAll();
 		Beam::RenderAll();
 		Bullet::RenderAll();
-
-		if(BossInfo::flag)
-		{
-			bossinfo.exist = false;
-			FrontDisplay::fdisp.RenderBossInfo();
-		}
-/*
-		if(Player::p[0].bBorder)
-		{
-			Ghost::RenderAll();
-		}
-*/
+		FrontDisplay::fdisp.RenderBossInfo();
 		Item::RenderAll();
 		Chat::chatitem.Render();
-/*
-
-		DWORD tcolor;
-		if(Player::p[0].x < 170 && Player::p[0].y > 420)
-		{
-			tcolor = 0x20ffffff;
-		}
-		else
-		{
-			tcolor = 0xc0ffffff;
-		}*/
-
 	}
-
 	BGLayer::RenderFG();
 	SelectSystem::RenderAll();
-
-	Export::clientSetMatrix();
-
 	SpriteItemManager::RenderFrontSprite();
 	FrontDisplay::fdisp.RenderPostPrint();
+}
+
+void Process::_RenderTar()
+{
+	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
+	{
+		if (rendertar[i])
+		{
+			if (sprendertar[i])
+			{
+				delete sprendertar[i];
+			}
+			sprendertar[i] = new hgeSprite(hge->Target_GetTexture(rendertar[i]), M_GAMESQUARE_LEFT_(i), M_GAMESQUARE_TOP, M_GAMESQUARE_WIDTH, M_GAMESQUARE_HEIGHT);
+			sprendertar[i]->Render(M_GAMESQUARE_CENTER_X_(i), M_GAMESQUARE_CENTER_Y);
+		}
+	}
+}
+
+int Process::render()
+{
+	bool isingame = IsInGame();
+	if (isingame)
+	{
+		hge->Gfx_BeginScene(rendertar[0]);
+		hge->Gfx_Clear(0x00000000);
+		Export::clientSetMatrix(worldx, worldy, worldz, M_RENDER_LEFT);
+		_Render(M_RENDER_LEFT);
+		hge->Gfx_EndScene();
+		hge->Gfx_BeginScene(rendertar[1]);
+		hge->Gfx_Clear(0x00000000);
+		Export::clientSetMatrix(worldx, worldy, worldz, M_RENDER_RIGHT);
+		_Render(M_RENDER_RIGHT);
+		hge->Gfx_EndScene();
+	}
+
+	hge->Gfx_BeginScene();
+	hge->Gfx_Clear(0x00000000);
+	Export::clientSetMatrix();
+	if (state == STATE_INIT)
+	{
+		return renderInit();
+	}
+	//BGLayer
+
+	if (!isingame)
+	{
+		_Render();
+	}
+	else
+	{
+		_RenderTar();
+	}
 	FrontDisplay::fdisp.PanelDisplay();
 
-	if(Player::CheckAble() && BossInfo::flag)
+	if(isingame)
 	{
 		FrontDisplay::fdisp.RenderEnemyX();
 	}
+	hge->Gfx_EndScene();
 	return PGO;
 }
 
