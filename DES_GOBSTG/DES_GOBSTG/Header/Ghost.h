@@ -5,6 +5,8 @@
 #include "Effectsys.h"
 #include "Target.h"
 
+#define GHOSTMAX			0x80
+
 #define GHOST_COLLISIONR	8
 
 #define GHOST_IZER(LIFE, MAXLIFE)	((LIFE) / (MAXLIFE) * 32.0f)

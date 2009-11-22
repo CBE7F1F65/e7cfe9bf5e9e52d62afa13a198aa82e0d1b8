@@ -3,13 +3,13 @@ end
 
 function CEMatchSelect_SetBG()
 	--Mask
-	hdssBGVALUE(BGMASK, SI_Null, TotalCenterX, TotalCenterY, TotalW, TotalH, global.ARGB(0xFF, 0));
+	hdssBGVALUE(UBGID_BGMASK, SI_Null, TotalCenterX, TotalCenterY, TotalW, TotalH, global.ARGB(0xFF, 0));
 	--BG
 	hdssBGVALUE(LConst_uibg_backgroundid, SI_SelectScene, TotalCenterX, TotalCenterY, TotalW, TotalH);
 	--TopContent
 	hdssBGVALUE(LConst_uibg_topcontentid, SI_TopContent_MatchMode, TotalCenterX, 96);
 	--Fade
-	hdssBGFLAG(BGMASK, BG_FADEOUT);
+	hdssBGFLAG(UBGID_BGMASK, BG_FADEOUT);
 end
 
 function CEMatchSelect_CloseUsed(selsysmatchid, selsyslatencyid, bbottom)

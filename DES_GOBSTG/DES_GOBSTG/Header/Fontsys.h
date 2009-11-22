@@ -4,6 +4,8 @@
 #include "MainDependency.h"
 #include "Const.h"
 
+#define FONTSYSMAX			0x40
+
 #define FONTSYS_CHATUSE			FONTSYSMAX-2
 #define FONTSYS_SPELLNAMEUSE	FONTSYSMAX-1
 

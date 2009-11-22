@@ -12,6 +12,7 @@
 #include "BossInfo.h"
 #include "InfoQuad.h"
 #include "BResource.h"
+#include "EffectIDDefine.h"
 
 Player Player::p[M_PL_MATCHMAXPLAYER];
 float Player::lostStack = 0;
@@ -576,21 +577,22 @@ void Player::valueSet(WORD _ID, WORD _ID_sub_1, WORD _ID_sub_2, BYTE _nLife, boo
 		sprite = new hgeSprite(mp.tex[res.playerdata[ID].tex], 0, 0, 0, 0);
 	setFrame(PLAYER_FRAME_STAND);
 
-	effGraze.valueSet(EFF_PL_GRAZE, *this);
+	// TODO:
+	effGraze.valueSet(EFF_PL_GRAZE, M_RENDER_LEFT, *this);
 	effGraze.Stop();
-	effChange.valueSet(EFF_PL_CHANGE, *this);
+	effChange.valueSet(EFF_PL_CHANGE, M_RENDER_LEFT, *this);
 	effChange.Stop();
-	effInfi.valueSet(EFF_PL_INFI, *this);
+	effInfi.valueSet(EFF_PL_INFI, M_RENDER_LEFT, *this);
 	effInfi.Stop();
-	effCollapse.valueSet(EFF_PL_COLLAPSE, *this);
+	effCollapse.valueSet(EFF_PL_COLLAPSE, M_RENDER_LEFT, *this);
 	effCollapse.Stop();
-	effMerge.valueSet(EFF_PL_MERGE, *this);
+	effMerge.valueSet(EFF_PL_MERGE, M_RENDER_LEFT, *this);
 	effMerge.Stop();
-	effBorder.valueSet(EFF_PL_BORDER, *this);
+	effBorder.valueSet(EFF_PL_BORDER, M_RENDER_LEFT, *this);
 	effBorder.Stop();
-	effBorderOn.valueSet(EFF_PL_BORDERON, *this);
+	effBorderOn.valueSet(EFF_PL_BORDERON, M_RENDER_LEFT, *this);
 	effBorderOn.Stop();
-	effBorderOff.valueSet(EFF_PL_BORDEROFF, *this);
+	effBorderOff.valueSet(EFF_PL_BORDEROFF, M_RENDER_LEFT, *this);
 	effBorderOff.Stop();
 
 	SetAble(true);

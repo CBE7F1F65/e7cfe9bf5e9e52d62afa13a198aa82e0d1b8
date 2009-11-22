@@ -186,7 +186,7 @@ enum hgeBoolState
 	HGE_DONTSUSPEND		= 0x0105,	// bool		focus lost:suspend?	(default: false)
 	HGE_HIDEMOUSE		= 0x0106,	// bool		hide system cursor?	(default: true)
 	
-	HGE_SHOWSPLASH		= 0x0107,	// bool		hide system cursor?	(default: true)
+	HGE_2DMODE			= 0x0107,	// bool		2d mode? (default: true)
 	
 	HGEBOOLSTATE_FORCE_DWORD = 0x7FFFFFFF
 };
@@ -553,12 +553,8 @@ public:
 	/* These functions are added by h5nc (h5nc@yahoo.com.cn)                */
 	/************************************************************************/
 	// begin
-	virtual bool			CALL	System_Set2DMode(hge3DPoint ptfar) = 0;
-	virtual bool			CALL	System_Set3DMode() = 0;
-	virtual hge3DPoint *	CALL	System_GetFarPoint() = 0;
-	virtual bool			CALL	System_Is2DMode() = 0;
-	virtual float			CALL	System_Transform3DPoint(hge3DPoint * pt) = 0;
-	virtual float			CALL	System_Transform3DPoint(float &x, float &y, float &z) = 0;
+	virtual float			CALL	System_Transform3DPoint(hge3DPoint * pt, hge3DPoint *ptfar=NULL) = 0;
+	virtual float			CALL	System_Transform3DPoint(float &x, float &y, float &z, hge3DPoint *ptfar=NULL) = 0;
 	// end
 
 private:
@@ -736,9 +732,10 @@ public:
 	virtual void		CALL	Gfx_SetClipping(int x=0, int y=0, int w=0, int h=0) = 0;
 	virtual void		CALL	Gfx_SetTransform(float x=0, float y=0, float dx=0, float dy=0, float rot=0, float hscale=0, float vscale=0) = 0;
 	/************************************************************************/
-	/* This function is added by h5nc (h5nc@yahoo.com.cn)                   */
+	/* These functions are added by h5nc (h5nc@yahoo.com.cn)                */
 	/************************************************************************/
 	virtual void		CALL	Gfx_SetTransform(D3DTRANSFORMSTATETYPE State, CONST D3DMATRIX * pMatrix) = 0;
+	virtual D3DMATRIX	CALL	Gfx_GetTransform(D3DTRANSFORMSTATETYPE State) = 0;
 
 	virtual HTARGET		CALL	Target_Create(int width, int height, bool zbuffer) = 0;
 	virtual void		CALL	Target_Free(HTARGET target) = 0;

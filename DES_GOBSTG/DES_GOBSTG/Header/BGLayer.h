@@ -5,6 +5,23 @@
 #include "Const.h"
 #include "BObject.h"
 
+
+#define BGLAYERMAX			0x40
+#define FGLAYERMAX			0x04
+#define BGFGLAYERMAX			(BGLAYERMAX+FGLAYERMAX)
+#define UBGLAYERMAX			(BGLAYERMAX+FGLAYERMAX+2)
+#define UBGID_BGMASK			(UBGLAYERMAX-2)
+#define UBGID_FGPAUSE		(UBGLAYERMAX-1)
+#define BGLAYERSETMAX		0x10
+#define UBGID_LEFTIDBEGIN		0x0
+#define UBGID_LEFTIDUNTIL		(BGLAYERMAX/2)
+#define UBGID_RIGHTIDBEGIN		UBGID_LEFTIDUNTIL
+#define UBGID_RIGHTIDUNTIL		BGLAYERMAX
+#define UFGID_LEFTIDBEGIN		UBGID_RIGHTIDUNTIL
+#define UFGID_LEFTIDUNTIL		(BGLAYERMAX+FGLAYERMAX/2)
+#define UFGID_RIGHTIDBEGIN		UFGID_LEFTIDUNTIL
+#define UFGID_RIGHTIDUNTIL		BGFGLAYERMAX
+
 #define BG_NONE			0x00
 
 #define BG_FLAGMASK		0xf0
@@ -55,22 +72,21 @@ public:
 	BGLayer();
 	virtual ~BGLayer();
 
-	static void Init();
+	static void Init(HTEXTURE * tex);
 	static void KillOtherLayer();
 	static void Action(bool active);
-	static void RenderBG();
-	static void RenderFG();
+	static void RenderBG(BYTE renderflag=M_RENDER_NULL);
+	static void RenderFG(BYTE renderflag=M_RENDER_NULL);
 
 	void Render();
-	void valueSet(HTEXTURE * tex, int siID, float x, float y, float z, float w, float h, int rotx, int roty, int rotz, float paral, float speed = 0, int angle = 9000, bool move = false, bool rotate = false, DWORD col = 0xffffffff);
-	void valueSet(HTEXTURE * tex, int siID, float cenx, float ceny, float width, float height, DWORD col = 0xffffffff);
-	void valueSetByName(HTEXTURE * tex, const char * spritename, float cenx, float ceny, float width=-1, float height=-1, DWORD col = 0xffffffff);
+	void valueSet(int siID, float cenx, float ceny, float width, float height, DWORD col = 0xffffffff);
+	void valueSetByName(const char * spritename, float cenx, float ceny, float width=-1, float height=-1, DWORD col = 0xffffffff);
 	void texRectSet(float texx, float texy, float texw, float texh);
 	void rectSet(float x, float y, float z, float w, float h, int rotx, int roty, int rotz);
 	void zSet(float z0, float z1, float z2, float z3);
 	void scaleSet(float hscale, float vscale);
 	void colorSet(DWORD col0, DWORD col1, DWORD col2, DWORD col3);
-	void moveSet(bool move, bool rotate);
+	void moveSet(float speed, int angle=9000, bool move=false, bool rotate=false);
 	void parallelogram(float paral);
 	void vertexSet(float x0, float y0, float z0, float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3);
 	void SetFlag(BYTE flag, int maxtime=-1);
@@ -95,6 +111,7 @@ public:
 
 	static BGLayerSet set[BGLAYERSETMAX];
 	static WORD setindex;
+	static HTEXTURE * tex;
 
 	static BGLayer ubg[UBGLAYERMAX];
 };

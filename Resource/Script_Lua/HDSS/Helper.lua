@@ -52,6 +52,15 @@ function hdssBGFLAG(index, flag)
 	)
 end
 
+function hdssBGCOLOR(index, col0, col1, col2, col3)
+	return hdss.Call(
+		HDSS_BGCOLOR,
+		{
+			index, col0, col1, col2, col3
+		}
+	)
+end
+
 function hdssBGOFF(index1, index2, index3, index4)
 	if index1 == nil then
 		return;

@@ -2,6 +2,8 @@
 #define _TARGET_H
 #include "Const.h"
 
+#define TARGETMAX			0x40
+
 class Target
 {
 public:

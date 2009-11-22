@@ -3,6 +3,7 @@
 #include "SpriteItemManager.h"
 #include "BResource.h"
 #include "Scripter.h"
+#include "Export.h"
 /*
 BGLayer * ubg[UBGLAYERMAX];
 BGLayer bg[BGLAYERMAX];
@@ -16,6 +17,8 @@ BGLayerSet BGLayer::set[BGLAYERSETMAX];
 BGLayer BGLayer::ubg[UBGLAYERMAX];
 
 WORD BGLayer::setindex = 0;
+
+HTEXTURE * BGLayer::tex = NULL;
 
 BGLayer::BGLayer()
 {
@@ -32,7 +35,7 @@ BGLayer::~BGLayer()
 	}
 }
 
-void BGLayer::Init()
+void BGLayer::Init(HTEXTURE * _tex)
 {
 	for(int i=0; i<BGLAYERSETMAX; i++)
 	{
@@ -47,6 +50,7 @@ void BGLayer::Init()
 		ubg[i].flag = 0;
 	}
 	setindex = 0;
+	tex = _tex;
 }
 
 void BGLayer::KillOtherLayer()
@@ -59,84 +63,84 @@ void BGLayer::KillOtherLayer()
 
 void BGLayer::SetBlend(int blend)
 {
+	if (!exist || !sprite)
+	{
+		return;
+	}
 	sprite->SetBlendMode(blend);
 }
 
-void BGLayer::valueSetByName(HTEXTURE * tex, const char * spritename, float cenx, float ceny, float width, float height, DWORD col)
+void BGLayer::valueSetByName(const char * spritename, float cenx, float ceny, float width, float height, DWORD col)
 {
-	valueSet(tex, SpriteItemManager::GetIndexByName(spritename), cenx, ceny, width, height, col);
+	valueSet(SpriteItemManager::GetIndexByName(spritename), cenx, ceny, width, height, col);
 }
 
-void BGLayer::valueSet(HTEXTURE * tex, int siID, float cenx, float ceny, float width, float height, DWORD col)
+void BGLayer::valueSet(int siID, float cenx, float ceny, float w, float h, DWORD col)
 {
-	valueSet(tex, siID, cenx - (width>0?width/2:0), ceny - (height>0?height/2:0), 0, width, height, 0, 0, 0, 0, 0, 9000, false, false, col);
-}
-
-void BGLayer::valueSet(HTEXTURE * _tex, int siID, float x, float y, float z, float w, float h, int rotx, int roty, int rotz, float paral, float _speed /* = 0 */, int _angle /* = 9000 */, bool _move /* = false */, bool _rotate /* = false */, DWORD col /* = 0xffffffff */)
-{
-	speed	=	_speed;
-	angle	=	_angle;
+	speed	=	0;
+	angle	=	9000;
 	hscale	=	1.0f;
 	vscale	=	1.0f;
 	flag	=	BG_NONE;
 	timer	=	0;
 	changetimer	=	0;
+	exist = true;
+	move = false;
+	rotate = false;
 
 	spriteData * _sd = SpriteItemManager::CastSprite(siID);
-	HTEXTURE tex = _tex[_sd->tex];
+	HTEXTURE _tex = tex[_sd->tex];
 
-
+	float _x = cenx;
+	float _y = ceny;
 	float tx = (float)_sd->tex_x;
 	float ty = (float)_sd->tex_y;
 	tw = (float)_sd->tex_w;
 	th = (float)_sd->tex_h;
 	if (tw < 0 || th < 0)
 	{
-		tw = hge->Texture_GetWidth(tex) - tx;
-		th = hge->Texture_GetHeight(tex) - ty;
+		tw = hge->Texture_GetWidth(_tex) - tx;
+		th = hge->Texture_GetHeight(_tex) - ty;
 	}
 	if (w < 0)
 	{
 		w *= -tw;
-		x -= w / 2;
 	}
 	if (h < 0)
 	{
 		h *= -th;
-		y -= h / 2;
 	}
+	_x -= w / 2;
+	_y -= h / 2;
 	width	=	w;
 	height	=	h;
 
 	if (sprite)
 	{
-//		delete sprite;
-		sprite->SetTexture(tex);
+		sprite->SetTexture(_tex);
 		sprite->SetTextureRect(tx, ty, tw, th);
 	}
 	else
 	{
-		sprite = new hgeSprite(tex, tx, ty, tw, th);
+		sprite = new hgeSprite(_tex, tx, ty, tw, th);
 	}
 
 	sprite->SetBlendMode(BLEND_DEFAULT);
 
-	rectSet(x, y, z, w, h, rotx, roty, rotz);
-	parallelogram(paral);
+	rectSet(_x, _y, 0, w, h, 0, 0, 0);
 	sprite->SetColor(col);
 	for (int i=0; i<4; i++)
 	{
 		ocol[i] = col;
 	}
-
-
-	exist = true;
-	move = _move;
-	rotate = _rotate;
 }
 
 void BGLayer::texRectSet(float texx, float texy, float texw, float texh)
 {
+	if (!exist)
+	{
+		return;
+	}
 	sprite->SetTextureRect(texx, texy, texw, texh);
 	tw = texw;
 	th = texh;
@@ -144,17 +148,29 @@ void BGLayer::texRectSet(float texx, float texy, float texw, float texh)
 
 void BGLayer::scaleSet(float _hscale, float _vscale)
 {
+	if (!exist)
+	{
+		return;
+	}
 	hscale *= _hscale;
 	vscale *= _vscale;
 }
 
 void BGLayer::zSet(float z0, float z1, float z2, float z3)
 {
+	if (!exist)
+	{
+		return;
+	}
 	sprite->SetZ(z0, z1, z2, z3);
 }
 
 void BGLayer::colorSet(DWORD col0, DWORD col1, DWORD col2, DWORD col3)
 {
+	if (!exist)
+	{
+		return;
+	}
 	sprite->SetColor(col0, col1, col2, col3);
 	
 	ocol[0] = col0;
@@ -163,15 +179,26 @@ void BGLayer::colorSet(DWORD col0, DWORD col1, DWORD col2, DWORD col3)
 	ocol[3] = col3;
 }
 
-void BGLayer::moveSet(bool _move, bool _rotate)
+void BGLayer::moveSet(float _speed, int _angle, bool _move, bool _rotate)
 {
+	if (!exist)
+	{
+		return;
+	}
+	speed = _speed;
+	angle = _angle;
 	move = _move;
 	rotate = _rotate;
 }
 
 void BGLayer::rectSet(float _x, float _y, float z, float w, float h, int rotx, int roty, int rotz)
 {
-	if (hge->System_Is2DMode())
+	if (!exist)
+	{
+		return;
+	}
+	/*
+	if (hge->System_GetState(HGE_2DMODE))
 	{
 		x = _x + width / 2;
 		y = _y + height / 2;
@@ -179,9 +206,19 @@ void BGLayer::rectSet(float _x, float _y, float z, float w, float h, int rotx, i
 		vscale = h / th;
 		return;
 	}
+	*/
 
 	float wx = w, wy = 0, wz = 0;
 	float hx = 0, hy = h, hz = 0;
+
+	if (w < 0)
+	{
+		w *= width;
+	}
+	if (h < 0)
+	{
+		h *= height;
+	}
 
 	if (rotx)
 	{
@@ -218,22 +255,34 @@ void BGLayer::rectSet(float _x, float _y, float z, float w, float h, int rotx, i
 
 void BGLayer::parallelogram(float paral)
 {
-	if (hge->System_Is2DMode())
+	if (!exist)
 	{
 		return;
 	}
+	/*
+	if (hge->System_GetState(HGE_2DMODE))
+	{
+		return;
+	}
+	*/
 	sprite->quad.v[2].x += paral;
 	sprite->quad.v[3].x += paral;
 }
 
 void BGLayer::vertexSet(float x0, float y0, float z0, float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3)
 {
-	if (hge->System_Is2DMode())
+	if (!exist)
+	{
+		return;
+	}
+	/*
+	if (hge->System_GetState(HGE_2DMODE))
 	{
 		hscale = (x1-x0) / width;
 		vscale = (y2-y1) / height;
 		return;
 	}
+	*/
 	sprite->quad.v[0].x = x0;	sprite->quad.v[0].y = y0;	sprite->quad.v[0].z = z0;
 	sprite->quad.v[1].x = x1;	sprite->quad.v[1].y = y1;	sprite->quad.v[1].z = z1;
 	sprite->quad.v[2].x = x2;	sprite->quad.v[2].y = y2;	sprite->quad.v[2].z = z2;
@@ -243,6 +292,10 @@ void BGLayer::vertexSet(float x0, float y0, float z0, float x1, float y1, float 
 
 void BGLayer::SetFlag(BYTE _flag, int maxtime)
 {
+	if (!exist)
+	{
+		return;
+	}
 	flag = _flag;
 	if (maxtime < 0)
 	{
@@ -300,13 +353,26 @@ void BGLayer::Action(bool active)
 	}
 }
 
-void BGLayer::RenderBG()
+void BGLayer::RenderBG(BYTE renderflag)
 {
-	for (int i=0; i<BGLAYERMAX; i++)
+	if (renderflag == M_RENDER_NULL || renderflag == M_RENDER_LEFT)
 	{
-		if (ubg[i].exist)
+		for (int i=UBGID_LEFTIDBEGIN; i<UBGID_LEFTIDUNTIL; i++)
 		{
-			ubg[i].Render();
+			if (ubg[i].exist)
+			{
+				ubg[i].Render();
+			}
+		}
+	}
+	if (renderflag == M_RENDER_NULL || renderflag == M_RENDER_RIGHT)
+	{
+		for (int i=UBGID_RIGHTIDBEGIN; i<UBGID_RIGHTIDUNTIL; i++)
+		{
+			if (ubg[i].exist)
+			{
+				ubg[i].Render();
+			}
 		}
 	}
 	if (ubg[UBGID_BGMASK].exist)
@@ -315,13 +381,26 @@ void BGLayer::RenderBG()
 	}
 }
 
-void BGLayer::RenderFG()
+void BGLayer::RenderFG(BYTE renderflag)
 {
-	for (int i=0; i<FGLAYERMAX; i++)
+	if (renderflag == M_RENDER_NULL || renderflag == M_RENDER_LEFT)
 	{
-		if (ubg[i+BGLAYERMAX].exist)
+		for (int i=UFGID_LEFTIDBEGIN; i<UFGID_LEFTIDUNTIL; i++)
 		{
-			ubg[i+BGLAYERMAX].Render();
+			if (ubg[i].exist)
+			{
+				ubg[i].Render();
+			}
+		}
+	}
+	if (renderflag == M_RENDER_NULL || renderflag == M_RENDER_RIGHT)
+	{
+		for (int i=UFGID_RIGHTIDBEGIN; i<UFGID_RIGHTIDUNTIL; i++)
+		{
+			if (ubg[i].exist)
+			{
+				ubg[i].Render();
+			}
 		}
 	}
 	if (ubg[UBGID_FGPAUSE].exist)
@@ -332,14 +411,14 @@ void BGLayer::RenderFG()
 
 void BGLayer::Render()
 {
-	if (hge->System_Is2DMode())
-	{
-		sprite->RenderEx(x, y, rotate?ARC(angle-9000):0, hscale, vscale);
-	}
-	else
-	{
+//	if (hge->System_GetState(HGE_2DMODE))
+//	{
+//		sprite->RenderEx(x, y, rotate?ARC(angle-9000):0, hscale, vscale);
+//	}
+//	else
+//	{
 		hge->Gfx_RenderQuad(&(sprite->quad));
-	}
+//	}
 }
 
 void BGLayer::action()
@@ -376,24 +455,24 @@ void BGLayer::action()
 		float xt = speed * costa;
 		float yt = speed * sinta;
 
-		if (hge->System_Is2DMode())
-		{
-			x += xt;
-			y += yt;
-		}
-		else
-		{
+//		if (hge->System_GetState(HGE_2DMODE))
+//		{
+//			x += xt;
+//			y += yt;
+//		}
+//		else
+//		{
 			sprite->quad.v[0].x += xt;	sprite->quad.v[0].y += yt;
 			sprite->quad.v[1].x += xt;	sprite->quad.v[1].y += yt;
 			sprite->quad.v[2].x += xt;	sprite->quad.v[2].y += yt;
 			sprite->quad.v[3].x += xt;	sprite->quad.v[3].y += yt;
-		}
+//		}
 
 	}
 	else
 	{
-		if (!hge->System_Is2DMode())
-		{
+//		if (!hge->System_GetState(HGE_2DMODE))
+//		{
 			//rotate the layer for XY-plane
 			float x = ((sprite->quad.v[0].x + sprite->quad.v[2].x) / 2);
 			float y = ((sprite->quad.v[0].y + sprite->quad.v[2].y) / 2);
@@ -409,7 +488,7 @@ void BGLayer::action()
 
 			sprite->quad.v[3].x  = (-width/2)*costa - (height/2)*sinta + x;
 			sprite->quad.v[3].y  = (-width/2)*sinta + (height/2)*costa + y;	
-		}
+//		}
 		if(angle > 0)
 			angle += (int)(speed*100);
 		else

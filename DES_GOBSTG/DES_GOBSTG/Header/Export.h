@@ -98,8 +98,10 @@ public:
 	~Export();
 
 	static bool clientInitial(bool usesound = false, bool extuse = false);
+	static bool clientAfterInitial();
+	static hge3DPoint * GetFarPoint(BYTE renderflag);
 	static void clientSetMatrix(float worldx = 0, float worldy = 0, float worldz = 0, BYTE renderflag=M_RENDER_NULL);
-	static bool clientSet2DMode(float x=M_ACTIVECLIENT_CENTER_X, float y=M_ACTIVECLIENT_CENTER_Y, float z=M_ACTIVECLIENT_CENTER_Y);
+	static bool clientSet2DMode();
 	static bool clientSet3DMode();
 	static void clientAdjustWindow();
 	static void Release();
@@ -131,6 +133,12 @@ public:
 	static partInfo partinfo[RPYPARTMAX];
 	static replayInfo rpyinfo;
 	static int password;
+
+	static D3DXMATRIX matView2DMode;
+	static D3DXMATRIX matProj2DMode;
+	static D3DXMATRIX matView[M_PL_MATCHMAXPLAYER];
+	static D3DXMATRIX matProj[M_PL_MATCHMAXPLAYER];
+	static hge3DPoint ptfar;
 };
 
 #ifndef _MAIN_H

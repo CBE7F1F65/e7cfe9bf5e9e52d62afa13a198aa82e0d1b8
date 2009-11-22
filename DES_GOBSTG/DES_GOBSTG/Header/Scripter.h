@@ -9,6 +9,9 @@
 #include "Export_Lua.h"
 #endif
 
+#define SCRIPT_DATAMAX		0x400000
+#define SCR_MAXDESC			0x100
+
 #ifdef __DEBUG
 	#define __COUNT_SCRIPTSIZE
 #endif

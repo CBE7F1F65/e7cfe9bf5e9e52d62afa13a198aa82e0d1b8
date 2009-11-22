@@ -49,6 +49,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	if(hge->System_Initiate())
 	{
+		Export::clientAfterInitial();
 		if(eres.Load())
 		{
 			hge->System_Start();

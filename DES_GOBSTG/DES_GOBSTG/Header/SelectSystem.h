@@ -4,6 +4,7 @@
 #include "Selector.h"
 #include "PushKey.h"
 
+#define SELSYSTEMMAX		4
 #define SELSYS_DEFAULTMAXTIME	8
 
 class SelectSystem

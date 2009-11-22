@@ -11,6 +11,8 @@ hgeSprite * Item::spItem[ITEMSPRITEMAX];
 VectorList<infoFont> Item::infofont;
 VectorList<Item> Item::mi;
 
+#define ITEMMAX				BULLETMAX
+
 #define _ITEM_GETR				32
 #define _ITEM_DRAINY			PL_ITEMDRAINY
 #define _ITEM_DRAINDELAY		24

@@ -37,20 +37,14 @@
 #define HGELOG			hge->System_Log
 #define HGELOG_ERRSTR	"**********ERROR**********"
 
-#define BTYPE_BULLET	0x10
-#define BTYPE_BEAM		0x20
-#define BTYPE_ENEMY		0x30
-#define BTYPE_GHOST		0x40
 
-#define BINDEX_NULL		0x100000
+#define M_PROJECTIONMATRIX_OFFSET	0.5f
 
 #define M_DEFAULT_FPS			60
 #define M_DEFAULT_FRAMESKIP		1
 #define M_DEFAULT_RENDERSKIP	1
 #define M_FRAMESKIP_FASTSKIP	-3
 #define M_FRAMESKIP_SLOWSKIP	2
-
-#define M_PROJECTIONMATRIX_OFFSET	0.5f
 
 #define M_CLIENT_LEFT			0.0f
 #define M_CLIENT_RIGHT			640.0f
@@ -94,19 +88,23 @@
 #define M_DELETECLIENT_TOP		(M_ACTIVECLIENT_TOP-M_DELETEBOLDER)
 #define M_DELETECLIENT_BOTTOM	(M_ACTIVECLIENT_BOTTOM+M_DELETEBOLDER)
 
+#define BTYPE_BULLET	0x10
+#define BTYPE_BEAM		0x20
+#define BTYPE_ENEMY		0x30
+#define BTYPE_GHOST		0x40
+
+#define BINDEX_NULL		0x100000
+
 #define M_KEYKEYMAX			0x100
 #define M_JOYKEYMAX			0x20
 
 #define M_GETSPELLMAX		0x40
-
 #define M_PL_CONTINUEMAX	5
-
-#define M_PL_ONESETPLAYER		3
-
+#define M_PL_ONESETPLAYER	3
 #define M_PL_MATCHMAXPLAYER	2
 
-#define M_NDIFFI		6
-#define M_NSTAGEDIFFI	11
+#define M_NDIFFI			6
+#define M_NSTAGEDIFFI		11
 #define M_DIFFI_EASY		0
 #define M_DIFFI_NORMAL		1
 #define M_DIFFI_HARD		2
@@ -166,9 +164,6 @@
 #define M_STRMAX		0x80
 #define M_STRITOAMAX	0x10
 
-#define M_FONTWIDTH		11
-#define M_FONTHEIGHT	20
-
 #define	M_LATENCY_NULL	0
 #define	M_LATENCY_MIN	1
 #define	M_LATENCY_MAX	9
@@ -195,134 +190,33 @@
 #define M_STAGESCENE_6_H	11
 
 #define M_SQUARE_2			0.70710678f
-#define M_SECONDPERFRAME	0.01666667f
-
-#define M_USINGMODE_ERROR	0x00
-#define M_USINGMODE_TEXT	0x01
-#define M_USINGMODE_BIN		0x02
-#define M_USINGMODE_BOTH	(M_USINGMODE_TEXT | M_USINGMODE_BIN)
-
-#define SEL_NULL		0x00
-#define SEL_NONACTIVE	0x10
-#define SEL_GRAY		0x20
-#define SEL_STAY		0x40
-#define SEL_NOSHIFT		0x80
 
 #define M_BINHEADER_OFFSET	0x40
 
 #define PLAYERTYPEMAX		0x20
 #define SCENEMAX			(PLAYERTYPEMAX)
-
 #define SPRITEITEMMAX		0x400
-
-#define TARGETMAX			0x40
-
-#define BULLETMAX			0x3000
 #define BULLETTYPEMAX		0x40
-#define BULLETCOLORMAX		0x10
-#define BULLETTYPECOLORMAX	(BULLETTYPEMAX * BULLETCOLORMAX)
-#define ITEMMAX				BULLETMAX
 #define	BEAMMAX				0x100
-
 #define PLAYERGHOSTMAX		4
 #define PLAYERGHOSTTYPEMAX	(PLAYERGHOSTMAX * PLAYERTYPEMAX * 2)
-
-#define PLAYERBULLETMAX		0x80
-
 #define PLAYERBULLETTYPE		4
 #define PLAYERBULLETSPRITEMAX	(PLAYERTYPEMAX * PLAYERBULLETTYPE * 2)
-
 #define PLAYERSHOOTTYPEMAX		(PLAYERTYPEMAX * (PLAYERGHOSTMAX + 2))
-
-#define ENEMYMAX			0x80
 #define ENEMYTYPEMAX		0x50
-#define GHOSTMAX			0x80
-
-#define GHOSTTYPEMAX		8
-
-#define BGLAYERMAX			0x0C
-#define FGLAYERMAX			0x04
-#define BGMASKINDEX			0x10
-#define FGPAUSEINDEX		0x11
-#define UBGLAYERMAX			0x12
-#define BGLAYERSETMAX		0x10
-
-#define EFFECTSPMAX			0x80
-
-#define EFFECTSYSMAX		0x100
 #define EFFECTSYSTYPEMAX	0x100
-
-#define EFF_NULL				0
-
-#define EFF_PG_EFFECTBEGIN		1
-#define EFF_PG_EFFECT_0			1
-#define EFF_PG_EFFECT_1			2
-#define EFF_PG_EFFECT_2			3
-#define EFF_PG_EFFECT_3			4
-#define EFF_PG_EFFECT_4			5
-#define EFF_PG_EFFECT_5			6
-#define EFF_PG_EFFECT_6			7
-#define EFF_PG_EFFECT_7			8
-
-#define EFF_PL_GRAZE			10
-#define EFF_PL_CHANGE			11
-#define EFF_PL_INFI				12
-#define EFF_PL_COLLAPSE			13
-#define EFF_PL_MERGE			14
-#define EFF_PL_BORDER			15
-#define EFF_PL_BORDERON			16
-#define EFF_PL_BORDEROFF		17
-
-#define EFF_PL_BOMBBEGIN		20
-#define EFF_PL_BOMB_0			20
-#define EFF_PL_BOMB_1			21
-#define EFF_PL_BOMB_2			22
-#define EFF_PL_BOMB_3			23
-#define EFF_PL_BOMB_4			24
-#define EFF_PL_BOMB_5			25
-#define EFF_PL_BOMB_6			26
-#define EFF_PL_BOMB_7			27
-
-#define EFF_GH_COLLAPSE			30
-#define EFF_EN_SHOT				31
-#define EFF_EN_COLLAPSE			32
-#define EFF_BI_BOSSUP			34
-#define EFF_BI_DESBOSSUP		35
-#define EFF_BI_COLLAPSE			36
-#define EFF_BI_DESCOLLAPSE		37
-#define EFF_BI_ITEM				38
-#define EFF_BI_BOSSSTORE		39
-
-#define EFF_GH_TYPEBEGIN		40
-#define EFF_FREE_TYPEBEGIN		50
-
 #define TEXMAX				0x100
-
 #define TEX_WORD		0
 #define TEX_WHITE		1
 #define TEX_BULLET		2//7
 #define TEX_GHOST		3//8
 #define TEX_ENEMY		4//14
-
-#define M_SCRIPTFOLDERMAX	8
-
 #define PACKAGEMAX			0x20
 #define MUSICMAX			0x40
-
 #define SEMAX				0x80
-#define SE_FREEBEGIN		0x40
-
-#define FONTSYSMAX			0x40
-
-#define EXTENSIONMAX		0x08
-
 #define STRINGDESCMAX		0x400
-
-#define FRONTSPRITEMAX		0x40
-
 #define M_SAVEINPUTMAX		0x36000
-
-#define SELSYSTEMMAX		4
+#define M_SCRIPTFOLDERMAX	8
 
 #ifdef __RELEASE
 	#define DEFAULT_RESOURCEPATH	"Resource"
@@ -340,8 +234,6 @@
 	#endif // _DEBUG
 #endif // __RELEASE
 
-//pan coefficient
-#define M_SE_PAN 0.35f
 
 //pushtimer
 #define M_PUSH_FIRST	40
@@ -349,12 +241,9 @@
 #define M_PUSH_SKIP		5
 #define M_NOPUSH_SKIP	240
 
-
 //script
 
-#define SCRIPT_DATAMAX		0x400000
 #define SCR_CUSTOMCONSTMAX	0x400
-#define SCR_MAXDESC			0x100
 
 //
 #define M_RENDER_NULL		0x00

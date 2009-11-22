@@ -2,6 +2,11 @@
 #include "BResource.h"
 #include "../../../src/core/BASS/bass.h"
 
+//pan coefficient
+#define M_SE_PAN 0.35f
+
+#define SE_FREEBEGIN		0x40
+
 seStruct SE::se[SEMAX];
 BYTE SE::vol;
 

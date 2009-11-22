@@ -90,13 +90,10 @@ public:
 	virtual bool		CALL	System_Initiate();
 	virtual void		CALL	System_Shutdown();
 	virtual bool		CALL	System_Start();
-	virtual bool			CALL	System_Set2DMode(hge3DPoint ptfar){return System_Set2DMode(ptfar.x, ptfar.y, ptfar.z);};
-	virtual bool			CALL	System_Set2DMode(float x, float y, float z);
-	virtual bool			CALL	System_Set3DMode();
-	virtual hge3DPoint *	CALL	System_GetFarPoint();
-	virtual bool			CALL	System_Is2DMode();
-	virtual float			CALL	System_Transform3DPoint(hge3DPoint * pt){return pt->scale = System_Transform3DPoint(pt->x, pt->y, pt->z);};
-	virtual float			CALL	System_Transform3DPoint(float &x, float &y, float &z);
+
+	virtual float		CALL	System_Transform3DPoint(hge3DPoint * pt, hge3DPoint *ptfar=NULL){return pt->scale = System_Transform3DPoint(pt->x, pt->y, pt->z, ptfar);};
+	virtual float		CALL	System_Transform3DPoint(float &x, float &y, float &z, hge3DPoint *ptfar=NULL);
+
 	virtual void		CALL	System_SetStateBool  (hgeBoolState   state, bool        value);
 	virtual void		CALL	System_SetStateFunc  (hgeFuncState   state, hgeCallback value);
 	virtual void		CALL	System_SetStateHwnd  (hgeHwndState   state, HWND        value);
@@ -219,6 +216,7 @@ public:
 	virtual void		CALL	Gfx_SetClipping(int x=0, int y=0, int w=0, int h=0);
 	virtual void		CALL	Gfx_SetTransform(float x=0, float y=0, float dx=0, float dy=0, float rot=0, float hscale=0, float vscale=0); 
 	virtual void		CALL	Gfx_SetTransform(D3DTRANSFORMSTATETYPE State, CONST D3DMATRIX * pMatrix);
+	virtual D3DMATRIX	CALL	Gfx_GetTransform(D3DTRANSFORMSTATETYPE State);
 
 	virtual HTARGET		CALL	Target_Create(int width, int height, bool zbuffer);
 	virtual void		CALL	Target_Free(HTARGET target);
@@ -258,12 +256,6 @@ public:
 	char				szIniString[256];
 
 
-	/************************************************************************/
-	/* These members are added by h5nc (h5nc@yahoo.com.cn)                  */
-	/************************************************************************/
-	// begin
-	bool				b2DMode;
-	hge3DPoint			ptfar;
 	// end
 
 	// System States
@@ -295,6 +287,11 @@ public:
 	int					nHGEFPS;
 	bool				bHideMouse;
 	bool				bDontSuspend;
+	/************************************************************************/
+	/* These members are added by h5nc (h5nc@yahoo.com.cn)                  */
+	/************************************************************************/
+	// begin
+	bool				b2DMode;
 	/************************************************************************/
 	/* These members are added by h5nc (h5nc@yahoo.com.cn)                  */
 	/************************************************************************/

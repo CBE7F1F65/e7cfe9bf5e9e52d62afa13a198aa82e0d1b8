@@ -98,6 +98,8 @@ int Export_Lua_HDSS::LuaFn_HDSS_Call(LuaState * ls)
 				return _HDSSCallGet::Call_BGVALUE(ls);
 			case SCR_BGVALEX:
 				return _HDSSCallGet::Call_BGVALEX(ls);
+			case SCR_BGCOLOR:
+				return _HDSSCallGet::Call_BGCOLOR(ls);
 			case SCR_BGFLAG:
 				return _HDSSCallGet::Call_BGFLAG(ls);
 			case SCR_BGOFF:

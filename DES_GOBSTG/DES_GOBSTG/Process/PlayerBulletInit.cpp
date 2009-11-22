@@ -1,6 +1,8 @@
 #include "PlayerBullet.h"
 #include "BResource.h"
 
+#define PLAYERBULLETMAX		0x80
+
 #define _PBTEX_PLAYERBEGIN		10
 
 void PlayerBullet::Init(HTEXTURE * _tex)

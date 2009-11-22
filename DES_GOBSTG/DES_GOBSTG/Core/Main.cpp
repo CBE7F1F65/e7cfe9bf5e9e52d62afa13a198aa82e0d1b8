@@ -54,6 +54,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	if(hge->System_Initiate())
 	{
+		Export::clientAfterInitial();
 		time = 0;
 		mp.state = STATE_INIT;
 		hge->System_Start();

@@ -398,7 +398,7 @@ int _HDSSCallGet::Call_BGVALUE(LuaState * ls)
 			}
 		}
 
-		BGLayer::ubg[_index].valueSet(mp.tex, _siid, _cenx, _ceny, _w, _h, _col);
+		BGLayer::ubg[_index].valueSet(_siid, _cenx, _ceny, _w, _h, _col);
 	}
 	return 0;
 }
@@ -410,48 +410,92 @@ int _HDSSCallGet::Call_BGVALEX(LuaState * ls)
 	{
 		int _index = _INEXT_HDSS_LUAPARA;
 		int _siid = _INEXT_HDSS_LUAPARA;
-		float _x = _FNEXT_HDSS_LUAPARA;
-		float _y = _FNEXT_HDSS_LUAPARA;
-		float _z = _FNEXT_HDSS_LUAPARA;
-		float _w = _FNEXT_HDSS_LUAPARA;
-		float _h = _FNEXT_HDSS_LUAPARA;
-		int _rotx = _INEXT_HDSS_LUAPARA;
-		int _roty = _INEXT_HDSS_LUAPARA;
-		int _rotz = _INEXT_HDSS_LUAPARA;
 
-		float _paral = 0;
-		float _speed = 0;
-		float _angle = 0;
-		bool _move = false;
-		bool _rotate = false;
 		DWORD _col = 0xffffffff;
 		_JNEXT_HDSS_LUAPARA;
 		if (bhavenext)
 		{
-			_paral = _FOBJ_HDSS_LUA;
+			_col = _COBJ_HDSS_LUA;
+		}
+
+		BGLayer::ubg[_index].valueSet(_siid, 0, 0, 0, 0, _col);
+
+		if (argscount > 2)
+		{
+			_GETPARAS_HDSS_LUAPARA(3);
+			float _x = _FNEXT_HDSS_LUAPARA;
+			float _y = _FNEXT_HDSS_LUAPARA;
+			float _z = _FNEXT_HDSS_LUAPARA;
+
+			float _w = -1;
+			float _h = -1;
+			int _rotx = 0;
+			int _roty = 0;
+			int _rotz = 0;
+			float _paral = 0;
+
 			_JNEXT_HDSS_LUAPARA;
 			if (bhavenext)
 			{
-				_speed = _FOBJ_HDSS_LUA;
+				_w = _FOBJ_HDSS_LUA;
 				_JNEXT_HDSS_LUAPARA;
 				if (bhavenext)
 				{
-					_move = _BOBJ_HDSS_LUA;
+					_h = _FOBJ_HDSS_LUA;
 					_JNEXT_HDSS_LUAPARA;
 					if (bhavenext)
 					{
-						_rotate = _BOBJ_HDSS_LUA;
+						_rotx = _IOBJ_HDSS_LUA;
 						_JNEXT_HDSS_LUAPARA;
 						if (bhavenext)
 						{
-							_col = _COBJ_HDSS_LUA;
+							_roty = _IOBJ_HDSS_LUA;
+							_JNEXT_HDSS_LUAPARA;
+							if (bhavenext)
+							{
+								_rotz = _IOBJ_HDSS_LUA;
+								_JNEXT_HDSS_LUAPARA;
+								if (bhavenext)
+								{
+									_paral = _FOBJ_HDSS_LUA;
+								}
+							}
 						}
 					}
 				}
 			}
-		}
 
-		BGLayer::ubg[_index].valueSet(mp.tex, _siid, _x, _y, _z, _w, _h, _rotx, _roty, _rotz, _paral, _speed, _angle, _move, _rotate, _col);
+			BGLayer::ubg[_index].rectSet(_x, _y, _z, _w, _h, _rotx, _roty, _rotz);
+			BGLayer::ubg[_index].parallelogram(_paral);
+
+			if (argscount > 3)
+			{
+				_GETPARAS_HDSS_LUAPARA(4);
+
+				float _speed = _FNEXT_HDSS_LUAPARA;
+
+				int _angle = 9000;
+				bool _move = false;
+				bool _rotate = false;
+
+				_JNEXT_HDSS_LUAPARA;
+				if (bhavenext)
+				{
+					_angle = _IOBJ_HDSS_LUA;
+					_JNEXT_HDSS_LUAPARA;
+					if (bhavenext)
+					{
+						_move = _BOBJ_HDSS_LUA;
+						_JNEXT_HDSS_LUAPARA;
+						if (bhavenext)
+						{
+							_rotate = _BOBJ_HDSS_LUA;
+						}
+					}
+				}
+				BGLayer::ubg[_index].moveSet(_speed, _angle, _move, _rotate);
+			}
+		}
 	}
 	return 0;
 }
@@ -471,6 +515,25 @@ int _HDSSCallGet::Call_BGFLAG(LuaState * ls)
 			_maxtime = _IOBJ_HDSS_LUA;
 		}
 		BGLayer::ubg[_index].SetFlag(_flag, _maxtime);
+	}
+	return 0;
+}
+
+int _HDSSCallGet::Call_BGCOLOR(LuaState * ls)
+{
+	_ENTERCALL_HDSS_LUA;
+
+	if (true)
+	{
+		int _index = _INEXT_HDSS_LUAPARA;
+		DWORD col[4];
+		for (int i=0; i<4; i++)
+		{
+			_JNEXT_HDSS_LUAPARA;
+			col[i] = _COBJ_HDSS_LUA;
+		}
+
+		BGLayer::ubg[_index].colorSet(col[0], col[1], col[2], col[3]);
 	}
 	return 0;
 }

@@ -6,8 +6,6 @@
 
 BYTE EffectSp::evtype;
 
-EffectSp es[EFFECTSPMAX];
-
 EffectSp::EffectSp()
 {
 	sprite = NULL;

@@ -7,6 +7,13 @@ partInfo Export::partinfo[RPYPARTMAX];
 replayInfo Export::rpyinfo;
 int Export::password = 0;
 
+D3DXMATRIX Export::matView2DMode;
+D3DXMATRIX Export::matProj2DMode;
+D3DXMATRIX Export::matView[M_PL_MATCHMAXPLAYER];
+D3DXMATRIX Export::matProj[M_PL_MATCHMAXPLAYER];
+
+hge3DPoint Export::ptfar;
+
 Export::Export()
 {
 }
@@ -64,34 +71,42 @@ bool Export::clientInitial(bool usesound /* = false */, bool extuse /* = false *
 	return bret;
 }
 
+bool Export::clientAfterInitial()
+{
+	matView2DMode = hge->Gfx_GetTransform(D3DTS_VIEW);
+	matProj2DMode = hge->Gfx_GetTransform(D3DTS_PROJECTION);
+
+	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
+	{
+		D3DXMATRIX _matView(
+			1.0f, 0.0f, 0.0f, 0.0f,
+			0.0f, -1.0f, 0.0f, 0.0f,
+			0.0f, 0.0f, -1.0f, 0.0f,
+			-M_GAMESQUARE_CENTER_X_(i), M_GAMESQUARE_CENTER_Y, M_GAMESQUARE_HEIGHT/2.0f, 1.0f
+			);
+		matView[i] = _matView;
+		D3DXMATRIX _matProj(
+			M_CLIENT_HEIGHT/M_CLIENT_WIDTH, 0.0f, 0.0f, 0.0f,
+			0.0f, 1.0f, 0.0f, 0.0f,
+			(M_GAMESQUARE_CENTER_X_(i)-M_CLIENT_CENTER_X)/(M_CLIENT_WIDTH/2), 0.0f, 0.0f, 1.0f,
+			-M_PROJECTIONMATRIX_OFFSET*(M_CLIENT_HEIGHT/M_CLIENT_HEIGHT), M_PROJECTIONMATRIX_OFFSET, 0.0f, -0.55f
+			);
+		matProj[i] = _matProj;
+	}
+
+	return true;
+}
+
 void Export::clientSetMatrix(float _worldx, float _worldy, float _worldz, BYTE renderflag)
 {
 	D3DXMATRIXA16 matWorld;
 	D3DXMatrixTranslation(&matWorld, _worldx, _worldy, _worldz);
 	hge->Gfx_SetTransform( D3DTS_WORLD, &matWorld );
 
-	if (hge->System_Is2DMode())
+	if (hge->System_GetState(HGE_2DMODE) || renderflag == M_RENDER_NULL)
 	{
-		return;
-	}
-
-	if (renderflag == M_RENDER_NULL)
-	{
-		D3DXMATRIX matView(
-			1.0f, 0.0f, 0.0f, 0.0f,
-			0.0f, -1.0f, 0.0f, 0.0f,
-			0.0f, 0.0f, -1.0f, 0.0f,
-			-M_CLIENT_CENTER_X, M_CLIENT_CENTER_Y, M_CLIENT_HEIGHT/2.0f, 1.0f
-			);
-		hge->Gfx_SetTransform( D3DTS_VIEW, &matView );
-
-		D3DXMATRIX matProj(
-			M_CLIENT_HEIGHT/M_CLIENT_WIDTH, 0.0f, 0.0f, 0.0f,
-			0.0f, 1.0f, 0.0f, 0.0f,
-			0.0f, 0.0f, 0.0f, 1.0f,
-			-M_PROJECTIONMATRIX_OFFSET*(M_CLIENT_HEIGHT/M_CLIENT_HEIGHT), M_PROJECTIONMATRIX_OFFSET, 0.0f, -0.55f
-			);
-		hge->Gfx_SetTransform(D3DTS_PROJECTION, &matProj);
+		hge->Gfx_SetTransform( D3DTS_VIEW, &matView2DMode );
+		hge->Gfx_SetTransform( D3DTS_PROJECTION, &matProj2DMode );
 		return;
 	}
 
@@ -104,40 +119,46 @@ void Export::clientSetMatrix(float _worldx, float _worldy, float _worldz, BYTE r
 	{
 		index = 1;
 	}
-	
-	D3DXMATRIX matView(
-		1.0f, 0.0f, 0.0f, 0.0f,
-		0.0f, -1.0f, 0.0f, 0.0f,
-		0.0f, 0.0f, -1.0f, 0.0f,
-		-M_GAMESQUARE_CENTER_X_(index), M_GAMESQUARE_CENTER_Y, M_GAMESQUARE_HEIGHT/2.0f, 1.0f
-		);
-	
-	hge->Gfx_SetTransform( D3DTS_VIEW, &matView );
-	
-
-	D3DXMATRIX matProj(
-		M_CLIENT_HEIGHT/M_CLIENT_WIDTH, 0.0f, 0.0f, 0.0f,
-		0.0f, 1.0f, 0.0f, 0.0f,
-		(M_GAMESQUARE_CENTER_X_(index)-M_CLIENT_CENTER_X)/(M_CLIENT_WIDTH/2), 0.0f, 0.0f, 1.0f,
-		-M_PROJECTIONMATRIX_OFFSET*(M_CLIENT_HEIGHT/M_CLIENT_HEIGHT), M_PROJECTIONMATRIX_OFFSET, 0.0f, -0.55f
-		);
-
-	hge->Gfx_SetTransform(D3DTS_PROJECTION, &matProj);
-	
+	hge->Gfx_SetTransform( D3DTS_VIEW, &matView[index] );
+	hge->Gfx_SetTransform( D3DTS_PROJECTION, &matProj[index] );
 }
 
-bool Export::clientSet2DMode(float x/* =M_ACTIVECLIENT_CENTER_X */, float y/* =M_ACTIVECLIENT_CENTER_Y */, float z/* =M_ACTIVECLIENT_CENTER_Y */)
+bool Export::clientSet2DMode()
 {
-	hge3DPoint ptfar;
-	ptfar.x = x;
-	ptfar.y = y;
-	ptfar.z = z;
-	return hge->System_Set2DMode(ptfar);
+//	hge3DPoint ptfar;
+//	ptfar.x = x;
+//	ptfar.y = y;
+//	ptfar.z = z;
+//	return hge->System_Set2DMode(ptfar);
+	hge->System_SetState(HGE_2DMODE, true);
+	return true;
+}
+
+hge3DPoint * Export::GetFarPoint(BYTE renderflag)
+{
+	ptfar.z = M_CLIENT_HEIGHT;
+	switch (renderflag)
+	{
+	case M_RENDER_NULL:
+		ptfar.x = M_CLIENT_CENTER_X;
+		ptfar.y = M_CLIENT_CENTER_Y;
+		break;
+	case M_RENDER_LEFT:
+		ptfar.x = M_GAMESQUARE_CENTER_X_0;
+		ptfar.y = M_GAMESQUARE_CENTER_Y;
+		break;
+	case M_RENDER_RIGHT:
+		ptfar.x = M_GAMESQUARE_CENTER_X_1;
+		ptfar.y = M_GAMESQUARE_CENTER_Y;
+		break;
+	}
+	return &ptfar;
 }
 
 bool Export::clientSet3DMode()
 {
-	return hge->System_Set3DMode();
+	hge->System_SetState(HGE_2DMODE, false);
+	return true;
 }
 
 bool Export::SetIni(bool extuse)

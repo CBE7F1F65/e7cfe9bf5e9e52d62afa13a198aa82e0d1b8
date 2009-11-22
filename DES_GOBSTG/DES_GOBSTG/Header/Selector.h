@@ -5,6 +5,12 @@
 #include "Const.h"
 #include "Fontsys.h"
 
+#define SEL_NULL		0x00
+#define SEL_NONACTIVE	0x10
+#define SEL_GRAY		0x20
+#define SEL_STAY		0x40
+#define SEL_NOSHIFT		0x80
+
 #define SEL_STATEMAX	0x04
 
 #define	SEL_NONE		0x00

@@ -4,6 +4,8 @@
 #include "MainDependency.h"
 #include "DataStruct.h"
 
+#define FRONTSPRITEMAX		0x40
+
 struct FrontSprite
 {
 	hgeSprite * sprite;

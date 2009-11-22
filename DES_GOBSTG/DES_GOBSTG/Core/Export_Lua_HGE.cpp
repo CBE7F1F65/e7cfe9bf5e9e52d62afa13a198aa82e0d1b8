@@ -2,6 +2,7 @@
 
 #include "../Header/Export_Lua_HGE.h"
 #include "../Header/LuaConstDefine.h"
+#include "../Header/Export.h"
 
 hgeChannelSyncInfo Export_Lua_HGE::channelsyncinfo;
 
@@ -17,10 +18,6 @@ bool Export_Lua_HGE::_LuaRegistFunction(LuaObject * obj)
 	_hgeobj.Register("System_Launch", LuaFn_hge_System_Launch);
 	_hgeobj.Register("System_Snapshot", LuaFn_hge_System_Snapshot);
 
-	_hgeobj.Register("System_Set2DMode", LuaFn_hge_System_Set2DMode);
-	_hgeobj.Register("System_Set3DMode", LuaFn_hge_System_Set3DMode);
-	_hgeobj.Register("System_GetFarPoint", LuaFn_hge_System_GetFarPoint);
-	_hgeobj.Register("System_Is2DMode", LuaFn_hge_System_Is2DMode);
 	_hgeobj.Register("System_Transform3DPoint", LuaFn_hge_System_Transform3DPoint);
 
 	_hgeobj.Register("Resource_Load", LuaFn_hge_Resource_Load);
@@ -177,7 +174,7 @@ bool Export_Lua_HGE::_LuaRegistConst(LuaObject * obj)
 	obj->SetInteger("HGE_DONTSUSPEND", HGE_DONTSUSPEND);
 	obj->SetInteger("HGE_HIDEMOUSE", HGE_HIDEMOUSE);
 
-	obj->SetInteger("HGE_SHOWSPLASH", HGE_SHOWSPLASH);
+	obj->SetInteger("HGE_3DMODE", HGE_2DMODE);
 
 	obj->SetInteger("HGE_HWND", HGE_HWND);
 	obj->SetInteger("HGE_HWNDPARENT", HGE_HWNDPARENT);
@@ -573,89 +570,35 @@ int Export_Lua_HGE::LuaFn_hge_System_Snapshot(LuaState * ls)
 	return 0;
 }
 
-int Export_Lua_HGE::LuaFn_hge_System_Set2DMode(LuaState * ls)
-{
-	LuaStack args(ls);
-	bool bret;
-
-	hge3DPoint ptfar;
-	if (args[1].IsTable())
-	{
-		ptfar.x = args[1].GetByName("x").GetFloat();
-		ptfar.y = args[1].GetByName("y").GetFloat();
-		ptfar.z = args[1].GetByName("z").GetFloat();
-	}
-	else
-	{
-		ptfar.x = args[1].GetFloat();
-		ptfar.y = args[2].GetFloat();
-		ptfar.z = args[3].GetFloat();
-	}
-	bret = hge->System_Set2DMode(ptfar);
-
-	ls->PushBoolean(bret);
-	return 1;
-}
-
-int Export_Lua_HGE::LuaFn_hge_System_Set3DMode(LuaState * ls)
-{
-	LuaStack args(ls);
-	bool bret;
-
-	bret = hge->System_Set3DMode();
-
-	ls->PushBoolean(bret);
-	return 1;
-}
-
-int Export_Lua_HGE::LuaFn_hge_System_GetFarPoint(LuaState * ls)
-{
-	LuaStack args(ls);
-	hge3DPoint * ptfar;
-	float fret[4];
-
-	ptfar = hge->System_GetFarPoint();
-	LuaStackObject table;
-	table = ls->CreateTable();
-	table.SetNumber("x", ptfar->x);
-	table.SetNumber("y", ptfar->y);
-	table.SetNumber("z", ptfar->z);
-	table.SetNumber("scale", ptfar->scale);
-
-	ls->PushValue(table);
-	return 1;
-}
-
-int Export_Lua_HGE::LuaFn_hge_System_Is2DMode(LuaState * ls)
-{
-	LuaStack args(ls);
-	bool bret;
-
-	bret = hge->System_Is2DMode();
-
-	ls->PushBoolean(bret);
-	return 1;
-}
-
 int Export_Lua_HGE::LuaFn_hge_System_Transform3DPoint(LuaState * ls)
 {
 	LuaStack args(ls);
 	float fret;
 
-	hge3DPoint ptfar;
+	hge3DPoint pt;
+	BYTE _renderflag = M_RENDER_NULL;
+	int argscount = args.Count();
 	if (args[1].IsTable())
 	{
-		ptfar.x = args[1].GetByName("x").GetFloat();
-		ptfar.y = args[1].GetByName("y").GetFloat();
-		ptfar.z = args[1].GetByName("z").GetFloat();
+		pt.x = args[1].GetByName("x").GetFloat();
+		pt.y = args[1].GetByName("y").GetFloat();
+		pt.z = args[1].GetByName("z").GetFloat();
+		if (argscount > 1)
+		{
+			_renderflag = args[2].GetInteger();
+		}
 	}
 	else
 	{
-		ptfar.x = args[1].GetFloat();
-		ptfar.y = args[2].GetFloat();
-		ptfar.z = args[3].GetFloat();
+		pt.x = args[1].GetFloat();
+		pt.y = args[2].GetFloat();
+		pt.z = args[3].GetFloat();
+		if (argscount > 3)
+		{
+			_renderflag = args[4].GetInteger();
+		}
 	}
-	fret = hge->System_Transform3DPoint(&ptfar);
+	fret = hge->System_Transform3DPoint(&pt, Export::GetFarPoint(_renderflag));
 
 	ls->PushNumber(fret);
 	return 1;

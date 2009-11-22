@@ -4,7 +4,7 @@ void Process::clearPrep(bool bclearkey)
 {
 	SelectSystem::ClearAll();
 	Effectsys::ClearAll();
-	BGLayer::Init();
+	BGLayer::Init(tex);
 	Enemy::ClearAll();
 	Ghost::ClearAll();
 	Target::ClearAll();
@@ -143,8 +143,8 @@ void Process::startPrep(bool callinit)
 			Player::p[0].nHiScore = Player::p[0].nScore;
 	}
 
-	BGLayer::ubg[UBGID_BGMASK].valueSetByName(tex, SI_NULL, M_ACTIVECLIENT_CENTER_X, M_ACTIVECLIENT_CENTER_Y, M_ACTIVECLIENT_WIDTH, M_ACTIVECLIENT_HEIGHT, 0);
-	BGLayer::ubg[UBGID_FGPAUSE].valueSetByName(tex, SI_NULL, M_ACTIVECLIENT_CENTER_X, M_ACTIVECLIENT_CENTER_Y, M_ACTIVECLIENT_WIDTH, M_ACTIVECLIENT_HEIGHT, 0);
+	BGLayer::ubg[UBGID_BGMASK].valueSetByName(SI_NULL, M_ACTIVECLIENT_CENTER_X, M_ACTIVECLIENT_CENTER_Y, M_ACTIVECLIENT_WIDTH, M_ACTIVECLIENT_HEIGHT, 0);
+	BGLayer::ubg[UBGID_FGPAUSE].valueSetByName(SI_NULL, M_ACTIVECLIENT_CENTER_X, M_ACTIVECLIENT_CENTER_Y, M_ACTIVECLIENT_WIDTH, M_ACTIVECLIENT_HEIGHT, 0);
 	BGLayer::ubg[UBGID_FGPAUSE].exist = false;
 
 	stopflag = 0;

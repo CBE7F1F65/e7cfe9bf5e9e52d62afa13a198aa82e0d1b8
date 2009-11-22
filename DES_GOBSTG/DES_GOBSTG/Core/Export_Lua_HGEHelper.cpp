@@ -2,6 +2,7 @@
 
 #include "../Header/Export_Lua_HGEHelp.h"
 #include "../Header/LuaConstDefine.h"
+#include "../Header/Export.h"
 
 list<hgeFont *> Export_Lua_HGEHelp::fontList;
 list<hgeSprite *> Export_Lua_HGEHelp::spriteList;
@@ -289,7 +290,13 @@ int Export_Lua_HGEHelp::LuaFn_hgeFont_SetZ(LuaState * ls)
 	LuaStack args(ls);
 	hgeFont * _font = _LuaHelper_hgeFont_Get(&args);
 
-	_font->SetZ(args[2].GetFloat());
+	hge3DPoint * ptfar = NULL;
+	if (args.Count() > 2)
+	{
+		ptfar = Export::GetFarPoint(args[3].GetInteger());
+	}
+
+	_font->SetZ(args[2].GetFloat(), ptfar);
 
 	return 0;
 }
@@ -734,7 +741,7 @@ int Export_Lua_HGEHelp::LuaFn_hgeES_Render(LuaState * ls)
 	LuaStack args(ls);
 	hgeEffectSystem * _es = _LuaHelper_hgeES_Get(&args);
 
-	_es->Render();
+	_es->Render(Export::GetFarPoint(args[2].GetInteger()));
 
 	return 0;
 }
@@ -1051,16 +1058,26 @@ int Export_Lua_HGEHelp::LuaFn_hgeSprite_SetZ(LuaState * ls)
 	int argscount = args.Count();
 	if (argscount > 3)
 	{
-		_sprite->SetZ(args[2].GetFloat(), args[3].GetFloat(), args[4].GetFloat(), args[5].GetFloat());
+		hge3DPoint * ptfar = NULL;
+		if (argscount > 5)
+		{
+			ptfar = Export::GetFarPoint(args[6].GetInteger());
+		}
+		_sprite->SetZ(args[2].GetFloat(), args[3].GetFloat(), args[4].GetFloat(), args[5].GetFloat(), ptfar);
 	}
 	else
 	{
 		int i=-1;
+		hge3DPoint * _ptfar = NULL;
 		if (argscount > 2)
 		{
 			i = args[3].GetInteger();
+			if (argscount > 3)
+			{
+				_ptfar = Export::GetFarPoint(args[4].GetInteger());
+			}
 		}
-		_sprite->SetZ(args[2].GetFloat(), i);
+		_sprite->SetZ(args[2].GetFloat(), i, _ptfar);
 	}
 
 	return 0;

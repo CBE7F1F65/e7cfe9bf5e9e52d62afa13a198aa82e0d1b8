@@ -1,6 +1,7 @@
 #include "EditorUI.h"
 #include "EditorRes.h"
 #include "Data.h"
+#include "Export.h"
 
 EditorUI ui;
 
@@ -2098,7 +2099,7 @@ void EditorUI::Render()
 	hge->Gfx_RenderLine(mx, my-5, mx, my+5, 0xffffffff, zpos > 0 ? 0 : zpos);
 	if(eres.eff[ebnum])
 	{
-		eres.eff[ebnum]->Render();
+		eres.eff[ebnum]->Render(Export::GetFarPoint(M_RENDER_NULL));
 	}
 	if(eres.panel)
 	{

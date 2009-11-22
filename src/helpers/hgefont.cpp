@@ -509,10 +509,10 @@ void hgeFont::SetColor(DWORD col0, DWORD col1, DWORD col2, DWORD col3)
 /************************************************************************/
 /* This function is modified by h5nc (h5nc@yahoo.com.cn)                */
 /************************************************************************/
-void hgeFont::SetZ(float z)
+void hgeFont::SetZ(float z, hge3DPoint *ptfar)
 {
 	fZ=z;
-	for(int i=0;i<256;i++) if(letters[i]) letters[i]->SetZ(z, z, z, z);
+	for(int i=0;i<256;i++) if(letters[i]) letters[i]->SetZ(z, z, z, z, ptfar);
 }
 
 /************************************************************************/

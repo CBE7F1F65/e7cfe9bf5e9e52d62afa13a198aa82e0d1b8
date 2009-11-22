@@ -2,7 +2,11 @@
 
 void Process::_Render(BYTE renderflag/* =M_RENDER_NULL */)
 {
-	BGLayer::RenderBG();
+	Export::clientSet3DMode();
+	Export::clientSetMatrix(worldx, worldy, worldz, renderflag);
+	BGLayer::RenderBG(renderflag);
+	Export::clientSet2DMode();
+	Export::clientSetMatrix(worldx, worldy, worldz, renderflag);
 	if(renderflag != M_RENDER_NULL)
 	{
 		FrontDisplay::fdisp.RenderBossTimeCircle();
@@ -17,7 +21,7 @@ void Process::_Render(BYTE renderflag/* =M_RENDER_NULL */)
 		Item::RenderAll();
 		Chat::chatitem.Render();
 	}
-	BGLayer::RenderFG();
+	BGLayer::RenderFG(renderflag);
 	SelectSystem::RenderAll();
 	SpriteItemManager::RenderFrontSprite();
 	FrontDisplay::fdisp.RenderPostPrint();
@@ -46,12 +50,10 @@ int Process::render()
 	{
 		hge->Gfx_BeginScene(rendertar[0]);
 		hge->Gfx_Clear(0x00000000);
-		Export::clientSetMatrix(worldx, worldy, worldz, M_RENDER_LEFT);
 		_Render(M_RENDER_LEFT);
 		hge->Gfx_EndScene();
 		hge->Gfx_BeginScene(rendertar[1]);
 		hge->Gfx_Clear(0x00000000);
-		Export::clientSetMatrix(worldx, worldy, worldz, M_RENDER_RIGHT);
 		_Render(M_RENDER_RIGHT);
 		hge->Gfx_EndScene();
 	}
@@ -61,7 +63,9 @@ int Process::render()
 	Export::clientSetMatrix();
 	if (state == STATE_INIT)
 	{
-		return renderInit();
+		int ret = renderInit();
+		hge->Gfx_EndScene();
+		return ret;
 	}
 	//BGLayer
 

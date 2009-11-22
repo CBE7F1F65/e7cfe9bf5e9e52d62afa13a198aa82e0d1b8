@@ -24,10 +24,6 @@ public:
 	static int LuaFn_hge_System_Launch(LuaState * ls);
 	static int LuaFn_hge_System_Snapshot(LuaState * ls);
 
-	static int LuaFn_hge_System_Set2DMode(LuaState * ls);
-	static int LuaFn_hge_System_Set3DMode(LuaState * ls);
-	static int LuaFn_hge_System_GetFarPoint(LuaState * ls);
-	static int LuaFn_hge_System_Is2DMode(LuaState * ls);
 	static int LuaFn_hge_System_Transform3DPoint(LuaState * ls);
 
 	static int LuaFn_hge_Resource_Load(LuaState * ls);

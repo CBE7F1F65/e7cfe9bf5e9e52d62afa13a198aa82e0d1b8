@@ -5,7 +5,7 @@
 	Name="DES_GOBSTG"
 	ProjectGUID="{A4938EF7-0CE1-47A3-BC8D-4D0B54F94F6D}"
 	VCNestedProjectGUID="{7329E15F-F0AE-44EE-BC64-27B9038C76D7}"
-	VCNestedProjectCRC32="2229380753"
+	VCNestedProjectCRC32="1219180907"
 	VCNestedProjectFileName="DES_GOBSTG.vcproj"
 	Keyword="Win32Proj">
 	<Configurations>
@@ -459,6 +459,8 @@
 			RelativePath=".\Header\SelectSystem.h"/>
 		<File 
 			RelativePath=".\Header\Target.h"/>
+		<File 
+			RelativePath=".\Header\EffectIDDefine.h"/>
 	</Files>
 </VisualStudioProject>
 

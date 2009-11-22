@@ -6,6 +6,8 @@
 #include "Effectsys.h"
 #include "Target.h"
 
+#define ENEMYMAX			0x80
+
 #define ENEMY_INDEXSTART	4
 #define ENEMY_MAINBOSSINDEX	0
 

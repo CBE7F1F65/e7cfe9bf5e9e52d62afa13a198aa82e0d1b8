@@ -274,7 +274,7 @@ int Process::processInit()
 		return PQUIT;
 	}
 
-	BGLayer::Init();
+	BGLayer::Init(tex);
 
 	SE::vol = sevol;
 	if(!SE::Initial())

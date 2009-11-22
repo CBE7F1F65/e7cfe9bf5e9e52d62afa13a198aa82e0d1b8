@@ -651,6 +651,9 @@
 					RelativePath=".\Header\Chat.h">
 				</File>
 				<File
+					RelativePath=".\Header\EffectIDDefine.h">
+				</File>
+				<File
 					RelativePath=".\Header\EffectSp.h">
 				</File>
 				<File

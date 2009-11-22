@@ -8,6 +8,7 @@
 #include "Process.h"
 #include "BResource.h"
 #include "FrontDisplay.h"
+#include "EffectIDDefine.h"
 
 #define _DAMAGEZONEMAX	0x10
 
@@ -224,7 +225,8 @@ void Enemy::valueSet(WORD _ID, float _x, float _y, int _angle, float _speed, BYT
 	initFrameIndex();
 	setFrame(ENEMY_FRAME_STAND);
 
-	effShot.valueSet(EFF_EN_SHOT, *this);
+	// TODO:
+	effShot.valueSet(EFF_EN_SHOT, M_RENDER_LEFT, *this);
 	effShot.Stop();
 }
 
@@ -971,7 +973,8 @@ void Enemy::action()
 		{
 			giveItem();
 			effShot.Stop();
-			effCollapse.valueSet(EFF_EN_COLLAPSE, *this);
+			// TODO:
+			effCollapse.valueSet(EFF_EN_COLLAPSE, M_RENDER_LEFT, *this);
 		}
 		else if(timer == 32)
 		{

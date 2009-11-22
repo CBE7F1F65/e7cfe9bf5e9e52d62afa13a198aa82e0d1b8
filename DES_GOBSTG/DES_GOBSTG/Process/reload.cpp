@@ -4,7 +4,7 @@ bool Process::reload()
 {
 	SetCurrentDirectory(hge->Resource_MakePath(""));
 
-	BGLayer::Init();
+	BGLayer::Init(tex);
 	Enemy::ClearAll();
 	Ghost::ClearAll();
 	Target::ClearAll();

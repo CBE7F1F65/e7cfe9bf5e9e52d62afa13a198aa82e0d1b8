@@ -78,24 +78,24 @@ bool Effectsys::Init(HTEXTURE * tex, const char * foldername, char name[][M_PATH
 	return true;
 }
 
-void Effectsys::valueSet(WORD ID, float x, float y, int lifetime)
+void Effectsys::valueSet(WORD ID, BYTE renderflag, float x, float y, int lifetime)
 {
-	valueSet(ID, lifetime, x, y, 0, 0xff, 9000, 0, 0);
+	valueSet(ID, renderflag, lifetime, x, y, 0, 0xff, 9000, 0, 0);
 }
 
-void Effectsys::valueSet(WORD ID, BObject & owner)
+void Effectsys::valueSet(WORD ID, BYTE renderflag, BObject & owner)
 {
-	valueSet(ID, owner.x, owner.y);
+	valueSet(ID, renderflag, owner.x, owner.y);
 }
 
-void Effectsys::valueSet(WORD ID, int lifetime, float x, float y, BYTE tarID, int _chasetimer, BYTE _tarAim)
+void Effectsys::valueSet(WORD ID, BYTE renderflag, int lifetime, float x, float y, BYTE tarID, int _chasetimer, BYTE _tarAim)
 {
-	valueSet(ID, lifetime, x, y, 0, tarID, 9000, 0, 0);
+	valueSet(ID, renderflag, lifetime, x, y, 0, tarID, 9000, 0, 0);
 	chasetimer = _chasetimer;
 	tarAim = _tarAim;
 }
 
-void Effectsys::valueSet(WORD _ID, int _lifetime, float _x, float _y, float _z, BYTE _tarID, int _angle, float _speed, float _zSpeed)
+void Effectsys::valueSet(WORD _ID, BYTE _renderflag, int _lifetime, float _x, float _y, float _z, BYTE _tarID, int _angle, float _speed, float _zSpeed)
 {
 	ID			= _ID;
 	tarID		= _tarID;
@@ -110,6 +110,7 @@ void Effectsys::valueSet(WORD _ID, int _lifetime, float _x, float _y, float _z, 
 	hscale		= 1.0f;
 	vscale		= 1.0f;
 	timer		= 0;
+	SetRenderFlag(_renderflag);
 
 	chasetimer = 0;
 
@@ -125,6 +126,11 @@ void Effectsys::valueSet(WORD _ID, int _lifetime, float _x, float _y, float _z, 
 	Fire();
 }
 
+void Effectsys::SetRenderFlag(BYTE _renderflag)
+{
+	renderflag = _renderflag;
+}
+
 void Effectsys::Stop(bool bKill /* = false */)
 {
 	eff->Stop(bKill);
@@ -137,7 +143,7 @@ void Effectsys::Fire()
 
 void Effectsys::Render()
 {
-	eff->Render();
+	eff->Render(Export::GetFarPoint(renderflag));
 }
 
 void Effectsys::MoveTo(float _x, float _y, float _z, bool bForce)

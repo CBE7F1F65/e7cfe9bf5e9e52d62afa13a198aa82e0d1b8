@@ -5,6 +5,7 @@
 #include "processPrep.h"
 #include "BossInfo.h"
 #include "Fontsys.h"
+#include "EffectIDDefine.h"
 
 FrontDisplay FrontDisplay::fdisp;
 
@@ -639,16 +640,17 @@ bool FrontDisplay::Init()
 	panel.borderindi = SpriteItemManager::CreateSpriteByName(SI_BORDER_CIRCLE);
 
 	//info
-	infobody.effBossCollapse.valueSet(EFF_BI_COLLAPSE, 0, 0);
+	// TODO:
+	infobody.effBossCollapse.valueSet(EFF_BI_COLLAPSE, M_RENDER_LEFT, 0, 0);
 	infobody.effBossCollapse.Stop();
-	infobody.effBossItem.valueSet(EFF_BI_ITEM, 0, 0);
+	infobody.effBossItem.valueSet(EFF_BI_ITEM, M_RENDER_LEFT, 0, 0);
 	infobody.effBossItem.Stop();
-	infobody.effBossUp.valueSet(EFF_BI_BOSSUP, 0, 0);
+	infobody.effBossUp.valueSet(EFF_BI_BOSSUP, M_RENDER_LEFT, 0, 0);
 	infobody.effBossUp.Stop();
-	infobody.effBossStore.valueSet(EFF_BI_BOSSSTORE, 0, 0);
+	infobody.effBossStore.valueSet(EFF_BI_BOSSSTORE, M_RENDER_LEFT, 0, 0);
 	infobody.effBossStore.Stop();
 	/************************************************************************/
-	infobody.effLoading.valueSet(0, 0, 0);
+	infobody.effLoading.valueSet(0, M_RENDER_NULL, 0, 0);
 	infobody.effLoading.Stop();
 	/************************************************************************/
 

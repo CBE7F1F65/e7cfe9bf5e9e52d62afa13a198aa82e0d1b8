@@ -58,7 +58,7 @@ public:
 	/* This function is added by h5nc (h5nc@yahoo.com.cn)                   */
 	/************************************************************************/
 	void		SetColor(DWORD col0, DWORD col1, DWORD col2, DWORD col3);
-	void		SetZ(float z);
+	void		SetZ(float z, hge3DPoint *ptfar=NULL);
 	void		SetBlendMode(int blend);
 	void		SetScale(float scale) {fScale=scale;}
 	void		SetProportion(float prop) { fProportion=prop; }

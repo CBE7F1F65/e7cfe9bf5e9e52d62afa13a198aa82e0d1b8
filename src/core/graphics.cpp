@@ -84,7 +84,7 @@ void CALL HGE_Impl::Gfx_SetClipping(int x, int y, int w, int h)
 }
 
 /************************************************************************/
-/* This function is added by h5nc (h5nc@yahoo.com.cn)                   */
+/* These functions are added by h5nc (h5nc@yahoo.com.cn)                */
 /************************************************************************/
 void CALL HGE_Impl::Gfx_SetTransform(float x, float y, float dx, float dy, float rot, float hscale, float vscale)
 {
@@ -109,6 +109,13 @@ void CALL HGE_Impl::Gfx_SetTransform(float x, float y, float dx, float dy, float
 void CALL HGE_Impl::Gfx_SetTransform(D3DTRANSFORMSTATETYPE State, CONST D3DMATRIX * pMatrix)
 {
 	pD3DDevice->SetTransform(State, pMatrix);
+}
+
+D3DMATRIX CALL HGE_Impl::Gfx_GetTransform(D3DTRANSFORMSTATETYPE State)
+{
+	D3DMATRIX mat;
+	pD3DDevice->GetTransform(State, &mat);
+	return mat;
 }
 
 bool CALL HGE_Impl::Gfx_BeginScene(HTARGET targ)

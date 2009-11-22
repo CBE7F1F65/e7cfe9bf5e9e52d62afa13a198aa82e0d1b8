@@ -8,6 +8,7 @@
 #include "Chat.h"
 #include "BossInfo.h"
 #include "Main.h"
+#include "EffectIDDefine.h"
 
 Ghost Ghost::gh[GHOSTMAX];
 
@@ -85,7 +86,8 @@ void Ghost::valueSet(WORD _ID, float _x, float _y, int _angle, float _speed, BYT
 	aim.x	=	0;
 	aim.y	=	0;
 
-	effghost.valueSet(EFF_GH_TYPEBEGIN + type, *this);
+	// TODO:
+	effghost.valueSet(EFF_GH_TYPEBEGIN + type, M_RENDER_LEFT, *this);
 
 	effghost.Fire();
 }
@@ -216,7 +218,8 @@ void Ghost::action()
 
 	if (Player::p[0].bBorder ^ lastborderstate)
 	{
-		effghost.valueSet(EFF_GH_TYPEBEGIN + type + (Player::p[0].bBorder?1:0), *this);
+		// TODO:
+		effghost.valueSet(EFF_GH_TYPEBEGIN + type + (Player::p[0].bBorder?1:0), M_RENDER_LEFT, *this);
 		effghost.Fire();
 		lastborderstate ^= true;
 	}

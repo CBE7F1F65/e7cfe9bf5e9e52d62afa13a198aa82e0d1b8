@@ -428,52 +428,19 @@ bool CALL HGE_Impl::System_Start()
 /* These functions are added by h5nc (h5nc@yahoo.com.cn)                */
 /************************************************************************/
 // begin
-bool CALL HGE_Impl::System_Set2DMode(float x, float y, float z)
+float CALL HGE_Impl::System_Transform3DPoint(float &x, float &y, float &z, hge3DPoint *ptfar)
 {
-	if (z == 0.0f)
-	{
-		return false;
-	}
-	b2DMode = true;
-	ptfar.x = x;
-	ptfar.y = y;
-	ptfar.z = z;
-	return true;
-}
-
-bool CALL HGE_Impl::System_Set3DMode()
-{
-	b2DMode = false;
-	return true;
-}
-
-hge3DPoint * CALL HGE_Impl::System_GetFarPoint()
-{
-	if (!b2DMode)
-	{
-		return NULL;
-	}
-	return &ptfar;
-}
-
-bool CALL HGE_Impl::System_Is2DMode()
-{
-	return b2DMode;
-}
-// end
-
-float CALL HGE_Impl::System_Transform3DPoint(float &x, float &y, float &z)
-{
-	if (!b2DMode || ptfar.z == 0.0f)
+	if (!ptfar || ptfar->z == 0.0f)
 	{
 		return 1.0f;
 	}
-	float scale = (ptfar.z - z) / ptfar.z;
-	x = (x - ptfar.x) * scale + ptfar.x;
-	y = (y - ptfar.y) * scale + ptfar.y;
+	float scale = (ptfar->z - z) / ptfar->z;
+	x = (x - ptfar->x) * scale + ptfar->x;
+	y = (y - ptfar->y) * scale + ptfar->y;
 	z = 0;
 	return scale;
 }
+// end
 
 void CALL HGE_Impl::System_SetStateBool(hgeBoolState state, bool value)
 {
@@ -537,6 +504,8 @@ void CALL HGE_Impl::System_SetStateBool(hgeBoolState state, bool value)
 		case HGE_HIDEMOUSE:		bHideMouse=value; break;
 
 		case HGE_DONTSUSPEND:	bDontSuspend=value; break;
+			
+		case HGE_2DMODE:		b2DMode=value; break;
 
 			/************************************************************************/
 			/* HGE_SHOWSPLASH case is deleted by h5nc (h5nc@yahoo.com.cn)           */
@@ -679,6 +648,7 @@ bool CALL HGE_Impl::System_GetStateBool(hgeBoolState state)
 		case HGE_USESOUND:		return bUseSound;
 		case HGE_DONTSUSPEND:	return bDontSuspend;
 		case HGE_HIDEMOUSE:		return bHideMouse;
+		case HGE_2DMODE:		return b2DMode;
 
 			/************************************************************************/
 			/* HGE_SHOWSPLASH case is deleted by h5nc (h5nc@yahoo.com.cn)           */
@@ -857,7 +827,7 @@ HGE_Impl::HGE_Impl()
 	/************************************************************************/
 	/* This parameter is added by h5nc (h5nc@yahoo.com.cn)                  */
 	/************************************************************************/
-	b2DMode = false;
+	b2DMode = true;
 	
 	procFrameFunc=0;
 	procRenderFunc=0;

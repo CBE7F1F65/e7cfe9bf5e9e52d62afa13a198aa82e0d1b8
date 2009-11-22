@@ -2,9 +2,9 @@ function CETitle_Init()
 end
 
 function CETitle_SetBG()
-	hdssBGVALUE(BGMASK, SI_Null, TotalCenterX, TotalCenterY, TotalW, TotalH, global.ARGB(0xFF, 0));
+	hdssBGVALUE(UBGID_BGMASK, SI_Null, TotalCenterX, TotalCenterY, TotalW, TotalH, global.ARGB(0xFF, 0));
 	hdssBGVALUE(LConst_uibg_backgroundid, SI_TitleScene, TotalCenterX, TotalCenterY, TotalW, TotalH);
-	hdssBGFLAG(BGMASK, BG_FADEOUT);
+	hdssBGFLAG(UBGID_BGMASK, BG_FADEOUT);
 end
 
 function CETitle_SetupSelect(selsysid)
