@@ -139,9 +139,12 @@ void Process::frameEnd()
 		}
 	}
 	*/
-	if (Player::p[0].nHiScore < Player::p[0].nScore)
+	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
 	{
-		Player::p[0].nHiScore = Player::p[0].nScore;
+		if (Player::p[i].nHiScore < Player::p[i].nScore)
+		{
+			Player::p[i].nHiScore = Player::p[i].nScore;
+		}
 	}
 
 	SE::play();

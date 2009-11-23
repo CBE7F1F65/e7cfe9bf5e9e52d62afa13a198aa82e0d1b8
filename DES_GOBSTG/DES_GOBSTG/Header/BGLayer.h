@@ -8,11 +8,13 @@
 
 #define BGLAYERMAX			0x40
 #define FGLAYERMAX			0x04
-#define BGFGLAYERMAX			(BGLAYERMAX+FGLAYERMAX)
+#define BGFGLAYERMAX		(BGLAYERMAX+FGLAYERMAX)
 #define UBGLAYERMAX			(BGLAYERMAX+FGLAYERMAX+2)
-#define UBGID_BGMASK			(UBGLAYERMAX-2)
+#define UBGID_BGMASK		(UBGLAYERMAX-2)
 #define UBGID_FGPAUSE		(UBGLAYERMAX-1)
+
 #define BGLAYERSETMAX		0x10
+
 #define UBGID_LEFTIDBEGIN		0x0
 #define UBGID_LEFTIDUNTIL		(BGLAYERMAX/2)
 #define UBGID_RIGHTIDBEGIN		UBGID_LEFTIDUNTIL
@@ -21,6 +23,11 @@
 #define UFGID_LEFTIDUNTIL		(BGLAYERMAX+FGLAYERMAX/2)
 #define UFGID_RIGHTIDBEGIN		UFGID_LEFTIDUNTIL
 #define UFGID_RIGHTIDUNTIL		BGFGLAYERMAX
+
+#define UBGID_ALLIDBEGIN	0x0
+#define UBGID_ALLIDUNTIL	BGLAYERMAX
+#define UFGID_ALLIDBEGIN	UBGID_ALLIDUNTIL
+#define UFGID_ALLIDUNTIL	BGFGLAYERMAX
 
 #define BG_NONE			0x00
 
@@ -77,6 +84,8 @@ public:
 	static void Action(bool active);
 	static void RenderBG(BYTE renderflag=M_RENDER_NULL);
 	static void RenderFG(BYTE renderflag=M_RENDER_NULL);
+
+	static void GetIDBeginUntil(BYTE renderflag, bool useforbg, int & idbegin, int & iduntil);
 
 	void Render();
 	void valueSet(int siID, float cenx, float ceny, float width, float height, DWORD col = 0xffffffff);

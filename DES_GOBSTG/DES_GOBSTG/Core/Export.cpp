@@ -185,6 +185,19 @@ void Export::clientAdjustWindow()
 	}
 }
 
+BYTE Export::GetPlayerIndexByRenderFlag(BYTE renderflag)
+{
+	if (renderflag == M_RENDER_LEFT)
+	{
+		return 0;
+	}
+	else if (renderflag == M_RENDER_RIGHT)
+	{
+		return 1;
+	}
+	return 0;
+}
+
 bool Export::GetResourceFile(bool readbin)
 {
 	strcpy(resourcefilename, hge->Ini_GetString(RESCONFIGS_RESOURCE, RESCONFIGN_RESOURCEFILE, RESCONFIGDEFAULT_RESOURCEFILE));

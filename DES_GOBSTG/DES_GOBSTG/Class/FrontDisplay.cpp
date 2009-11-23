@@ -460,96 +460,96 @@ void FrontDisplay::RenderBossInfo()
 	if (flag)
 	{
 		bossinfo.exist = false;
-	WORD timer = bossinfo.timer;
-	bool bSpell = bossinfo.isSpell();
-	bool failed = BossInfo::failed;
-	DWORD bonus = bossinfo.bonus;
-//	exist = false;
-	infobody.effBossStore.Render();
-	if(flag < BOSSINFO_COLLAPSE)
-	{
-		info.bossfont->SetScale(1.2f);
-		info.bossfont->printf(50, 20, HGETEXT_RIGHT|HGETEXT_MIDDLE, "%d", bossinfo.remain);
-
-		int ttime = bossinfo.limit-timer/60;
-		if (ttime < 4)
-			info.bossfont->SetColor(0xffff0000);
-		else if (ttime < 11)
-			info.bossfont->SetColor(0xffff00ff);
-		else if (ttime > 99)
+		WORD timer = bossinfo.timer;
+		bool bSpell = bossinfo.isSpell();
+		bool failed = BossInfo::failed;
+		DWORD bonus = bossinfo.bonus;
+	//	exist = false;
+		infobody.effBossStore.Render();
+		if(flag < BOSSINFO_COLLAPSE)
 		{
-			ttime = 99;
-		}
-		info.bossfont->printf(400, 20, HGETEXT_CENTER|HGETEXT_MIDDLE, "%d", ttime);
+			info.bossfont->SetScale(1.2f);
+			info.bossfont->printf(50, 20, HGETEXT_RIGHT|HGETEXT_MIDDLE, "%d", bossinfo.remain);
 
-		info.bossasciifont->printf(60, 20, HGETEXT_LEFT, "%s", bossinfo.enemyename);
-
-		if(bSpell)
-		{
-			float yt;
-			if(Enemy::bossflag[ENEMY_MAINBOSSINDEX] & BOSS_SPELLUP)
-				info.cutin->Render(312, Enemy::spelluptimer[ENEMY_MAINBOSSINDEX]*2.4f);
-			if(timer < 30)
+			int ttime = bossinfo.limit-timer/60;
+			if (ttime < 4)
+				info.bossfont->SetColor(0xffff0000);
+			else if (ttime < 11)
+				info.bossfont->SetColor(0xffff00ff);
+			else if (ttime > 99)
 			{
-				yt = 225;
+				ttime = 99;
 			}
-			else if(timer < 120)
+			info.bossfont->printf(400, 20, HGETEXT_CENTER|HGETEXT_MIDDLE, "%d", ttime);
+
+			info.bossasciifont->printf(60, 20, HGETEXT_LEFT, "%s", bossinfo.enemyename);
+
+			if(bSpell)
 			{
-				yt = (120-timer)*2+45;
+				float yt;
+				if(Enemy::bossflag[ENEMY_MAINBOSSINDEX] & BOSS_SPELLUP)
+					info.cutin->Render(312, Enemy::spelluptimer[ENEMY_MAINBOSSINDEX]*2.4f);
+				if(timer < 30)
+				{
+					yt = 225;
+				}
+				else if(timer < 120)
+				{
+					yt = (120-timer)*2+45;
+				}
+				else
+				{
+					yt = 45;
+				}
+
+				info.bossspellline->Render(296, yt);
+
+				int tlenth = strlen(bossinfo.spellname);
+				float spellnamew = tlenth*8;
+				DWORD spellnamealpha = 0xff000000;
+				if(Player::p[0].y < 100)
+					spellnamealpha = 0x40000000;
+				bossinfo.fsspellname.SetColor(spellnamealpha+0xffffff, spellnamealpha+0xffffffff, spellnamealpha+0xff0000, spellnamealpha+0xff0000);
+				bossinfo.fsspellname.Render(400-spellnamew, yt-5);
+
+				if (flag & BOSSINFO_UP)
+				{
+					infobody.effBossUp.Render();
+				}
+
+				info.spellbonustext->Render(240, yt+20);
+				info.spellhistorytext->Render(345, yt+20);
+				if (!failed)
+				{
+					info.bossasciifont->printf(320, yt+16, HGETEXT_RIGHT, "%09d", bonus);
+				}
+				else
+				{
+					info.spellfailedtext->Render(280, yt+20);
+				}
+				info.bossasciifont->printf(410, yt+16, HGETEXT_RIGHT, "%03d/%03d", bossinfo.get, bossinfo.meet);
+			}
+			hge->Gfx_RenderQuad(&infobody.iqBossBlood.quad);
+		}
+		else if(flag & BOSSINFO_COLLAPSE)
+		{
+			if(bSpell && !failed)
+			{
+				infobody.effBossCollapse.Render();
+				infobody.effBossItem.Render();
+				info.getbonus->Render(M_ACTIVECLIENT_CENTER_X, 80);
+				info.bossfont->SetColor((((timer*8)%0x100)<<8)+0xffff007f);
 			}
 			else
 			{
-				yt = 45;
+				if (failed)
+				{
+					info.failed->Render(M_ACTIVECLIENT_CENTER_X, 80);
+					info.bossfont->SetColor((((timer*8)%0x100)<<16)+0xff00ffff);
+				}
 			}
-
-			info.bossspellline->Render(296, yt);
-
-			int tlenth = strlen(bossinfo.spellname);
-			float spellnamew = tlenth*8;
-			DWORD spellnamealpha = 0xff000000;
-			if(Player::p[0].y < 100)
-				spellnamealpha = 0x40000000;
-			bossinfo.fsspellname.SetColor(spellnamealpha+0xffffff, spellnamealpha+0xffffffff, spellnamealpha+0xff0000, spellnamealpha+0xff0000);
-			bossinfo.fsspellname.Render(400-spellnamew, yt-5);
-
-			if (flag & BOSSINFO_UP)
-			{
-				infobody.effBossUp.Render();
-			}
-
-			info.spellbonustext->Render(240, yt+20);
-			info.spellhistorytext->Render(345, yt+20);
-			if (!failed)
-			{
-				info.bossasciifont->printf(320, yt+16, HGETEXT_RIGHT, "%09d", bonus);
-			}
-			else
-			{
-				info.spellfailedtext->Render(280, yt+20);
-			}
-			info.bossasciifont->printf(410, yt+16, HGETEXT_RIGHT, "%03d/%03d", bossinfo.get, bossinfo.meet);
+			info.bossfont->printf(M_ACTIVECLIENT_CENTER_X, 120, HGETEXT_CENTER|HGETEXT_MIDDLE, "%d", bonus);
 		}
-		hge->Gfx_RenderQuad(&infobody.iqBossBlood.quad);
-	}
-	else if(flag & BOSSINFO_COLLAPSE)
-	{
-		if(bSpell && !failed)
-		{
-			infobody.effBossCollapse.Render();
-			infobody.effBossItem.Render();
-			info.getbonus->Render(M_ACTIVECLIENT_CENTER_X, 80);
-			info.bossfont->SetColor((((timer*8)%0x100)<<8)+0xffff007f);
-		}
-		else
-		{
-			if (failed)
-			{
-				info.failed->Render(M_ACTIVECLIENT_CENTER_X, 80);
-				info.bossfont->SetColor((((timer*8)%0x100)<<16)+0xff00ffff);
-			}
-		}
-		info.bossfont->printf(M_ACTIVECLIENT_CENTER_X, 120, HGETEXT_CENTER|HGETEXT_MIDDLE, "%d", bonus);
-	}
 	}
 }
 

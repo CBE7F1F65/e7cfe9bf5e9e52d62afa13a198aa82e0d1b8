@@ -23,7 +23,10 @@ void Process::clearPrep(bool bclearkey)
 	Scripter::stopEdefScript = false;
 	FrontDisplay::fdisp.SetState(FDISP_PANEL, 1);
 
-	Player::p[0].ClearSet();
+	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
+	{
+		Player::p[i].ClearSet();
+	}
 
 	if(!bclearkey)
 		return;
@@ -82,7 +85,11 @@ void Process::startPrep(bool callinit)
 
 	srandt(seed);
 
-	Player::p[0].ClearNC();
+	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
+	{
+		Player::p[i].ClearNC();
+		Player::p[i].nHiScore = DataConnector::nHiScore();
+	}
 
 	//set
 
@@ -90,17 +97,19 @@ void Process::startPrep(bool callinit)
 	nowdifflv = data.getDiffi(scene);
 	if(!practicemode)
 	{
-		Player::p[0].valueSet(mainchara, subchara_1, subchara_2);
+		Player::p[0].valueSet(0, mainchara, subchara_1, subchara_2);
+		Player::p[1].valueSet(1, mainchara, subchara_1, subchara_2);
 	}
 	else if(!spellmode)
 	{
-		Player::p[0].valueSet(mainchara, subchara_1, subchara_2, PL_NPLAYERMAX);
+		Player::p[0].valueSet(0, mainchara, subchara_1, subchara_2, PL_NPLAYERMAX);
+		Player::p[1].valueSet(1, mainchara, subchara_1, subchara_2, PL_NPLAYERMAX);
 	}
 	else
 	{
-		Player::p[0].valueSet(mainchara, subchara_1, subchara_2, 0);
+		Player::p[0].valueSet(0, mainchara, subchara_1, subchara_2, 0);
+		Player::p[1].valueSet(1, mainchara, subchara_1, subchara_2, 0);
 	}
-	Player::p[0].nHiScore = DataConnector::nHiScore();
 	DataConnector::Try(true);
 
 	if(!replaymode)
@@ -128,19 +137,22 @@ void Process::startPrep(bool callinit)
 		BYTE part = 0;
 		if(scene < S1200)
 			part = data.getStage(scene) - 1;
-		if (part)
+		for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
 		{
-			Player::p[0].nScore = rpy.partinfo[part].nowscore;
-			Player::p[0].nPoint = Player::p[0].nLastPoint = rpy.partinfo[part].nowpoint;
-			Player::p[0].nFaith = Player::p[0].nLastFaith = rpy.partinfo[part].nowfaith;
-			Player::p[0].nGraze = Player::p[0].nLastGraze = rpy.partinfo[part].nowgraze;
-			Player::p[0].nPower = rpy.partinfo[part].nowpower;
-			Player::p[0].nNext = Player::p[0].getnNext();
-			Player::p[0].changePlayerID(rpy.partinfo[part].nowID);
+			if (part)
+			{
+				Player::p[i].nScore = rpy.partinfo[part].nowscore;
+				Player::p[i].nPoint = Player::p[i].nLastPoint = rpy.partinfo[part].nowpoint;
+				Player::p[i].nFaith = Player::p[i].nLastFaith = rpy.partinfo[part].nowfaith;
+				Player::p[i].nGraze = Player::p[i].nLastGraze = rpy.partinfo[part].nowgraze;
+				Player::p[i].nPower = rpy.partinfo[part].nowpower;
+				Player::p[i].nNext = Player::p[i].getnNext();
+				Player::p[i].changePlayerID(rpy.partinfo[part].nowID);
+			}
+			Player::p[i].nLife = rpy.partinfo[part].nowplayer;
+			if(Player::p[i].nHiScore < Player::p[i].nScore)
+				Player::p[i].nHiScore = Player::p[i].nScore;
 		}
-		Player::p[0].nLife = rpy.partinfo[part].nowplayer;
-		if(Player::p[0].nHiScore < Player::p[0].nScore)
-			Player::p[0].nHiScore = Player::p[0].nScore;
 	}
 
 	BGLayer::ubg[UBGID_BGMASK].valueSetByName(SI_NULL, M_ACTIVECLIENT_CENTER_X, M_ACTIVECLIENT_CENTER_Y, M_ACTIVECLIENT_WIDTH, M_ACTIVECLIENT_HEIGHT, 0);

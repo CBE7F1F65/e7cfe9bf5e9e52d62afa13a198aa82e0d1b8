@@ -25,8 +25,7 @@ public:
 	PlayerGhost();
 	~PlayerGhost();
 
-	static void ResetValue(bool move=false);
-	void valueSet(WORD ID, bool move=false);
+	void valueSet(BYTE playerindex, WORD ID, bool move=false);
 
 	void Render();
 
@@ -41,6 +40,7 @@ public:
 	bool lastchasing;
 	int shootangle;
 	WORD flag;
+	BYTE playerindex;
 };
 
 #endif

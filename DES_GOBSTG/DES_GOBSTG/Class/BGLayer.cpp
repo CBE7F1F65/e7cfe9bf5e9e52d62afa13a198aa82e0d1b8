@@ -353,26 +353,59 @@ void BGLayer::Action(bool active)
 	}
 }
 
-void BGLayer::RenderBG(BYTE renderflag)
+void BGLayer::GetIDBeginUntil(BYTE renderflag, bool useforbg, int & idbegin, int & iduntil)
 {
-	if (renderflag == M_RENDER_NULL || renderflag == M_RENDER_LEFT)
+	if (renderflag == M_RENDER_NULL)
 	{
-		for (int i=UBGID_LEFTIDBEGIN; i<UBGID_LEFTIDUNTIL; i++)
+		if (useforbg)
 		{
-			if (ubg[i].exist)
-			{
-				ubg[i].Render();
-			}
+			idbegin = UBGID_ALLIDBEGIN;
+			iduntil = UBGID_ALLIDUNTIL;
+		}
+		else
+		{
+			idbegin = UFGID_ALLIDBEGIN;
+			iduntil = UFGID_ALLIDUNTIL;
 		}
 	}
-	if (renderflag == M_RENDER_NULL || renderflag == M_RENDER_RIGHT)
+	else if (renderflag == M_RENDER_LEFT)
 	{
-		for (int i=UBGID_RIGHTIDBEGIN; i<UBGID_RIGHTIDUNTIL; i++)
+		if (useforbg)
 		{
-			if (ubg[i].exist)
-			{
-				ubg[i].Render();
-			}
+			idbegin = UBGID_LEFTIDBEGIN;
+			iduntil = UBGID_LEFTIDUNTIL;
+		}
+		else
+		{
+			idbegin = UFGID_LEFTIDBEGIN;
+			iduntil = UFGID_LEFTIDUNTIL;
+		}
+	}
+	else if (renderflag == M_RENDER_RIGHT)
+	{
+		if (useforbg)
+		{
+			idbegin = UBGID_RIGHTIDBEGIN;
+			iduntil = UBGID_RIGHTIDUNTIL;
+		}
+		else
+		{
+			idbegin = UFGID_RIGHTIDBEGIN;
+			iduntil = UFGID_RIGHTIDUNTIL;
+		}
+	}
+}
+
+void BGLayer::RenderBG(BYTE renderflag)
+{
+	int idbegin;
+	int iduntil;
+	GetIDBeginUntil(renderflag, true, idbegin, iduntil);
+	for (int i=idbegin; i<iduntil; i++)
+	{
+		if (ubg[i].exist)
+		{
+			ubg[i].Render();
 		}
 	}
 	if (ubg[UBGID_BGMASK].exist)
@@ -383,24 +416,14 @@ void BGLayer::RenderBG(BYTE renderflag)
 
 void BGLayer::RenderFG(BYTE renderflag)
 {
-	if (renderflag == M_RENDER_NULL || renderflag == M_RENDER_LEFT)
+	int idbegin;
+	int iduntil;
+	GetIDBeginUntil(renderflag, false, idbegin, iduntil);
+	for (int i=idbegin; i<iduntil; i++)
 	{
-		for (int i=UFGID_LEFTIDBEGIN; i<UFGID_LEFTIDUNTIL; i++)
+		if (ubg[i].exist)
 		{
-			if (ubg[i].exist)
-			{
-				ubg[i].Render();
-			}
-		}
-	}
-	if (renderflag == M_RENDER_NULL || renderflag == M_RENDER_RIGHT)
-	{
-		for (int i=UFGID_RIGHTIDBEGIN; i<UFGID_RIGHTIDUNTIL; i++)
-		{
-			if (ubg[i].exist)
-			{
-				ubg[i].Render();
-			}
+			ubg[i].Render();
 		}
 	}
 	if (ubg[UBGID_FGPAUSE].exist)

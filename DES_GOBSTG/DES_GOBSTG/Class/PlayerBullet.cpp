@@ -7,8 +7,9 @@
 #include "SpriteItemManager.h"
 #include "FrontDisplayName.h"
 #include "BResource.h"
+#include "Export.h"
 
-VectorList<PlayerBullet> PlayerBullet::pb;
+VectorList<PlayerBullet> PlayerBullet::pb[M_PL_MATCHMAXPLAYER];
 
 int PlayerBullet::locked = PBLOCK_LOST;
 
@@ -51,67 +52,75 @@ PlayerBullet::~PlayerBullet()
 
 void PlayerBullet::ClearItem()
 {
-	pb.clear_item();
+	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
+	{
+		pb[i].clear_item();
+	}
 }
 
 void PlayerBullet::Action()
 {
-	if (pb.size)
+	for (int j=0; j<M_PL_MATCHMAXPLAYER; j++)
 	{
-		DWORD i = 0;
-		DWORD size = pb.size;
-		for (pb.toBegin(); i<size; pb.toNext(), i++)
+		if (pb[j].size)
 		{
-			if (!pb.isValid())
+			DWORD i = 0;
+			DWORD size = pb[j].size;
+			for (pb[j].toBegin(); i<size; pb[j].toNext(), i++)
 			{
-				continue;
-			}
-			if ((*pb).exist)
-			{
-				(*pb).action();
-			}
-			else
-			{
-				pb.pop();
+				if (!pb[j].isValid())
+				{
+					continue;
+				}
+				if ((*pb[j]).exist)
+				{
+					(*pb[j]).action();
+				}
+				else
+				{
+					pb[j].pop();
+				}
 			}
 		}
 	}
 }
 
-void PlayerBullet::RenderAll()
+void PlayerBullet::RenderAll(BYTE renderflag)
 {
-	if (pb.size)
+	BYTE playerindex = Export::GetPlayerIndexByRenderFlag(renderflag);
+	if (pb[playerindex].size)
 	{
 		DWORD i = 0;
-		DWORD size = pb.size;
-		for (pb.toBegin(); i<size; pb.toNext(), i++)
+		DWORD size = pb[playerindex].size;
+		for (pb[playerindex].toBegin(); i<size; pb[playerindex].toNext(), i++)
 		{
-			if (pb.isValid())
+			if (pb[playerindex].isValid())
 			{
-				(*pb).Render();
+				(*pb[playerindex]).Render();
 			}
 
 		}
 	}
 }
 
-void PlayerBullet::Build(int shootdataID)
+void PlayerBullet::Build(BYTE playerindex, int shootdataID)
 {
 	PlayerBullet _pb;
 	playershootData * item = &(res.playershootdata[shootdataID]);
-	pb.push_back(_pb)->valueSet(item->ID, item->arrange, item->xbias, item->ybias, 
+	pb[playerindex].push_back(_pb)->valueSet(playerindex, item->ID, item->arrange, item->xbias, item->ybias, 
 		item->scale, item->angle, item->speed, item->accelspeed, 
 		item->power, item->hitonfactor, item->flag, item->seID);
 }
 
-void PlayerBullet::valueSet(WORD _ID, BYTE _arrange, float _xbias, float _ybias, float _scale, int _angle, float _speed, float _accelspeed, float _power, int _hitonfactor, WORD _flag, BYTE seID)
+void PlayerBullet::valueSet(BYTE _playerindex, WORD _ID, BYTE _arrange, float _xbias, float _ybias, float _scale, int _angle, float _speed, float _accelspeed, float _power, int _hitonfactor, WORD _flag, BYTE seID)
 {
+	playerindex = _playerindex;
 	ID		=	_ID;
 	angle	=	_angle;
 	speed	=	_speed;
 	accelspeed = _accelspeed;
 	oldspeed =	speed;
-	power	=	Player::p[0].TranslatePower(_power);
+	power	=	Player::p[playerindex].TranslatePower(_power);
 	hitonfactor = _hitonfactor;
 	arrange	=	_arrange;
 	flag	=	_flag;
@@ -136,13 +145,13 @@ void PlayerBullet::valueSet(WORD _ID, BYTE _arrange, float _xbias, float _ybias,
 	}
 	if (arrange)
 	{
-		angle += Player::p[0].pg[arrange-1].shootangle;
+		angle += Player::p[playerindex].pg[arrange-1].shootangle;
 	}
 	if (flag & PBFLAG_ANTISHOOTER)
 	{
 		if (!arrange)
 		{
-			angle += Player::p[0].aMainAngle(Player::p[0].lastmx[0], Player::p[0].lastmy[0]);
+			angle += Player::p[playerindex].aMainAngle(Player::p[playerindex].lastmx[0], Player::p[playerindex].lastmy[0]);
 		}
 	}
 	else
@@ -169,13 +178,13 @@ void PlayerBullet::valueSet(WORD _ID, BYTE _arrange, float _xbias, float _ybias,
 
 	if(arrange)
 	{
-		x = Player::p[0].pg[arrange-1].x;
-		y = Player::p[0].pg[arrange-1].y;
+		x = Player::p[playerindex].pg[arrange-1].x;
+		y = Player::p[playerindex].pg[arrange-1].y;
 	}
 	else
 	{
-		x = Player::p[0].x;
-		y = Player::p[0].y;
+		x = Player::p[playerindex].x;
+		y = Player::p[playerindex].y;
 	}
 
 	x += xbias;
@@ -192,7 +201,11 @@ void PlayerBullet::Release()
 			delete spPlayerBullet[i];
 		spPlayerBullet[i] = NULL;
 	}
-	pb.clear();
+
+	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
+	{
+		pb[i].clear();
+	}
 }
 
 void PlayerBullet::Render()
@@ -303,7 +316,7 @@ void PlayerBullet::hitOn()
 {
 	fadeout = true;
 	able = false;
-	Player::p[0].DoPlayerBulletHit(hitonfactor);
+	Player::p[playerindex].DoPlayerBulletHit(hitonfactor);
 	timer = 0;
 }
 
@@ -326,7 +339,7 @@ bool PlayerBullet::isInRange(float aimx, float aimy, float w, float h)
 		}
 		else if ((flag & PBFLAG_BEAM) && !(timer % 24))
 		{
-			Player::p[0].DoPlayerBulletHit(hitonfactor);
+			Player::p[playerindex].DoPlayerBulletHit(hitonfactor);
 		}
 		return true;
 	}
@@ -396,19 +409,19 @@ void PlayerBullet::action()
 		{
 			if (arrange)
 			{
-				y = Player::p[0].pg[arrange-1].y;
+				y = Player::p[playerindex].pg[arrange-1].y;
 			}
 			else
 			{
-				y = Player::p[0].y;
+				y = Player::p[playerindex].y;
 			}
 			y += - M_ACTIVECLIENT_HEIGHT / 2 + ybias;
 			xplus = 0;
 			yplus = 0;
 			float extramove = 0;
-			if (!(arrange && (Player::p[0].pg[arrange-1].flag & PGFLAG_STAY) || (Player::p[0].pg[arrange-1].flag & PGFLAG_ABSSTAY)))
+			if (!(arrange && (Player::p[playerindex].pg[arrange-1].flag & PGFLAG_STAY) || (Player::p[playerindex].pg[arrange-1].flag & PGFLAG_ABSSTAY)))
 			{
-				extramove = (Player::p[0].y-Player::p[0].lasty[_PBBEAM_LASTINDEX]) / 2.5f;
+				extramove = (Player::p[playerindex].y-Player::p[playerindex].lasty[_PBBEAM_LASTINDEX]) / 2.5f;
 			}
 			float _tx, _ty, _tw, _th;
 			spPlayerBullet[ID]->GetTextureRect(&_tx, &_ty, &_tw, &_th);
@@ -507,15 +520,15 @@ void PlayerBullet::action()
 		}
 		if (flag & PBFLAG_BEAM)
 		{
-			float taimx = Player::p[0].x;
+			float taimx = Player::p[playerindex].x;
 			if (arrange)
 			{
-				taimx = Player::p[0].pg[arrange-1].x;
+				taimx = Player::p[playerindex].pg[arrange-1].x;
 			}
-			float taimy = Player::p[0].y;
+			float taimy = Player::p[playerindex].y;
 			if (arrange)
 			{
-				taimy = Player::p[0].pg[arrange-1].y;
+				taimy = Player::p[playerindex].pg[arrange-1].y;
 			}
 			taimx += xbias;
 			taimy += -M_ACTIVECLIENT_HEIGHT / 2 + ybias;
@@ -527,20 +540,20 @@ void PlayerBullet::action()
 	able = exist && !fadeout;
 }
 
-float PlayerBullet::CheckShoot(float aimx, float aimy, float aimw, float aimh)
+float PlayerBullet::CheckShoot(BYTE playerindex, float aimx, float aimy, float aimw, float aimh)
 {
 	float totalpower = 0.0f;
-	if (pb.size)
+	if (pb[playerindex].size)
 	{
 		DWORD i = 0;
-		DWORD size = pb.size;
-		for (pb.toBegin(); i<size; pb.toNext(), i++)
+		DWORD size = pb[playerindex].size;
+		for (pb[playerindex].toBegin(); i<size; pb[playerindex].toNext(), i++)
 		{
-			if (pb.isValid() && (*pb).able)
+			if (pb[playerindex].isValid() && (*pb[playerindex]).able)
 			{
-				if ((*pb).isInRange(aimx, aimy, aimw, aimh))
+				if ((*pb[playerindex]).isInRange(aimx, aimy, aimw, aimh))
 				{
-					totalpower += (*pb).power;
+					totalpower += (*pb[playerindex]).power;
 				}
 			}
 		}

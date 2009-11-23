@@ -10,10 +10,10 @@ void Process::_Render(BYTE renderflag/* =M_RENDER_NULL */)
 	if(renderflag != M_RENDER_NULL)
 	{
 		FrontDisplay::fdisp.RenderBossTimeCircle();
-		Ghost::RenderAll();
-		Enemy::RenderAll();
-		PlayerBullet::RenderAll();
-		Player::RenderAll();
+		Ghost::RenderAll(renderflag);
+		Enemy::RenderAll(renderflag);
+		PlayerBullet::RenderAll(renderflag);
+		Player::RenderAll(renderflag);
 		Effectsys::RenderAll();
 		Beam::RenderAll();
 		Bullet::RenderAll();

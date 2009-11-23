@@ -6,6 +6,10 @@
 #include "Target.h"
 
 #define GHOSTMAX			0x80
+#define GHID_LEFTIDBEGIN	0x0
+#define GHID_LEFTIDUNTIL	(GHOSTMAX/2)
+#define GHID_RIGHTIDBEGIN	GHID_LEFTIDUNTIL
+#define GHID_RIGHTIDUNTIL	GHOSTMAX
 
 #define GHOST_COLLISIONR	8
 
@@ -20,11 +24,13 @@ public:
 	static bool Build(WORD gID, BYTE tarID, BYTE belong, float x, float y, int angle, float speed, BYTE type, float life, int ac);
 	static void ClearAll();
 	static void Action(bool notinstop);
-	static void RenderAll();
+	static void RenderAll(BYTE renderflag);
 
 	void Clear();
 	void valueSet(WORD ID, float x, float y, int angle, float speed, BYTE type, float life, int ac);
 	void valueSet(WORD ID, BYTE belong, int angle, float speed, BYTE type, float life, int ac);
+	
+	BYTE getPlayerIndex();
 
 	void CostLife(float power);
 

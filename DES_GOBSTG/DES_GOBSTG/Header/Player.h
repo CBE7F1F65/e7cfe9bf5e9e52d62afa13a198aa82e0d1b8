@@ -66,10 +66,11 @@ public:
 	Player();
 	virtual ~Player();
 
-	void valueSet(WORD ID, WORD ID_sub_1, WORD ID_sub_2, BYTE nLife=PL_DEFAULTNPLAYER, bool bContinue = false);
+	void valueSet(BYTE playerindex, WORD ID, WORD ID_sub_1, WORD ID_sub_2, BYTE nLife=PL_DEFAULTNPLAYER, bool bContinue = false);
 	void ClearSet();
 	void ClearNC();
 	void UpdatePlayerData();
+	void ResetPlayerGhost(bool move = false);
 
 	virtual void action();
 
@@ -137,7 +138,7 @@ public:
 	static void Action(bool * notinstop);
 	static void SetAble(bool setable);
 	static bool CheckAble();
-	static void RenderAll();
+	static void RenderAll(BYTE renderflag);
 
 	static void Init();
 
@@ -240,6 +241,8 @@ public:
 
 	// add
 	BYTE	initlife;
+	BYTE	playerindex;
+
 	static float lostStack;
 	static bool able;
 

@@ -85,15 +85,13 @@ void Player::Init()
 	SetAble(false);
 }
 
-void Player::RenderAll()
+void Player::RenderAll(BYTE renderflag)
 {
-	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
+	int _playerindex = Export::GetPlayerIndexByRenderFlag(renderflag);
+	if (p[_playerindex].exist)
 	{
-		if (p[i].exist)
-		{
-			p[i].Render();
-			p[i].RenderEffect();
-		}
+		p[_playerindex].Render();
+		p[_playerindex].RenderEffect();
 	}
 }
 
@@ -539,8 +537,9 @@ void Player::SetChara(WORD id, WORD id_sub_1/* =0xffff */, WORD id_sub_2/* =0xff
 	ID_sub_2 = id_sub_2;
 }
 
-void Player::valueSet(WORD _ID, WORD _ID_sub_1, WORD _ID_sub_2, BYTE _nLife, bool bContinue)
+void Player::valueSet(BYTE _playerindex, WORD _ID, WORD _ID_sub_1, WORD _ID_sub_2, BYTE _nLife, bool bContinue)
 {
+	playerindex = _playerindex;
 	ID			=	_ID;
 	ID_sub_1	= _ID_sub_1;
 	ID_sub_2	= _ID_sub_2;
@@ -727,11 +726,11 @@ void Player::action()
 	//input
 	if(!(flag & PLAYER_SHOT || flag & PLAYER_COLLAPSE))
 	{
-		if (hge->Input_GetDIKey(KS_SLOW_MP))
+		if (hge->Input_GetDIKey(KS_SLOW_MP_(playerindex)))
 		{
 			bSlow = true;
 			flag &= ~PLAYER_FASTCHANGE;
-			if(hge->Input_GetDIKey(KS_SLOW_MP, DIKEY_DOWN))
+			if(hge->Input_GetDIKey(KS_SLOW_MP_(playerindex), DIKEY_DOWN))
 			{
 				if (!(flag & PLAYER_SLOWCHANGE))
 				{
@@ -744,7 +743,7 @@ void Player::action()
 		{
 			bSlow = false;
 			flag &= ~PLAYER_SLOWCHANGE;
-			if(hge->Input_GetDIKey(KS_SLOW_MP, DIKEY_UP))
+			if(hge->Input_GetDIKey(KS_SLOW_MP_(playerindex), DIKEY_UP))
 			{
 				if (!(flag & PLAYER_FASTCHANGE))
 				{
@@ -777,7 +776,7 @@ void Player::action()
 		speedfactor = 1.0f;
 		if(!(flag & PLAYER_BORDER || flag & PLAYER_BOMB))
 		{
-			if(hge->Input_GetDIKey(KS_CHARGE_MP, DIKEY_DOWN))
+			if(hge->Input_GetDIKey(KS_CHARGE_MP_(playerindex), DIKEY_DOWN))
 			{
 				if (!(flag & PLAYER_PLAYERCHANGE))
 				{
@@ -786,21 +785,21 @@ void Player::action()
 				}
 			}
 		}
-		if((hge->Input_GetDIKey(KS_UP_MP) ^ hge->Input_GetDIKey(KS_DOWN_MP)) &&
-			hge->Input_GetDIKey(KS_LEFT_MP) ^ hge->Input_GetDIKey(KS_RIGHT_MP))
+		if((hge->Input_GetDIKey(KS_UP_MP_(playerindex)) ^ hge->Input_GetDIKey(KS_DOWN_MP_(playerindex))) &&
+			hge->Input_GetDIKey(KS_LEFT_MP_(playerindex)) ^ hge->Input_GetDIKey(KS_RIGHT_MP_(playerindex)))
 			nowspeed *= M_SQUARE_2;
-		if(hge->Input_GetDIKey(KS_UP_MP))
+		if(hge->Input_GetDIKey(KS_UP_MP_(playerindex)))
 			y -= nowspeed;
-		if(hge->Input_GetDIKey(KS_DOWN_MP))
+		if(hge->Input_GetDIKey(KS_DOWN_MP_(playerindex)))
 			y += nowspeed;
-		if(hge->Input_GetDIKey(KS_LEFT_MP))
+		if(hge->Input_GetDIKey(KS_LEFT_MP_(playerindex)))
 		{
 			updateFrame(PLAYER_FRAME_LEFTPRE);
 			x -= nowspeed;
 		}
-		if(hge->Input_GetDIKey(KS_RIGHT_MP))
+		if(hge->Input_GetDIKey(KS_RIGHT_MP_(playerindex)))
 		{
-			if (!hge->Input_GetDIKey(KS_LEFT_MP))
+			if (!hge->Input_GetDIKey(KS_LEFT_MP_(playerindex)))
 			{
 				updateFrame(PLAYER_FRAME_RIGHTPRE);
 			}
@@ -810,14 +809,14 @@ void Player::action()
 			}
 			x += nowspeed;
 		}
-		if (!hge->Input_GetDIKey(KS_LEFT_MP) && !hge->Input_GetDIKey(KS_RIGHT_MP))
+		if (!hge->Input_GetDIKey(KS_LEFT_MP_(playerindex)) && !hge->Input_GetDIKey(KS_RIGHT_MP_(playerindex)))
 		{
 			updateFrame(PLAYER_FRAME_STAND);
 		}
-		if(hge->Input_GetDIKey(KS_FIRE_MP) && !Chat::chatitem.IsChatting())
+		if(hge->Input_GetDIKey(KS_FIRE_MP_(playerindex)) && !Chat::chatitem.IsChatting())
 			flag |= PLAYER_SHOOT;
 	}
-	if(hge->Input_GetDIKey(KS_QUICK_MP) && !(flag & PLAYER_MERGE))
+	if(hge->Input_GetDIKey(KS_QUICK_MP_(playerindex)) && !(flag & PLAYER_MERGE))
 	{
 		callBomb(mp.spellmode);
 	}
@@ -1000,7 +999,7 @@ void Player::DoPlayerBulletHit(int hitonfactor)
 
 void Player::DoShot()
 {
-	if (!Player::p[0].bInfi && !(Player::p[0].flag & (PLAYER_SHOT | PLAYER_COLLAPSE)))
+	if (!bInfi && !(flag & (PLAYER_SHOT | PLAYER_COLLAPSE)))
 	{
 		if(nPower >= bombperpower)
 			flag |= PLAYER_SHOT;
@@ -1069,7 +1068,7 @@ bool Player::callBomb(bool onlyborder)
 
 	if (flag & PLAYER_BORDER)
 	{
-		if (!hge->Input_GetDIKey(KS_QUICK_MP, DIKEY_DOWN) && hge->Input_GetDIKey(KS_QUICK_MP))
+		if (!hge->Input_GetDIKey(KS_QUICK_MP_(playerindex), DIKEY_DOWN) && hge->Input_GetDIKey(KS_QUICK_MP_(playerindex)))
 		{
 			return false;
 		}
@@ -1091,11 +1090,11 @@ void Player::callSlowFastChange(bool toslow)
 {
 	if (toslow)
 	{
-		hge->Input_SetDIKey(KS_SLOW_MP);
+		hge->Input_SetDIKey(KS_SLOW_MP_(playerindex));
 	}
 	else
 	{
-		hge->Input_SetDIKey(KS_SLOW_MP, false);
+		hge->Input_SetDIKey(KS_SLOW_MP_(playerindex), false);
 	}
 }
 
@@ -1111,7 +1110,7 @@ bool Player::Merge()
 	bInfi = true;
 	if(mergetimer == 1)
 	{
-		if(hge->Input_GetDIKey(KS_SLOW_MP))
+		if(hge->Input_GetDIKey(KS_SLOW_MP_(playerindex)))
 		{
 			flag |= PLAYER_SLOWCHANGE;
 			slowtimer = 0;
@@ -1254,7 +1253,7 @@ bool Player::Collapse()
 			return true;
 		}
 
-		if(hge->Input_GetDIKey(KS_SLOW_MP))
+		if(hge->Input_GetDIKey(KS_SLOW_MP_(playerindex)))
 		{
 			flag |= PLAYER_SLOWCHANGE;
 			slowtimer = 0;
@@ -1355,7 +1354,7 @@ bool Player::Bomb()
 	{
 		bombtimer = 0;
 		bInfi = false;
-		if(hge->Input_GetDIKey(KS_SLOW_MP))
+		if(hge->Input_GetDIKey(KS_SLOW_MP_(playerindex)))
 		{
 			flag |= PLAYER_SLOWCHANGE;
 			slowtimer = 0;
@@ -1376,15 +1375,29 @@ bool Player::Bomb()
 	return false;
 }
 
+void Player::ResetPlayerGhost(bool move /* = false */)
+{
+	int tid = nowID;
+	tid *= PLAYERGHOSTMAX * 2;
+	if (bSlow)
+	{
+		tid += PLAYERGHOSTMAX;
+	}
+	for (int i=0; i<PLAYERGHOSTMAX; i++)
+	{
+		pg[i].valueSet(playerindex, tid+i, move);
+	}
+}
+
 bool Player::SlowChange()
 {
-	if(hge->Input_GetDIKey(KS_SLOW_MP, DIKEY_DOWN))
+	if(hge->Input_GetDIKey(KS_SLOW_MP_(playerindex), DIKEY_DOWN))
 		slowtimer = 0;
 	bSlow = true;
 	slowtimer++;
 	if(slowtimer == 1)
 	{
-		PlayerGhost::ResetValue();
+		ResetPlayerGhost();
 		SE::push(SE_PLAYER_SLOWON, x);
 		for(int i=0;i<PLAYERGHOSTMAX;i++)
 		{
@@ -1406,19 +1419,19 @@ bool Player::SlowChange()
 void Player::changePlayerID(WORD toID, bool moveghost/* =false */)
 {
 	nowID = toID;
-	PlayerGhost::ResetValue(moveghost);
+	ResetPlayerGhost(moveghost);
 	UpdatePlayerData();
 }
 
 bool Player::FastChange()
 {
-	if(hge->Input_GetDIKey(KS_SLOW_MP, DIKEY_UP))
+	if(hge->Input_GetDIKey(KS_SLOW_MP_(playerindex), DIKEY_UP))
 		fasttimer = 0;
 	bSlow = false;
 	fasttimer++;
 	if(fasttimer == 1)
 	{
-		PlayerGhost::ResetValue();
+		ResetPlayerGhost();
 		SE::push(SE_PLAYER_SLOWOFF, x);
 		for(int i=0;i<PLAYERGHOSTMAX;i++)
 		{
@@ -1435,7 +1448,7 @@ bool Player::FastChange()
 
 bool Player::PlayerChange()
 {
-	if(hge->Input_GetDIKey(KS_CHARGE_MP, DIKEY_DOWN))
+	if(hge->Input_GetDIKey(KS_CHARGE_MP_(playerindex), DIKEY_DOWN))
 		playerchangetimer = 0;
 	playerchangetimer++;
 	if(playerchangetimer == 1)

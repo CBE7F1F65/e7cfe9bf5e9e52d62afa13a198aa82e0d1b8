@@ -16,7 +16,7 @@ void Player::_Shoot()
 		{
 			if (item->userID == nowID && item->timeMod && (item->timeMod == 1 || !(shoottimer % item->timeMod)))
 			{
-				PlayerBullet::Build(i);
+				PlayerBullet::Build(playerindex, i);
 			}
 		}
 	}
@@ -33,7 +33,7 @@ bool Player::Shoot()
 	_Shoot();
 	shoottimer++;
 //
-	if(!hge->Input_GetDIKey(KS_FIRE_MP) && shoottimer % 24 == 0)
+	if(!hge->Input_GetDIKey(KS_FIRE_MP_(playerindex)) && shoottimer % 24 == 0)
 	{
 		shoottimer = 0;
 		return true;

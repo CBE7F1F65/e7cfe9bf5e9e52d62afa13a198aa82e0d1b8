@@ -131,16 +131,33 @@ void Enemy::Action(bool notinstop)
 	}
 }
 
-void Enemy::RenderAll()
+void Enemy::GetIDBeginUntil(BYTE renderflag, int & idbegin, int & iduntil)
 {
-	for (int i=0; i<ENEMYMAX; i++)
+	if (renderflag == M_RENDER_LEFT)
+	{
+		idbegin = ENID_LEFTIDBEGIN;
+		iduntil = ENID_LEFTIDUNTIL;
+	}
+	else if (renderflag == M_RENDER_RIGHT)
+	{
+		idbegin = ENID_RIGHTIDBEGIN;
+		iduntil = ENID_RIGHTIDUNTIL;
+	}
+}
+
+void Enemy::RenderAll(BYTE renderflag)
+{
+	int idbegin;
+	int iduntil;
+	GetIDBeginUntil(renderflag, idbegin, iduntil);
+	for (int i=idbegin; i<iduntil; i++)
 	{
 		if (en[i].exist)
 		{
 			en[i].Render();
 		}
 	}
-	for (int i=0; i<ENEMYMAX; i++)
+	for (int i=idbegin; i<iduntil; i++)
 	{
 		if (en[i].exist)
 		{
@@ -232,6 +249,7 @@ void Enemy::valueSet(WORD _ID, float _x, float _y, int _angle, float _speed, BYT
 
 void Enemy::matchAction()
 {
+	BYTE playerindex = getPlayerIndex();
 	switch(ac)
 	{
 	case ENAC_NONE:
@@ -249,7 +267,7 @@ void Enemy::matchAction()
 		//¿¿½üÖ÷½Ç
 		if(timer < para[0])
 		{
-			angle = aMainAngle(Player::p[0]);
+			angle = aMainAngle(Player::p[playerindex]);
 			speed *= para[1]/1000.0f;
 		}
 		else
@@ -336,7 +354,7 @@ void Enemy::matchAction()
 		else if(timer < para[2])
 		{
 			speed += 0.06f;
-			angle = aMainAngle(Player::p[0]);
+			angle = aMainAngle(Player::p[playerindex]);
 		}
 		break;
 
@@ -367,10 +385,10 @@ void Enemy::matchAction()
 		else if(timer % (int)para[3] == 0)
 		{
 			para[0] = 2 * para[3] > 120 ? 120 : 2 * para[3];
-			if(Player::p[0].x > x)
-				para[1] = Player::p[0].x + randt() % 60;
+			if(Player::p[playerindex].x > x)
+				para[1] = Player::p[playerindex].x + randt() % 60;
 			else
-				para[1] = Player::p[0].x - randt() % 60;
+				para[1] = Player::p[playerindex].x - randt() % 60;
 			if(para[1] < M_ACTIVECLIENT_RIGHT*0.15f)
 			{
 				if(x <= M_ACTIVECLIENT_RIGHT*0.15f + 8)
@@ -763,7 +781,7 @@ void Enemy::GetCollisionRect(float * w, float * h)
 
 void Enemy::CostLife(float power)
 {
-	if (!Player::p[0].bBomb || !(bossinfo.spellflag & BISF_NOBOMBDAMAGE))
+	if (!Player::p[getPlayerIndex()].bBomb || !(bossinfo.spellflag & BISF_NOBOMBDAMAGE))
 	{
 		life -= power * (1 - defrate);
 	}
@@ -795,12 +813,25 @@ void Enemy::actionInStop()
 	}
 }
 
+BYTE Enemy::getPlayerIndex()
+{
+	if (ID >= ENID_LEFTIDBEGIN && ID < ENID_LEFTIDUNTIL)
+	{
+		return 0;
+	}
+	else if (ID >= ENID_RIGHTIDBEGIN && ID < ENID_RIGHTIDUNTIL)
+	{
+		return 1;
+	}
+	return 0;
+}
+
 void Enemy::DoShot()
 {
 	float tw;
 	float th;
 	GetCollisionRect(&tw, &th);
-	float costpower = PlayerBullet::CheckShoot(x, y ,tw, th);
+	float costpower = PlayerBullet::CheckShoot(getPlayerIndex(), x, y ,tw, th);
 	if (costpower)
 	{
 		CostLife(costpower);
@@ -817,7 +848,7 @@ void Enemy::DoShot()
 				if (isInRange(tdmg->x, tdmg->y, tdmg->r))
 				{
 					CostLife(tdmg->power);
-					Player::p[0].DoPlayerBulletHit();
+					Player::p[getPlayerIndex()].DoPlayerBulletHit();
 				}
 			}
 		}
@@ -874,7 +905,7 @@ void Enemy::DoShot()
 
 		if (life < 0)
 		{
-			Player::p[0].GetScoreLife(maxlife, true);
+			Player::p[getPlayerIndex()].GetScoreLife(maxlife, true);
 
 			SE::push(SE_ENEMY_DEAD, x);
 
@@ -889,6 +920,7 @@ void Enemy::action()
 {
 	timer++;
 
+	BYTE playerindex = getPlayerIndex();
 	if(infitimer)
 	{
 		infitimer--;
@@ -948,16 +980,16 @@ void Enemy::action()
 		float tw;
 		float th;
 		GetCollisionRect(&tw, &th);
-		if (!Player::p[0].bInfi && !Player::p[0].bBomb && !Player::p[0].bBorder)
+		if (!Player::p[playerindex].bInfi && !Player::p[playerindex].bBomb && !Player::p[playerindex].bBorder)
 		{
-			if (checkCollisionSquare(Player::p[0], tw, th))
+			if (checkCollisionSquare(Player::p[playerindex], tw, th))
 			{
-				Player::p[0].DoShot();
+				Player::p[playerindex].DoShot();
 			}
 		}
 		if(BossInfo::flag)
 		{
-			int txdiff = fabsf(Player::p[0].x - x);
+			int txdiff = fabsf(Player::p[playerindex].x - x);
 			if(txdiff < ENEMY_BOSSX_FADERANGE)
 				FrontDisplay::fdisp.info.enemyx->SetColor(((0x40 + txdiff*2) << 24) | 0xffffff);
 			else

@@ -11,6 +11,11 @@
 #define ENEMY_INDEXSTART	4
 #define ENEMY_MAINBOSSINDEX	0
 
+#define ENID_LEFTIDBEGIN	0x0
+#define ENID_LEFTIDUNTIL	(ENEMYMAX/2)
+#define ENID_RIGHTIDBEGIN	ENID_LEFTIDUNTIL
+#define ENID_RIGHTIDUNTIL	ENEMYMAX
+
 #define ENEMY_TEXMAX		4
 #define ENEMY_PARAMAX		4
 
@@ -79,11 +84,14 @@ public:
 	static void DamageZoneBuild(float x, float y, float r, float power);
 	static void Action(bool notinstop);
 	static void ClearAll();
-	static void RenderAll();
+	static void RenderAll(BYTE renderflag);
 	static void ClearDamageZoneItem();
+
+	static void GetIDBeginUntil(BYTE renderflag, int & idbegin, int & iduntil);
 
 	void Clear();
 	bool isInRange(float x, float y, float r);
+	BYTE getPlayerIndex();
 
 	void valueSet(WORD ID, float x, float y, int angle, float speed, BYTE type, float life, int infitimer, DWORD take,
 		WORD ac=0, float para0 = 0, float para1 = 0, float para2 = 0, float para3 = 0);

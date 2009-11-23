@@ -119,15 +119,28 @@ void Ghost::Render()
 
 void Ghost::actionInStop()
 {
-	if (!fadeout && !half && Player::p[0].bBorder)
+	if (!fadeout && !half && Player::p[getPlayerIndex()].bBorder)
 	{
 		DoShot();
 	}
 }
 
+BYTE Ghost::getPlayerIndex()
+{
+	if (ID >= GHID_LEFTIDBEGIN && ID < GHID_LEFTIDUNTIL)
+	{
+		return 0;
+	}
+	else if (ID >= GHID_RIGHTIDBEGIN && ID < GHID_RIGHTIDUNTIL)
+	{
+		return 1;
+	}
+	return 0;
+}
+
 void Ghost::DoShot()
 {
-	float costpower = PlayerBullet::CheckShoot(x, y, 32);
+	float costpower = PlayerBullet::CheckShoot(getPlayerIndex(), x, y, 32);
 	if (costpower)
 	{
 		CostLife(costpower);
@@ -144,7 +157,7 @@ void Ghost::DoShot()
 				if (checkCollisionCircle(tdmg->x, tdmg->y, tdmg->r))
 				{
 					CostLife(tdmg->power);
-					Player::p[0].DoPlayerBulletHit();
+					Player::p[getPlayerIndex()].DoPlayerBulletHit();
 				}
 			}
 		}
@@ -185,13 +198,26 @@ void Ghost::Action(bool notinstop)
 	}
 }
 
-void Ghost::RenderAll()
+void Ghost::RenderAll(BYTE renderflag)
 {
-	for (int i=0; i<GHOSTMAX; i++)
+	if (renderflag == M_RENDER_LEFT)
 	{
-		if (gh[i].exist)
+		for (int i=GHID_LEFTIDBEGIN; i<GHID_LEFTIDUNTIL; i++)
 		{
-			gh[i].Render();
+			if (gh[i].exist)
+			{
+				gh[i].Render();
+			}
+		}
+	}
+	else if (renderflag == M_RENDER_RIGHT)
+	{
+		for (int i=GHID_RIGHTIDBEGIN; i<GHID_RIGHTIDUNTIL; i++)
+		{
+			if (gh[i].exist)
+			{
+				gh[i].Render();
+			}
 		}
 	}
 }
@@ -200,6 +226,7 @@ void Ghost::action()
 {
 	timer++;
 
+	BYTE playerindex = getPlayerIndex();
 	if(life < maxlife / 2 && life > 0)
 	{
 		if (!half)
@@ -209,17 +236,17 @@ void Ghost::action()
 		}
 	}
 
-	if(!fadeout && !gave && half && (Player::p[0].bBorder))
+	if(!fadeout && !gave && half && (Player::p[playerindex].bBorder))
 	{
 		Item::Build(ITEM_FAITH, x, y, true);
 
 		gave = true;
 	}
 
-	if (Player::p[0].bBorder ^ lastborderstate)
+	if (Player::p[playerindex].bBorder ^ lastborderstate)
 	{
 		// TODO:
-		effghost.valueSet(EFF_GH_TYPEBEGIN + type + (Player::p[0].bBorder?1:0), M_RENDER_LEFT, *this);
+		effghost.valueSet(EFF_GH_TYPEBEGIN + type + (Player::p[playerindex].bBorder?1:0), M_RENDER_LEFT, *this);
 		effghost.Fire();
 		lastborderstate ^= true;
 	}
@@ -246,11 +273,11 @@ void Ghost::action()
 			index = tindex;
 		}
 
-		if(Player::p[0].bBorder)
+		if(Player::p[playerindex].bBorder)
 		{
-			if (checkCollisionSquare(Player::p[0], GHOST_COLLISIONR))
+			if (checkCollisionSquare(Player::p[playerindex], GHOST_COLLISIONR))
 			{
-				Player::p[0].DoShot();
+				Player::p[playerindex].DoShot();
 			}
 			DoShot();
 		}
@@ -282,7 +309,7 @@ void Ghost::action()
 
 			if (life < 0)
 			{
-				Player::p[0].GetScoreLife(maxlife, false);
+				Player::p[playerindex].GetScoreLife(maxlife, false);
 
 				fadeout = true;
 				timer = 0;

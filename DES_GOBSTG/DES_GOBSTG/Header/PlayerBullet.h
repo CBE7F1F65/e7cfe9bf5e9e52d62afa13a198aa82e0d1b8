@@ -33,13 +33,13 @@ public:
 	virtual ~PlayerBullet();
 
 	static void Init(HTEXTURE * tex);
-	static void Build(int shootdataID);
+	static void Build(BYTE playerindex, int shootdataID);
 	static void ClearItem();
 	static void Action();
-	static void RenderAll();
-	static float CheckShoot(float aimx, float aimy, float aimw, float aimh=0.0f);
+	static void RenderAll(BYTE renderflag);
+	static float CheckShoot(BYTE playerindex, float aimx, float aimy, float aimw, float aimh=0.0f);
 
-	void valueSet(WORD ID, BYTE arrange, float xbias, float ybias, float scale, int angle, float speed, float accelspeed, float power, int hitonfactor, WORD flag, BYTE seID);
+	void valueSet(BYTE playerindex, WORD ID, BYTE arrange, float xbias, float ybias, float scale, int angle, float speed, float accelspeed, float power, int hitonfactor, WORD flag, BYTE seID);
 
 	virtual void action();
 	void Render();
@@ -75,13 +75,14 @@ public:
 	WORD	flag;
 
 	BYTE	arrange;
+	BYTE	playerindex;
 
 	static hgeSprite * spPlayerBullet[PLAYERBULLETSPRITEMAX];
 	static DWORD bcol0, bcol1, bcol2, bcol3;
 	static HTEXTURE * tex;
 	static int locked;
 	static WORD beams;
-	static VectorList<PlayerBullet>pb;
+	static VectorList<PlayerBullet>pb[M_PL_MATCHMAXPLAYER];
 };
 
 #endif

@@ -39,7 +39,7 @@ int Process::processContinue()
 		BGLayer::ubg[UBGID_FGPAUSE].exist = false;
 		if(!spellmode && scene < S1200)
 		{
-			Player::p[0].valueSet(mainchara, subchara_1, subchara_2, PL_DEFAULTNPLAYER, true);
+			Player::p[0].valueSet(0, mainchara, subchara_1, subchara_2, PL_DEFAULTNPLAYER, true);
 			Player::p[0].ncCont++;
 
 			Bullet::IzeBuild(BULLETIZE_FADEOUT, Player::p[0].x, Player::p[0].y);
