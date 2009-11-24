@@ -51,6 +51,7 @@ public:
 
 	float zpos;
 	int nlives;
+	int nobj;
 
 	int oper;
 	char * input;

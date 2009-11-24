@@ -70,24 +70,33 @@ bool EditorRes::Load()
 
 	for(int i=0; i<EFFECTSYSTYPEMAX; i++)
 	{
-		char buffer[M_STRMAX];
-		if(strlen(res.resdata.effectsysfilename[i]))
-		{
-			eff[i] = new hgeEffectSystem;
-			strcpy(buffer, res.resdata.effectsysfoldername);
-			strcat(buffer, res.resdata.effectsysfilename[i]);
-			texnum[i] = Export::effLoad(buffer, eff[i], tex);
-			if(texnum[i] < 0)
-			{
-				HGELOG("Failed in loading Effect System File %s.", buffer);
-				data.SetEffectSystemResourceName(i, "");
-				delete eff[i];
-				eff[i] = NULL;
-			}
-		}
+		ReloadEffect(i);
 	}
 
 	return true;
+}
+
+bool EditorRes::ReloadEffect(int ID)
+{
+	ReleaseEffect(ID);
+	char buffer[M_STRMAX];
+	if(strlen(res.resdata.effectsysfilename[ID]))
+	{
+		eff[ID] = new hgeEffectSystem;
+		strcpy(buffer, res.resdata.effectsysfoldername);
+		strcat(buffer, res.resdata.effectsysfilename[ID]);
+		texnum[ID] = Export::effLoad(buffer, eff[ID], tex);
+		if(texnum[ID] < 0)
+		{
+			HGELOG("Failed in loading Effect System File %s.", buffer);
+			data.SetEffectSystemResourceName(ID, "");
+			delete eff[ID];
+			eff[ID] = NULL;
+			return false;
+		}
+		return true;
+	}
+	return false;
 }
 
 char * EditorRes::GetAffectorName(char type)
@@ -164,7 +173,9 @@ bool EditorRes::Save(int savei)
 	if(MessageBox(NULL, buffer, "", MB_OKCANCEL) == IDCANCEL)
 		return false;
 
-	return Export::effSave(fullfilename, eff[savei], texnum[savei]);
+	bool ret = Export::effSave(fullfilename, eff[savei], texnum[savei]);
+	ReloadEffect(savei);
+	return ret;
 }
 
 void EditorRes::Release()
@@ -195,11 +206,16 @@ void EditorRes::Release()
 
 	for(int i=0; i<EFFECTSYSTYPEMAX; i++)
 	{
-		if(eff[i])
-			delete eff[i];
-		eff[i] = NULL;
-		texnum[i] = -1;
+		ReleaseEffect(i);
 	}
+}
+
+void EditorRes::ReleaseEffect(int ID)
+{
+	if(eff[ID])
+		delete eff[ID];
+	eff[ID] = NULL;
+	texnum[ID] = -1;
 }
 
 void EditorRes::Init()

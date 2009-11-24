@@ -52,6 +52,10 @@ void EditorUI::SetupEB(bool updateList)
 
 		if(updateList)
 		{
+			eres.eff[ebnum]->Stop(true);
+			eres.eff[ebnum]->MoveTo(mx, my, true);
+			eres.eff[ebnum]->Fire();
+
 			emitterItem = eres.eff[ebnum]->eiList;
 			if(emitterItem)
 			{
@@ -73,7 +77,6 @@ void EditorUI::SetupEB(bool updateList)
 			{
 				affector = NULL;
 			}
-			eres.eff[ebnum]->Fire();
 		}
 	}
 	else
@@ -1047,13 +1050,14 @@ void EditorUI::Update()
 	}
 
 	nlives = 0;
+	nobj = 0;
 	if(eres.eff[ebnum])
 	{
 		if(mx < M_ACTIVECLIENT_RIGHT)
 			eres.eff[ebnum]->MoveTo(mx, my, zpos);
 		eres.eff[ebnum]->Update();
 
-		nlives = eres.eff[ebnum]->GetEffectObjectAlive();
+		nlives = eres.eff[ebnum]->GetEffectObjectAlive(0, &nobj);
 	}
 
 	if(hge->Input_GetDIKey(DIK_RCONTROL))
@@ -2136,6 +2140,6 @@ void EditorUI::Render()
 	if(eres.font)
 	{
 		eres.font->printf(M_ACTIVECLIENT_RIGHT, M_ACTIVECLIENT_BOTTOM - UIITEM_FONT, HGETEXT_RIGHT, "%f", hge->Timer_GetFPS(35));
-		eres.font->printf(M_ACTIVECLIENT_LEFT, M_ACTIVECLIENT_BOTTOM - UIITEM_FONT, HGETEXT_LEFT, "(%d, %d, %d) nLives=%d", (int)mx, (int)my, (int)zpos, nlives);
+		eres.font->printf(M_ACTIVECLIENT_LEFT, M_ACTIVECLIENT_BOTTOM - UIITEM_FONT, HGETEXT_LEFT, "(%d, %d, %d) nLives=%d (%d)", (int)mx, (int)my, (int)zpos, nlives, nobj);
 	}
 }

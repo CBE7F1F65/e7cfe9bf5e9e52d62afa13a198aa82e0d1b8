@@ -148,7 +148,19 @@ void hgeEffectSystem::FreeList()
 	while(emitterItem)
 	{
 		if(emitterItem->emitter.sprite)
+		{
 			delete emitterItem->emitter.sprite;
+			emitterItem->emitter.sprite = NULL;
+		}
+		if (emitterItem->emitter.nObj)
+		{
+			if (emitterItem->emitter.obj)
+			{
+				free(emitterItem->emitter.obj);
+				emitterItem->emitter.obj = NULL;
+			}
+			emitterItem->emitter.nObj = 0;
+		}
 		CAffectorList * affectorItem = emitterItem->emitter.eaiList, *affectorNextItem;
 
 		while(affectorItem)
@@ -289,7 +301,7 @@ void hgeEffectSystem::Update()
 			emitter->fEmissionResidue += emitter->eei.fEmitNum;
 			while(emitter->fEmissionResidue >= 1.0f)
 			{
-				if(emitter->nEffectObjectsAlive >= MAX_EFFECTS)
+				if(emitter->nEffectObjectsAlive >= emitter->nObj)
 					break;
 				hgeEffectObject * _obj = obj + emitter->nEffectObjectsAlive;
 				ZeroMemory(_obj, sizeof(hgeEffectObject));
@@ -697,6 +709,13 @@ bool hgeEffectSystem::AddEmitter(hgeEffectEmitter * emitter)
 	emitter->sprite->SetBlendMode(emitter->eei.blend);
 	emitter->sprite->SetHotSpot(emitter->eei.fHotX, emitter->eei.fHotY);
 
+	emitter->nObj = emitter->eei.fEmitNum * emitter->eei.nLifeTimeMax + 1;
+	if (emitter->nObj > MAX_EFFECTS || emitter->nObj <= 1)
+	{
+		emitter->nObj = MAX_EFFECTS;
+	}
+	emitter->obj = (hgeEffectObject *)malloc(sizeof(hgeEffectObject) * emitter->nObj);
+
 	emitterItem->next = eiList;
 	eiList = emitterItem;
 
@@ -726,7 +745,19 @@ bool hgeEffectSystem::DeleteEmitter(BYTE emitterID)
 		}
 
 		if(emitterItem->emitter.sprite)
+		{
 			delete emitterItem->emitter.sprite;
+			emitterItem->emitter.sprite = NULL;
+		}
+		if (emitterItem->emitter.nObj)
+		{
+			if (emitterItem->emitter.obj)
+			{
+				free(emitterItem->emitter.obj);
+				emitterItem->emitter.obj = NULL;
+			}
+			emitterItem->emitter.nObj = 0;
+		}
 		CAffectorList * affectorItem = emitterItem->emitter.eaiList, *affectorNextItem;
 
 		while(affectorItem)
@@ -972,9 +1003,13 @@ int hgeEffectSystem::GetAffectorAge(BYTE emitterID, BYTE affectorID)
 	return 0;
 }
 
-int hgeEffectSystem::GetEffectObjectAlive(BYTE emitterID)
+int hgeEffectSystem::GetEffectObjectAlive(BYTE emitterID, int * nobj)
 {
 	int nAlive = 0;
+	if (nobj)
+	{
+		*nobj = 0;
+	}
 
 	CEmitterList * emitterItem = eiList;
 
@@ -982,10 +1017,18 @@ int hgeEffectSystem::GetEffectObjectAlive(BYTE emitterID)
 	{
 		if(!emitterID)
 		{
+			if (nobj)
+			{
+				*nobj += emitterItem->emitter.nObj;
+			}
 			nAlive += emitterItem->emitter.nEffectObjectsAlive;
 		}
 		else if(emitterItem->emitter.ID == emitterID)
 		{
+			if (nobj)
+			{
+				*nobj = emitterItem->emitter.nObj;
+			}
 			return emitterItem->emitter.nEffectObjectsAlive;
 		}
 		emitterItem = emitterItem->next;

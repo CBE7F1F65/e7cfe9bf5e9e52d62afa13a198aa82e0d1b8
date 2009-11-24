@@ -165,11 +165,12 @@ struct CAffectorList{
 };
 
 struct hgeEffectEmitter{
-	hgeEffectObject			obj[MAX_EFFECTS];
+	hgeEffectObject			* obj;
 	CAffectorList *			eaiList;
 	hgeEffectEmitterInfo	eei;
 	int						nEffectObjectsAlive;
 	int						nAge;
+	int						nObj;
 	float					fEmissionResidue;
 	hgeSprite *				sprite;
 	BYTE					ID;
@@ -216,7 +217,7 @@ public:
 
 	int GetEmitterAge(BYTE emitterID);
 	int GetAffectorAge(BYTE emitterID, BYTE affectorID);
-	int GetEffectObjectAlive(BYTE emitterID = 0);
+	int GetEffectObjectAlive(BYTE emitterID = 0, int * nobj=NULL);
 
 private:
 	void _EffectSystemInit();

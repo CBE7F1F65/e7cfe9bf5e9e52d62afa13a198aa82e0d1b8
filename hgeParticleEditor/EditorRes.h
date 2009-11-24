@@ -141,6 +141,8 @@ public:
 	~EditorRes();
 
 	bool Load();
+	bool ReloadEffect(int ID);
+	void ReleaseEffect(int ID);
 	void Release();
 
 	void Init();
