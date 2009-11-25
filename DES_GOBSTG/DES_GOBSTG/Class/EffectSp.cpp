@@ -3,8 +3,12 @@
 #include "Enemy.h"
 #include "SpriteItemManager.h"
 #include "FrontDisplayName.h"
+#include "Bullet.h"
+#include "Scripter.h"
 
-BYTE EffectSp::evtype;
+#define EFFSPMAX	(BULLETMAX * M_PL_MATCHMAXPLAYER)
+
+VectorList<EffectSp> EffectSp::effsp;
 
 EffectSp::EffectSp()
 {
@@ -18,79 +22,161 @@ EffectSp::~EffectSp()
 	sprite = NULL;
 }
 
+void EffectSp::Init()
+{
+	effsp.init(EFFSPMAX);
+}
+
+void EffectSp::ClearItem()
+{
+	effsp.clear_item();
+}
+
 void EffectSp::Render()
 {
 	sprite->SetColor((alpha<<24)|diffuse);
 	sprite->RenderEx(x, y, ARC(angle+headangle), hscale, vscale);
 }
 
-void EffectSp::valueSet(BYTE _type, float _x, float _y, int _angle, float _speed, bool _onplayer, WORD _ID)
+void EffectSp::Action()
 {
-	ID			= _ID;
-	type		= _type;
-	x			= _x;
-	y			= _y;
-	angle		= _angle;
-	speed		= _speed;
-	onplayer	= _onplayer;
-
-	timer = 0;
-	exist = true;
-	hscale = 1;
-	vscale = 0;
-	headangle = 0;
-
-	if(sprite)
-		SpriteItemManager::FreeSprite(&sprite);
-
-	colorSet(0xffffff);
-
-	switch(type)
+	if (effsp.size)
 	{
-	case EFFECT_PLAYERCHANGE:
-		sprite = SpriteItemManager::CreateSpriteByName(SI_PLAYER_SHOTITEM);
-		sprite->SetBlendMode(BLEND_ALPHAADD);
-		alpha = 0x7f;
-		hscale = 3.0f;
-		break;
-	case EFFECT_PLAYERSHOT:
-		sprite = SpriteItemManager::CreateSpriteByName(SI_PLAYER_SHOTITEM);
-		alpha = 0xcc;
-		hscale = 1.2f;
-		break;
-	case EFFECT_PLAYERBORDER:
-		sprite = SpriteItemManager::CreateSpriteByName(SI_BORDER_CIRCLE);
-		alpha = 0xC0;
-		hscale = 1.0f;
-		break;
-	case EFFECT_PLAYERBORDERZONE:
-		sprite = SpriteItemManager::CreateSpriteByName(SI_BORDER_CIRCLE);
-		alpha = 0x80;
-		hscale = 0.0f;
-		break;
-	case EFFECT_PLAYERPOINT:
-		sprite = SpriteItemManager::CreateSpriteByName(SI_PLAYER_POINT);
-		alpha = 0xff;
-		hscale = 1.0f;
-		break;
-	case EFFECT_PLAYERCOLLAPSE:
-		sprite = SpriteItemManager::CreateSpriteByName(SI_PLAYER_SHOTITEM);
-		alpha = 0x7f;
-		hscale = 1.0f;
-		break;
-
-	case EFFECT_BOMB_CUTIN:
-		sprite = SpriteItemManager::CreateSpriteByName(SI_PLAYERFACE_01);
-		SpriteItemManager::ptFace(Player::p[0].nowID, sprite, false);
-		hscale = vscale = 1.40625f;
-		alpha = 0x7f;
-		break;
+		DWORD i = 0;
+		DWORD size = effsp.size;
+		for (effsp.toBegin(); i<size; effsp.toNext(), i++)
+		{
+			if (effsp.isValid())
+			{
+				if ((*effsp).exist)
+				{
+					(*effsp).action();
+				}
+				else
+				{
+					effsp.pop();
+				}
+			}
+		}
 	}
 }
 
-void EffectSp::colorSet(DWORD color)
+void EffectSp::RenderAll()
 {
-	diffuse = color;
+	if (effsp.size)
+	{
+		DWORD i = 0;
+		DWORD size = effsp.size;
+		for (effsp.toBegin(); i<size; effsp.toNext(), i++)
+		{
+			if (effsp.isValid())
+			{
+				if ((*effsp).exist)
+				{
+					(*effsp).Render();
+				}
+			}
+		}
+	}
+}
+
+
+void EffectSp::EffectSpOff(int _setID, int _ID)
+{
+	if (_setID < EFFSPSET_FREEBEGIN || _setID >= EFFSPSET_FREEUNTIL)
+	{
+		return;
+	}
+	DWORD nowindex = effsp.index;
+	if (effsp.size)
+	{
+		DWORD i = 0;
+		DWORD size = effsp.size;
+		for (effsp.toBegin(); i<size; effsp.toNext(), i++)
+		{
+			if (effsp.isValid())
+			{
+				if ((*effsp).exist)
+				{
+					if ((*effsp).setID == _setID)
+					{
+						if (_ID < 0 || (*effsp).ID == _ID)
+						{
+							effsp.pop();
+						}
+					}
+				}
+			}
+		}
+	}
+	effsp.index = nowindex;
+}
+
+void EffectSp::actionSet(int _angle, float _speed, int _headangleadd/* =0 */)
+{
+	angle = _angle;
+	speed = _speed;
+	headangleadd = _headangleadd;
+}
+
+void EffectSp::chaseSet(BYTE _chaseflag, float _aimx, float _aimy, int _chasetimer/* =-1 */, BYTE _chaseaim/* =0xff */)
+{
+	if (chaseflag != _chaseflag || _chasetimer != -1)
+	{
+		chasetimer = _chasetimer;
+	}
+	if (chaseflag != chaseflag || _chaseaim != 0xff)
+	{
+		chaseaim = _chaseaim;
+	}
+	chaseflag = _chaseflag;
+	aimx = _aimx;
+	aimy = _aimy;
+}
+
+void EffectSp::Build(int setID, WORD ID, int siid, float x, float y, int headangle/* =0 */, float hscale/* =1.0f */, float vscale/* =0.0f */)
+{
+	EffectSp _effsp;
+	effsp.push_back(_effsp)->valueSet(setID, ID, siid, x, y, headangle, hscale, vscale);
+}
+
+void EffectSp::valueSet(int _setID, WORD _ID, int siid, float _x, float _y, int _headangle/*=0*/, float _hscale/*=1.0f*/, float _vscale/*=0.0f*/)
+{
+	ID			= _ID;
+	setID		= _setID;
+	x			= _x;
+	y			= _y;
+	headangle	= _headangle;
+	hscale = _hscale;
+	vscale = _vscale;
+
+	chaseflag = EFFSP_CHASE_NULL;
+	chasetimer = 0;
+	angle = 0;
+	speed = 0;
+	timer = 0;
+	exist = true;
+	headangleadd = 0;
+
+	if(sprite)
+	{
+		SpriteItemManager::FreeSprite(&sprite);
+	}
+	sprite = NULL;
+
+	colorSet(0xffffffff);
+
+	sprite = SpriteItemManager::CreateSprite(siid);
+}
+
+void EffectSp::colorSet(DWORD color, int blend)
+{
+	alpha = GETA(color);
+	diffuse = color & 0xffffff;
+	if (sprite)
+	{
+		sprite->SetBlendMode(blend);
+	}
 }
 
 float EffectSp::GetWidth()
@@ -107,22 +193,39 @@ void EffectSp::action()
 {
 	timer++;
 
-	if(onplayer)
+	switch (chaseflag)
 	{
-		headangle += angle;
-		x = Player::p[0].x;
-		y = Player::p[0].y;
+	case EFFSP_CHASE_PLAYER_0:
+		aimx = Player::p[0].x;
+		aimy = Player::p[0].y;
+		break;
+	case EFFSP_CHASE_PLAYER_1:
+		aimx = Player::p[1].x;
+		aimy = Player::p[1].y;
+		break;
+	case EFFSP_CHASE_TARGET:
+		aimx = Target::tar[chaseaim].x;
+		aimy = Target::tar[chaseaim].y;
+		break;
 	}
-	else
-	{
-		updateMove();
 
-		if(type > 0x80)
+	if (chaseflag != EFFSP_CHASE_NULL)
+	{
+		if (chasetimer > 0)
 		{
-			if(headangle > 0)
-				headangle += ANGLE(speed / 15);
-			else
-				headangle -= ANGLE(speed / 15);
+			chasetimer = chaseAim(aimx, aimy, chasetimer);
+		}
+		else
+		{
+			x = aimx;
+			y = aimy;
+			if (setID >= EFFSPSET_FREEBEGIN && setID < EFFSPSET_FREEUNTIL)
+			{
+				scr.Execute(SCR_EVENT, SCR_EVENT_EFFSPCHASE, setID);
+			}
 		}
 	}
+	headangle += headangleadd;
+
+	updateMove();
 }

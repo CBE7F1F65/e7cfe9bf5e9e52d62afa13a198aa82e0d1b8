@@ -255,6 +255,7 @@ public:
 	DWORD strdescIndex;
 
 	static bool stopEdefScript;
+	static char strdesc[STRINGDESCMAX][M_STRMAX*2];
 
 #ifndef __NOTUSELUA
 public:

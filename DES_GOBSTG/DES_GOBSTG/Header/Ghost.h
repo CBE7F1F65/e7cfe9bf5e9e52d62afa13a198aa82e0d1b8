@@ -56,7 +56,6 @@ public:
 	bool	fadeout;
 	bool	able;
 	bool	damage;
-	bool	lastborderstate;
 
 	WORD	gID;
 

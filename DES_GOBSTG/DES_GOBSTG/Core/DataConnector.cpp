@@ -3,7 +3,7 @@
 #include "Player.h"
 #include "Data.h"
 #include "Replay.h"
-
+/*
 int DataConnector::Insert()
 {
 	if(mp.replaymode)
@@ -179,7 +179,7 @@ void DataConnector::Clear()
 
 	data.iWrite(DATA_BINFILE, sec, data.nLinkType(DATAN_CLEARTIME), data.iRead(DATA_BINFILE, sec, data.nLinkType(DATAN_CLEARTIME), 0)+1);
 }
-
+*/
 //playtimeStart
 void DataConnector::addPlayTime()
 {
@@ -197,7 +197,7 @@ void DataConnector::addPlayTime()
 
 	mp.playtimeStart = 0;
 }
-
+/*
 //spellmode, luchara, scene, nowdifflv, practicemode
 LONGLONG DataConnector::nHiScore()
 {
@@ -251,3 +251,4 @@ void DataConnector::Try(bool first)
 		data.iWrite(DATA_BINFILE, sec, name, data.iRead(DATA_BINFILE, sec, name, 0)+1);
 	}
 }
+*/

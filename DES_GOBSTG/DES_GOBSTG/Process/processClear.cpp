@@ -12,6 +12,7 @@
 int Process::processClear()
 {
 	processStart();
+	/*
 	if(time == 1)
 	{
 		frameskip = M_DEFAULT_FRAMESKIP;
@@ -54,7 +55,7 @@ int Process::processClear()
 //		musicChange(0, true);
 	}
 
-	if(time > _PCLEAR_FDISP_TIME /*&& !replaymode*/ || time > _PCLEAR_FDIPS_CANCELTIME && hge->Input_GetDIKey(KS_FIRE, DIKEY_DOWN))
+	if(time > _PCLEAR_FDISP_TIME  || time > _PCLEAR_FDIPS_CANCELTIME && hge->Input_GetDIKey(KS_FIRE, DIKEY_DOWN))
 	{
 		FrontDisplay::fdisp.SetState(FDISP_NEXTSTAGE, 0);
 		BGLayer::ubg[UBGID_FGPAUSE].exist = false;
@@ -119,6 +120,7 @@ int Process::processClear()
 
 		return PTURN;
 	}
+	*/
 
 	return PGO;
 }

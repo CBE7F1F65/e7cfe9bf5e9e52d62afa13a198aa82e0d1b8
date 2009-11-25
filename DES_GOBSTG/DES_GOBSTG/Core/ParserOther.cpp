@@ -1,5 +1,5 @@
 #include "Scripter.h"
-#include "processPrep.h"
+#include "Main.h"
 #include "Export_Lua_HDSS.h"
 
 bool Scripter::Copy(vector<Script>::iterator * p, BYTE num, BYTE dstart)

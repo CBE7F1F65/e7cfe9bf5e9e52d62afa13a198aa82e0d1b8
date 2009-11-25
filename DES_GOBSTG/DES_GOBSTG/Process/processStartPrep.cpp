@@ -14,6 +14,7 @@ void Process::clearPrep(bool bclearkey)
 	Beam::ClearItem();
 	Chat::chatitem.Clear();
 	BossInfo::Clear();
+	EffectSp::ClearItem();
 
 	pauseinit = false;
 	worldx = 0;
@@ -61,19 +62,13 @@ void Process::startPrep(bool callinit)
 	{
 		rpy.Load(rpyfilename, true);
 		BYTE part = 0;
-		if(scene < S1200)
-			part = data.getStage(scene) - 1;
-		/*
-		else
-			part = RPYPARTMAX - 1;
-			*/
 		seed = rpy.partinfo[part].seed;
-		scene = rpy.partinfo[part].scene;
-		mainchara = rpy.rpyinfo.usingchara[0];
-		subchara_1 = rpy.rpyinfo.usingchara[1];
-		subchara_2 = rpy.rpyinfo.usingchara[2];
-		spellmode = rpy.rpyinfo.modeflag & M_RPYMODE_SPELL;
-		practicemode = (bool)(rpy.rpyinfo.modeflag & M_RPYMODE_PRACTICE);
+		for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
+		{
+			Player::p[i].SetChara(rpy.rpyinfo.usingchara[i][0], rpy.rpyinfo.usingchara[i][1], rpy.rpyinfo.usingchara[i][2]);
+			Player::p[i].SetInitLife(rpy.rpyinfo.initlife[i]);
+		}
+		scene = rpy.rpyinfo.scene;
 
 		replayIndex = rpy.partinfo[part].offset - 1;
 	}
@@ -88,29 +83,16 @@ void Process::startPrep(bool callinit)
 	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
 	{
 		Player::p[i].ClearNC();
-		Player::p[i].nHiScore = DataConnector::nHiScore();
+//		Player::p[i].nHiScore = DataConnector::nHiScore();
 	}
 
 	//set
 
-	startscene = scene;
-	nowdifflv = data.getDiffi(scene);
-	if(!practicemode)
+	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
 	{
-		Player::p[0].valueSet(0, mainchara, subchara_1, subchara_2);
-		Player::p[1].valueSet(1, mainchara, subchara_1, subchara_2);
+		Player::p[i].valueSet(i);
 	}
-	else if(!spellmode)
-	{
-		Player::p[0].valueSet(0, mainchara, subchara_1, subchara_2, PL_NPLAYERMAX);
-		Player::p[1].valueSet(1, mainchara, subchara_1, subchara_2, PL_NPLAYERMAX);
-	}
-	else
-	{
-		Player::p[0].valueSet(0, mainchara, subchara_1, subchara_2, 0);
-		Player::p[1].valueSet(1, mainchara, subchara_1, subchara_2, 0);
-	}
-	DataConnector::Try(true);
+//	DataConnector::Try(true);
 
 	if(!replaymode)
 	{
@@ -118,8 +100,8 @@ void Process::startPrep(bool callinit)
 
 		//partinfo
 		BYTE part = 0;
-		if(scene < S1200)
-			part = scene / M_STAGENSCENE - 1;
+//		if(scene < S1200)
+//			part = scene / M_STAGENSCENE - 1;
 		for(int i=0;i<RPYPARTMAX;i++)
 		{
 			if(i != part)
@@ -135,23 +117,14 @@ void Process::startPrep(bool callinit)
 	else
 	{
 		BYTE part = 0;
-		if(scene < S1200)
-			part = data.getStage(scene) - 1;
+//		if(scene < S1200)
+//			part = data.getStage(scene) - 1;
 		for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
 		{
 			if (part)
 			{
-				Player::p[i].nScore = rpy.partinfo[part].nowscore;
-				Player::p[i].nPoint = Player::p[i].nLastPoint = rpy.partinfo[part].nowpoint;
-				Player::p[i].nFaith = Player::p[i].nLastFaith = rpy.partinfo[part].nowfaith;
-				Player::p[i].nGraze = Player::p[i].nLastGraze = rpy.partinfo[part].nowgraze;
-				Player::p[i].nPower = rpy.partinfo[part].nowpower;
-				Player::p[i].nNext = Player::p[i].getnNext();
-				Player::p[i].changePlayerID(rpy.partinfo[part].nowID);
+				Player::p[i].changePlayerID(rpy.partinfo[part].nowID[i]);
 			}
-			Player::p[i].nLife = rpy.partinfo[part].nowplayer;
-			if(Player::p[i].nHiScore < Player::p[i].nScore)
-				Player::p[i].nHiScore = Player::p[i].nScore;
 		}
 	}
 

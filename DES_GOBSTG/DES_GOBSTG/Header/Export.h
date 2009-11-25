@@ -37,14 +37,7 @@
 struct replayInfo
 {
 	char username[RPYINFO_USERNAMEMAX];
-	WORD getspell[M_GETSPELLMAX];
 
-	LONGLONG score;	
-
-	DWORD startscene;
-	DWORD endscene;
-	DWORD point;
-	DWORD faith;
 	DWORD alltime;
 	DWORD offset;
 
@@ -54,36 +47,21 @@ struct replayInfo
 	WORD hour;
 	WORD minute;
 
+	DWORD scene;
+
 	float lost;
-	float borderrate;
-	float fastrate;
 
 	BYTE modeflag;
 
-	BYTE usingchara[M_PL_ONESETPLAYER];
-
-	BYTE miss;
-	int border;
-	BYTE cont;
-	BYTE get;
-	BYTE pause;
-
-	BYTE difflv;
-	BYTE laststage;
+	BYTE usingchara[M_PL_MATCHMAXPLAYER][M_PL_ONESETPLAYER];
+	BYTE initlife[M_PL_MATCHMAXPLAYER];
 };
 
 struct partInfo
 {
-	LONGLONG nowscore;
-	DWORD scene;
 	DWORD offset;
 	DWORD seed;
-	DWORD nowpoint;
-	DWORD nowfaith;
-	DWORD nowpower;
-	DWORD nowgraze;
-	WORD nowID;
-	BYTE nowplayer;
+	WORD nowID[M_PL_MATCHMAXPLAYER];
 };
 
 struct replayFrame{

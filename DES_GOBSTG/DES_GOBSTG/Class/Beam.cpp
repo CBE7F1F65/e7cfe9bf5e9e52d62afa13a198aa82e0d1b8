@@ -5,7 +5,7 @@
 #include "Chat.h"
 #include "BossInfo.h"
 #include "Item.h"
-#include "Main.h"
+//#include "Main.h"
 #include "Target.h"
 #include "Export.h"
 

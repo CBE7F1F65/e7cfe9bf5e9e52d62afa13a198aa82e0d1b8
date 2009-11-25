@@ -44,9 +44,6 @@ public:
 	char enemyename[M_STRMAX];
 	char spellname[M_STRMAX];
 	InfoQuad blood;
-	DWORD bonus;
-	DWORD maxbonus;
-	DWORD lastgraze;
 	int get;
 	int meet;
 	int itemstack;

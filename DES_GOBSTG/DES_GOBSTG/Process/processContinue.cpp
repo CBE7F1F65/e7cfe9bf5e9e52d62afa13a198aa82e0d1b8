@@ -8,6 +8,8 @@
 
 int Process::processContinue()
 {
+/*
+
 	if(Player::p[0].ncCont >= M_PL_CONTINUEMAX || practicemode)
 		goto exit;
 
@@ -37,11 +39,11 @@ int Process::processContinue()
 	if(tsec == 0x10)
 	{
 		BGLayer::ubg[UBGID_FGPAUSE].exist = false;
-		if(!spellmode && scene < S1200)
+		if(/ *!spellmode &&* / scene < S1200)
 		{
 			for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
 			{
-				Player::p[i].valueSet(i, mainchara, subchara_1, subchara_2, PL_DEFAULTNPLAYER, true);
+				Player::p[i].valueSet(i, true);
 				Player::p[i].ncCont++;
 
 				Bullet::IzeBuild(i, BULLETIZE_FADEOUT, Player::p[i].x, Player::p[i].y);
@@ -57,12 +59,14 @@ int Process::processContinue()
 		{
 			scene = startscene;
 			startPrep();
+			/ *
 			if(spellmode)
 			{
 				hge->Channel_Resume(channel);
 				hge->Channel_SetVolume(channel, 0);
 				musicSlide(1.5f, -1);
 			}
+			* /
 			state = STATE_START;
 			return PTURN;
 		}
@@ -79,6 +83,7 @@ exit:
 	}
 
 	scr.SetIntValue(SCR_RESERVEBEGIN, tsec);
+*/
 
 	return PGO;
 }

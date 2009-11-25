@@ -7,6 +7,10 @@
 #include "Fontsys.h"
 #include "EffectIDDefine.h"
 
+#define FDISP_LIFEINDI_EMPTY	0
+#define FDISP_LIFEINDI_HALF		1
+#define FDISP_LIFEINDI_FULL		2
+
 FrontDisplay FrontDisplay::fdisp;
 
 FrontDisplay::FrontDisplay()
@@ -17,6 +21,7 @@ FrontDisplay::FrontDisplay()
 	ZeroMemory(&normalnum, sizeof(ftNumSet));
 	ZeroMemory(&smallnum, sizeof(ftNumSet));
 	ZeroMemory(&itemnum, sizeof(ftItemNumSet));
+	ZeroMemory(&spellpointnum, sizeof(ftSpellPointNumSet));
 	ZeroMemory(&ascii, sizeof(ftAscIISet));
 	ZeroMemory(&asciismall, sizeof(ftAscIISet));
 	ZeroMemory(&first, sizeof(ftFirstSet));
@@ -106,7 +111,7 @@ void FrontDisplay::SetState(BYTE type, BYTE state/* =FDISP_STATE_COUNT */)
 	}
 }
 
-void FrontDisplay::PanelDisplay()
+void FrontDisplay::RenderPanel()
 {
 	if (nextstagecount)
 	{
@@ -136,94 +141,58 @@ void FrontDisplay::PanelDisplay()
 
 		if (panelcountup == 0xff)
 		{
-			BYTE alpha = 0xff;
-			DWORD color = 0xffffff;
-			if (Player::p[0].x < 128 && Player::p[0].y > 420)
-			{
-				alpha = 0x40;
-			}
-			color = (alpha<<24)+0xffffff;
-			panel.pointindi->SetColor(color);
-			panel.pointindi->Render(38, 457);
-			float tx, ty, tw, th;
-			panel.slot->GetTextureRect(&tx, &ty, &tw, &th);
+			float spellpointx[M_PL_MATCHMAXPLAYER];
+			spellpointx[0] = M_GAMESQUARE_RIGHT_0-panel.spellpoint->GetWidth();
+			spellpointx[1] = M_GAMESQUARE_LEFT_1;
 
-			panel.slot->SetTextureRect(tx, ty, tw*(Player::p[0].fPoprate*0.82f+0.18f), th);
-			panel.slot->SetHotSpot(0, 0);
-			if (Player::p[0].fPoprate >= 1.0f)
+			for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
 			{
-				if (time % 8 < 4)
+				panel.spellpoint->Render(spellpointx[i], M_GAMESQUARE_TOP);
+				char buffer[M_STRITOAMAX];
+				sprintf(buffer, "%d%c", Player::p[i].combogage, '0'+21);
+				for (int j=0; j<strlen(buffer)-1; j++)
 				{
-					color = 0xff3333;
+					buffer[j] += 10;
 				}
-				else
+				info.spellpointdigitfont->printf(spellpointx[i]+36, M_GAMESQUARE_TOP+16, HGETEXT_RIGHT, "%s", buffer);
+				info.spellpointdigitfont->printf(spellpointx[i]+36, M_GAMESQUARE_TOP+16, HGETEXT_LEFT, "%06d", Player::p[i].nSpellPoint);
+
+				panel.slot->Render(M_GAMESQUARE_LEFT_(i), M_GAMESQUARE_BOTTOM);
+				panel.slotback->Render(M_GAMESQUARE_LEFT_(i), M_GAMESQUARE_BOTTOM);
+				float tempx;
+				for (int j=0; j<PLAYER_DEFAULTINITLIFE/2; j++)
 				{
-					color = 0xffff33;
+					tempx = panel.lifeindi[FDISP_LIFEINDI_FULL]->GetWidth() * (j-(PLAYER_DEFAULTINITLIFE/2)/2) + M_GAMESQUARE_CENTER_X_(i);
+					if (Player::p[i].nLife > j * 2 + 1)
+					{
+						panel.lifeindi[FDISP_LIFEINDI_FULL]->Render(tempx, M_GAMESQUARE_TOP);
+					}
+					else if (Player::p[i].nLife > j * 2)
+					{
+						panel.lifeindi[FDISP_LIFEINDI_HALF]->Render(tempx, M_GAMESQUARE_TOP);
+					}
+					else
+					{
+						panel.lifeindi[FDISP_LIFEINDI_EMPTY]->Render(tempx, M_GAMESQUARE_TOP);
+					}
 				}
 			}
-			else
+			for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
 			{
-				color = 0xffffff;
-			}
-			color += (alpha<<24);
-			panel.slot->SetColor(color);
-			panel.slot->Render(44, 438);
-			panel.slot->SetTextureRect(tx, ty, tw, th);
-//			panel.slotback->SetColor((alpha<<24)+0xffffff);
-			panel.slotback->Render(44, 438);
-
-			color = (alpha<<24)+0xffffff;
-			if (Player::p[0].bBorder)
-			{
-				panel.borderindi->SetColor(color);
-				panel.borderindi->RenderEx(80, 448, ARC(Player::p[0].esBorder.angle+Player::p[0].esBorder.headangle), Player::p[0].esBorder.hscale / 2.0f);
-			}
-
-			if (info.smalldigitfont)
-			{
-				info.smalldigitfont->SetColor(color);
-				info.smalldigitfont->printf(48, 454, HGETEXT_LEFT | HGETEXT_TOP, "%06d*%.2f", Player::p[0].nFaith, (int)((Player::p[0].fPoprate+Player::p[0].fPopratebase)*100)/100.0f);
-				info.smalldigitfont->SetColor(0xffffffff);
+				if (info.spellpointdigitfont)
+				{
+					info.spellpointdigitfont->printf(M_GAMESQUARE_LEFT_(i)+2, M_GAMESQUARE_BOTTOM-11, HGETEXT_LEFT, "%02d", Player::p[i].cardlevel);
+					info.spellpointdigitfont->printf(M_GAMESQUARE_RIGHT_(i)-2, M_GAMESQUARE_BOTTOM-11, HGETEXT_RIGHT, "%02d", Player::p[i].bosslevel);
+				}
 			}
 
 		}
-
-		/*
-		float ledge = panel.leftedge->GetWidth();
-		panel.leftedge->Render(M_ACTIVECLIENT_LEFT, M_ACTIVECLIENT_TOP);
-		panel.topedge->Render(M_ACTIVECLIENT_LEFT+ledge, M_ACTIVECLIENT_TOP);
-		panel.bottomedge->Render(M_ACTIVECLIENT_LEFT+ledge, M_ACTIVECLIENT_BOTTOM-panel.bottomedge->GetHeight());
-		panel.rightedge->Render(M_ACTIVECLIENT_RIGHT-ledge, M_ACTIVECLIENT_TOP);
-		*/
 		for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
 		{
 			panel.leftedge[i]->Render(M_GAMESQUARE_LEFT_(i)-M_GAMESQUARE_EDGE/2, M_GAMESQUARE_CENTER_Y);
 			panel.rightedge[i]->Render(M_GAMESQUARE_RIGHT_(i)+M_GAMESQUARE_EDGE/2, M_GAMESQUARE_CENTER_Y);
 			panel.topedge[i]->Render(M_GAMESQUARE_CENTER_X_(i), M_GAMESQUARE_TOP-M_GAMESQUARE_EDGE/2);
 			panel.bottomedge[i]->Render(M_GAMESQUARE_CENTER_X_(i), M_GAMESQUARE_BOTTOM+M_GAMESQUARE_EDGE/2);
-		}
-
-		if (panelcountup == 0xff)
-		{
-			panel.hiscore->Render(472, 54);
-			panel.score->Render(472, 80);
-			panel.player->Render(472, 111);
-			panel.power->Render(472, 135);
-			panel.graze->Render(472, 159);
-			if(info.normaldigitfont)
-			{
-				info.normaldigitfont->SetColor(0xffffffff);
-				info.normaldigitfont->printfb(0, 45, 630, 20, HGETEXT_MIDDLE | HGETEXT_RIGHT, "%I64d", (__int64)Player::p[0].nHiScore);
-				info.normaldigitfont->printfb(0, 71, 630, 20, HGETEXT_MIDDLE | HGETEXT_RIGHT, "%I64d", (__int64)Player::p[0].nScore);
-
-				info.normaldigitfont->printf(520, 126, HGETEXT_LEFT, "%.3f", (float)Player::p[0].nPower / Player::p[0].bombperpower);
-				info.normaldigitfont->printf(520, 152, HGETEXT_LEFT, "%d", Player::p[0].nGraze);
-				for (int i=0; i<Player::p[0].nLife; i++)
-				{
-					panel.lifeindi[5]->Render(530+i*panel.lifeindi[5]->GetWidth(), 110);
-				}
-			}
-
 		}
 	}
 	if(info.asciifont)
@@ -232,29 +201,27 @@ void FrontDisplay::PanelDisplay()
 		{
 			info.smalldigitfont->printf(385, 450, 0, "%.2f", mp.replayFPS);
 		}
-		info.asciifont->printf(
 #ifdef __DEBUG
+		info.asciifont->printf(
 			520,
-			410,
+			390,
 			0,
-			"%d  %d\n%f\n%f\n%f",
-			mp.objcount,
+			"%d\n%f\n%f\n%f",
 			hge->System_GetState(HGE_FRAMECOUNTER),
 			hge->Timer_GetWorstFPS(35)/M_DEFAULT_RENDERSKIP,
 			hge->Timer_GetFPS()/M_DEFAULT_RENDERSKIP,
-#else
-			540,
-			450,
-			0,
-			"%.2f\n%.2f",
-			hge->Timer_GetFPS(35)/M_DEFAULT_RENDERSKIP,
-#endif
 			hge->Timer_GetTime()
 			);
+#endif
+		if (Player::CheckAble() && info.asciifont)
+		{
+			info.asciifont->printf(M_CLIENT_CENTER_X, M_CLIENT_BOTTOM-14, HGETEXT_CENTER, "%.2f", hge->Timer_GetFPS(35));
+			info.asciifont->printf(M_CLIENT_CENTER_X, M_CLIENT_TOP, HGETEXT_CENTER, "%02d:%02d", time/3600, (time/60)%60);
+		}
 #ifdef __DEBUG
 		if (Player::CheckAble() && info.smalldigitfont)
 		{
-			info.smalldigitfont->printf(8, 465, 0, "%d / %d", mp.scene, time);
+			info.smalldigitfont->printf(8, 465, 0, "%d", time);
 		}
 #endif // __DEBUG
 	}
@@ -463,7 +430,6 @@ void FrontDisplay::RenderBossInfo()
 		WORD timer = bossinfo.timer;
 		bool bSpell = bossinfo.isSpell();
 		bool failed = BossInfo::failed;
-		DWORD bonus = bossinfo.bonus;
 	//	exist = false;
 		infobody.effBossStore.Render();
 		if(flag < BOSSINFO_COLLAPSE)
@@ -517,6 +483,7 @@ void FrontDisplay::RenderBossInfo()
 					infobody.effBossUp.Render();
 				}
 
+				/*
 				info.spellbonustext->Render(240, yt+20);
 				info.spellhistorytext->Render(345, yt+20);
 				if (!failed)
@@ -528,11 +495,13 @@ void FrontDisplay::RenderBossInfo()
 					info.spellfailedtext->Render(280, yt+20);
 				}
 				info.bossasciifont->printf(410, yt+16, HGETEXT_RIGHT, "%03d/%03d", bossinfo.get, bossinfo.meet);
+				*/
 			}
 			hge->Gfx_RenderQuad(&infobody.iqBossBlood.quad);
 		}
 		else if(flag & BOSSINFO_COLLAPSE)
 		{
+			/*
 			if(bSpell && !failed)
 			{
 				infobody.effBossCollapse.Render();
@@ -549,6 +518,7 @@ void FrontDisplay::RenderBossInfo()
 				}
 			}
 			info.bossfont->printf(M_ACTIVECLIENT_CENTER_X, 120, HGETEXT_CENTER|HGETEXT_MIDDLE, "%d", bonus);
+			*/
 		}
 	}
 }
@@ -619,25 +589,20 @@ bool FrontDisplay::Init()
 	panel.topedge[1] = SpriteItemManager::CreateSpriteByName(SI_FRONTPANEL_TOP_1);
 	panel.bottomedge[1] = SpriteItemManager::CreateSpriteByName(SI_FRONTPANEL_BOTTOM_1);
 
-	panel.hiscore = SpriteItemManager::CreateSpriteByName(SI_FRONTPANEL_HISCORE);
-	panel.score = SpriteItemManager::CreateSpriteByName(SI_FRONTPANEL_SCORE);
-	panel.player = SpriteItemManager::CreateSpriteByName(SI_FRONTPANEL_PLAYER);
-	panel.power = SpriteItemManager::CreateSpriteByName(SI_FRONTPANEL_POWER);
-	panel.graze = SpriteItemManager::CreateSpriteByName(SI_FRONTPANEL_GRAZE);
+	panel.spellpoint = SpriteItemManager::CreateSpriteByName(SI_FRONTPANEL_SPELLPOINT);
+	panel.spellpoint->SetHotSpot(0, 0);
+	panel.winindi = SpriteItemManager::CreateSpriteByName(SI_FRONTPANEL_WININDI);
 	panel.slot = SpriteItemManager::CreateSpriteByName(SI_FRONTPANEL_SLOT);
-	panel.slot->SetHotSpot(0, 0);
+	panel.slot->SetHotSpot(0, panel.slot->GetHeight());
 	panel.slotback = SpriteItemManager::CreateSpriteByName(SI_FRONTPANEL_SLOTBACK);
-	panel.slotback->SetColor(0x803333ff);
-	panel.slotback->SetHotSpot(0, 0);
-	panel.lifeindi[0] = SpriteItemManager::CreateSpriteByName(SI_FRONTPANEL_LIFEINDI_0);
-	panel.lifeindi[1] = SpriteItemManager::CreateSpriteByName(SI_FRONTPANEL_LIFEINDI_1);
-	panel.lifeindi[2] = SpriteItemManager::CreateSpriteByName(SI_FRONTPANEL_LIFEINDI_2);
-	panel.lifeindi[3] = SpriteItemManager::CreateSpriteByName(SI_FRONTPANEL_LIFEINDI_3);
-	panel.lifeindi[4] = SpriteItemManager::CreateSpriteByName(SI_FRONTPANEL_LIFEINDI_4);
-	panel.lifeindi[5] = SpriteItemManager::CreateSpriteByName(SI_FRONTPANEL_LIFEINDI_5);
-	panel.triangleindi = SpriteItemManager::CreateSpriteByName(SI_FRONTPANEL_TRIANGLEINDI);
-	panel.pointindi = SpriteItemManager::CreateSpriteByName(SI_FRONTPANEL_POINT);
-	panel.borderindi = SpriteItemManager::CreateSpriteByName(SI_BORDER_CIRCLE);
+	panel.slotback->SetHotSpot(0, panel.slotback->GetHeight());
+	panel.lifeindi[FDISP_LIFEINDI_EMPTY] = SpriteItemManager::CreateSpriteByName(SI_FRONTPANEL_LIFEINDI_EMPTY);
+	panel.lifeindi[FDISP_LIFEINDI_HALF] = SpriteItemManager::CreateSpriteByName(SI_FRONTPANEL_LIFEINDI_HALF);
+	panel.lifeindi[FDISP_LIFEINDI_FULL] = SpriteItemManager::CreateSpriteByName(SI_FRONTPANEL_LIFEINDI_FULL);
+	for (int i=0; i<FDISP_LIFEINDIMAX; i++)
+	{
+		panel.lifeindi[i]->SetHotSpot(panel.lifeindi[i]->GetWidth()/2, 0);
+	}
 
 	//info
 	// TODO:
@@ -680,7 +645,6 @@ bool FrontDisplay::Init()
 	info.enemyx = SpriteItemManager::CreateSpriteByName(SI_ENEMY_X);
 
 	info.lifebar = SpriteItemManager::CreateSpriteByName(SI_NULL);
-	info.star = SpriteItemManager::CreateSpriteByName(SI_FRONTINFO_STAR);
 	info.getbonus = SpriteItemManager::CreateSpriteByName(SI_FRONTINFO_GETBONUS);
 	info.failed = SpriteItemManager::CreateSpriteByName(SI_FRONTINFO_FAILED);
 	info.stageclear = SpriteItemManager::CreateSpriteByName(SI_STAGE_CLEAR);
@@ -729,6 +693,12 @@ bool FrontDisplay::Init()
 	for (int i=0; i<30; i++)
 	{
 		itemnum.itemnum[i] = SpriteItemManager::CreateSprite(idx+i);
+	}
+
+	idx = SpriteItemManager::GetIndexByName(SI_SPELLPOINTDIGITCHARACTER_0);
+	for (int i=0; i<22; i++)
+	{
+		spellpointnum.spellpointnum[i] = SpriteItemManager::CreateSprite(idx+i);
 	}
 
 	//ascii
@@ -787,6 +757,12 @@ bool FrontDisplay::Init()
 		info.itemfont->ChangeSprite(i, itemnum.itemnum[i-'0']);
 	}
 	info.itemfont->SetScale(1.2f);
+	
+	info.spellpointdigitfont = new hgeFont();
+	for (int i='0'; i<22+'0'; i++)
+	{
+		info.spellpointdigitfont->ChangeSprite(i, spellpointnum.spellpointnum[i-'0']);
+	}
 
 	info.asciifont = new hgeFont();
 	for (int i=FDISP_ASCII_BEGIN; i<=FDISP_ASCII_END; i++)
@@ -820,20 +796,14 @@ void FrontDisplay::Release()
 		SpriteItemManager::FreeSprite(&panel.topedge[i]);
 		SpriteItemManager::FreeSprite(&panel.bottomedge[i]);
 	}
-	SpriteItemManager::FreeSprite(&panel.hiscore);
-	SpriteItemManager::FreeSprite(&panel.score);
-	SpriteItemManager::FreeSprite(&panel.player);
-	SpriteItemManager::FreeSprite(&panel.power);
-	SpriteItemManager::FreeSprite(&panel.graze);
+	SpriteItemManager::FreeSprite(&panel.spellpoint);
+	SpriteItemManager::FreeSprite(&panel.winindi);
 	SpriteItemManager::FreeSprite(&panel.slot);
 	SpriteItemManager::FreeSprite(&panel.slotback);
-	for (int i=0; i<6; i++)
+	for (int i=0; i<FDISP_LIFEINDIMAX; i++)
 	{
 		SpriteItemManager::FreeSprite(&panel.lifeindi[i]);
 	}
-	SpriteItemManager::FreeSprite(&panel.triangleindi);
-	SpriteItemManager::FreeSprite(&panel.pointindi);
-	SpriteItemManager::FreeSprite(&panel.borderindi);
 
 	if (info.bossfont)
 	{
@@ -891,7 +861,6 @@ void FrontDisplay::Release()
 	SpriteItemManager::FreeSprite(&info.timecircle);
 	SpriteItemManager::FreeSprite(&info.enemyx);
 	SpriteItemManager::FreeSprite(&info.lifebar);
-	SpriteItemManager::FreeSprite(&info.star);
 	SpriteItemManager::FreeSprite(&info.getbonus);
 	SpriteItemManager::FreeSprite(&info.failed);
 	SpriteItemManager::FreeSprite(&info.stageclear);
@@ -935,6 +904,11 @@ void FrontDisplay::Release()
 	for (int i=0; i<30; i++)
 	{
 		SpriteItemManager::FreeSprite(&itemnum.itemnum[i]);
+	}
+
+	for (int i=0; i<22; i++)
+	{
+		SpriteItemManager::FreeSprite(&spellpointnum.spellpointnum[i]);
 	}
 
 	for (int i=0; i<FDISP_ASCII_MAX; i++)

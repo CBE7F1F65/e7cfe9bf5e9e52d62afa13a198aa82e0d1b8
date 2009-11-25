@@ -13,18 +13,18 @@
 #include "InfoQuad.h"
 #include "BResource.h"
 #include "EffectIDDefine.h"
+#include "SpriteItemManager.h"
+#include "FrontDisplayName.h"
 
 Player Player::p[M_PL_MATCHMAXPLAYER];
 float Player::lostStack = 0;
 bool Player::able = false;
 
-#define _PL_ITEMDRAINNPOP	(PL_NPOPMAX * 4 / 5)
+//
+BYTE Player::rank = 0;
+int Player::lilycount = 0;
 
 #define _PL_HITONSCOREADD	40
-#define _PL_POWERADD		1000
-#define _PL_BIGPOWERADD		10000
-#define _PL_BOMBPOWERADD	100000
-#define _PL_FULLPOWERADD	30000
 
 #define _PL_FAITHADD		1000
 #define _PL_SMALLFAITHADD	10
@@ -32,8 +32,6 @@ bool Player::able = false;
 #define _PL_NPOPGRAZEADD	100
 
 #define _PL_NPOPCOST		4
-
-#define _PL_EXTENDNPOP		(PL_NPOPMAX + _PL_NPOPCOST*96)
 
 #define _PL_BORDERIZEZONE_TIME	8
 #define _PL_BORDERGRAZEMAX		300
@@ -321,57 +319,6 @@ void Player::updateFrame(BYTE frameenum, int usetimer /* = -1*/)
 	}
 }
 
-
-LONGLONG Player::getClearBonusPoint()
-{
-	LONGLONG ret = 0;
-	if (nPoint > nLastPoint)
-	{
-		ret = (nPoint - nLastPoint) * 5000;
-	}
-	nLastPoint = nPoint;
-	return ret;
-}
-
-LONGLONG Player::getClearBonusGraze()
-{
-	LONGLONG ret = 0;
-	if (nGraze > nLastGraze)
-	{
-		ret = (nGraze - nLastGraze) * 125;
-	}
-	nLastGraze = nGraze;
-	return ret;
-}
-
-LONGLONG Player::getClearBonusFaith()
-{
-	LONGLONG ret = 0;
-	
-	if (nFaith > nLastFaith)
-	{
-		ret = (nFaith - nLastFaith) * 50;
-	}
-	nLastFaith = nFaith;
-	
-	return ret;
-}
-
-LONGLONG Player::getClearBonusStage(int nstage)
-{
-	return 2500000 * nstage;
-}
-
-LONGLONG Player::getAllClearBonusLife()
-{
-	return 5000000 * nLife;
-}
-
-LONGLONG Player::getAllClearBonusPower()
-{
-	return 3 * nPower;
-}
-
 bool Player::HavePlayer(WORD _ID)
 {
 	if (_ID == ID || _ID == ID_sub_1 || _ID == ID_sub_2)
@@ -383,11 +330,6 @@ bool Player::HavePlayer(WORD _ID)
 
 void Player::ClearNC()
 {
-	ncCont = 0;
-	ncGet = 0;
-	ncBorder = 0;
-	ncMiss = 0;
-	ncPause = 0;
 }
 
 void Player::ClearSet()
@@ -405,11 +347,8 @@ void Player::ClearSet()
 	timer		=	0;
 	angle		=	0;
 	flag		=	PLAYER_MERGE;
-	bBomb		=	false;
-	bBorder		=	false;
 	bSlow		=	false;
 	bInfi		=	true;
-	borderShot	=	false;
 	hscale		=	1.0f;
 	vscale		=	1.0f;
 	alpha		=	0xff;
@@ -423,12 +362,6 @@ void Player::ClearSet()
 	slowtimer			=	0;
 	fasttimer			=	0;
 	playerchangetimer	=	0;
-
-	nPop			=	0;
-	fPoprate		=	0.0f;
-	bordergraze		=	0;
-
-	bonusflag		=	0;
 
 	speedfactor		=	1.0f;
 
@@ -480,13 +413,28 @@ void Player::ClearSet()
 
 	changePlayerID(nowID, true);
 
-	esChange.valueSet(EFFECT_PLAYERCHANGE, x, y, 0, 0);
-	esShot.valueSet(EFFECT_PLAYERSHOT, x, y, 0, 0);
-	esShot.colorSet(0xff0000);
-	esBorder.valueSet(EFFECT_PLAYERBORDER, x, y, 240, 1.5f, true);
-	esBorderZone.valueSet(EFFECT_PLAYERBORDERZONE, x, y, 240, -1.5f, true);
-	esPoint.valueSet(EFFECT_PLAYERPOINT, x, y, 0, 0);
-	esCollapse.valueSet(EFFECT_PLAYERCOLLAPSE, x, y, 160 ,0, false);
+	esChange.valueSet(EFFSPSET_PLAYERUSE, EFFSP_PLAYERCHANGE, SpriteItemManager::GetIndexByName(SI_PLAYER_SHOTITEM), x, y, 0, 3.0f);
+	esChange.colorSet(0x7fffffff, BLEND_ALPHAADD);
+
+	esShot.valueSet(EFFSPSET_PLAYERUSE, EFFSP_PLAYERSHOT, SpriteItemManager::GetIndexByName(SI_PLAYER_SHOTITEM), x, y, 0, 1.2f);
+	esShot.colorSet(0xccff0000);
+
+	esBorder.valueSet(EFFSPSET_PLAYERUSE, EFFSP_PLAYERBORDER, SpriteItemManager::GetIndexByName(SI_BORDER_CIRCLE), x, y, 0, 0.0f);
+	esBorder.chaseSet(EFFSP_CHASE_PLAYER_(playerindex), 0, 0);
+	esBorder.actionSet(0, 0, 240);
+	esBorder.colorSet(0xC0ffffff);
+
+	esBorderZone.valueSet(EFFSPSET_PLAYERUSE, EFFSP_PLAYERBORDERZONE, x, y, 0, 0.0f);
+	esBorderZone.chaseSet(EFFSP_CHASE_PLAYER_(playerindex), 0, 0);
+	esBorderZone.actionSet(0, 0, 240);
+	esBorderZone.colorSet(0x80ffffff);
+
+	esPoint.valueSet(EFFSPSET_PLAYERUSE, EFFSP_PLAYERPOINT, SpriteItemManager::GetIndexByName(SI_PLAYER_POINT), x, y);
+
+	esCollapse.valueSet(EFFSPSET_PLAYERUSE, EFFSP_PLAYERCOLLAPSE, SpriteItemManager::GetIndexByName(SI_PLAYER_SHOTITEM), x, y);
+	esBorder.actionSet(0, 0, 160);
+	esBorder.colorSet(0x80ffffff);
+
 }
 
 //add
@@ -502,10 +450,7 @@ void Player::UpdatePlayerData()
 	speed = pdata->fastspeed;
 	slowspeed = pdata->slowspeed;
 	graze_r = pdata->graze_r;
-	bombperpower = pdata->bombperpower;
 	shotdelay = pdata->shotdelay;
-	borderlast = pdata->borderlast;
-	bomblast = pdata->bomblast;
 }
 
 void Player::AddLostStack()
@@ -537,39 +482,21 @@ void Player::SetChara(WORD id, WORD id_sub_1/* =0xffff */, WORD id_sub_2/* =0xff
 	ID_sub_2 = id_sub_2;
 }
 
-void Player::valueSet(BYTE _playerindex, WORD _ID, WORD _ID_sub_1, WORD _ID_sub_2, BYTE _nLife, bool bContinue)
+void Player::valueSet(BYTE _playerindex, bool bContinue)
 {
 	playerindex = _playerindex;
-	ID			=	_ID;
-	ID_sub_1	= _ID_sub_1;
-	ID_sub_2	= _ID_sub_2;
 	nowID		= ID;
 	ClearSet();
 	initFrameIndex();
 	UpdatePlayerData();
 
-	nLife		=	_nLife;
+	nLife		=	initlife;
 
-	nPower		=	PL_DEFAULTNPOWER;
-	nGraze		=	0;
-	nPoint		=	0;
-	nFaith		=	PL_DEFAULTNFAITH;
-	nScore		=	0;
-
-	nNext		=	getnNext();
-
-	for(int i=0;i<M_GETSPELLMAX;i++)
-		getspell[i] = 0;
-
-	nLastPoint		= 0;
-	nLastGraze		= 0;
-	nLastFaith	= 0;
+	nSpellPoint		=	0;
 
 	if (!bContinue)
 	{
 		lostStack		=	0;
-		fastCounter		=	0;
-		borderCounter	=	0;
 	}
 
 	if(!sprite)
@@ -597,31 +524,6 @@ void Player::valueSet(BYTE _playerindex, WORD _ID, WORD _ID_sub_1, WORD _ID_sub_
 	SetAble(true);
 }
 
-DWORD Player::getnNext()
-{
-	if (nPoint < _PLEXTEND_1)
-	{
-		return _PLEXTEND_1;
-	}
-	if (nPoint < _PLEXTEND_2)
-	{
-		return _PLEXTEND_2;
-	}
-	if (nPoint < _PLEXTEND_3)
-	{
-		return _PLEXTEND_3;
-	}
-	if (nPoint < _PLEXTEND_4)
-	{
-		return _PLEXTEND_4;
-	}
-	if (nPoint < _PLEXTEND_5)
-	{
-		return _PLEXTEND_5;
-	}
-	return _PLEXTEND_MAX;
-}
-
 void Player::action()
 {
 	float nowspeed = 0;
@@ -630,18 +532,6 @@ void Player::action()
 	alpha = 0xff;
 	if(timer == 1)
 		flag |= PLAYER_MERGE;
-
-	if (nPoint >= nNext)
-	{
-		SE::push(SE_ITEM_EXTEND, x);
-		nLife++;
-		if(nLife > PL_NPLAYERMAX)
-		{
-			nLife = PL_NPLAYERMAX;
-			nPower += _PL_BOMBPOWERADD;
-		}
-		nNext = getnNext();
-	}
 
 	//savelast
 	if(lastmx[0] != x || lastmy[0] != y)
@@ -661,16 +551,6 @@ void Player::action()
 	}
 	lastx[0] = x;
 	lasty[0] = y;
-
-	if (nPop > PL_NPOPMAX)
-	{
-		fPoprate = 1.0f;
-	}
-	else
-	{
-		fPoprate = (float)nPop / PL_NPOPMAX;
-	}
-	fPopratebase = nGraze / 10000.0f;
 
 	//flag
 	if(flag & PLAYER_MERGE)
@@ -717,12 +597,6 @@ void Player::action()
 		if(Graze())
 			flag &= ~PLAYER_GRAZE;
 
-
-	if (bonusflag & PLBONUS_TIME)
-	{
-		nScore += 2000;
-		bonusflag &= ~PLBONUS_TIME;
-	}
 	//input
 	if(!(flag & PLAYER_SHOT || flag & PLAYER_COLLAPSE))
 	{
@@ -754,15 +628,6 @@ void Player::action()
 		}
 		if(!Chat::chatitem.IsChatting() && !bInfi)
 		{
-			nPop -= _PL_NPOPCOST;
-			if (nPop > _PL_EXTENDNPOP)
-			{
-				nPop = _PL_EXTENDNPOP;
-			}
-			else if (nPop < 0)
-			{
-				nPop = 0;
-			}
 		}
 		if(bSlow)
 		{
@@ -818,7 +683,7 @@ void Player::action()
 	}
 	if(hge->Input_GetDIKey(KS_QUICK_MP_(playerindex)) && !(flag & PLAYER_MERGE))
 	{
-		callBomb(mp.spellmode);
+		callBomb(false/*mp.spellmode*/);
 	}
 
 	if (!(flag & PLAYER_MERGE) || mergetimer >= 32)
@@ -832,17 +697,6 @@ void Player::action()
 		else if(y < PL_MOVABLE_TOP)
 			y = PL_MOVABLE_TOP;
 	}
-
-	if (y < PL_ITEMDRAINY)
-	{
-		if (nPop < _PL_ITEMDRAINNPOP)
-		{
-			nPop = _PL_ITEMDRAINNPOP;
-		}
-	}
-
-	if(nScore > nHiScore)
-		nHiScore = nScore;
 
 	if (bInfi && timer % 16 < 8)
 	{
@@ -868,16 +722,6 @@ void Player::action()
 
 	for(int i=0;i<PLAYERGHOSTMAX;i++)
 		pg[i].action();
-
-	if(!bSlow)
-		fastCounter++;
-	if(bBorder)
-	{
-		borderCounter++;
-	}
-
-	bBomb = flag & PLAYER_BOMB;
-	bBorder = flag & PLAYER_BORDER;
 }
 
 LONGLONG Player::getItemBonus(WORD itemtype)
@@ -886,30 +730,30 @@ LONGLONG Player::getItemBonus(WORD itemtype)
 	switch (itemtype)
 	{
 	case ITEM_POINT:
-		nPoint++;
-		retscore = nFaith * (fPoprate + fPopratebase);
-		if (fPoprate >= 1.0f)
-		{
-			retscore *= 2;
-		}
+//		nPoint++;
+//		retscore = nFaith * (fPoprate + fPopratebase);
+//		if (fPoprate >= 1.0f)
+//		{
+//			retscore *= 2;
+//		}
 		break;
 	case ITEM_POWER:
-		nPower+=_PL_POWERADD;
+//		nPower+=_PL_POWERADD;
 		retscore = 100;
 		break;
 	case ITEM_BIGPOWER:
-		nPower += _PL_BIGPOWERADD;
+//		nPower += _PL_BIGPOWERADD;
 		retscore = 500;
 		SE::push(SE_ITEM_POWERUP, x);
 		break;
 	case ITEM_FULL:
-		nPower += _PL_FULLPOWERADD;
+//		nPower += _PL_FULLPOWERADD;
 //		Item::ChangeItemID(ITEM_FULL, ITEM_SMALLFAITH);
 		SE::push(SE_ITEM_POWERUP, x);
 		retscore = 1000;
 		break;
 	case ITEM_BOMB:
-		nPower += _PL_BOMBPOWERADD;
+//		nPower += _PL_BOMBPOWERADD;
 		SE::push(SE_ITEM_EXTEND, x);
 		retscore = 1000;
 		break;
@@ -919,17 +763,17 @@ LONGLONG Player::getItemBonus(WORD itemtype)
 		if(nLife > PL_NPLAYERMAX)
 		{
 			nLife = PL_NPLAYERMAX;
-			nPower += _PL_BOMBPOWERADD;
+//			nPower += _PL_BOMBPOWERADD;
 		}
 		retscore = 1000;
 		break;
 	case ITEM_FAITH:
-		nFaith += _PL_FAITHADD;
-		retscore = nPower;
+//		nFaith += _PL_FAITHADD;
+//		retscore = nPower;
 		break;
 	case ITEM_SMALLFAITH:
-		nFaith += _PL_SMALLFAITHADD;
-		retscore = nPower / 100;
+//		nFaith += _PL_SMALLFAITHADD;
+//		retscore = nPower / 100;
 		break;
 	}
 	return retscore;
@@ -939,90 +783,27 @@ void Player::DoGraze(float x, float y)
 {
 	if(!(flag & (PLAYER_MERGE | PLAYER_SHOT | PLAYER_COLLAPSE)))
 	{
-		int grazechange = bSlow ? 1 : 2;
-		nGraze += grazechange;
-		nScore += 200 * grazechange;
-
-		if (flag & PLAYER_BORDER)
-		{
-			Item::Build(playerindex, ITEM_SMALLFAITH, x, y, true);
-			bordergraze++;
-			if (bordergraze > _PL_BORDERGRAZEMAX)
-			{
-				bordergraze = _PL_BORDERGRAZEMAX;
-			}
-		}
-		nPop += _PL_NPOPGRAZEADD;
-		if (nPop > _PL_EXTENDNPOP)
-		{
-			nPop = _PL_EXTENDNPOP;
-		}
-
-		if(bossinfo.isSpell() && !bossinfo.failed && bossinfo.limit)
-		{
-			bossinfo.bonus += bossinfo.maxbonus/(bossinfo.limit*60);
-		}
-
 		flag |= PLAYER_GRAZE;
-
-		if (bonusflag & PLBONUS_GRAZE)
-		{
-			nScore += 2000;
-			bonusflag &= ~PLBONUS_GRAZE;
-		}
-	}
-}
-
-void Player::AddPower(int power)
-{
-	if (power >= 0 || nPower >= -power)
-	{
-		nPower += power;
 	}
 }
 
 void Player::DoPlayerBulletHit(int hitonfactor)
 {
-	if (!bBorder && !bBomb && (!bossinfo.flag || bossinfo.flag==BOSSINFO_ENABLE))
-	{
-		AddPower(hitonfactor);
-	}
-	if (bonusflag & PLBONUS_SHOOT)
-	{
-		if (hitonfactor > 0)
-		{
-			nScore += hitonfactor * _PL_HITONSCOREADD;
-		}
-		bonusflag &= ~PLBONUS_SHOOT;
-	}
 }
 
 void Player::DoShot()
 {
 	if (!bInfi && !(flag & (PLAYER_SHOT | PLAYER_COLLAPSE)))
 	{
-		if(nPower >= bombperpower)
+//		if(nPower >= bombperpower)
 			flag |= PLAYER_SHOT;
-		else
-			flag |= PLAYER_COLLAPSE;
+//		else
+//			flag |= PLAYER_COLLAPSE;
 	}
-}
-
-float Player::TranslatePower(float bulletpower)
-{
-	return bulletpower * (nPower + 1300000) / 1600000;
 }
 
 void Player::GetScoreLife(float maxlife, bool isenemy /* = true */)
 {
-	if (isenemy)
-	{
-		nScore += 5000 * maxlife;
-	}
-	else
-	{
-		nScore += 3000 * maxlife;
-	}
 }
 
 int Player::GrazeRegain(int grazenum)
@@ -1046,10 +827,10 @@ bool Player::callBomb(bool onlyborder)
 	{
 		return false;
 	}
-	if (nPower < bombperpower)
-	{
-		return false;
-	}
+//	if (nPower < bombperpower)
+//	{
+//		return false;
+//	}
 	if (onlyborder && (flag & PLAYER_BORDER))
 	{
 		return true;
@@ -1061,7 +842,7 @@ bool Player::callBomb(bool onlyborder)
 		return true;
 	}
 	
-	if (bBomb && onlyborder)
+	if (onlyborder)
 	{
 		return false;
 	}
@@ -1071,14 +852,6 @@ bool Player::callBomb(bool onlyborder)
 		if (!hge->Input_GetDIKey(KS_QUICK_MP_(playerindex), DIKEY_DOWN) && hge->Input_GetDIKey(KS_QUICK_MP_(playerindex)))
 		{
 			return false;
-		}
-		else
-		{
-			int _tbt = borderlast - PLAYER_BORDEROFFPRE;
-			if (bordertimer < _tbt)
-			{
-				bordertimer = _tbt;
-			}
 		}
 	}
 	flag |= PLAYER_BOMB;
@@ -1130,10 +903,12 @@ bool Player::Merge()
 		y = PL_MERGEPOS_Y - (mergetimer-16) * 4.5f;
 		alpha = (mergetimer-16) * 8;
 	}
+	/*
 	else if(mergetimer == 48 && mp.spellmode)
 	{
 		mergetimer = 208;
 	}
+	*/
 	else if(mergetimer > 208 && mergetimer < 240)
 	{
 		alpha = 0xff;
@@ -1150,22 +925,13 @@ bool Player::Merge()
 bool Player::Shot()
 {
 	shottimer++;
+	/*
 	if (mp.spellmode)
 	{
 		shottimer = shotdelay;
 	}
-	else if(flag & PLAYER_BORDER || flag & PLAYER_BOMB)
+	else*/ if(flag & PLAYER_BORDER || flag & PLAYER_BOMB)
 	{
-		if (flag & PLAYER_BORDER)
-		{
-			int _tbt = borderlast - PLAYER_BORDEROFFPRE;
-			if (bordertimer < _tbt)
-			{
-				bordertimer = _tbt;
-			}
-			nFaith *= _PL_BOMBFAITHCOSTRATE;
-			borderShot = true;
-		}
 		shottimer = 0;
 		return true;
 	}
@@ -1175,7 +941,7 @@ bool Player::Shot()
 //		Item::undrainAll();
 		SE::push(SE_PLAYER_SHOT, x);
 	}
-	else if (shottimer == (8>shotdelay?shotdelay:8) && bossinfo.isSpell() && (BossInfo::spellflag & BISF_BOMB) && !mp.spellmode)
+	else if (shottimer == (8>shotdelay?shotdelay:8) && bossinfo.isSpell() && (BossInfo::spellflag & BISF_BOMB)/* && !mp.spellmode*/)
 	{
 		if (callBomb())
 		{
@@ -1200,8 +966,6 @@ bool Player::Collapse()
 	if(collapsetimer == 1)
 	{
 		Bullet::IzeBuild(playerindex, BULLETIZE_FADEOUT, x, y, 64);
-
-		nPop = 0;
 
 		if(bossinfo.isSpell())
 			BossInfo::failed = true;
@@ -1241,11 +1005,10 @@ bool Player::Collapse()
 		vscale = 1.0f;
 		flag |= PLAYER_MERGE;
 		bInfi = true;
-		ncMiss++;
 		if(nLife)
 		{
 			nLife--;
-			nPower = PL_DEFAULTNPOWER;
+//			nPower = PL_DEFAULTNPOWER;
 		}
 		else
 		{
@@ -1265,14 +1028,6 @@ bool Player::Collapse()
 			fasttimer = 0;
 			flag &= ~PLAYER_SLOWCHANGE;
 		}
-		if(bBorder)
-		{
-			int _tbt = borderlast - PLAYER_BORDEROFFPRE;
-			if (bordertimer < _tbt)
-			{
-				bordertimer = _tbt;
-			}
-		}
 
 		effCollapse.Stop();
 
@@ -1290,89 +1045,12 @@ bool Player::Collapse()
 
 bool Player::Border()
 {
-	bordertimer++;
-	nPop = _PL_EXTENDNPOP;
-	if (!(flag & PLAYER_SHOT) && !(flag & PLAYER_COLLAPSE))
-	{
-//		Item::drainAll();
-		nScore += nPower / 10000;
-	}
-	esBorder.hscale = (float)(borderlast-bordertimer) / (float)borderlast;
-	esBorderZone.hscale = (float)bordergraze * 2.0f / esBorderZone.GetWidth();
-	if(bordertimer == 1)
-	{
-		ncBorder++;
-		bordergraze = 0;
-		SE::push(SE_PLAYER_BORDERON, x);
-		effBorderOn.MoveTo(x, y, 0, true);
-		effBorderOn.Fire();
-	}
-	else if (bordertimer == borderlast - PLAYER_BORDEROFFPRE + 1)
-	{
-		effBorderOff.MoveTo(x, y, 0, true);
-		effBorderOff.Fire();
-		SE::push(SE_PLAYER_BORDEROFF, x);
-		bInfi = true;
-	}
-	else if(bordertimer == borderlast)
-	{
-		bordertimer = 0;
-		AddPower(-bombperpower);
-
-		if (!(flag & PLAYER_BOMB))
-		{
-			bInfi = false;
-			if (borderShot)
-			{
-				Bullet::IzeBuild(playerindex, BULLETIZE_FAITH, x, y, IZEZONE_DEFAULTTIME/2);
-				borderShot = false;
-			}
-			else
-			{
-				Bullet::IzeBuild(playerindex, BULLETIZE_POINT, x, y, IZEZONE_DEFAULTTIME, bordergraze);
-			}
-		}
-		return true;
-	}
-	return false;
+	return true;
 }
 
 bool Player::Bomb()
 {
-	bombtimer++;
-	_Bomb();
-	if(bombtimer == 1)
-	{
-		nFaith *= _PL_BOMBFAITHCOSTRATE;
-		if(bossinfo.isSpell())
-			BossInfo::failed = true;
-//		Item::drainAll();
-		bInfi = true;
-	}
-	
-	else if(bombtimer == bomblast)
-	{
-		bombtimer = 0;
-		bInfi = false;
-		if(hge->Input_GetDIKey(KS_SLOW_MP_(playerindex)))
-		{
-			flag |= PLAYER_SLOWCHANGE;
-			slowtimer = 0;
-			flag &= ~PLAYER_FASTCHANGE;
-		}
-		else
-		{
-			flag |= PLAYER_FASTCHANGE;
-			fasttimer = 0;
-			flag &= ~PLAYER_SLOWCHANGE;
-		}
-		flag &= ~PLAYER_PLAYERCHANGE;
-
-		Bullet::IzeBuild(playerindex, BULLETIZE_FADEOUT, x, y);
-
-		return true;
-	}
-	return false;
+	return true;
 }
 
 void Player::ResetPlayerGhost(bool move /* = false */)
@@ -1492,12 +1170,6 @@ void Player::Render()
 
 void Player::RenderEffect()
 {
-	if (bBorder)
-	{
-		esBorderZone.Render();
-		esBorder.Render();
-	}
-
 	effGraze.Render();
 
 	for(int i=0;i<PLAYERGHOSTMAX;i++)
@@ -1508,10 +1180,6 @@ void Player::RenderEffect()
 	}
 	if(flag & PLAYER_SHOT)
 		esShot.Render();
-	if (bBorder)
-	{
-		effBorderOn.Render();
-	}
 	effBorderOff.Render();
 	if(bSlow)
 	{

@@ -13,6 +13,8 @@
 #define FDISP_ASCII_MAX			(FDISP_ASCII_END-FDISP_ASCII_BEGIN+1)
 #define FDISP_ASCIISMALL_MAX	(FDISP_ASCIISMALL_END-FDISP_ASCII_BEGIN+1)
 
+#define FDISP_LIFEINDIMAX	3
+
 struct fdPostPrint
 {
 	char str[M_STRMAX];
@@ -33,17 +35,11 @@ struct ftPanelSet
 	hgeSprite * rightedge[M_PL_MATCHMAXPLAYER];
 	hgeSprite * topedge[M_PL_MATCHMAXPLAYER];
 	hgeSprite * bottomedge[M_PL_MATCHMAXPLAYER];
-	hgeSprite * hiscore;
-	hgeSprite * score;
-	hgeSprite * player;
-	hgeSprite * power;
-	hgeSprite * graze;
+	hgeSprite * spellpoint;
+	hgeSprite * winindi;
 	hgeSprite * slot;
 	hgeSprite * slotback;
-	hgeSprite * lifeindi[6];
-	hgeSprite * triangleindi;
-	hgeSprite * pointindi;
-	hgeSprite * borderindi;
+	hgeSprite * lifeindi[FDISP_LIFEINDIMAX];
 };
 
 struct ftInfoBody
@@ -66,6 +62,7 @@ struct ftInfoSet
 	hgeFont * smalldigitfont;
 	hgeFont * asciifont;
 	hgeFont * itemfont;
+	hgeFont * spellpointdigitfont;
 	HD3DFONT normalfont;
 	HD3DFONT smallfont;
 
@@ -87,7 +84,6 @@ struct ftInfoSet
 	hgeSprite * enemyx;
 
 	hgeSprite * lifebar;
-	hgeSprite * star;
 	hgeSprite * getbonus;
 	hgeSprite * failed;
 
@@ -164,6 +160,37 @@ struct ftItemNumSet
 			hgeSprite * fadeII_9;
 		};
 		hgeSprite * itemnum[30];
+	};
+};
+
+struct ftSpellPointNumSet
+{
+	union {
+		struct {
+			hgeSprite * num_0;
+			hgeSprite * num_1;
+			hgeSprite * num_2;
+			hgeSprite * num_3;
+			hgeSprite * num_4;
+			hgeSprite * num_5;
+			hgeSprite * num_6;
+			hgeSprite * num_7;
+			hgeSprite * num_8;
+			hgeSprite * num_9;
+			hgeSprite * rednum_0;
+			hgeSprite * rednum_1;
+			hgeSprite * rednum_2;
+			hgeSprite * rednum_3;
+			hgeSprite * rednum_4;
+			hgeSprite * rednum_5;
+			hgeSprite * rednum_6;
+			hgeSprite * rednum_7;
+			hgeSprite * rednum_8;
+			hgeSprite * rednum_9;
+			hgeSprite * hit;
+			hgeSprite * rethit;
+		};
+		hgeSprite * spellpointnum[22];
 	};
 };
 
@@ -297,7 +324,7 @@ public:
 	bool Init();
 	void Release();
 
-	void PanelDisplay();
+	void RenderPanel();
 	void InfoDisplay();
 	void ItemInfoDisplay(infoFont * item);
 
@@ -327,6 +354,7 @@ public:
 	ftNumSet normalnum;
 	ftNumSet smallnum;
 	ftItemNumSet itemnum;
+	ftSpellPointNumSet spellpointnum;
 	ftAscIISet ascii;
 	ftAscIISet asciismall;
 	ftFirstSet first;

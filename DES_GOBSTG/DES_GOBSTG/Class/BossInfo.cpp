@@ -55,8 +55,6 @@ bool BossInfo::Fill(int _sno)
 			limit = i->timelimit;
 			remain = i->remain;
 			turntoscene = i->turntoscene;
-			bonus = i->bonus;
-			maxbonus = bonus;
 			return true;
 		}
 	}
@@ -70,10 +68,9 @@ bool BossInfo::isSpell()
 
 void BossInfo::bossUp()
 {
-	Fill(mp.scene);
+//	Fill(mp.scene);
 
 	failed	= false;
-	lastgraze = Player::p[0].nGraze;
 
 	flag = BOSSINFO_UP | BOSSINFO_ENABLE;
 	timer = 0;
@@ -84,10 +81,10 @@ void BossInfo::bossUp()
 		BGLayer::ubg[UBGID_BGMASK].SetFlag(BG_WHITEFLASH, BGMT_FLASH);
 		Enemy::bossflag[ENEMY_MAINBOSSINDEX] = BOSS_SPELLUP;
 		fsspellname.SignUp(spellname, FrontDisplay::fdisp.info.smallfont);
-		get = DataConnector::nGet();
-		meet = DataConnector::nMeet() - 1;
-		if(meet < 0)
-			meet = 0;
+//		get = DataConnector::nGet();
+//		meet = DataConnector::nMeet() - 1;
+//		if(meet < 0)
+//			meet = 0;
 	}
 }
 
@@ -108,10 +105,12 @@ void BossInfo::quit()
 	{
 		failed = true;
 	}
+	/*
 	if(!(spellflag & BISF_NOTSPELL) && mp.spellmode)
 	{
 		BGLayer::ubg[UBGID_BGMASK].SetFlag(BG_WHITEOUT, BGMT_OUT);
 	}
+	*/
 	if(remain)
 	{
 		Enemy::en[ENEMY_MAINBOSSINDEX].alpha = 0xff;
@@ -176,41 +175,13 @@ bool BossInfo::action()
 				Enemy::en[ENEMY_MAINBOSSINDEX].ac = 0;
 				Enemy::en[ENEMY_MAINBOSSINDEX].speed = 0;
 			}
-			Player::p[0].nScore += bonus;
-			if(!(spellflag & BISF_NOTSPELL))
-			{
-				// TODO:
-				Bullet::IzeBuild(0, BULLETIZE_FAITH, Enemy::en[ENEMY_MAINBOSSINDEX].x, Enemy::en[ENEMY_MAINBOSSINDEX].y);
-			}
-			else
-			{
-				// TODO:
-				Bullet::IzeBuild(0, BULLETIZE_FADEOUT, Enemy::en[ENEMY_MAINBOSSINDEX].x, Enemy::en[ENEMY_MAINBOSSINDEX].y);
-				timer = 100;
-			}
-
-			if(!failed)
-			{
-				DataConnector::Get();
-			}
-
-			if(!failed && !(spellflag & BISF_NOTSPELL))
-			{
-				Player::p[0].getspell[Player::p[0].ncGet] = mp.scene;
-				Player::p[0].ncGet++;
-			}
-
-			if(turntoscene - SCLEAR > S1 && !mp.spellmode)
-			{
-				allover = true;
-			}
 		}
 		else if(timer == 160)
 		{
 			quit();
 			return true;
 		}
-		if(Enemy::en[ENEMY_MAINBOSSINDEX].timer == 16 && Enemy::en[ENEMY_MAINBOSSINDEX].life < 0 && !mp.spellmode && remain)
+		if(Enemy::en[ENEMY_MAINBOSSINDEX].timer == 16 && Enemy::en[ENEMY_MAINBOSSINDEX].life < 0 /*&& !mp.spellmode*/ && remain)
 		{
 			Enemy::en[ENEMY_MAINBOSSINDEX].exist = true;
 			Enemy::en[ENEMY_MAINBOSSINDEX].fadeout = false;
@@ -232,11 +203,13 @@ bool BossInfo::action()
 			}
 			if(!(spellflag & BISF_WAIT))
 				failed = true;
+			/*
 			if(!failed && !(spellflag & BISF_NOTSPELL) && (spellflag & BISF_WAIT))
 			{
 				Player::p[0].getspell[Player::p[0].ncGet] = mp.scene;
 				Player::p[0].ncGet++;
 			}
+			*/
 			if(spellflag & BISF_NOTSPELL)
 			{
 				timer = 100;
@@ -248,7 +221,7 @@ bool BossInfo::action()
 				Enemy::en[ENEMY_MAINBOSSINDEX].life = -1;
 			}
 
-			if(turntoscene - SCLEAR > S1 && !mp.spellmode)
+			if(turntoscene - SCLEAR > S1/* && !mp.spellmode*/)
 			{
 				allover = true;
 			}
@@ -258,7 +231,7 @@ bool BossInfo::action()
 			quit();
 			return true;
 		}
-		if(Enemy::en[ENEMY_MAINBOSSINDEX].timer == 16 && Enemy::en[ENEMY_MAINBOSSINDEX].life < 0 && !mp.spellmode && remain)
+		if(Enemy::en[ENEMY_MAINBOSSINDEX].timer == 16 && Enemy::en[ENEMY_MAINBOSSINDEX].life < 0/* && !mp.spellmode*/ && remain)
 		{
 			Enemy::en[ENEMY_MAINBOSSINDEX].exist = true;
 			Enemy::en[ENEMY_MAINBOSSINDEX].fadeout = false;
@@ -271,18 +244,14 @@ bool BossInfo::action()
 	{
 		if(!failed && !(spellflag & BISF_WAIT))
 		{
-			int minus;
-			minus = maxbonus / (limit*60);
-			minus -= Player::p[0].GrazeRegain(Player::p[0].nGraze - lastgraze);
-			bonus -= minus;
-			if(bonus > maxbonus)
-				bonus = maxbonus;
-			lastgraze = Player::p[0].nGraze;
 		}
 		else if(failed)
-			bonus = maxbonus / 100;
+		{
+		}
 		else if(timer == limit * 60 - 1)
+		{
 			Enemy::en[ENEMY_MAINBOSSINDEX].life = -1;
+		}
 	}
 	if(flag < BOSSINFO_COLLAPSE)
 	{

@@ -45,7 +45,6 @@ void Enemy::Init(HTEXTURE _texmain)
 	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
 	{
 		dmgz[i].init(_DAMAGEZONEMAX);
-		dmgz[i].clear_item();
 	}
 }
 
@@ -787,7 +786,7 @@ void Enemy::GetCollisionRect(float * w, float * h)
 
 void Enemy::CostLife(float power)
 {
-	if (!Player::p[getPlayerIndex()].bBomb || !(bossinfo.spellflag & BISF_NOBOMBDAMAGE))
+	if (!(bossinfo.spellflag & BISF_NOBOMBDAMAGE))
 	{
 		life -= power * (1 - defrate);
 	}
@@ -986,7 +985,7 @@ void Enemy::action()
 		float tw;
 		float th;
 		GetCollisionRect(&tw, &th);
-		if (!Player::p[playerindex].bInfi && !Player::p[playerindex].bBomb && !Player::p[playerindex].bBorder)
+		if (!Player::p[playerindex].bInfi)
 		{
 			if (checkCollisionSquare(Player::p[playerindex], tw, th))
 			{
@@ -1035,9 +1034,6 @@ void Enemy::action()
 
 void Enemy::giveItem(BYTE playerindex)
 {
-	if(mp.spellmode)
-		return;
-
 	bool first = true;
 	float aimx;
 	float aimy;

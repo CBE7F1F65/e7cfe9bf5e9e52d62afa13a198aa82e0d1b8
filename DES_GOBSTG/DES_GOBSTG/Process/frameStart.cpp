@@ -15,14 +15,16 @@ void Process::frameStart()
 	if(!replaymode)
 	{
 		playing = true;
+		/*
 		if(!Player::p[0].ncCont)
 		{
 			replayIndex++;
 			replayframe[replayIndex].input = nowInput;
 			Export::rpySetBias(&(replayframe[replayIndex]));
 		}
+		*/
 	}
-	else if(!Player::p[0].ncCont)
+	else if(true/*!Player::p[0].ncCont*/)
 	{
 		replayIndex++;
 		nowInput = replayframe[replayIndex].input;
@@ -31,7 +33,7 @@ void Process::frameStart()
 		if(nowInput == 0xffff)
 		{
 			replayend = true;
-			scene = S1;
+//			scene = S1;
 			clearPrep();
 			hge->Input_SetDIKey(KS_PAUSE);
 		}
@@ -73,12 +75,12 @@ void Process::frameStart()
 
 		}
 	}
-	if(time == 1)
-	{
-		if(data.getSpellNumber(scene) > 0)
-		{
-			DataConnector::Meet();
-		}
-	}
+//	if(time == 1)
+//	{
+//		if(data.getSpellNumber(scene) > 0)
+//		{
+//			DataConnector::Meet();
+//		}
+//	}
 	active = true;
 }

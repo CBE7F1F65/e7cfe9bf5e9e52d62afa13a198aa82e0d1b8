@@ -414,6 +414,8 @@ enum {
 	/*Bullet*/
 	SCR_EVENT_BULLETENTERIZE	= 0x0210,
 	/*0x20*/
+	/*EffectSp*/
+	SCR_EVENT_EFFSPCHASE	= 0x0610,
 };
 
 struct scrKeyWord

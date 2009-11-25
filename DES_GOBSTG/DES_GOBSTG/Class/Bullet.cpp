@@ -40,7 +40,6 @@ void Bullet::Init(HTEXTURE _tex)
 		ZeroMemory(renderDepth[i], sizeof(RenderDepth) * BULLETTYPEMAX);
 		bu[i].init(BULLETMAX);
 		izel[i].init(_IZEZONEMAX);
-		izel[i].clear_item();
 	}
 	tex = _tex;
 	for (int i=0; i<BULLETTYPEMAX; i++)
@@ -643,27 +642,29 @@ void Bullet::action(BYTE playerindex)
 			else if(toafter == BULLETIZE_SCORE)
 			{
 				color = res.bulletdata[oldtype].bonuscolor;
+				/*
 				switch(color)
 				{
 				case 0:
-					Player::p[0].nScore += 500;
+					Player::p[0].nSpellPoint += 500;
 					break;
 				case 1:
-					Player::p[0].nScore += 1000;
+					Player::p[0].nSpellPoint += 1000;
 					break;
 				case 2:
-					Player::p[0].nScore += 2000;
+					Player::p[0].nSpellPoint += 2000;
 					break;
 				case 3:
-					Player::p[0].nScore += 3000;
+					Player::p[0].nSpellPoint += 3000;
 					break;
 				case 4:
-					Player::p[0].nScore += 5000;
+					Player::p[0].nSpellPoint += 5000;
 					break;
 				case 5:
-					Player::p[0].nScore += 8000;
+					Player::p[0].nSpellPoint += 8000;
 					break;
 				}
+				*/
 				type = BULLET_BONUSTYPE;
 				alpha = 0xff;
 				hscale = 1;

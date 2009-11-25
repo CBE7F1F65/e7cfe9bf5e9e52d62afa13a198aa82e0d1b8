@@ -8,6 +8,7 @@ Scripter scr;
 
 bool Scripter::stopEdefScript = false;
 
+char Scripter::strdesc[STRINGDESCMAX][M_STRMAX*2];
 
 Scripter::Scripter()
 {

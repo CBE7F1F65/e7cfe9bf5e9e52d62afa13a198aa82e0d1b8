@@ -23,6 +23,7 @@ void Process::_Render(BYTE renderflag/* =M_RENDER_NULL */)
 	}
 	BGLayer::RenderFG(renderflag);
 	SelectSystem::RenderAll();
+	EffectSp::RenderAll();
 	SpriteItemManager::RenderFrontSprite();
 	FrontDisplay::fdisp.RenderPostPrint();
 }
@@ -77,7 +78,7 @@ int Process::render()
 	{
 		_RenderTar();
 	}
-	FrontDisplay::fdisp.PanelDisplay();
+	FrontDisplay::fdisp.RenderPanel();
 
 	if(isingame)
 	{

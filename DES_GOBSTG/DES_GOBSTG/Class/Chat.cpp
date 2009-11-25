@@ -177,8 +177,6 @@ bool Chat::chat(BYTE ID, BYTE chatsprite, const char * _text)
 
 bool Chat::chatOn(BYTE leftID, BYTE rightID, BYTE chatsprite)
 {
-	if(Player::p[0].bBomb || Player::p[0].bBorder)
-		return false;
 	timer++;
 
 	Player::p[0].bInfi = true;

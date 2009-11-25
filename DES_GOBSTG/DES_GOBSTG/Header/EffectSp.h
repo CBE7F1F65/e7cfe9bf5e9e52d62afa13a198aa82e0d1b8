@@ -3,14 +3,23 @@
 
 #include "BObject.h"
 
-#define	EFFECT_PLAYERCHANGE		0x01
-#define	EFFECT_PLAYERSHOT		0x02
-#define	EFFECT_PLAYERBORDER		0x03
-#define EFFECT_PLAYERBORDERZONE	0x04
-#define	EFFECT_PLAYERPOINT		0x05
-#define	EFFECT_PLAYERCOLLAPSE	0x06
+#define EFFSPSET_FREEBEGIN	0x0
+#define EFFSPSET_FREEUNTIL	0x100
+#define EFFSPSET_PLAYERUSE	0x100
 
-#define	EFFECT_BOMB_CUTIN		0x20
+#define	EFFSP_PLAYERCHANGE		0x01
+#define	EFFSP_PLAYERSHOT		0x02
+#define	EFFSP_PLAYERBORDER		0x03
+#define EFFSP_PLAYERBORDERZONE	0x04
+#define	EFFSP_PLAYERPOINT		0x05
+#define	EFFSP_PLAYERCOLLAPSE	0x06
+
+#define EFFSP_CHASE_NULL		0x00
+#define EFFSP_CHASE_PLAYER_0	0x01
+#define EFFSP_CHASE_PLAYER_1	0x02
+#define EFFSP_CHASE_PLAYER_(X)	((X)?EFFSP_CHASE_PLAYER_1:EFFSP_CHASE_PLAYER_0)
+#define EFFSP_CHASE_TARGET		0x10
+#define EFFSP_CHASE_FREE		0x20
 
 class EffectSp : public BObject
 {
@@ -18,8 +27,18 @@ public:
 	EffectSp();
 	~EffectSp();
 
-	void valueSet(BYTE type, float x, float y, int angle, float speed, bool onplayer = true, WORD ID = 0);
-	void colorSet(DWORD color);
+	static void Init();
+	static void ClearItem();
+	static void Build(int setID, WORD ID, int siid, float x, float y, int headangle=0, float hscale=1.0f, float vscale=0.0f);
+	static void Action();
+	static void RenderAll();
+
+	void valueSet(int setID, WORD ID, int siid, float x, float y, int headangle=0, float hscale=1.0f, float vscale=0.0f);
+	void actionSet(int angle, float speed, int headangleadd=0);
+	void chaseSet(BYTE chaseflag, float aimx, float aimy, int chasetimer=-1, BYTE chaseaim=0xff);
+	void colorSet(DWORD color, int blend=BLEND_DEFAULT);
+
+	void EffectSpOff(int setID, int ID=-1);
 
 	void action();
 	void Render();
@@ -30,10 +49,16 @@ public:
 public:
 	hgeSprite * sprite;
 
-	bool onplayer;
-	BYTE type;
+	int setID;
 
-	static BYTE evtype;
+	int chasetimer;
+	int headangleadd;
+	float aimx;
+	float aimy;
+	BYTE chaseflag;
+	BYTE chaseaim;
+
+	static VectorList<EffectSp> effsp;
 };
 
 #endif

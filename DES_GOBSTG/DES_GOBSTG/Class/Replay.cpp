@@ -3,6 +3,7 @@
 #include "Player.h"
 #include "Data.h"
 #include "BResource.h"
+#include "Player.h"
 
 Replay rpy;
 
@@ -28,15 +29,17 @@ void Replay::Fill()
 	SYSTEMTIME systime;
 	GetLocalTime(&systime);
 
-	rpyinfo.modeflag = (mp.spellmode?M_RPYMODE_SPELL:0)|(mp.practicemode?M_RPYMODE_PRACTICE:0);
+//	rpyinfo.modeflag = (mp.spellmode?M_RPYMODE_SPELL:0)|(mp.practicemode?M_RPYMODE_PRACTICE:0);
 
-	rpyinfo.usingchara[0] = mp.mainchara;
-	rpyinfo.usingchara[1] = mp.subchara_1;
-	rpyinfo.usingchara[2] = mp.subchara_2;
+	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
+	{
+		rpyinfo.usingchara[i][0] = Player::p[i].ID;
+		rpyinfo.usingchara[i][1] = Player::p[i].ID_sub_1;
+		rpyinfo.usingchara[i][2] = Player::p[i].ID_sub_2;
+		rpyinfo.initlife[i] = Player::p[i].initlife;
+	}
 
-	rpyinfo.startscene = mp.startscene;
-	rpyinfo.endscene = mp.endscene;
-
+	rpyinfo.scene = mp.scene;
 	rpyinfo.alltime = mp.alltime;
 	rpyinfo.year = systime.wYear;
 	rpyinfo.month = systime.wMonth;
@@ -44,30 +47,9 @@ void Replay::Fill()
 	rpyinfo.hour = systime.wHour;
 	rpyinfo.minute = systime.wMinute;
 
-	rpyinfo.score = Player::p[0].nScore;
-	rpyinfo.miss = Player::p[0].ncMiss;
-	rpyinfo.border = Player::p[0].ncBorder;
-	rpyinfo.cont = Player::p[0].ncCont;
-	rpyinfo.get = Player::p[0].ncGet;
-	rpyinfo.pause = Player::p[0].ncPause;
-	rpyinfo.point = Player::p[0].nPoint;
-	rpyinfo.faith = Player::p[0].nFaith;
 	strcpy(rpyinfo.username, mp.username);
 
 	rpyinfo.lost = Player::lostStack / mp.framecounter;
-	rpyinfo.borderrate = (float)Player::p[0].borderCounter / mp.alltime;
-	rpyinfo.fastrate = (float)Player::p[0].fastCounter / mp.alltime;
-
-	rpyinfo.difflv = mp.nowdifflv;
-	if(rpyinfo.endscene == S1)
-		rpyinfo.laststage = 0xff;
-	else
-		rpyinfo.laststage = data.getStage(rpyinfo.endscene) - 1;
-
-	for (int i=0; i<M_GETSPELLMAX; i++)
-	{
-		rpyinfo.getspell[i] = Player::p[0].getspell[i];
-	}
 	rpyinfo.offset = replayIndex;
 }
 
@@ -76,18 +58,14 @@ void Replay::partFill(BYTE part)
 	if (part < RPYPARTMAX)
 	{
 		partinfo[part].offset = replayIndex + 1;
-		partinfo[part].scene = mp.scene;
 		partinfo[part].seed = mp.seed;
-		partinfo[part].nowplayer = Player::p[0].nLife;
-		partinfo[part].nowpower = Player::p[0].nPower;
 	}
 	else
 		part = 0;
-	partinfo[part].nowfaith = Player::p[0].nFaith;
-	partinfo[part].nowpoint = Player::p[0].nPoint;
-	partinfo[part].nowgraze = Player::p[0].nGraze;
-	partinfo[part].nowscore = Player::p[0].nScore;
-	partinfo[part].nowID = Player::p[0].nowID;
+	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
+	{
+		partinfo[part].nowID[i] = Player::p[i].nowID;
+	}
 }
 
 bool Replay::Check(char * filename)

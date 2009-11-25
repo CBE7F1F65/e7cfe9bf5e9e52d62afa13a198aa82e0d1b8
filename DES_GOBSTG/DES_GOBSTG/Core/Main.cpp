@@ -5,13 +5,9 @@
 
 #include "Main.h"
 
-char strdesc[STRINGDESCMAX][M_STRMAX*2];
-
 HGE *hge = NULL;
 
 int time = 0;
-
-DWORD strdescIndex = 0;
 
 bool RenderFunc()
 {

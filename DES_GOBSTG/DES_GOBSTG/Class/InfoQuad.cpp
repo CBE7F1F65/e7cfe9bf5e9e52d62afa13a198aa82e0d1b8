@@ -1,5 +1,4 @@
 #include "InfoQuad.h"
-#include "Player.h"
 
 HTEXTURE InfoQuad::tex;
 

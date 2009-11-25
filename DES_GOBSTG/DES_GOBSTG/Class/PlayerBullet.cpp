@@ -120,7 +120,7 @@ void PlayerBullet::valueSet(BYTE _playerindex, WORD _ID, BYTE _arrange, float _x
 	speed	=	_speed;
 	accelspeed = _accelspeed;
 	oldspeed =	speed;
-	power	=	Player::p[playerindex].TranslatePower(_power);
+	power	=	_power;
 	hitonfactor = _hitonfactor;
 	arrange	=	_arrange;
 	flag	=	_flag;

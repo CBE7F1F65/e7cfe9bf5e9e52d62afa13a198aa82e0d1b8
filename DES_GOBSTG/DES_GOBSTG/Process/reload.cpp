@@ -18,11 +18,10 @@ bool Process::reload()
 	strcpy(rpyfilename, "");
 	replayIndex = 0;
 	pauseinit = false;
-	practicemode = false;
-	spellmode = false;
 	replaymode = false;
 	replayFPS = 0;
-	scene = S100;
+	scene = 0;
+//	scene = S100;
 	worldx = 0;
 	worldy = 0;
 	worldz = 0;
@@ -47,6 +46,7 @@ bool Process::reload()
 	Beam::Init();
 	PlayerBullet::Init(tex);
 	SpriteItemManager::Init(tex);
+	EffectSp::Init();
 
 	BossInfo::Init();
 	InfoQuad::Init(tex[TEX_WHITE]);

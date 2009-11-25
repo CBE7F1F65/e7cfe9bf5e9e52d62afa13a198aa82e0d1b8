@@ -278,10 +278,6 @@ void Item::action(BYTE playerindex)
 			bDrained = true;
 			bFast = false;
 		}
-		if(Player::p[playerindex].y < _ITEM_DRAINY || Player::p[playerindex].fPoprate >= 1.0f)
-		{
-			bDrained = true;
-		}
 	}
 	if(bDrained)
 	{
@@ -342,7 +338,7 @@ void Item::action(BYTE playerindex)
 		score = Player::p[playerindex].getItemBonus(ID);
 
 		exist = false;
-		Player::p[playerindex].nScore += score;
+//		Player::p[playerindex].nSpellPoint += score;
 
 		struct infoFont info;
 		itoa(score, info.cScore, 10);
@@ -350,9 +346,11 @@ void Item::action(BYTE playerindex)
 		info.timer = 0;
 		info.x = x;
 		info.y = y;
+		/*
 		if(ID == ITEM_POINT && (Player::p[playerindex].fPoprate) >= 1.0f)
 			info.yellow = true;
 		else
+		*/
 			info.yellow = false;
 		infofont.push_back(info);
 	}

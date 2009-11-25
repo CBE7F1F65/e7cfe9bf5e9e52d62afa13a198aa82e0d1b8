@@ -64,7 +64,6 @@ rebuild:
 		hge->	Ini_SetInt(RESCONFIGS_VOLUME, RESCONFIGN_VOLSE, RESCONFIGDEFAULT_VOLSE);
 
 		hge->	Ini_SetInt(RESCONFIGS_CUSTOM, RESCONFIGN_SCREENMODE, RESCONFIGDEFAULT_SCREENMODE);
-		hge->	Ini_SetInt(RESCONFIGS_CUSTOM, RESCONFIGN_DEFAULTLEVEL, RESCONFIGDEFAULT_DEFAULTLV);
 		hge->	Ini_SetString(RESCONFIGS_CUSTOM, RESCONFIGN_USERNAME, RESCONFIGDEFAULT_USERNAME);
 		hge->	Ini_SetInt(RESCONFIGS_CUSTOM, RESCONFIGN_RENDERSKIP, RESCONFIGDEFAULT_RENDERSKIP);
 
@@ -129,7 +128,6 @@ rebuild:
 	sevol			= hge->Ini_GetInt(RESCONFIGS_VOLUME, RESCONFIGN_VOLSE, RESCONFIGDEFAULT_VOLSE);
 
 	screenmode		= hge->Ini_GetInt(RESCONFIGS_CUSTOM, RESCONFIGN_SCREENMODE, RESCONFIGDEFAULT_SCREENMODE);
-	defaultdifflv	= hge->Ini_GetInt(RESCONFIGS_CUSTOM, RESCONFIGN_DEFAULTLEVEL, RESCONFIGDEFAULT_DEFAULTLV);
 	strcpy(username, hge->Ini_GetString(RESCONFIGS_CUSTOM, RESCONFIGN_USERNAME, RESCONFIGDEFAULT_USERNAME));
 	renderskip		= hge->Ini_GetInt(RESCONFIGS_CUSTOM, RESCONFIGN_RENDERSKIP, RESCONFIGDEFAULT_RENDERSKIP);
 
@@ -160,8 +158,6 @@ rebuild:
 		goto rebuild;
 #endif
 	if(screenmode < 0 || screenmode > 1)
-		goto rebuild;
-	if(defaultdifflv < 0 || defaultdifflv > M_DIFFI_EXTRA_START)
 		goto rebuild;
 	if(bgmvol < 0 || bgmvol > 100)
 		goto rebuild;
@@ -232,7 +228,7 @@ int Process::processInit()
 			errorcode = PROC_ERROR_SCRIPT;
 			return PQUIT;
 		}
-		if(!res.Pack(strdesc, res.customconstdata))
+		if(!res.Pack(Scripter::strdesc, res.customconstdata))
 		{
 #ifdef __DEBUG
 			HGELOG("Error in Packing Resource Data.");
@@ -246,7 +242,7 @@ int Process::processInit()
 			return PQUIT;
 		}
 	}
-	if(!res.Gain(strdesc, binmode?res.customconstdata:NULL))
+	if(!res.Gain(Scripter::strdesc, binmode?res.customconstdata:NULL))
 	{
 #ifdef __DEBUG
 		HGELOG("Error in Gaining Resource Data.");
@@ -352,17 +348,11 @@ int Process::processInit()
 
 	SelectSystem::ClearAll();
 
-	mainchara	= 0;
-	subchara_1	= 0;
-	subchara_2	= 0;
-	nowdifflv	= defaultdifflv;
 	randi		= 0;
 	errorcode = PROC_ERROR_NONE;
 	titleselect = 0;
 
 	replaymode = false;
-	practicemode = false;
-	spellmode = false;
 
 	playing = false;
 	playtimeStart = 0;

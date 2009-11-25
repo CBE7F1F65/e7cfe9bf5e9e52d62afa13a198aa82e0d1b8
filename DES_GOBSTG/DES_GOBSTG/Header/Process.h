@@ -107,7 +107,6 @@ public:
 	int		screenmode;
 	int		bgmvol;
 	int		sevol;
-	int		defaultdifflv;
 
 	//replay
 	char	rpyfilename[M_STRITOAMAX];
@@ -141,25 +140,15 @@ public:
 	int retvalue;
 
 	DWORD	scene;
-	DWORD	startscene;
-	DWORD	endscene;
-	//practice
-	bool	practicemode;
-	bool	spellmode;
+
 	//pause return
 	bool	pauseinit;
 	//Replayinfo
 	float	replayFPS;
 	//error
 	int	errorcode;
-	//fps
-	int	objcount;
 
 	//indicator
-	BYTE	nowdifflv;
-	BYTE	mainchara;
-	BYTE	subchara_1;
-	BYTE	subchara_2;
 	BYTE	titleselect;
 	BYTE	state;
 	//input

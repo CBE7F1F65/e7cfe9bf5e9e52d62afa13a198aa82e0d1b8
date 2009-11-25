@@ -17,7 +17,6 @@
 #define PLAYER_DEFAULTINITLIFE	10
 
 #define PLSHOTDELAY_ADD		12
-#define PL_NPOPMAX			1200
 
 #define PL_HITONFACTORDEFAULT	50
 
@@ -28,7 +27,6 @@
 
 #define PLAYER_BORDEROFFPRE	8
 
-#define PL_DEFAULTNPOWER	300000
 #define PL_DEFAULTNFAITH	10000
 #define PL_DEFAULTNPLAYER	2
 #define PL_NPLAYERMAX		7
@@ -66,7 +64,7 @@ public:
 	Player();
 	virtual ~Player();
 
-	void valueSet(BYTE playerindex, WORD ID, WORD ID_sub_1, WORD ID_sub_2, BYTE nLife=PL_DEFAULTNPLAYER, bool bContinue = false);
+	void valueSet(BYTE playerindex, bool bContinue = false);
 	void ClearSet();
 	void ClearNC();
 	void UpdatePlayerData();
@@ -87,8 +85,6 @@ public:
 	bool PlayerChange();
 	bool Graze();
 
-	DWORD getnNext();
-
 	void initFrameIndex();
 	void setFrame(BYTE frameenum);
 	BYTE getFrameIndex(BYTE frameenum);
@@ -107,13 +103,6 @@ public:
 
 	void Render();
 
-	LONGLONG getClearBonusPoint();
-	LONGLONG getClearBonusGraze();
-	LONGLONG getClearBonusFaith();
-	LONGLONG getClearBonusStage(int nstage);
-	LONGLONG getAllClearBonusLife();
-	LONGLONG getAllClearBonusPower();
-
 	LONGLONG getItemBonus(WORD itemtype);
 
 	void DoGraze(float x, float y);
@@ -124,12 +113,8 @@ public:
 
 	void changePlayerID(WORD toID, bool moveghost=false);
 
-	float TranslatePower(float bulletpower);
-
 	int GrazeRegain(int grazenum);
 	void GetScoreLife(float maxlife, bool isenemy = true);
-
-	void AddPower(int power);
 
 	// add
 	void SetInitLife(BYTE initlife);
@@ -151,7 +136,6 @@ public:
 	BYTE	frameoffset;
 	BYTE	nowstate;
 
-	int getspell[M_GETSPELLMAX];
 	float	lastx[PL_SAVELASTMAX];
 	float	lasty[PL_SAVELASTMAX];
 	float	lastmx[PL_SAVELASTMAX];
@@ -175,39 +159,13 @@ public:
 	Effectsys	effBorderOn;
 	Effectsys	effBorderOff;
 
-	LONGLONG	nScore;
-	LONGLONG	nHiScore;
-	DWORD	nPoint;
-	DWORD	nGraze;
-	DWORD	nFaith;
-	DWORD	nNext;
-	DWORD	nPower;
-
-	DWORD	nLastPoint;
-	DWORD	nLastGraze;
-	DWORD	nLastFaith;
-
-	DWORD	borderCounter;
-	DWORD	fastCounter;
-
 	float	slowspeed;
 	float	speedfactor;
 	float	r;
 	float	graze_r;
-	float	fPoprate;
-	float	fPopratebase;
 
-	int		nPop;
-	int		bombperpower;
-
-	int		bordergraze;
-
-	bool	bBomb;
-	bool	bBorder;
 	bool	bSlow;
 	bool	bInfi;
-
-	bool	borderShot;
 
 	hgeSprite * sprite;
 	BYTE	frameindex[M_PL_ONESETPLAYER][PLAYER_FRAME_STATEMAX];
@@ -225,23 +183,27 @@ public:
 	WORD	fasttimer;
 	WORD	playerchangetimer;
 
-	WORD	borderlast;
-	WORD	bomblast;
 	BYTE	shotdelay;
 
 	BYTE	nLife;
 
-	BYTE	bonusflag;
-
-	int		ncBorder;
-	BYTE	ncMiss;
-	BYTE	ncCont;
-	BYTE	ncGet;
-	BYTE	ncPause;
-
 	// add
 	BYTE	initlife;
 	BYTE	playerindex;
+
+	int nExPoint;
+	int nGhostPoint;
+	int nBulletPoint;
+	int	nSpellPoint;
+
+	BYTE cardlevel;
+	BYTE bosslevel;
+	BYTE damagelevel;
+	int combogage;
+	int charge;
+
+	static BYTE rank;
+	static int lilycount;
 
 	static float lostStack;
 	static bool able;

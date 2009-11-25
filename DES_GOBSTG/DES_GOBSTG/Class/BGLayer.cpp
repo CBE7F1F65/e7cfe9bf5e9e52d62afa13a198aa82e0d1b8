@@ -1,7 +1,7 @@
 #include "BGLayer.h"
 #include "Main.h"
 #include "SpriteItemManager.h"
-#include "BResource.h"
+//#include "BResource.h"
 #include "Scripter.h"
 #include "Export.h"
 /*

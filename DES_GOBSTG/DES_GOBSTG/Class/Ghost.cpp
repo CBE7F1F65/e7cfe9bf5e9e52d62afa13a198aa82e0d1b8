@@ -76,7 +76,6 @@ void Ghost::valueSet(WORD _ID, float _x, float _y, int _angle, float _speed, BYT
 	damage	=	false;
 	half	=	false;
 	gave	=	false;
-	lastborderstate = false;
 	hscale	=	1.0f;
 	vscale	=	1.0f;
 	headangle =	0;
@@ -120,7 +119,7 @@ void Ghost::Render()
 void Ghost::actionInStop()
 {
 	BYTE playerindex = getPlayerIndex();
-	if (!fadeout && !half && Player::p[playerindex].bBorder)
+	if (!fadeout && !half)
 	{
 		DoShot(playerindex);
 	}
@@ -237,19 +236,11 @@ void Ghost::action()
 		}
 	}
 
-	if(!fadeout && !gave && half && (Player::p[playerindex].bBorder))
+	if(!fadeout && !gave && half)
 	{
 		Item::Build(playerindex, ITEM_FAITH, x, y, true);
 
 		gave = true;
-	}
-
-	if (Player::p[playerindex].bBorder ^ lastborderstate)
-	{
-		// TODO:
-		effghost.valueSet(EFF_GH_TYPEBEGIN + type + (Player::p[playerindex].bBorder?1:0), M_RENDER_LEFT, *this);
-		effghost.Fire();
-		lastborderstate ^= true;
 	}
 
 	if(!fadeout)
@@ -274,14 +265,11 @@ void Ghost::action()
 			index = tindex;
 		}
 
-		if(Player::p[playerindex].bBorder)
+		if (checkCollisionSquare(Player::p[playerindex], GHOST_COLLISIONR))
 		{
-			if (checkCollisionSquare(Player::p[playerindex], GHOST_COLLISIONR))
-			{
-				Player::p[playerindex].DoShot();
-			}
-			DoShot(playerindex);
+			Player::p[playerindex].DoShot();
 		}
+		DoShot(playerindex);
 
 		if(belong != 0xff)
 		{

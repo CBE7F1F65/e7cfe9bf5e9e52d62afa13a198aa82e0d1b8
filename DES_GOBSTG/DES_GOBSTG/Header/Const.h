@@ -98,7 +98,6 @@
 #define M_KEYKEYMAX			0x100
 #define M_JOYKEYMAX			0x20
 
-#define M_GETSPELLMAX		0x40
 #define M_PL_CONTINUEMAX	5
 #define M_PL_ONESETPLAYER	3
 #define M_PL_MATCHMAXPLAYER	2

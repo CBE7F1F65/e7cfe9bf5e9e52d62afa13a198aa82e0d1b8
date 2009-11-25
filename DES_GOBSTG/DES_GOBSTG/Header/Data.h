@@ -311,10 +311,6 @@ public:
 	LONGLONG nHighScore(int sno, BYTE difflv, bool bSpell = false, bool bPractice = false);
 	int nTryStageTime(int stage, BYTE difflv);
 
-	BYTE getDiffi(int sno);
-	BYTE getStage(int sno);
-	BYTE getBattle(int sno);
-
 	LONGLONG getTotalRunTime();
 	//
 	

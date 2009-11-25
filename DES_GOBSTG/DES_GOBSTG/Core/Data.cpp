@@ -329,12 +329,14 @@ void Data::MoveDown(DWORD sec, BYTE i)
 		name = nLinkNum(name, j+1);
 		iWrite(DATA_BINFILE, secD, name, iRead(DATA_BINFILE, secS, name, 0));
 	}
+	/*
 	name = nLinkType(DATAN_GETSPELL);
 	for (int j=0; j<M_GETSPELLMAX; j++)
 	{
 		name = nLinkNum(name, j+1);
 		iWrite(DATA_BINFILE, secD, name, iRead(DATA_BINFILE, secS, name, 0));
 	}
+	*/
 }
 
 BYTE * Data::CreateMemHeader(BYTE type)
@@ -1246,40 +1248,6 @@ int Data::nTryStageTime(int stage, BYTE difflv)
 	sec = sLinkNum(sec, stage);
 
 	return iRead(DATA_BINFILE, sec, nLinkType(DATAN_TRYTIME), 0);
-}
-
-BYTE Data::getDiffi(int sno)
-{
-	if(sno < S1200)
-	{
-		return sno % 4;
-	}
-	if (sno >= S1200)
-	{
-		return (sno - S1200 + 1) / M_STAGENSCENE + M_DIFFI_EXTRA_START;
-	}
-	return M_DIFFI_DESTINY;
-}
-
-BYTE Data::getStage(int sno)
-{
-	if (sno < S700)
-	{
-		return (sno / M_STAGENSCENE);
-	}
-	return (sno-S700) / M_STAGENSCENE + 7;
-}
-
-BYTE Data::getBattle(int sno)
-{
-	for (vector<spellData>::iterator it = res.spelldata.begin(); it!= res.spelldata.end(); it++)
-	{
-		if (it->sno == sno)
-		{
-			return it->battleID;
-		}
-	}
-	return 0;
 }
 
 LONGLONG Data::getTotalRunTime()

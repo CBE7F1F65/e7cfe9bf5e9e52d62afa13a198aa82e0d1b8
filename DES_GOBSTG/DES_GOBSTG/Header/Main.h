@@ -4,9 +4,6 @@
 #include "MainDependency.h"
 
 extern HGE * hge;
-
 extern int time;
-
-extern char strdesc[STRINGDESCMAX][M_STRMAX*2];
 
 #endif

@@ -2,7 +2,6 @@
 
 void Process::frameEnd()
 {
-	objcount = 0;
 	if(active)
 	{
 		framecounter++;
@@ -81,6 +80,10 @@ void Process::frameEnd()
 		*/
 		Enemy::ClearDamageZoneItem();
 		Bullet::Action(!(stopflag & FRAME_STOPFLAG_BULLET));
+		if (!(stopflag & FRAME_STOPFLAG_BULLET))
+		{
+			EffectSp::Action();
+		}
 		if (!(stopflag & FRAME_STOPFLAG_BEAM))
 		{
 			Beam::Action();
@@ -100,12 +103,6 @@ void Process::frameEnd()
 			if(bossinfo.action())
 			{
 				time = 0;
-				if(!spellmode)
-				{
-					scene = BossInfo::turntoscene;
-				}
-				else
-					Player::SetAble(false);
 			}
 			if(BossInfo::flag >= BOSSINFO_COLLAPSE)
 				Scripter::stopEdefScript = true;
@@ -125,27 +122,6 @@ void Process::frameEnd()
 		}
 	}
 	SelectSystem::Action();
-	/*
-	for(list<InfoSelect>::iterator i=infoselect.begin();i!=infoselect.end();i++)
-	{
-		if(!InfoSelect::complete)
-		{
-			i->action();
-		}
-		else
-		{
-			InfoSelect::Clear();
-			break;
-		}
-	}
-	*/
-	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
-	{
-		if (Player::p[i].nHiScore < Player::p[i].nScore)
-		{
-			Player::p[i].nHiScore = Player::p[i].nScore;
-		}
-	}
 
 	SE::play();
 	active = false;
