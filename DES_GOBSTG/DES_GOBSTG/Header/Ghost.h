@@ -34,7 +34,7 @@ public:
 
 	void CostLife(float power);
 
-	void DoShot();
+	void DoShot(BYTE playerindex);
 
 	virtual void action();
 	void actionInStop();

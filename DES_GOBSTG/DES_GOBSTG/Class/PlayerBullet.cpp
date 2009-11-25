@@ -511,7 +511,7 @@ void PlayerBullet::action()
 			{
 				SE::push(SE_PLAYER_EXPLODE, x);
 			}
-			Enemy::DamageZoneBuild(x, y, spPlayerBullet[ID]->GetWidth(), power);
+			Enemy::DamageZoneBuild(playerindex, x, y, spPlayerBullet[ID]->GetWidth(), power);
 		}
 		if (flag & PBFLAG_SCALEUP)
 		{

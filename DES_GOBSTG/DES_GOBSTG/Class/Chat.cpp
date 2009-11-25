@@ -193,7 +193,10 @@ bool Chat::chatOn(BYTE leftID, BYTE rightID, BYTE chatsprite)
 		strcpy(text, "");
 		fschat.SignUp(text);
 		
-		Bullet::IzeBuild(BULLETIZE_FAITH, Player::p[0].x, Player::p[0].y);
+		for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
+		{
+			Bullet::IzeBuild(i, BULLETIZE_FAITH, Player::p[i].x, Player::p[i].y);
+		}
 
 		chatting = true;
 		SpriteItemManager::SetSprite(-1, leftname, mp.tex);

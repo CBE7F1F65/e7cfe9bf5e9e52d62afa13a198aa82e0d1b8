@@ -5,13 +5,14 @@
 #include "SpriteItemManager.h"
 #include "FrontDisplayName.h"
 #include "FrontDisplay.h"
+#include "Export.h"
 
 hgeSprite * Item::spItem[ITEMSPRITEMAX];
 
 VectorList<infoFont> Item::infofont;
-VectorList<Item> Item::mi;
+VectorList<Item> Item::mi[M_PL_MATCHMAXPLAYER];
 
-#define ITEMMAX				BULLETMAX
+#define ITEMMAX				0x10
 
 #define _ITEM_GETR				32
 #define _ITEM_DRAINY			PL_ITEMDRAINY
@@ -33,29 +34,35 @@ Item::~Item()
 
 void Item::ClearItem()
 {
-	mi.clear_item();
+	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
+	{
+		mi[i].clear_item();
+	}
 	infofont.clear_item();
 }
 
 void Item::Action(bool notinpause)
 {
-	if (mi.size)
+	for (int j=0; j<M_PL_MATCHMAXPLAYER; j++)
 	{
-		DWORD i = 0;
-		DWORD size = mi.size;
-		for (mi.toBegin(); i<size; mi.toNext(), i++)
+		if (mi[j].size)
 		{
-			if (!mi.isValid())
+			DWORD i = 0;
+			DWORD size = mi[j].size;
+			for (mi[j].toBegin(); i<size; mi[j].toNext(), i++)
 			{
-				continue;
-			}
-			if ((*mi).exist)
-			{
-				(*mi).action();
-			}
-			else
-			{
-				mi.pop();
+				if (!mi[j].isValid())
+				{
+					continue;
+				}
+				if ((*mi[j]).exist)
+				{
+					(*mi[j]).action(j);
+				}
+				else
+				{
+					mi[j].pop();
+				}
 			}
 		}
 	}
@@ -88,17 +95,18 @@ void Item::Action(bool notinpause)
 	}
 }
 
-void Item::RenderAll()
+void Item::RenderAll(BYTE renderflag)
 {
-	if (mi.size)
+	BYTE playerindex = Export::GetPlayerIndexByRenderFlag(renderflag);
+	if (mi[playerindex].size)
 	{
 		DWORD i = 0;
-		DWORD size = mi.size;
-		for (mi.toBegin(); i<size; mi.toNext(), i++)
+		DWORD size = mi[playerindex].size;
+		for (mi[playerindex].toBegin(); i<size; mi[playerindex].toNext(), i++)
 		{
-			if (mi.isValid())
+			if (mi[playerindex].isValid())
 			{
-				(*mi).Render();
+				(*mi[playerindex]).Render();
 			}
 		}
 	}
@@ -121,7 +129,10 @@ void Item::RenderAll()
 void Item::Init()
 {
 	Release();
-	mi.init(ITEMMAX);
+	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
+	{
+		mi[i].init(ITEMMAX);
+	}
 	infofont.init(ITEMINFOFONTMAX);
 	int tidx = SpriteItemManager::GetIndexByName(SI_ITEM_POWER);
 	for(int i=0;i<ITEMTYPEMAX;i++)
@@ -154,41 +165,45 @@ void Item::valueSet(WORD type, float _x, float _y, bool _bDrained, int _angle, f
 	exist	=	true;
 }
 
-void Item::Build(WORD type, float _x, float _y, bool _bDrained /* = false */, int _angle, float _speed)
+void Item::Build(BYTE playerindex, WORD type, float _x, float _y, bool _bDrained /* = false */, int _angle, float _speed)
 {
-	mi.push_back()->valueSet(type, _x, _y, _bDrained, _angle, _speed);
+	mi[playerindex].push_back()->valueSet(type, _x, _y, _bDrained, _angle, _speed);
 }
-
-void Item::ChangeItemID(WORD oriID, WORD toID)
+/*
+void Item::ChangeItemID(BYTE playerindex, WORD oriID, WORD toID)
 {
-	DWORD nowindex = mi.index;
+	DWORD nowindex = mi[playerindex].index;
 	DWORD i = 0;
-	DWORD size = mi.size;
-	for (mi.toBegin(); i<size; mi.toNext(), i++)
+	DWORD size = mi[playerindex].size;
+	for (mi[playerindex].toBegin(); i<size; mi[playerindex].toNext(), i++)
 	{
-		if (!mi.isValid())
+		if (!mi[playerindex].isValid())
 		{
 			continue;
 		}
-		if ((*mi).exist)
+		if ((*mi[playerindex]).exist)
 		{
-			if ((*mi).ID == oriID)
+			if ((*mi[playerindex]).ID == oriID)
 			{
-				(*mi).valueSet(toID, (*mi).x, (*mi).y);
+				(*mi[playerindex]).valueSet(toID, (*mi[playerindex]).x, (*mi[playerindex]).y);
 			}
 		}
 	}
-	mi.index = nowindex;
+	mi[playerindex].index = nowindex;
 }
+*/
 
 void Item::Release()
 {
-	for(int i=0;i<ITEMSPRITEMAX;i++)
+	for (int i=0; i<ITEMSPRITEMAX; i++)
 	{
 		if(spItem[i])
 			SpriteItemManager::FreeSprite(&spItem[i]);
 	}
-	mi.clear();
+	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
+	{
+		mi[i].clear();
+	}
 	infofont.clear();
 }
 
@@ -201,7 +216,7 @@ void Item::Render()
 	}
 	spItem[ID]->RenderEx(x, y, ARC(headangle));
 }
-
+/*
 void Item::drainAll()
 {
 	if (mi.size)
@@ -252,18 +267,18 @@ void Item::undrainAll()
 		mi.index = _index;
 	}
 }
-
-void Item::action()
+*/
+void Item::action(BYTE playerindex)
 {
-	if(!bDrained && !(Player::p[0].flag & PLAYER_COLLAPSE || Player::p[0].flag & PLAYER_SHOT))
+	if(!bDrained && !(Player::p[playerindex].flag & PLAYER_COLLAPSE || Player::p[playerindex].flag & PLAYER_SHOT))
 	{
-		float rdrain = (Player::p[0].bSlow) ? 64 : 48;
-		if (checkCollisionSquare(Player::p[0], rdrain))
+		float rdrain = (Player::p[playerindex].bSlow) ? 64 : 48;
+		if (checkCollisionSquare(Player::p[playerindex], rdrain))
 		{
 			bDrained = true;
 			bFast = false;
 		}
-		if(Player::p[0].y < _ITEM_DRAINY || Player::p[0].fPoprate >= 1.0f)
+		if(Player::p[playerindex].y < _ITEM_DRAINY || Player::p[playerindex].fPoprate >= 1.0f)
 		{
 			bDrained = true;
 		}
@@ -276,9 +291,9 @@ void Item::action()
 				speed = _ITEM_DRAINFASTSPEED;
 			else
 				speed = _ITEM_DRAINSLOWSPEED;
-			float dist = DIST(x, y, Player::p[0].x, Player::p[0].y);
-			x += speed * (Player::p[0].x - x) / dist;
-			y += speed * (Player::p[0].y - y) / dist;
+			float dist = DIST(x, y, Player::p[playerindex].x, Player::p[playerindex].y);
+			x += speed * (Player::p[playerindex].x - x) / dist;
+			y += speed * (Player::p[playerindex].y - y) / dist;
 		}
 		else
 		{
@@ -297,7 +312,7 @@ void Item::action()
 	}
 	else
 	{
-		headangle += SIGN((int)mi.index) * 600 * speed;
+		headangle += SIGN((int)mi[playerindex].index) * 600 * speed;
 	}
 
 	timer++;
@@ -313,8 +328,8 @@ void Item::action()
 			y += speed;
 	}
 
-	if (checkCollisionSquare(Player::p[0], _ITEM_GETR)
-		&& !(Player::p[0].flag & PLAYER_COLLAPSE)
+	if (checkCollisionSquare(Player::p[playerindex], _ITEM_GETR)
+		&& !(Player::p[playerindex].flag & PLAYER_COLLAPSE)
 		&& !((ID == ITEM_SMALLFAITH || ID == ITEM_FAITH) && timer <= _ITEM_DRAINDELAY))
 	{
 		DWORD score;
@@ -324,10 +339,10 @@ void Item::action()
 		else
 			SE::push(SE_ITEM_EXTEND, x);
 
-		score = Player::p[0].getItemBonus(ID);
+		score = Player::p[playerindex].getItemBonus(ID);
 
 		exist = false;
-		Player::p[0].nScore += score;
+		Player::p[playerindex].nScore += score;
 
 		struct infoFont info;
 		itoa(score, info.cScore, 10);
@@ -335,7 +350,7 @@ void Item::action()
 		info.timer = 0;
 		info.x = x;
 		info.y = y;
-		if(ID == ITEM_POINT && (Player::p[0].fPoprate) >= 1.0f)
+		if(ID == ITEM_POINT && (Player::p[playerindex].fPoprate) >= 1.0f)
 			info.yellow = true;
 		else
 			info.yellow = false;

@@ -904,7 +904,7 @@ LONGLONG Player::getItemBonus(WORD itemtype)
 		break;
 	case ITEM_FULL:
 		nPower += _PL_FULLPOWERADD;
-		Item::ChangeItemID(ITEM_FULL, ITEM_SMALLFAITH);
+//		Item::ChangeItemID(ITEM_FULL, ITEM_SMALLFAITH);
 		SE::push(SE_ITEM_POWERUP, x);
 		retscore = 1000;
 		break;
@@ -945,7 +945,7 @@ void Player::DoGraze(float x, float y)
 
 		if (flag & PLAYER_BORDER)
 		{
-			Item::Build(ITEM_SMALLFAITH, x, y, true);
+			Item::Build(playerindex, ITEM_SMALLFAITH, x, y, true);
 			bordergraze++;
 			if (bordergraze > _PL_BORDERGRAZEMAX)
 			{
@@ -1172,7 +1172,7 @@ bool Player::Shot()
 	
 	if(shottimer == 1)
 	{
-		Item::undrainAll();
+//		Item::undrainAll();
 		SE::push(SE_PLAYER_SHOT, x);
 	}
 	else if (shottimer == (8>shotdelay?shotdelay:8) && bossinfo.isSpell() && (BossInfo::spellflag & BISF_BOMB) && !mp.spellmode)
@@ -1199,7 +1199,7 @@ bool Player::Collapse()
 	collapsetimer++;
 	if(collapsetimer == 1)
 	{
-		Bullet::IzeBuild(BULLETIZE_FADEOUT, x, y, 64);
+		Bullet::IzeBuild(playerindex, BULLETIZE_FADEOUT, x, y, 64);
 
 		nPop = 0;
 
@@ -1215,11 +1215,11 @@ bool Player::Collapse()
 		{
 			aimx = (float)(randt()%360 + 40);
 			aimy = (float)(randt()%80 - 40 - (480 - y) / 2);
-			Item::Build(nLife ? ITEM_POWER : ITEM_FULL, x, y + 36, false, 18000 + rMainAngle(aimx, aimy), -sqrt(2 * 0.1f * DIST(x, y, aimx, aimy)));
+			Item::Build(playerindex, nLife ? ITEM_POWER : ITEM_FULL, x, y + 36, false, 18000 + rMainAngle(aimx, aimy), -sqrt(2 * 0.1f * DIST(x, y, aimx, aimy)));
 		}
 		aimx = (float)(randt()%360 + 40);
 		aimy = (float)(randt()%80 - 40 - (480 - y) / 2);
-		Item::Build(nLife ? ITEM_BIGPOWER : ITEM_FULL, x, y + 32, false, 18000 + rMainAngle(aimx, aimy), -sqrt(2 * 0.1f * DIST(x, y, aimx, aimy)));
+		Item::Build(playerindex, nLife ? ITEM_BIGPOWER : ITEM_FULL, x, y + 32, false, 18000 + rMainAngle(aimx, aimy), -sqrt(2 * 0.1f * DIST(x, y, aimx, aimy)));
 
 		effCollapse.MoveTo(x, y , 0, true);
 		effCollapse.Fire();
@@ -1294,7 +1294,7 @@ bool Player::Border()
 	nPop = _PL_EXTENDNPOP;
 	if (!(flag & PLAYER_SHOT) && !(flag & PLAYER_COLLAPSE))
 	{
-		Item::drainAll();
+//		Item::drainAll();
 		nScore += nPower / 10000;
 	}
 	esBorder.hscale = (float)(borderlast-bordertimer) / (float)borderlast;
@@ -1324,12 +1324,12 @@ bool Player::Border()
 			bInfi = false;
 			if (borderShot)
 			{
-				Bullet::IzeBuild(BULLETIZE_FAITH, x, y, IZEZONE_DEFAULTTIME/2);
+				Bullet::IzeBuild(playerindex, BULLETIZE_FAITH, x, y, IZEZONE_DEFAULTTIME/2);
 				borderShot = false;
 			}
 			else
 			{
-				Bullet::IzeBuild(BULLETIZE_POINT, x, y, IZEZONE_DEFAULTTIME, bordergraze);
+				Bullet::IzeBuild(playerindex, BULLETIZE_POINT, x, y, IZEZONE_DEFAULTTIME, bordergraze);
 			}
 		}
 		return true;
@@ -1346,7 +1346,7 @@ bool Player::Bomb()
 		nFaith *= _PL_BOMBFAITHCOSTRATE;
 		if(bossinfo.isSpell())
 			BossInfo::failed = true;
-		Item::drainAll();
+//		Item::drainAll();
 		bInfi = true;
 	}
 	
@@ -1368,7 +1368,7 @@ bool Player::Bomb()
 		}
 		flag &= ~PLAYER_PLAYERCHANGE;
 
-		Bullet::IzeBuild(BULLETIZE_FADEOUT, x, y);
+		Bullet::IzeBuild(playerindex, BULLETIZE_FADEOUT, x, y);
 
 		return true;
 	}

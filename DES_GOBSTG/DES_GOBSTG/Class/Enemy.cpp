@@ -14,7 +14,7 @@
 
 Enemy Enemy::en[ENEMYMAX];
 
-VectorList<DamageZone> Enemy::dmgz;
+VectorList<DamageZone> Enemy::dmgz[M_PL_MATCHMAXPLAYER];
 HTEXTURE Enemy::texmain;
 WORD Enemy::index;
 BYTE Enemy::bossflag[ENEMY_BOSSMAX];
@@ -42,23 +42,29 @@ void Enemy::Init(HTEXTURE _texmain)
 {
 	texmain = _texmain;
 	index = ENEMY_INDEXSTART;
-	dmgz.init(_DAMAGEZONEMAX);
-	dmgz.clear_item();
+	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
+	{
+		dmgz[i].init(_DAMAGEZONEMAX);
+		dmgz[i].clear_item();
+	}
 }
 
-void Enemy::DamageZoneBuild(float _x, float _y, float _r, float _power)
+void Enemy::DamageZoneBuild(BYTE playerindex, float _x, float _y, float _r, float _power)
 {
 	DamageZone _dmgz;
 	_dmgz.x = _x;
 	_dmgz.y = _y;
 	_dmgz.r = _r;
 	_dmgz.power = _power;
-	dmgz.push_back(_dmgz);
+	dmgz[playerindex].push_back(_dmgz);
 }
 
 void Enemy::ClearDamageZoneItem()
 {
-	dmgz.clear_item();
+	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
+	{
+		dmgz[i].clear_item();
+	}
 }
 
 bool Enemy::Build(WORD _eID, BYTE _index, BYTE _tarID, float x, float y, int angle, float speed, BYTE type, float life, int infitimer, DWORD take)
@@ -809,7 +815,7 @@ void Enemy::actionInStop()
 {
 	if (!fadeout)
 	{
-		DoShot();
+		DoShot(getPlayerIndex());
 	}
 }
 
@@ -826,29 +832,29 @@ BYTE Enemy::getPlayerIndex()
 	return 0;
 }
 
-void Enemy::DoShot()
+void Enemy::DoShot(BYTE playerindex)
 {
 	float tw;
 	float th;
 	GetCollisionRect(&tw, &th);
-	float costpower = PlayerBullet::CheckShoot(getPlayerIndex(), x, y ,tw, th);
+	float costpower = PlayerBullet::CheckShoot(playerindex, x, y ,tw, th);
 	if (costpower)
 	{
 		CostLife(costpower);
 	}
-	if (dmgz.size)
+	if (dmgz[playerindex].size)
 	{
 		DWORD i = 0;
-		DWORD size = dmgz.size;
-		for (dmgz.toBegin(); i<size; dmgz.toNext(), i++)
+		DWORD size = dmgz[playerindex].size;
+		for (dmgz[playerindex].toBegin(); i<size; dmgz[playerindex].toNext(), i++)
 		{
-			if (dmgz.isValid())
+			if (dmgz[playerindex].isValid())
 			{
-				DamageZone * tdmg = &(*dmgz);
+				DamageZone * tdmg = &(*dmgz[playerindex]);
 				if (isInRange(tdmg->x, tdmg->y, tdmg->r))
 				{
 					CostLife(tdmg->power);
-					Player::p[getPlayerIndex()].DoPlayerBulletHit();
+					Player::p[playerindex].DoPlayerBulletHit();
 				}
 			}
 		}
@@ -905,7 +911,7 @@ void Enemy::DoShot()
 
 		if (life < 0)
 		{
-			Player::p[getPlayerIndex()].GetScoreLife(maxlife, true);
+			Player::p[playerindex].GetScoreLife(maxlife, true);
 
 			SE::push(SE_ENEMY_DEAD, x);
 
@@ -995,7 +1001,7 @@ void Enemy::action()
 			else
 				FrontDisplay::fdisp.info.enemyx->SetColor(0x80ffffff);
 		}
-		DoShot();
+		DoShot(playerindex);
 		if(x > M_DELETECLIENT_RIGHT || x < M_DELETECLIENT_LEFT || y > M_DELETECLIENT_BOTTOM || y < M_DELETECLIENT_TOP)
 			exist = false;
 	}
@@ -1003,7 +1009,7 @@ void Enemy::action()
 	{
 		if(timer == 1)
 		{
-			giveItem();
+			giveItem(playerindex);
 			effShot.Stop();
 			// TODO:
 			effCollapse.valueSet(EFF_EN_COLLAPSE, M_RENDER_LEFT, *this);
@@ -1027,7 +1033,7 @@ void Enemy::action()
 	able = exist && !fadeout;
 }
 
-void Enemy::giveItem()
+void Enemy::giveItem(BYTE playerindex)
 {
 	if(mp.spellmode)
 		return;
@@ -1057,11 +1063,11 @@ void Enemy::giveItem()
 				else if(aimx < 23)
 					aimx = 23;
 				aimy = (float)(randt()%80 - 240 + y);
-				Item::Build(i, x, y, false, 18000 + rMainAngle(aimx, aimy), -sqrt(2 * 0.1f * DIST(x, y, aimx, aimy)));
+				Item::Build(playerindex, i, x, y, false, 18000 + rMainAngle(aimx, aimy), -sqrt(2 * 0.1f * DIST(x, y, aimx, aimy)));
 			}
 			else
 			{
-				Item::Build(i, x, y);
+				Item::Build(playerindex, i, x, y);
 			}
 			first = false;
 		}

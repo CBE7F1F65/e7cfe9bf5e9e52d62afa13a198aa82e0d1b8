@@ -179,11 +179,13 @@ bool BossInfo::action()
 			Player::p[0].nScore += bonus;
 			if(!(spellflag & BISF_NOTSPELL))
 			{
-				Bullet::IzeBuild(BULLETIZE_FAITH, Enemy::en[ENEMY_MAINBOSSINDEX].x, Enemy::en[ENEMY_MAINBOSSINDEX].y);
+				// TODO:
+				Bullet::IzeBuild(0, BULLETIZE_FAITH, Enemy::en[ENEMY_MAINBOSSINDEX].x, Enemy::en[ENEMY_MAINBOSSINDEX].y);
 			}
 			else
 			{
-				Bullet::IzeBuild(BULLETIZE_FADEOUT, Enemy::en[ENEMY_MAINBOSSINDEX].x, Enemy::en[ENEMY_MAINBOSSINDEX].y);
+				// TODO:
+				Bullet::IzeBuild(0, BULLETIZE_FADEOUT, Enemy::en[ENEMY_MAINBOSSINDEX].x, Enemy::en[ENEMY_MAINBOSSINDEX].y);
 				timer = 100;
 			}
 
@@ -239,7 +241,8 @@ bool BossInfo::action()
 			{
 				timer = 100;
 			}
-			Bullet::IzeBuild(BULLETIZE_FADEOUT, Enemy::en[ENEMY_MAINBOSSINDEX].x, Enemy::en[ENEMY_MAINBOSSINDEX].y);
+			// TODO:
+			Bullet::IzeBuild(0, BULLETIZE_FADEOUT, Enemy::en[ENEMY_MAINBOSSINDEX].x, Enemy::en[ENEMY_MAINBOSSINDEX].y);
 			if((spellflag & BISF_WAIT) || !remain)
 			{
 				Enemy::en[ENEMY_MAINBOSSINDEX].life = -1;
@@ -318,7 +321,8 @@ bool BossInfo::action()
 
 			for(int i=0;i<tthrow;i++)
 			{
-				Item::Build(ITEM_SMALLFAITH, tx+randt()%10-5, ty+randt()%10-5, true);
+				// TODO:
+				Item::Build(0, ITEM_SMALLFAITH, tx+randt()%10-5, ty+randt()%10-5, true);
 			}
 			itemstack -= tthrow;
 		}

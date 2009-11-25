@@ -6,6 +6,10 @@
 #include "BObject.h"
 
 #define EFFECTSYSMAX		0x100
+#define EFFID_LEFTIDBEGIN	0x0
+#define EFFID_LEFTIDUNTIL	(EFFECTSYSMAX/2)
+#define EFFID_RIGHTIDBEGIN	EFFID_LEFTIDUNTIL
+#define EFFID_RIGHTIDUNTIL	EFFECTSYSMAX
 
 #define EFFSYS_AUTOFADEOUT_TIME	120
 
@@ -18,7 +22,9 @@ public:
 	static bool Init(HTEXTURE * tex, const char * foldername, char name[][M_PATHMAX]);
 	static void ClearAll();
 	static void Action();
-	static void RenderAll();
+	static void RenderAll(BYTE renderflag);
+
+	static void GetIDBeginUntil(BYTE renderflag, int & idbegin, int & iduntil);
 
 	void Clear();
 	void valueSet(WORD ID, BYTE renderflag, float x, float y, int lifetime = -1);

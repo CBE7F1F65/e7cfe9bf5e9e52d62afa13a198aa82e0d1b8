@@ -7,16 +7,17 @@
 #include "Main.h"
 #include "BResource.h"
 #include "Target.h"
+#include "Export.h"
 
 #define _IZEZONEMAX			0x20
 
-RenderDepth Bullet::renderDepth[BULLETTYPEMAX];
+RenderDepth Bullet::renderDepth[M_PL_MATCHMAXPLAYER][BULLETTYPEMAX];
 
 int Bullet::_actionList[BULLETACTIONMAX];
 hgeSprite * Bullet::sp[BULLETTYPECOLORMAX];
-VectorList<IzeZone> Bullet::izel;
+VectorList<IzeZone> Bullet::izel[M_PL_MATCHMAXPLAYER];
 
-VectorList<Bullet> Bullet::bu;
+VectorList<Bullet> Bullet::bu[M_PL_MATCHMAXPLAYER];
 HTEXTURE Bullet::tex;
 
 WORD Bullet::index;
@@ -34,8 +35,13 @@ void Bullet::Init(HTEXTURE _tex)
 {
 	Release();
 
-	ZeroMemory(renderDepth, sizeof(RenderDepth) * BULLETTYPEMAX);
-	bu.init(BULLETMAX);
+	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
+	{
+		ZeroMemory(renderDepth[i], sizeof(RenderDepth) * BULLETTYPEMAX);
+		bu[i].init(BULLETMAX);
+		izel[i].init(_IZEZONEMAX);
+		izel[i].clear_item();
+	}
 	tex = _tex;
 	for (int i=0; i<BULLETTYPEMAX; i++)
 	{
@@ -64,13 +70,10 @@ void Bullet::Init(HTEXTURE _tex)
 		}
 	}
 
-	izel.init(_IZEZONEMAX);
-	izel.clear_item();
-
 	index = 0;
 }
 
-void Bullet::BuildCircle(int num, int baseangle, float baser, float x, float y, float speed, BYTE type, BYTE color, int fadeinTime, float avoid)
+void Bullet::BuildCircle(BYTE playerindex, int num, int baseangle, float baser, float x, float y, float speed, BYTE type, BYTE color, int fadeinTime, float avoid)
 {
 	if (num <= 0)
 	{
@@ -82,11 +85,11 @@ void Bullet::BuildCircle(int num, int baseangle, float baser, float x, float y, 
 		int tnowangle = baseangle + i * anglestep;
 		float tx = x + cost(tnowangle) * baser;
 		float ty = y + sint(tnowangle) * baser;
-		Bullet::Build(tx, ty, true, tnowangle, speed, type, color, fadeinTime, avoid, 0xff);
+		Bullet::Build(playerindex, tx, ty, true, tnowangle, speed, type, color, fadeinTime, avoid, 0xff);
 	}
 }
 
-void Bullet::BuildLine(int num, int baseangle, float space, int baseindex, float x, float y, int angle, float anglefactor, float speed, float speedfactor, BYTE type, BYTE color, int fadeinTime, float avoid)
+void Bullet::BuildLine(BYTE playerindex, int num, int baseangle, float space, int baseindex, float x, float y, int angle, float anglefactor, float speed, float speedfactor, BYTE type, BYTE color, int fadeinTime, float avoid)
 {
 	if (num <= 0)
 	{
@@ -97,18 +100,18 @@ void Bullet::BuildLine(int num, int baseangle, float space, int baseindex, float
 		int tindex = i - baseindex;
 		float tx = x + tindex * cost(baseangle) * space;
 		float ty = y + tindex * sint(baseangle) * space;
-		Bullet::Build(tx, ty, true, angle + anglefactor * tindex, speed + speedfactor * abs(tindex), type, color, fadeinTime, avoid, 0xff);
+		Bullet::Build(playerindex, tx, ty, true, angle + anglefactor * tindex, speed + speedfactor * abs(tindex), type, color, fadeinTime, avoid, 0xff);
 	}
 }
 
-bool Bullet::Build(float x, float y, bool absolute, int angle, float speed, BYTE type, BYTE color, int fadeinTime, float avoid, BYTE tarID)
+bool Bullet::Build(BYTE playerindex, float x, float y, bool absolute, int angle, float speed, BYTE type, BYTE color, int fadeinTime, float avoid, BYTE tarID)
 {
 	Bullet * _tbu = NULL;
-	_tbu = bu.push_back();
-	index = bu.getEndIndex();
+	_tbu = bu[playerindex].push_back();
+	index = bu[playerindex].getEndIndex();
 	if (!_tbu->valueSet(index, x, y, absolute, angle, speed, type, color, fadeinTime, avoid, tarID))
 	{
-		bu.pop(index);
+		bu[playerindex].pop(index);
 		return false;
 	}
 	memcpy(_tbu->actionList, _actionList, BULLETACTIONMAX*sizeof(int));
@@ -117,7 +120,10 @@ bool Bullet::Build(float x, float y, bool absolute, int angle, float speed, BYTE
 
 void Bullet::Release()
 {
-	bu.clear();
+	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
+	{
+		bu[i].clear();
+	}
 	for(int i=0;i<BULLETTYPECOLORMAX;i++)
 	{
 		if(sp[i])
@@ -128,57 +134,63 @@ void Bullet::Release()
 
 void Bullet::ClearItem()
 {
-	bu.clear_item();
+	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
+	{
+		bu[i].clear_item();
+		izel[i].clear_item();
+	}
 	index = 0;
-	izel.clear_item();
 	ZeroMemory(_actionList, sizeof(int) * BULLETACTIONMAX);
 }
 
 void Bullet::Action(bool notinstop)
 {
-	if (bu.size)
+	for (int j=0; j<M_PL_MATCHMAXPLAYER; j++)
 	{
-		ZeroMemory(Bullet::renderDepth, sizeof(RenderDepth) * BULLETTYPEMAX);
-		DWORD i = 0;
-		DWORD size = bu.size;
-		for (bu.toBegin(); i<size; bu.toNext(), i++)
+		if (bu[j].size)
 		{
-			if (!bu.isValid())
+			ZeroMemory(Bullet::renderDepth[j], sizeof(RenderDepth) * BULLETTYPEMAX);
+			DWORD i = 0;
+			DWORD size = bu[j].size;
+			for (bu[j].toBegin(); i<size; bu[j].toNext(), i++)
 			{
-				continue;
-			}
-			if ((*bu).exist)
-			{
-				if (notinstop)
+				if (!bu[j].isValid())
 				{
-					(*bu).action();
+					continue;
+				}
+				if ((*bu[j]).exist)
+				{
+					if (notinstop)
+					{
+						(*bu[j]).action(j);
+					}
+					else
+					{
+						(*bu[j]).actionInStop(j);
+					}
 				}
 				else
 				{
-					(*bu).actionInStop();
+					bu[j].pop();
 				}
 			}
-			else
-			{
-				bu.pop();
-			}
 		}
-	}
-	if (notinstop)
-	{
-		if (Bullet::izel.size)
+		if (notinstop)
 		{
-			DWORD i = 0;
-			DWORD size = Bullet::izel.size;
-			for (Bullet::izel.toBegin(); i<size; Bullet::izel.toNext(), i++)
+			if (izel[j].size)
 			{
-				if (Bullet::izel.isValid())
+				DWORD i = 0;
+				DWORD size = izel[j].size;
+				for (izel[j].toBegin(); i<size; izel[j].toNext(), i++)
 				{
-					IzeZone * tize = &(*(Bullet::izel));
-					tize->timer++;
-					if (tize->timer == tize->maxtime)
+					if (izel[j].isValid())
 					{
-						Bullet::izel.pop();
+						IzeZone * tize = &(*(izel[j]));
+						tize->timer++;
+						if (tize->timer == tize->maxtime)
+						{
+							izel[j].pop();
+						}
 					}
 				}
 			}
@@ -186,19 +198,20 @@ void Bullet::Action(bool notinstop)
 	}
 }
 
-void Bullet::RenderAll()
+void Bullet::RenderAll(BYTE renderflag)
 {
-	if (bu.size)
+	BYTE playerindex = Export::GetPlayerIndexByRenderFlag(renderflag);
+	if (bu[playerindex].size)
 	{
 		for (int i=0; i<BULLETTYPEMAX; i++)
 		{
-			if (Bullet::renderDepth[i].haveType)
+			if (Bullet::renderDepth[playerindex][i].haveType)
 			{
-				for (bu.toIndex(Bullet::renderDepth[i].startIndex); bu.index != Bullet::renderDepth[i].endIndex; bu.toNext())
+				for (bu[playerindex].toIndex(Bullet::renderDepth[playerindex][i].startIndex); bu[playerindex].index != Bullet::renderDepth[playerindex][i].endIndex; bu[playerindex].toNext())
 				{
-					if (bu.isValid() && (*bu).getRenderDepth() == i)
+					if (bu[playerindex].isValid() && (*bu[playerindex]).getRenderDepth() == i)
 					{
-						(*bu).Render();
+						(*bu[playerindex]).Render();
 					}
 				}
 			}
@@ -327,7 +340,7 @@ bool Bullet::valueSet(WORD _ID, float _x, float _y, bool absolute, int _angle, f
 	return true;
 }
 
-void Bullet::IzeBuild(BYTE _type, float _x, float _y, BYTE _maxtime, float _r, BYTE _eventID)
+void Bullet::IzeBuild(BYTE playerindex, BYTE _type, float _x, float _y, BYTE _maxtime, float _r, BYTE _eventID)
 {
 	IzeZone _ize;
 	_ize.x = _x;
@@ -337,22 +350,22 @@ void Bullet::IzeBuild(BYTE _type, float _x, float _y, BYTE _maxtime, float _r, B
 	_ize.type = _type;
 	_ize.timer = 0;
 	_ize.eventID = _eventID;
-	izel.push_back(_ize);
+	izel[playerindex].push_back(_ize);
 }
 
-void Bullet::DoIze()
+void Bullet::DoIze(BYTE playerindex)
 {
 	if (cancelable || bossinfo.flag>=BOSSINFO_COLLAPSE)
 	{
-		if (izel.size)
+		if (izel[playerindex].size)
 		{
 			DWORD i = 0;
-			DWORD size = izel.size;
-			for (izel.toBegin(); i<size; izel.toNext(), i++)
+			DWORD size = izel[playerindex].size;
+			for (izel[playerindex].toBegin(); i<size; izel[playerindex].toNext(), i++)
 			{
-				if (izel.isValid())
+				if (izel[playerindex].isValid())
 				{
-					IzeZone * tize = &(*(izel));
+					IzeZone * tize = &(*(izel[playerindex]));
 					float tor = tize->r;
 					if (tize->maxtime > 1)
 					{
@@ -362,7 +375,6 @@ void Bullet::DoIze()
 						}
 						tor /= tize->maxtime;
 					}
-
 
 					if (checkCollisionBigCircle(tize->x, tize->y, tor))
 					{
@@ -398,45 +410,45 @@ void Bullet::DoIze()
 	}
 }
 
-void Bullet::DoGraze()
+void Bullet::DoGraze(BYTE playerindex)
 {
 	if(!grazed && res.bulletdata[type].collisiontype != BULLET_COLLISION_NONE)
 	{
-		if((Player::p[0].x - x) * (Player::p[0].x - x) + (Player::p[0].y - y) * (Player::p[0].y - y) < Player::p[0].graze_r * Player::p[0].graze_r)
+		if((Player::p[playerindex].x - x) * (Player::p[playerindex].x - x) + (Player::p[playerindex].y - y) * (Player::p[playerindex].y - y) < Player::p[playerindex].graze_r * Player::p[playerindex].graze_r)
 		{
-			Player::p[0].DoGraze(x, y);
+			Player::p[playerindex].DoGraze(x, y);
 			grazed = true;
 		}
 	}
 }
 
-void Bullet::DoCollision()
+void Bullet::DoCollision(BYTE playerindex)
 {
-	if(isInRect(Player::p[0].r, Player::p[0].x, Player::p[0].y))
+	if(isInRect(Player::p[playerindex].r, Player::p[playerindex].x, Player::p[playerindex].y))
 	{
 		if (cancelable)
 		{
 			fadeout = true;
 			timer = 0;
 		}
-		Player::p[0].DoShot();
+		Player::p[playerindex].DoShot();
 	}
 }
 
-void Bullet::DoUpdateRenderDepth()
+void Bullet::DoUpdateRenderDepth(BYTE playerindex)
 {
 	if (exist)
 	{
 		BYTE rdtype = getRenderDepth();
-		if (!renderDepth[rdtype].haveType)
+		if (!renderDepth[playerindex][rdtype].haveType)
 		{
-			renderDepth[rdtype].haveType = true;
-			renderDepth[rdtype].startIndex = index;
+			renderDepth[playerindex][rdtype].haveType = true;
+			renderDepth[playerindex][rdtype].startIndex = index;
 		}
-		renderDepth[rdtype].endIndex = index + 1;
-		if (renderDepth[rdtype].endIndex == BULLETMAX)
+		renderDepth[playerindex][rdtype].endIndex = index + 1;
+		if (renderDepth[playerindex][rdtype].endIndex == BULLETMAX)
 		{
-			renderDepth[rdtype].endIndex = 0;
+			renderDepth[playerindex][rdtype].endIndex = 0;
 		}
 	}
 }
@@ -450,18 +462,18 @@ bool Bullet::HaveGray()
 	return false;
 }
 
-void Bullet::actionInStop()
+void Bullet::actionInStop(BYTE playerindex)
 {
 	index = ID;
 	if (!fadeout)
 	{
-		DoIze();
+		DoIze(playerindex);
 		if (timer > fadeinTime)
 		{
-			DoGraze();
+			DoGraze(playerindex);
 		}
 	}
-	DoUpdateRenderDepth();
+	DoUpdateRenderDepth(playerindex);
 }
 
 bool Bullet::passedEvent(BYTE _eventID)
@@ -493,7 +505,7 @@ void Bullet::passEvent(BYTE _eventID)
 	eventID[0] = _eventID;
 }
 
-void Bullet::action()
+void Bullet::action(BYTE playerindex)
 {
 	index = ID;
 	if(angle != lastangle || lastspeed == 0)
@@ -562,7 +574,7 @@ void Bullet::action()
 
 			if (able)
 			{
-				ChangeAction();
+				ChangeAction(playerindex);
 
 				if (res.bulletdata[type].nRoll && !(timer % BULLET_ANIMATIONSPEED))
 				{
@@ -596,12 +608,12 @@ void Bullet::action()
 					}
 				}
 
-				DoCollision();
-				DoGraze();
+				DoCollision(playerindex);
+				DoGraze(playerindex);
 			}
 		}
 
-		DoIze();
+		DoIze(playerindex);
 		headangle += SIGN(color) * res.bulletdata[type].nTurnAngle;
 		if(tarID != 0xff)
 		{
@@ -620,12 +632,12 @@ void Bullet::action()
 		{
 			if(toafter == BULLETIZE_FAITH)
 			{
-				Item::Build(ITEM_SMALLFAITH, x, y, true);
+				Item::Build(playerindex, ITEM_SMALLFAITH, x, y, true);
 				exist = false;
 			}
 			else if (toafter == BULLETIZE_POINT)
 			{
-				Item::Build(ITEM_POINT, x, y, false);
+				Item::Build(playerindex, ITEM_POINT, x, y, false);
 				exist = false;
 			}
 			else if(toafter == BULLETIZE_SCORE)
@@ -682,7 +694,7 @@ void Bullet::action()
 	}
 	able = exist && !fadeout;
 
-	DoUpdateRenderDepth();
+	DoUpdateRenderDepth(playerindex);
 }
 
 void Bullet::faithlize()
@@ -742,7 +754,7 @@ bool Bullet::isInRect(float r, float aimx, float aimy)
 	return false;
 }
 
-void Bullet::ChangeAction()
+void Bullet::ChangeAction(BYTE playerindex)
 {
 	bool doit = false;
 	for(int i=0;i<BULLETACTIONMAX;++i)
@@ -1055,7 +1067,7 @@ void Bullet::ChangeAction()
 				case ANGLESETRMAP:
 					if(doit)
 					{
-						angle = rMainAngle(Player::p[0].x,Player::p[0].y,actionList[i+1]*1.0f);
+						angle = rMainAngle(Player::p[playerindex].x,Player::p[playerindex].y,actionList[i+1]*1.0f);
 						SE::push(SE_BULLET_CHANGE_1, x);
 					}
 					++i;
@@ -1082,7 +1094,7 @@ void Bullet::ChangeAction()
 				case ANGLESETAMAP:
 					if(doit)
 					{
-						angle = aMainAngle(Player::p[0].x,Player::p[0].y,actionList[i+1]);
+						angle = aMainAngle(Player::p[playerindex].x,Player::p[playerindex].y,actionList[i+1]);
 						SE::push(SE_BULLET_CHANGE_1, x);
 					}
 					++i;

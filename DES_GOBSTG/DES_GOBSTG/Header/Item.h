@@ -39,22 +39,23 @@ public:
 	static void Init();
 	static void ClearItem();
 	static void Action(bool notinpause);
-	static void RenderAll();
+	static void RenderAll(BYTE renderflag);
 
-	static void Build(WORD type, float x, float y, bool bDrained = false, int angle = 9000, float speed = ITEM_STARTSPEED);
+	static void Build(BYTE playerindex, WORD type, float x, float y, bool bDrained = false, int angle = 9000, float speed = ITEM_STARTSPEED);
 
 	void valueSet(WORD type, float x, float y, bool bDrained = false, int angle = 9000, float speed = ITEM_STARTSPEED);
 
-	static void ChangeItemID(WORD oriID, WORD toID);
+//	static void ChangeItemID(WORD oriID, WORD toID);
 	static void Release();
 
 	void Render();
 
-	virtual void action();
-
+//	virtual void action();
+	void action(BYTE playerindex);
+/*
 	static void undrainAll();
 	static void drainAll();
-
+*/
 public:
 	bool bDrained;
 	bool bFast;
@@ -62,7 +63,7 @@ public:
 	static hgeSprite *spItem[ITEMSPRITEMAX];
 	static VectorList<infoFont>infofont;
 
-	static VectorList<Item>mi;
+	static VectorList<Item>mi[M_PL_MATCHMAXPLAYER];
 };
 
 #endif

@@ -39,10 +39,13 @@ int Process::processContinue()
 		BGLayer::ubg[UBGID_FGPAUSE].exist = false;
 		if(!spellmode && scene < S1200)
 		{
-			Player::p[0].valueSet(0, mainchara, subchara_1, subchara_2, PL_DEFAULTNPLAYER, true);
-			Player::p[0].ncCont++;
+			for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
+			{
+				Player::p[i].valueSet(i, mainchara, subchara_1, subchara_2, PL_DEFAULTNPLAYER, true);
+				Player::p[i].ncCont++;
 
-			Bullet::IzeBuild(BULLETIZE_FADEOUT, Player::p[0].x, Player::p[0].y);
+				Bullet::IzeBuild(i, BULLETIZE_FADEOUT, Player::p[i].x, Player::p[i].y);
+			}
 
 			hge->Channel_Resume(channel);
 			hge->Channel_SetVolume(channel, 0);

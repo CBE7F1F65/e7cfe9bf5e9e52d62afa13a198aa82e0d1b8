@@ -48,9 +48,31 @@ void Effectsys::Action()
 	}
 }
 
-void Effectsys::RenderAll()
+void Effectsys::GetIDBeginUntil(BYTE renderflag, int & idbegin, int & iduntil)
 {
-	for (int i=0; i<EFFECTSYSMAX; i++)
+	if (renderflag == M_RENDER_NULL)
+	{
+		idbegin = 0x0;
+		iduntil = EFFECTSYSMAX;
+	}
+	else if (renderflag == M_RENDER_LEFT)
+	{
+		idbegin = EFFID_LEFTIDBEGIN;
+		iduntil = EFFID_LEFTIDUNTIL;
+	}
+	else if (renderflag == M_RENDER_RIGHT)
+	{
+		idbegin = EFFID_RIGHTIDBEGIN;
+		iduntil = EFFID_RIGHTIDUNTIL;
+	}
+}
+
+void Effectsys::RenderAll(BYTE _renderflag)
+{
+	int idbegin;
+	int iduntil;
+	GetIDBeginUntil(_renderflag, idbegin, iduntil);
+	for (int i=idbegin; i<iduntil; i++)
 	{
 		if (effsys[i].exist)
 		{

@@ -3,7 +3,7 @@
 
 #include "BObject.h"
 
-#define BULLETMAX			0x3000
+#define BULLETMAX			0x1000
 #define BULLETCOLORMAX		0x10
 #define BULLETTYPECOLORMAX	(BULLETTYPEMAX * BULLETCOLORMAX)
 
@@ -197,23 +197,24 @@ public:
 	static void Release();
 	static void ClearItem();
 	static void Action(bool noninstop);
-	static void RenderAll();
+	static void RenderAll(BYTE renderflag);
 	void Render();
 
-	virtual void action();
-	void actionInStop();
+//	virtual void action();
+	void action(BYTE playerindex);
+	void actionInStop(BYTE playerindex);
 
-	void DoIze();
-	void DoCollision();
-	void DoGraze();
-	void DoUpdateRenderDepth();
+	void DoIze(BYTE playerindex);
+	void DoCollision(BYTE playerindex);
+	void DoGraze(BYTE playerindex);
+	void DoUpdateRenderDepth(BYTE playerindex);
 
 	bool HaveGray();
 
 	BYTE getRenderDepth();
 
 	bool isInRect(float r,float aimx,float aimy);
-	static void IzeBuild(BYTE type, float x, float y, BYTE maxtime=IZEZONE_DEFAULTTIME, float r=BULLET_IZEOVERZONE, BYTE eventID=0xff);
+	static void IzeBuild(BYTE playerindex, BYTE type, float x, float y, BYTE maxtime=IZEZONE_DEFAULTTIME, float r=BULLET_IZEOVERZONE, BYTE eventID=0xff);
 
 	bool valueSet(WORD ID, float x, float y, bool absolute, int angle, float speed, BYTE type, BYTE color, int fadeinTime, float avoid = 0, BYTE tarID = 0xff);
 	inline void valueSet(WORD ID, const BObject & from, bool absolute, int angle, float speed, BYTE type, BYTE color, int fadeinTime, float avoid = 0, BYTE tarID = 0xff)
@@ -221,9 +222,9 @@ public:
 		valueSet(ID, from.x, from.y, absolute, angle, speed, type, color, fadeinTime, avoid, tarID);
 	}
 
-	static bool Build(float x, float y, bool absolute, int angle, float speed, BYTE type, BYTE color, int fadeinTime, float avoid, BYTE tarID);
-	static void BuildCircle(int num, int baseangle, float baser, float x, float y, float speed, BYTE type, BYTE color, int fadeinTime, float avoid);
-	static void BuildLine(int num, int baseangle, float space, int baseindex, float x, float y, int angle, float anglefactor, float speed, float speedfactor, BYTE type, BYTE color, int fadeinTime, float avoid);
+	static bool Build(BYTE playerindex, float x, float y, bool absolute, int angle, float speed, BYTE type, BYTE color, int fadeinTime, float avoid, BYTE tarID);
+	static void BuildCircle(BYTE playerindex, int num, int baseangle, float baser, float x, float y, float speed, BYTE type, BYTE color, int fadeinTime, float avoid);
+	static void BuildLine(BYTE playerindex, int num, int baseangle, float space, int baseindex, float x, float y, int angle, float anglefactor, float speed, float speedfactor, BYTE type, BYTE color, int fadeinTime, float avoid);
 
 	void matchFadeInColorType();
 	void matchFadeOutColorType();
@@ -235,7 +236,7 @@ public:
 	bool passedEvent(BYTE eventID);
 	void passEvent(BYTE eventID);
 
-	void ChangeAction();
+	void ChangeAction(BYTE playerindex);
 
 public:
 	int		actionList[BULLETACTIONMAX];
@@ -264,12 +265,12 @@ public:
 
 	static int _actionList[BULLETACTIONMAX];
 
-	static RenderDepth renderDepth[BULLETTYPEMAX];
+	static RenderDepth renderDepth[M_PL_MATCHMAXPLAYER][BULLETTYPEMAX];
 	static hgeSprite * sp[BULLETTYPECOLORMAX];
-	static VectorList<IzeZone> izel;
+	static VectorList<IzeZone> izel[M_PL_MATCHMAXPLAYER];
 	static HTEXTURE tex;
 	static WORD index;
-	static VectorList<Bullet>bu;
+	static VectorList<Bullet>bu[M_PL_MATCHMAXPLAYER];
 };
 
 #endif

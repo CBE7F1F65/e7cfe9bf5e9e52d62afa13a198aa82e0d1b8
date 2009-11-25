@@ -7,8 +7,11 @@
 #include "Item.h"
 #include "Main.h"
 #include "Target.h"
+#include "Export.h"
 
-VectorList<Beam> Beam::be;
+#define	BEAMMAX				0x50
+
+VectorList<Beam> Beam::be[M_PL_MATCHMAXPLAYER];
 
 WORD Beam::index;
 
@@ -23,60 +26,70 @@ Beam::~Beam()
 
 void Beam::Init()
 {
-	be.init(BEAMMAX);
+	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
+	{
+		be[i].init(BEAMMAX);
+	}
 	index = 0;
 }
 
 void Beam::ClearItem()
 {
-	be.clear_item();
+	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
+	{
+		be[i].clear_item();
+	}
 }
 
 void Beam::Action()
 {
-	if (be.size)
+	for (int j=0; j<M_PL_MATCHMAXPLAYER; j++)
 	{
-		DWORD i = 0;
-		DWORD size = be.size;
-		for (be.toBegin(); i<size; be.toNext(), i++)
+		if (be[j].size)
 		{
-			if (!be.isValid())
+			DWORD i = 0;
+			DWORD size = be[j].size;
+			for (be[j].toBegin(); i<size; be[j].toNext(), i++)
 			{
-				continue;
-			}
-			if ((*be).exist)
-			{
-				(*be).action();
-			}
-			else
-			{
-				be.pop();
+				if (!be[j].isValid())
+				{
+					continue;
+				}
+				if ((*be[j]).exist)
+				{
+					(*be[j]).action();
+				}
+				else
+				{
+					be[j].pop();
+				}
 			}
 		}
 	}
 }
 
-void Beam::RenderAll()
+void Beam::RenderAll(BYTE renderflag)
 {
-	if (be.size)
+	BYTE playerindex = Export::GetPlayerIndexByRenderFlag(renderflag);
+	if (be[playerindex].size)
 	{
 		DWORD i = 0;
-		DWORD size = be.size;
-		for (be.toBegin(); i<size; be.toNext(), i++)
+		DWORD size = be[playerindex].size;
+		for (be[playerindex].toBegin(); i<size; be[playerindex].toNext(), i++)
 		{
-			if (be.isValid())
+			if (be[playerindex].isValid())
 			{
-				(*be).Render();
+				(*be[playerindex]).Render();
 			}
 		}
 	}
 }
 
-bool Beam::Build(float x, float y, int angle, float speed, BYTE type, BYTE color, WORD length, BYTE flag, int fadeouttime, BYTE tarID)
+bool Beam::Build(BYTE playerindex, float x, float y, int angle, float speed, BYTE type, BYTE color, WORD length, BYTE flag, int fadeouttime, BYTE tarID)
 {
 	Beam * _tbe;
-	_tbe = be.push_back();
-	index = be.getEndIndex();
+	_tbe = be[playerindex].push_back();
+	index = be[playerindex].getEndIndex();
 	_tbe->valueSet(index, x, y, angle, speed, type, color, length, flag, fadeouttime, tarID);
 	return true;
 }

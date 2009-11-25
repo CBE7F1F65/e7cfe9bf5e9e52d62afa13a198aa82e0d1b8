@@ -119,9 +119,10 @@ void Ghost::Render()
 
 void Ghost::actionInStop()
 {
-	if (!fadeout && !half && Player::p[getPlayerIndex()].bBorder)
+	BYTE playerindex = getPlayerIndex();
+	if (!fadeout && !half && Player::p[playerindex].bBorder)
 	{
-		DoShot();
+		DoShot(playerindex);
 	}
 }
 
@@ -138,26 +139,26 @@ BYTE Ghost::getPlayerIndex()
 	return 0;
 }
 
-void Ghost::DoShot()
+void Ghost::DoShot(BYTE playerindex)
 {
-	float costpower = PlayerBullet::CheckShoot(getPlayerIndex(), x, y, 32);
+	float costpower = PlayerBullet::CheckShoot(playerindex, x, y, 32);
 	if (costpower)
 	{
 		CostLife(costpower);
 	}
-	if (Enemy::dmgz.size)
+	if (Enemy::dmgz[playerindex].size)
 	{
 		DWORD i = 0;
-		DWORD size = Enemy::dmgz.size;
-		for (Enemy::dmgz.toBegin(); i<size; Enemy::dmgz.toNext(), i++)
+		DWORD size = Enemy::dmgz[playerindex].size;
+		for (Enemy::dmgz[playerindex].toBegin(); i<size; Enemy::dmgz[playerindex].toNext(), i++)
 		{
-			if (Enemy::dmgz.isValid())
+			if (Enemy::dmgz[playerindex].isValid())
 			{
-				DamageZone * tdmg = &(*(Enemy::dmgz));
+				DamageZone * tdmg = &(*(Enemy::dmgz[playerindex]));
 				if (checkCollisionCircle(tdmg->x, tdmg->y, tdmg->r))
 				{
 					CostLife(tdmg->power);
-					Player::p[getPlayerIndex()].DoPlayerBulletHit();
+					Player::p[playerindex].DoPlayerBulletHit();
 				}
 			}
 		}
@@ -238,7 +239,7 @@ void Ghost::action()
 
 	if(!fadeout && !gave && half && (Player::p[playerindex].bBorder))
 	{
-		Item::Build(ITEM_FAITH, x, y, true);
+		Item::Build(playerindex, ITEM_FAITH, x, y, true);
 
 		gave = true;
 	}
@@ -279,7 +280,7 @@ void Ghost::action()
 			{
 				Player::p[playerindex].DoShot();
 			}
-			DoShot();
+			DoShot(playerindex);
 		}
 
 		if(belong != 0xff)

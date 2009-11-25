@@ -81,7 +81,7 @@ public:
 
 	static bool Build(WORD eID, BYTE index, BYTE tarID, float x, float y, int angle, float speed, BYTE type, float life, int infitimer, DWORD take);
 	static void Init(HTEXTURE texmain);
-	static void DamageZoneBuild(float x, float y, float r, float power);
+	static void DamageZoneBuild(BYTE playerindex, float x, float y, float r, float power);
 	static void Action(bool notinstop);
 	static void ClearAll();
 	static void RenderAll(BYTE renderflag);
@@ -105,7 +105,7 @@ public:
 	void updateFrame(BYTE frameenum, int usetimer = -1);
 	void updateFrameAsMove();
 
-	void DoShot();
+	void DoShot(BYTE playerindex);
 
 	virtual void action();
 	void actionInStop();
@@ -115,7 +115,7 @@ public:
 	void GetCollisionRect(float * w, float * h);
 	void CostLife(float power);
 
-	void giveItem();
+	void giveItem(BYTE playerindex);
 
 	void Render();
 	void RenderEffect();
@@ -153,7 +153,7 @@ public:
 
 	BYTE	frameindex[ENEMY_FRAME_STATEMAX];
 
-	static VectorList<DamageZone> dmgz;
+	static VectorList<DamageZone> dmgz[M_PL_MATCHMAXPLAYER];
 	static HTEXTURE texmain;
 	static BYTE bossflag[ENEMY_BOSSMAX];
 	static BYTE spelluptimer[ENEMY_BOSSMAX];

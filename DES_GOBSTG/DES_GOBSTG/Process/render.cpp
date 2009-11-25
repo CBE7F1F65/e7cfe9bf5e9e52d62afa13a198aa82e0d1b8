@@ -14,11 +14,11 @@ void Process::_Render(BYTE renderflag/* =M_RENDER_NULL */)
 		Enemy::RenderAll(renderflag);
 		PlayerBullet::RenderAll(renderflag);
 		Player::RenderAll(renderflag);
-		Effectsys::RenderAll();
-		Beam::RenderAll();
-		Bullet::RenderAll();
+		Effectsys::RenderAll(renderflag);
+		Beam::RenderAll(renderflag);
+		Bullet::RenderAll(renderflag);
 		FrontDisplay::fdisp.RenderBossInfo();
-		Item::RenderAll();
+		Item::RenderAll(renderflag);
 		Chat::chatitem.Render();
 	}
 	BGLayer::RenderFG(renderflag);
