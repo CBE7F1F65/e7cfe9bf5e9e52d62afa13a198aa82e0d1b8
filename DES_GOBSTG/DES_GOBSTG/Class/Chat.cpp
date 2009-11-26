@@ -87,7 +87,6 @@ bool Chat::chat(BYTE ID, BYTE chatsprite, const char * _text)
 		timer = 0;
 		return true;
 	}
-	Player::p[0].bInfi = true;
 
 	if(hge->Input_GetDIKey(KS_FIRE_MP))
 	{
@@ -179,7 +178,10 @@ bool Chat::chatOn(BYTE leftID, BYTE rightID, BYTE chatsprite)
 {
 	timer++;
 
-	Player::p[0].bInfi = true;
+	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
+	{
+		Player::p[i].SetInfi(PLAYERINFI_CHAT);
+	}
 	chatinit = false;
 
 	rightID -= ENEMY_BOSSTYPEBEGIN;
@@ -271,8 +273,6 @@ bool Chat::chatOff()
 {
 	timer++;
 
-	Player::p[0].bInfi = true;
-
 	if(timer == 1)
 	{
 //		strcpy(text, "");
@@ -290,7 +290,10 @@ bool Chat::chatOff()
 	}
 	else
 	{
-		Player::p[0].bInfi = false;
+		for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
+		{
+			Player::p[i].SetInfi(PLAYERINFI_CHAT, PLAYER_INFIUNSET);
+		}
 		timer = 0;
 		chatting = false;
 		return true;

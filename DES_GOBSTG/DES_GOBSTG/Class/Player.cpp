@@ -45,6 +45,11 @@ int Player::lilycount = 0;
 #define _PLEXTEND_5		11000
 #define _PLEXTEND_MAX	99999
 
+#define _PL_SHOOTCHARGEINFI_1	8
+#define _PL_SHOOTCHARGEINFI_2	47
+#define _PL_SHOOTCHARGEINFI_3	63
+#define _PL_SHOOTCHARGEINFI_4	127
+
 Player::Player()
 {
 	effGraze.exist = false;
@@ -328,6 +333,25 @@ bool Player::HavePlayer(WORD _ID)
 	return false;
 }
 
+void Player::SetInfi(BYTE reasonflag, int _infitimer/* =PLAYER_INFIMAX */)
+{
+	infireasonflag |= reasonflag;
+	if (_infitimer == PLAYER_INFIMAX)
+	{
+		infitimer = PLAYER_INFIMAX;
+	}
+	else if (_infitimer == PLAYER_INFIUNSET)
+	{
+		infitimer = 0;
+	}
+
+	if (infitimer == PLAYER_INFIMAX || infitimer >= _infitimer)
+	{
+		return;
+	}
+	infitimer = _infitimer;
+}
+
 void Player::ClearNC()
 {
 }
@@ -348,6 +372,8 @@ void Player::ClearSet()
 	angle		=	0;
 	flag		=	PLAYER_MERGE;
 	bSlow		=	false;
+	bCharge		=	false;
+	bBorder		=	false;
 	bInfi		=	true;
 	hscale		=	1.0f;
 	vscale		=	1.0f;
@@ -358,10 +384,17 @@ void Player::ClearSet()
 	collapsetimer		=	0;
 	shoottimer			=	0;
 	bordertimer			=	0;
+	chargetimer			=	0;
 	bombtimer			=	0;
 	slowtimer			=	0;
 	fasttimer			=	0;
 	playerchangetimer	=	0;
+
+	fCharge = 0;
+	fChargeMax = PLAYER_CHARGEONE;
+	infitimer = 0;
+	rechargedelaytimer = 0;
+	infireasonflag = 0;
 
 	speedfactor		=	1.0f;
 
@@ -421,16 +454,6 @@ void Player::ClearSet()
 	esShot.colorSet(0xccff0000);
 	esShot.chaseSet(EFFSP_CHASE_PLAYER_(playerindex), 0, 0);
 
-	esBorder.valueSet(EFFSPSET_PLAYERUSE, EFFSP_PLAYERBORDER, SpriteItemManager::GetIndexByName(SI_BORDER_CIRCLE), x, y, 0, 0.0f);
-	esBorder.chaseSet(EFFSP_CHASE_PLAYER_(playerindex), 0, 0);
-	esBorder.actionSet(0, 0, 240);
-	esBorder.colorSet(0xC0ffffff);
-
-	esBorderZone.valueSet(EFFSPSET_PLAYERUSE, EFFSP_PLAYERBORDERZONE, x, y, 0, 0.0f);
-	esBorderZone.chaseSet(EFFSP_CHASE_PLAYER_(playerindex), 0, 0);
-	esBorderZone.actionSet(0, 0, 240);
-	esBorderZone.colorSet(0x80ffffff);
-
 	esPoint.valueSet(EFFSPSET_PLAYERUSE, EFFSP_PLAYERPOINT, SpriteItemManager::GetIndexByName(SI_PLAYER_POINT), x, y);
 	esPoint.chaseSet(EFFSP_CHASE_PLAYER_(playerindex), 0, 0);
 
@@ -454,6 +477,8 @@ void Player::UpdatePlayerData()
 	slowspeed = pdata->slowspeed;
 	graze_r = pdata->graze_r;
 	shotdelay = pdata->shotdelay;
+	chargespeed = pdata->chargespeed;
+	rechargedelay = pdata->rechargedelay;
 }
 
 void Player::AddLostStack()
@@ -567,29 +592,86 @@ void Player::action()
 		}
 	}
 	if(flag & PLAYER_COLLAPSE)
+	{
 		if(Collapse())
+		{
 			flag &= ~PLAYER_COLLAPSE;
+		}
+	}
 	if(flag & PLAYER_SLOWCHANGE)
+	{
 		if(SlowChange())
+		{
 			flag &= ~PLAYER_SLOWCHANGE;
+		}
+	}
 	if(flag & PLAYER_FASTCHANGE)
+	{
 		if(FastChange())
+		{
 			flag &= ~PLAYER_FASTCHANGE;
+		}
+	}
 	if(flag & PLAYER_PLAYERCHANGE)
+	{
 		if(PlayerChange())
+		{
 			flag &= ~PLAYER_PLAYERCHANGE;
+		}
+	}
 	if(flag & PLAYER_SHOOT)
+	{
 		if(Shoot())
+		{
 			flag &= ~PLAYER_SHOOT;
+		}
+	}
 	if(flag & PLAYER_BOMB)
+	{
 		if(Bomb())
+		{
 			flag &= ~PLAYER_BOMB;
+		}
+	}
 	if(flag & PLAYER_BORDER)
+	{
 		if(Border())
+		{
 			flag &= ~PLAYER_BORDER;
+		}
+	}
+	if (flag & PLAYER_CHARGE)
+	{
+		if (Charge())
+		{
+			flag &= ~PLAYER_CHARGE;
+		}
+	}
 	if(flag & PLAYER_GRAZE)
+	{
 		if(Graze())
+		{
 			flag &= ~PLAYER_GRAZE;
+		}
+	}
+
+	if (rechargedelaytimer)
+	{
+		rechargedelaytimer--;
+	}
+	if (infitimer > 0)
+	{
+		infitimer--;
+		bInfi = true;
+	}
+	else if (infitimer == PLAYER_INFIMAX)
+	{
+		bInfi = true;
+	}
+	else
+	{
+		bInfi = false;
+	}
 
 	//input
 	if(!(flag & PLAYER_SHOT || flag & PLAYER_COLLAPSE))
@@ -630,6 +712,25 @@ void Player::action()
 		}
 		nowspeed *= speedfactor;
 		speedfactor = 1.0f;
+
+		if (hge->Input_GetDIKey(KS_CHARGE_MP_(playerindex)))
+		{
+			bCharge = true;
+			if (hge->Input_GetDIKey(KS_CHARGE_MP_(playerindex), DIKEY_DOWN))
+			{
+				if (!(flag & PLAYER_CHARGE))
+				{
+					chargetimer = 0;
+					flag |= PLAYER_CHARGE;
+				}
+			}
+		}
+		else
+		{
+			bCharge = false;
+			flag &= ~PLAYER_CHARGE;
+		}
+
 		if(!(flag & PLAYER_BORDER || flag & PLAYER_BOMB))
 		{
 			if(hge->Input_GetDIKey(KS_CHARGE_MP_(playerindex), DIKEY_DOWN))
@@ -689,7 +790,7 @@ void Player::action()
 			y = PL_MOVABLE_TOP;
 	}
 
-	if (bInfi && timer % 16 < 8)
+	if (bInfi && timer % 8 < 4)
 	{
 		diffuse = 0xff99ff;
 	}
@@ -697,8 +798,6 @@ void Player::action()
 		diffuse = 0xffffff;
 
 	esChange.action();
-	esBorder.action();
-	esBorderZone.action();
 	esShot.action();
 	esPoint.action();
 	
@@ -846,7 +945,8 @@ bool Player::callBomb(bool onlyborder)
 		}
 	}
 	flag |= PLAYER_BOMB;
-	bInfi = true;
+	// TODO:
+	SetInfi(PLAYERINFI_SHOOTCHARGE, 240);
 	return true;
 }
 
@@ -871,9 +971,9 @@ void Player::callPlayerChange()
 bool Player::Merge()
 {
 	mergetimer++;
-	bInfi = true;
 	if(mergetimer == 1)
 	{
+		SetInfi(PLAYERINFI_MERGE, 240);
 		if(hge->Input_GetDIKey(KS_SLOW_MP_(playerindex)))
 		{
 			flag |= PLAYER_SLOWCHANGE;
@@ -907,7 +1007,6 @@ bool Player::Merge()
 	else if(mergetimer == 240)
 	{
 		mergetimer = 0;
-		bInfi = false;
 		return true;
 	}
 	return false;
@@ -995,7 +1094,8 @@ bool Player::Collapse()
 		collapsetimer = 0;
 		vscale = 1.0f;
 		flag |= PLAYER_MERGE;
-		bInfi = true;
+
+		SetInfi(PLAYERINFI_COLLAPSE);
 		if(nLife)
 		{
 			nLife--;
@@ -1037,6 +1137,60 @@ bool Player::Collapse()
 bool Player::Border()
 {
 	return true;
+}
+
+void Player::_ShootCharge(BYTE nChargeLevel)
+{
+	switch (nChargeLevel)
+	{
+	case 0:
+		return;
+	case 1:
+		SetInfi(PLAYERINFI_SHOOTCHARGE, _PL_SHOOTCHARGEINFI_1);
+		break;
+	case 2:
+		SetInfi(PLAYERINFI_SHOOTCHARGE, _PL_SHOOTCHARGEINFI_2);
+		break;
+	case 3:
+		SetInfi(PLAYERINFI_SHOOTCHARGE, _PL_SHOOTCHARGEINFI_3);
+		break;
+	case 4:
+		SetInfi(PLAYERINFI_SHOOTCHARGE, _PL_SHOOTCHARGEINFI_4);
+		break;
+	}
+}
+
+bool Player::Charge()
+{
+	if (rechargedelaytimer)
+	{
+		return false;
+	}
+	chargetimer++;
+	if (chargetimer == 1)
+	{
+		SE::push(SE_PLAYER_CHARGEON, x);
+	}
+	BYTE nChargeLevel = fCharge/PLAYER_CHARGEONE;
+	fCharge += chargespeed;
+	if (fCharge > fChargeMax)
+	{
+		fCharge = fChargeMax;
+	}
+	if ((int)(fCharge/PLAYER_CHARGEONE) > nChargeLevel)
+	{
+		SE::push(SE_PLAYER_CHARGEUP, x);
+		nChargeLevel++;
+	}
+	if (hge->Input_GetDIKey(KS_CHARGE_MP_(playerindex), DIKEY_UP))
+	{
+		_ShootCharge(nChargeLevel);
+		chargetimer = 0;
+		fCharge = 0;
+		rechargedelaytimer = rechargedelay;
+		return true;
+	}
+	return false;
 }
 
 bool Player::Bomb()

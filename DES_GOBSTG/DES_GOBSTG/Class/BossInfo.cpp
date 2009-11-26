@@ -99,7 +99,6 @@ void BossInfo::quit()
 {
 	if (flag & BOSSINFO_COLLAPSE)
 	{
-		Player::p[0].bInfi = false;
 	}
 	else if (flag & BOSSINFO_TIMEOVER)
 	{
@@ -163,9 +162,12 @@ bool BossInfo::action()
 	}
 	else if(flag & BOSSINFO_COLLAPSE)
 	{
-		Player::p[0].bInfi = true;
 		if(timer == 1)
 		{
+			for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
+			{
+				Player::p[i].SetInfi(PLAYERINFI_OVER, 160);
+			}
 			scr.Execute(SCR_STAGE, sno, SCRIPT_CON_QUIT);
 
 			if(remain)

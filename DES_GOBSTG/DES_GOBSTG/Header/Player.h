@@ -49,12 +49,26 @@
 #define	PLAYER_BOMB					0x20
 #define	PLAYER_SLOWCHANGE			0x40
 #define	PLAYER_FASTCHANGE			0x80
-#define	PLAYER_PLAYERCHANGE			0x100
-#define	PLAYER_GRAZE				0x200
+#define PLAYER_CHARGE				0x100
+#define	PLAYER_PLAYERCHANGE			0x200
+#define	PLAYER_GRAZE				0x1000
 
 #define PLBONUS_GRAZE	0x01
 #define PLBONUS_SHOOT	0x02
 #define PLBONUS_TIME	0x04
+
+#define PLAYER_INFIMAX		-1
+#define PLAYER_INFIUNSET	0
+#define PLAYERINFI_MERGE		0x01
+#define PLAYERINFI_SHOOTCHARGE	0x02
+#define PLAYERINFI_OVER			0x04
+#define PLAYERINFI_CHAT			0x08
+#define PLAYERINFI_SHOT			0x10
+#define PLAYERINFI_COLLAPSE		0x20
+
+#define PLAYER_CHARGEONE	100.0f
+#define PLAYER_CHARGENMAX	4
+#define PLAYER_CHARGEMAX	(PLAYER_CHARGEONE*PLAYER_CHARGENMAX)
 
 class Player : public BObject
 {
@@ -65,7 +79,7 @@ public:
 	void valueSet(BYTE playerindex, bool bContinue = false);
 	void ClearSet();
 	void ClearNC();
-	void UpdatePlayerData();
+	void UpdatePlayerData();       
 	void ResetPlayerGhost(bool move = false);
 
 	virtual void action();
@@ -77,6 +91,7 @@ public:
 	bool Collapse();
 	bool Shoot();
 	bool Border();
+	bool Charge();
 	bool Bomb();
 	bool SlowChange();
 	bool FastChange();
@@ -96,6 +111,9 @@ public:
 
 	void _Shoot();
 	void _Bomb();
+	void _ShootCharge(BYTE nChargeLevel);
+
+	void SetInfi(BYTE reasonflag, int infitimer=PLAYER_INFIMAX);
 
 	void bombAction();
 
@@ -141,8 +159,6 @@ public:
 
 	PlayerGhost pg[PLAYERGHOSTMAX];
 
-	EffectSp	esBorder;
-	EffectSp	esBorderZone;
 	EffectSp	esChange;
 	EffectSp	esShot;
 	EffectSp	esPoint;
@@ -162,8 +178,21 @@ public:
 	float	r;
 	float	graze_r;
 
+	float	chargespeed;
+	int		infitimer;
+
 	bool	bSlow;
+	bool	bCharge;
+	bool	bBorder;
 	bool	bInfi;
+
+	int nExPoint;
+	int nGhostPoint;
+	int nBulletPoint;
+	int	nSpellPoint;
+	int nComboHit;
+	float fCharge;
+	float fChargeMax;
 
 	hgeSprite * sprite;
 	BYTE	frameindex[M_PL_ONESETPLAYER][PLAYER_FRAME_STATEMAX];
@@ -176,6 +205,7 @@ public:
 	WORD	collapsetimer;
 	WORD	shoottimer;
 	WORD	bordertimer;
+	WORD	chargetimer;
 	WORD	bombtimer;
 	WORD	slowtimer;
 	WORD	fasttimer;
@@ -183,22 +213,20 @@ public:
 
 	BYTE	shotdelay;
 
+	BYTE	rechargedelay;
+	BYTE	rechargedelaytimer;
+
+	BYTE	infireasonflag;
+
 	BYTE	nLife;
 
 	// add
 	BYTE	initlife;
 	BYTE	playerindex;
 
-	int nExPoint;
-	int nGhostPoint;
-	int nBulletPoint;
-	int	nSpellPoint;
-
 	BYTE cardlevel;
 	BYTE bosslevel;
 	BYTE damagelevel;
-	int combogage;
-	int charge;
 
 	static BYTE rank;
 	static int lilycount;

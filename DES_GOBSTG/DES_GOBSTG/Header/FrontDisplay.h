@@ -40,6 +40,7 @@ struct ftPanelSet
 	hgeSprite * slot;
 	hgeSprite * slotback;
 	hgeSprite * lifeindi[FDISP_LIFEINDIMAX];
+	int slotindex;
 };
 
 struct ftInfoBody
@@ -59,10 +60,10 @@ struct ftInfoSet
 	hgeFont * bossfont;
 	hgeFont * bossasciifont;
 	hgeFont * normaldigitfont;
-	hgeFont * smalldigitfont;
 	hgeFont * asciifont;
 	hgeFont * itemfont;
 	hgeFont * spellpointdigitfont;
+	hgeFont * headdigitfont;
 	HD3DFONT normalfont;
 	HD3DFONT smallfont;
 
@@ -158,8 +159,9 @@ struct ftItemNumSet
 			hgeSprite * fadeII_7;
 			hgeSprite * fadeII_8;
 			hgeSprite * fadeII_9;
+			hgeSprite * bonus;
 		};
-		hgeSprite * itemnum[30];
+		hgeSprite * itemnum[31];
 	};
 };
 
@@ -191,6 +193,45 @@ struct ftSpellPointNumSet
 			hgeSprite * rethit;
 		};
 		hgeSprite * spellpointnum[22];
+	};
+};
+
+struct ftGameInfoDisplaySet
+{
+	union {
+		struct {
+			hgeSprite * num_0;
+			hgeSprite * num_1;
+			hgeSprite * num_2;
+			hgeSprite * num_3;
+			hgeSprite * num_4;
+			hgeSprite * num_5;
+			hgeSprite * num_6;
+			hgeSprite * num_7;
+			hgeSprite * num_8;
+			hgeSprite * num_9;
+			hgeSprite * slash;
+			hgeSprite * colon;
+			hgeSprite * charge;
+			hgeSprite * chargemax;
+			hgeSprite * gaugefilled;
+			hgeSprite * gaugelevel;
+			hgeSprite * caution;
+			hgeSprite * lastlife;
+			hgeSprite * lily;
+			hgeSprite * gameset;
+			hgeSprite * winner;
+			hgeSprite * deadparrot;
+			hgeSprite * warning;
+			hgeSprite * classfairy;
+			hgeSprite * classwitch;
+			hgeSprite * classdragon;
+			hgeSprite * classgods;
+			hgeSprite * spellline;
+			hgeSprite * ready;
+			hgeSprite * gamestart;
+		};
+		hgeSprite * gameinfodisplay[30];
 	};
 };
 
@@ -352,9 +393,9 @@ public:
 	ftInfoSet info;
 	ftNumSet bignum;
 	ftNumSet normalnum;
-	ftNumSet smallnum;
 	ftItemNumSet itemnum;
 	ftSpellPointNumSet spellpointnum;
+	ftGameInfoDisplaySet gameinfodisplay;
 	ftAscIISet ascii;
 	ftAscIISet asciismall;
 	ftFirstSet first;

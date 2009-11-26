@@ -19,9 +19,9 @@ FrontDisplay::FrontDisplay()
 	ZeroMemory(&info, sizeof(ftInfoSet));
 	ZeroMemory(&bignum, sizeof(ftNumSet));
 	ZeroMemory(&normalnum, sizeof(ftNumSet));
-	ZeroMemory(&smallnum, sizeof(ftNumSet));
 	ZeroMemory(&itemnum, sizeof(ftItemNumSet));
 	ZeroMemory(&spellpointnum, sizeof(ftSpellPointNumSet));
+	ZeroMemory(&gameinfodisplay, sizeof(ftGameInfoDisplaySet));
 	ZeroMemory(&ascii, sizeof(ftAscIISet));
 	ZeroMemory(&asciismall, sizeof(ftAscIISet));
 	ZeroMemory(&first, sizeof(ftFirstSet));
@@ -149,7 +149,7 @@ void FrontDisplay::RenderPanel()
 			{
 				panel.spellpoint->Render(spellpointx[i], M_GAMESQUARE_TOP);
 				char buffer[M_STRITOAMAX];
-				sprintf(buffer, "%d%c", Player::p[i].combogage, '0'+21);
+				sprintf(buffer, "%d%c", Player::p[i].nComboHit, '0'+21);
 				for (int j=0; j<strlen(buffer)-1; j++)
 				{
 					buffer[j] += 10;
@@ -157,7 +157,17 @@ void FrontDisplay::RenderPanel()
 				info.spellpointdigitfont->printf(spellpointx[i]+36, M_GAMESQUARE_TOP+16, HGETEXT_RIGHT, "%s", buffer);
 				info.spellpointdigitfont->printf(spellpointx[i]+36, M_GAMESQUARE_TOP+16, HGETEXT_LEFT, "%06d", Player::p[i].nSpellPoint);
 
-				panel.slot->Render(M_GAMESQUARE_LEFT_(i), M_GAMESQUARE_BOTTOM);
+				spriteData * _spd = SpriteItemManager::CastSprite(panel.slotindex);
+				float fslot = Player::p[i].fChargeMax / PLAYER_CHARGEMAX;
+				panel.slot->SetTextureRect(_spd->tex_x, _spd->tex_y, _spd->tex_w*fslot, _spd->tex_h);
+				panel.slot->SetHotSpot(0, _spd->tex_h);
+				panel.slot->SetColor(0xff808080);
+				panel.slot->Render(M_GAMESQUARE_LEFT_(i)+16, M_GAMESQUARE_BOTTOM);
+				fslot = Player::p[i].fCharge / PLAYER_CHARGEMAX;
+				panel.slot->SetTextureRect(_spd->tex_x, _spd->tex_y, _spd->tex_w*fslot, _spd->tex_h);
+				panel.slot->SetHotSpot(0, _spd->tex_h);
+				panel.slot->SetColor(0xffffffff);
+				panel.slot->Render(M_GAMESQUARE_LEFT_(i)+16, M_GAMESQUARE_BOTTOM);
 				panel.slotback->Render(M_GAMESQUARE_LEFT_(i), M_GAMESQUARE_BOTTOM);
 				float tempx;
 				for (int j=0; j<PLAYER_DEFAULTINITLIFE/2; j++)
@@ -199,7 +209,7 @@ void FrontDisplay::RenderPanel()
 	{
 		if (mp.replaymode)
 		{
-			info.smalldigitfont->printf(385, 450, 0, "%.2f", mp.replayFPS);
+			info.asciifont->printf(385, 450, 0, "%.2f", mp.replayFPS);
 		}
 #ifdef __DEBUG
 		info.asciifont->printf(
@@ -215,13 +225,13 @@ void FrontDisplay::RenderPanel()
 #endif
 		if (Player::CheckAble() && info.asciifont)
 		{
-			info.asciifont->printf(M_CLIENT_CENTER_X, M_CLIENT_BOTTOM-14, HGETEXT_CENTER, "%.2f", hge->Timer_GetFPS(35));
+			info.asciifont->printf(M_CLIENT_CENTER_X, M_CLIENT_BOTTOM-14, HGETEXT_CENTER, "%.2ffps", hge->Timer_GetFPS(35));
 			info.asciifont->printf(M_CLIENT_CENTER_X, M_CLIENT_TOP, HGETEXT_CENTER, "%02d:%02d", time/3600, (time/60)%60);
 		}
 #ifdef __DEBUG
-		if (Player::CheckAble() && info.smalldigitfont)
+		if (Player::CheckAble())
 		{
-			info.smalldigitfont->printf(8, 465, 0, "%d", time);
+			info.asciifont->printf(8, 465, 0, "%d", time);
 		}
 #endif // __DEBUG
 	}
@@ -595,7 +605,8 @@ bool FrontDisplay::Init()
 	panel.spellpoint = SpriteItemManager::CreateSpriteByName(SI_FRONTPANEL_SPELLPOINT);
 	panel.spellpoint->SetHotSpot(0, 0);
 	panel.winindi = SpriteItemManager::CreateSpriteByName(SI_FRONTPANEL_WININDI);
-	panel.slot = SpriteItemManager::CreateSpriteByName(SI_FRONTPANEL_SLOT);
+	panel.slotindex = SpriteItemManager::GetIndexByName(SI_FRONTPANEL_SLOT);
+	panel.slot = SpriteItemManager::CreateSprite(panel.slotindex);
 	panel.slot->SetHotSpot(0, panel.slot->GetHeight());
 	panel.slotback = SpriteItemManager::CreateSpriteByName(SI_FRONTPANEL_SLOTBACK);
 	panel.slotback->SetHotSpot(0, panel.slotback->GetHeight());
@@ -680,29 +691,44 @@ bool FrontDisplay::Init()
 	normalnum.num_div = SpriteItemManager::CreateSpriteByName(SI_DIGITNORMAL_DIV);
 	normalnum.num_dot = SpriteItemManager::CreateSpriteByName(SI_DIGITNORMAL_DOT);
 
-	idx = SpriteItemManager::GetIndexByName(SI_DIGITSMALL_0);
-	for (int i=0; i<10; i++)
-	{
-		smallnum.num[i] = SpriteItemManager::CreateSprite(idx+i);
-	}
-	smallnum.num_add = SpriteItemManager::CreateSpriteByName(SI_DIGITSMALL_ADD);
-	smallnum.num_sub = SpriteItemManager::CreateSpriteByName(SI_DIGITSMALL_SUB);
-	smallnum.num_mul = SpriteItemManager::CreateSpriteByName(SI_DIGITSMALL_MUL);
-	smallnum.num_div = SpriteItemManager::CreateSpriteByName(SI_DIGITSMALL_DIV);
-	smallnum.num_mod = SpriteItemManager::CreateSpriteByName(SI_DIGITSMALL_MOD);
-	smallnum.num_dot = SpriteItemManager::CreateSpriteByName(SI_DIGITSMALL_DOT);
-
 	idx = SpriteItemManager::GetIndexByName(SI_DIGITCHARACTER_0);
 	for (int i=0; i<30; i++)
 	{
 		itemnum.itemnum[i] = SpriteItemManager::CreateSprite(idx+i);
 	}
+	itemnum.bonus = SpriteItemManager::CreateSpriteByName(SI_DIGITCHARACTER_BONUS);
 
 	idx = SpriteItemManager::GetIndexByName(SI_SPELLPOINTDIGITCHARACTER_0);
 	for (int i=0; i<22; i++)
 	{
 		spellpointnum.spellpointnum[i] = SpriteItemManager::CreateSprite(idx+i);
 	}
+
+	idx = SpriteItemManager::GetIndexByName(SI_GAMEINFO_0);
+	for (int i=0; i<10; i++)
+	{
+		gameinfodisplay.gameinfodisplay[i] = SpriteItemManager::CreateSprite(idx+i);
+	}
+	gameinfodisplay.slash = SpriteItemManager::CreateSpriteByName(SI_GAMEINFO_SLASH);
+	gameinfodisplay.colon = SpriteItemManager::CreateSpriteByName(SI_GAMEINFO_COLON);
+	gameinfodisplay.charge = SpriteItemManager::CreateSpriteByName(SI_GAMEINFO_CHARGE);
+	gameinfodisplay.chargemax = SpriteItemManager::CreateSpriteByName(SI_GAMEINFO_CHARGEMAX);
+	gameinfodisplay.gaugefilled = SpriteItemManager::CreateSpriteByName(SI_GAMEINFO_GAUGEFILLED);
+	gameinfodisplay.gaugelevel = SpriteItemManager::CreateSpriteByName(SI_GAMEINFO_GAUGELEVEL);
+	gameinfodisplay.caution = SpriteItemManager::CreateSpriteByName(SI_GAMEINFO_CAUTION);
+	gameinfodisplay.lastlife = SpriteItemManager::CreateSpriteByName(SI_GAMEINFO_LASTLIFE);
+	gameinfodisplay.lily = SpriteItemManager::CreateSpriteByName(SI_GAMEINFO_LILY);
+	gameinfodisplay.gameset = SpriteItemManager::CreateSpriteByName(SI_GAMEINFO_GAMESET);
+	gameinfodisplay.winner = SpriteItemManager::CreateSpriteByName(SI_GAMEINFO_WINNER);
+	gameinfodisplay.deadparrot = SpriteItemManager::CreateSpriteByName(SI_GAMEINFO_DEADPARROT);
+	gameinfodisplay.warning = SpriteItemManager::CreateSpriteByName(SI_GAMEINFO_WARNING);
+	gameinfodisplay.classfairy = SpriteItemManager::CreateSpriteByName(SI_GAMEINFO_CLASSFAIRY);
+	gameinfodisplay.classwitch = SpriteItemManager::CreateSpriteByName(SI_GAMEINFO_CLASSWITCH);
+	gameinfodisplay.classdragon = SpriteItemManager::CreateSpriteByName(SI_GAMEINFO_CLASSDRAGON);
+	gameinfodisplay.classgods = SpriteItemManager::CreateSpriteByName(SI_GAMEINFO_CLASSGODS);
+	gameinfodisplay.spellline = SpriteItemManager::CreateSpriteByName(SI_GAMEINFO_SPELLLINE);
+	gameinfodisplay.ready = SpriteItemManager::CreateSpriteByName(SI_GAMEINFO_READY);
+	gameinfodisplay.gamestart = SpriteItemManager::CreateSpriteByName(SI_GAMEINFO_GAMESTART);
 
 	//ascii
 
@@ -741,19 +767,6 @@ bool FrontDisplay::Init()
 	info.bossfont->ChangeSprite('.', normalnum.num_dot);
 	info.bossfont->ChangeSprite(' ', ascii.space);
 
-	info.smalldigitfont = new hgeFont();
-	for (int i='0'; i<='9'; i++)
-	{
-		info.smalldigitfont->ChangeSprite(i, smallnum.num[i-'0']);
-	}
-	info.smalldigitfont->ChangeSprite('+', smallnum.num_add);
-	info.smalldigitfont->ChangeSprite('-', smallnum.num_sub);
-	info.smalldigitfont->ChangeSprite('*', smallnum.num_mul);
-	info.smalldigitfont->ChangeSprite('/', smallnum.num_div);
-	info.smalldigitfont->ChangeSprite('%', smallnum.num_mod);
-	info.smalldigitfont->ChangeSprite('.', smallnum.num_dot);
-	info.smalldigitfont->ChangeSprite(' ', asciismall.space);
-
 	info.itemfont = new hgeFont();
 	for (int i='0'; i<30+'0'; i++)
 	{
@@ -766,6 +779,14 @@ bool FrontDisplay::Init()
 	{
 		info.spellpointdigitfont->ChangeSprite(i, spellpointnum.spellpointnum[i-'0']);
 	}
+
+	info.headdigitfont = new hgeFont();
+	for (int i='0'; i<10+'0'; i++)
+	{
+		info.headdigitfont->ChangeSprite(i, gameinfodisplay.gameinfodisplay[i]);
+	}
+	info.headdigitfont->ChangeSprite('/', gameinfodisplay.slash);
+	info.headdigitfont->ChangeSprite(':', gameinfodisplay.colon);
 
 	info.asciifont = new hgeFont();
 	for (int i=FDISP_ASCII_BEGIN; i<=FDISP_ASCII_END; i++)
@@ -817,11 +838,6 @@ void FrontDisplay::Release()
 	{
 		delete info.normaldigitfont;
 		info.normaldigitfont = NULL;
-	}
-	if (info.smalldigitfont)
-	{
-		delete info.smalldigitfont;
-		info.smalldigitfont = NULL;
 	}
 	if (info.asciifont)
 	{
@@ -893,18 +909,7 @@ void FrontDisplay::Release()
 	SpriteItemManager::FreeSprite(&normalnum.num_div);
 	SpriteItemManager::FreeSprite(&normalnum.num_dot);
 
-	for (int i=0; i<10; i++)
-	{
-		SpriteItemManager::FreeSprite(&smallnum.num[i]);
-	}
-	SpriteItemManager::FreeSprite(&smallnum.num_add);
-	SpriteItemManager::FreeSprite(&smallnum.num_sub);
-	SpriteItemManager::FreeSprite(&smallnum.num_mul);
-	SpriteItemManager::FreeSprite(&smallnum.num_div);
-	SpriteItemManager::FreeSprite(&smallnum.num_mod);
-	SpriteItemManager::FreeSprite(&smallnum.num_dot);
-
-	for (int i=0; i<30; i++)
+	for (int i=0; i<31; i++)
 	{
 		SpriteItemManager::FreeSprite(&itemnum.itemnum[i]);
 	}
@@ -912,6 +917,11 @@ void FrontDisplay::Release()
 	for (int i=0; i<22; i++)
 	{
 		SpriteItemManager::FreeSprite(&spellpointnum.spellpointnum[i]);
+	}
+
+	for (int i=0; i<30; i++)
+	{
+		SpriteItemManager::FreeSprite(&gameinfodisplay.gameinfodisplay[i]);
 	}
 
 	for (int i=0; i<FDISP_ASCII_MAX; i++)

@@ -386,12 +386,12 @@ bool _DataTable::PlayerDefineFile()
 		{
 			return true;
 		}
-		fscanf(file, "%f%f%f%f%d%d%d%d%d%d%d%d%d%d%d%d%d%d%f%f\t%[^\t]\t%[^\t\r\n]", 
+		fscanf(file, "%f%f%f%f%f%d%d%d%d%d%d%d%d%d%d%d%d%d%f%f\t%[^\t]\t%[^\t\r\n]", 
 			&(item->collision_r), 
 			&(item->fastspeed), 
 			&(item->slowspeed), 
 			&(item->graze_r),
-			&(item->bombperpower), 
+			&(item->chargespeed), 
 			&(tint[0]), 
 			&(tint[1]), 
 			&(tint[2]), 
@@ -410,7 +410,7 @@ bool _DataTable::PlayerDefineFile()
 			(item->name),
 			(item->ename));
 		item->shotdelay = tint[0];
-		item->borderlast = tint[1];
+		item->rechargedelay = tint[1];
 		item->bomblast = tint[2];
 		item->tex = tint[3];
 		item->faceIndex = tint[4];

@@ -16,16 +16,19 @@
 #define	SE_PLAYER_CHANGE		10
 #define SE_PLAYER_BORDERON		11
 #define SE_PLAYER_BORDEROFF		12
+#define SE_PLAYER_CHARGEON		13
+#define SE_PLAYER_CHARGEUP		14
 
-#define	SE_BULLET_CHANGE_1		16
-#define	SE_BULLET_CHANGE_2		17
-#define	SE_BULLET_BOUND			18
-#define	SE_BULLET_FADEOUT		19
+#define SE_BULLET_ERASE			16
+#define	SE_BULLET_CHANGE_1		17
+#define	SE_BULLET_CHANGE_2		18
+#define	SE_BULLET_BOUND			19
+#define	SE_BULLET_FADEOUT		20
 
-#define	SE_BEAM_1				20
-#define	SE_BEAM_2				21
-#define SE_BEAM_REFLECT			22
-#define SE_BEAM_FADEOUT			23
+#define	SE_BEAM_1				22
+#define	SE_BEAM_2				23
+#define SE_BEAM_REFLECT			24
+#define SE_BEAM_FADEOUT			25
 
 #define	SE_BOSS_UP				28
 #define	SE_BOSS_DEAD			29
@@ -35,6 +38,7 @@
 #define	SE_BOSS_POWER_1			33
 #define	SE_BOSS_POWER_2			34
 #define SE_BOSS_BONUS			35
+#define SE_BOSS_WARNING			36
 
 #define	SE_ENEMY_DAMAGE_1		40
 #define	SE_ENEMY_DAMAGE_2		41

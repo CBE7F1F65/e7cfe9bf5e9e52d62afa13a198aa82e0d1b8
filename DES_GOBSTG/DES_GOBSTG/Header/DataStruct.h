@@ -185,10 +185,10 @@ struct playerData
 	float usetexw;
 	float usetexh;
 	float graze_r;
-	int bombperpower;
-	WORD borderlast;
+	float chargespeed;
 	WORD bomblast;
 	BYTE shotdelay;
+	BYTE rechargedelay;
 	BYTE tex;
 	BYTE faceIndex;
 	BYTE tex_nCol;
