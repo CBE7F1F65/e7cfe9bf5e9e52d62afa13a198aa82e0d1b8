@@ -28,7 +28,7 @@ public:
 	void SetAction(BYTE typeflag, float xadj, float yadj);
 	int SetSelect(int select=-1);
 
-	bool Confirm(BYTE pushid, int keyminus=PUSHKEY_KEYNULL, int keyplus=PUSHKEY_KEYNULL, int keyok=PUSHKEY_KEYNULL, int keycancel=PUSHKEY_KEYNULL, float cenx=M_ACTIVECLIENT_CENTER_X, float ceny=M_ACTIVECLIENT_CENTER_Y, bool settrue=false);
+	bool Confirm(BYTE pushid, int keyminus=PUSHKEY_KEYNULL, int keyplus=PUSHKEY_KEYNULL, int keyok=PUSHKEY_KEYNULL, int keycancel=PUSHKEY_KEYNULL, float cenx=M_CLIENT_CENTER_X, float ceny=M_CLIENT_CENTER_Y, bool settrue=false);
 
 	void shift(int nshift);
 	void action();

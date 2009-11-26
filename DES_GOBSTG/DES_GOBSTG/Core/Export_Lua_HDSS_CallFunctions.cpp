@@ -206,7 +206,7 @@ int _HDSSCallGet::Call_SE(LuaState * ls)
 	{
 		int _type = _INEXT_HDSS_LUAPARA;
 
-		float _x = M_ACTIVECLIENT_CENTER_X;
+		float _x = M_CLIENT_CENTER_X;
 		_JNEXT_HDSS_LUAPARA;
 		if (bhavenext)
 		{

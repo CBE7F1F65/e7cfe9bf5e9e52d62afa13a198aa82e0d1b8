@@ -76,7 +76,7 @@ void Chat::Render()
 	}
 	textbox->RenderEx(x[CHATTER_TEXTBOX], y[CHATTER_TEXTBOX], ARC(9000), 1.5f, 1.0f);
 	fschat.SetColor(0xFFFFFFFF, 0xFFFFFFFF, col, col);
-	fschat.Render(M_ACTIVECLIENT_LEFT+70, M_ACTIVECLIENT_CENTER_Y+138, 0xffffffff, col);
+	fschat.Render(M_CLIENT_LEFT+70, M_CLIENT_CENTER_Y+138, 0xffffffff, col);
 }
 
 bool Chat::chat(BYTE ID, BYTE chatsprite, const char * _text)
@@ -163,13 +163,13 @@ bool Chat::chat(BYTE ID, BYTE chatsprite, const char * _text)
 	{
 		if (chatsprite & CHATSPRITE_LEFT)
 		{
-			x[CHATTER_LEFT] = INTER(x[CHATTER_LEFT], M_ACTIVECLIENT_CENTER_X-80, 1.0/(16-timer));
-			x[CHATTER_RIGHT] = INTER(x[CHATTER_RIGHT], M_ACTIVECLIENT_CENTER_X+132, 1.0/(16-timer));
+			x[CHATTER_LEFT] = INTER(x[CHATTER_LEFT], M_CLIENT_CENTER_X-80, 1.0/(16-timer));
+			x[CHATTER_RIGHT] = INTER(x[CHATTER_RIGHT], M_CLIENT_CENTER_X+132, 1.0/(16-timer));
 		}
 		else
 		{
-			x[CHATTER_LEFT] = INTER(x[CHATTER_LEFT], M_ACTIVECLIENT_CENTER_X-132, 1.0/(16-timer));
-			x[CHATTER_RIGHT] = INTER(x[CHATTER_RIGHT], M_ACTIVECLIENT_CENTER_X+80, 1.0/(16-timer));
+			x[CHATTER_LEFT] = INTER(x[CHATTER_LEFT], M_CLIENT_CENTER_X-132, 1.0/(16-timer));
+			x[CHATTER_RIGHT] = INTER(x[CHATTER_RIGHT], M_CLIENT_CENTER_X+80, 1.0/(16-timer));
 		}
 	}
 	return false;
@@ -228,10 +228,10 @@ bool Chat::chatOn(BYTE leftID, BYTE rightID, BYTE chatsprite)
 	}
 	if(timer <= 36)
 	{
-		x[CHATTER_LEFT] = M_ACTIVECLIENT_CENTER_X-492+timer*10;
-		y[CHATTER_LEFT] = M_ACTIVECLIENT_CENTER_Y+80;
-		x[CHATTER_RIGHT] = M_ACTIVECLIENT_CENTER_X+492-timer*10;
-		y[CHATTER_RIGHT] = M_ACTIVECLIENT_CENTER_Y+80;
+		x[CHATTER_LEFT] = M_CLIENT_CENTER_X-492+timer*10;
+		y[CHATTER_LEFT] = M_CLIENT_CENTER_Y+80;
+		x[CHATTER_RIGHT] = M_CLIENT_CENTER_X+492-timer*10;
+		y[CHATTER_RIGHT] = M_CLIENT_CENTER_Y+80;
 		if(chatsprite & CHATSPRITE_LEFT)
 		{
 			right->SetColor(0x80ffffff);
@@ -240,21 +240,21 @@ bool Chat::chatOn(BYTE leftID, BYTE rightID, BYTE chatsprite)
 		{
 			left->SetColor(0x80ffffff);
 		}
-		x[CHATTER_TEXTBOX] = M_ACTIVECLIENT_CENTER_X;
-		y[CHATTER_TEXTBOX] = M_ACTIVECLIENT_BOTTOM+72-timer*4;
+		x[CHATTER_TEXTBOX] = M_CLIENT_CENTER_X;
+		y[CHATTER_TEXTBOX] = M_CLIENT_BOTTOM+72-timer*4;
 	}
 	else
 	{
 		if (leftID != 0xff)
 		{
-			x[CHATTER_LEFTNAME] = M_ACTIVECLIENT_CENTER_X-90;
-			y[CHATTER_LEFTNAME] = M_ACTIVECLIENT_CENTER_Y+108;
+			x[CHATTER_LEFTNAME] = M_CLIENT_CENTER_X-90;
+			y[CHATTER_LEFTNAME] = M_CLIENT_CENTER_Y+108;
 			SpriteItemManager::ptName(leftID, leftname, false);
 		}
 		if (rightID != 0xff)
 		{
-			x[CHATTER_RIGHTNAME] = M_ACTIVECLIENT_CENTER_X+90;
-			y[CHATTER_RIGHTNAME] = M_ACTIVECLIENT_CENTER_Y+108;
+			x[CHATTER_RIGHTNAME] = M_CLIENT_CENTER_X+90;
+			y[CHATTER_RIGHTNAME] = M_CLIENT_CENTER_Y+108;
 			SpriteItemManager::ptName(rightID, rightname, true);
 		}
 		/*

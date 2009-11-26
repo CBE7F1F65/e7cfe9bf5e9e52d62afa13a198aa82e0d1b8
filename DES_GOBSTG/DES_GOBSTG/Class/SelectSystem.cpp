@@ -368,7 +368,7 @@ void SelectSystem::Render()
 	}
 }
 
-bool SelectSystem::Confirm(BYTE _pushid, int _keyminus, int _keyplus, int _keyok, int _keycancel, float cenx/* =M_ACTIVECLIENT_CENTER_X */, float ceny/* =M_ACTIVECLIENT_CENTER_Y */, bool settrue/* =false */)
+bool SelectSystem::Confirm(BYTE _pushid, int _keyminus, int _keyplus, int _keyok, int _keycancel, float cenx/* =M_CLIENT_CENTER_X */, float ceny/* =M_CLIENT_CENTER_Y */, bool settrue/* =false */)
 {
 	if(!confirminit)
 	{

@@ -97,6 +97,13 @@ bool Export::clientAfterInitial()
 	return true;
 }
 
+void Export::clientSetMatrixUser(D3DXMATRIX matWorld, D3DXMATRIX matView, D3DXMATRIX matProj)
+{
+	hge->Gfx_SetTransform( D3DTS_WORLD, &matWorld );
+	hge->Gfx_SetTransform( D3DTS_VIEW, &matView );
+	hge->Gfx_SetTransform( D3DTS_PROJECTION, &matProj );
+}
+
 void Export::clientSetMatrix(float _worldx, float _worldy, float _worldz, BYTE renderflag)
 {
 	D3DXMATRIXA16 matWorld;

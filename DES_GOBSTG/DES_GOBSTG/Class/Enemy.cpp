@@ -368,7 +368,7 @@ void Enemy::matchAction()
 		//BOSS³ö³¡¸´Î»
 		if((int)para[0])
 		{
-			chaseAim(M_ACTIVECLIENT_BOSSX, M_ACTIVECLIENT_BOSSY, para[0]);
+			chaseAim(M_GAMESQUARE_BOSSX_(playerindex), M_GAMESQUARE_BOSSY, para[0]);
 			para[0] -= 0.8f;
 			para[0] = (int)para[0];
 		}
@@ -394,21 +394,24 @@ void Enemy::matchAction()
 				para[1] = Player::p[playerindex].x + randt() % 60;
 			else
 				para[1] = Player::p[playerindex].x - randt() % 60;
-			if(para[1] < M_ACTIVECLIENT_RIGHT*0.15f)
+			float edgescale = 0.15f;
+			float leftedge = M_GAMESQUARE_LEFT_(playerindex)+M_GAMESQUARE_WIDTH * edgescale;
+			float rightedge = M_GAMESQUARE_RIGHT_(playerindex)-M_GAMESQUARE_WIDTH * edgescale;
+			if(para[1] < M_GAMESQUARE_LEFT_(playerindex)+M_GAMESQUARE_WIDTH*0.15f)
 			{
-				if(x <= M_ACTIVECLIENT_RIGHT*0.15f + 8)
-					para[1] = M_ACTIVECLIENT_RIGHT*0.15f + 8 + randt() % 50;
+				if(x <= leftedge + 8)
+					para[1] = leftedge + 8 + randt() % 50;
 				else
-					para[1] = M_ACTIVECLIENT_RIGHT*0.15f;
+					para[1] = leftedge;
 			}
-			else if(para[1] > M_ACTIVECLIENT_RIGHT*0.85f)
+			else if(para[1] > rightedge)
 			{
-				if(x >= M_ACTIVECLIENT_RIGHT*0.85f- 8)
-					para[1] = M_ACTIVECLIENT_RIGHT*0.85f - 8 - randt() % 50;
+				if(x >= rightedge - 8)
+					para[1] = rightedge - 8 - randt() % 50;
 				else
-					para[1] = M_ACTIVECLIENT_RIGHT*0.85f;
+					para[1] = rightedge;
 			}
-			para[2] = randt() % 80 + M_ACTIVECLIENT_BOSSY - 40;
+			para[2] = randt() % 80 + M_GAMESQUARE_BOSSY - 40;
 		}
 		break;
 	case ENAC_CHASETO_CXY:
@@ -1001,7 +1004,7 @@ void Enemy::action()
 				FrontDisplay::fdisp.info.enemyx->SetColor(0x80ffffff);
 		}
 		DoShot(playerindex);
-		if(x > M_DELETECLIENT_RIGHT || x < M_DELETECLIENT_LEFT || y > M_DELETECLIENT_BOTTOM || y < M_DELETECLIENT_TOP)
+		if(x > M_DELETECLIENT_RIGHT_(playerindex) || x < M_DELETECLIENT_LEFT_(playerindex) || y > M_DELETECLIENT_BOTTOM || y < M_DELETECLIENT_TOP)
 			exist = false;
 	}
 	else
@@ -1042,10 +1045,10 @@ void Enemy::giveItem(BYTE playerindex)
 	float tempy = y;
 
 	y -= randt()%30;
-	if(x > PL_MOVABLE_RIGHT)
-		x = PL_MOVABLE_RIGHT;
-	else if(x < PL_MOVABLE_LEFT)
-		x = PL_MOVABLE_LEFT;
+	if(x > PL_MOVABLE_RIGHT_(playerindex))
+		x = PL_MOVABLE_RIGHT_(playerindex);
+	else if(x < PL_MOVABLE_LEFT_(playerindex))
+		x = PL_MOVABLE_LEFT_(playerindex);
 
 	for(int i=0;i<8;i++)
 	{

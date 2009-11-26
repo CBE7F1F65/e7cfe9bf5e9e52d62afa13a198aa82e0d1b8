@@ -57,7 +57,7 @@ void Beam::Action()
 				}
 				if ((*be[j]).exist)
 				{
-					(*be[j]).action();
+					(*be[j]).action(j);
 				}
 				else
 				{
@@ -177,7 +177,7 @@ void Beam::SetHold(BYTE _holdtar, BYTE _pintar, float holdoffset)
 	pintar = _pintar;
 }
 
-void Beam::action()
+void Beam::action(BYTE playerindex)
 {
 	if(angle != lastangle)
 	{
@@ -248,9 +248,9 @@ void Beam::action()
 			timer = 0;
 		}
 
-		if(isInRect(Player::p[0].r, Player::p[0].x, Player::p[0].y))
+		if(isInRect(Player::p[playerindex].r, Player::p[playerindex].x, Player::p[playerindex].y))
 		{
-			Player::p[0].DoShot();
+			Player::p[playerindex].DoShot();
 		}
 
 		if (!(flag & BEAMFLAG_NOGRAZE))
@@ -264,29 +264,29 @@ void Beam::action()
 			else
 			{
 				grazetimer++;
-				if(isInRect(Player::p[0].graze_r, Player::p[0].x, Player::p[0].y))
+				if(isInRect(Player::p[playerindex].graze_r, Player::p[playerindex].x, Player::p[playerindex].y))
 				{
 					float itemx;
 					float itemy;
 					float tk = 0;
 					if (xplus || yplus)
 					{
-						tk = - ((x - Player::p[0].x) * xplus + (y - Player::p[0].y) * yplus) / (xplus * xplus + yplus * yplus);
+						tk = - ((x - Player::p[playerindex].x) * xplus + (y - Player::p[playerindex].y) * yplus) / (xplus * xplus + yplus * yplus);
 						itemx = x + xplus * tk;
 						itemy = y + yplus * tk;
 					}
 					else
 					{
-						itemx = Player::p[0].x;
-						itemy = Player::p[0].y;
+						itemx = Player::p[playerindex].x;
+						itemy = Player::p[playerindex].y;
 					}
-					Player::p[0].DoGraze(itemx, itemy);
+					Player::p[playerindex].DoGraze(itemx, itemy);
 				}
 			}
 
 		}
-		if(	x - hscale * 16 > M_DELETECLIENT_RIGHT ||
-			x + hscale * 16 < M_DELETECLIENT_LEFT ||
+		if(	x - hscale * 16 > M_DELETECLIENT_RIGHT_(playerindex) ||
+			x + hscale * 16 < M_DELETECLIENT_LEFT_(playerindex) ||
 			y - hscale * 16 > M_DELETECLIENT_BOTTOM ||
 			y + hscale * 16 < M_DELETECLIENT_TOP)
 			exist = false;

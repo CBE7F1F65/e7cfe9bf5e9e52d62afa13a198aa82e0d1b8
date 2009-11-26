@@ -334,7 +334,7 @@ void Player::ClearNC()
 
 void Player::ClearSet()
 {
-	x			=	PL_MERGEPOS_X;
+	x			=	PL_MERGEPOS_X_(playerindex);
 	y			=	PL_MERGEPOS_Y;
 
 	for(int i=0;i<PL_SAVELASTMAX;i++)
@@ -415,9 +415,11 @@ void Player::ClearSet()
 
 	esChange.valueSet(EFFSPSET_PLAYERUSE, EFFSP_PLAYERCHANGE, SpriteItemManager::GetIndexByName(SI_PLAYER_SHOTITEM), x, y, 0, 3.0f);
 	esChange.colorSet(0x7fffffff, BLEND_ALPHAADD);
+	esChange.chaseSet(EFFSP_CHASE_PLAYER_(playerindex), 0, 0);
 
 	esShot.valueSet(EFFSPSET_PLAYERUSE, EFFSP_PLAYERSHOT, SpriteItemManager::GetIndexByName(SI_PLAYER_SHOTITEM), x, y, 0, 1.2f);
 	esShot.colorSet(0xccff0000);
+	esShot.chaseSet(EFFSP_CHASE_PLAYER_(playerindex), 0, 0);
 
 	esBorder.valueSet(EFFSPSET_PLAYERUSE, EFFSP_PLAYERBORDER, SpriteItemManager::GetIndexByName(SI_BORDER_CIRCLE), x, y, 0, 0.0f);
 	esBorder.chaseSet(EFFSP_CHASE_PLAYER_(playerindex), 0, 0);
@@ -430,10 +432,11 @@ void Player::ClearSet()
 	esBorderZone.colorSet(0x80ffffff);
 
 	esPoint.valueSet(EFFSPSET_PLAYERUSE, EFFSP_PLAYERPOINT, SpriteItemManager::GetIndexByName(SI_PLAYER_POINT), x, y);
+	esPoint.chaseSet(EFFSP_CHASE_PLAYER_(playerindex), 0, 0);
 
 	esCollapse.valueSet(EFFSPSET_PLAYERUSE, EFFSP_PLAYERCOLLAPSE, SpriteItemManager::GetIndexByName(SI_PLAYER_SHOTITEM), x, y);
-	esBorder.actionSet(0, 0, 160);
-	esBorder.colorSet(0x80ffffff);
+	esCollapse.actionSet(0, 0, 160);
+	esCollapse.colorSet(0x80ffffff);
 
 }
 
@@ -558,18 +561,9 @@ void Player::action()
 			flag &= ~PLAYER_MERGE;
 	if(flag & PLAYER_SHOT)
 	{
-		bool shotdelaychange = bossinfo.isSpell() && (BossInfo::spellflag & BISF_SHOT);
-		if (shotdelaychange)
-		{
-			shotdelay += PLSHOTDELAY_ADD;
-		}
 		if(Shot())
 		{
 			flag &= ~PLAYER_SHOT;
-		}
-		if (shotdelaychange)
-		{
-			shotdelay -= PLSHOTDELAY_ADD;
 		}
 	}
 	if(flag & PLAYER_COLLAPSE)
@@ -625,9 +619,6 @@ void Player::action()
 					flag |= PLAYER_FASTCHANGE;
 				}
 			}
-		}
-		if(!Chat::chatitem.IsChatting() && !bInfi)
-		{
 		}
 		if(bSlow)
 		{
@@ -688,10 +679,10 @@ void Player::action()
 
 	if (!(flag & PLAYER_MERGE) || mergetimer >= 32)
 	{
-		if(x > PL_MOVABLE_RIGHT)
-			x = PL_MOVABLE_RIGHT;
-		else if(x < PL_MOVABLE_LEFT)
-			x = PL_MOVABLE_LEFT;
+		if(x > PL_MOVABLE_RIGHT_(playerindex))
+			x = PL_MOVABLE_RIGHT_(playerindex);
+		else if(x < PL_MOVABLE_LEFT_(playerindex))
+			x = PL_MOVABLE_LEFT_(playerindex);
 		if(y > PL_MOVABLE_BOTTOM)
 			y = PL_MOVABLE_BOTTOM;
 		else if(y < PL_MOVABLE_TOP)
@@ -899,7 +890,7 @@ bool Player::Merge()
 	if(mergetimer < 48)
 	{
 		flag &= ~PLAYER_SHOOT;
-		x = PL_MERGEPOS_X;
+		x = PL_MERGEPOS_X_(playerindex);
 		y = PL_MERGEPOS_Y - (mergetimer-16) * 4.5f;
 		alpha = (mergetimer-16) * 8;
 	}
@@ -990,7 +981,7 @@ bool Player::Collapse()
 	}
 	else if(collapsetimer == 64)
 	{
-		x = PL_MERGEPOS_X;
+		x = PL_MERGEPOS_X_(playerindex);
 		y = PL_MERGEPOS_Y;
 		for(int i=0;i<PL_SAVELASTMAX;i++)
 		{
@@ -1084,21 +1075,14 @@ bool Player::SlowChange()
 	}
 	else if(slowtimer == 16)
 	{
-		esPoint.alpha = 0xff;
+		esPoint.colorSet(0xffffffff);
 		slowtimer = 0;
 		return true;
 	}
 
-	esPoint.angle = (24 - slowtimer) * 25;
-	esPoint.alpha = slowtimer * 16;
+	esPoint.actionSet(0, 0, (24 - slowtimer) * 25);
+	esPoint.colorSet(((slowtimer*16)<<24)+0xffffff);
 	return false;
-}
-
-void Player::changePlayerID(WORD toID, bool moveghost/* =false */)
-{
-	nowID = toID;
-	ResetPlayerGhost(moveghost);
-	UpdatePlayerData();
 }
 
 bool Player::FastChange()
@@ -1118,10 +1102,19 @@ bool Player::FastChange()
 	}
 	else if(fasttimer == 16)
 	{
+		esPoint.colorSet(0x00ffffff);
 		fasttimer = 0;
 		return true;
 	}
+	esPoint.colorSet(((0xff-fasttimer*16)<<24)+0xffffff);
 	return false;
+}
+
+void Player::changePlayerID(WORD toID, bool moveghost/* =false */)
+{
+	nowID = toID;
+	ResetPlayerGhost(moveghost);
+	UpdatePlayerData();
 }
 
 bool Player::PlayerChange()
@@ -1131,20 +1124,6 @@ bool Player::PlayerChange()
 	playerchangetimer++;
 	if(playerchangetimer == 1)
 	{
-		if (nowID == ID)
-		{
-			changePlayerID(ID_sub_1);
-		}
-		else if (nowID == ID_sub_1)
-		{
-			changePlayerID(ID_sub_2);
-		}
-		else
-		{
-			changePlayerID(ID);
-		}
-
-		SE::push(SE_PLAYER_CHANGE, x);
 	}
 	else if(playerchangetimer == 16)
 	{
@@ -1181,7 +1160,7 @@ void Player::RenderEffect()
 	if(flag & PLAYER_SHOT)
 		esShot.Render();
 	effBorderOff.Render();
-	if(bSlow)
+	if(bSlow || flag & PLAYER_FASTCHANGE)
 	{
 		esPoint.Render();
 		esPoint.headangle = -esPoint.headangle;

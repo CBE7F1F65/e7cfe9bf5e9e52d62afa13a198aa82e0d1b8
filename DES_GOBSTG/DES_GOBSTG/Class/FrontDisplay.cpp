@@ -229,6 +229,7 @@ void FrontDisplay::RenderPanel()
 
 void FrontDisplay::RenderNextStage()
 {
+	/*
 	if (nextstagecount)
 	{
 		info.stageclear->Render(M_ACTIVECLIENT_CENTER_X, 160);
@@ -239,6 +240,7 @@ void FrontDisplay::RenderNextStage()
 		info.bossfont->SetColor(0xffffffff);
 		info.bossfont->printf(M_ACTIVECLIENT_CENTER_X, 220, HGETEXT_CENTER|HGETEXT_MIDDLE, "%d", llval);
 	}
+	*/
 }
 
 void FrontDisplay::BossAction()
@@ -276,7 +278,8 @@ void FrontDisplay::BossAction()
 				col1 = 0xcececebd;
 				col2 = 0xceffffbd;
 			}
-			infobody.iqBossBlood.valueSet(0, M_ACTIVECLIENT_CENTER_X, 32,
+			// TODO:
+			infobody.iqBossBlood.valueSet(0, M_GAMESQUARE_CENTER_X_(0), 32,
 				60, 30, col1,
 				60, 30, col1,
 				60, 34, col2,

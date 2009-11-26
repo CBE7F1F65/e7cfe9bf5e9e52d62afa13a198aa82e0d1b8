@@ -621,7 +621,7 @@ void Bullet::action(BYTE playerindex)
 
 		if(!remain)
 		{
-			if(x > M_DELETECLIENT_RIGHT || x < M_DELETECLIENT_LEFT || y > M_DELETECLIENT_BOTTOM || y < M_DELETECLIENT_TOP)
+			if(x > M_DELETECLIENT_RIGHT_(playerindex) || x < M_DELETECLIENT_LEFT_(playerindex) || y > M_DELETECLIENT_BOTTOM || y < M_DELETECLIENT_TOP)
 				exist = false;
 		}
 	}
@@ -1286,13 +1286,13 @@ void Bullet::ChangeAction(BYTE playerindex)
 					{
 						if (actionList[i+2])
 						{
-							if (x < M_ACTIVECLIENT_LEFT + actionList[i+1] || x > M_ACTIVECLIENT_RIGHT - actionList[i+1])
+							if (x < M_GAMESQUARE_LEFT_(playerindex) + actionList[i+1] || x > M_GAMESQUARE_RIGHT_(playerindex) - actionList[i+1])
 							{
 								actionList[i+2]--;
 								SE::push(SE_BULLET_CHANGE_2, x);
 								angle = 18000 - angle;
 							}
-							if (y < M_ACTIVECLIENT_TOP + actionList[i+1] || y > M_ACTIVECLIENT_BOTTOM - actionList[i+1])
+							if (y < M_GAMESQUARE_TOP + actionList[i+1] || y > M_GAMESQUARE_BOTTOM - actionList[i+1])
 							{
 								actionList[i+2]--;
 								SE::push(SE_BULLET_CHANGE_2, x);

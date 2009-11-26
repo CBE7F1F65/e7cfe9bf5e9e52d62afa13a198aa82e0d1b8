@@ -4,6 +4,7 @@
 #include "MainDependency.h"
 #include "hgeEffectSystem.h"
 
+
 #define UIEDITMODE_EB	1
 #define UIEDITMODE_EE	2
 #define UIEDITMODE_EA	4

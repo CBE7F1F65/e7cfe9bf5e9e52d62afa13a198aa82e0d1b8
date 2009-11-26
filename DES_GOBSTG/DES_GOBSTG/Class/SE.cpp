@@ -54,7 +54,7 @@ bool SE::have(BYTE type)
 void SE::push(BYTE type, float x)
 {
 	se[type].counter++;
-	se[type].sum += x - M_ACTIVECLIENT_CENTER_X;
+	se[type].sum += x - M_CLIENT_CENTER_X;
 }
 
 void SE::play()

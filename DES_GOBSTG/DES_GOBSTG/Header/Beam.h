@@ -32,7 +32,7 @@ public:
 	void SetHold(BYTE holdtar, float holdoffset);
 	void SetHold(BYTE holdtar, BYTE pintar, float holdoffset);
 
-	virtual void action();
+	void action(BYTE playerindex);
 
 	void Render();
 

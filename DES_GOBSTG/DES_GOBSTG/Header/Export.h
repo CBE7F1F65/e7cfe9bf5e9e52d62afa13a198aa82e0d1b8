@@ -79,6 +79,7 @@ public:
 	static bool clientAfterInitial();
 	static hge3DPoint * GetFarPoint(BYTE renderflag);
 	static void clientSetMatrix(float worldx = 0, float worldy = 0, float worldz = 0, BYTE renderflag=M_RENDER_NULL);
+	static void clientSetMatrixUser(D3DXMATRIX matWorld, D3DXMATRIX matView, D3DXMATRIX matProj);
 	static bool clientSet2DMode();
 	static bool clientSet3DMode();
 	static void clientAdjustWindow();

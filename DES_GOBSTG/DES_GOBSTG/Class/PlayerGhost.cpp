@@ -48,7 +48,7 @@ void PlayerGhost::valueSet(BYTE _playerindex, WORD _ID, bool move)
 
 	if (move)
 	{
-		x = PL_MERGEPOS_X;
+		x = PL_MERGEPOS_X_(playerindex);
 		y = PL_MERGEPOS_Y;
 	}
 

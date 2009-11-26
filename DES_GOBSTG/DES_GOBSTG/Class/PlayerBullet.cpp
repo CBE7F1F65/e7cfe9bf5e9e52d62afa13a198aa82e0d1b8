@@ -33,9 +33,9 @@ WORD PlayerBullet::beams;
 #define _PBDELAY_SPEEDDOWN		0.9f
 #define _DELAY_TURNMAX		1200
 
-#define _PB_DELETEBOLDER		M_ACTIVECLIENT_HEIGHT
-#define _PB_DELETE_LEFT			M_DELETECLIENT_LEFT - _PB_DELETEBOLDER
-#define _PB_DELETE_RIGHT		M_DELETECLIENT_RIGHT + _PB_DELETEBOLDER
+#define _PB_DELETEBOLDER		M_GAMESQUARE_HEIGHT
+#define _PB_DELETE_LEFT_(X)			M_DELETECLIENT_LEFT_(X) - _PB_DELETEBOLDER
+#define _PB_DELETE_RIGHT_(X)		M_DELETECLIENT_RIGHT_(X) + _PB_DELETEBOLDER
 #define _PB_DELETE_TOP			M_DELETECLIENT_TOP - _PB_DELETEBOLDER
 #define _PB_DELETE_BOTTOM		M_DELETECLIENT_BOTTOM + _PB_DELETEBOLDER
 
@@ -164,7 +164,7 @@ void PlayerBullet::valueSet(BYTE _playerindex, WORD _ID, BYTE _arrange, float _x
 
 	if (flag & PBFLAG_BEAM)
 	{
-		hscale = M_ACTIVECLIENT_HEIGHT / spPlayerBullet[ID]->GetWidth();
+		hscale = M_GAMESQUARE_HEIGHT / spPlayerBullet[ID]->GetWidth();
 		vscale = scale / spPlayerBullet[ID]->GetHeight();
 		angle = -9000;
 		alpha = 0x60;
@@ -327,8 +327,8 @@ bool PlayerBullet::isInRange(float aimx, float aimy, float w, float h)
 	{
 		hiton = false;
 		w += scale / 2;
-		aimy += M_ACTIVECLIENT_HEIGHT / 2;
-		h = M_ACTIVECLIENT_HEIGHT / 2;
+		aimy += M_GAMESQUARE_HEIGHT / 2;
+		h = M_GAMESQUARE_HEIGHT / 2;
 	}
 	if (checkCollisionSquare(aimx, aimy, w, h))
 	{
@@ -415,7 +415,7 @@ void PlayerBullet::action()
 			{
 				y = Player::p[playerindex].y;
 			}
-			y += - M_ACTIVECLIENT_HEIGHT / 2 + ybias;
+			y += - M_GAMESQUARE_HEIGHT / 2 + ybias;
 			xplus = 0;
 			yplus = 0;
 			float extramove = 0;
@@ -475,7 +475,7 @@ void PlayerBullet::action()
 				}
 			}
 		}
-		if(x < _PB_DELETE_LEFT || x > _PB_DELETE_RIGHT || y < _PB_DELETE_TOP || y > _PB_DELETE_BOTTOM)
+		if(x < _PB_DELETE_LEFT_(playerindex) || x > _PB_DELETE_RIGHT_(playerindex) || y < _PB_DELETE_TOP || y > _PB_DELETE_BOTTOM)
 			exist = false;
 	}
 	else
@@ -531,7 +531,7 @@ void PlayerBullet::action()
 				taimy = Player::p[playerindex].pg[arrange-1].y;
 			}
 			taimx += xbias;
-			taimy += -M_ACTIVECLIENT_HEIGHT / 2 + ybias;
+			taimy += -M_GAMESQUARE_HEIGHT / 2 + ybias;
 			chaseAim(taimx, taimy, (32-timer));
 			angle = -9000;
 		}
