@@ -15,6 +15,7 @@
 #include "EffectIDDefine.h"
 #include "SpriteItemManager.h"
 #include "FrontDisplayName.h"
+#include "FrontDisplay.h"
 
 Player Player::p[M_PL_MATCHMAXPLAYER];
 float Player::lostStack = 0;
@@ -901,6 +902,18 @@ int Player::GrazeRegain(int grazenum)
 	return 200 * grazenum;
 }
 
+void Player::GetNCharge(BYTE * ncharge, BYTE * nchargemax)
+{
+	if (ncharge)
+	{
+		*ncharge = (BYTE)(fCharge/PLAYER_CHARGEONE);
+	}
+	if (nchargemax)
+	{
+		*nchargemax = (BYTE)(fChargeMax/PLAYER_CHARGEONE);
+	}
+}
+
 void Player::callCollapse()
 {
 	if (flag & PLAYER_COLLAPSE)
@@ -1160,6 +1173,35 @@ void Player::_ShootCharge(BYTE nChargeLevel)
 	}
 }
 
+BYTE Player::AddCharge(float addcharge, float addchargemax)
+{
+	BYTE ncharge;
+	BYTE nchargemax;
+	GetNCharge(&ncharge, &nchargemax);
+	fChargeMax += addchargemax;
+	if (fChargeMax > PLAYER_CHARGEMAX)
+	{
+		fChargeMax = PLAYER_CHARGEMAX;
+	}
+	fCharge += addcharge;
+	if (fCharge > fChargeMax)
+	{
+		fCharge = fChargeMax;
+	}
+	BYTE nchargenow;
+	BYTE nchargemaxnow;
+	GetNCharge(&nchargenow, &nchargemaxnow);
+	if (nchargenow > ncharge)
+	{
+		SE::push(SE_PLAYER_CHARGEUP);
+	}
+	if (nchargemaxnow > nchargemax)
+	{
+		FrontDisplay::fdisp.gameinfodisplay.gaugefilledcountdown[playerindex] = FDISP_COUNTDOWNTIME;
+	}
+	return nchargenow;
+}
+
 bool Player::Charge()
 {
 	if (rechargedelaytimer)
@@ -1171,17 +1213,7 @@ bool Player::Charge()
 	{
 		SE::push(SE_PLAYER_CHARGEON, x);
 	}
-	BYTE nChargeLevel = fCharge/PLAYER_CHARGEONE;
-	fCharge += chargespeed;
-	if (fCharge > fChargeMax)
-	{
-		fCharge = fChargeMax;
-	}
-	if ((int)(fCharge/PLAYER_CHARGEONE) > nChargeLevel)
-	{
-		SE::push(SE_PLAYER_CHARGEUP, x);
-		nChargeLevel++;
-	}
+	BYTE nChargeLevel = AddCharge(chargespeed, 0.7f);
 	if (hge->Input_GetDIKey(KS_CHARGE_MP_(playerindex), DIKEY_UP))
 	{
 		_ShootCharge(nChargeLevel);

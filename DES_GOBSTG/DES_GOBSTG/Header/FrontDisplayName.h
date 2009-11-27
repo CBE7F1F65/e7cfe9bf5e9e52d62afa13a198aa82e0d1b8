@@ -376,6 +376,7 @@
 #define SI_GAMEINFO_0			"SI_GameInfo_0"
 #define SI_GAMEINFO_SLASH		"SI_GameInfo_Slash"
 #define SI_GAMEINFO_COLON		"SI_GameInfo_Colon"
+#define SI_GAMEINFO_SPACE		"SI_GameInfo_Space"
 #define SI_GAMEINFO_CHARGE		"SI_GameInfo_Charge"
 #define SI_GAMEINFO_CHARGEMAX	"SI_GameInfo_ChargeMax"
 #define SI_GAMEINFO_GAUGEFILLED	"SI_GameInfo_GaugeFilled"

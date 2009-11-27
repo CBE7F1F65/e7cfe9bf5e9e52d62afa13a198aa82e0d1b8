@@ -15,6 +15,8 @@
 
 #define FDISP_LIFEINDIMAX	3
 
+#define FDISP_COUNTDOWNTIME	180
+
 struct fdPostPrint
 {
 	char str[M_STRMAX];
@@ -212,6 +214,7 @@ struct ftGameInfoDisplaySet
 			hgeSprite * num_9;
 			hgeSprite * slash;
 			hgeSprite * colon;
+			hgeSprite * space;
 			hgeSprite * charge;
 			hgeSprite * chargemax;
 			hgeSprite * gaugefilled;
@@ -231,8 +234,11 @@ struct ftGameInfoDisplaySet
 			hgeSprite * ready;
 			hgeSprite * gamestart;
 		};
-		hgeSprite * gameinfodisplay[30];
+		hgeSprite * gameinfodisplay[31];
 	};
+	BYTE gaugefilledcountdown[M_PL_MATCHMAXPLAYER];
+	BYTE lastlifecountdown[M_PL_MATCHMAXPLAYER];
+	BYTE lilycountdown;
 };
 
 struct ftAscIISet 
@@ -366,6 +372,7 @@ public:
 	void Release();
 
 	void RenderPanel();
+	void RenderHeadInfo();
 	void InfoDisplay();
 	void ItemInfoDisplay(infoFont * item);
 

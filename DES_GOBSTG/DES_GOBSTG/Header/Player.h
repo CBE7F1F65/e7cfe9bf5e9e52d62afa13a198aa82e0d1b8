@@ -132,6 +132,9 @@ public:
 	int GrazeRegain(int grazenum);
 	void GetScoreLife(float maxlife, bool isenemy = true);
 
+	void GetNCharge(BYTE * ncharge=NULL, BYTE * nchargemax=NULL);
+	BYTE AddCharge(float addcharg=0, float addchargemaxe=0);
+
 	// add
 	void SetInitLife(BYTE initlife);
 	void SetChara(WORD id, WORD id_sub_1=0xffff, WORD id_sub_2=0xffff);

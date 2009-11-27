@@ -111,6 +111,61 @@ void FrontDisplay::SetState(BYTE type, BYTE state/* =FDISP_STATE_COUNT */)
 	}
 }
 
+void FrontDisplay::RenderHeadInfo()
+{
+	float yoffset = 32.0f;
+	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
+	{
+		float px = Player::p[i].x;
+		float py = Player::p[i].y;
+		DWORD color = 0xffffffff;
+		BYTE alpha = 0xff;
+		if (Player::p[i].bCharge)
+		{
+			BYTE ncharge;
+			BYTE nchargemax;
+			if (Player::p[i].chargetimer < 16)
+			{
+				alpha = Player::p[i].chargetimer * 16;
+			}
+			Player::p[i].GetNCharge(&ncharge, &nchargemax);
+			if (Player::p[i].chargetimer % 16 < 8)
+			{
+				color = (alpha<<24)+0xA0ffA0;
+			}
+			else
+			{
+				color = (alpha<<24)+0xffffff;
+			}
+			gameinfodisplay.charge->SetColor(color);
+			gameinfodisplay.charge->Render(px, py-yoffset-10);
+			info.headdigitfont->SetColor(color);
+			info.headdigitfont->printf(px, py-yoffset-6, HGETEXT_CENTER, "%d / %d", ncharge, nchargemax);
+			yoffset += 20.0f;
+		}
+		if (gameinfodisplay.gaugefilledcountdown[i])
+		{
+			BYTE ncharge;
+			BYTE nchargemax;
+			Player::p[i].GetNCharge(&ncharge, &nchargemax);
+			gameinfodisplay.gaugefilledcountdown[i]--;
+			alpha = 0xff;
+			if (gameinfodisplay.gaugefilledcountdown[i] < 16)
+			{
+				alpha = gameinfodisplay.gaugefilledcountdown[i] * 16;
+			}
+			color = (alpha<<24)+0xffffff;
+			gameinfodisplay.gaugefilled->SetColor(color);
+			gameinfodisplay.gaugefilled->Render(px, py-yoffset-10);
+			gameinfodisplay.gaugelevel->SetColor(color);
+			gameinfodisplay.gaugelevel->Render(px-16, py-yoffset);
+			info.headdigitfont->SetColor(color);
+			info.headdigitfont->printf(px+16, py-yoffset-8, HGETEXT_CENTER, "%d", nchargemax);
+			yoffset += 20.0f;
+		}
+	}
+}
+
 void FrontDisplay::RenderPanel()
 {
 	if (nextstagecount)
@@ -167,6 +222,12 @@ void FrontDisplay::RenderPanel()
 				panel.slot->SetTextureRect(_spd->tex_x, _spd->tex_y, _spd->tex_w*fslot, _spd->tex_h);
 				panel.slot->SetHotSpot(0, _spd->tex_h);
 				panel.slot->SetColor(0xffffffff);
+				BYTE nCharge;
+				Player::p[i].GetNCharge(&nCharge);
+				if (nCharge > 0)
+				{
+					panel.slot->SetColor(0xffffff80);
+				}
 				panel.slot->Render(M_GAMESQUARE_LEFT_(i)+16, M_GAMESQUARE_BOTTOM);
 				panel.slotback->Render(M_GAMESQUARE_LEFT_(i), M_GAMESQUARE_BOTTOM);
 				float tempx;
@@ -711,6 +772,7 @@ bool FrontDisplay::Init()
 	}
 	gameinfodisplay.slash = SpriteItemManager::CreateSpriteByName(SI_GAMEINFO_SLASH);
 	gameinfodisplay.colon = SpriteItemManager::CreateSpriteByName(SI_GAMEINFO_COLON);
+	gameinfodisplay.space = SpriteItemManager::CreateSpriteByName(SI_GAMEINFO_SPACE);
 	gameinfodisplay.charge = SpriteItemManager::CreateSpriteByName(SI_GAMEINFO_CHARGE);
 	gameinfodisplay.chargemax = SpriteItemManager::CreateSpriteByName(SI_GAMEINFO_CHARGEMAX);
 	gameinfodisplay.gaugefilled = SpriteItemManager::CreateSpriteByName(SI_GAMEINFO_GAUGEFILLED);
@@ -783,10 +845,11 @@ bool FrontDisplay::Init()
 	info.headdigitfont = new hgeFont();
 	for (int i='0'; i<10+'0'; i++)
 	{
-		info.headdigitfont->ChangeSprite(i, gameinfodisplay.gameinfodisplay[i]);
+		info.headdigitfont->ChangeSprite(i, gameinfodisplay.gameinfodisplay[i-'0']);
 	}
 	info.headdigitfont->ChangeSprite('/', gameinfodisplay.slash);
 	info.headdigitfont->ChangeSprite(':', gameinfodisplay.colon);
+	info.headdigitfont->ChangeSprite(' ', gameinfodisplay.space);
 
 	info.asciifont = new hgeFont();
 	for (int i=FDISP_ASCII_BEGIN; i<=FDISP_ASCII_END; i++)
@@ -919,7 +982,7 @@ void FrontDisplay::Release()
 		SpriteItemManager::FreeSprite(&spellpointnum.spellpointnum[i]);
 	}
 
-	for (int i=0; i<30; i++)
+	for (int i=0; i<31; i++)
 	{
 		SpriteItemManager::FreeSprite(&gameinfodisplay.gameinfodisplay[i]);
 	}

@@ -20,6 +20,7 @@ void Process::_Render(BYTE renderflag/* =M_RENDER_NULL */)
 		FrontDisplay::fdisp.RenderBossInfo();
 		Item::RenderAll(renderflag);
 		Chat::chatitem.Render();
+		FrontDisplay::fdisp.RenderHeadInfo();
 	}
 	BGLayer::RenderFG(renderflag);
 	SelectSystem::RenderAll();
