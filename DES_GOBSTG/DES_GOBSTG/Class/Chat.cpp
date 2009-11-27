@@ -9,6 +9,7 @@
 #include "FrontDisplay.h"
 #include "FrontDisplayName.h"
 #include "Enemy.h"
+#include "EventZone.h"
 
 Chat Chat::chatitem;
 
@@ -195,7 +196,8 @@ bool Chat::chatOn(BYTE leftID, BYTE rightID, BYTE chatsprite)
 		
 		for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
 		{
-			Bullet::IzeBuild(i, BULLETIZE_FAITH, Player::p[i].x, Player::p[i].y);
+			EventZone::Build(EVENTZONE_TYPE_ERASEBULLET, i, Player::p[i].x, Player::p[i].y);
+//			Bullet::IzeBuild(i, BULLETIZE_FAITH, Player::p[i].x, Player::p[i].y);
 		}
 
 		chatting = true;

@@ -79,6 +79,18 @@ int Export_Lua_HDSS::LuaFn_HDSS_Call(LuaState * ls)
 		switch (nowval & SCRKWMASK_CLASS)
 		{
 			/************************************************************************/
+			/* ENEMY                                                                */
+			/************************************************************************/
+		case SCRKW_CLASS_ENEMY:
+			switch (nowval)
+			{
+			case SCR_ENBUILD:
+				return _HDSSCallGet::Call_ENBUILD(ls);
+			case SCR_ENACTIONSET:
+				return _HDSSCallGet::Call_ENACTIONSET(ls);
+			}
+			break;
+			/************************************************************************/
 			/* PLAYER                                                               */
 			/************************************************************************/
 		case SCRKW_CLASS_PLAYER:

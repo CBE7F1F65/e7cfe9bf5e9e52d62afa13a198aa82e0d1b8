@@ -5,7 +5,7 @@
 	Name="hgeParticleEditor"
 	ProjectGUID="{5AEB2D47-89F2-47BB-A9D6-6708204001F0}"
 	VCNestedProjectGUID="{FDA21157-179D-444D-877B-DC7A20668803}"
-	VCNestedProjectCRC32="1392281217"
+	VCNestedProjectCRC32="2462375341"
 	VCNestedProjectFileName="hgeParticleEditor.vcproj"
 	Keyword="Win32Proj">
 	<Configurations>
@@ -225,6 +225,8 @@
 			RelativePath=".\hgeParticleEditor.cpp"/>
 		<File 
 			RelativePath="..\Des_gobstg\Des_gobstg\Core\InitDllLoader.cpp"/>
+		<File 
+			RelativePath="..\Des_gobstg\Des_gobstg\Core\SpriteItemManager.cpp"/>
 		<File 
 			RelativePath=".\EditorRes.h"/>
 		<File 

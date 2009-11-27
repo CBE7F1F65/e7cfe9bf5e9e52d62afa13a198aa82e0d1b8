@@ -65,27 +65,19 @@
 #define ENAC_OVERPLAYER_CXYT	0x81
 #define ENAC_CHASETO_CXY		0x82
 
-struct DamageZone 
-{
-	float x;
-	float y;
-	float r;
-	float power;
-};
-
 class Enemy : public BObject
 {
 public:
 	Enemy();
 	virtual ~Enemy();
 
-	static bool Build(WORD eID, BYTE index, BYTE tarID, float x, float y, int angle, float speed, BYTE type, float life, int infitimer, DWORD take);
-	static void Init(HTEXTURE texmain);
-	static void DamageZoneBuild(BYTE playerindex, float x, float y, float r, float power);
+	static bool Build(WORD eID, BYTE playerindex, BYTE index, float x, float y, int angle, float speed, BYTE type, float life, int infitimer);
+	static void Init(HTEXTURE * tex);
 	static void Action(bool notinstop);
 	static void ClearAll();
 	static void RenderAll(BYTE renderflag);
-	static void ClearDamageZoneItem();
+
+	static Enemy * GetNowEnemy();
 
 	static void GetIDBeginUntil(BYTE renderflag, int & idbegin, int & iduntil);
 
@@ -93,10 +85,11 @@ public:
 	bool isInRange(float x, float y, float r);
 	BYTE getPlayerIndex();
 
-	void valueSet(WORD ID, float x, float y, int angle, float speed, BYTE type, float life, int infitimer, DWORD take,
-		WORD ac=0, float para0 = 0, float para1 = 0, float para2 = 0, float para3 = 0);
+	void valueSet(WORD eID, WORD ID, float x, float y, int angle, float speed, BYTE type, float life, int infitimer);
 
-	void setMove(float para0, float para1, float para2, float para3 = 0, WORD ac = 42);
+	void setTar(BYTE tarID=0xff);
+	void setTake(DWORD take=0);
+	void setAction(WORD ac=ENAC_NONE, float para0=0, float para1=0, float para2=0, float para3=0);
 
 	void initFrameIndex();
 	void setFrame(BYTE frameenum);
@@ -111,6 +104,8 @@ public:
 	void actionInStop();
 	void matchAction();
 	void bossAction();
+
+	void GetBlastInfo(BYTE * maxtime=NULL, float * r=NULL, float * power=NULL);
 
 	void GetCollisionRect(float * w, float * h);
 	void CostLife(float power);
@@ -153,8 +148,7 @@ public:
 
 	BYTE	frameindex[ENEMY_FRAME_STATEMAX];
 
-	static VectorList<DamageZone> dmgz[M_PL_MATCHMAXPLAYER];
-	static HTEXTURE texmain;
+	static HTEXTURE * tex;
 	static BYTE bossflag[ENEMY_BOSSMAX];
 	static BYTE spelluptimer[ENEMY_BOSSMAX];
 	static BYTE storetimer[ENEMY_BOSSMAX];

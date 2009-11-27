@@ -8,6 +8,7 @@
 #include "FrontDisplayName.h"
 #include "BResource.h"
 #include "Export.h"
+#include "EventZone.h"
 
 VectorList<PlayerBullet> PlayerBullet::pb[M_PL_MATCHMAXPLAYER];
 
@@ -511,7 +512,8 @@ void PlayerBullet::action()
 			{
 				SE::push(SE_PLAYER_EXPLODE, x);
 			}
-			Enemy::DamageZoneBuild(playerindex, x, y, spPlayerBullet[ID]->GetWidth(), power);
+
+			EventZone::Build(EVENTZONE_TYPE_ENEMYGHOSTDAMAGE, playerindex, x, y, 1, spPlayerBullet[ID]->GetWidth(), power);
 		}
 		if (flag & PBFLAG_SCALEUP)
 		{

@@ -9,6 +9,7 @@
 #include "BossInfo.h"
 #include "Main.h"
 #include "EffectIDDefine.h"
+#include "EventZone.h"
 
 Ghost Ghost::gh[GHOSTMAX];
 
@@ -145,20 +146,16 @@ void Ghost::DoShot(BYTE playerindex)
 	{
 		CostLife(costpower);
 	}
-	if (Enemy::dmgz[playerindex].size)
+
+	for (list<EventZone>::iterator it=EventZone::ezone[playerindex].begin(); it!=EventZone::ezone[playerindex].end(); it++)
 	{
-		DWORD i = 0;
-		DWORD size = Enemy::dmgz[playerindex].size;
-		for (Enemy::dmgz[playerindex].toBegin(); i<size; Enemy::dmgz[playerindex].toNext(), i++)
+		if (it->type & EVENTZONE_TYPE_ENEMYDAMAGE)
 		{
-			if (Enemy::dmgz[playerindex].isValid())
+			if (checkCollisionCircle(it->x, it->y, it->r))
 			{
-				DamageZone * tdmg = &(*(Enemy::dmgz[playerindex]));
-				if (checkCollisionCircle(tdmg->x, tdmg->y, tdmg->r))
-				{
-					CostLife(tdmg->power);
-					Player::p[playerindex].DoPlayerBulletHit();
-				}
+				CostLife(it->power);
+				// TODO:
+				Player::p[playerindex].DoPlayerBulletHit();
 			}
 		}
 	}

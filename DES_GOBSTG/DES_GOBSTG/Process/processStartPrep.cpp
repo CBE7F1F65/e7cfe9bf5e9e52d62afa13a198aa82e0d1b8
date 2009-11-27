@@ -15,6 +15,7 @@ void Process::clearPrep(bool bclearkey)
 	Chat::chatitem.Clear();
 	BossInfo::Clear();
 	EffectSp::ClearItem();
+	EventZone::Clear();
 
 	pauseinit = false;
 	worldx = 0;

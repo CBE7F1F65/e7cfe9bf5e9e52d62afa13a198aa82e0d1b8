@@ -5,7 +5,7 @@
 	Name="DES_GOBSTG"
 	ProjectGUID="{A4938EF7-0CE1-47A3-BC8D-4D0B54F94F6D}"
 	VCNestedProjectGUID="{7329E15F-F0AE-44EE-BC64-27B9038C76D7}"
-	VCNestedProjectCRC32="1219180907"
+	VCNestedProjectCRC32="2740827922"
 	VCNestedProjectFileName="DES_GOBSTG.vcproj"
 	Keyword="Win32Proj">
 	<Configurations>
@@ -234,8 +234,6 @@
 		<File 
 			RelativePath=".\Core\Scripter.cpp"/>
 		<File 
-			RelativePath=".\Core\SpriteItemManager.cpp"/>
-		<File 
 			RelativePath=".\Core\Export_Lua.cpp"/>
 		<File 
 			RelativePath=".\Core\Export_Lua_Const.cpp"/>
@@ -257,6 +255,8 @@
 			RelativePath=".\Core\Export_Lua_HGE.cpp"/>
 		<File 
 			RelativePath=".\Core\Export_Lua_HGEHelper.cpp"/>
+		<File 
+			RelativePath=".\Core\SpriteItemManager.cpp"/>
 		<File 
 			RelativePath=".\Class\Beam.cpp"/>
 		<File 
@@ -309,6 +309,8 @@
 			RelativePath=".\Class\SelectSystem.cpp"/>
 		<File 
 			RelativePath=".\Class\Target.cpp"/>
+		<File 
+			RelativePath=".\Class\EventZone.cpp"/>
 		<File 
 			RelativePath=".\Process\frame.cpp"/>
 		<File 
@@ -424,6 +426,8 @@
 		<File 
 			RelativePath=".\Header\Chat.h"/>
 		<File 
+			RelativePath=".\Header\EffectIDDefine.h"/>
+		<File 
 			RelativePath=".\Header\EffectSp.h"/>
 		<File 
 			RelativePath=".\Header\Effectsys.h"/>
@@ -460,7 +464,9 @@
 		<File 
 			RelativePath=".\Header\Target.h"/>
 		<File 
-			RelativePath=".\Header\EffectIDDefine.h"/>
+			RelativePath=".\Header\EventZone.h"/>
+		<File 
+			RelativePath=".\Header\BulletListActionConst.h"/>
 	</Files>
 </VisualStudioProject>
 

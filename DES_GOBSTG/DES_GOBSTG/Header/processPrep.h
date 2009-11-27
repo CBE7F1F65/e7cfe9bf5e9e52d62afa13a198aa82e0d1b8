@@ -32,5 +32,6 @@
 #include "FrontDisplay.h"
 #include "PushKey.h"
 #include "Target.h"
+#include "EventZone.h"
 
 #endif

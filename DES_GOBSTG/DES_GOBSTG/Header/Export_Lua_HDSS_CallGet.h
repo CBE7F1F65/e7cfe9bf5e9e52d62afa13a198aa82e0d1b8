@@ -30,6 +30,9 @@ public:
 
 	static int Call_SETPINITLIFE(LuaState * ls);
 
+	static int Call_ENBUILD(LuaState * ls);
+	static int Call_ENACTIONSET(LuaState * ls);
+
 	static int Call_BGVALUE(LuaState * ls);
 	static int Call_BGVALEX(LuaState * ls);
 	static int Call_BGCOLOR(LuaState * ls);

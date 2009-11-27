@@ -1,6 +1,7 @@
 #include "Data.h"
 #include "BResource.h"
 #include "DataTable.h"
+#include "SpriteItemManager.h"
 
 _DataTable _DataTable::datatable;
 
@@ -323,8 +324,8 @@ bool _DataTable::BulletDefineFile()
 bool _DataTable::EnemyDefineFile()
 {
 	ZeroMemory(res.enemydata, RSIZE_ENEMY);
-	fscanf(file, "%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s", 
-		buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer);
+	fscanf(file, "%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s", 
+		buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer);
 	while (!feof(file))
 	{
 		fscanf(file, "%d", &tindex);
@@ -333,42 +334,38 @@ bool _DataTable::EnemyDefineFile()
 		{
 			return true;
 		}
-		fscanf(file, "%d%d%d%d%f%f%d%d%d%d%d%d%d%d%d%d%d%f%f\t%[^\t]\t%[^\t\r\n]", 
+		fscanf(file, "%d%s%f%f%d%d%d%d%d%d%d%d%d%d%d%f%f\t%[^\t]\t%[^\t\r\n]", 
 			&(tint[0]), 
-			&(tint[1]), 
-			&(tint[2]),
-			&(tint[3]), 
+			buffer,
 			&(item->collision_w), 
 			&(item->collision_h), 
-			&(tint[4]), 
-			&(tint[5]), 
+			&(tint[1]), 
 			&(item->standshake), 
+			&(tint[2]), 
+			&(tint[3]),
+			&(tint[4]), 
+			&(tint[5]),
 			&(tint[6]), 
 			&(tint[7]),
 			&(tint[8]), 
-			&(tint[9]),
-			&(tint[10]), 
-			&(tint[11]),
-			&(tint[12]), 
-			&(tint[13]), 
-			&(item->usetexw),
-			&(item->usetexh),
+			&(tint[9]), 
+			&(tint[10]),
+			&(item->blastr),
+			&(item->blastpower),
 			item->name,
 			item->ename);
-		item->tex = tint[0];
-		item->faceIndex  = tint[1];
-		item->tex_nCol = tint[2];
-		item->tex_nRow  = tint[3];
-		item->startFrame  = tint[4];
-		item->standFrame  = tint[5];
-		item->rightPreFrame  = tint[6];
-		item->rightFrame = tint[7];
-		item->leftPreFrame  = tint[8];
-		item->leftFrame = tint[9];
-		item->attackPreFrame  = tint[10];
-		item->attackFrame = tint[11];
-		item->storePreFrame  = tint[12];
-		item->storeFrame  = tint[13];
+		item->faceIndex  = tint[0];
+		item->siid = SpriteItemManager::GetIndexByName(buffer);
+		item->standFrame  = tint[1];
+		item->rightPreFrame  = tint[2];
+		item->rightFrame = tint[3];
+		item->leftPreFrame  = tint[4];
+		item->leftFrame = tint[5];
+		item->attackPreFrame  = tint[6];
+		item->attackFrame = tint[7];
+		item->storePreFrame  = tint[8];
+		item->storeFrame  = tint[9];
+		item->blastmaxtime = tint[10];
 	}
 	return true;
 }

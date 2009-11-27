@@ -9,13 +9,14 @@
 #include "BResource.h"
 #include "FrontDisplay.h"
 #include "EffectIDDefine.h"
+#include "EventZone.h"
+#include "SpriteItemManager.h"
 
 #define _DAMAGEZONEMAX	0x10
 
 Enemy Enemy::en[ENEMYMAX];
 
-VectorList<DamageZone> Enemy::dmgz[M_PL_MATCHMAXPLAYER];
-HTEXTURE Enemy::texmain;
+HTEXTURE * Enemy::tex = NULL;
 WORD Enemy::index;
 BYTE Enemy::bossflag[ENEMY_BOSSMAX];
 BYTE Enemy::spelluptimer[ENEMY_BOSSMAX];
@@ -38,35 +39,18 @@ Enemy::~Enemy()
 	sprite = NULL;
 }
 
-void Enemy::Init(HTEXTURE _texmain)
+void Enemy::Init(HTEXTURE * _tex)
 {
-	texmain = _texmain;
+	tex = _tex;
 	index = ENEMY_INDEXSTART;
-	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
-	{
-		dmgz[i].init(_DAMAGEZONEMAX);
-	}
 }
 
-void Enemy::DamageZoneBuild(BYTE playerindex, float _x, float _y, float _r, float _power)
+Enemy * Enemy::GetNowEnemy()
 {
-	DamageZone _dmgz;
-	_dmgz.x = _x;
-	_dmgz.y = _y;
-	_dmgz.r = _r;
-	_dmgz.power = _power;
-	dmgz[playerindex].push_back(_dmgz);
+	return &(en[index]);
 }
 
-void Enemy::ClearDamageZoneItem()
-{
-	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
-	{
-		dmgz[i].clear_item();
-	}
-}
-
-bool Enemy::Build(WORD _eID, BYTE _index, BYTE _tarID, float x, float y, int angle, float speed, BYTE type, float life, int infitimer, DWORD take)
+bool Enemy::Build(WORD eID, BYTE playerindex, BYTE _index, float x, float y, int angle, float speed, BYTE type, float life, int infitimer)
 {
 	bool rv = false;
 	if (_index < ENEMYMAX)
@@ -85,20 +69,21 @@ bool Enemy::Build(WORD _eID, BYTE _index, BYTE _tarID, float x, float y, int ang
 				{
 					index = ENEMY_INDEXSTART;
 				}
-				if(!en[index].exist)
+				if (en[j].getPlayerIndex() == playerindex)
 				{
-					rv = true;
-//					i = index;
-					break;
+					if(!en[index].exist)
+					{
+						rv = true;
+	//					i = index;
+						break;
+					}
 				}
 			}
 		}
 	}
 	if(!rv)
 		return false;
-	en[index].valueSet(index, x, y, angle, speed, type, life, infitimer, take);
-	en[index].eID = _eID;
-	en[index].tarID = _tarID;
+	en[index].valueSet(eID, index, x, y, angle, speed, type, life, infitimer);
 	return true;
 }
 
@@ -185,9 +170,19 @@ void Enemy::RenderEffect()
 	effShot.Render();
 }
 
-void Enemy::valueSet(WORD _ID, float _x, float _y, int _angle, float _speed, BYTE _type, float _life, int _infitimer, DWORD _take,
-					 WORD _ac, float para0, float para1, float para2, float para3)
+void Enemy::setTar(BYTE _tarID)
 {
+	tarID = _tarID;
+}
+
+void Enemy::setTake(DWORD _take)
+{
+	take = _take;
+}
+
+void Enemy::valueSet(WORD _eID, WORD _ID, float _x, float _y, int _angle, float _speed, BYTE _type, float _life, int _infitimer)
+{
+	eID		=	_eID;
 	ID		=	_ID;
 	x		=	_x;
 	lastx	=	x;
@@ -195,9 +190,9 @@ void Enemy::valueSet(WORD _ID, float _x, float _y, int _angle, float _speed, BYT
 	speed	=	_speed;
 	type	=	_type;
 	life	=	_life;
-	ac		=	_ac;
+	ac		=	ENAC_NONE;
 	angle	=	_angle;
-	take	=	_take;
+	take	=	0;
 	infitimer = _infitimer;
 
 	timer	=	0;
@@ -227,23 +222,13 @@ void Enemy::valueSet(WORD _ID, float _x, float _y, int _angle, float _speed, BYT
 	aim.x	=	0;
 	aim.y	=	0;
 
-	para[0] = para0;
-	para[1] = para1;
-	para[2] = para2;
-	para[3] = para3;
+	for (int i=0; i<ENEMY_PARAMAX; i++)
+	{
+		para[i] = 0;
+	}
 
 	headangle = -angle;
 
-	if(!sprite)
-		sprite = new hgeSprite(texmain, 0, 0, 32, 32);
-	if(type >= ENEMY_BOSSTYPEBEGIN)
-	{
-		sprite->SetTexture(mp.tex[res.enemydata[type].tex]);
-	}
-	else
-	{
-		sprite->SetTexture(texmain);
-	}
 	initFrameIndex();
 	setFrame(ENEMY_FRAME_STAND);
 
@@ -429,7 +414,7 @@ void Enemy::matchAction()
 	}
 }
 
-void Enemy::setMove(float para0, float para1, float para2, float para3, WORD _ac)
+void Enemy::setAction(WORD _ac, float para0, float para1, float para2, float para3)
 {
 	para[0] = para0;
 	para[1] = para1;
@@ -693,7 +678,7 @@ void Enemy::bossAction()
 void Enemy::initFrameIndex()
 {
 	enemyData * pdata = &(res.enemydata[type]);
-	int tfi = pdata->startFrame;
+	int tfi = 0;
 	frameindex[ENEMY_FRAME_STAND] = tfi;
 
 	bool bhr = pdata->rightPreFrame;
@@ -773,12 +758,17 @@ void Enemy::setFrame(BYTE frameenum)
 void Enemy::setIndexFrame(BYTE index)
 {
 	enemyData * pdata = &(res.enemydata[type]);
-	float tw = pdata->usetexw / (pdata->tex_nCol);
-	float th = pdata->usetexh / (pdata->tex_nRow);
-	float ltx = tw * (index % (pdata->tex_nCol));
-	float lty = th * (index / (pdata->tex_nCol));
-	sprite->SetTextureRect(ltx, lty, tw, th);
-	sprite->SetFlip(flipx, false);
+	spriteData * pspdata = SpriteItemManager::CastSprite(pdata->siid+index);
+	if (!sprite)
+	{
+		sprite = new hgeSprite(tex[pspdata->tex], pspdata->tex_x, pspdata->tex_y, pspdata->tex_w, pspdata->tex_h);
+	}
+	else
+	{
+		sprite->SetTexture(tex[pspdata->tex]);
+		sprite->SetTextureRect(pspdata->tex_x, pspdata->tex_y, pspdata->tex_w, pspdata->tex_h);
+		sprite->SetFlip(flipx, false);
+	}
 }
 
 void Enemy::GetCollisionRect(float * w, float * h)
@@ -844,20 +834,15 @@ void Enemy::DoShot(BYTE playerindex)
 	{
 		CostLife(costpower);
 	}
-	if (dmgz[playerindex].size)
+	for (list<EventZone>::iterator it=EventZone::ezone[playerindex].begin(); it!=EventZone::ezone[playerindex].end(); it++)
 	{
-		DWORD i = 0;
-		DWORD size = dmgz[playerindex].size;
-		for (dmgz[playerindex].toBegin(); i<size; dmgz[playerindex].toNext(), i++)
+		if (it->type & EVENTZONE_TYPE_ENEMYDAMAGE)
 		{
-			if (dmgz[playerindex].isValid())
+			if (isInRange(it->x, it->y, it->r))
 			{
-				DamageZone * tdmg = &(*dmgz[playerindex]);
-				if (isInRange(tdmg->x, tdmg->y, tdmg->r))
-				{
-					CostLife(tdmg->power);
-					Player::p[playerindex].DoPlayerBulletHit();
-				}
+				CostLife(it->power);
+				// TODO:
+				Player::p[playerindex].DoPlayerBulletHit();
 			}
 		}
 	}
@@ -1015,6 +1000,13 @@ void Enemy::action()
 			effShot.Stop();
 			// TODO:
 			effCollapse.valueSet(EFF_EN_COLLAPSE, M_RENDER_LEFT, *this);
+
+			BYTE blastmaxtime;
+			float blastr;
+			float blastpower;
+			GetBlastInfo(&blastmaxtime, &blastr, &blastpower);
+			EventZone::Build(EVENTZONE_TYPE_ERASESENDBULLET|EVENTZONE_TYPE_ENEMYGHOSTDAMAGE, playerindex, x, y, blastmaxtime, blastr, blastpower, EVENTZONE_EVENT_NULL);
+			Player::p[playerindex].DoEnemyCollapse();
 		}
 		else if(timer == 32)
 		{
@@ -1033,6 +1025,22 @@ void Enemy::action()
 
 	damage = false;
 	able = exist && !fadeout;
+}
+
+void Enemy::GetBlastInfo(BYTE * maxtime/* =NULL */, float * r/* =NULL */, float * power/* =NULL */)
+{
+	if (maxtime)
+	{
+		*maxtime = res.enemydata[type].blastmaxtime;
+	}
+	if (r)
+	{
+		*r = res.enemydata[type].blastr;
+	}
+	if (power)
+	{
+		*power = res.enemydata[type].blastpower;
+	}
 }
 
 void Enemy::giveItem(BYTE playerindex)

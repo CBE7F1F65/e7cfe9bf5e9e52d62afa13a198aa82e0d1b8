@@ -200,7 +200,6 @@
 #define TEX_WHITE		1
 #define TEX_BULLET		2//7
 #define TEX_GHOST		3//8
-#define TEX_ENEMY		4//14
 #define PACKAGEMAX			0x20
 #define MUSICMAX			0x40
 #define SEMAX				0x80

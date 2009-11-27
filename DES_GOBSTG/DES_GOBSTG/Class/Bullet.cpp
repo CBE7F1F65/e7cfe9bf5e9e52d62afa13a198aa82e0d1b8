@@ -8,14 +8,13 @@
 #include "BResource.h"
 #include "Target.h"
 #include "Export.h"
+#include "EventZone.h"
 
-#define _IZEZONEMAX			0x20
 
 RenderDepth Bullet::renderDepth[M_PL_MATCHMAXPLAYER][BULLETTYPEMAX];
 
 int Bullet::_actionList[BULLETACTIONMAX];
 hgeSprite * Bullet::sp[BULLETTYPECOLORMAX];
-VectorList<IzeZone> Bullet::izel[M_PL_MATCHMAXPLAYER];
 
 VectorList<Bullet> Bullet::bu[M_PL_MATCHMAXPLAYER];
 HTEXTURE Bullet::tex;
@@ -39,7 +38,6 @@ void Bullet::Init(HTEXTURE _tex)
 	{
 		ZeroMemory(renderDepth[i], sizeof(RenderDepth) * BULLETTYPEMAX);
 		bu[i].init(BULLETMAX);
-		izel[i].init(_IZEZONEMAX);
 	}
 	tex = _tex;
 	for (int i=0; i<BULLETTYPEMAX; i++)
@@ -136,7 +134,6 @@ void Bullet::ClearItem()
 	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
 	{
 		bu[i].clear_item();
-		izel[i].clear_item();
 	}
 	index = 0;
 	ZeroMemory(_actionList, sizeof(int) * BULLETACTIONMAX);
@@ -171,26 +168,6 @@ void Bullet::Action(bool notinstop)
 				else
 				{
 					bu[j].pop();
-				}
-			}
-		}
-		if (notinstop)
-		{
-			if (izel[j].size)
-			{
-				DWORD i = 0;
-				DWORD size = izel[j].size;
-				for (izel[j].toBegin(); i<size; izel[j].toNext(), i++)
-				{
-					if (izel[j].isValid())
-					{
-						IzeZone * tize = &(*(izel[j]));
-						tize->timer++;
-						if (tize->timer == tize->maxtime)
-						{
-							izel[j].pop();
-						}
-					}
 				}
 			}
 		}
@@ -339,69 +316,33 @@ bool Bullet::valueSet(WORD _ID, float _x, float _y, bool absolute, int _angle, f
 	return true;
 }
 
-void Bullet::IzeBuild(BYTE playerindex, BYTE _type, float _x, float _y, BYTE _maxtime, float _r, BYTE _eventID)
-{
-	IzeZone _ize;
-	_ize.x = _x;
-	_ize.y = _y;
-	_ize.r = _r;
-	_ize.maxtime = _maxtime;
-	_ize.type = _type;
-	_ize.timer = 0;
-	_ize.eventID = _eventID;
-	izel[playerindex].push_back(_ize);
-}
-
 void Bullet::DoIze(BYTE playerindex)
 {
 	if (cancelable || bossinfo.flag>=BOSSINFO_COLLAPSE)
 	{
-		if (izel[playerindex].size)
+		for (list<EventZone>::iterator it=EventZone::ezone[playerindex].begin(); it!=EventZone::ezone[playerindex].end(); it++)
 		{
-			DWORD i = 0;
-			DWORD size = izel[playerindex].size;
-			for (izel[playerindex].toBegin(); i<size; izel[playerindex].toNext(), i++)
+			if ((it->type) & EVENTZONE_TYPEMASK_BULLET)
 			{
-				if (izel[playerindex].isValid())
+				if (checkCollisionBigCircle(it->x, it->y, it->r))
 				{
-					IzeZone * tize = &(*(izel[playerindex]));
-					float tor = tize->r;
-					if (tize->maxtime > 1)
+					if (it->type & EVENTZONE_TYPE_ERASEBULLET)
 					{
-						if (tize->timer > 0)
-						{
-							tor *= tize->timer;
-						}
-						tor /= tize->maxtime;
+						fadeout = true;
+						timer = 0;
 					}
-
-					if (checkCollisionBigCircle(tize->x, tize->y, tor))
+					if (it->type & EVENTZONE_TYPE_SENDBULLET)
 					{
-						switch (tize->type)
+						toafter = BULLETZONE_SEND;
+					}
+					if (it->type & EVENTZONE_TYPE_BULLETEVENT)
+					{
+						if (!passedEvent(it->eventID))
 						{
-						case BULLETIZE_FADEOUT:
-							fadeout = true;
-							timer = 0;
-							break;
-						case BULLETIZE_FAITH:
-							faithlize();
-							break;
-						case BULLETIZE_POINT:
-							pointlize();
-							break;
-						case BULLETIZE_SCORE:
-							scorelize();
-							break;
+							scr.Execute(SCR_EVENT, SCR_EVENT_BULLETENTERZONE, it->eventID);
+							passEvent(it->eventID);
 						}
-						if (tize->eventID != 0xff)
-						{
-							if (!passedEvent(tize->eventID))
-							{
-								scr.Execute(SCR_EVENT, SCR_EVENT_BULLETENTERIZE, tize->eventID);
-								passEvent(tize->eventID);
-							}
-						}
-						break;
+
 					}
 				}
 			}
@@ -502,6 +443,12 @@ void Bullet::passEvent(BYTE _eventID)
 		}
 	}
 	eventID[0] = _eventID;
+}
+
+void Bullet::sendBullet(BYTE playerindex)
+{
+	// TODO:
+
 }
 
 void Bullet::action(BYTE playerindex)
@@ -629,48 +576,9 @@ void Bullet::action(BYTE playerindex)
 	{
 		if(timer == 16)
 		{
-			if(toafter == BULLETIZE_FAITH)
+			if(toafter == BULLETZONE_SEND)
 			{
-				Item::Build(playerindex, ITEM_SMALLFAITH, x, y, true);
-				exist = false;
-			}
-			else if (toafter == BULLETIZE_POINT)
-			{
-				Item::Build(playerindex, ITEM_POINT, x, y, false);
-				exist = false;
-			}
-			else if(toafter == BULLETIZE_SCORE)
-			{
-				color = res.bulletdata[oldtype].bonuscolor;
-				/*
-				switch(color)
-				{
-				case 0:
-					Player::p[0].nSpellPoint += 500;
-					break;
-				case 1:
-					Player::p[0].nSpellPoint += 1000;
-					break;
-				case 2:
-					Player::p[0].nSpellPoint += 2000;
-					break;
-				case 3:
-					Player::p[0].nSpellPoint += 3000;
-					break;
-				case 4:
-					Player::p[0].nSpellPoint += 5000;
-					break;
-				case 5:
-					Player::p[0].nSpellPoint += 8000;
-					break;
-				}
-				*/
-				type = BULLET_BONUSTYPE;
-				alpha = 0xff;
-				hscale = 1;
-				angle = -BULLET_ANGLEOFFSET;
-				headangle = 0;
-				timer = 32;
+				sendBullet(!playerindex);
 			}
 		}
 		else if(timer == 32)
@@ -696,30 +604,6 @@ void Bullet::action(BYTE playerindex)
 	able = exist && !fadeout;
 
 	DoUpdateRenderDepth(playerindex);
-}
-
-void Bullet::faithlize()
-{
-	timer = 0;
-	fadeout = true;
-	able = false;
-	toafter = BULLETIZE_FAITH;
-}
-
-void Bullet::pointlize()
-{
-	timer = 0;
-	fadeout = true;
-	able = false;
-	toafter = BULLETIZE_POINT;
-}
-
-void Bullet::scorelize()
-{
-	timer = 0;
-	fadeout = true;
-	able = false;
-	toafter = BULLETIZE_SCORE;
 }
 
 bool Bullet::isInRect(float r, float aimx, float aimy)
@@ -789,9 +673,9 @@ void Bullet::ChangeAction(BYTE playerindex)
 //				break;
 			}
 		}
-		else if (actionList[i] < BUAL_EXECUTESTART)
+		else if (actionList[i] < BULA_EXECUTESTART)
 		{
-			switch (actionList[i] & BUALC_FILTER)
+			switch (actionList[i] & BULAC_FILTER)
 			{
 			case BULAC_OTHER:
 				switch (actionList[i])
@@ -1266,19 +1150,19 @@ void Bullet::ChangeAction(BYTE playerindex)
 				case FAITHLIZE:
 					if(doit)
 					{
-						faithlize();
+//						faithlize();
 					}
 					break;
 				case POINTLIZE:
 					if(doit)
 					{
-						pointlize();
+//						pointlize();
 					}
 					break;
 				case SCORELIZE:
 					if (doit)
 					{
-						scorelize();
+//						scorelize();
 					}
 					break;
 				case BOUNCE:

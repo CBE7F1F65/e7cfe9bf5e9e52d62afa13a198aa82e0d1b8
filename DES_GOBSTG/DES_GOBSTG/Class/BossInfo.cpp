@@ -217,7 +217,7 @@ bool BossInfo::action()
 				timer = 100;
 			}
 			// TODO:
-			Bullet::IzeBuild(0, BULLETIZE_FADEOUT, Enemy::en[ENEMY_MAINBOSSINDEX].x, Enemy::en[ENEMY_MAINBOSSINDEX].y);
+//			Bullet::IzeBuild(0, BULLETIZE_FADEOUT, Enemy::en[ENEMY_MAINBOSSINDEX].x, Enemy::en[ENEMY_MAINBOSSINDEX].y);
 			if((spellflag & BISF_WAIT) || !remain)
 			{
 				Enemy::en[ENEMY_MAINBOSSINDEX].life = -1;

@@ -5,7 +5,7 @@
 	Name="ReplayView"
 	ProjectGUID="{EF267EDC-A6F8-41D8-A350-0092EE4A2AEB}"
 	VCNestedProjectGUID="{997877FE-1AB7-4AF1-8E33-505A99E4FD82}"
-	VCNestedProjectCRC32="3919420513"
+	VCNestedProjectCRC32="2994519341"
 	VCNestedProjectFileName="ReplayView.vcproj"
 	Keyword="MFCProj">
 	<Configurations>
@@ -270,6 +270,8 @@
 					UsePrecompiledHeader="1"/>
 			</FileConfiguration>
 		</File>
+		<File 
+			RelativePath="..\Des_gobstg\Des_gobstg\Core\SpriteItemManager.cpp"/>
 		<File 
 			RelativePath=".\ReplayView.h"/>
 		<File 

@@ -304,6 +304,9 @@
 				RelativePath=".\ReplayViewDlg.cpp">
 			</File>
 			<File
+				RelativePath="..\Des_gobstg\Des_gobstg\Core\SpriteItemManager.cpp">
+			</File>
+			<File
 				RelativePath=".\stdafx.cpp">
 				<FileConfiguration
 					Name="Debug|Win32">

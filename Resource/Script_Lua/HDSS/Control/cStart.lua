@@ -57,7 +57,14 @@ function ControlExecute_cStart(con)
 		hdssBGCOLOR(i*UBGID_RIGHTIDBEGIN+3, 0, col, col, 0);
 		end
 		
---		hdssBGVALUE(0, SI_BG_01_1, TotalCenterX, TotalCenterY, TotalW, TotalH)
 	end
-		
+
+	if math.mod(con, 60) == 1 then		
+		hdss.Call(
+			HDSS_EB,
+			{
+				0, 0, 0xff, 120, 0, 9000, 1.0, 0, 3, 8
+			}
+		)
+	end
 end

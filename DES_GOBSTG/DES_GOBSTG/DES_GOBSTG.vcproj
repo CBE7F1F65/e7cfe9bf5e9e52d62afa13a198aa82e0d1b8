@@ -408,6 +408,9 @@
 					RelativePath=".\Class\Enemy.cpp">
 				</File>
 				<File
+					RelativePath=".\Class\EventZone.cpp">
+				</File>
+				<File
 					RelativePath=".\Class\Fontsys.cpp">
 				</File>
 				<File
@@ -648,6 +651,9 @@
 					RelativePath=".\Header\Bullet.h">
 				</File>
 				<File
+					RelativePath=".\Header\BulletListActionConst.h">
+				</File>
+				<File
 					RelativePath=".\Header\Chat.h">
 				</File>
 				<File
@@ -661,6 +667,9 @@
 				</File>
 				<File
 					RelativePath=".\Header\Enemy.h">
+				</File>
+				<File
+					RelativePath=".\Header\EventZone.h">
 				</File>
 				<File
 					RelativePath=".\Header\Fontsys.h">

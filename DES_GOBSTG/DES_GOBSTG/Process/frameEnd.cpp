@@ -78,7 +78,6 @@ void Process::frameEnd()
 			}
 		}
 		*/
-		Enemy::ClearDamageZoneItem();
 		Bullet::Action(!(stopflag & FRAME_STOPFLAG_BULLET));
 		if (!(stopflag & FRAME_STOPFLAG_BULLET))
 		{
@@ -96,6 +95,7 @@ void Process::frameEnd()
 		{
 			Item::Action(state != STATE_PAUSE);
 		}
+		EventZone::Action();
 
 		Scripter::stopEdefScript = false;
 		if(BossInfo::flag)

@@ -674,6 +674,16 @@ bool Data::GetAllTable()
 #endif // __DEBUG
 		return false;
 	}
+
+	//sprite
+	if (!GetTableFile(DATA_SPRITEDEFINEFILE))
+	{
+#ifdef __DEBUG
+		HGELOG("%s\nFailed in loading SpriteDefineFile %s.", HGELOG_ERRSTR, spritedefinefilename);
+#endif // __DEBUG
+		return false;
+	}
+
 	//scene
 	if (!GetTableFile(DATA_SCENEDEFINEFILE))
 	{
@@ -713,15 +723,6 @@ bool Data::GetAllTable()
 	{
 #ifdef __DEBUG
 		HGELOG("%s\nFailed in loading PlayerDefineFile %s.", HGELOG_ERRSTR, playerdefinefilename);
-#endif // __DEBUG
-		return false;
-	}
-
-	//sprite
-	if (!GetTableFile(DATA_SPRITEDEFINEFILE))
-	{
-#ifdef __DEBUG
-		HGELOG("%s\nFailed in loading SpriteDefineFile %s.", HGELOG_ERRSTR, spritedefinefilename);
 #endif // __DEBUG
 		return false;
 	}

@@ -13,6 +13,7 @@ bool Process::reload()
 	Chat::chatitem.Clear();
 	BossInfo::Clear();
 	Player::Init();
+	EventZone::Clear();
 
 	frameskip = M_DEFAULT_FRAMESKIP;
 	strcpy(rpyfilename, "");
@@ -41,7 +42,7 @@ bool Process::reload()
 	}
 
 	Bullet::Init(tex[TEX_BULLET]);
-	Enemy::Init(tex[TEX_ENEMY]);
+	Enemy::Init(tex);
 	Item::Init();
 	Beam::Init();
 	PlayerBullet::Init(tex);

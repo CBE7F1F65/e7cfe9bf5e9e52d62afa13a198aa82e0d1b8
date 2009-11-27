@@ -154,15 +154,10 @@ struct enemyData
 {
 	char name[M_STRMAX];
 	char ename[M_STRMAX];
+	int siid;
 	float collision_w;
 	float collision_h;
-	float usetexw;
-	float usetexh;
-	BYTE tex;
 	BYTE faceIndex;
-	BYTE tex_nCol;
-	BYTE tex_nRow;
-	BYTE startFrame;
 	BYTE standFrame;
 	BYTE rightPreFrame;
 	BYTE rightFrame;
@@ -173,6 +168,9 @@ struct enemyData
 	BYTE storePreFrame;
 	BYTE storeFrame;
 	bool standshake;
+	BYTE blastmaxtime;
+	float blastr;
+	float blastpower;
 };
 
 struct playerData 

@@ -41,16 +41,17 @@
 
 #define PL_SAVELASTMAX		0x20
 
-#define	PLAYER_MERGE				0x1
-#define	PLAYER_SHOT					0x2
-#define	PLAYER_COLLAPSE				0x4
-#define	PLAYER_SHOOT				0x8
-#define	PLAYER_BORDER				0x10
-#define	PLAYER_BOMB					0x20
-#define	PLAYER_SLOWCHANGE			0x40
-#define	PLAYER_FASTCHANGE			0x80
-#define PLAYER_CHARGE				0x100
-#define	PLAYER_PLAYERCHANGE			0x200
+#define	PLAYER_MERGE				0x0001
+#define	PLAYER_SHOT					0x0002
+#define PLAYER_COSTLIFE				0x0004
+#define	PLAYER_COLLAPSE				0x0008
+#define	PLAYER_SHOOT				0x0010
+#define	PLAYER_BORDER				0x0020
+#define	PLAYER_BOMB					0x0040
+#define	PLAYER_SLOWCHANGE			0x0080
+#define	PLAYER_FASTCHANGE			0x0100
+#define PLAYER_CHARGE				0x0200
+#define	PLAYER_PLAYERCHANGE			0x0400
 #define	PLAYER_GRAZE				0x1000
 
 #define PLBONUS_GRAZE	0x01
@@ -63,7 +64,7 @@
 #define PLAYERINFI_SHOOTCHARGE	0x02
 #define PLAYERINFI_OVER			0x04
 #define PLAYERINFI_CHAT			0x08
-#define PLAYERINFI_SHOT			0x10
+#define PLAYERINFI_COSTLIFE			0x10
 #define PLAYERINFI_COLLAPSE		0x20
 
 #define PLAYER_CHARGEONE	100.0f
@@ -76,8 +77,8 @@ public:
 	Player();
 	virtual ~Player();
 
-	void valueSet(BYTE playerindex, bool bContinue = false);
-	void ClearSet();
+	void valueSet(BYTE playerindex, BYTE round = 0);
+	void ClearSet(BYTE round=0);
 	void ClearNC();
 	void UpdatePlayerData();       
 	void ResetPlayerGhost(bool move = false);
@@ -97,6 +98,10 @@ public:
 	bool FastChange();
 	bool PlayerChange();
 	bool Graze();
+	bool CostLife();
+
+	void AddComboHit(int combo, bool ori);
+	void DoEnemyCollapse();
 
 	void initFrameIndex();
 	void setFrame(BYTE frameenum);
@@ -194,8 +199,11 @@ public:
 	int nBulletPoint;
 	int	nSpellPoint;
 	int nComboHit;
+	int nComboHitOri;
 	float fCharge;
 	float fChargeMax;
+
+	int nBounceAngle;
 
 	hgeSprite * sprite;
 	BYTE	frameindex[M_PL_ONESETPLAYER][PLAYER_FRAME_STATEMAX];
@@ -213,6 +221,7 @@ public:
 	WORD	slowtimer;
 	WORD	fasttimer;
 	WORD	playerchangetimer;
+	WORD	costlifetimer;
 
 	BYTE	shotdelay;
 
@@ -222,6 +231,7 @@ public:
 	BYTE	infireasonflag;
 
 	BYTE	nLife;
+	int		nLifeCost;
 
 	// add
 	BYTE	initlife;

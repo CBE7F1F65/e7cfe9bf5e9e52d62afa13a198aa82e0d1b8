@@ -284,6 +284,9 @@
 			<File
 				RelativePath="..\Des_gobstg\Des_gobstg\Core\InitDllLoader.cpp">
 			</File>
+			<File
+				RelativePath="..\Des_gobstg\Des_gobstg\Core\SpriteItemManager.cpp">
+			</File>
 		</Filter>
 		<Filter
 			Name="Í·ÎÄ¼þ"
