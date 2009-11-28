@@ -71,6 +71,10 @@
 #define PLAYER_CHARGENMAX	4
 #define PLAYER_CHARGEMAX	(PLAYER_CHARGEONE*PLAYER_CHARGENMAX)
 
+#define PLAYER_COMBOGAGEMAX	105
+#define PLAYER_COMBORESET	45
+#define PLAYER_COMBOALERT	65
+
 class Player : public BObject
 {
 public:
@@ -102,6 +106,11 @@ public:
 
 	void AddComboHit(int combo, bool ori);
 	void DoEnemyCollapse();
+
+	void AddSpellPoint(int spellpoint);
+	void AddExPoint(int expoint, float x, float y);
+	void AddGhostPoint(int ghostpoint, float x, float y);
+	void AddBulletPoint(int bulletpoint, float x, float y);
 
 	void initFrameIndex();
 	void setFrame(BYTE frameenum);
@@ -232,6 +241,7 @@ public:
 
 	BYTE	nLife;
 	int		nLifeCost;
+	BYTE	nComboGage;
 
 	// add
 	BYTE	initlife;

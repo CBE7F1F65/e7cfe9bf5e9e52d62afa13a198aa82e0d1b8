@@ -259,16 +259,33 @@ void FrontDisplay::RenderPanel()
 			for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
 			{
 				panel.spellpoint->Render(spellpointx[i], M_GAMESQUARE_TOP);
-				char buffer[M_STRITOAMAX];
-				sprintf(buffer, "%d%c", Player::p[i].nComboHit, '0'+21);
-				for (int j=0; j<strlen(buffer)-1; j++)
+				spriteData * _spd = SpriteItemManager::CastSprite(panel.combobarindex);
+				float fcombogage = ((float)Player::p[i].nComboGage) / PLAYER_COMBOGAGEMAX;
+				panel.combobar->SetTextureRect(_spd->tex_x, _spd->tex_y, _spd->tex_w*fcombogage, _spd->tex_h);
+				panel.combobar->SetHotSpot(0, 0);
+				panel.combobar->Render(spellpointx[i]+2, M_GAMESQUARE_TOP+30);
+
+				bool usered = true;
+				if (Player::p[i].nComboGage < PLAYER_COMBOALERT && Player::p[i].nComboGage > PLAYER_COMBORESET)
 				{
-					buffer[j] += 10;
+					if (time % 8 < 4)
+					{
+						usered = false;
+					}
+				}
+				char buffer[M_STRITOAMAX];
+				sprintf(buffer, "%d%c", Player::p[i].nComboHit, '0'+(usered?21:20));
+				if (usered)
+				{
+					for (int j=0; j<strlen(buffer)-1; j++)
+					{
+						buffer[j] += 10;
+					}
 				}
 				info.spellpointdigitfont->printf(spellpointx[i]+36, M_GAMESQUARE_TOP+16, HGETEXT_RIGHT, "%s", buffer);
 				info.spellpointdigitfont->printf(spellpointx[i]+36, M_GAMESQUARE_TOP+16, HGETEXT_LEFT, "%06d", Player::p[i].nSpellPoint);
 
-				spriteData * _spd = SpriteItemManager::CastSprite(panel.slotindex);
+				_spd = SpriteItemManager::CastSprite(panel.slotindex);
 				float fslot = Player::p[i].fChargeMax / PLAYER_CHARGEMAX;
 				panel.slot->SetTextureRect(_spd->tex_x, _spd->tex_y, _spd->tex_w*fslot, _spd->tex_h);
 				panel.slot->SetHotSpot(0, _spd->tex_h);
@@ -721,10 +738,11 @@ bool FrontDisplay::Init()
 
 	panel.spellpoint = SpriteItemManager::CreateSpriteByName(SI_FRONTPANEL_SPELLPOINT);
 	panel.spellpoint->SetHotSpot(0, 0);
+	panel.combobarindex = SpriteItemManager::GetIndexByName(SI_FRONTPANEL_COMBOBAR);
+	panel.combobar = SpriteItemManager::CreateSprite(panel.combobarindex);
 	panel.winindi = SpriteItemManager::CreateSpriteByName(SI_FRONTPANEL_WININDI);
 	panel.slotindex = SpriteItemManager::GetIndexByName(SI_FRONTPANEL_SLOT);
 	panel.slot = SpriteItemManager::CreateSprite(panel.slotindex);
-	panel.slot->SetHotSpot(0, panel.slot->GetHeight());
 	panel.slotback = SpriteItemManager::CreateSpriteByName(SI_FRONTPANEL_SLOTBACK);
 	panel.slotback->SetHotSpot(0, panel.slotback->GetHeight());
 	panel.lifeindi[FDISP_LIFEINDI_EMPTY] = SpriteItemManager::CreateSpriteByName(SI_FRONTPANEL_LIFEINDI_EMPTY);
@@ -836,17 +854,7 @@ bool FrontDisplay::Init()
 	gameinfodisplay.caution = SpriteItemManager::CreateSpriteByName(SI_GAMEINFO_CAUTION);
 	gameinfodisplay.lastlife = SpriteItemManager::CreateSpriteByName(SI_GAMEINFO_LASTLIFE);
 	gameinfodisplay.lily = SpriteItemManager::CreateSpriteByName(SI_GAMEINFO_LILY);
-	gameinfodisplay.gameset = SpriteItemManager::CreateSpriteByName(SI_GAMEINFO_GAMESET);
-	gameinfodisplay.winner = SpriteItemManager::CreateSpriteByName(SI_GAMEINFO_WINNER);
-	gameinfodisplay.deadparrot = SpriteItemManager::CreateSpriteByName(SI_GAMEINFO_DEADPARROT);
-	gameinfodisplay.warning = SpriteItemManager::CreateSpriteByName(SI_GAMEINFO_WARNING);
-	gameinfodisplay.classfairy = SpriteItemManager::CreateSpriteByName(SI_GAMEINFO_CLASSFAIRY);
-	gameinfodisplay.classwitch = SpriteItemManager::CreateSpriteByName(SI_GAMEINFO_CLASSWITCH);
-	gameinfodisplay.classdragon = SpriteItemManager::CreateSpriteByName(SI_GAMEINFO_CLASSDRAGON);
-	gameinfodisplay.classgods = SpriteItemManager::CreateSpriteByName(SI_GAMEINFO_CLASSGODS);
 	gameinfodisplay.spellline = SpriteItemManager::CreateSpriteByName(SI_GAMEINFO_SPELLLINE);
-	gameinfodisplay.ready = SpriteItemManager::CreateSpriteByName(SI_GAMEINFO_READY);
-	gameinfodisplay.gamestart = SpriteItemManager::CreateSpriteByName(SI_GAMEINFO_GAMESTART);
 
 	//ascii
 
@@ -940,6 +948,7 @@ void FrontDisplay::Release()
 		SpriteItemManager::FreeSprite(&panel.bottomedge[i]);
 	}
 	SpriteItemManager::FreeSprite(&panel.spellpoint);
+	SpriteItemManager::FreeSprite(&panel.combobar);
 	SpriteItemManager::FreeSprite(&panel.winindi);
 	SpriteItemManager::FreeSprite(&panel.slot);
 	SpriteItemManager::FreeSprite(&panel.slotback);
@@ -1048,7 +1057,7 @@ void FrontDisplay::Release()
 		SpriteItemManager::FreeSprite(&spellpointnum.spellpointnum[i]);
 	}
 
-	for (int i=0; i<31; i++)
+	for (int i=0; i<21; i++)
 	{
 		SpriteItemManager::FreeSprite(&gameinfodisplay.gameinfodisplay[i]);
 	}

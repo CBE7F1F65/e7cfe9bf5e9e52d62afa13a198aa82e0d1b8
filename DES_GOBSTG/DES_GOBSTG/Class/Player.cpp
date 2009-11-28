@@ -419,6 +419,7 @@ void Player::ClearSet(BYTE round)
 
 	nComboHit = 0;
 	nComboHitOri = 0;
+	nComboGage = 0;
 
 	if (effGraze.exist)
 	{
@@ -705,6 +706,18 @@ void Player::action()
 	else
 	{
 		bInfi = false;
+	}
+	if (nComboGage)
+	{
+		nComboGage--;
+		if (nComboGage == PLAYER_COMBORESET)
+		{
+			AddComboHit(-1, true);
+		}
+		else if (!nComboGage)
+		{
+			AddSpellPoint(-1);
+		}
 	}
 
 	//input
@@ -1228,14 +1241,95 @@ void Player::DoEnemyCollapse()
 	}
 	AddComboHit(1, true);
 	AddCharge(0, addcharge);
+	int addspellpoint;
+	if (nComboHitOri == 1)
+	{
+		addspellpoint = 20;
+	}
+	else
+	{
+		addspellpoint = nComboHitOri * 30 - 20;
+		if (addspellpoint > 3000)
+		{
+			addspellpoint = 3000;
+		}
+	}
+	AddSpellPoint(addspellpoint);
+}
+
+void Player::AddExPoint(int expoint, float x, float y)
+{
+	nExPoint += expoint;
+	// TODO:
+}
+
+void Player::AddGhostPoint(int ghostpoint, float x, float y)
+{
+	nGhostPoint += ghostpoint;
+	if (nGhostPoint >= 60-rank*1.5f)
+	{
+		if (nBulletPoint >= 10)
+		{
+			AddGhostPoint(-(60-rank*2), x, y);
+			AddBulletPoint(-10, x, y);
+			Ghost::SendGhost(!playerindex, x, y, false);
+		}
+	}
+}
+
+void Player::AddBulletPoint(int bulletpoint, float x, float y)
+{
+	nBulletPoint += bulletpoint;
+	if (nBulletPoint >= 120-rank*4)
+	{
+		AddBulletPoint(-(120-rank*4), x, y);
+		Bullet::SendBullet(!playerindex, x, y, false);
+	}
+}
+
+void Player::AddSpellPoint(int spellpoint)
+{
+	if (spellpoint < 0)
+	{
+		nSpellPoint = 0;
+		return;
+	}
+	nSpellPoint += spellpoint;
 }
 
 void Player::AddComboHit(int combo, bool ori)
 {
+	if (combo < 0)
+	{
+		nComboHit = 0;
+		nComboHitOri = 0;
+		return;
+	}
 	nComboHit += combo;
 	if (ori)
 	{
 		nComboHitOri += combo;
+	}
+
+	if (nComboGage < 74)
+	{
+		nComboGage += 30;
+		if (nComboGage < 74)
+		{
+			nComboGage = 74;
+		}
+	}
+	else if (nComboGage < 94)
+	{
+		nComboGage += 5;
+	}
+	else
+	{
+		nComboGage += 2;
+	}
+	if (nComboGage > PLAYER_COMBOGAGEMAX)
+	{
+		nComboGage = PLAYER_COMBOGAGEMAX;
 	}
 }
 

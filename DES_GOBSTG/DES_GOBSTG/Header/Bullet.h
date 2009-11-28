@@ -94,7 +94,7 @@ public:
 	void matchFadeInColorType();
 	void matchFadeOutColorType();
 
-	void sendBullet(BYTE playerindex);
+	static void SendBullet(BYTE playerindex, float x, float y, bool bythis=true);
 
 	bool passedEvent(BYTE eventID);
 	void passEvent(BYTE eventID);

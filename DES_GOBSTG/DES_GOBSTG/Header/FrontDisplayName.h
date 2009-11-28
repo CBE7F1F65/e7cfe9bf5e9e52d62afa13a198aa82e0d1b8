@@ -384,6 +384,8 @@
 #define SI_GAMEINFO_CAUTION		"SI_GameInfo_Caution"
 #define SI_GAMEINFO_LASTLIFE	"SI_GameInfo_LastLife"
 #define SI_GAMEINFO_LILY		"SI_GameInfo_Lily"
+#define SI_GAMEINFO_SPELLLINE	"SI_GameInfo_SpellLine"
+/*
 #define SI_GAMEINFO_GAMESET		"SI_GameInfo_GameSet"
 #define SI_GAMEINFO_WINNER		"SI_GameInfo_Winner"
 #define SI_GAMEINFO_DEADPARROT	"SI_GameInfo_DeadParrot"
@@ -392,10 +394,9 @@
 #define SI_GAMEINFO_CLASSWITCH	"SI_GameInfo_ClassWitch"
 #define SI_GAMEINFO_CLASSDRAGON	"SI_GameInfo_ClassDragon"
 #define SI_GAMEINFO_CLASSGODS	"SI_GameInfo_ClassGods"
-#define SI_GAMEINFO_SPELLLINE	"SI_GameInfo_SpellLine"
 #define SI_GAMEINFO_READY		"SI_GameInfo_Ready"
 #define SI_GAMEINFO_GAMESTART	"SI_GameInfo_GameStart"
-
+*/
 /*#define	SI_POWERUP_POWERUP	"SI_PowerUp_PowerUp"*/
 #define	SI_ENEMY_X	"SI_Enemy_X"
 #define	SI_LOADING_WORD	"SI_Loading_Word"
@@ -504,6 +505,7 @@
 #define	SI_FRONTPANEL_BOTTOM_1	"SI_FrontPanel_Bottom_1"
 
 #define	SI_FRONTPANEL_SPELLPOINT	"SI_FrontPanel_SpellPoint"
+#define SI_FRONTPANEL_COMBOBAR	"SI_FrontPanel_ComboBar"
 #define	SI_FRONTPANEL_WININDI	"SI_FrontPanel_WinIndi"
 #define	SI_FRONTPANEL_SLOT	"SI_FrontPanel_Slot"
 #define	SI_FRONTPANEL_SLOTBACK	"SI_FrontPanel_SlotBack"

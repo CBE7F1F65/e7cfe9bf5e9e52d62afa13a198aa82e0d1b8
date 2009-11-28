@@ -445,7 +445,7 @@ void Bullet::passEvent(BYTE _eventID)
 	eventID[0] = _eventID;
 }
 
-void Bullet::sendBullet(BYTE playerindex)
+void Bullet::SendBullet(BYTE playerindex, float x, float y, bool byerase)
 {
 	// TODO:
 
@@ -578,7 +578,7 @@ void Bullet::action(BYTE playerindex)
 		{
 			if(toafter == BULLETZONE_SEND)
 			{
-				sendBullet(!playerindex);
+				SendBullet(!playerindex, x, y);
 			}
 		}
 		else if(timer == 32)

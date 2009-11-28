@@ -38,11 +38,13 @@ struct ftPanelSet
 	hgeSprite * topedge[M_PL_MATCHMAXPLAYER];
 	hgeSprite * bottomedge[M_PL_MATCHMAXPLAYER];
 	hgeSprite * spellpoint;
+	hgeSprite * combobar;
 	hgeSprite * winindi;
 	hgeSprite * slot;
 	hgeSprite * slotback;
 	hgeSprite * lifeindi[FDISP_LIFEINDIMAX];
 	int slotindex;
+	int combobarindex;
 };
 
 struct ftInfoBody
@@ -222,19 +224,9 @@ struct ftGameInfoDisplaySet
 			hgeSprite * caution;
 			hgeSprite * lastlife;
 			hgeSprite * lily;
-			hgeSprite * gameset;
-			hgeSprite * winner;
-			hgeSprite * deadparrot;
-			hgeSprite * warning;
-			hgeSprite * classfairy;
-			hgeSprite * classwitch;
-			hgeSprite * classdragon;
-			hgeSprite * classgods;
 			hgeSprite * spellline;
-			hgeSprite * ready;
-			hgeSprite * gamestart;
 		};
-		hgeSprite * gameinfodisplay[31];
+		hgeSprite * gameinfodisplay[21];
 	};
 	BYTE gaugefilledcountdown[M_PL_MATCHMAXPLAYER];
 	BYTE lastlifecountdown[M_PL_MATCHMAXPLAYER];

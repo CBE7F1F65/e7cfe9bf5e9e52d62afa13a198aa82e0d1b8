@@ -126,6 +126,11 @@ void Ghost::actionInStop()
 	}
 }
 
+void Ghost::SendGhost(BYTE playerindex, float x, float y, bool bythis/* =true */)
+{
+	// TODO:
+}
+
 BYTE Ghost::getPlayerIndex()
 {
 	if (ID >= GHID_LEFTIDBEGIN && ID < GHID_LEFTIDUNTIL)
