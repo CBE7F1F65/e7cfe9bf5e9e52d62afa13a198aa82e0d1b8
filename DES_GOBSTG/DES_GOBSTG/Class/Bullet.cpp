@@ -445,10 +445,22 @@ void Bullet::passEvent(BYTE _eventID)
 	eventID[0] = _eventID;
 }
 
-void Bullet::SendBullet(BYTE playerindex, float x, float y, bool byerase)
+void Bullet::SendBullet(BYTE playerindex, float x, float y, BYTE setID)
 {
-	// TODO:
-
+	int siidindex = EFFSPSEND_COLOR_RED;
+	if (playerindex)
+	{
+		siidindex = EFFSPSEND_COLOR_BLUE;
+	}
+	EffectSp * _peffsp = EffectSp::Build(setID, playerindex, EffectSp::senditemsiid[siidindex][0], x, y);
+	_peffsp->colorSet(0x80ffffff);
+	_peffsp->blendSet(BLEND_ALPHAADD);
+	float aimx;
+	float aimy;
+	aimx = hge->Random_Float(M_GAMESQUARE_LEFT_(playerindex) + 8, M_GAMESQUARE_RIGHT_(playerindex) - 8);
+	aimy = hge->Random_Float(M_GAMESQUARE_TOP, M_GAMESQUARE_TOP + 128);
+	_peffsp->chaseSet(EFFSP_CHASE_FREE, aimx, aimy, 60);
+	_peffsp->animationSet(EFFSPSEND_ANIMATIONMAX);
 }
 
 void Bullet::action(BYTE playerindex)
@@ -578,7 +590,7 @@ void Bullet::action(BYTE playerindex)
 		{
 			if(toafter == BULLETZONE_SEND)
 			{
-				SendBullet(!playerindex, x, y);
+				SendBullet(!playerindex, x, y, EFFSPSET_SYSTEM_SENDBLUEBULLET);
 			}
 		}
 		else if(timer == 32)

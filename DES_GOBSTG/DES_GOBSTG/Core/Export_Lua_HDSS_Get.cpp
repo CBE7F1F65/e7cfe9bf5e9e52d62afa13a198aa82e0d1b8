@@ -171,8 +171,8 @@ int Export_Lua_HDSS::LuaFn_HDSS_Get(LuaState * ls)
 		case SCR_NOWCON:
 			break;
 
-		case SCR_DIFFI:
-			break;
+		case SCR_RANK:
+			return _HDSSCallGet::Get_RANK(ls);
 		case SCR_SNOSTAGE:
 			break;
 		case SCR_SNODIFFI:
@@ -240,9 +240,9 @@ int Export_Lua_HDSS::LuaFn_HDSS_Get(LuaState * ls)
 		switch (nowval)
 		{
 		case SCR_PX:
-			break;
+			return _HDSSCallGet::Get_PX(ls);
 		case SCR_PY:
-			break;
+			return _HDSSCallGet::Get_PY(ls);
 		case SCR_PLIFE:
 			return _HDSSCallGet::Get_PLIFE(ls);
 		case SCR_PBOMB:

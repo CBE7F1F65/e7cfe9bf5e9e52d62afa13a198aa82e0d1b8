@@ -373,8 +373,8 @@ bool _DataTable::EnemyDefineFile()
 bool _DataTable::PlayerDefineFile()
 {
 	ZeroMemory(res.playerdata, RSIZE_PLAYER);
-	fscanf(file, "%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s", 
-		buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer);
+	fscanf(file, "%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s", 
+		buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer, buffer);
 	while (!feof(file))
 	{
 		fscanf(file, "%d", &tindex);
@@ -383,7 +383,7 @@ bool _DataTable::PlayerDefineFile()
 		{
 			return true;
 		}
-		fscanf(file, "%f%f%f%f%f%d%d%d%d%d%d%d%d%d%d%d%d%d%f%f\t%[^\t]\t%[^\t\r\n]", 
+		fscanf(file, "%f%f%f%f%f%d%d%d%f%f%d%d%d%d%d%d%d%d%d%d%f%f\t%[^\t]\t%[^\t\r\n]", 
 			&(item->collision_r), 
 			&(item->fastspeed), 
 			&(item->slowspeed), 
@@ -392,6 +392,8 @@ bool _DataTable::PlayerDefineFile()
 			&(tint[0]), 
 			&(tint[1]), 
 			&(tint[2]), 
+			&(item->exsendparab),
+			&(item->exsendparaa),
 			&(tint[3]), 
 			&(tint[4]), 
 			&(tint[5]), 

@@ -273,8 +273,13 @@ void FrontDisplay::RenderPanel()
 						usered = false;
 					}
 				}
+				int nComboHit = Player::p[i].nComboHit;
+				if (nComboHit > 999)
+				{
+					nComboHit = 999;
+				}
 				char buffer[M_STRITOAMAX];
-				sprintf(buffer, "%d%c", Player::p[i].nComboHit, '0'+(usered?21:20));
+				sprintf(buffer, "%d%c", nComboHit, '0'+(usered?21:20));
 				if (usered)
 				{
 					for (int j=0; j<strlen(buffer)-1; j++)
@@ -282,8 +287,13 @@ void FrontDisplay::RenderPanel()
 						buffer[j] += 10;
 					}
 				}
-				info.spellpointdigitfont->printf(spellpointx[i]+36, M_GAMESQUARE_TOP+16, HGETEXT_RIGHT, "%s", buffer);
-				info.spellpointdigitfont->printf(spellpointx[i]+36, M_GAMESQUARE_TOP+16, HGETEXT_LEFT, "%06d", Player::p[i].nSpellPoint);
+				info.spellpointdigitfont->printf(spellpointx[i]+38, M_GAMESQUARE_TOP+16, HGETEXT_RIGHT, "%s", buffer);
+				int nSpellPoint = Player::p[i].nSpellPoint;
+				if (nSpellPoint > 999999)
+				{
+					nSpellPoint = 999999;
+				}
+				info.spellpointdigitfont->printf(spellpointx[i]+38, M_GAMESQUARE_TOP+16, HGETEXT_LEFT, "%06d", nSpellPoint);
 
 				_spd = SpriteItemManager::CastSprite(panel.slotindex);
 				float fslot = Player::p[i].fChargeMax / PLAYER_CHARGEMAX;

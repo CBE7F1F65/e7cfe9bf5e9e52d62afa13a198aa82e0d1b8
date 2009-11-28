@@ -497,6 +497,8 @@ void Player::UpdatePlayerData()
 	shotdelay = pdata->shotdelay;
 	chargespeed = pdata->chargespeed;
 	rechargedelay = pdata->rechargedelay;
+	fExSendParaB = pdata->exsendparab;
+	fExSendParaA = pdata->exsendparaa;
 }
 
 void Player::AddLostStack()
@@ -1228,7 +1230,7 @@ void Player::_ShootCharge(BYTE nChargeLevel)
 	}
 }
 
-void Player::DoEnemyCollapse()
+void Player::DoEnemyCollapse(float x, float y)
 {
 	if (bInfi)
 	{
@@ -1241,6 +1243,22 @@ void Player::DoEnemyCollapse()
 	}
 	AddComboHit(1, true);
 	AddCharge(0, addcharge);
+
+	AddExPoint(1, x, y);
+	int addexpoint;
+	addexpoint = nComboHitOri + 3;
+	if (addexpoint > 28)
+	{
+		addexpoint = 28;
+	}
+	AddGhostPoint(addexpoint, x, y);
+	int addbulletpoint;
+	addbulletpoint = nComboHitOri * 3 + 27;
+	if (addbulletpoint > 60)
+	{
+		addbulletpoint = 60;
+	}
+	AddBulletPoint(addbulletpoint, x, y);
 	int addspellpoint;
 	if (nComboHitOri == 1)
 	{
@@ -1257,10 +1275,19 @@ void Player::DoEnemyCollapse()
 	AddSpellPoint(addspellpoint);
 }
 
+void Player::SendEx(float x, float y, bool bythis/* =true */)
+{
+
+}
+
 void Player::AddExPoint(int expoint, float x, float y)
 {
 	nExPoint += expoint;
-	// TODO:
+	if (nExPoint >= fExSendParaB + fExSendParaA * rank)
+	{
+		AddExPoint(-(fExSendParaB + fExSendParaA * rank), x, y);
+		SendEx(x, y, false);
+	}
 }
 
 void Player::AddGhostPoint(int ghostpoint, float x, float y)
@@ -1283,7 +1310,12 @@ void Player::AddBulletPoint(int bulletpoint, float x, float y)
 	if (nBulletPoint >= 120-rank*4)
 	{
 		AddBulletPoint(-(120-rank*4), x, y);
-		Bullet::SendBullet(!playerindex, x, y, false);
+		BYTE setID = EFFSPSET_SYSTEM_SENDBLUEBULLET;
+		if (hge->Random_Int(1, 3) == 1)
+		{
+			setID = EFFSPSET_SYSTEM_SENDREDBULLET;
+		}
+		Bullet::SendBullet(!playerindex, x, y, setID);
 	}
 }
 

@@ -26,6 +26,7 @@ public:
 	static void Release();
 	static hgeSprite * CreateSprite(int index);
 	static bool CreateSprite(int index, hgeSprite ** sprite);
+	static bool ChangeSprite(int index, hgeSprite * sprite);
 	static int GetIndexByName(const char * spritename);
 	static hgeSprite * CreateSpriteByName(const char * spritename);
 	static bool CreateSpriteByName(const char * spritename, hgeSprite ** sprite);

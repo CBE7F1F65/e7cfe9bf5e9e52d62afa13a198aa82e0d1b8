@@ -105,7 +105,7 @@ public:
 	bool CostLife();
 
 	void AddComboHit(int combo, bool ori);
-	void DoEnemyCollapse();
+	void DoEnemyCollapse(float x, float y);
 
 	void AddSpellPoint(int spellpoint);
 	void AddExPoint(int expoint, float x, float y);
@@ -157,6 +157,8 @@ public:
 	static void SetAble(bool setable);
 	static bool CheckAble();
 	static void RenderAll(BYTE renderflag);
+
+	static void SendEx(float x, float y, bool bythis=true);
 
 	static void Init();
 
@@ -211,6 +213,9 @@ public:
 	int nComboHitOri;
 	float fCharge;
 	float fChargeMax;
+
+	float fExSendParaB;
+	float fExSendParaA;
 
 	int nBounceAngle;
 

@@ -231,3 +231,45 @@ function hdssSETPINITLIFE(index, life)
 		}
 	)
 end
+
+function hdssRMA(x, y, aimx, aimy, r)
+	return hdss.Call(
+		HDSS_RAMA,
+		{
+			true, x, y, r, aimx, aimy
+		}
+	)
+end
+
+function hdssRMAP(playerindex, x, y, r)
+	return hdss.Call(
+		HDSS_RAMA,
+		{
+			true, x, y, r, hdss.Get(HDSS_PX, playerindex), hdss.Get(HDSS_PY, playerindex)
+		}
+	)
+end
+
+function hdssAMA(x, y, aimx, aimy, angle)
+	if angle == nil then
+		angle = 0;
+	end
+	return hdss.Call(
+		HDSS_RAMA,
+		{
+			false, x, y, angle, aimx, aimy
+		}
+	)
+end
+
+function hdssAMAP(playerindex, x, y, angle)
+	if angle == nil then
+		angle = 0;
+	end
+	return hdss.Call(
+		HDSS_RAMA,
+		{
+			false, x, y, angle, hdss.Get(HDSS_PX, playerindex), hdss.Get(HDSS_PY, playerindex)
+		}
+	)
+end

@@ -22,6 +22,7 @@ bool Export_Lua_Game::_LuaRegistFunction(LuaObject * obj)
 	_gameobj.Register("GetMatchMode", LuaFn_Game_GetMatchMode);
 	_gameobj.Register("GetPlayerContentTable", LuaFn_Game_GetPlayerContentTable);
 	_gameobj.Register("GetSceneContentTable", LuaFn_Game_GetSceneContentTable);
+	_gameobj.Register("GetSendItemInfo", LuaFn_Game_GetSendItemInfo);
 
 	return true;
 }
@@ -136,6 +137,15 @@ int Export_Lua_Game::LuaFn_Game_GetSceneContentTable(LuaState * ls)
 		return 1;
 	}
 	return 0;
+}
+
+int Export_Lua_Game::LuaFn_Game_GetSendItemInfo(LuaState * ls)
+{
+	EffectSp * _peffsp = &(*(EffectSp::effsp));
+	ls->PushInteger(_peffsp->ID);
+	ls->PushNumber(_peffsp->x);
+	ls->PushNumber(_peffsp->y);
+	return 3;
 }
 
 #endif

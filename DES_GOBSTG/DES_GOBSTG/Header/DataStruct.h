@@ -184,6 +184,8 @@ struct playerData
 	float usetexh;
 	float graze_r;
 	float chargespeed;
+	float exsendparab;
+	float exsendparaa;
 	WORD bomblast;
 	BYTE shotdelay;
 	BYTE rechargedelay;

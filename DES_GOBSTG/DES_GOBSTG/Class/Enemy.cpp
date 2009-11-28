@@ -1006,7 +1006,7 @@ void Enemy::action()
 			float blastpower;
 			GetBlastInfo(&blastmaxtime, &blastr, &blastpower);
 			EventZone::Build(EVENTZONE_TYPE_ERASESENDBULLET|EVENTZONE_TYPE_ENEMYGHOSTDAMAGE, playerindex, x, y, blastmaxtime, blastr, blastpower, EVENTZONE_EVENT_NULL);
-			Player::p[playerindex].DoEnemyCollapse();
+			Player::p[playerindex].DoEnemyCollapse(x, y);
 		}
 		else if(timer == 32)
 		{

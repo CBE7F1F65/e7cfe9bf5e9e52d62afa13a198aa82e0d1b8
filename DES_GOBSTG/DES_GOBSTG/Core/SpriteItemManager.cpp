@@ -183,6 +183,17 @@ bool SpriteItemManager::CreateSprite(int index, hgeSprite ** sprite)
 	return false;
 }
 
+bool SpriteItemManager::ChangeSprite(int index, hgeSprite * sprite)
+{
+	if (!sprite)
+	{
+		return false;
+	}
+	sprite->SetTexture(tex[res.spritedata[index].tex]);
+	sprite->SetTextureRect(res.spritedata[index].tex_x, res.spritedata[index].tex_y, res.spritedata[index].tex_w, res.spritedata[index].tex_h);
+	return true;
+}
+
 hgeSprite * SpriteItemManager::CreateSpriteByName(const char * spritename)
 {
 	int index = GetIndexByName(spritename);

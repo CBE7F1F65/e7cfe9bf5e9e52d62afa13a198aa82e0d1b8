@@ -79,6 +79,16 @@ int Export_Lua_HDSS::LuaFn_HDSS_Call(LuaState * ls)
 		switch (nowval & SCRKWMASK_CLASS)
 		{
 			/************************************************************************/
+			/* ATTACKOBJECT                                                         */
+			/************************************************************************/
+		case SCRKW_CLASS_ATTACKOBJECT:
+			switch (nowval)
+			{
+			case SCR_BUBUILD:
+				return _HDSSCallGet::Call_BUBUILD(ls);
+			}
+			break;
+			/************************************************************************/
 			/* ENEMY                                                                */
 			/************************************************************************/
 		case SCRKW_CLASS_ENEMY:
@@ -88,6 +98,16 @@ int Export_Lua_HDSS::LuaFn_HDSS_Call(LuaState * ls)
 				return _HDSSCallGet::Call_ENBUILD(ls);
 			case SCR_ENACTIONSET:
 				return _HDSSCallGet::Call_ENACTIONSET(ls);
+			}
+			break;
+			/************************************************************************/
+			/* MATH                                                                 */
+			/************************************************************************/
+		case SCRKW_CLASS_MATH:
+			switch (nowval)
+			{
+			case SCR_RAMA:
+				return _HDSSCallGet::Call_RAMA(ls);
 			}
 			break;
 			/************************************************************************/

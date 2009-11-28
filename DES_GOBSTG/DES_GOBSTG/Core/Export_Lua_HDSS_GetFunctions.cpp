@@ -37,6 +37,17 @@ int _HDSSCallGet::Get_Du(LuaState * ls)
 	return 0;
 }
 
+int _HDSSCallGet::Get_RANK(LuaState * ls)
+{
+	_ENTERGET_HDSS_LUA;
+	if (true)
+	{
+		_PI_HDSS_LUA(Player::rank);
+		return 1;
+	}
+	return 0;
+}
+
 int _HDSSCallGet::Get_CHARA(LuaState * ls)
 {
 	_ENTERGET_HDSS_LUA;
@@ -76,6 +87,30 @@ int _HDSSCallGet::Get_SELCOMPLETE(LuaState * ls)
 			}
 			return 2;
 		}
+	}
+	return 0;
+}
+
+int _HDSSCallGet::Get_PX(LuaState * ls)
+{
+	_ENTERGET_HDSS_LUA;
+	if (argscount > 1)
+	{
+		int _index = _INEXT_HDSS_LUAFUNC;
+		_PF_HDSS_LUA(Player::p[_index].x);
+		return 1;
+	}
+	return 0;
+}
+
+int _HDSSCallGet::Get_PY(LuaState * ls)
+{
+	_ENTERGET_HDSS_LUA;
+	if (argscount > 1)
+	{
+		int _index = _INEXT_HDSS_LUAFUNC;
+		_PF_HDSS_LUA(Player::p[_index].y);
+		return 1;
 	}
 	return 0;
 }

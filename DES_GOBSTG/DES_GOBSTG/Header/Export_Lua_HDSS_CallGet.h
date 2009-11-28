@@ -30,8 +30,12 @@ public:
 
 	static int Call_SETPINITLIFE(LuaState * ls);
 
+	static int Call_BUBUILD(LuaState * ls);
+
 	static int Call_ENBUILD(LuaState * ls);
 	static int Call_ENACTIONSET(LuaState * ls);
+
+	static int Call_RAMA(LuaState * ls);
 
 	static int Call_BGVALUE(LuaState * ls);
 	static int Call_BGVALEX(LuaState * ls);
@@ -47,8 +51,11 @@ public:
 public:
 	static int Get_D(LuaState * ls);
 	static int Get_Du(LuaState * ls);
+	static int Get_RANK(LuaState * ls);
 	static int Get_CHARA(LuaState * ls);
 
+	static int Get_PX(LuaState * ls);
+	static int Get_PY(LuaState * ls);
 	static int Get_PLIFE(LuaState * ls);
 
 	static int Get_SELCOMPLETE(LuaState * ls);

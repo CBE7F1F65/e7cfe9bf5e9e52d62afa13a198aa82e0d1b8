@@ -10,6 +10,8 @@
 
 VectorList<EffectSp> EffectSp::effsp;
 
+int EffectSp::senditemsiid[EFFSPSEND_COLORMAX][EFFSPSEND_ANIMATIONMAX];
+
 EffectSp::EffectSp()
 {
 	sprite = NULL;
@@ -25,6 +27,22 @@ EffectSp::~EffectSp()
 void EffectSp::Init()
 {
 	effsp.init(EFFSPMAX);
+	int senditemsiidbegin = SpriteItemManager::GetIndexByName(SI_SENDITEM_00);
+	for (int i=0; i<EFFSPSEND_COLORMAX; i++)
+	{
+		for (int j=0; j<EFFSPSEND_ANIMATIONMAX; j++)
+		{
+			senditemsiid[i][j] = senditemsiidbegin + i*EFFSPSEND_ANIMATIONMAX + j;
+		}
+	}
+}
+
+void EffectSp::blendSet(int blend)
+{
+	if (sprite)
+	{
+		sprite->SetBlendMode(blend);
+	}
 }
 
 void EffectSp::ClearItem()
@@ -83,7 +101,7 @@ void EffectSp::RenderAll()
 
 void EffectSp::EffectSpOff(int _setID, int _ID)
 {
-	if (_setID < EFFSPSET_FREEBEGIN || _setID >= EFFSPSET_FREEUNTIL)
+	if (_setID < EFFSPSET_LISTBEGIN || _setID >= EFFSPSET_LISTUNTIL)
 	{
 		return;
 	}
@@ -134,13 +152,15 @@ void EffectSp::chaseSet(BYTE _chaseflag, float _aimx, float _aimy, int _chasetim
 	aimy = _aimy;
 }
 
-void EffectSp::Build(int setID, WORD ID, int siid, float x, float y, int headangle/* =0 */, float hscale/* =1.0f */, float vscale/* =0.0f */)
+EffectSp * EffectSp::Build(int setID, WORD ID, int siid, float x, float y, int headangle/* =0 */, float hscale/* =1.0f */, float vscale/* =0.0f */)
 {
 	EffectSp _effsp;
-	effsp.push_back(_effsp)->valueSet(setID, ID, siid, x, y, headangle, hscale, vscale);
+	EffectSp * _peffsp = effsp.push_back(_effsp);
+	_peffsp->valueSet(setID, ID, siid, x, y, headangle, hscale, vscale);
+	return _peffsp;
 }
 
-void EffectSp::valueSet(int _setID, WORD _ID, int siid, float _x, float _y, int _headangle/*=0*/, float _hscale/*=1.0f*/, float _vscale/*=0.0f*/)
+void EffectSp::valueSet(int _setID, WORD _ID, int _siid, float _x, float _y, int _headangle/*=0*/, float _hscale/*=1.0f*/, float _vscale/*=0.0f*/)
 {
 	ID			= _ID;
 	setID		= _setID;
@@ -149,6 +169,7 @@ void EffectSp::valueSet(int _setID, WORD _ID, int siid, float _x, float _y, int 
 	headangle	= _headangle;
 	hscale = _hscale;
 	vscale = _vscale;
+	siid = _siid;
 
 	chaseflag = EFFSP_CHASE_NULL;
 	chasetimer = 0;
@@ -157,6 +178,8 @@ void EffectSp::valueSet(int _setID, WORD _ID, int siid, float _x, float _y, int 
 	timer = 0;
 	exist = true;
 	headangleadd = 0;
+	animation = 0;
+	animationinterval = 0;
 
 	if(sprite)
 	{
@@ -167,6 +190,12 @@ void EffectSp::valueSet(int _setID, WORD _ID, int siid, float _x, float _y, int 
 	colorSet(0xffffffff);
 
 	sprite = SpriteItemManager::CreateSprite(siid);
+}
+
+void EffectSp::animationSet(BYTE _animation, BYTE _animationinterval)
+{
+	animation = _animation;
+	animationinterval = _animationinterval;
 }
 
 void EffectSp::colorSet(DWORD color, int blend)
@@ -209,6 +238,14 @@ void EffectSp::action()
 		break;
 	}
 
+	if (animation > 1)
+	{
+		if (timer % animationinterval == 0)
+		{
+			SpriteItemManager::ChangeSprite(siid + (timer/animationinterval)%animation, sprite);
+		}
+	}
+
 	if (chaseflag != EFFSP_CHASE_NULL)
 	{
 		if (chasetimer > 0)
@@ -219,9 +256,13 @@ void EffectSp::action()
 		{
 			x = aimx;
 			y = aimy;
-			if (setID >= EFFSPSET_FREEBEGIN && setID < EFFSPSET_FREEUNTIL)
+			if (setID >= EFFSPSET_LISTBEGIN && setID < EFFSPSET_LISTUNTIL)
 			{
 				scr.Execute(SCR_EVENT, SCR_EVENT_EFFSPCHASE, setID);
+				if (setID >= EFFSPSET_SYSTEMBEGIN && setID < EFFSPSET_SYSTEMUNTIL)
+				{
+					exist = false;
+				}
 			}
 		}
 	}

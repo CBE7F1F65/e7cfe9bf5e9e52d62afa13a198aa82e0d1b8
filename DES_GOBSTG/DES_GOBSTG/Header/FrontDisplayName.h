@@ -452,23 +452,8 @@
 #define	SI_NAMECARD_32	"SI_NameCard_32"
 */
 #define SI_PLAYERNAMECARD_01	"SI_PlayerNameCard_01"
+#define SI_SENDITEM_00		"SI_SendItem_00"
 /*
-#define	SI_BLURROUND_W01	"SI_BlurRound_W01"
-#define	SI_BLURROUND_W02	"SI_BlurRound_W02"
-#define	SI_BLURROUND_W03	"SI_BlurRound_W03"
-#define	SI_BLURROUND_W04	"SI_BlurRound_W04"
-#define	SI_BLURROUND_R01	"SI_BlurRound_R01"
-#define	SI_BLURROUND_R02	"SI_BlurRound_R02"
-#define	SI_BLURROUND_R03	"SI_BlurRound_R03"
-#define	SI_BLURROUND_R04	"SI_BlurRound_R04"
-#define	SI_BLURROUND_G01	"SI_BlurRound_G01"
-#define	SI_BLURROUND_G02	"SI_BlurRound_G02"
-#define	SI_BLURROUND_G03	"SI_BlurRound_G03"
-#define	SI_BLURROUND_G04	"SI_BlurRound_G04"
-#define	SI_BLURROUND_B01	"SI_BlurRound_B01"
-#define	SI_BLURROUND_B02	"SI_BlurRound_B02"
-#define	SI_BLURROUND_B03	"SI_BlurRound_B03"
-#define	SI_BLURROUND_B04	"SI_BlurRound_B04"
 */
 #define	SI_PLAYER_POINT	"SI_Player_Point"
 /*#define	SI_PLAYER_BOMBITEM	"SI_Player_BombItem"*/
