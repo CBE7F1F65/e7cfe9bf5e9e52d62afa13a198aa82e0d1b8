@@ -18,7 +18,7 @@ Enemy Enemy::en[ENEMYMAX];
 
 HTEXTURE * Enemy::tex = NULL;
 WORD Enemy::index;
-BYTE Enemy::bossflag[ENEMY_BOSSMAX];
+BYTE Enemy::actionflag[ENEMY_BOSSMAX];
 BYTE Enemy::spelluptimer[ENEMY_BOSSMAX];
 BYTE Enemy::storetimer[ENEMY_BOSSMAX];
 
@@ -42,7 +42,7 @@ Enemy::~Enemy()
 void Enemy::Init(HTEXTURE * _tex)
 {
 	tex = _tex;
-	index = ENEMY_INDEXSTART;
+	index = 0;
 }
 
 Enemy * Enemy::GetNowEnemy()
@@ -62,19 +62,18 @@ bool Enemy::Build(WORD eID, BYTE playerindex, BYTE _index, float x, float y, int
 	{
 		if(type < ENEMY_BOSSTYPEBEGIN)
 		{
-			for(int j=0;j<ENEMYMAX-ENEMY_INDEXSTART;j++)
+			for(int j=0;j<ENEMYMAX;j++)
 			{
 				index++;
-				if(index == ENEMYMAX || index < ENEMY_INDEXSTART)
+				if(index == ENEMYMAX)
 				{
-					index = ENEMY_INDEXSTART;
+					index = 0;
 				}
 				if (en[j].getPlayerIndex() == playerindex)
 				{
 					if(!en[index].exist)
 					{
 						rv = true;
-	//					i = index;
 						break;
 					}
 				}
@@ -100,7 +99,7 @@ void Enemy::ClearAll()
 	{
 		en[i].Clear();
 	}
-	index = ENEMY_INDEXSTART;
+	index = 0;
 }
 
 void Enemy::Action(bool notinstop)
@@ -209,12 +208,9 @@ void Enemy::valueSet(WORD _eID, WORD _ID, float _x, float _y, int _angle, float 
 	diffuse	=	0xffffff;
 	faceindex = res.enemydata[type].faceIndex;
 
-	if (type >= ENEMY_BOSSTYPEBEGIN)
-	{
-		bossflag[ID]		=	0;
-		spelluptimer[ID]	=	0;
-		storetimer[ID]		=	0;
-	}
+	actionflag[ID]		=	0;
+	spelluptimer[ID]	=	0;
+	storetimer[ID]		=	0;
 
 	eID		=	0;
 	tarID	=	0xff;
@@ -595,22 +591,14 @@ void Enemy::updateFrameAsMove()
 	}
 }
 
-void Enemy::bossAction()
+void Enemy::updateAction()
 {
 	enemyData * pdata = &(res.enemydata[type]);
-	if(timer < ENEMY_BOSSINFITIMER)
-		defrate = 1.0f;
-	else if(timer == ENEMY_BOSSINFITIMER)
-		defrate = 0;
-	if (bossinfo.spellflag & BISF_WAIT)
-	{
-		defrate = 1.0f;
-	}
-	if(!bossflag[ID])
+	if(!actionflag[ID])
 	{
 		updateFrameAsMove();
 	}
-	if(bossflag[ID] & BOSS_ATTACK)
+	if(actionflag[ID] & ENEMYACTION_ATTACK)
 	{
 		if (!pdata->attackFrame)
 		{
@@ -620,9 +608,9 @@ void Enemy::bossAction()
 		{
 			updateFrame(ENEMY_FRAME_ATTACKPRE);
 		}
-		bossflag[ID] &= ~BOSS_ATTACK;
+		actionflag[ID] &= ~ENEMYACTION_ATTACK;
 	}
-	if(bossflag[ID] & BOSS_STORE)
+	if(actionflag[ID] & ENEMYACTION_STORE)
 	{
 		if (!pdata->storeFrame)
 		{
@@ -636,42 +624,12 @@ void Enemy::bossAction()
 
 		if(storetimer[ID] == 1)
 		{
-			SE::push(SE_BOSS_POWER_1, x);
-			FrontDisplay::fdisp.infobody.effBossStore.Stop(true);
-			FrontDisplay::fdisp.infobody.effBossStore.Fire();
-			FrontDisplay::fdisp.infobody.effBossStore.MoveTo(x, y, 0, true);
 		}
 		else if(storetimer[ID] == 120)
 		{
 			storetimer[ID] = 0;
-			bossflag[ID] &= ~BOSS_STORE;
+			actionflag[ID] &= ~ENEMYACTION_STORE;
 		}
-	}
-	else
-	{
-		FrontDisplay::fdisp.infobody.effBossStore.Stop();
-	}
-	FrontDisplay::fdisp.infobody.effBossStore.MoveTo(x, y);
-	if(bossflag[ID] & BOSS_SPELLUP)
-	{
-		if (!pdata->attackFrame)
-		{
-			updateFrameAsMove();
-		}
-		else
-		{
-			updateFrame(ENEMY_FRAME_ATTACKPRE);
-		}
-		if(spelluptimer[ID] == 0)
-		{
-			SE::push(SE_BOSS_POWER_2, x);
-		}
-		else if(spelluptimer[ID] == 180)
-		{
-			bossflag[ID] &= ~BOSS_SPELLUP;
-			spelluptimer[ID] = 0;
-		}
-		spelluptimer[ID]++;
 	}
 }
 
@@ -851,9 +809,6 @@ void Enemy::DoShot(BYTE playerindex)
 	if(!damage && life < maxlife / 5 && timer%8<4)
 	{
 		SE::push(SE_ENEMY_DAMAGE_1, x);
-
-		if(BossInfo::flag && type >= ENEMY_BOSSTYPEBEGIN)
-			FrontDisplay::fdisp.info.enemyx->SetColor(0xffffffff);
 	}
 
 	if(damage && !damagetimer)
@@ -871,9 +826,6 @@ void Enemy::DoShot(BYTE playerindex)
 			alpha = 0x7f;
 			diffuse = 0xb40000;
 			effShot.Fire();
-
-			if(BossInfo::flag && type >= ENEMY_BOSSTYPEBEGIN)
-				FrontDisplay::fdisp.info.enemyx->SetColor(0xc0ffffff);
 
 			if(life < maxlife / 5)
 			{
@@ -927,7 +879,7 @@ void Enemy::action()
 
 	if(!fadeout)
 	{
-		if((Chat::chatitem.IsChatting() || (BossInfo::flag >= BOSSINFO_COLLAPSE)) && type < ENEMY_BOSSTYPEBEGIN)
+		if((Chat::chatitem.IsChatting() || (BossInfo::flag >= BOSSINFO_COLLAPSE)))
 		{
 			life = 0;
 			fadeout = true;
@@ -942,26 +894,8 @@ void Enemy::action()
 			index = tindex;
 		}
 		matchAction();
-
 		updateMove();
-
-		if(type >= ENEMY_BOSSTYPEBEGIN)
-			bossAction();
-		else
-		{
-			if(lastx - x > ENEMY_ENEMYMOVELIMIT)
-			{
-				updateFrame(ENEMY_FRAME_LEFTPRE);
-			}
-			else if(x - lastx > ENEMY_ENEMYMOVELIMIT)
-			{
-				updateFrame(ENEMY_FRAME_RIGHTPRE);
-			}
-			else
-			{
-				updateFrame(ENEMY_FRAME_STAND);
-			}
-		}
+		updateAction();
 
 		lastx = x;
 
@@ -1005,7 +939,7 @@ void Enemy::action()
 			float blastr;
 			float blastpower;
 			GetBlastInfo(&blastmaxtime, &blastr, &blastpower);
-			EventZone::Build(EVENTZONE_TYPE_ERASESENDBULLET|EVENTZONE_TYPE_ENEMYGHOSTDAMAGE, playerindex, x, y, blastmaxtime, blastr, blastpower, EVENTZONE_EVENT_NULL);
+			EventZone::Build(EVENTZONE_TYPE_SENDBULLET|EVENTZONE_TYPE_ENEMYGHOSTDAMAGE, playerindex, x, y, blastmaxtime, blastr, blastpower, EVENTZONE_EVENT_NULL);
 			Player::p[playerindex].DoEnemyCollapse(x, y);
 		}
 		else if(timer == 32)

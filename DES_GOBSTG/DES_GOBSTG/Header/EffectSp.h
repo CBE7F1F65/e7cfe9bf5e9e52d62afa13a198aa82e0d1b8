@@ -10,10 +10,15 @@
 #define EFFSPSET_SYSTEMBEGIN	EFFSPSET_FREEUNTIL
 #define EFFSPSET_SYSTEMUNTIL	EFFSPSET_LISTUNTIL
 
-#define EFFSPSET_SYSTEM_SENDREDBULLET	0x80
-#define EFFSPSET_SYSTEM_SENDBLUEBULLET	0x81
-#define EFFSPSET_SYSTEM_SENDEXBULLET	0x82
-#define EFFSPSET_SYSTEM_SENDITEMBULLET	0x83
+#define EFFSPSET_SYSTEM_SENDREDBULLET_0		0x80
+#define EFFSPSET_SYSTEM_SENDBLUEBULLET_0	0x81
+#define EFFSPSET_SYSTEM_SENDREDBULLET_1		0x82
+#define EFFSPSET_SYSTEM_SENDBLUEBULLET_1	0x83
+#define EFFSPSET_SYSTEM_SENDREDBULLET_2		0x84
+#define EFFSPSET_SYSTEM_SENDBLUEBULLET_2	0x85
+#define EFFSPSET_SYSTEM_SENDREDBIGBULLET	0x86
+#define EFFSPSET_SYSTEM_SENDBLUEBIGBULLET	0x87
+#define EFFSPSET_SYSTEM_SENDITEMBULLET	0x88
 #define EFFSPSET_SYSTEM_SENDGREENGHOST	0x90
 #define EFFSPSET_SYSTEM_SENDYELLOWGHOST	0x91
 #define EFFSPSET_SYSTEM_SENDREDGHOST	0x92
@@ -53,6 +58,7 @@ public:
 
 	static void Init();
 	static void ClearItem();
+	static void Release();
 	static EffectSp * Build(int setID, WORD ID, int siid, float x, float y, int headangle=0, float hscale=1.0f, float vscale=0.0f);
 	static void Action();
 	static void RenderAll();
@@ -62,18 +68,14 @@ public:
 	void chaseSet(BYTE chaseflag, float aimx, float aimy, int chasetimer=-1, BYTE chaseaim=0xff);
 	void colorSet(DWORD color, int blend=BLEND_DEFAULT);
 	void animationSet(BYTE animation, BYTE animationinterval=EFFSP_DEFAULTANIMATIONINTERVAL);
-	void blendSet(int blend);
 
 	void EffectSpOff(int setID, int ID=-1);
 
 	void action();
 	void Render();
 
-	float GetWidth();
-	float GetHeight();
-
 public:
-	hgeSprite * sprite;
+//	hgeSprite * sprite;
 
 	WORD setID;
 
@@ -82,12 +84,15 @@ public:
 	float aimx;
 	float aimy;
 	int siid;
+	int siidnow;
+	int blend;
 	BYTE animation;
 	BYTE chaseflag;
 	BYTE chaseaim;
 	BYTE animationinterval;
 
 	static int senditemsiid[EFFSPSEND_COLORMAX][EFFSPSEND_ANIMATIONMAX];
+	static hgeSprite * sprite;
 
 	static VectorList<EffectSp> effsp;
 };

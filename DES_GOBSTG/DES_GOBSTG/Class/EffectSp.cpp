@@ -9,23 +9,21 @@
 #define EFFSPMAX	(BULLETMAX * M_PL_MATCHMAXPLAYER)
 
 VectorList<EffectSp> EffectSp::effsp;
+hgeSprite * EffectSp::sprite = NULL;
 
 int EffectSp::senditemsiid[EFFSPSEND_COLORMAX][EFFSPSEND_ANIMATIONMAX];
 
 EffectSp::EffectSp()
 {
-	sprite = NULL;
 }
 
 EffectSp::~EffectSp()
 {
-	if(sprite)
-		delete sprite;
-	sprite = NULL;
 }
 
 void EffectSp::Init()
 {
+	Release();
 	effsp.init(EFFSPMAX);
 	int senditemsiidbegin = SpriteItemManager::GetIndexByName(SI_SENDITEM_00);
 	for (int i=0; i<EFFSPSEND_COLORMAX; i++)
@@ -35,14 +33,16 @@ void EffectSp::Init()
 			senditemsiid[i][j] = senditemsiidbegin + i*EFFSPSEND_ANIMATIONMAX + j;
 		}
 	}
+	sprite = SpriteItemManager::CreateSprite(0);
 }
 
-void EffectSp::blendSet(int blend)
+void EffectSp::Release()
 {
 	if (sprite)
 	{
-		sprite->SetBlendMode(blend);
+		SpriteItemManager::FreeSprite(&sprite);
 	}
+	ClearItem();
 }
 
 void EffectSp::ClearItem()
@@ -52,7 +52,9 @@ void EffectSp::ClearItem()
 
 void EffectSp::Render()
 {
+	SpriteItemManager::ChangeSprite(siidnow, sprite);
 	sprite->SetColor((alpha<<24)|diffuse);
+	sprite->SetBlendMode(blend);
 	sprite->RenderEx(x, y, ARC(angle+headangle), hscale, vscale);
 }
 
@@ -170,6 +172,7 @@ void EffectSp::valueSet(int _setID, WORD _ID, int _siid, float _x, float _y, int
 	hscale = _hscale;
 	vscale = _vscale;
 	siid = _siid;
+	siidnow = _siid;
 
 	chaseflag = EFFSP_CHASE_NULL;
 	chasetimer = 0;
@@ -181,15 +184,7 @@ void EffectSp::valueSet(int _setID, WORD _ID, int _siid, float _x, float _y, int
 	animation = 0;
 	animationinterval = 0;
 
-	if(sprite)
-	{
-		SpriteItemManager::FreeSprite(&sprite);
-	}
-	sprite = NULL;
-
 	colorSet(0xffffffff);
-
-	sprite = SpriteItemManager::CreateSprite(siid);
 }
 
 void EffectSp::animationSet(BYTE _animation, BYTE _animationinterval)
@@ -198,24 +193,11 @@ void EffectSp::animationSet(BYTE _animation, BYTE _animationinterval)
 	animationinterval = _animationinterval;
 }
 
-void EffectSp::colorSet(DWORD color, int blend)
+void EffectSp::colorSet(DWORD color, int _blend)
 {
 	alpha = GETA(color);
 	diffuse = color & 0xffffff;
-	if (sprite)
-	{
-		sprite->SetBlendMode(blend);
-	}
-}
-
-float EffectSp::GetWidth()
-{
-	return sprite->width;
-}
-
-float EffectSp::GetHeight()
-{
-	return sprite->height;
+	blend = _blend;
 }
 
 void EffectSp::action()
@@ -242,7 +224,7 @@ void EffectSp::action()
 	{
 		if (timer % animationinterval == 0)
 		{
-			SpriteItemManager::ChangeSprite(siid + (timer/animationinterval)%animation, sprite);
+			siidnow = siid + (timer/animationinterval)%animation;
 		}
 	}
 

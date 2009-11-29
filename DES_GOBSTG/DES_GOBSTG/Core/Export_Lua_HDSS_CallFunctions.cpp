@@ -390,9 +390,9 @@ int _HDSSCallGet::Call_ENBUILD(LuaState * ls)
 					Enemy::GetNowEnemy()->setTake(_take);
 				}
 			}
+			_PI_HDSS_LUA(Enemy::index);
+			return 1;
 		}
-		ls->PushBoolean(bret);
-		return 1;
 	}
 	return 0;
 }
@@ -513,8 +513,8 @@ int _HDSSCallGet::Call_BUBUILD(LuaState * ls)
 			}
 		}
 
-		bool bret = Bullet::Build(_playerindex, _x, _y, _absolute, _angle, _speed, _type, _color, _fadeintime, _avoid, _tarID);
-		ls->PushBoolean(bret);
+		int iret = Bullet::Build(_playerindex, _x, _y, _absolute, _angle, _speed, _type, _color, _fadeintime, _avoid, _tarID);
+		_PI_HDSS_LUA(iret);
 		return 1;
 	}
 	return 0;

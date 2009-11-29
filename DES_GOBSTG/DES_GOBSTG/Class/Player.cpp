@@ -23,7 +23,13 @@ float Player::lostStack = 0;
 bool Player::able = false;
 
 //
-BYTE Player::rank = 0;
+
+#define _GAMERANK_MIN	8
+#define _GAMERANK_MAX	22
+#define _GAMERANK_ADDINTERVAL	9000
+#define _GAMERANK_STAGEOVERADD	-8
+
+BYTE Player::rank = _GAMERANK_MIN;
 int Player::lilycount = 0;
 
 #define _PL_HITONSCOREADD	40
@@ -520,6 +526,14 @@ void Player::Action(bool * notinstop)
 			p[i].action();
 		}
 	}
+	if (time % _GAMERANK_ADDINTERVAL == 0)
+	{
+		rank++;
+		if (rank > _GAMERANK_MAX)
+		{
+			rank = _GAMERANK_MAX;
+		}
+	}
 }
 
 void Player::SetChara(WORD id, WORD id_sub_1/* =0xffff */, WORD id_sub_2/* =0xffff */)
@@ -549,7 +563,9 @@ void Player::valueSet(BYTE _playerindex, BYTE round)
 	}
 
 	if(!sprite)
+	{
 		sprite = new hgeSprite(mp.tex[res.playerdata[ID].tex], 0, 0, 0, 0);
+	}
 	setFrame(PLAYER_FRAME_STAND);
 
 	// TODO:
@@ -1118,7 +1134,7 @@ bool Player::Collapse()
 	{
 		for (int i=0; i<2; i++)
 		{
-			EventZone::Build(EVENTZONE_TYPE_ERASEBULLET|EVENTZONE_TYPE_ENEMYGHOSTDAMAGE, i, p[i].x, p[i].y, 64, EVENTZONE_OVERZONE, 1000, EVENTZONE_EVENT_NULL, 16);
+			EventZone::Build(EVENTZONE_TYPE_BULLETFADEOUT|EVENTZONE_TYPE_ENEMYGHOSTDAMAGE, i, p[i].x, p[i].y, 64, EVENTZONE_OVERZONE, 1000, EVENTZONE_EVENT_NULL, 16);
 		}
 //		Bullet::IzeBuild(playerindex, BULLETIZE_FADEOUT, x, y, 64);
 
@@ -1258,7 +1274,9 @@ void Player::DoEnemyCollapse(float x, float y)
 	{
 		addbulletpoint = 60;
 	}
-	AddBulletPoint(addbulletpoint, x, y);
+	float _x = x + hge->Random_Float(-4, 4);
+	float _y = y + hge->Random_Float(-4, 4);
+	AddBulletPoint(addbulletpoint, _x, _y);
 	int addspellpoint;
 	if (nComboHitOri == 1)
 	{
@@ -1310,10 +1328,10 @@ void Player::AddBulletPoint(int bulletpoint, float x, float y)
 	if (nBulletPoint >= 120-rank*4)
 	{
 		AddBulletPoint(-(120-rank*4), x, y);
-		BYTE setID = EFFSPSET_SYSTEM_SENDBLUEBULLET;
-		if (hge->Random_Int(1, 3) == 1)
+		BYTE setID = EFFSPSET_SYSTEM_SENDBLUEBULLET_0;
+		if (hge->Random_Int(0, 2) == 0)
 		{
-			setID = EFFSPSET_SYSTEM_SENDREDBULLET;
+			setID = EFFSPSET_SYSTEM_SENDREDBULLET_0;
 		}
 		Bullet::SendBullet(!playerindex, x, y, setID);
 	}
@@ -1556,7 +1574,7 @@ bool Player::CostLife()
 			nLife = 1;
 		}
 		SetInfi(PLAYERINFI_COSTLIFE, 120);
-		EventZone::Build(EVENTZONE_TYPE_ERASEBULLET|EVENTZONE_TYPE_ENEMYGHOSTDAMAGE, playerindex, x, y, 120, 0, 10, EVENTZONE_EVENT_NULL, 15.6);
+		EventZone::Build(EVENTZONE_TYPE_BULLETFADEOUT|EVENTZONE_TYPE_ENEMYGHOSTDAMAGE, playerindex, x, y, 120, 0, 10, EVENTZONE_EVENT_NULL, 15.6);
 		if (nLife == 1)
 		{
 			AddCharge(0, PLAYER_CHARGEMAX);

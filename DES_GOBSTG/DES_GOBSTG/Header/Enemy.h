@@ -8,7 +8,6 @@
 
 #define ENEMYMAX			0x80
 
-#define ENEMY_INDEXSTART	4
 #define ENEMY_MAINBOSSINDEX	0
 
 #define ENID_LEFTIDBEGIN	0x0
@@ -45,12 +44,8 @@
 
 #define ENEMY_BOSSX_FADERANGE	32
 
-#define	BOSS_ATTACK		0x1
-#define BOSS_SPELLUP	0x2
-
-#define	BOSS_STORE		0x11
-#define BOSS_BREAK		0x12
-#define BOSS_COLLAPSE	0x13
+#define	ENEMYACTION_ATTACK		0x01
+#define	ENEMYACTION_STORE		0x02
 
 #define ENAC_NONE			0x00
 
@@ -103,7 +98,7 @@ public:
 	virtual void action();
 	void actionInStop();
 	void matchAction();
-	void bossAction();
+	void updateAction();
 
 	void GetBlastInfo(BYTE * maxtime=NULL, float * r=NULL, float * power=NULL);
 
@@ -149,7 +144,7 @@ public:
 	BYTE	frameindex[ENEMY_FRAME_STATEMAX];
 
 	static HTEXTURE * tex;
-	static BYTE bossflag[ENEMY_BOSSMAX];
+	static BYTE actionflag[ENEMY_BOSSMAX];
 	static BYTE spelluptimer[ENEMY_BOSSMAX];
 	static BYTE storetimer[ENEMY_BOSSMAX];
 	static WORD index;

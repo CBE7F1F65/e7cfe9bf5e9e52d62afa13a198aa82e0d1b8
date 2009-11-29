@@ -3,7 +3,6 @@
 
 #include "BObject.h"
 #include "BulletListActionConst.h"
-#include "EffectSp.h"
 
 #define BULLETMAX			0x1000
 #define BULLETCOLORMAX		0x10
@@ -85,7 +84,7 @@ public:
 
 	bool valueSet(WORD ID, float x, float y, bool absolute, int angle, float speed, BYTE type, BYTE color, int fadeinTime, float avoid = 0, BYTE tarID = 0xff);
 
-	static bool Build(BYTE playerindex, float x, float y, bool absolute, int angle, float speed, BYTE type, BYTE color, int fadeinTime=BULLET_FADEINTIME, float avoid=0, BYTE tarID=0xff);
+	static int Build(BYTE playerindex, float x, float y, bool absolute, int angle, float speed, BYTE type, BYTE color, int fadeinTime=BULLET_FADEINTIME, float avoid=0, BYTE tarID=0xff);
 	static void BuildCircle(BYTE playerindex, int num, int baseangle, float baser, float x, float y, float speed, BYTE type, BYTE color, int fadeinTime, float avoid);
 	static void BuildLine(BYTE playerindex, int num, int baseangle, float space, int baseindex, float x, float y, int angle, float anglefactor, float speed, float speedfactor, BYTE type, BYTE color, int fadeinTime, float avoid);
 
@@ -93,6 +92,7 @@ public:
 	void matchFadeOutColorType();
 
 	static void SendBullet(BYTE playerindex, float x, float y, BYTE setID);
+	void AddSendInfo(BYTE sendsetID);
 
 	bool passedEvent(BYTE eventID);
 	void passEvent(BYTE eventID);
@@ -123,6 +123,9 @@ public:
 	BYTE	toafter;
 	BYTE	typechangetimer;
 	BYTE	eventID[BULLET_EVENTMAX];
+
+	BYTE	sendtime;
+	BYTE	sendsetID;
 
 	static int _actionList[BULLETACTIONMAX];
 

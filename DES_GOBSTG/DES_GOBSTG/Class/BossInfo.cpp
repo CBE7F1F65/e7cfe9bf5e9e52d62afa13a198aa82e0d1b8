@@ -79,7 +79,7 @@ void BossInfo::bossUp()
 	if(!(spellflag & BISF_NOTSPELL))
 	{
 		BGLayer::ubg[UBGID_BGMASK].SetFlag(BG_WHITEFLASH, BGMT_FLASH);
-		Enemy::bossflag[ENEMY_MAINBOSSINDEX] = BOSS_SPELLUP;
+//		Enemy::actionflag[ENEMY_MAINBOSSINDEX] = BOSS_SPELLUP;
 		fsspellname.SignUp(spellname, FrontDisplay::fdisp.info.smallfont);
 //		get = DataConnector::nGet();
 //		meet = DataConnector::nMeet() - 1;

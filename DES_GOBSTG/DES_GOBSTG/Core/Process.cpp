@@ -142,6 +142,7 @@ void Process::Release()
 	Fontsys::Release();
 	BossInfo::Release();
 	Chat::chatitem.Release();
+	EffectSp::Release();
 	FrontDisplay::fdisp.Release();
 	SpriteItemManager::Release();
 

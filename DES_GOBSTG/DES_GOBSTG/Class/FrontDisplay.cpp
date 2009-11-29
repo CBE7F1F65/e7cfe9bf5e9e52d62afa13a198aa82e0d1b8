@@ -610,8 +610,8 @@ void FrontDisplay::RenderBossInfo()
 			if(bSpell)
 			{
 				float yt;
-				if(Enemy::bossflag[ENEMY_MAINBOSSINDEX] & BOSS_SPELLUP)
-					info.cutin->Render(312, Enemy::spelluptimer[ENEMY_MAINBOSSINDEX]*2.4f);
+//				if(Enemy::actionflag[ENEMY_MAINBOSSINDEX] & BOSS_SPELLUP)
+//					info.cutin->Render(312, Enemy::spelluptimer[ENEMY_MAINBOSSINDEX]*2.4f);
 				if(timer < 30)
 				{
 					yt = 225;
@@ -630,8 +630,6 @@ void FrontDisplay::RenderBossInfo()
 				int tlenth = strlen(bossinfo.spellname);
 				float spellnamew = tlenth*8;
 				DWORD spellnamealpha = 0xff000000;
-				if(Player::p[0].y < 100)
-					spellnamealpha = 0x40000000;
 				bossinfo.fsspellname.SetColor(spellnamealpha+0xffffff, spellnamealpha+0xffffffff, spellnamealpha+0xff0000, spellnamealpha+0xff0000);
 				bossinfo.fsspellname.Render(400-spellnamew, yt-5);
 
