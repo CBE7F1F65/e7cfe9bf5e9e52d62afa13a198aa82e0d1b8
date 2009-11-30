@@ -15,7 +15,6 @@ VectorList<Item> Item::mi[M_PL_MATCHMAXPLAYER];
 #define ITEMMAX				0x10
 
 #define _ITEM_GETR				32
-#define _ITEM_DRAINY			PL_ITEMDRAINY
 #define _ITEM_DRAINDELAY		24
 #define _ITEM_DRAINFASTSPEED	8.8f
 #define _ITEM_DRAINSLOWSPEED	5.0f
@@ -134,15 +133,10 @@ void Item::Init()
 		mi[i].init(ITEMMAX);
 	}
 	infofont.init(ITEMINFOFONTMAX);
-	int tidx = SpriteItemManager::GetIndexByName(SI_ITEM_POWER);
+	int tidx = SpriteItemManager::GetIndexByName(SI_ITEM_GUARD);
 	for(int i=0;i<ITEMTYPEMAX;i++)
 	{
 		spItem[i] = SpriteItemManager::CreateSprite(tidx+i);
-	}
-	tidx = SpriteItemManager::GetIndexByName(SI_ITEM_POWER_OUT);
-	for(int i=0;i<ITEMTYPEMAX;i++)
-	{
-		spItem[i+ITEMTYPEMAX] = SpriteItemManager::CreateSprite(tidx+i);
 	}
 }
 
@@ -169,29 +163,6 @@ void Item::Build(BYTE playerindex, WORD type, float _x, float _y, bool _bDrained
 {
 	mi[playerindex].push_back()->valueSet(type, _x, _y, _bDrained, _angle, _speed);
 }
-/*
-void Item::ChangeItemID(BYTE playerindex, WORD oriID, WORD toID)
-{
-	DWORD nowindex = mi[playerindex].index;
-	DWORD i = 0;
-	DWORD size = mi[playerindex].size;
-	for (mi[playerindex].toBegin(); i<size; mi[playerindex].toNext(), i++)
-	{
-		if (!mi[playerindex].isValid())
-		{
-			continue;
-		}
-		if ((*mi[playerindex]).exist)
-		{
-			if ((*mi[playerindex]).ID == oriID)
-			{
-				(*mi[playerindex]).valueSet(toID, (*mi[playerindex]).x, (*mi[playerindex]).y);
-			}
-		}
-	}
-	mi[playerindex].index = nowindex;
-}
-*/
 
 void Item::Release()
 {
@@ -209,65 +180,9 @@ void Item::Release()
 
 void Item::Render()
 {
-	if(y < 0)
-	{
-		spItem[ID + ITEMTYPEMAX]->SetColor((BYTE)((int)y + 0xff)<<24 | 0xffffff);
-		spItem[ID + ITEMTYPEMAX]->Render(x, 24);
-	}
 	spItem[ID]->RenderEx(x, y, ARC(headangle));
 }
-/*
-void Item::drainAll()
-{
-	if (mi.size)
-	{
-		DWORD _index = mi.index;
 
-		DWORD i = 0;
-		DWORD size = mi.size;
-		for (mi.toBegin(); i<size; mi.toNext(), i++)
-		{
-			if (!mi.isValid())
-			{
-				continue;
-			}
-			Item * _i = &(*mi);
-			if (_i->exist)
-			{
-				_i->bDrained = true;
-			}
-		}
-		mi.index = _index;
-	}
-}
-
-void Item::undrainAll()
-{
-	if (mi.size)
-	{
-		DWORD _index = mi.index;
-
-		DWORD i = 0;
-		DWORD size = mi.size;
-		for (mi.toBegin(); i<size; mi.toNext(), i++)
-		{
-			if (!mi.isValid())
-			{
-				continue;
-			}
-			Item * _i = &(*mi);
-			if (_i->exist && _i->bDrained)
-			{
-				_i->bDrained = false;
-				_i->bFast = true;
-				_i->speed = _ITEM_RETHROWSPEED;
-				_i->angle = 9000;
-			}
-		}
-		mi.index = _index;
-	}
-}
-*/
 void Item::action(BYTE playerindex)
 {
 	if(!bDrained && !(Player::p[playerindex].flag & PLAYER_COLLAPSE || Player::p[playerindex].flag & PLAYER_SHOT))
@@ -335,10 +250,9 @@ void Item::action(BYTE playerindex)
 		else
 			SE::push(SE_ITEM_EXTEND, x);
 
-		score = Player::p[playerindex].getItemBonus(ID);
+		score = Player::p[playerindex].DoItemGet(ID);
 
 		exist = false;
-//		Player::p[playerindex].nSpellPoint += score;
 
 		struct infoFont info;
 		itoa(score, info.cScore, 10);

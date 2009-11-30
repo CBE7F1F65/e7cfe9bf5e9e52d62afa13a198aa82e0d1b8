@@ -409,13 +409,12 @@ enum {
 	SCR_EVENT_ENTERSTATE		= 0x0010,
 	SCR_EVENT_LEAVESTATE		= 0x0020,
 
-	/*Player*/
-	SCR_EVENT_PLAYERBOMB	= 0x01A0,
 	/*Bullet*/
 	SCR_EVENT_BULLETENTERZONE	= 0x0210,
-	/*0x20*/
 	/*EffectSp*/
 	SCR_EVENT_EFFSPCHASE	= 0x0610,
+	/*Player*/
+	SCR_EVENT_PLAYERDRAIN		= 0x0710,
 };
 
 struct scrKeyWord

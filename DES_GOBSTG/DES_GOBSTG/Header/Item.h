@@ -7,8 +7,8 @@ class Player;
 
 #define ITEMINFOFONTMAX		0x40
 
-#define ITEMTYPEMAX			0x08
-#define ITEMSPRITEMAX		ITEMTYPEMAX * 2
+#define ITEMTYPEMAX			0x04
+#define ITEMSPRITEMAX		ITEMTYPEMAX
 
 #define ITEM_STARTSPEED		-5
 

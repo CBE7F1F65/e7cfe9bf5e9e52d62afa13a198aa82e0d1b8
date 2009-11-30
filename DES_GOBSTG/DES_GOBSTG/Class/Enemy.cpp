@@ -850,8 +850,6 @@ void Enemy::DoShot(BYTE playerindex)
 
 		if (life < 0)
 		{
-			Player::p[playerindex].GetScoreLife(maxlife, true);
-
 			SE::push(SE_ENEMY_DEAD, x);
 
 			fadeout = true;

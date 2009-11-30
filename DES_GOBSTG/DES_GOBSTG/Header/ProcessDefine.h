@@ -8,7 +8,7 @@
 #define KS_FIRE		keyKS[0].keyFire
 #define KS_QUICK	keyKS[0].keyQuick
 #define KS_SLOW		keyKS[0].keySlow
-#define KS_CHARGE	keyKS[0].keyCharge
+#define KS_DRAIN	keyKS[0].keyDrain
 #define KS_PAUSE	keyKS[0].keyPause
 #define KS_SKIP		keyKS[0].keySkip
 #define KS_ENTER	keyKS[0].keyEnter
@@ -22,7 +22,7 @@
 #define KS_FIRE_MP		mp.keyKS[0].keyFire
 #define KS_QUICK_MP		mp.keyKS[0].keyQuick
 #define KS_SLOW_MP		mp.keyKS[0].keySlow
-#define KS_CHARGE_MP	mp.keyKS[0].keyCharge
+#define KS_DRAIN_MP		mp.keyKS[0].keyDrain
 #define KS_PAUSE_MP		mp.keyKS[0].keyPause
 #define KS_SKIP_MP		mp.keyKS[0].keySkip
 #define KS_ENTER_MP		mp.keyKS[0].keyEnter
@@ -36,7 +36,7 @@
 #define KS_FIRE_(X)		keyKS[(X)].keyFire
 #define KS_QUICK_(X)	keyKS[(X)].keyQuick
 #define KS_SLOW_(X)		keyKS[(X)].keySlow
-#define KS_CHARGE_(X)	keyKS[(X)].keyCharge
+#define KS_DRAIN_(X)	keyKS[(X)].keyDrain
 #define KS_PAUSE_(X)	keyKS[(X)].keyPause
 #define KS_SKIP_(X)		keyKS[(X)].keySkip
 #define KS_ENTER_(X)	keyKS[(X)].keyEnter
@@ -50,7 +50,7 @@
 #define KS_FIRE_MP_(X)		mp.keyKS[(X)].keyFire
 #define KS_QUICK_MP_(X)		mp.keyKS[(X)].keyQuick
 #define KS_SLOW_MP_(X)		mp.keyKS[(X)].keySlow
-#define KS_CHARGE_MP_(X)	mp.keyKS[(X)].keyCharge
+#define KS_DRAIN_MP_(X)		mp.keyKS[(X)].keyDrain
 #define KS_PAUSE_MP_(X)		mp.keyKS[(X)].keyPause
 #define KS_SKIP_MP_(X)		mp.keyKS[(X)].keySkip
 #define KS_ENTER_MP_(X)		mp.keyKS[(X)].keyEnter
@@ -60,14 +60,14 @@
 #define JS_FIRE				keyJS[0].joyFire
 #define JS_QUICK			keyJS[0].joyQuick
 #define JS_SLOW				keyJS[0].joySlow
-#define JS_CHARGE			keyJS[0].joyCharge
+#define JS_DRAIN			keyJS[0].joyDrain
 #define JS_PAUSE			keyJS[0].joyPause
 #define JS_DEBUG_SPEEDUP	keyJS[0].debug_joySpeedUp
 
 #define JS_FIRE_(X)				keyJS[X].joyFire
 #define JS_QUICK_(X)			keyJS[X].joyQuick
 #define JS_SLOW_(X)				keyJS[X].joySlow
-#define JS_CHARGE_(X)			keyJS[X].joyCharge
+#define JS_DRAIN_(X)			keyJS[X].joyDrain
 #define JS_PAUSE_(X)			keyJS[X].joyPause
 #define JS_DEBUG_SPEEDUP_(X)	keyJS[X].debug_joySpeedUp
 

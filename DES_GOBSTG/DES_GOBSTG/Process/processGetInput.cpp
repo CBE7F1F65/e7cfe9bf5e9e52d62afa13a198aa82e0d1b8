@@ -45,8 +45,8 @@ int Process::getInput()
 			hge->Input_SetDIKey(KS_QUICK_(0));
 		if(	hge->Input_GetDIJoy(JS_SLOW_(0), DIKEY_PRESSED, 0))
 			hge->Input_SetDIKey(KS_SLOW_(0));
-		if(	hge->Input_GetDIJoy(JS_CHARGE_(0), DIKEY_PRESSED, 0))
-			hge->Input_SetDIKey(KS_CHARGE_(0));
+		if(	hge->Input_GetDIJoy(JS_DRAIN_(0), DIKEY_PRESSED, 0))
+			hge->Input_SetDIKey(KS_DRAIN_(0));
 
 		if(	hge->Input_GetDIJoy(JOY_LEFT, DIKEY_PRESSED, 1))
 			hge->Input_SetDIKey(KS_LEFT_(1));
@@ -62,8 +62,8 @@ int Process::getInput()
 			hge->Input_SetDIKey(KS_QUICK_(1));
 		if(	hge->Input_GetDIJoy(JS_SLOW_(1), DIKEY_PRESSED, 1))
 			hge->Input_SetDIKey(KS_SLOW_(1));
-		if(	hge->Input_GetDIJoy(JS_CHARGE_(1), DIKEY_PRESSED, 1))
-			hge->Input_SetDIKey(KS_CHARGE_(1));
+		if(	hge->Input_GetDIJoy(JS_DRAIN_(1), DIKEY_PRESSED, 1))
+			hge->Input_SetDIKey(KS_DRAIN_(1));
 	}
 	else
 	{
@@ -73,7 +73,7 @@ int Process::getInput()
 		hge->Input_SetDIKey(KS_DOWN_(0), false);
 		hge->Input_SetDIKey(KS_FIRE_(0), false);
 		hge->Input_SetDIKey(KS_QUICK_(0), false);
-		hge->Input_SetDIKey(KS_CHARGE_(0), false);
+		hge->Input_SetDIKey(KS_DRAIN_(0), false);
 		hge->Input_SetDIKey(KS_SLOW_(0), false);
 
 		hge->Input_SetDIKey(KS_LEFT_(1), false);
@@ -82,7 +82,7 @@ int Process::getInput()
 		hge->Input_SetDIKey(KS_DOWN_(1), false);
 		hge->Input_SetDIKey(KS_FIRE_(1), false);
 		hge->Input_SetDIKey(KS_QUICK_(1), false);
-		hge->Input_SetDIKey(KS_CHARGE_(1), false);
+		hge->Input_SetDIKey(KS_DRAIN_(1), false);
 		hge->Input_SetDIKey(KS_SLOW_(1), false);
 	}
 
@@ -111,7 +111,7 @@ int Process::getInput()
 		nowInput |= 0x1000;
 	if(hge->Input_GetDIKey(KS_QUICK_(0)))
 		nowInput |= 0x2000;
-	if(hge->Input_GetDIKey(KS_CHARGE_(0)))
+	if(hge->Input_GetDIKey(KS_DRAIN_(0)))
 		nowInput |= 0x4000;
 	if(hge->Input_GetDIKey(KS_SLOW_(0)))
 		nowInput |= 0x8000;
@@ -128,7 +128,7 @@ int Process::getInput()
 		nowInput |= 0x0010;
 	if(hge->Input_GetDIKey(KS_QUICK_(1)))
 		nowInput |= 0x0020;
-	if(hge->Input_GetDIKey(KS_CHARGE_(1)))
+	if(hge->Input_GetDIKey(KS_DRAIN_(1)))
 		nowInput |= 0x0040;
 	if(hge->Input_GetDIKey(KS_SLOW_(1)))
 		nowInput |= 0x0080;
@@ -151,7 +151,7 @@ int Process::getInput()
 		if(nowInput & 0x2000)
 			hge->Input_SetDIKey(KS_QUICK_(0));
 		if(nowInput & 0x4000)
-			hge->Input_SetDIKey(KS_CHARGE_(0));
+			hge->Input_SetDIKey(KS_DRAIN_(0));
 		if(nowInput & 0x8000)
 			hge->Input_SetDIKey(KS_SLOW_(0));
 
@@ -168,7 +168,7 @@ int Process::getInput()
 		if(nowInput & 0x0020)
 			hge->Input_SetDIKey(KS_QUICK_(1));
 		if(nowInput & 0x0040)
-			hge->Input_SetDIKey(KS_CHARGE_(1));
+			hge->Input_SetDIKey(KS_DRAIN_(1));
 		if(nowInput & 0x0080)
 			hge->Input_SetDIKey(KS_SLOW_(1));
 	}

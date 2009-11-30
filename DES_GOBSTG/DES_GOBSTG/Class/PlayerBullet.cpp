@@ -14,7 +14,7 @@ VectorList<PlayerBullet> PlayerBullet::pb[M_PL_MATCHMAXPLAYER];
 
 int PlayerBullet::locked = PBLOCK_LOST;
 
-hgeSprite * PlayerBullet::spPlayerBullet[PLAYERBULLETSPRITEMAX];
+hgeSprite * PlayerBullet::sprite[PLAYERSHOOTTYPEMAX];
 HTEXTURE * PlayerBullet::tex;
 
 DWORD PlayerBullet::bcol0;
@@ -35,12 +35,16 @@ WORD PlayerBullet::beams;
 #define _DELAY_TURNMAX		1200
 
 #define _PB_DELETEBOLDER		M_GAMESQUARE_HEIGHT
-#define _PB_DELETE_LEFT_(X)			M_DELETECLIENT_LEFT_(X) - _PB_DELETEBOLDER
-#define _PB_DELETE_RIGHT_(X)		M_DELETECLIENT_RIGHT_(X) + _PB_DELETEBOLDER
+#define _PB_DELETE_LEFT_(X)		M_DELETECLIENT_LEFT_(X) - _PB_DELETEBOLDER
+#define _PB_DELETE_RIGHT_(X)	M_DELETECLIENT_RIGHT_(X) + _PB_DELETEBOLDER
 #define _PB_DELETE_TOP			M_DELETECLIENT_TOP - _PB_DELETEBOLDER
 #define _PB_DELETE_BOTTOM		M_DELETECLIENT_BOTTOM + _PB_DELETEBOLDER
 
 #define _PB_HEADARCPLUS			10
+
+#define PLAYERBULLETMAX		0x40
+
+#define _PBTEX_PLAYERBEGIN		10
 
 PlayerBullet::PlayerBullet()
 {
@@ -49,6 +53,35 @@ PlayerBullet::PlayerBullet()
 
 PlayerBullet::~PlayerBullet()
 {
+}
+
+void PlayerBullet::Init(HTEXTURE * _tex)
+{
+	tex = _tex;
+	Release();
+
+	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
+	{
+		pb[i].init(PLAYERBULLETMAX);
+	}
+
+	for (int i=0; i<PLAYERSHOOTTYPEMAX; i++)
+	{
+		sprite[i] = SpriteItemManager::CreateSprite(res.playershootdata[i].siid);
+	}
+}
+
+void PlayerBullet::Release()
+{
+	for (int i=0; i<PLAYERSHOOTTYPEMAX; i++)
+	{
+		SpriteItemManager::FreeSprite(&sprite[i]);
+
+	}
+	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
+	{
+		pb[i].clear();
+	}
 }
 
 void PlayerBullet::ClearItem()
@@ -108,7 +141,7 @@ void PlayerBullet::Build(BYTE playerindex, int shootdataID)
 {
 	PlayerBullet _pb;
 	playershootData * item = &(res.playershootdata[shootdataID]);
-	pb[playerindex].push_back(_pb)->valueSet(playerindex, item->ID, item->arrange, item->xbias, item->ybias, 
+	pb[playerindex].push_back(_pb)->valueSet(playerindex, shootdataID, item->arrange, item->xbias, item->ybias, 
 		item->scale, item->angle, item->speed, item->accelspeed, 
 		item->power, item->hitonfactor, item->flag, item->seID);
 }
@@ -165,8 +198,8 @@ void PlayerBullet::valueSet(BYTE _playerindex, WORD _ID, BYTE _arrange, float _x
 
 	if (flag & PBFLAG_BEAM)
 	{
-		hscale = M_GAMESQUARE_HEIGHT / spPlayerBullet[ID]->GetWidth();
-		vscale = scale / spPlayerBullet[ID]->GetHeight();
+		hscale = M_GAMESQUARE_HEIGHT / SpriteItemManager::GetTexW(res.playershootdata[ID].siid);
+		vscale = scale / SpriteItemManager::GetTexH(res.playershootdata[ID].siid);
 		angle = -9000;
 		alpha = 0x60;
 	}
@@ -194,25 +227,10 @@ void PlayerBullet::valueSet(BYTE _playerindex, WORD _ID, BYTE _arrange, float _x
 	SE::push(seID, x);
 }
 
-void PlayerBullet::Release()
-{
-	for(int i=0;i<PLAYERBULLETSPRITEMAX;i++)
-	{
-		if(spPlayerBullet[i])
-			delete spPlayerBullet[i];
-		spPlayerBullet[i] = NULL;
-	}
-
-	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
-	{
-		pb[i].clear();
-	}
-}
-
 void PlayerBullet::Render()
 {
-	spPlayerBullet[ID]->SetColor((alpha<<24)|diffuse);
-	spPlayerBullet[ID]->RenderEx(x, y, ARC(angle+headangle), hscale, vscale);
+	sprite[ID]->SetColor((alpha<<24)|diffuse);
+	sprite[ID]->RenderEx(x, y, ARC(angle+headangle), hscale, vscale);
 }
 
 bool PlayerBullet::GetLockAim(BObject ** obj)
@@ -425,8 +443,8 @@ void PlayerBullet::action()
 				extramove = (Player::p[playerindex].y-Player::p[playerindex].lasty[_PBBEAM_LASTINDEX]) / 2.5f;
 			}
 			float _tx, _ty, _tw, _th;
-			spPlayerBullet[ID]->GetTextureRect(&_tx, &_ty, &_tw, &_th);
-			spPlayerBullet[ID]->SetTextureRect(_tx - (2.0f + extramove) / accelspeed, _ty, _tw, _th);
+//			sprite[ID]->GetTextureRect(&_tx, &_ty, &_tw, &_th);
+//			sprite[ID]->SetTextureRect(_tx - (2.0f + extramove) / accelspeed, _ty, _tw, _th);
 			timer = PB_FADEOUTTIME - 8;
 			fadeout = true;
 		}
@@ -513,7 +531,7 @@ void PlayerBullet::action()
 				SE::push(SE_PLAYER_EXPLODE, x);
 			}
 
-			EventZone::Build(EVENTZONE_TYPE_ENEMYGHOSTDAMAGE, playerindex, x, y, 1, spPlayerBullet[ID]->GetWidth(), power);
+			EventZone::Build(EVENTZONE_TYPE_ENEMYGHOSTDAMAGE, playerindex, x, y, 1, SpriteItemManager::GetTexW(res.playershootdata[ID].siid), power);
 		}
 		if (flag & PBFLAG_SCALEUP)
 		{

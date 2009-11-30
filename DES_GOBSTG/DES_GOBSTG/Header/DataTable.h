@@ -17,14 +17,18 @@ public:
 	bool EnemyDefineFile();
 	bool PlayerDefineFile();
 	bool SpriteDefineFile();
-	bool PlayerBulletDefineFile();
 	bool PlayerShootDefineFile();
 	bool PlayerGhostDefineFile();
+
+	bool ReadStringBuffer(int nCol);
+	bool CommentBuffer();
 
 public:
 	FILE * file;
 	char buffer[M_STRMAX];
+	char bufferlong[M_STRMAX*4];
 	int tindex;
 	int tint[32];
+	int ti;
 	static _DataTable datatable;
 };

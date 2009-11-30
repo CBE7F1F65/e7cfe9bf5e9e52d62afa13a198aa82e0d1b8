@@ -11,7 +11,6 @@
 #define FDISP_ASCII_END			0x81
 #define FDISP_ASCIISMALL_END	0x7E
 #define FDISP_ASCII_MAX			(FDISP_ASCII_END-FDISP_ASCII_BEGIN+1)
-#define FDISP_ASCIISMALL_MAX	(FDISP_ASCIISMALL_END-FDISP_ASCII_BEGIN+1)
 
 #define FDISP_LIFEINDIMAX	3
 
@@ -61,9 +60,6 @@ struct ftInfoBody
 
 struct ftInfoSet
 {
-	hgeFont * bossfont;
-	hgeFont * bossasciifont;
-	hgeFont * normaldigitfont;
 	hgeFont * asciifont;
 	hgeFont * itemfont;
 	hgeFont * spellpointdigitfont;
@@ -80,23 +76,11 @@ struct ftInfoSet
 	hgeSprite * enchat_3;
 	hgeSprite * namecard;
 
-	hgeSprite * bossspellline;
-	hgeSprite * playerspellline;
-	hgeSprite * spellbonustext;
-	hgeSprite * spellhistorytext;
-	hgeSprite * spellfailedtext;
 	hgeSprite * timecircle;
 	hgeSprite * enemyx;
 
 	hgeSprite * lifebar;
-	hgeSprite * getbonus;
-	hgeSprite * failed;
 
-	hgeSprite * stageclear;
-	hgeSprite * nextstage;
-	hgeSprite * fullpower;
-	hgeSprite * hiscoreget;
-	hgeSprite * extend;
 	hgeSprite * textbox;
 	hgeSprite * demo;
 	hgeSprite * loading;
@@ -340,11 +324,6 @@ struct ftAscIISet
 	};
 };
 
-struct ftFirstSet 
-{
-	hgeSprite * face;
-	hgeSprite * namecard;
-};
 
 #define FDISP_PANEL			0
 #define FDISP_NEXTSTAGE		1
@@ -391,13 +370,10 @@ public:
 	ftPanelSet panel;
 	ftInfoSet info;
 	ftNumSet bignum;
-	ftNumSet normalnum;
 	ftItemNumSet itemnum;
 	ftSpellPointNumSet spellpointnum;
 	ftGameInfoDisplaySet gameinfodisplay;
 	ftAscIISet ascii;
-	ftAscIISet asciismall;
-	ftFirstSet first;
 	ftInfoBody infobody;
 
 	list<fdPostPrint>postprintlist;

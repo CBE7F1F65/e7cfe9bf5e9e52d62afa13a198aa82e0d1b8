@@ -52,7 +52,7 @@ void Process::frameStart()
 			if(nowInput & 0x2000)
 				hge->Input_SetDIKey(KS_QUICK_(0));
 			if(nowInput & 0x4000)
-				hge->Input_SetDIKey(KS_CHARGE_(0));
+				hge->Input_SetDIKey(KS_DRAIN_(0));
 			if(nowInput & 0x8000)
 				hge->Input_SetDIKey(KS_SLOW_(0));
 
@@ -69,7 +69,7 @@ void Process::frameStart()
 			if(nowInput & 0x0020)
 				hge->Input_SetDIKey(KS_QUICK_(1));
 			if(nowInput & 0x0040)
-				hge->Input_SetDIKey(KS_CHARGE_(1));
+				hge->Input_SetDIKey(KS_DRAIN_(1));
 			if(nowInput & 0x0080)
 				hge->Input_SetDIKey(KS_SLOW_(1));
 

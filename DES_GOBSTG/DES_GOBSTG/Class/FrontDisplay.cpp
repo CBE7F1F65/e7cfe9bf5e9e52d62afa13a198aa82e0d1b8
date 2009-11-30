@@ -18,13 +18,10 @@ FrontDisplay::FrontDisplay()
 	ZeroMemory(&panel, sizeof(ftPanelSet));
 	ZeroMemory(&info, sizeof(ftInfoSet));
 	ZeroMemory(&bignum, sizeof(ftNumSet));
-	ZeroMemory(&normalnum, sizeof(ftNumSet));
 	ZeroMemory(&itemnum, sizeof(ftItemNumSet));
 	ZeroMemory(&spellpointnum, sizeof(ftSpellPointNumSet));
 	ZeroMemory(&gameinfodisplay, sizeof(ftGameInfoDisplaySet));
 	ZeroMemory(&ascii, sizeof(ftAscIISet));
-	ZeroMemory(&asciismall, sizeof(ftAscIISet));
-	ZeroMemory(&first, sizeof(ftFirstSet));
 	postprintlist.clear();
 }
 
@@ -383,194 +380,10 @@ void FrontDisplay::RenderPanel()
 
 void FrontDisplay::RenderNextStage()
 {
-	/*
-	if (nextstagecount)
-	{
-		info.stageclear->Render(M_ACTIVECLIENT_CENTER_X, 160);
-		if (bval)
-		{
-			info.nextstage->Render(M_ACTIVECLIENT_CENTER_X, 280);
-		}
-		info.bossfont->SetColor(0xffffffff);
-		info.bossfont->printf(M_ACTIVECLIENT_CENTER_X, 220, HGETEXT_CENTER|HGETEXT_MIDDLE, "%d", llval);
-	}
-	*/
 }
 
 void FrontDisplay::BossAction()
 {
-	BYTE flag = BossInfo::flag;
-	WORD timer = bossinfo.timer;
-	bool bSpell = bossinfo.isSpell();
-	if(flag >= BOSSINFO_COLLAPSE)
-	{
-		infobody.effBossStore.Stop();
-		infobody.effBossCollapse.action();
-		infobody.effBossItem.action();
-	}
-	infobody.effBossStore.action();
-
-	if (flag & BOSSINFO_UP)
-	{
-		if (timer == 1)
-		{
-			DWORD col1, col2;
-			if(bSpell)
-			{
-				col1 = 0xce7f0000;
-				col2 = 0xceff0000;
-
-				SpriteItemManager::ptFace(Enemy::en[ENEMY_MAINBOSSINDEX].faceindex, info.cutin);
-				info.cutin->SetColor(0x60ffffff);
-
-				infobody.effBossUp.Stop(true);
-				infobody.effBossUp.MoveTo(Enemy::en[ENEMY_MAINBOSSINDEX].x, Enemy::en[ENEMY_MAINBOSSINDEX].y, 0, true);
-				infobody.effBossUp.Fire();
-			}
-			else
-			{
-				col1 = 0xcececebd;
-				col2 = 0xceffffbd;
-			}
-			// TODO:
-			infobody.iqBossBlood.valueSet(0, M_GAMESQUARE_CENTER_X_(0), 32,
-				60, 30, col1,
-				60, 30, col1,
-				60, 34, col2,
-				60, 34, col2);
-		}
-		if((infobody.iqBossBlood.quad.v[1].x-60) / 320.0f < Enemy::en[ENEMY_MAINBOSSINDEX].life / Enemy::en[ENEMY_MAINBOSSINDEX].maxlife)
-		{
-			infobody.iqBossBlood.quad.v[1].x += 2;
-			infobody.iqBossBlood.quad.v[2].x += 2;
-		}
-		else
-		{
-			infobody.iqBossBlood.quad.v[1].x = Enemy::en[ENEMY_MAINBOSSINDEX].life / Enemy::en[ENEMY_MAINBOSSINDEX].maxlife * 320.0f + 60;
-			infobody.iqBossBlood.quad.v[2].x = Enemy::en[ENEMY_MAINBOSSINDEX].life / Enemy::en[ENEMY_MAINBOSSINDEX].maxlife * 320.0f + 60;
-		}
-		//
-		if(bSpell)
-		{
-		/*
-			float _tx = en[ENEMY_MAINBOSSINDEX].x;
-			float _ty = en[ENEMY_MAINBOSSINDEX].y;
-			_tx += (160 - timer) * cost(timer * 400);
-			_ty += (160 - timer) * sint(timer * 400);
-			infobody.effBossUp.MoveTo(_tx, _ty);
-			*/
-			infobody.effBossUp.MoveTo(Enemy::en[ENEMY_MAINBOSSINDEX].x, Enemy::en[ENEMY_MAINBOSSINDEX].y);
-			infobody.effBossUp.action();
-			if(timer == 90)
-			{
-				SE::push(SE_BOSS_UP, Enemy::en[ENEMY_MAINBOSSINDEX].x);
-				infobody.effBossUp.Stop();
-			}
-		}
-		//
-		if (timer > 128)
-		{
-			info.cutin->SetColor((((160-timer)*3)<<24)+0xffffff);
-		}
-	}
-	else if(flag & BOSSINFO_COLLAPSE)
-	{
-		if (timer == 1)
-		{
-			SE::push(SE_BOSS_DEAD, Enemy::en[ENEMY_MAINBOSSINDEX].x);
-			infobody.effBossCollapse.Stop(true);
-			infobody.effBossCollapse.MoveTo(Enemy::en[ENEMY_MAINBOSSINDEX].x, Enemy::en[ENEMY_MAINBOSSINDEX].y, 0, true);
-			infobody.effBossCollapse.Fire();
-			if (bSpell)
-			{
-//				BGLayer::ubg[UBGID_BGMASK].flag = BG_REDOUT;
-				BGLayer::ubg[UBGID_BGMASK].SetFlag(BG_REDOUT, BGMT_OUT);
-			}
-			mp.SetShake(1);
-		}
-		else if (timer == 75)
-		{
-			if (bSpell)
-			{
-				if (!BossInfo::failed)
-				{
-					SE::push(SE_BOSS_BONUS);
-				}
-			}
-		}
-		else if(timer == 120)
-		{
-			infobody.effBossCollapse.Stop();
-		}
-	}
-	else if(flag & BOSSINFO_TIMEOVER)
-	{
-		if(timer == 1)
-		{
-			if (bSpell)
-			{
-//				BGLayer::ubg[UBGID_BGMASK].flag = BG_WHITEFLASH;
-				BGLayer::ubg[UBGID_BGMASK].SetFlag(BG_WHITEFLASH, BGMT_FLASH);
-			}
-		}
-	}
-	else
-	{
-		if(Enemy::en[ENEMY_MAINBOSSINDEX].life > 0)
-		{
-			infobody.iqBossBlood.quad.v[1].x = Enemy::en[ENEMY_MAINBOSSINDEX].life / Enemy::en[ENEMY_MAINBOSSINDEX].maxlife * 320.0f + 60;
-			infobody.iqBossBlood.quad.v[2].x = Enemy::en[ENEMY_MAINBOSSINDEX].life / Enemy::en[ENEMY_MAINBOSSINDEX].maxlife * 320.0f + 60;
-		}
-		else
-		{
-			infobody.iqBossBlood.quad.v[1].x = 60;
-			infobody.iqBossBlood.quad.v[2].x = 60;
-		}
-	}
-	if(Player::p[0].y < 100)
-	{
-		infobody.iqBossBlood.quad.v[0].col &= (0x7fffffff);
-		infobody.iqBossBlood.quad.v[1].col &= (0x7fffffff);
-		infobody.iqBossBlood.quad.v[2].col &= (0x7fffffff);
-		infobody.iqBossBlood.quad.v[3].col &= (0x7fffffff);
-
-		info.bossspellline->SetColor(0x40ffffff);
-		info.spellbonustext->SetColor(0x40ffffff);
-		info.spellhistorytext->SetColor(0x40ffffff);
-		info.spellfailedtext->SetColor(0x40ffffff);
-
-		info.bossfont->SetColor(0x40ffffff);
-		info.bossasciifont->SetColor(0x40ffffff);
-	}
-	else
-	{
-		infobody.iqBossBlood.quad.v[0].col |= (0x80<<24);
-		infobody.iqBossBlood.quad.v[1].col |= (0x80<<24);
-		infobody.iqBossBlood.quad.v[2].col |= (0x80<<24);
-		infobody.iqBossBlood.quad.v[3].col |= (0x80<<24);
-
-		info.bossspellline->SetColor(0xffffffff);
-		info.spellbonustext->SetColor(0xffffffff);
-		info.spellhistorytext->SetColor(0xffffffff);
-		info.spellfailedtext->SetColor(0xffffffff);
-
-		info.bossfont->SetColor(0xffffffff);
-		info.bossasciifont->SetColor(0xffffffff);
-	}
-
-	if(flag >= BOSSINFO_COLLAPSE)
-	{
-		if(timer == 1)
-		{
-			infobody.effBossItem.Stop(true);
-			infobody.effBossItem.MoveTo(Enemy::en[ENEMY_MAINBOSSINDEX].x, Enemy::en[ENEMY_MAINBOSSINDEX].y, 0, true);
-			infobody.effBossItem.Fire();
-		}
-		else if(timer == 90)
-		{
-			infobody.effBossItem.Stop();
-		}
-	}
 }
 
 void FrontDisplay::BossMoveItemEffect(float x, float y)
@@ -584,96 +397,13 @@ void FrontDisplay::RenderBossInfo()
 	if (flag)
 	{
 		bossinfo.exist = false;
-		WORD timer = bossinfo.timer;
-		bool bSpell = bossinfo.isSpell();
-		bool failed = BossInfo::failed;
-	//	exist = false;
 		infobody.effBossStore.Render();
 		if(flag < BOSSINFO_COLLAPSE)
 		{
-			info.bossfont->SetScale(1.2f);
-			info.bossfont->printf(50, 20, HGETEXT_RIGHT|HGETEXT_MIDDLE, "%d", bossinfo.remain);
-
-			int ttime = bossinfo.limit-timer/60;
-			if (ttime < 4)
-				info.bossfont->SetColor(0xffff0000);
-			else if (ttime < 11)
-				info.bossfont->SetColor(0xffff00ff);
-			else if (ttime > 99)
-			{
-				ttime = 99;
-			}
-			info.bossfont->printf(400, 20, HGETEXT_CENTER|HGETEXT_MIDDLE, "%d", ttime);
-
-			info.bossasciifont->printf(60, 20, HGETEXT_LEFT, "%s", bossinfo.enemyename);
-
-			if(bSpell)
-			{
-				float yt;
-//				if(Enemy::actionflag[ENEMY_MAINBOSSINDEX] & BOSS_SPELLUP)
-//					info.cutin->Render(312, Enemy::spelluptimer[ENEMY_MAINBOSSINDEX]*2.4f);
-				if(timer < 30)
-				{
-					yt = 225;
-				}
-				else if(timer < 120)
-				{
-					yt = (120-timer)*2+45;
-				}
-				else
-				{
-					yt = 45;
-				}
-
-				info.bossspellline->Render(296, yt);
-
-				int tlenth = strlen(bossinfo.spellname);
-				float spellnamew = tlenth*8;
-				DWORD spellnamealpha = 0xff000000;
-				bossinfo.fsspellname.SetColor(spellnamealpha+0xffffff, spellnamealpha+0xffffffff, spellnamealpha+0xff0000, spellnamealpha+0xff0000);
-				bossinfo.fsspellname.Render(400-spellnamew, yt-5);
-
-				if (flag & BOSSINFO_UP)
-				{
-					infobody.effBossUp.Render();
-				}
-
-				/*
-				info.spellbonustext->Render(240, yt+20);
-				info.spellhistorytext->Render(345, yt+20);
-				if (!failed)
-				{
-					info.bossasciifont->printf(320, yt+16, HGETEXT_RIGHT, "%09d", bonus);
-				}
-				else
-				{
-					info.spellfailedtext->Render(280, yt+20);
-				}
-				info.bossasciifont->printf(410, yt+16, HGETEXT_RIGHT, "%03d/%03d", bossinfo.get, bossinfo.meet);
-				*/
-			}
-			hge->Gfx_RenderQuad(&infobody.iqBossBlood.quad);
+//			hge->Gfx_RenderQuad(&infobody.iqBossBlood.quad);
 		}
 		else if(flag & BOSSINFO_COLLAPSE)
 		{
-			/*
-			if(bSpell && !failed)
-			{
-				infobody.effBossCollapse.Render();
-				infobody.effBossItem.Render();
-				info.getbonus->Render(M_ACTIVECLIENT_CENTER_X, 80);
-				info.bossfont->SetColor((((timer*8)%0x100)<<8)+0xffff007f);
-			}
-			else
-			{
-				if (failed)
-				{
-					info.failed->Render(M_ACTIVECLIENT_CENTER_X, 80);
-					info.bossfont->SetColor((((timer*8)%0x100)<<16)+0xff00ffff);
-				}
-			}
-			info.bossfont->printf(M_ACTIVECLIENT_CENTER_X, 120, HGETEXT_CENTER|HGETEXT_MIDDLE, "%d", bonus);
-			*/
 		}
 	}
 }
@@ -732,7 +462,6 @@ bool FrontDisplay::Init()
 	SpriteItemManager::noIndex = SpriteItemManager::GetIndexByName(SI_CONFIRM_NO);
 	SpriteItemManager::cancelIndex = SpriteItemManager::GetIndexByName(SI_CONFIRM_CANCEL);
 	SpriteItemManager::confirmIndex = SpriteItemManager::GetIndexByName(SI_CONFIRM);
-	SpriteItemManager::digituiIndex = SpriteItemManager::GetIndexByName(SI_DIGITBIG_0);
 
 	//panel
 	panel.leftedge[0] = SpriteItemManager::CreateSpriteByName(SI_FRONTPANEL_LEFT_0);
@@ -792,23 +521,10 @@ bool FrontDisplay::Init()
 	info.namecard = SpriteItemManager::CreateSprite(idx);
 	SpriteItemManager::nameIndexEnemy = idx;
 	SpriteItemManager::nameIndexPlayer = SpriteItemManager::GetIndexByName(SI_PLAYERNAMECARD_01);
-//	info.namecard = SpriteItemManager::CreateSpriteByName(SI_NAMECARD_01);
-	info.bossspellline = SpriteItemManager::CreateSpriteByName(SI_SPELLLINE_BOSS);
-	info.playerspellline = SpriteItemManager::CreateSpriteByName(SI_SPELLLINE_PLAYER);
-	info.spellbonustext = SpriteItemManager::CreateSpriteByName(SI_SPELLLINE_BONUS);
-	info.spellhistorytext = SpriteItemManager::CreateSpriteByName(SI_SPELLLINE_HISTORY);
-	info.spellfailedtext = SpriteItemManager::CreateSpriteByName(SI_SPELLLINE_FAILED);
 	info.timecircle = SpriteItemManager::CreateSpriteByName(SI_BOSS_TIMECIRCLE);
 	info.enemyx = SpriteItemManager::CreateSpriteByName(SI_ENEMY_X);
 
 	info.lifebar = SpriteItemManager::CreateSpriteByName(SI_NULL);
-	info.getbonus = SpriteItemManager::CreateSpriteByName(SI_FRONTINFO_GETBONUS);
-	info.failed = SpriteItemManager::CreateSpriteByName(SI_FRONTINFO_FAILED);
-	info.stageclear = SpriteItemManager::CreateSpriteByName(SI_STAGE_CLEAR);
-	info.nextstage = SpriteItemManager::CreateSpriteByName(SI_FRONTINFO_NEXTSTAGE);
-	info.fullpower = SpriteItemManager::CreateSpriteByName(SI_FRONTINFO_FULLPOWER);
-	info.hiscoreget = SpriteItemManager::CreateSpriteByName(SI_FRONTINFO_HISCOREGET);
-	info.extend = SpriteItemManager::CreateSpriteByName(SI_FRONTINFO_EXTEND);
 	info.textbox = SpriteItemManager::CreateSpriteByName(SI_FRONT_TEXT);
 	info.demo = SpriteItemManager::CreateSpriteByName(SI_FRONTINFO_DEMO);
 	info.loading = SpriteItemManager::CreateSpriteByName(SI_LOADING_WORD);
@@ -825,14 +541,6 @@ bool FrontDisplay::Init()
 	bignum.num_div = SpriteItemManager::CreateSpriteByName(SI_ASCIIBIG_X2F);
 	bignum.num_mod = SpriteItemManager::CreateSpriteByName(SI_ASCIIBIG_X25);
 	bignum.num_dot = SpriteItemManager::CreateSpriteByName(SI_ASCIIBIG_X2E);
-
-	idx = SpriteItemManager::GetIndexByName(SI_DIGITNORMAL_0);
-	for (int i=0; i<10; i++)
-	{
-		normalnum.num[i] = SpriteItemManager::CreateSprite(idx+i);
-	}
-	normalnum.num_div = SpriteItemManager::CreateSpriteByName(SI_DIGITNORMAL_DIV);
-	normalnum.num_dot = SpriteItemManager::CreateSpriteByName(SI_DIGITNORMAL_DOT);
 
 	idx = SpriteItemManager::GetIndexByName(SI_DIGITCHARACTER_0);
 	for (int i=0; i<30; i++)
@@ -871,35 +579,8 @@ bool FrontDisplay::Init()
 	{
 		ascii.ascii[i] = SpriteItemManager::CreateSprite(idx+i);
 	}
-	idx = SpriteItemManager::GetIndexByName(SI_ASCIISMALL_X20);
-	for (int i=0; i<FDISP_ASCIISMALL_MAX; i++)
-	{
-		asciismall.ascii[i] = SpriteItemManager::CreateSprite(idx+i);
-	}
-
-	//first
-	first.face = SpriteItemManager::CreateSpriteByName(SI_FACE_01);
-	first.namecard = SpriteItemManager::CreateSpriteByName(SI_NAMECARD_01);
-
 
 	//font
-	info.normaldigitfont = new hgeFont();
-	for (int i='0'; i<='9'; i++)
-	{
-		info.normaldigitfont->ChangeSprite(i, normalnum.num[i-'0']);
-	}
-	info.normaldigitfont->ChangeSprite('/', normalnum.num_div);
-	info.normaldigitfont->ChangeSprite('.', normalnum.num_dot);
-	info.normaldigitfont->ChangeSprite(' ', ascii.space);
-
-	info.bossfont = new hgeFont();
-	for (int i='0'; i<='9'; i++)
-	{
-		info.bossfont->ChangeSprite(i, normalnum.num[i-'0']);
-	}
-	info.bossfont->ChangeSprite('/', normalnum.num_div);
-	info.bossfont->ChangeSprite('.', normalnum.num_dot);
-	info.bossfont->ChangeSprite(' ', ascii.space);
 
 	info.itemfont = new hgeFont();
 	for (int i='0'; i<30+'0'; i++)
@@ -927,11 +608,6 @@ bool FrontDisplay::Init()
 	for (int i=FDISP_ASCII_BEGIN; i<=FDISP_ASCII_END; i++)
 	{
 		info.asciifont->ChangeSprite(i, ascii.ascii[i-FDISP_ASCII_BEGIN]);
-	}
-	info.bossasciifont = new hgeFont();
-	for (int i=FDISP_ASCII_BEGIN; i<=FDISP_ASCIISMALL_END; i++)
-	{
-		info.bossasciifont->ChangeSprite(i, asciismall.ascii[i-FDISP_ASCII_BEGIN]);
 	}
 
 	info.normalfont = hge->Font_Load(res.resdata.widefontname, 20);
@@ -965,25 +641,10 @@ void FrontDisplay::Release()
 		SpriteItemManager::FreeSprite(&panel.lifeindi[i]);
 	}
 
-	if (info.bossfont)
-	{
-		delete info.bossfont;
-		info.bossfont = NULL;
-	}
-	if (info.normaldigitfont)
-	{
-		delete info.normaldigitfont;
-		info.normaldigitfont = NULL;
-	}
 	if (info.asciifont)
 	{
 		delete info.asciifont;
 		info.asciifont = NULL;
-	}
-	if (info.bossasciifont)
-	{
-		delete info.bossasciifont;
-		info.bossasciifont = NULL;
 	}
 	if (info.itemfont)
 	{
@@ -1018,21 +679,9 @@ void FrontDisplay::Release()
 	SpriteItemManager::FreeSprite(&info.enchat_1);
 	SpriteItemManager::FreeSprite(&info.enchat_2);
 	SpriteItemManager::FreeSprite(&info.enchat_3);
-	SpriteItemManager::FreeSprite(&info.bossspellline);
-	SpriteItemManager::FreeSprite(&info.playerspellline);
-	SpriteItemManager::FreeSprite(&info.spellbonustext);
-	SpriteItemManager::FreeSprite(&info.spellhistorytext);
-	SpriteItemManager::FreeSprite(&info.spellfailedtext);
 	SpriteItemManager::FreeSprite(&info.timecircle);
 	SpriteItemManager::FreeSprite(&info.enemyx);
 	SpriteItemManager::FreeSprite(&info.lifebar);
-	SpriteItemManager::FreeSprite(&info.getbonus);
-	SpriteItemManager::FreeSprite(&info.failed);
-	SpriteItemManager::FreeSprite(&info.stageclear);
-	SpriteItemManager::FreeSprite(&info.nextstage);
-	SpriteItemManager::FreeSprite(&info.fullpower);
-	SpriteItemManager::FreeSprite(&info.hiscoreget);
-	SpriteItemManager::FreeSprite(&info.extend);
 	SpriteItemManager::FreeSprite(&info.textbox);
 	SpriteItemManager::FreeSprite(&info.demo);
 	SpriteItemManager::FreeSprite(&info.loading);
@@ -1047,13 +696,6 @@ void FrontDisplay::Release()
 	SpriteItemManager::FreeSprite(&bignum.num_div);
 	SpriteItemManager::FreeSprite(&bignum.num_mod);
 	SpriteItemManager::FreeSprite(&bignum.num_dot);
-
-	for (int i=0; i<10; i++)
-	{
-		SpriteItemManager::FreeSprite(&normalnum.num[i]);
-	}
-	SpriteItemManager::FreeSprite(&normalnum.num_div);
-	SpriteItemManager::FreeSprite(&normalnum.num_dot);
 
 	for (int i=0; i<31; i++)
 	{
@@ -1074,12 +716,4 @@ void FrontDisplay::Release()
 	{
 		SpriteItemManager::FreeSprite(&ascii.ascii[i]);
 	}
-	for (int i=0; i<FDISP_ASCIISMALL_MAX; i++)
-	{
-		SpriteItemManager::FreeSprite(&asciismall.ascii[i]);
-	}
-
-	SpriteItemManager::FreeSprite(&first.face);
-	SpriteItemManager::FreeSprite(&first.namecard);
-
 }

@@ -33,12 +33,12 @@
 #define	SI_OPTIONKEY_CHANGE	"SI_OptionKey_Change"
 #define	SI_OPTIONKEY_PAUSE	"SI_OptionKey_Pause"
 #define	SI_OPTION_PLAYER	"SI_OptionKey_OK"
-*/
 #define	SI_OPTIONGRAPH_WINDOW	"SI_OptionGraph_Window"
 #define	SI_OPTIONGRAPH_FULL	"SI_OptionGraph_Full"
+*/
 
-#define	SI_DIGITBIG_0	"SI_DigitBig_0"
 /*
+#define	SI_DIGITBIG_0	"SI_DigitBig_0"
 #define	SI_DIGITBIG_1	"SI_DigitBig_1"
 #define	SI_DIGITBIG_2	"SI_DigitBig_2"
 #define	SI_DIGITBIG_3	"SI_DigitBig_3"
@@ -100,7 +100,9 @@
 #define	SI_BATTLE_16	"SI_Battle_16"
 #define	SI_BATTLE_17	"SI_Battle_17"
 */
+/*
 #define	SI_STAGE_CLEAR	"SI_Stage_Clear"
+*/
 /*
 #define	SI_TITLEWORD_01	"SI_TitleWord_01"
 #define	SI_TITLEWORD_02	"SI_TitleWord_02"
@@ -207,6 +209,7 @@
 #define	SI_ASCIIBIG_BS	"SI_ASCIIBig_BS"
 #define	SI_ASCIIBIG_END	"SI_ASCIIBig_End"
 #define	SI_ASCIIBIG_BLOCK	"SI_ASCIIBig_Block"
+/*
 #define	SI_DIGITSMALL_0	"SI_DigitSmall_0"
 #define	SI_DIGITSMALL_1	"SI_DigitSmall_1"
 #define	SI_DIGITSMALL_2	"SI_DigitSmall_2"
@@ -228,7 +231,6 @@
 #define	SI_SPELLLINE_BONUS	"SI_SpellLine_Bonus"
 #define	SI_SPELLLINE_HISTORY	"SI_SpellLine_History"
 #define	SI_SPELLLINE_FAILED	"SI_SpellLine_Failed"
-
 #define	SI_ASCIISMALL_X20	"SI_ASCIISmall_Null"
 #define	SI_ASCIISMALL_X21	"SI_ASCIISmall_!"
 #define	SI_ASCIISMALL_X22	"SI_ASCIISmall_\""
@@ -324,7 +326,8 @@
 #define	SI_ASCIISMALL_X7C	"SI_ASCIISmall_|"
 #define	SI_ASCIISMALL_X7D	"SI_ASCIISmall_}"
 #define	SI_ASCIISMALL_X7E	"SI_ASCIISmall_~"
-
+*/
+/*
 #define	SI_DIGITNORMAL_0	"SI_DigitNormal_0"
 #define	SI_DIGITNORMAL_1	"SI_DigitNormal_1"
 #define	SI_DIGITNORMAL_2	"SI_DigitNormal_2"
@@ -338,7 +341,9 @@
 #define	SI_DIGITNORMAL_DIV	"SI_DigitNormal_/"
 #define	SI_DIGITNORMAL_DOT	"SI_DigitNormal_."
 #define	SI_DIGITNORMAL_S	"SI_DigitNormal_s"
+*/
 #define	SI_DIGITCHARACTER_0	"SI_DigitCharacter_0"
+
 /*
 #define	SI_DIGITCHARACTER_1	"SI_DigitCharacter_1"
 #define	SI_DIGITCHARACTER_2	"SI_DigitCharacter_2"
@@ -463,22 +468,10 @@
 #define	SI_ENEMY_COLLAPSE_Y	"SI_Enemy_Collapse_Y"
 #define	SI_ENEMY_COLLAPSE_G	"SI_Enemy_Collapse_G"
 #define	SI_BOSS_TIMECIRCLE	"SI_Boss_TimeCircle"
-#define	SI_ITEM_POWER	"SI_Item_Power"
+#define	SI_ITEM_GUARD	"SI_Item_Guard"
+#define	SI_ITEM_BULLET	"SI_Item_Bullet"
+#define	SI_ITEM_EX	"SI_Item_Ex"
 #define	SI_ITEM_POINT	"SI_Item_Point"
-#define	SI_ITEM_BIGFAITH	"SI_Item_BigFaith"
-#define	SI_ITEM_BIGPOWER	"SI_Item_BigPower"
-#define	SI_ITEM_LIFEPIECE	"SI_Item_LifePiece"
-#define	SI_ITEM_FULLPOWER	"SI_Item_FullPower"
-#define	SI_ITEM_LIFE	"SI_Item_Life"
-#define	SI_ITEM_FAITH	"SI_Item_Faith"
-#define	SI_ITEM_POWER_OUT	"SI_Item_Power_Out"
-#define	SI_ITEM_POINT_OUT	"SI_Item_Point_Out"
-#define	SI_ITEM_BIGFAITH_OUT	"SI_Item_BigFaith_Out"
-#define	SI_ITEM_BIGPOWER_OUT	"SI_Item_BigPower_Out"
-#define	SI_ITEM_LIFEPIECE_OUT	"SI_Item_LifePiece_Out"
-#define	SI_ITEM_FULLPOWER_OUT	"SI_Item_FullPower_Out"
-#define	SI_ITEM_LIFE_OUT	"SI_Item_Life_Out"
-#define	SI_ITEM_FAITH_OUT	"SI_Item_Faith_Out"
 
 #define	SI_FRONTPANEL_LEFT_0	"SI_FrontPanel_Left_0"
 #define	SI_FRONTPANEL_RIGHT_0	"SI_FrontPanel_Right_0"
@@ -585,6 +578,7 @@
 #define	SI_MUSICNAME_36	"SI_MusicName_36"
 #define	SI_MUSICNAME_37	"SI_MusicName_37"
 */
+/*
 #define SI_BORDER_CIRCLE	"SI_BorderCircle"
-
+*/
 #endif

@@ -10,59 +10,41 @@
 #include "Bullet.h"
 #include "Chat.h"
 #include "BossInfo.h"
-#include "InfoQuad.h"
-#include "BResource.h"
 #include "EffectIDDefine.h"
 #include "SpriteItemManager.h"
 #include "FrontDisplayName.h"
 #include "FrontDisplay.h"
 #include "EventZone.h"
-
-Player Player::p[M_PL_MATCHMAXPLAYER];
-float Player::lostStack = 0;
-bool Player::able = false;
-
-//
+#include "BResource.h"
+#include "Scripter.h"
 
 #define _GAMERANK_MIN	8
 #define _GAMERANK_MAX	22
 #define _GAMERANK_ADDINTERVAL	9000
 #define _GAMERANK_STAGEOVERADD	-8
 
-BYTE Player::rank = _GAMERANK_MIN;
-int Player::lilycount = 0;
-
-#define _PL_HITONSCOREADD	40
-
-#define _PL_FAITHADD		1000
-#define _PL_SMALLFAITHADD	10
-
-#define _PL_NPOPGRAZEADD	100
-
-#define _PL_NPOPCOST		4
-
-#define _PL_BORDERIZEZONE_TIME	8
-#define _PL_BORDERGRAZEMAX		300
-
-#define _PL_BOMBFAITHCOSTRATE	0.75f
-
-#define _PLEXTEND_1		1000
-#define _PLEXTEND_2		2500
-#define _PLEXTEND_3		5000
-#define _PLEXTEND_4		8000
-#define _PLEXTEND_5		11000
-#define _PLEXTEND_MAX	99999
-
 #define _PL_SHOOTCHARGEINFI_1	8
 #define _PL_SHOOTCHARGEINFI_2	47
 #define _PL_SHOOTCHARGEINFI_3	63
 #define _PL_SHOOTCHARGEINFI_4	127
 
-#define _PLAYER_DEFAULETCARDLEVEL_(X)	(X+8)
-#define _PLAYER_DEFAULETBOSSLEVEL_(X)	(X+8)
+#define _PLAYER_DEFAULETCARDLEVEL_(X)	(X?9:8)
+#define _PLAYER_DEFAULETBOSSLEVEL_(X)	(X?9:8)
 
 #define _PLAYER_LIFECOSTMAX	2880
 #define _PLAYER_COMBOHITMAX	999
+
+#define _PLAYER_SHOOTPUSHOVER	9
+#define _PLAYER_SHOOTNOTPUSHOVER	9
+
+Player Player::p[M_PL_MATCHMAXPLAYER];
+float Player::lostStack = 0;
+bool Player::able = false;
+
+BYTE Player::rank = _GAMERANK_MIN;
+int Player::lilycount = 0;
+
+
 
 Player::Player()
 {
@@ -88,284 +70,6 @@ Player::~Player()
 	sprite = NULL;
 }
 
-void Player::Init()
-{
-	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
-	{
-		p[i].ClearNC();
-		p[i].exist = false;
-		p[i].ID = i;
-		p[i].nowID = i;
-		p[i].ID_sub_1 = 0xffff;
-		p[i].ID_sub_2 = 0xffff;
-	}
-	SetAble(false);
-}
-
-void Player::RenderAll(BYTE renderflag)
-{
-	int _playerindex = Export::GetPlayerIndexByRenderFlag(renderflag);
-	if (p[_playerindex].exist)
-	{
-		p[_playerindex].Render();
-		p[_playerindex].RenderEffect();
-	}
-}
-
-void Player::SetAble(bool setable)
-{
-	able = setable;
-}
-
-bool Player::CheckAble()
-{
-	return able;
-}
-
-void Player::initFrameIndex()
-{
-	WORD _ID;
-	for (int i=0; i<M_PL_ONESETPLAYER; i++)
-	{
-		if (i == 1)
-		{
-			_ID = ID_sub_1;
-		}
-		else if (i == 2)
-		{
-			_ID = ID_sub_2;
-		}
-		else
-		{
-			_ID = ID;
-		}
-		playerData * pdata = &(res.playerdata[_ID]);
-		int tfi = pdata->startFrame;
-		frameindex[i][PLAYER_FRAME_STAND] = tfi;
-
-		bool bhr = pdata->rightPreFrame;
-		bool bhl = pdata->leftPreFrame;
-
-		tfi += pdata->standFrame;
-		frameindex[i][PLAYER_FRAME_LEFTPRE] = tfi;
-		if (bhr)
-		{
-			tfi += pdata->rightPreFrame;
-		}
-		else
-		{
-			tfi += pdata->leftPreFrame;
-		}
-		frameindex[i][PLAYER_FRAME_LEFT] = tfi;
-
-		if (bhr)
-		{
-			tfi += pdata->rightFrame;
-		}
-		else
-		{
-			tfi += pdata->leftFrame;
-		}
-		if (!bhr || !bhl)
-		{
-			tfi -= pdata->leftPreFrame + pdata->rightPreFrame + pdata->leftFrame + pdata->rightFrame;
-		}
-		frameindex[i][PLAYER_FRAME_RIGHTPRE] = tfi;
-		if (bhr)
-		{
-			tfi += pdata->rightPreFrame;
-		}
-		else
-		{
-			tfi += pdata->leftPreFrame;
-		}
-		frameindex[i][PLAYER_FRAME_RIGHT] = tfi;
-		if (bhr)
-		{
-			tfi += pdata->rightFrame;
-		}
-		else
-		{
-			tfi += pdata->leftFrame;
-		}
-	}
-}
-
-BYTE Player::getFrameIndex(BYTE frameenum)
-{
-	flipx = false;
-	playerData * pdata = &(res.playerdata[nowID]);
-	if ((frameenum == PLAYER_FRAME_RIGHTPRE || frameenum == PLAYER_FRAME_RIGHT) && (!pdata->rightPreFrame) ||
-		(frameenum == PLAYER_FRAME_LEFTPRE || frameenum == PLAYER_FRAME_LEFT) && (!pdata->leftPreFrame))
-	{
-		flipx = true;
-	}
-	int tindex = 0;
-	if (nowID == ID_sub_1)
-	{
-		tindex = 1;
-	}
-	else if (nowID == ID_sub_2)
-	{
-		tindex = 2;
-	}
-	return frameindex[tindex][frameenum];
-}
-
-void Player::setFrame(BYTE frameenum)
-{
-	frameoffset = 0;
-	setIndexFrame(getFrameIndex(frameenum));
-	nowstate = frameenum;
-}
-
-void Player::setIndexFrame(BYTE index)
-{
-	playerData * pdata = &(res.playerdata[nowID]);
-	HTEXTURE nowtex = mp.tex[res.playerdata[nowID].tex];
-	sprite->SetTexture(nowtex);
-	float tw = pdata->usetexw / (pdata->tex_nCol);
-	float th = pdata->usetexh / (pdata->tex_nRow);
-	float ltx = tw * (index % (pdata->tex_nCol));
-	float lty = th * (index / (pdata->tex_nCol));
-	sprite->SetTextureRect(ltx, lty, tw, th);
-	sprite->SetFlip(flipx, false);
-}
-
-
-void Player::updateFrame(BYTE frameenum, int usetimer /* = -1*/)
-{
-	if (usetimer == -1)
-	{
-		usetimer = timer;
-	}
-	if (frameenum != nowstate && (frameenum == PLAYER_FRAME_STAND || frameenum+1 != nowstate))
-	{
-		setFrame(frameenum);
-		return;
-	}
-	if ((usetimer % PLAYER_ANIMATIONSPEED))
-	{
-		return;
-	}
-	playerData * pdata = &(res.playerdata[nowID]);
-	frameoffset++;
-	BYTE tbyte;
-	switch (nowstate)
-	{
-	case PLAYER_FRAME_STAND:
-		if (frameoffset >= pdata->standFrame)
-		{
-			setFrame(PLAYER_FRAME_STAND);
-		}
-		else
-		{
-			setIndexFrame(getFrameIndex(PLAYER_FRAME_STAND) + frameoffset);
-		}
-		break;
-	case PLAYER_FRAME_LEFTPRE:
-		if (!pdata->leftPreFrame)
-		{
-			tbyte = pdata->rightPreFrame;
-		}
-		else
-		{
-			tbyte = pdata->leftPreFrame;
-		}
-		if (frameoffset >= tbyte)
-		{
-			setFrame(PLAYER_FRAME_LEFT);
-		}
-		else
-		{
-			setIndexFrame(getFrameIndex(PLAYER_FRAME_LEFTPRE) + frameoffset);
-		}
-		break;
-	case PLAYER_FRAME_LEFT:
-		if (!pdata->leftFrame)
-		{
-			tbyte = pdata->rightFrame;
-		}
-		else
-		{
-			tbyte = pdata->leftFrame;
-		}
-		if (frameoffset >= tbyte)
-		{
-			setFrame(PLAYER_FRAME_LEFT);
-		}
-		else
-		{
-			setIndexFrame(getFrameIndex(PLAYER_FRAME_LEFT) + frameoffset);
-		}
-		break;
-	case PLAYER_FRAME_RIGHTPRE:
-		if (!pdata->rightPreFrame)
-		{
-			tbyte = pdata->leftPreFrame;
-		}
-		else
-		{
-			tbyte = pdata->rightPreFrame;
-		}
-		if (frameoffset >= tbyte)
-		{
-			setFrame(PLAYER_FRAME_RIGHT);
-		}
-		else
-		{
-			setIndexFrame(getFrameIndex(PLAYER_FRAME_RIGHTPRE) + frameoffset);
-		}
-		break;
-	case PLAYER_FRAME_RIGHT:
-		if (!pdata->rightFrame)
-		{
-			tbyte = pdata->leftFrame;
-		}
-		else
-		{
-			tbyte = pdata->rightFrame;
-		}
-		if (frameoffset >= tbyte)
-		{
-			setFrame(PLAYER_FRAME_RIGHT);
-		}
-		else
-		{
-			setIndexFrame(getFrameIndex(PLAYER_FRAME_RIGHT) + frameoffset);
-		}
-		break;
-	}
-}
-
-bool Player::HavePlayer(WORD _ID)
-{
-	if (_ID == ID || _ID == ID_sub_1 || _ID == ID_sub_2)
-	{
-		return true;
-	}
-	return false;
-}
-
-void Player::SetInfi(BYTE reasonflag, int _infitimer/* =PLAYER_INFIMAX */)
-{
-	infireasonflag |= reasonflag;
-	if (_infitimer == PLAYER_INFIMAX)
-	{
-		infitimer = PLAYER_INFIMAX;
-	}
-	else if (_infitimer == PLAYER_INFIUNSET)
-	{
-		infitimer = 0;
-	}
-
-	if (infitimer == PLAYER_INFIMAX || infitimer >= _infitimer)
-	{
-		return;
-	}
-	infitimer = _infitimer;
-}
-
 void Player::ClearNC()
 {
 }
@@ -387,7 +91,7 @@ void Player::ClearSet(BYTE round)
 	flag		=	PLAYER_MERGE;
 	bSlow		=	false;
 	bCharge		=	false;
-	bBorder		=	false;
+	bDrain		=	false;
 	bInfi		=	true;
 	hscale		=	1.0f;
 	vscale		=	1.0f;
@@ -397,9 +101,8 @@ void Player::ClearSet(BYTE round)
 	shottimer			=	0;
 	collapsetimer		=	0;
 	shoottimer			=	0;
-	bordertimer			=	0;
+	draintimer			=	0;
 	chargetimer			=	0;
-	bombtimer			=	0;
 	slowtimer			=	0;
 	fasttimer			=	0;
 	playerchangetimer	=	0;
@@ -415,6 +118,9 @@ void Player::ClearSet(BYTE round)
 	infitimer = 0;
 	rechargedelaytimer = 0;
 	infireasonflag = 0;
+
+	shootpushtimer = 0;
+	shootnotpushtimer = 0;
 
 	speedfactor		=	1.0f;
 
@@ -488,61 +194,7 @@ void Player::ClearSet(BYTE round)
 }
 
 //add
-void Player::SetInitLife(BYTE _initlife)
-{
-	initlife = _initlife;
-}
 
-void Player::UpdatePlayerData()
-{
-	playerData * pdata = &(res.playerdata[nowID]);
-	r = pdata->collision_r;
-	speed = pdata->fastspeed;
-	slowspeed = pdata->slowspeed;
-	graze_r = pdata->graze_r;
-	shotdelay = pdata->shotdelay;
-	chargespeed = pdata->chargespeed;
-	rechargedelay = pdata->rechargedelay;
-	fExSendParaB = pdata->exsendparab;
-	fExSendParaA = pdata->exsendparaa;
-}
-
-void Player::AddLostStack()
-{
-	float lost = (hge->Timer_GetDelta() - 1/60.0f) * 100 * 60.0f;
-	if(lost < 0)
-		lost = 0;
-	if(lost > 100)
-		lost = 100;
-	lostStack += lost;
-}
-
-void Player::Action(bool * notinstop)
-{
-	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
-	{
-		if (p[i].exist && notinstop[i])
-		{
-			p[i].action();
-		}
-	}
-	if (time % _GAMERANK_ADDINTERVAL == 0)
-	{
-		rank++;
-		if (rank > _GAMERANK_MAX)
-		{
-			rank = _GAMERANK_MAX;
-		}
-	}
-}
-
-void Player::SetChara(WORD id, WORD id_sub_1/* =0xffff */, WORD id_sub_2/* =0xffff */)
-{
-	ID = id;
-	nowID = ID;
-	ID_sub_1 = id_sub_1;
-	ID_sub_2 = id_sub_2;
-}
 
 void Player::valueSet(BYTE _playerindex, BYTE round)
 {
@@ -587,6 +239,25 @@ void Player::valueSet(BYTE _playerindex, BYTE round)
 	effBorderOff.Stop();
 
 	SetAble(true);
+}
+
+void Player::Action(bool * notinstop)
+{
+	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
+	{
+		if (p[i].exist && notinstop[i])
+		{
+			p[i].action();
+		}
+	}
+	if (time % _GAMERANK_ADDINTERVAL == 0)
+	{
+		rank++;
+		if (rank > _GAMERANK_MAX)
+		{
+			rank = _GAMERANK_MAX;
+		}
+	}
 }
 
 void Player::action()
@@ -681,11 +352,11 @@ void Player::action()
 			flag &= ~PLAYER_BOMB;
 		}
 	}
-	if(flag & PLAYER_BORDER)
+	if(flag & PLAYER_DRAIN)
 	{
-		if(Border())
+		if(Drain())
 		{
-			flag &= ~PLAYER_BORDER;
+			flag &= ~PLAYER_DRAIN;
 		}
 	}
 	if (flag & PLAYER_CHARGE)
@@ -778,27 +449,80 @@ void Player::action()
 		nowspeed *= speedfactor;
 		speedfactor = 1.0f;
 
-		if (hge->Input_GetDIKey(KS_CHARGE_MP_(playerindex)))
+		if(hge->Input_GetDIKey(KS_FIRE_MP_(playerindex)))
 		{
-			bCharge = true;
-			if (hge->Input_GetDIKey(KS_CHARGE_MP_(playerindex), DIKEY_DOWN))
+			if (!Chat::chatitem.IsChatting())
 			{
-				if (!(flag & PLAYER_CHARGE))
+				flag |= PLAYER_SHOOT;
+			}
+			shootnotpushtimer = 0;
+		}
+		else
+		{
+			if (shootnotpushtimer < 0xff)
+			{
+				shootnotpushtimer++;
+			}
+		}
+		if (shootpushtimer < _PLAYER_SHOOTPUSHOVER)
+		{
+			if (hge->Input_GetDIKey(KS_FIRE_MP_(playerindex)))
+			{
+				shootpushtimer++;
+			}
+			else
+			{
+				shootpushtimer = 0;
+			}
+		}
+		else
+		{
+			if (!hge->Input_GetDIKey(KS_FIRE_MP_(playerindex)))
+			{
+				bCharge = false;
+				flag &= ~PLAYER_CHARGE;
+				shootpushtimer = 0;
+			}
+			else
+			{
+				if (!rechargedelaytimer)
 				{
-					chargetimer = 0;
-					flag |= PLAYER_CHARGE;
+					flag &= ~PLAYER_SHOOT;
+					bCharge = true;
+					if (shootpushtimer == _PLAYER_SHOOTPUSHOVER)
+					{
+						if (!(flag & PLAYER_CHARGE))
+						{
+							chargetimer = 0;
+							flag |= PLAYER_CHARGE;
+							shootpushtimer = 0xff;
+						}
+					}
+				}
+			}
+		}
+		if (hge->Input_GetDIKey(KS_DRAIN_MP_(playerindex)))
+		{
+			bDrain = true;
+			if (hge->Input_GetDIKey(KS_DRAIN_MP_(playerindex), DIKEY_DOWN))
+			{
+				if (!(flag & PLAYER_DRAIN))
+				{
+					draintimer = 0;
+					flag |= PLAYER_DRAIN;
 				}
 			}
 		}
 		else
 		{
-			bCharge = false;
-			flag &= ~PLAYER_CHARGE;
+			bDrain = false;
+			flag &= ~PLAYER_DRAIN;
 		}
 
-		if(!(flag & PLAYER_BORDER || flag & PLAYER_BOMB))
+		/*
+		if(!(flag & PLAYER_DRAIN || flag & PLAYER_CHARGE))
 		{
-			if(hge->Input_GetDIKey(KS_CHARGE_MP_(playerindex), DIKEY_DOWN))
+			if(hge->Input_GetDIKey(KS_DRAIN_MP_(playerindex), DIKEY_DOWN))
 			{
 				if (!(flag & PLAYER_PLAYERCHANGE))
 				{
@@ -807,6 +531,7 @@ void Player::action()
 				}
 			}
 		}
+		*/
 		if((hge->Input_GetDIKey(KS_UP_MP_(playerindex)) ^ hge->Input_GetDIKey(KS_DOWN_MP_(playerindex))) &&
 			hge->Input_GetDIKey(KS_LEFT_MP_(playerindex)) ^ hge->Input_GetDIKey(KS_RIGHT_MP_(playerindex)))
 			nowspeed *= M_SQUARE_2;
@@ -835,12 +560,10 @@ void Player::action()
 		{
 			updateFrame(PLAYER_FRAME_STAND);
 		}
-		if(hge->Input_GetDIKey(KS_FIRE_MP_(playerindex)) && !Chat::chatitem.IsChatting())
-			flag |= PLAYER_SHOOT;
 	}
 	if(hge->Input_GetDIKey(KS_QUICK_MP_(playerindex)) && !(flag & PLAYER_MERGE))
 	{
-		callBomb(false/*mp.spellmode*/);
+		callBomb();
 	}
 
 	if (!(flag & PLAYER_MERGE) || mergetimer >= 32)
@@ -877,172 +600,6 @@ void Player::action()
 
 	for(int i=0;i<PLAYERGHOSTMAX;i++)
 		pg[i].action();
-}
-
-LONGLONG Player::getItemBonus(WORD itemtype)
-{
-	LONGLONG retscore = 0;
-	switch (itemtype)
-	{
-	case ITEM_POINT:
-//		nPoint++;
-//		retscore = nFaith * (fPoprate + fPopratebase);
-//		if (fPoprate >= 1.0f)
-//		{
-//			retscore *= 2;
-//		}
-		break;
-	case ITEM_POWER:
-//		nPower+=_PL_POWERADD;
-		retscore = 100;
-		break;
-	case ITEM_BIGPOWER:
-//		nPower += _PL_BIGPOWERADD;
-		retscore = 500;
-		SE::push(SE_ITEM_POWERUP, x);
-		break;
-	case ITEM_FULL:
-//		nPower += _PL_FULLPOWERADD;
-//		Item::ChangeItemID(ITEM_FULL, ITEM_SMALLFAITH);
-		SE::push(SE_ITEM_POWERUP, x);
-		retscore = 1000;
-		break;
-	case ITEM_BOMB:
-//		nPower += _PL_BOMBPOWERADD;
-		SE::push(SE_ITEM_EXTEND, x);
-		retscore = 1000;
-		break;
-	case ITEM_EXTEND:
-		SE::push(SE_ITEM_EXTEND, x);
-		nLife++;
-		if(nLife > PL_NPLAYERMAX)
-		{
-			nLife = PL_NPLAYERMAX;
-//			nPower += _PL_BOMBPOWERADD;
-		}
-		retscore = 1000;
-		break;
-	case ITEM_FAITH:
-//		nFaith += _PL_FAITHADD;
-//		retscore = nPower;
-		break;
-	case ITEM_SMALLFAITH:
-//		nFaith += _PL_SMALLFAITHADD;
-//		retscore = nPower / 100;
-		break;
-	}
-	return retscore;
-}
-
-void Player::DoGraze(float x, float y)
-{
-	if(!(flag & (PLAYER_MERGE | PLAYER_SHOT | PLAYER_COLLAPSE)))
-	{
-		flag |= PLAYER_GRAZE;
-	}
-}
-
-void Player::DoPlayerBulletHit(int hitonfactor)
-{
-}
-
-void Player::DoShot()
-{
-	if (!bInfi && !(flag & (PLAYER_SHOT | PLAYER_COLLAPSE)))
-	{
-//		if(nPower >= bombperpower)
-			flag |= PLAYER_SHOT;
-//		else
-//			flag |= PLAYER_COLLAPSE;
-	}
-}
-
-void Player::GetScoreLife(float maxlife, bool isenemy /* = true */)
-{
-}
-
-int Player::GrazeRegain(int grazenum)
-{
-	return 200 * grazenum;
-}
-
-void Player::GetNCharge(BYTE * ncharge, BYTE * nchargemax)
-{
-	if (ncharge)
-	{
-		*ncharge = (BYTE)(fCharge/PLAYER_CHARGEONE);
-	}
-	if (nchargemax)
-	{
-		*nchargemax = (BYTE)(fChargeMax/PLAYER_CHARGEONE);
-	}
-}
-
-void Player::callCollapse()
-{
-	if (flag & PLAYER_COLLAPSE)
-	{
-		return;
-	}
-	flag |= PLAYER_COLLAPSE;
-	collapsetimer = 0;
-}
-
-bool Player::callBomb(bool onlyborder)
-{
-	if (Chat::chatitem.IsChatting() || (flag & PLAYER_COLLAPSE) || (flag & PLAYER_BOMB))
-	{
-		return false;
-	}
-//	if (nPower < bombperpower)
-//	{
-//		return false;
-//	}
-	if (onlyborder && (flag & PLAYER_BORDER))
-	{
-		return true;
-	}
-	if (!(flag & PLAYER_BORDER) && !(flag & PLAYER_SHOT))
-	{
-		bordertimer = 0;
-		flag |= PLAYER_BORDER;
-		return true;
-	}
-	
-	if (onlyborder)
-	{
-		return false;
-	}
-
-	if (flag & PLAYER_BORDER)
-	{
-		if (!hge->Input_GetDIKey(KS_QUICK_MP_(playerindex), DIKEY_DOWN) && hge->Input_GetDIKey(KS_QUICK_MP_(playerindex)))
-		{
-			return false;
-		}
-	}
-	flag |= PLAYER_BOMB;
-	// TODO:
-	SetInfi(PLAYERINFI_SHOOTCHARGE, 240);
-	return true;
-}
-
-void Player::callSlowFastChange(bool toslow)
-{
-	if (toslow)
-	{
-		hge->Input_SetDIKey(KS_SLOW_MP_(playerindex));
-	}
-	else
-	{
-		hge->Input_SetDIKey(KS_SLOW_MP_(playerindex), false);
-	}
-}
-
-void Player::callPlayerChange()
-{
-	flag |= PLAYER_PLAYERCHANGE;
-	playerchangetimer = 0;
 }
 
 bool Player::Merge()
@@ -1092,12 +649,8 @@ bool Player::Merge()
 bool Player::Shot()
 {
 	shottimer++;
-	/*
-	if (mp.spellmode)
-	{
-		shottimer = shotdelay;
-	}
-	else*/ if(flag & PLAYER_BORDER || flag & PLAYER_BOMB)
+	// TODO:
+	if(bInfi)
 	{
 		shottimer = 0;
 		return true;
@@ -1108,14 +661,6 @@ bool Player::Shot()
 //		Item::undrainAll();
 		SE::push(SE_PLAYER_SHOT, x);
 	}
-	else if (shottimer == (8>shotdelay?shotdelay:8) && bossinfo.isSpell() && (BossInfo::spellflag & BISF_BOMB)/* && !mp.spellmode*/)
-	{
-		if (callBomb())
-		{
-			shottimer = 0;
-			return true;
-		}
-	}
 	else if(shottimer == shotdelay)
 	{
 		shottimer = 0;
@@ -1124,6 +669,61 @@ bool Player::Shot()
 	}
 
 	esShot.hscale = (shotdelay - shottimer) * 4.0f / shotdelay;
+	return false;
+}
+
+bool Player::CostLife()
+{
+	costlifetimer++;
+	if (costlifetimer == 1)
+	{
+		if (nLife == 1)
+		{
+			flag |= PLAYER_COLLAPSE;
+			costlifetimer = 0;
+			return true;
+		}
+		int nLifeCostNum = nLifeCost / 720 + 2;
+		if (nLife > nLifeCostNum+1)
+		{
+			nLife -= nLifeCostNum;
+		}
+		else
+		{
+			FrontDisplay::fdisp.gameinfodisplay.lastlifecountdown[playerindex] = FDISP_COUNTDOWNTIME;
+			SE::push(SE_PLAYER_ALERT, x);
+			nLife = 1;
+		}
+		SetInfi(PLAYERINFI_COSTLIFE, 120);
+		EventZone::Build(EVENTZONE_TYPE_BULLETFADEOUT|EVENTZONE_TYPE_ENEMYGHOSTDAMAGE, playerindex, x, y, 120, 0, 10, EVENTZONE_EVENT_NULL, 15.6);
+		if (nLife == 1)
+		{
+			AddCharge(0, PLAYER_CHARGEMAX);
+		}
+		else
+		{
+			AddCharge(0, 130-nLife * 10);
+		}
+		nBounceAngle = RANDA;
+	}
+	else if (costlifetimer == 60)
+	{
+		costlifetimer = 0;
+		return true;
+	}
+	else
+	{
+		hge->Input_SetDIKey(KS_UP_MP_(playerindex), false);
+		hge->Input_SetDIKey(KS_DOWN_MP_(playerindex), false);
+		hge->Input_SetDIKey(KS_LEFT_MP_(playerindex), false);
+		hge->Input_SetDIKey(KS_RIGHT_MP_(playerindex), false);
+		hge->Input_SetDIKey(KS_FIRE_MP_(playerindex), false);
+		hge->Input_SetDIKey(KS_QUICK_MP_(playerindex), false);
+		hge->Input_SetDIKey(KS_SLOW_MP_(playerindex), false);
+		hge->Input_SetDIKey(KS_DRAIN_MP_(playerindex), false);
+		x += cost(nBounceAngle) * ((60-costlifetimer) / 20.0f);
+		y += sint(nBounceAngle) * ((60-costlifetimer) / 20.0f);
+	}
 	return false;
 }
 
@@ -1217,33 +817,156 @@ bool Player::Collapse()
 	return false;
 }
 
-bool Player::Border()
+bool Player::Shoot()
 {
+	if(flag & PLAYER_SHOT || Chat::chatitem.IsChatting())
+	{
+		shoottimer = 0;
+		return true;
+	}
+
+	playershootData * item;
+	for (int i=0; i<PLAYERSHOOTTYPEMAX; i++)
+	{
+		item = &(res.playershootdata[i]);
+		if (item->timeMod)
+		{
+			if (item->userID == nowID && item->timeMod && (item->timeMod == 1 || !(shoottimer % item->timeMod)))
+			{
+				PlayerBullet::Build(playerindex, i);
+			}
+		}
+	}
+	shoottimer++;
+	//
+	if(shootnotpushtimer > _PLAYER_SHOOTNOTPUSHOVER)
+	{
+		shoottimer = 0;
+		return true;
+	}
+	return false;
+}
+
+bool Player::Drain()
+{
+	draintimer++;
+	scr.Execute(SCR_EVENT, SCR_EVENT_PLAYERDRAIN, playerindex);
+	return false;
+}
+
+bool Player::Bomb()
+{
+	BYTE ncharge;
+	BYTE nchargemax;
+	GetNCharge(&ncharge, &nchargemax);
+	if (nchargemax > 1)
+	{
+		shootCharge(nchargemax);
+		AddCharge(-PLAYER_CHARGEMAX, -PLAYER_CHARGEMAX);
+	}
 	return true;
 }
 
-void Player::_ShootCharge(BYTE nChargeLevel)
+bool Player::SlowChange()
 {
-	switch (nChargeLevel)
+	if(hge->Input_GetDIKey(KS_SLOW_MP_(playerindex), DIKEY_DOWN))
+		slowtimer = 0;
+	bSlow = true;
+	slowtimer++;
+	if(slowtimer == 1)
 	{
-	case 0:
-		return;
-	case 1:
-		SetInfi(PLAYERINFI_SHOOTCHARGE, _PL_SHOOTCHARGEINFI_1);
-		break;
-	case 2:
-		SetInfi(PLAYERINFI_SHOOTCHARGE, _PL_SHOOTCHARGEINFI_2);
-		AddCharge(-PLAYER_CHARGEONE, -PLAYER_CHARGEONE);
-		break;
-	case 3:
-		SetInfi(PLAYERINFI_SHOOTCHARGE, _PL_SHOOTCHARGEINFI_3);
-		AddCharge(-PLAYER_CHARGEONE*2, -PLAYER_CHARGEONE*2);
-		break;
-	case 4:
-		SetInfi(PLAYERINFI_SHOOTCHARGE, _PL_SHOOTCHARGEINFI_4);
-		AddCharge(-PLAYER_CHARGEONE*3, -PLAYER_CHARGEONE*3);
-		break;
+		ResetPlayerGhost();
+		SE::push(SE_PLAYER_SLOWON, x);
+		for(int i=0;i<PLAYERGHOSTMAX;i++)
+		{
+			pg[i].timer = 0;
+		}
 	}
+	else if(slowtimer == 16)
+	{
+		esPoint.colorSet(0xffffffff);
+		slowtimer = 0;
+		return true;
+	}
+
+	esPoint.actionSet(0, 0, (24 - slowtimer) * 25);
+	esPoint.colorSet(((slowtimer*16)<<24)+0xffffff);
+	return false;
+}
+
+bool Player::FastChange()
+{
+	if(hge->Input_GetDIKey(KS_SLOW_MP_(playerindex), DIKEY_UP))
+		fasttimer = 0;
+	bSlow = false;
+	fasttimer++;
+	if(fasttimer == 1)
+	{
+		ResetPlayerGhost();
+		SE::push(SE_PLAYER_SLOWOFF, x);
+		for(int i=0;i<PLAYERGHOSTMAX;i++)
+		{
+			pg[i].timer = 0;
+		}
+	}
+	else if(fasttimer == 16)
+	{
+		esPoint.colorSet(0x00ffffff);
+		fasttimer = 0;
+		return true;
+	}
+	esPoint.colorSet(((0xff-fasttimer*16)<<24)+0xffffff);
+	return false;
+}
+
+bool Player::Charge()
+{
+	chargetimer++;
+	if (chargetimer == 1)
+	{
+		SE::push(SE_PLAYER_CHARGEON, x);
+	}
+	BYTE nChargeLevel = AddCharge(chargespeed);
+	if (hge->Input_GetDIKey(KS_FIRE_MP_(playerindex), DIKEY_UP))
+	{
+		shootCharge(nChargeLevel);
+		chargetimer = 0;
+		fCharge = 0;
+		rechargedelaytimer = rechargedelay;
+		return true;
+	}
+	return false;
+}
+
+bool Player::PlayerChange()
+{
+	if(hge->Input_GetDIKey(KS_DRAIN_MP_(playerindex), DIKEY_DOWN))
+		playerchangetimer = 0;
+	playerchangetimer++;
+	if(playerchangetimer == 1)
+	{
+	}
+	else if(playerchangetimer == 16)
+	{
+		playerchangetimer = 0;
+		return true;
+	}
+	esChange.colorSet(0x3030ff | (((16-playerchangetimer) * 16)<<16));
+	return false;
+}
+
+void Player::changePlayerID(WORD toID, bool moveghost/* =false */)
+{
+	nowID = toID;
+	ResetPlayerGhost(moveghost);
+	UpdatePlayerData();
+}
+
+bool Player::Graze()
+{
+	effGraze.Fire();
+	SE::push(SE_PLAYER_GRAZE, x);
+	return true;
 }
 
 void Player::DoEnemyCollapse(float x, float y)
@@ -1291,6 +1014,208 @@ void Player::DoEnemyCollapse(float x, float y)
 		}
 	}
 	AddSpellPoint(addspellpoint);
+}
+
+void Player::DoGraze(float x, float y)
+{
+	if(!(flag & (PLAYER_MERGE | PLAYER_SHOT | PLAYER_COLLAPSE)))
+	{
+		flag |= PLAYER_GRAZE;
+	}
+}
+
+void Player::DoPlayerBulletHit(int hitonfactor)
+{
+}
+
+void Player::DoShot()
+{
+	if (!bInfi && !(flag & (PLAYER_SHOT | PLAYER_COLLAPSE)))
+	{
+//		if(nPower >= bombperpower)
+			flag |= PLAYER_SHOT;
+//		else
+//			flag |= PLAYER_COLLAPSE;
+	}
+}
+
+LONGLONG Player::DoItemGet(WORD itemtype)
+{
+	LONGLONG retscore = 0;
+	switch (itemtype)
+	{
+	case ITEM_POINT:
+		//		nPoint++;
+		//		retscore = nFaith * (fPoprate + fPopratebase);
+		//		if (fPoprate >= 1.0f)
+		//		{
+		//			retscore *= 2;
+		//		}
+		break;
+	case ITEM_POWER:
+		//		nPower+=_PL_POWERADD;
+		retscore = 100;
+		break;
+	case ITEM_BIGPOWER:
+		//		nPower += _PL_BIGPOWERADD;
+		retscore = 500;
+		SE::push(SE_ITEM_POWERUP, x);
+		break;
+	case ITEM_FULL:
+		//		nPower += _PL_FULLPOWERADD;
+		//		Item::ChangeItemID(ITEM_FULL, ITEM_SMALLFAITH);
+		SE::push(SE_ITEM_POWERUP, x);
+		retscore = 1000;
+		break;
+	case ITEM_BOMB:
+		//		nPower += _PL_BOMBPOWERADD;
+		SE::push(SE_ITEM_EXTEND, x);
+		retscore = 1000;
+		break;
+	case ITEM_EXTEND:
+		SE::push(SE_ITEM_EXTEND, x);
+		nLife++;
+		if (nLife > initlife)
+		{
+			nLife = initlife;
+		}
+//		if(nLife > PL_NPLAYERMAX)
+//		{
+//			nLife = PL_NPLAYERMAX;
+			//			nPower += _PL_BOMBPOWERADD;
+//		}
+		retscore = 1000;
+		break;
+	case ITEM_FAITH:
+		//		nFaith += _PL_FAITHADD;
+		//		retscore = nPower;
+		break;
+	case ITEM_SMALLFAITH:
+		//		nFaith += _PL_SMALLFAITHADD;
+		//		retscore = nPower / 100;
+		break;
+	}
+	return retscore;
+}
+
+void Player::GetNCharge(BYTE * ncharge, BYTE * nchargemax)
+{
+	if (ncharge)
+	{
+		*ncharge = (BYTE)(fCharge/PLAYER_CHARGEONE);
+	}
+	if (nchargemax)
+	{
+		*nchargemax = (BYTE)(fChargeMax/PLAYER_CHARGEONE);
+	}
+}
+
+
+void Player::ResetPlayerGhost(bool move /* = false */)
+{
+	int tid = nowID;
+	tid *= PLAYERGHOSTMAX * 2;
+	if (bSlow)
+	{
+		tid += PLAYERGHOSTMAX;
+	}
+	for (int i=0; i<PLAYERGHOSTMAX; i++)
+	{
+		pg[i].valueSet(playerindex, tid+i, move);
+	}
+}
+
+void Player::Render()
+{
+	sprite->SetColor(alpha<<24|diffuse);
+	sprite->RenderEx(x, y, 0, hscale, vscale);
+}
+
+void Player::RenderEffect()
+{
+	effGraze.Render();
+
+	for(int i=0;i<PLAYERGHOSTMAX;i++)
+		pg[i].Render();
+	if(flag & PLAYER_PLAYERCHANGE)
+	{
+		esChange.Render();
+	}
+	if(flag & PLAYER_SHOT)
+		esShot.Render();
+	effBorderOff.Render();
+	if(bSlow || flag & PLAYER_FASTCHANGE)
+	{
+		esPoint.Render();
+		esPoint.headangle = -esPoint.headangle;
+		esPoint.Render();
+		esPoint.headangle = -esPoint.headangle;
+	}
+	if(flag & PLAYER_COLLAPSE)
+		esCollapse.Render();
+
+	effCollapse.Render();
+}
+
+void Player::callCollapse()
+{
+	if (flag & PLAYER_COLLAPSE)
+	{
+		return;
+	}
+	flag |= PLAYER_COLLAPSE;
+	collapsetimer = 0;
+}
+
+bool Player::callBomb()
+{
+	if (Chat::chatitem.IsChatting() || (flag & PLAYER_COLLAPSE) || bInfi)
+	{
+		return false;
+	}
+	return Bomb();
+}
+
+void Player::callSlowFastChange(bool toslow)
+{
+	if (toslow)
+	{
+		hge->Input_SetDIKey(KS_SLOW_MP_(playerindex));
+	}
+	else
+	{
+		hge->Input_SetDIKey(KS_SLOW_MP_(playerindex), false);
+	}
+}
+
+void Player::callPlayerChange()
+{
+	flag |= PLAYER_PLAYERCHANGE;
+	playerchangetimer = 0;
+}
+
+void Player::shootCharge(BYTE nChargeLevel)
+{
+	switch (nChargeLevel)
+	{
+	case 0:
+		return;
+	case 1:
+		SetInfi(PLAYERINFI_SHOOTCHARGE, _PL_SHOOTCHARGEINFI_1);
+		break;
+	case 2:
+		SetInfi(PLAYERINFI_SHOOTCHARGE, _PL_SHOOTCHARGEINFI_2);
+		AddCharge(-PLAYER_CHARGEONE, -PLAYER_CHARGEONE);
+		break;
+	case 3:
+		SetInfi(PLAYERINFI_SHOOTCHARGE, _PL_SHOOTCHARGEINFI_3);
+		AddCharge(-PLAYER_CHARGEONE*2, -PLAYER_CHARGEONE*2);
+		break;
+	case 4:
+		SetInfi(PLAYERINFI_SHOOTCHARGE, _PL_SHOOTCHARGEINFI_4);
+		AddCharge(-PLAYER_CHARGEONE*3, -PLAYER_CHARGEONE*3);
+		break;
+	}
 }
 
 void Player::SendEx(float x, float y, bool bythis/* =true */)
@@ -1418,222 +1343,4 @@ BYTE Player::AddCharge(float addcharge, float addchargemax)
 		FrontDisplay::fdisp.gameinfodisplay.gaugefilledcountdown[playerindex] = FDISP_COUNTDOWNTIME;
 	}
 	return nchargenow;
-}
-
-bool Player::Charge()
-{
-	if (rechargedelaytimer)
-	{
-		return false;
-	}
-	chargetimer++;
-	if (chargetimer == 1)
-	{
-		SE::push(SE_PLAYER_CHARGEON, x);
-	}
-	BYTE nChargeLevel = AddCharge(chargespeed);
-	if (hge->Input_GetDIKey(KS_CHARGE_MP_(playerindex), DIKEY_UP))
-	{
-		_ShootCharge(nChargeLevel);
-		chargetimer = 0;
-		fCharge = 0;
-		rechargedelaytimer = rechargedelay;
-		return true;
-	}
-	return false;
-}
-
-bool Player::Bomb()
-{
-	BYTE ncharge;
-	GetNCharge(&ncharge);
-	if (ncharge > 1)
-	{
-		_ShootCharge(ncharge);
-	}
-	return true;
-}
-
-void Player::ResetPlayerGhost(bool move /* = false */)
-{
-	int tid = nowID;
-	tid *= PLAYERGHOSTMAX * 2;
-	if (bSlow)
-	{
-		tid += PLAYERGHOSTMAX;
-	}
-	for (int i=0; i<PLAYERGHOSTMAX; i++)
-	{
-		pg[i].valueSet(playerindex, tid+i, move);
-	}
-}
-
-bool Player::SlowChange()
-{
-	if(hge->Input_GetDIKey(KS_SLOW_MP_(playerindex), DIKEY_DOWN))
-		slowtimer = 0;
-	bSlow = true;
-	slowtimer++;
-	if(slowtimer == 1)
-	{
-		ResetPlayerGhost();
-		SE::push(SE_PLAYER_SLOWON, x);
-		for(int i=0;i<PLAYERGHOSTMAX;i++)
-		{
-			pg[i].timer = 0;
-		}
-	}
-	else if(slowtimer == 16)
-	{
-		esPoint.colorSet(0xffffffff);
-		slowtimer = 0;
-		return true;
-	}
-
-	esPoint.actionSet(0, 0, (24 - slowtimer) * 25);
-	esPoint.colorSet(((slowtimer*16)<<24)+0xffffff);
-	return false;
-}
-
-bool Player::FastChange()
-{
-	if(hge->Input_GetDIKey(KS_SLOW_MP_(playerindex), DIKEY_UP))
-		fasttimer = 0;
-	bSlow = false;
-	fasttimer++;
-	if(fasttimer == 1)
-	{
-		ResetPlayerGhost();
-		SE::push(SE_PLAYER_SLOWOFF, x);
-		for(int i=0;i<PLAYERGHOSTMAX;i++)
-		{
-			pg[i].timer = 0;
-		}
-	}
-	else if(fasttimer == 16)
-	{
-		esPoint.colorSet(0x00ffffff);
-		fasttimer = 0;
-		return true;
-	}
-	esPoint.colorSet(((0xff-fasttimer*16)<<24)+0xffffff);
-	return false;
-}
-
-void Player::changePlayerID(WORD toID, bool moveghost/* =false */)
-{
-	nowID = toID;
-	ResetPlayerGhost(moveghost);
-	UpdatePlayerData();
-}
-
-bool Player::PlayerChange()
-{
-	if(hge->Input_GetDIKey(KS_CHARGE_MP_(playerindex), DIKEY_DOWN))
-		playerchangetimer = 0;
-	playerchangetimer++;
-	if(playerchangetimer == 1)
-	{
-	}
-	else if(playerchangetimer == 16)
-	{
-		playerchangetimer = 0;
-		return true;
-	}
-	esChange.colorSet(0x3030ff | (((16-playerchangetimer) * 16)<<16));
-	return false;
-}
-
-bool Player::Graze()
-{
-	effGraze.Fire();
-	SE::push(SE_PLAYER_GRAZE, x);
-	return true;
-}
-
-bool Player::CostLife()
-{
-	costlifetimer++;
-	if (costlifetimer == 1)
-	{
-		if (nLife == 1)
-		{
-			flag |= PLAYER_COLLAPSE;
-			costlifetimer = 0;
-			return true;
-		}
-		int nLifeCostNum = nLifeCost / 720 + 2;
-		if (nLife > nLifeCostNum+1)
-		{
-			nLife -= nLifeCostNum;
-		}
-		else
-		{
-			FrontDisplay::fdisp.gameinfodisplay.lastlifecountdown[playerindex] = FDISP_COUNTDOWNTIME;
-			SE::push(SE_PLAYER_ALERT, x);
-			nLife = 1;
-		}
-		SetInfi(PLAYERINFI_COSTLIFE, 120);
-		EventZone::Build(EVENTZONE_TYPE_BULLETFADEOUT|EVENTZONE_TYPE_ENEMYGHOSTDAMAGE, playerindex, x, y, 120, 0, 10, EVENTZONE_EVENT_NULL, 15.6);
-		if (nLife == 1)
-		{
-			AddCharge(0, PLAYER_CHARGEMAX);
-		}
-		else
-		{
-			AddCharge(0, 130-nLife * 10);
-		}
-		nBounceAngle = RANDA;
-	}
-	else if (costlifetimer == 60)
-	{
-		costlifetimer = 0;
-		return true;
-	}
-	else
-	{
-		hge->Input_SetDIKey(KS_UP_MP_(playerindex), false);
-		hge->Input_SetDIKey(KS_DOWN_MP_(playerindex), false);
-		hge->Input_SetDIKey(KS_LEFT_MP_(playerindex), false);
-		hge->Input_SetDIKey(KS_RIGHT_MP_(playerindex), false);
-		hge->Input_SetDIKey(KS_FIRE_MP_(playerindex), false);
-		hge->Input_SetDIKey(KS_QUICK_MP_(playerindex), false);
-		hge->Input_SetDIKey(KS_SLOW_MP_(playerindex), false);
-		hge->Input_SetDIKey(KS_CHARGE_MP_(playerindex), false);
-		x += cost(nBounceAngle) * ((60-costlifetimer) / 20.0f);
-		y += sint(nBounceAngle) * ((60-costlifetimer) / 20.0f);
-	}
-	return false;
-}
-
-void Player::Render()
-{
-	sprite->SetColor(alpha<<24|diffuse);
-	sprite->RenderEx(x, y, 0, hscale, vscale);
-}
-
-void Player::RenderEffect()
-{
-	effGraze.Render();
-
-	for(int i=0;i<PLAYERGHOSTMAX;i++)
-		pg[i].Render();
-	if(flag & PLAYER_PLAYERCHANGE)
-	{
-		esChange.Render();
-	}
-	if(flag & PLAYER_SHOT)
-		esShot.Render();
-	effBorderOff.Render();
-	if(bSlow || flag & PLAYER_FASTCHANGE)
-	{
-		esPoint.Render();
-		esPoint.headangle = -esPoint.headangle;
-		esPoint.Render();
-		esPoint.headangle = -esPoint.headangle;
-	}
-	if(flag & PLAYER_COLLAPSE)
-		esCollapse.Render();
-
-	effCollapse.Render();
 }

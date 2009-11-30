@@ -301,7 +301,6 @@ bool BResource::Pack(void * pStrdesc, void * pCustomConstData)
 		RSIZE_ENEMY + 
 		RSIZE_PLAYER + 
 		RSIZE_SPRITE + 
-		RSIZE_PLAYERBULLET + 
 		RSIZE_PLAYERSHOOT + 
 		RSIZE_PLAYERGHOST + 
 		sizeof(spellData) * spelldata.size();
@@ -350,8 +349,6 @@ bool BResource::Pack(void * pStrdesc, void * pCustomConstData)
 	offset += RSIZE_PLAYER;
 	memcpy(content+offset, spritedata, RSIZE_SPRITE);
 	offset += RSIZE_SPRITE;
-	memcpy(content+offset, playerbulletdata, RSIZE_PLAYERBULLET);
-	offset += RSIZE_PLAYERBULLET;
 	memcpy(content+offset, playershootdata, RSIZE_PLAYERSHOOT);
 	offset += RSIZE_PLAYERSHOOT;
 	memcpy(content+offset, playerghostdata, RSIZE_PLAYERGHOST);
@@ -409,8 +406,6 @@ bool BResource::Gain(void * pStrdesc, void * pCustomConstData)
 			offset += RSIZE_PLAYER;
 			memcpy(spritedata, content+offset, RSIZE_SPRITE);
 			offset += RSIZE_SPRITE;
-			memcpy(playerbulletdata, content+offset, RSIZE_PLAYERBULLET);
-			offset += RSIZE_PLAYERBULLET;
 			memcpy(playershootdata, content+offset, RSIZE_PLAYERSHOOT);
 			offset += RSIZE_PLAYERSHOOT;
 			memcpy(playerghostdata, content+offset, RSIZE_PLAYERGHOST);
@@ -473,7 +468,6 @@ void BResource::CopyData()
 		data.enemydefinefilename = resdata.enemydefinefilename;
 		data.playerdefinefilename = resdata.playerdefinefilename;
 		data.spritedefinefilename = resdata.spritedefinefilename;
-		data.playerbulletdefinefilename = resdata.playerbulletdefinefilename;
 		data.playershootdefinefilename = resdata.playershootdefinefilename;
 		data.playerghostdefinefilename = resdata.playerghostdefinefilename;
 		data.datadefinefilename = resdata.datadefinefilename;
@@ -509,8 +503,6 @@ bool BResource::SetDataFile()
 		if (!data.SetFile(data.playerdefinefilename, DATA_PLAYERDEFINEFILE))
 			return false;
 		if (!data.SetFile(data.spritedefinefilename, DATA_SPRITEDEFINEFILE))
-			return false;
-		if (!data.SetFile(data.playerbulletdefinefilename, DATA_PLAYERBULLETDEFINE))
 			return false;
 		if (!data.SetFile(data.playershootdefinefilename, DATA_PLAYERSHOOTDEFINE))
 			return false;

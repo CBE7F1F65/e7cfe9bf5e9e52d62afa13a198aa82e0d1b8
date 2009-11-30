@@ -30,7 +30,6 @@ Data::Data()
 	enemydefinefilename = NULL;
 	playerdefinefilename = NULL;
 	spritedefinefilename = NULL;
-	playerbulletdefinefilename = NULL;
 	playershootdefinefilename = NULL;
 	playerghostdefinefilename = NULL;
 
@@ -425,9 +424,6 @@ void Data::getFile(BYTE type)
 	case DATA_SPRITEDEFINEFILE:
 		nowfilename = spritedefinefilename;
 		break;
-	case DATA_PLAYERBULLETDEFINE:
-		nowfilename = playerbulletdefinefilename;
-		break;
 	case DATA_PLAYERSHOOTDEFINE:
 		nowfilename = playershootdefinefilename;
 		break;
@@ -723,15 +719,6 @@ bool Data::GetAllTable()
 	{
 #ifdef __DEBUG
 		HGELOG("%s\nFailed in loading PlayerDefineFile %s.", HGELOG_ERRSTR, playerdefinefilename);
-#endif // __DEBUG
-		return false;
-	}
-
-	//playerbullet
-	if (!GetTableFile(DATA_PLAYERBULLETDEFINE))
-	{
-#ifdef __DEBUG
-		HGELOG("%s\nFailed in loading PlayerBulletDefineFile %s.", HGELOG_ERRSTR, playerbulletdefinefilename);
 #endif // __DEBUG
 		return false;
 	}

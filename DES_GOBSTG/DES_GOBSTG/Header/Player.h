@@ -7,27 +7,18 @@
 #include "PlayerBullet.h"
 #include "Effectsys.h"
 
+// add
+#define PLAYER_DEFAULTINITLIFE	10
+
+#define PL_HITONFACTORDEFAULT	50
+
 #define PLAYER_FRAME_STAND		0
 #define PLAYER_FRAME_LEFTPRE	1
 #define PLAYER_FRAME_LEFT		2
 #define PLAYER_FRAME_RIGHTPRE	3
 #define PLAYER_FRAME_RIGHT		4
 
-// add
-#define PLAYER_DEFAULTINITLIFE	10
-
-#define PL_HITONFACTORDEFAULT	50
-
-#define PL_ITEMDRAINY		144
-
 #define PLAYER_FRAME_STATEMAX	5
-#define PLAYER_ANIMATIONSPEED	8
-
-#define PLAYER_BORDEROFFPRE	8
-
-#define PL_DEFAULTNFAITH	10000
-#define PL_DEFAULTNPLAYER	2
-#define PL_NPLAYERMAX		7
 
 #define PL_MOVABLEDGE_X		8
 #define PL_MOVABLEDGE_Y		16
@@ -46,17 +37,13 @@
 #define PLAYER_COSTLIFE				0x0004
 #define	PLAYER_COLLAPSE				0x0008
 #define	PLAYER_SHOOT				0x0010
-#define	PLAYER_BORDER				0x0020
+#define	PLAYER_DRAIN				0x0020
 #define	PLAYER_BOMB					0x0040
 #define	PLAYER_SLOWCHANGE			0x0080
 #define	PLAYER_FASTCHANGE			0x0100
 #define PLAYER_CHARGE				0x0200
 #define	PLAYER_PLAYERCHANGE			0x0400
 #define	PLAYER_GRAZE				0x1000
-
-#define PLBONUS_GRAZE	0x01
-#define PLBONUS_SHOOT	0x02
-#define PLBONUS_TIME	0x04
 
 #define PLAYER_INFIMAX		-1
 #define PLAYER_INFIUNSET	0
@@ -93,24 +80,33 @@ public:
 
 	bool Merge();
 	bool Shot();
+	bool CostLife();
 	bool Collapse();
 	bool Shoot();
-	bool Border();
-	bool Charge();
+	bool Drain();
 	bool Bomb();
 	bool SlowChange();
 	bool FastChange();
+	bool Charge();
 	bool PlayerChange();
 	bool Graze();
-	bool CostLife();
+
+	void changePlayerID(WORD toID, bool moveghost=false);
+	void shootCharge(BYTE nChargeLevel);
 
 	void AddComboHit(int combo, bool ori);
-	void DoEnemyCollapse(float x, float y);
-
 	void AddSpellPoint(int spellpoint);
 	void AddExPoint(int expoint, float x, float y);
 	void AddGhostPoint(int ghostpoint, float x, float y);
 	void AddBulletPoint(int bulletpoint, float x, float y);
+
+	void DoEnemyCollapse(float x, float y);
+	LONGLONG DoItemGet(WORD itemtype);
+	void DoGraze(float x, float y);
+	void DoPlayerBulletHit(int hitonfactor = PL_HITONFACTORDEFAULT);
+	void DoShot();
+
+	void Render();
 
 	void initFrameIndex();
 	void setFrame(BYTE frameenum);
@@ -119,48 +115,25 @@ public:
 	void updateFrame(BYTE frameenum, int usetimer = -1);
 
 	void callCollapse();
-	bool callBomb(bool onlyborder = false);
+	bool callBomb();
 	void callSlowFastChange(bool toslow);
 	void callPlayerChange();
 
-	void _Shoot();
-	void _Bomb();
-	void _ShootCharge(BYTE nChargeLevel);
-
+	void SetInitLife(BYTE initlife);
+	void SetChara(WORD id, WORD id_sub_1=0xffff, WORD id_sub_2=0xffff);
 	void SetInfi(BYTE reasonflag, int infitimer=PLAYER_INFIMAX);
-
-	void bombAction();
-
-	void Render();
-
-	LONGLONG getItemBonus(WORD itemtype);
-
-	void DoGraze(float x, float y);
-	void DoPlayerBulletHit(int hitonfactor = PL_HITONFACTORDEFAULT);
-	void DoShot();
-
 	bool HavePlayer(WORD ID);
-
-	void changePlayerID(WORD toID, bool moveghost=false);
-
-	int GrazeRegain(int grazenum);
-	void GetScoreLife(float maxlife, bool isenemy = true);
-
 	void GetNCharge(BYTE * ncharge=NULL, BYTE * nchargemax=NULL);
 	BYTE AddCharge(float addcharg=0, float addchargemaxe=0);
 
-	// add
-	void SetInitLife(BYTE initlife);
-	void SetChara(WORD id, WORD id_sub_1=0xffff, WORD id_sub_2=0xffff);
 	static void AddLostStack();
-	static void Action(bool * notinstop);
 	static void SetAble(bool setable);
 	static bool CheckAble();
-	static void RenderAll(BYTE renderflag);
-
 	static void SendEx(float x, float y, bool bythis=true);
 
 	static void Init();
+	static void Action(bool * notinstop);
+	static void RenderAll(BYTE renderflag);
 
 public:
 	WORD	ID_sub_1;
@@ -202,7 +175,7 @@ public:
 
 	bool	bSlow;
 	bool	bCharge;
-	bool	bBorder;
+	bool	bDrain;
 	bool	bInfi;
 
 	int nExPoint;
@@ -229,13 +202,15 @@ public:
 	WORD	shottimer;
 	WORD	collapsetimer;
 	WORD	shoottimer;
-	WORD	bordertimer;
+	WORD	draintimer;
 	WORD	chargetimer;
-	WORD	bombtimer;
 	WORD	slowtimer;
 	WORD	fasttimer;
 	WORD	playerchangetimer;
 	WORD	costlifetimer;
+
+	BYTE	shootpushtimer;
+	BYTE	shootnotpushtimer;
 
 	BYTE	shotdelay;
 

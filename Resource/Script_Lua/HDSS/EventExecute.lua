@@ -21,6 +21,13 @@ function EventExecute(name, con)
 		elseif con == EFFSPCHASE_SENDEXATTACK then
 			return eSendExAttack(playerindex, x, y, con);
 		end
+	elseif name == EVENT_PLAYERDRAIN then
+		local playerID, x, y, draintimer = game.GetPlayerDrainInfo();
+		if playerID == 0 then
+			return ePlayerDrain_0(playerindex, playerID, x, y, draintimer);
+		elseif playerID == 1 then
+			return ePlayerDrain_1(playerindex, playerID, x, y, draintimer);
+		end
 	end
 	return true;
 

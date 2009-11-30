@@ -99,7 +99,6 @@ struct resourceData
 	char enemydefinefilename[M_PATHMAX];
 	char playerdefinefilename[M_PATHMAX];
 	char spritedefinefilename[M_PATHMAX];
-	char playerbulletdefinefilename[M_PATHMAX];
 	char playershootdefinefilename[M_PATHMAX];
 	char playerghostdefinefilename[M_PATHMAX];
 	char datadefinefilename[M_PATHMAX];
@@ -211,19 +210,11 @@ struct spriteData
 	BYTE tex;
 };
 
-struct playerbulletData 
-{
-	float x;
-	float y;
-	float w;
-	float h;
-	BYTE tex;
-};
-
 struct playershootData 
 {
 	int angle;
 	int hitonfactor;
+	int siid;
 	float xbias;
 	float ybias;
 	float scale;
@@ -235,7 +226,6 @@ struct playershootData
 	BYTE seID;
 	BYTE timeMod;
 	BYTE arrange;
-	BYTE ID;
 };
 
 struct playerghostData 

@@ -41,13 +41,17 @@ public:
 
 	static bool SetSprite(int index, hgeSprite * sprite, HTEXTURE * tex);
 
+	static HTEXTURE GetTexture(int index);
+	static float GetTexX(int index);
+	static float GetTexY(int index);
+	static float GetTexW(int index);
+	static float GetTexH(int index);
+
 	static bool ptFace(int index, hgeSprite * sprite, bool enemy = true);
 	static bool ptName(int index, hgeSprite * sprite, bool enemy = true);
 
 public:
 	static HTEXTURE * tex;
-
-	static int digituiIndex;
 
 	static int faceIndexEnemy;
 	static int nameIndexEnemy;

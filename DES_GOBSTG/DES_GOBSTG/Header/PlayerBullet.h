@@ -77,7 +77,7 @@ public:
 	BYTE	arrange;
 	BYTE	playerindex;
 
-	static hgeSprite * spPlayerBullet[PLAYERBULLETSPRITEMAX];
+	static hgeSprite * sprite[PLAYERSHOOTTYPEMAX];
 	static DWORD bcol0, bcol1, bcol2, bcol3;
 	static HTEXTURE * tex;
 	static int locked;

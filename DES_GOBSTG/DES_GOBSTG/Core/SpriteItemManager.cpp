@@ -2,7 +2,6 @@
 #include "BResource.h"
 
 HTEXTURE * SpriteItemManager::tex;
-int SpriteItemManager::digituiIndex = 0;
 int SpriteItemManager::faceIndexEnemy = 0;
 int SpriteItemManager::nameIndexEnemy = 0;
 int SpriteItemManager::faceIndexPlayer = 0;
@@ -33,6 +32,51 @@ void SpriteItemManager::Init(HTEXTURE * _tex)
 void SpriteItemManager::Release()
 {
 	FreeFrontSprite();
+}
+
+HTEXTURE SpriteItemManager::GetTexture(int index)
+{
+	if (index < 0 || index >= SPRITEITEMMAX || !tex)
+	{
+		return NULL;
+	}
+	return tex[res.spritedata[index].tex];
+}
+
+float SpriteItemManager::GetTexX(int index)
+{
+	if (index < 0 || index >= SPRITEITEMMAX)
+	{
+		return 0;
+	}
+	return res.spritedata[index].tex_x;
+}
+
+float SpriteItemManager::GetTexY(int index)
+{
+	if (index < 0 || index >= SPRITEITEMMAX)
+	{
+		return 0;
+	}
+	return res.spritedata[index].tex_y;
+}
+
+float SpriteItemManager::GetTexW(int index)
+{
+	if (index < 0 || index >= SPRITEITEMMAX)
+	{
+		return 0;
+	}
+	return res.spritedata[index].tex_w;
+}
+
+float SpriteItemManager::GetTexH(int index)
+{
+	if (index < 0 || index >= SPRITEITEMMAX)
+	{
+		return 0;
+	}
+	return res.spritedata[index].tex_h;
 }
 
 void SpriteItemManager::RenderFrontSprite()
@@ -158,6 +202,10 @@ void SpriteItemManager::SetFrontSpriteValue(int ID, float x, float y, int angle/
 hgeSprite * SpriteItemManager::CreateSprite(int index)
 {
 	hgeSprite * sprite;
+	if (!tex)
+	{
+		return NULL;
+	}
 	if (index < 0)
 	{
 		sprite = new hgeSprite(tex[TEX_WHITE], 0, 0, 0, 0);
@@ -229,7 +277,7 @@ void SpriteItemManager::FreeSprite(hgeSprite ** sprite)
 
 bool SpriteItemManager::ptFace(int index, hgeSprite * sprite, bool enemy)
 {
-	if (!sprite)
+	if (!sprite || !tex)
 	{
 		return false;
 	}
@@ -246,7 +294,7 @@ bool SpriteItemManager::ptFace(int index, hgeSprite * sprite, bool enemy)
 
 bool SpriteItemManager::ptName(int index, hgeSprite * sprite, bool enemy)
 {
-	if (!sprite)
+	if (!sprite || !tex)
 	{
 		return false;
 	}

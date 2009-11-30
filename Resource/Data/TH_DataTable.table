@@ -8,6 +8,5 @@ BulletDefineFile	TH_BULLETDEFINE.table
 EnemyDefineFile	TH_ENEMYDEFINE.table	
 PlayerDefineFile	TH_PLAYERDEFINE.table	
 SpriteDefineFile	TH_SPRITEDEFINE.table	
-PlayerBulletDefineFile	TH_PLAYERBULLETDEFINE.table	
 PlayerShootDefineFile	TH_PLAYERSHOOTDEFINE.table	
 PlayerGhostDefineFile	TH_PLAYERGHOSTDEFINE.table	

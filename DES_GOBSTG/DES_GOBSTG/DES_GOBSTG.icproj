@@ -5,7 +5,7 @@
 	Name="DES_GOBSTG"
 	ProjectGUID="{A4938EF7-0CE1-47A3-BC8D-4D0B54F94F6D}"
 	VCNestedProjectGUID="{7329E15F-F0AE-44EE-BC64-27B9038C76D7}"
-	VCNestedProjectCRC32="2740827922"
+	VCNestedProjectCRC32="2206038366"
 	VCNestedProjectFileName="DES_GOBSTG.vcproj"
 	Keyword="Win32Proj">
 	<Configurations>
@@ -234,6 +234,8 @@
 		<File 
 			RelativePath=".\Core\Scripter.cpp"/>
 		<File 
+			RelativePath=".\Core\SpriteItemManager.cpp"/>
+		<File 
 			RelativePath=".\Core\Export_Lua.cpp"/>
 		<File 
 			RelativePath=".\Core\Export_Lua_Const.cpp"/>
@@ -256,8 +258,6 @@
 		<File 
 			RelativePath=".\Core\Export_Lua_HGEHelper.cpp"/>
 		<File 
-			RelativePath=".\Core\SpriteItemManager.cpp"/>
-		<File 
 			RelativePath=".\Class\Beam.cpp"/>
 		<File 
 			RelativePath=".\Class\BGLayer.cpp"/>
@@ -276,6 +276,8 @@
 		<File 
 			RelativePath=".\Class\Enemy.cpp"/>
 		<File 
+			RelativePath=".\Class\EventZone.cpp"/>
+		<File 
 			RelativePath=".\Class\Fontsys.cpp"/>
 		<File 
 			RelativePath=".\Class\FrontDisplay.cpp"/>
@@ -288,15 +290,9 @@
 		<File 
 			RelativePath=".\Class\Player.cpp"/>
 		<File 
-			RelativePath=".\Class\PlayerBomb.cpp"/>
-		<File 
 			RelativePath=".\Class\PlayerBullet.cpp"/>
 		<File 
-			RelativePath=".\Process\PlayerBulletInit.cpp"/>
-		<File 
 			RelativePath=".\Class\PlayerGhost.cpp"/>
-		<File 
-			RelativePath=".\Class\PlayerShoot.cpp"/>
 		<File 
 			RelativePath=".\Class\PushKey.cpp"/>
 		<File 
@@ -310,7 +306,7 @@
 		<File 
 			RelativePath=".\Class\Target.cpp"/>
 		<File 
-			RelativePath=".\Class\EventZone.cpp"/>
+			RelativePath=".\Class\PlayerOtherAction.cpp"/>
 		<File 
 			RelativePath=".\Process\frame.cpp"/>
 		<File 
@@ -424,6 +420,8 @@
 		<File 
 			RelativePath=".\Header\Bullet.h"/>
 		<File 
+			RelativePath=".\Header\BulletListActionConst.h"/>
+		<File 
 			RelativePath=".\Header\Chat.h"/>
 		<File 
 			RelativePath=".\Header\EffectIDDefine.h"/>
@@ -433,6 +431,8 @@
 			RelativePath=".\Header\Effectsys.h"/>
 		<File 
 			RelativePath=".\Header\Enemy.h"/>
+		<File 
+			RelativePath=".\Header\EventZone.h"/>
 		<File 
 			RelativePath=".\Header\Fontsys.h"/>
 		<File 
@@ -463,10 +463,6 @@
 			RelativePath=".\Header\SelectSystem.h"/>
 		<File 
 			RelativePath=".\Header\Target.h"/>
-		<File 
-			RelativePath=".\Header\EventZone.h"/>
-		<File 
-			RelativePath=".\Header\BulletListActionConst.h"/>
 	</Files>
 </VisualStudioProject>
 

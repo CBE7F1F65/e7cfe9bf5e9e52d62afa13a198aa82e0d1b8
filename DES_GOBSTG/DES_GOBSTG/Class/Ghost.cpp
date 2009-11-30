@@ -300,8 +300,6 @@ void Ghost::action()
 
 			if (life < 0)
 			{
-				Player::p[playerindex].GetScoreLife(maxlife, false);
-
 				fadeout = true;
 				timer = 0;
 			}

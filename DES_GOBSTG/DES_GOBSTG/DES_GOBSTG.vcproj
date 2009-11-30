@@ -429,19 +429,13 @@
 					RelativePath=".\Class\Player.cpp">
 				</File>
 				<File
-					RelativePath=".\Class\PlayerBomb.cpp">
-				</File>
-				<File
 					RelativePath=".\Class\PlayerBullet.cpp">
-				</File>
-				<File
-					RelativePath=".\Process\PlayerBulletInit.cpp">
 				</File>
 				<File
 					RelativePath=".\Class\PlayerGhost.cpp">
 				</File>
 				<File
-					RelativePath=".\Class\PlayerShoot.cpp">
+					RelativePath=".\Class\PlayerOtherAction.cpp">
 				</File>
 				<File
 					RelativePath=".\Class\PushKey.cpp">

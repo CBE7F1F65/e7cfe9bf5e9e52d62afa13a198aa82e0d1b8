@@ -39,7 +39,7 @@ void Process::clearPrep(bool bclearkey)
 	hge->Input_SetDIKey(KS_RIGHT_(0), false);
 	hge->Input_SetDIKey(KS_FIRE_(0), false);
 	hge->Input_SetDIKey(KS_QUICK_(0), false);
-	hge->Input_SetDIKey(KS_CHARGE_(0), false);
+	hge->Input_SetDIKey(KS_DRAIN_(0), false);
 	hge->Input_SetDIKey(KS_SLOW_(0), false);
 
 	hge->Input_SetDIKey(KS_UP_(1), false);
@@ -48,7 +48,7 @@ void Process::clearPrep(bool bclearkey)
 	hge->Input_SetDIKey(KS_RIGHT_(1), false);
 	hge->Input_SetDIKey(KS_FIRE_(1), false);
 	hge->Input_SetDIKey(KS_QUICK_(1), false);
-	hge->Input_SetDIKey(KS_CHARGE_(1), false);
+	hge->Input_SetDIKey(KS_DRAIN_(1), false);
 	hge->Input_SetDIKey(KS_SLOW_(1), false);
 }
 

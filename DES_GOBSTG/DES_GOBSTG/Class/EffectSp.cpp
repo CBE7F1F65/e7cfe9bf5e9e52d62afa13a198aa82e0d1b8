@@ -33,7 +33,7 @@ void EffectSp::Init()
 			senditemsiid[i][j] = senditemsiidbegin + i*EFFSPSEND_ANIMATIONMAX + j;
 		}
 	}
-	sprite = SpriteItemManager::CreateSprite(0);
+	sprite = SpriteItemManager::CreateSprite(-1);
 }
 
 void EffectSp::Release()

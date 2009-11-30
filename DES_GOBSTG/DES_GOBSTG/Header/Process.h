@@ -78,7 +78,7 @@ public:
 			int keyFire;
 			int keyQuick;
 			int keySlow;
-			int keyCharge;
+			int keyDrain;
 			int keyPause;
 			int keySkip;
 			int keyEnter;
@@ -92,7 +92,7 @@ public:
 			int	joyFire;
 			int	joyQuick;
 			int	joySlow;
-			int	joyCharge;
+			int	joyDrain;
 			int	joyPause;
 			int debug_joySpeedUp;
 		}		keyJS[M_PL_MATCHMAXPLAYER];

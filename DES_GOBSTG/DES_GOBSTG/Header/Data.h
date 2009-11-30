@@ -18,9 +18,8 @@
 #define DATA_ENEMYDEFINEFILE	0x49
 #define DATA_PLAYERDEFINEFILE	0x4A
 #define DATA_SPRITEDEFINEFILE	0x4B
-#define DATA_PLAYERBULLETDEFINE	0x4C
-#define DATA_PLAYERSHOOTDEFINE	0x4D
-#define DATA_PLAYERGHOSTDEFINE	0x4E
+#define DATA_PLAYERSHOOTDEFINE	0x4C
+#define DATA_PLAYERGHOSTDEFINE	0x4D
 
 #define DATA_DATATABLEDEFINE	0x51
 #define DATA_PACKAGETABLEDEFINE	0x52
@@ -351,7 +350,6 @@ public:
 	char * enemydefinefilename;
 	char * playerdefinefilename;
 	char * spritedefinefilename;
-	char * playerbulletdefinefilename;
 	char * playershootdefinefilename;
 	char * playerghostdefinefilename;
 
