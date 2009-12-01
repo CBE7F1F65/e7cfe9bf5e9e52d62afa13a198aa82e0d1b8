@@ -38,16 +38,6 @@
 #define BULLETACT_FLOATSCALE	100.0f
 #define BULLETACT_ANGLECHANGESE	3000
 
-typedef struct tagIzeZone{
-	float	x;
-	float	y;
-	float	r;
-	BYTE	timer;
-	BYTE	maxtime;
-	BYTE	type;
-	BYTE	eventID;
-}IzeZone;
-
 typedef struct tagRenderDepth{
 	int startIndex;
 	int endIndex;
@@ -130,7 +120,7 @@ public:
 	static int _actionList[BULLETACTIONMAX];
 
 	static RenderDepth renderDepth[M_PL_MATCHMAXPLAYER][BULLETTYPEMAX];
-	static hgeSprite * sp[BULLETTYPECOLORMAX];
+	static hgeSprite * sprite[BULLETTYPECOLORMAX];
 	static HTEXTURE tex;
 	static WORD index;
 	static VectorList<Bullet>bu[M_PL_MATCHMAXPLAYER];

@@ -8,11 +8,30 @@ BResource::BResource()
 {
 	ZeroMemory(&resdata, RSIZE_RESOURCE);
 	customconstdata = NULL;
+	spritenumber = 0;
+	spritedata = NULL;
 }
 
 BResource::~BResource()
 {
+	ReleaseSpriteData();
 	ReleaseCustomConst();
+}
+
+void BResource::InitSpriteData()
+{
+	ReleaseSpriteData();
+	spritedata = (spriteData *)malloc(RSIZE_SPRITE);
+	ZeroMemory(spritedata, RSIZE_SPRITE);
+}
+
+void BResource::ReleaseSpriteData()
+{
+	if (spritedata)
+	{
+		free(spritedata);
+		spritedata = NULL;
+	}
 }
 
 void BResource::ReleaseCustomConst()
@@ -23,6 +42,7 @@ void BResource::ReleaseCustomConst()
 		customconstdata = NULL;
 	}
 }
+
 
 //Scripter::LoadAll
 bool BResource::Fill()
@@ -300,10 +320,12 @@ bool BResource::Pack(void * pStrdesc, void * pCustomConstData)
 		RSIZE_BULLET + 
 		RSIZE_ENEMY + 
 		RSIZE_PLAYER + 
-		RSIZE_SPRITE + 
+//		RSIZE_SPRITE + 
 		RSIZE_PLAYERSHOOT + 
 		RSIZE_PLAYERGHOST + 
-		sizeof(spellData) * spelldata.size();
+		RSIZE_SPELL +
+		RSIZE_SPRITENUMBER +
+		RSIZE_SPRITE;
 	BYTE * content = (BYTE *)malloc(size);
 	if(!content)
 		return false;
@@ -347,17 +369,26 @@ bool BResource::Pack(void * pStrdesc, void * pCustomConstData)
 	offset += RSIZE_ENEMY;
 	memcpy(content+offset, playerdata, RSIZE_PLAYER);
 	offset += RSIZE_PLAYER;
-	memcpy(content+offset, spritedata, RSIZE_SPRITE);
-	offset += RSIZE_SPRITE;
+//	memcpy(content+offset, spritedata, RSIZE_SPRITE);
+//	offset += RSIZE_SPRITE;
 	memcpy(content+offset, playershootdata, RSIZE_PLAYERSHOOT);
 	offset += RSIZE_PLAYERSHOOT;
 	memcpy(content+offset, playerghostdata, RSIZE_PLAYERGHOST);
 	offset += RSIZE_PLAYERGHOST;
+	memcpy(content+offset, spelldata, RSIZE_SPELL);
+	offset += RSIZE_SPELL;
+
+	memcpy(content+offset, &spritenumber, RSIZE_SPRITENUMBER);
+	offset += RSIZE_SPRITENUMBER;
+	memcpy(content+offset, spritedata, RSIZE_SPRITE);
+	offset += RSIZE_SPRITE;
+	/*
 	for(vector<spellData>::iterator i=spelldata.begin(); i!=spelldata.end(); i++)
 	{
 		memcpy(content+offset, &(*i), sizeof(spellData));
 		offset += sizeof(spellData);
 	}
+	*/
 
 	hgeMemoryFile memfile;
 	memfile.data = content;
@@ -382,7 +413,7 @@ bool BResource::Gain(void * pStrdesc, void * pCustomConstData)
 	content = hge->Resource_Load(data.resbinname, &size);
 	if(content)
 	{
-		spelldata.clear();
+//		spelldata.clear();
 		if(data.CheckMemHeader(content, size, DATA_RESOURCEFILE))
 		{
 			DWORD offset = M_BINHEADER_OFFSET;
@@ -404,12 +435,20 @@ bool BResource::Gain(void * pStrdesc, void * pCustomConstData)
 			offset += RSIZE_ENEMY;
 			memcpy(playerdata, content+offset, RSIZE_PLAYER);
 			offset += RSIZE_PLAYER;
-			memcpy(spritedata, content+offset, RSIZE_SPRITE);
-			offset += RSIZE_SPRITE;
+//			memcpy(spritedata, content+offset, RSIZE_SPRITE);
+//			offset += RSIZE_SPRITE;
 			memcpy(playershootdata, content+offset, RSIZE_PLAYERSHOOT);
 			offset += RSIZE_PLAYERSHOOT;
 			memcpy(playerghostdata, content+offset, RSIZE_PLAYERGHOST);
 			offset += RSIZE_PLAYERGHOST;
+			memcpy(spelldata, content+offset, RSIZE_SPELL);
+			offset += RSIZE_SPELL;
+
+			memcpy(&spritenumber, content+offset, RSIZE_SPRITENUMBER);
+			offset += RSIZE_SPRITENUMBER;
+			InitSpriteData();
+			memcpy(spritedata, content+offset, RSIZE_SPRITE);
+			/*
 			while(offset < size)
 			{
 				spellData _rdata;
@@ -417,6 +456,7 @@ bool BResource::Gain(void * pStrdesc, void * pCustomConstData)
 				offset += sizeof(spellData);
 				spelldata.push_back(_rdata);
 			}
+			*/
 			CopyData();
 			if(SetDataFile())
 				ret = true;

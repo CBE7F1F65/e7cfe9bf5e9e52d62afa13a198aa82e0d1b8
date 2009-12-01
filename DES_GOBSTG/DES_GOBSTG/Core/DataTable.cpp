@@ -16,6 +16,14 @@ _DataTable _DataTable::datatable;
 #define _LOADTINT	(tint[++ti])
 #define _SAVETINT	(&_LOADTINT)
 
+_DataTable::_DataTable()
+{
+}
+
+_DataTable::~_DataTable()
+{
+}
+
 bool _DataTable::ReadStringBuffer(int nCol)
 {
 	if (!file)
@@ -181,34 +189,34 @@ bool _DataTable::CustomConstFile()
 
 bool _DataTable::SpellDefineFile()
 {
-	res.spelldata.clear();
+//	res.spelldata.clear();
+	ZeroMemory(res.spelldata, RSIZE_SPELL);
 	_READSTRINGBUFFERLINE(10);
 	while (!feof(file))
 	{
 		_INITTINT;
 		fscanf(file, "%d", &tindex);
 		_CHECKEOF_DATATABLE;
-		spellData _item;
+		spellData * item = &(res.spelldata[tindex]);
 
 		fscanf(file, "%d\t%[^\t]%d%d%d%I64d%d%x%d", 
-			&(_item.spellnumber), 
-			_item.spellname, 
+			&(item->spellnumber), 
+			item->spellname, 
 			_SAVETINT, 
 			_SAVETINT, 
 			_SAVETINT, 
-			&(_item.bonus), 
-			&(_item.turntoscene), 
+			&(item->bonus), 
+			&(item->turntoscene), 
 			_SAVETINT, 
 			_SAVETINT);
 
 		_INITTINT;
-		_item.sno = tindex;
-		_item.timelimit = _LOADTINT;
-		_item.remain = _LOADTINT;
-		_item.userID = _LOADTINT;
-		_item.spellflag = _LOADTINT;
-		_item.battleID = _LOADTINT;
-		res.spelldata.push_back(_item);
+		item->timelimit = _LOADTINT;
+		item->remain = _LOADTINT;
+		item->userID = _LOADTINT;
+		item->spellflag = _LOADTINT;
+		item->battleID = _LOADTINT;
+//		res.spelldata.push_back(item);
 	}
 	return true;
 }
@@ -243,7 +251,7 @@ bool _DataTable::MusicDefineFile()
 bool _DataTable::BulletDefineFile()
 {
 	ZeroMemory(res.bulletdata, RSIZE_BULLET);
-	_READSTRINGBUFFERLINE(17);
+	_READSTRINGBUFFERLINE(14);
 	while (!feof(file))
 	{
 		_INITTINT;
@@ -252,11 +260,8 @@ bool _DataTable::BulletDefineFile()
 		bulletData * item = &(res.bulletdata[tindex]);
 		_CHECKEOF_DATATABLE;
 
-		fscanf(file, "%d%d%d%d%d%d%d%f%f%d%d%d%d%d%d", 
-			&(item->tex_x), 
-			&(item->tex_y), 
-			&(item->tex_w), 
-			&(item->tex_h), 
+		fscanf(file, "%s%d%d%d%f%f%d%d%d%d%d%d", 
+			strbuffer[0],
 			_SAVETINT, 
 			_SAVETINT, 
 			_SAVETINT, 
@@ -270,6 +275,7 @@ bool _DataTable::BulletDefineFile()
 			_SAVETINT);
 
 		_INITTINT;
+		item->siid = SpriteItemManager::GetIndexByName(strbuffer[0]);
 		item->nRoll = _LOADTINT;
 		item->nColor = _LOADTINT;
 		item->collisiontype = _LOADTINT;
@@ -296,7 +302,7 @@ bool _DataTable::EnemyDefineFile()
 
 		fscanf(file, "%d%s%f%f%d%d%d%d%d%d%d%d%d%d%d%f%f\t%[^\t]\t%[^\t\r\n]", 
 			_SAVETINT, 
-			buffer,
+			strbuffer[0],
 			&(item->collision_w), 
 			&(item->collision_h), 
 			_SAVETINT, 
@@ -317,7 +323,7 @@ bool _DataTable::EnemyDefineFile()
 
 		_INITTINT;
 		item->faceIndex  = _LOADTINT;
-		item->siid = SpriteItemManager::GetIndexByName(buffer);
+		item->siid = SpriteItemManager::GetIndexByName(strbuffer[0]);
 		item->standFrame  = _LOADTINT;
 		item->rightPreFrame  = _LOADTINT;
 		item->rightFrame = _LOADTINT;
@@ -390,7 +396,9 @@ bool _DataTable::PlayerDefineFile()
 
 bool _DataTable::SpriteDefineFile()
 {
-	ZeroMemory(res.spritedata, RSIZE_SPRITE);
+	fscanf(file, "%d", &(res.spritenumber));
+	res.InitSpriteData();
+//	ZeroMemory(res.spritedata, RSIZE_SPRITE);
 	_READSTRINGBUFFERLINE(8);
 	while (!feof(file))
 	{
@@ -428,7 +436,7 @@ bool _DataTable::PlayerShootDefineFile()
 
 		fscanf(file, "%d%s%d%x%f%d%d%d%f%f%f%f%f%d", 
 			_SAVETINT, 
-			buffer,
+			strbuffer[0],
 			_SAVETINT, 
 			_SAVETINT, 
 			&(item->power), 
@@ -444,7 +452,7 @@ bool _DataTable::PlayerShootDefineFile()
 
 		_INITTINT;
 		item->userID = _LOADTINT;
-		item->siid = SpriteItemManager::GetIndexByName(buffer);
+		item->siid = SpriteItemManager::GetIndexByName(strbuffer[0]);
 		item->timeMod = _LOADTINT;
 		item->flag = _LOADTINT;
 		item->arrange = _LOADTINT;

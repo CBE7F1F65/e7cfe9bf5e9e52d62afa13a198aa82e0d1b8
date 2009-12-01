@@ -54,7 +54,7 @@ bool Export_Lua_HDSS::_LuaRegistConst(LuaObject * obj)
 	}
 
 	//SI
-	for (i=0; i<SPRITEITEMMAX; i++)
+	for (i=0; i<res.spritenumber; i++)
 	{
 		if (strlen(res.spritedata[i].spritename))
 		{

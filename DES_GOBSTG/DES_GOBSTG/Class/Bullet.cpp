@@ -10,12 +10,12 @@
 #include "Export.h"
 #include "EventZone.h"
 #include "EffectSp.h"
-
+#include "SpriteItemManager.h"
 
 RenderDepth Bullet::renderDepth[M_PL_MATCHMAXPLAYER][BULLETTYPEMAX];
 
 int Bullet::_actionList[BULLETACTIONMAX];
-hgeSprite * Bullet::sp[BULLETTYPECOLORMAX];
+hgeSprite * Bullet::sprite[BULLETTYPECOLORMAX];
 
 VectorList<Bullet> Bullet::bu[M_PL_MATCHMAXPLAYER];
 HTEXTURE Bullet::tex;
@@ -54,17 +54,17 @@ void Bullet::Init(HTEXTURE _tex)
 		for (j=0; j<tnum; j++)
 		{
 			index = i*BULLETCOLORMAX+j;
-			sp[index] = new hgeSprite(tex, tbd->tex_x + j*(tbd->tex_w), tbd->tex_y, tbd->tex_w, tbd->tex_h);
-			sp[index]->SetBlendMode(tbd->blendtype);
+			sprite[index] = SpriteItemManager::CreateSprite(tbd->siid+j);
+			sprite[index]->SetBlendMode(tbd->blendtype);
 			if (res.bulletdata[i].collisiontype != BULLET_COLLISION_ELLIPSE && tbd->collisionSub)
 			{
-				sp[index]->SetHotSpot((tbd->tex_w)/2.0f, (tbd->tex_h)/2.0f+tbd->collisionSub);
+				sprite[index]->SetHotSpot(SpriteItemManager::GetTexW(tbd->siid+j)/2.0f, SpriteItemManager::GetTexH(tbd->siid+j)/2.0f+tbd->collisionSub);
 			}
 		}
 		for (; j<BULLETCOLORMAX; j++)
 		{
 			index = i*BULLETCOLORMAX+j;
-			sp[index] = new hgeSprite(tex, 0, 0, 0, 0);
+			sprite[index] = new hgeSprite(tex, 0, 0, 0, 0);
 		}
 	}
 
@@ -124,9 +124,9 @@ void Bullet::Release()
 	}
 	for(int i=0;i<BULLETTYPECOLORMAX;i++)
 	{
-		if(sp[i])
-			delete sp[i];
-		sp[i] = NULL;
+		if(sprite[i])
+			delete sprite[i];
+		sprite[i] = NULL;
 	}
 }
 
@@ -199,8 +199,8 @@ void Bullet::RenderAll(BYTE renderflag)
 void Bullet::Render()
 {
 	int i = type*BULLETCOLORMAX + color;
-	sp[i]->SetColor(alpha<<24 | diffuse);
-	sp[i]->RenderEx(x, y, ARC(angle+headangle+BULLET_ANGLEOFFSET), hscale);
+	sprite[i]->SetColor(alpha<<24 | diffuse);
+	sprite[i]->RenderEx(x, y, ARC(angle+headangle+BULLET_ANGLEOFFSET), hscale);
 }
 
 BYTE Bullet::getRenderDepth()

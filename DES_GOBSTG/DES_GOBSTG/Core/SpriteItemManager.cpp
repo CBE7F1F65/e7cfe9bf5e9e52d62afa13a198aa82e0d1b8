@@ -1,4 +1,5 @@
 #include "SpriteItemManager.h"
+#include "FrontDisplayName.h"
 #include "BResource.h"
 
 HTEXTURE * SpriteItemManager::tex;
@@ -36,7 +37,7 @@ void SpriteItemManager::Release()
 
 HTEXTURE SpriteItemManager::GetTexture(int index)
 {
-	if (index < 0 || index >= SPRITEITEMMAX || !tex)
+	if (index < 0 || index >= res.spritenumber || !tex)
 	{
 		return NULL;
 	}
@@ -45,7 +46,7 @@ HTEXTURE SpriteItemManager::GetTexture(int index)
 
 float SpriteItemManager::GetTexX(int index)
 {
-	if (index < 0 || index >= SPRITEITEMMAX)
+	if (index < 0 || index >= res.spritenumber)
 	{
 		return 0;
 	}
@@ -54,7 +55,7 @@ float SpriteItemManager::GetTexX(int index)
 
 float SpriteItemManager::GetTexY(int index)
 {
-	if (index < 0 || index >= SPRITEITEMMAX)
+	if (index < 0 || index >= res.spritenumber)
 	{
 		return 0;
 	}
@@ -63,7 +64,7 @@ float SpriteItemManager::GetTexY(int index)
 
 float SpriteItemManager::GetTexW(int index)
 {
-	if (index < 0 || index >= SPRITEITEMMAX)
+	if (index < 0 || index >= res.spritenumber)
 	{
 		return 0;
 	}
@@ -72,7 +73,7 @@ float SpriteItemManager::GetTexW(int index)
 
 float SpriteItemManager::GetTexH(int index)
 {
-	if (index < 0 || index >= SPRITEITEMMAX)
+	if (index < 0 || index >= res.spritenumber)
 	{
 		return 0;
 	}
@@ -100,7 +101,7 @@ int SpriteItemManager::GetIndexByName(const char * spritename)
 	{
 		return -1;
 	}
-	for (int i=0; i<SPRITEITEMMAX; i++)
+	for (int i=0; i<res.spritenumber; i++)
 	{
 		if (!strcmp(spritename, res.spritedata[i].spritename))
 		{
@@ -113,7 +114,7 @@ int SpriteItemManager::GetIndexByName(const char * spritename)
 
 spriteData * SpriteItemManager::CastSprite(int index)
 {
-	if (index >= 0 && index < SPRITEITEMMAX)
+	if (index >= 0 && index < res.spritenumber)
 	{
 		return &(res.spritedata[index]);
 	}
@@ -208,7 +209,7 @@ hgeSprite * SpriteItemManager::CreateSprite(int index)
 	}
 	if (index < 0)
 	{
-		sprite = new hgeSprite(tex[TEX_WHITE], 0, 0, 0, 0);
+		return CreateSpriteByName(SI_NULL);
 	}
 	else
 	{

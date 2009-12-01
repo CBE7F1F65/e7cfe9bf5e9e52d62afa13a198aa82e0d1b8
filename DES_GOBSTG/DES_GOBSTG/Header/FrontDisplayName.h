@@ -4,7 +4,8 @@
 #define SIDIGITUI_MODPLUS	10
 #define SIDIGITUI_POINTPLUS	11
 
-#define SI_NULL	"SI_Null"
+#define SI_NULL		"SI_Null"
+#define SI_WHITE	"SI_White"
 /*
 #define	SI_TITLE_START	"SI_Title_Start"
 #define	SI_TITLE_EXTRA	"SI_Title_Extra"

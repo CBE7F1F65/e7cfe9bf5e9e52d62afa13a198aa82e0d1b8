@@ -34,7 +34,6 @@ struct spellData{
 	char spellname[M_STRMAX];
 	LONGLONG bonus;
 	int spellnumber;
-	int sno;
 	int turntoscene;
 	BYTE timelimit;
 	BYTE remain;
@@ -133,10 +132,7 @@ struct resourceData
 struct bulletData 
 {
 	int nTurnAngle;
-	int tex_x;
-	int tex_y;
-	int tex_w;
-	int tex_h;
+	int siid;
 	float collisionMain;
 	float collisionSub;
 	BYTE nRoll;

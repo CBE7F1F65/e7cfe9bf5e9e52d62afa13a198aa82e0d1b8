@@ -46,10 +46,10 @@ void Chat::Clear()
 void Chat::Init()
 {
 	Release();
-	left = SpriteItemManager::CreateSprite(-1);
-	right = SpriteItemManager::CreateSprite(-1);
-	leftname = SpriteItemManager::CreateSprite(-1);
-	rightname = SpriteItemManager::CreateSprite(-1);
+	left = SpriteItemManager::CreateSpriteByName(SI_NULL);
+	right = SpriteItemManager::CreateSpriteByName(SI_NULL);;
+	leftname = SpriteItemManager::CreateSpriteByName(SI_NULL);;
+	rightname = SpriteItemManager::CreateSpriteByName(SI_NULL);;
 	textbox = SpriteItemManager::CreateSpriteByName(SI_FRONT_TEXT);
 }
 

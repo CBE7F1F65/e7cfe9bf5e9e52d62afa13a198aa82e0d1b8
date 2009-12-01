@@ -14,6 +14,7 @@
 #include "Scripter.h"
 #include "FrontDisplay.h"
 #include "Bullet.h"
+#include "BResource.h"
 
 BossInfo bossinfo;
 int BossInfo::sno;
@@ -43,22 +44,16 @@ void BossInfo::Clear()
 //bossinfo
 bool BossInfo::Fill(int _sno)
 {
-	for(vector<spellData>::iterator i=res.spelldata.begin(); i!=res.spelldata.end(); i++)
-	{
-		if(i->sno == _sno)
-		{
-			sno = _sno;
-			spellflag = i->spellflag;
-			strcpy(spellname, i->spellname);
-			strcpy(enemyname, data.getEnemyName(i->userID));
-			strcpy(enemyename, data.getEnemyEName(i->userID));
-			limit = i->timelimit;
-			remain = i->remain;
-			turntoscene = i->turntoscene;
-			return true;
-		}
-	}
-	return false;
+	spellData * item = &(res.spelldata[_sno]);
+	sno = _sno;
+	spellflag = item->spellflag;
+	strcpy(spellname, item->spellname);
+	strcpy(enemyname, data.getEnemyName(item->userID));
+	strcpy(enemyename, data.getEnemyEName(item->userID));
+	limit = item->timelimit;
+	remain = item->remain;
+	turntoscene = item->turntoscene;
+	return true;
 }
 
 bool BossInfo::isSpell()

@@ -797,7 +797,7 @@ Token Scripter::GetToken()
 	else if (!strncmp(buffer, "SI_", 3))
 	{
 		bool bIsSIItem = false;
-		for (int j=0; j<SPRITEITEMMAX; j++)
+		for (int j=0; j<res.spritenumber; j++)
 		{
 			if (!strcmp(&buffer[3], &(res.spritedata[j].spritename[3])))
 			{

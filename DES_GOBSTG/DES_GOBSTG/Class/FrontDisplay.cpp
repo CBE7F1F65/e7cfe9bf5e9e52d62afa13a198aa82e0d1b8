@@ -524,7 +524,7 @@ bool FrontDisplay::Init()
 	info.timecircle = SpriteItemManager::CreateSpriteByName(SI_BOSS_TIMECIRCLE);
 	info.enemyx = SpriteItemManager::CreateSpriteByName(SI_ENEMY_X);
 
-	info.lifebar = SpriteItemManager::CreateSpriteByName(SI_NULL);
+	info.lifebar = SpriteItemManager::CreateSpriteByName(SI_WHITE);
 	info.textbox = SpriteItemManager::CreateSpriteByName(SI_FRONT_TEXT);
 	info.demo = SpriteItemManager::CreateSpriteByName(SI_FRONTINFO_DEMO);
 	info.loading = SpriteItemManager::CreateSpriteByName(SI_LOADING_WORD);

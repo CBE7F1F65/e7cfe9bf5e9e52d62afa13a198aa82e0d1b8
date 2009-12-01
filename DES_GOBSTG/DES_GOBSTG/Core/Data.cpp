@@ -192,67 +192,29 @@ void Data::raSetIndi(int sno, WORD _indi)
 
 int Data::getSpellNumber(int sno)
 {
-	for (vector<spellData>::iterator i=res.spelldata.begin(); i!=res.spelldata.end(); i++)
-	{
-		if (i->sno == sno)
-		{
-			return i->spellnumber;
-		}
-	}
-	return 0;
+	return res.spelldata[sno].spellnumber;
 }
 
 int Data::getSpellUser(int sno)
 {
-	for (vector<spellData>::iterator i=res.spelldata.begin(); i!=res.spelldata.end(); i++)
-	{
-		if (i->sno == sno)
-		{
-			return i->userID;
-		}
-	}
-	return 0;
+	return res.spelldata[sno].userID;
 }
 
 char * Data::getSpellName(int sno)
 {
-	strcpy(buf, DATA_DEFAULTSTR_WIDE);
-	for(vector<spellData>::iterator i=res.spelldata.begin(); i!=res.spelldata.end(); i++)
-	{
-		if(i->sno == sno)
-		{
-			strcpy(buf, i->spellname);
-			break;
-		}
-	}
+	strcpy(buf, res.spelldata[sno].spellname);
 	return buf;
 }
 
 char * Data::getSpellUserName(int sno)
 {
-	strcpy(buf, DATA_DEFAULTSTR_WIDE);
-	for(vector<spellData>::iterator i=res.spelldata.begin(); i!=res.spelldata.end(); i++)
-	{
-		if(i->sno == sno)
-		{
-			strcpy(buf, getEnemyName(i->userID));
-			break;
-		}
-	}
+	strcpy(buf, getEnemyName(res.spelldata[sno].userID));
 	return buf;
 }
 
 char * Data::getSpellUserEName(int sno)
 {
-	strcpy(buf, DATA_DEFAULTSTR_WIDE);
-	for(vector<spellData>::iterator i=res.spelldata.begin(); i!=res.spelldata.end(); i++)
-	{
-		if(i->sno == sno)
-		{
-			strcpy(buf, getEnemyEName(i->userID));
-			break;
-		}
-	}
+	strcpy(buf, getEnemyEName(res.spelldata[sno].userID));
 	return buf;
 }
 

@@ -97,11 +97,11 @@ bool Beam::Build(BYTE playerindex, float x, float y, int angle, float speed, BYT
 void Beam::Render()
 {
 	int i = type*BULLETCOLORMAX+color;
-	int tblend = Bullet::sp[i]->GetBlendMode();
-	Bullet::sp[i]->SetBlendMode(BLEND_ALPHAADD);
-	Bullet::sp[i]->SetColor(alpha<<24|diffuse);
-	Bullet::sp[i]->RenderEx(x, y, ARC(angle+headangle+BULLET_ANGLEOFFSET), vscale, hscale);
-	Bullet::sp[i]->SetBlendMode(tblend);
+	int tblend = Bullet::sprite[i]->GetBlendMode();
+	Bullet::sprite[i]->SetBlendMode(BLEND_ALPHAADD);
+	Bullet::sprite[i]->SetColor(alpha<<24|diffuse);
+	Bullet::sprite[i]->RenderEx(x, y, ARC(angle+headangle+BULLET_ANGLEOFFSET), vscale, hscale);
+	Bullet::sprite[i]->SetBlendMode(tblend);
 }
 
 void Beam::valueSet(WORD _ID, float _x, float _y, int _angle, float _speed, BYTE _type, BYTE _color, WORD _length, BYTE _flag, int _fadeouttime, BYTE _tarID)
