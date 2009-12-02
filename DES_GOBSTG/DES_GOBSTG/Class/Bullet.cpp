@@ -364,7 +364,7 @@ void Bullet::DoGraze(BYTE playerindex)
 {
 	if(!grazed && res.bulletdata[type].collisiontype != BULLET_COLLISION_NONE)
 	{
-		if((Player::p[playerindex].x - x) * (Player::p[playerindex].x - x) + (Player::p[playerindex].y - y) * (Player::p[playerindex].y - y) < Player::p[playerindex].graze_r * Player::p[playerindex].graze_r)
+		if((Player::p[playerindex].x - x) * (Player::p[playerindex].x - x) + (Player::p[playerindex].y - y) * (Player::p[playerindex].y - y) < PLAYER_GRAZE_R * PLAYER_GRAZE_R)
 		{
 			Player::p[playerindex].DoGraze(x, y);
 			grazed = true;
@@ -628,7 +628,7 @@ void Bullet::action(BYTE playerindex)
 				{
 					sendsetID = EFFSPSET_SYSTEM_SENDREDBULLET_0;
 				}
-				SendBullet(!playerindex, x, y, sendsetID+sendtime*2);
+				SendBullet(1-playerindex, x, y, sendsetID+sendtime*2);
 			}
 		}
 		else if(timer == 32)

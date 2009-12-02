@@ -42,9 +42,7 @@ public:
 	union{
 		struct{
 			hgeSprite * left;
-			hgeSprite * leftname;
 			hgeSprite * right;
-			hgeSprite * rightname;
 			hgeSprite * textbox;
 		};
 		hgeSprite * chatter[CHATTERMAX];

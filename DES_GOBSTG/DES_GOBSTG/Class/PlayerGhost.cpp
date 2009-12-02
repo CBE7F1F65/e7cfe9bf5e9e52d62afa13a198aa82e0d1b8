@@ -6,7 +6,7 @@
 #include "BResource.h"
 
 #define _PLAYERGHOST_ADJUSTTIME	0x10
-#define _PLAYERGHOST_LASTINDEX	1
+#define _PLAYERGHOST_LASTINDEX	0
 
 #define _PLAYERGHOST_TRACEEDGEANGLE	200
 
@@ -37,6 +37,7 @@ void PlayerGhost::valueSet(BYTE _playerindex, WORD _ID, bool move)
 	lastchasing	=	false;
 
 	playerghostData * _pgd = &(res.playerghostdata[ID]);
+
 	
 	speed	=	_pgd->speed;
 	flag	=	_pgd->flag;
@@ -54,11 +55,11 @@ void PlayerGhost::valueSet(BYTE _playerindex, WORD _ID, bool move)
 
 	if(!sprite)
 	{
-		sprite = SpriteItemManager::CreateSprite(_pgd->siID);
+		sprite = SpriteItemManager::CreateSprite(_pgd->siid);
 	}
 	else
 	{
-		SpriteItemManager::SetSprite(_pgd->siID, sprite, mp.tex);
+		SpriteItemManager::ChangeSprite(_pgd->siid, sprite);
 	}
 }
 
@@ -285,7 +286,7 @@ void PlayerGhost::action()
 		headangle = 0;
 	}
 
-	SpriteItemManager::SetSprite(_pgd->siID, sprite, mp.tex);
+	SpriteItemManager::SetSprite(_pgd->siid, sprite, mp.tex);
 	if (flag & PGFLAG_SYNCPLAYER)
 	{
 		float tex_x, tex_y, tex_w, tex_h;

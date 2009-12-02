@@ -264,7 +264,7 @@ void Beam::action(BYTE playerindex)
 			else
 			{
 				grazetimer++;
-				if(isInRect(Player::p[playerindex].graze_r, Player::p[playerindex].x, Player::p[playerindex].y))
+				if(isInRect(PLAYER_GRAZE_R, Player::p[playerindex].x, Player::p[playerindex].y))
 				{
 					float itemx;
 					float itemy;

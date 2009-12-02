@@ -7,7 +7,7 @@
 
 #define SE_FREEBEGIN		0x40
 
-seStruct SE::se[SEMAX];
+SE SE::se[SEMAX];
 BYTE SE::vol;
 
 bool SE::Initial()

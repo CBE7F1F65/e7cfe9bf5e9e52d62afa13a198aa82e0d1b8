@@ -74,7 +74,6 @@ struct ftInfoSet
 	hgeSprite * enchat_1;
 	hgeSprite * enchat_2;
 	hgeSprite * enchat_3;
-	hgeSprite * namecard;
 
 	hgeSprite * timecircle;
 	hgeSprite * enemyx;

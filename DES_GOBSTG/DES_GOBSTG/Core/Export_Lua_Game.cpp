@@ -106,7 +106,7 @@ int Export_Lua_Game::LuaFn_Game_GetPlayerContentTable(LuaState * ls)
 	else
 	{
 		int index = args[1].GetInteger();
-		ls->PushInteger(SpriteItemManager::faceIndexPlayer + res.playerdata[index].faceIndex);
+		ls->PushInteger(res.playerdata[index].faceSIID);
 		_LuaHelper_PushString(ls, res.playerdata[index].name);
 		_LuaHelper_PushString(ls, res.playerdata[index].ename);
 		return 3;

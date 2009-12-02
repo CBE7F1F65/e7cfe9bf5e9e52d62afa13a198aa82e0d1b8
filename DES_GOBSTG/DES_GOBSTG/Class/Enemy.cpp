@@ -69,7 +69,7 @@ bool Enemy::Build(WORD eID, BYTE playerindex, BYTE _index, float x, float y, int
 				{
 					index = 0;
 				}
-				if (en[j].getPlayerIndex() == playerindex)
+				if (en[index].getPlayerIndex(index) == playerindex)
 				{
 					if(!en[index].exist)
 					{
@@ -737,10 +737,10 @@ void Enemy::GetCollisionRect(float * w, float * h)
 
 void Enemy::CostLife(float power)
 {
-	if (!(bossinfo.spellflag & BISF_NOBOMBDAMAGE))
-	{
+//	if (!(bossinfo.spellflag & BISF_NOBOMBDAMAGE))
+//	{
 		life -= power * (1 - defrate);
-	}
+//	}
 	damage = true;
 }
 
@@ -769,8 +769,12 @@ void Enemy::actionInStop()
 	}
 }
 
-BYTE Enemy::getPlayerIndex()
+BYTE Enemy::getPlayerIndex(BYTE index)
 {
+	if (index < ENEMYMAX)
+	{
+		ID = index;
+	}
 	if (ID >= ENID_LEFTIDBEGIN && ID < ENID_LEFTIDUNTIL)
 	{
 		return 0;
@@ -832,7 +836,9 @@ void Enemy::DoShot(BYTE playerindex)
 				SE::push(SE_ENEMY_DAMAGE_2, x);
 			}
 			else
+			{
 				SE::push(SE_ENEMY_DAMAGE_1, x);
+			}
 		}
 		else
 		{

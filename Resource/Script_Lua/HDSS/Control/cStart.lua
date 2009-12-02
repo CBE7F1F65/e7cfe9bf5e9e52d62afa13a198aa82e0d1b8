@@ -59,18 +59,21 @@ function ControlExecute_cStart(con)
 		
 	end
 
-	if math.mod(con, 2) == 1 then		
-		hdss.Call(
-			HDSS_EB,
-			{
-				2, 0, 0xff, hge.Random_Int(0, 16) * 10 + 80, 280, 9000, 0.1, 0, 1, 8
-			}
-		)
-		hdss.Call(
-			HDSS_EB,
-			{
-				2, 1, 0xff, hge.Random_Int(0, 16) * 10 + 400, 280, 9000, 0.1, 0, 1, 8
-			}
-		)
+	if math.mod(con, 160) == 1 then	
+		for i=0, 1 do
+			hdss.Call(
+				HDSS_EB,
+				{
+					2, 0, 0xff, hge.Random_Int(0, 16) * 10 + 80, 280, 9000, 0.1, 0, 20, 0
+				}
+			)
+			hdss.Call(
+				HDSS_EB,
+				{
+					2, 1, 0xff, hge.Random_Int(0, 16) * 10 + 400, 280, 9000, 0.1, 0, 20, 0
+				}
+			)
+		end
 	end
+
 end

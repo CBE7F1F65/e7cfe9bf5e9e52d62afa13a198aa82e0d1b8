@@ -47,9 +47,7 @@ void Chat::Init()
 {
 	Release();
 	left = SpriteItemManager::CreateSpriteByName(SI_NULL);
-	right = SpriteItemManager::CreateSpriteByName(SI_NULL);;
-	leftname = SpriteItemManager::CreateSpriteByName(SI_NULL);;
-	rightname = SpriteItemManager::CreateSpriteByName(SI_NULL);;
+	right = SpriteItemManager::CreateSpriteByName(SI_NULL);
 	textbox = SpriteItemManager::CreateSpriteByName(SI_FRONT_TEXT);
 }
 
@@ -120,9 +118,8 @@ bool Chat::chat(BYTE ID, BYTE chatsprite, const char * _text)
 			left->SetColor(0xffffffff);
 			right->SetColor(0x80ffffff);
 			textbox->SetColor(0xff3333ff);
-			SpriteItemManager::ptFace(ID, left, false);
+			SpriteItemManager::ptFace(ID, left);
 			left->SetFlip(chatsprite & CHATSPRITE_LEFTFLIP, false);
-			SpriteItemManager::ptName(ID, leftname, false);
 		}
 		else
 		{
@@ -130,9 +127,8 @@ bool Chat::chat(BYTE ID, BYTE chatsprite, const char * _text)
 			left->SetColor(0x80ffffff);
 			right->SetColor(0xffffffff);
 			textbox->SetColor(0xffff3333);
-			SpriteItemManager::ptFace(ID, right, true);
+			SpriteItemManager::ptFace(ID, right);
 			right->SetFlip(chatsprite & CHATSPRITE_RIGHTFLIP, false);
-			SpriteItemManager::ptName(ID, rightname, true);
 		}
 		int line = 0;
 		int tlength = strlen(_text);
@@ -201,25 +197,23 @@ bool Chat::chatOn(BYTE leftID, BYTE rightID, BYTE chatsprite)
 		}
 
 		chatting = true;
-		SpriteItemManager::SetSprite(-1, leftname, mp.tex);
-		SpriteItemManager::SetSprite(-1, rightname, mp.tex);
 		if (leftID != 0xff)
 		{
-			SpriteItemManager::ptFace(leftID, left, false);
+			SpriteItemManager::ptFace(leftID, left);
 			left->SetFlip(chatsprite & CHATSPRITE_LEFTFLIP, false);
 		}
 		else
 		{
-			SpriteItemManager::ptFace(-1, left, false);
+			SpriteItemManager::ptFace(-1, left);
 		}
 		if (rightID != 0xff)
 		{
-			SpriteItemManager::ptFace(rightID, right, true);
+			SpriteItemManager::ptFace(rightID, right);
 			right->SetFlip(chatsprite & CHATSPRITE_RIGHTFLIP, false);
 		}
 		else
 		{
-			SpriteItemManager::ptFace(-1, right, true);
+			SpriteItemManager::ptFace(-1, right);
 		}
 		if (chatsprite & CHATSPRITE_LEFT)
 		{
@@ -253,13 +247,11 @@ bool Chat::chatOn(BYTE leftID, BYTE rightID, BYTE chatsprite)
 		{
 			x[CHATTER_LEFTNAME] = M_CLIENT_CENTER_X-90;
 			y[CHATTER_LEFTNAME] = M_CLIENT_CENTER_Y+108;
-			SpriteItemManager::ptName(leftID, leftname, false);
 		}
 		if (rightID != 0xff)
 		{
 			x[CHATTER_RIGHTNAME] = M_CLIENT_CENTER_X+90;
 			y[CHATTER_RIGHTNAME] = M_CLIENT_CENTER_Y+108;
-			SpriteItemManager::ptName(rightID, rightname, true);
 		}
 		/*
 		match(CHATTER_LEFTNAME, left);
@@ -280,8 +272,6 @@ bool Chat::chatOff()
 //		strcpy(text, "");
 //		fschat.SignUp(text);
 		fschat.SignOff();
-		SpriteItemManager::ptName(-1, leftname);
-		SpriteItemManager::ptName(-1, rightname);
 	}
 
 	if(timer <= 32)

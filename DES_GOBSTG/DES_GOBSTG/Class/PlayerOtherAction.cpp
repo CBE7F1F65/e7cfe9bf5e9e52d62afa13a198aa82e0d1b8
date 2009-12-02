@@ -5,6 +5,7 @@
 #include "Chat.h"
 #include "Process.h"
 #include "BResource.h"
+#include "SpriteItemManager.h"
 
 #define _PLAYER_ANIMATIONSPEED	8
 
@@ -73,8 +74,12 @@ void Player::initFrameIndex()
 		{
 			_ID = ID;
 		}
+		if (_ID > PLAYERTYPEMAX)
+		{
+			continue;
+		}
 		playerData * pdata = &(res.playerdata[_ID]);
-		int tfi = pdata->startFrame;
+		int tfi = 0;
 		frameindex[i][PLAYER_FRAME_STAND] = tfi;
 
 		bool bhr = pdata->rightPreFrame;
@@ -156,13 +161,7 @@ void Player::setFrame(BYTE frameenum)
 void Player::setIndexFrame(BYTE index)
 {
 	playerData * pdata = &(res.playerdata[nowID]);
-	HTEXTURE nowtex = mp.tex[res.playerdata[nowID].tex];
-	sprite->SetTexture(nowtex);
-	float tw = pdata->usetexw / (pdata->tex_nCol);
-	float th = pdata->usetexh / (pdata->tex_nRow);
-	float ltx = tw * (index % (pdata->tex_nCol));
-	float lty = th * (index / (pdata->tex_nCol));
-	sprite->SetTextureRect(ltx, lty, tw, th);
+	SpriteItemManager::ChangeSprite(res.playerdata[nowID].siid+index, sprite);
 	sprite->SetFlip(flipx, false);
 }
 
@@ -278,7 +277,6 @@ void Player::UpdatePlayerData()
 	r = pdata->collision_r;
 	speed = pdata->fastspeed;
 	slowspeed = pdata->slowspeed;
-	graze_r = pdata->graze_r;
 	shotdelay = pdata->shotdelay;
 	chargespeed = pdata->chargespeed;
 	rechargedelay = pdata->rechargedelay;

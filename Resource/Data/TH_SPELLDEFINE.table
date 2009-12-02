@@ -1,9 +1,2 @@
-73	h5nc	42							
-Spell	SpellNumber	SpellName	TimeLimit	Remain	UserID	Bonus	TurnToScene	SpellFlag	Battle
-104	1	Frozen Butterfly	28	3	20	1000000	108	0	0
-108	2	Aureate Harvest	37	2	20	1000000	112	0	0
-112	3	Southern Mango	40	1	20	1000000	116	0	0
-116	4	Unfortunate Twist	43	0	20	1000000	100200	0	0
-204	5	Foxy Hideout	32	5	21	1500000	208	0	3
-208	6	Lucky Rabbit	37	4	21	1500000	212	0	3
-212	7	White Fog	44	3	21	1500000	216	0	3
+73	h5nc	42								
+Comment	Spell	SpellNumber	SpellName	TimeLimit	Remain	UserID	Bonus	TurnToScene	SpellFlag	Battle

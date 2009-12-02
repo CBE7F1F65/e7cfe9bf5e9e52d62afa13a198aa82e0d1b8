@@ -3,10 +3,6 @@
 #include "BResource.h"
 
 HTEXTURE * SpriteItemManager::tex;
-int SpriteItemManager::faceIndexEnemy = 0;
-int SpriteItemManager::nameIndexEnemy = 0;
-int SpriteItemManager::faceIndexPlayer = 0;
-int SpriteItemManager::nameIndexPlayer = 0;
 int SpriteItemManager::yesIndex = 0;
 int SpriteItemManager::noIndex = 0;
 int SpriteItemManager::cancelIndex = 0;
@@ -276,7 +272,7 @@ void SpriteItemManager::FreeSprite(hgeSprite ** sprite)
 	}
 }
 
-bool SpriteItemManager::ptFace(int index, hgeSprite * sprite, bool enemy)
+bool SpriteItemManager::ptFace(int index, hgeSprite * sprite)
 {
 	if (!sprite || !tex)
 	{
@@ -287,12 +283,10 @@ bool SpriteItemManager::ptFace(int index, hgeSprite * sprite, bool enemy)
 		sprite->SetTextureRect(0, 0, 0, 0);
 		return true;
 	}
-	spriteData * tsd = &(res.spritedata[index+(enemy?faceIndexEnemy:faceIndexPlayer)]);
-	sprite->SetTexture(tex[tsd->tex]);
-	sprite->SetTextureRect(tsd->tex_x, tsd->tex_y, tsd->tex_w, tsd->tex_h);
+	ChangeSprite(res.playerdata[index].faceSIID, sprite);
 	return true;
 }
-
+/*
 bool SpriteItemManager::ptName(int index, hgeSprite * sprite, bool enemy)
 {
 	if (!sprite || !tex)
@@ -309,3 +303,4 @@ bool SpriteItemManager::ptName(int index, hgeSprite * sprite, bool enemy)
 	sprite->SetTextureRect(tsd->tex_x, tsd->tex_y, tsd->tex_w, tsd->tex_h);
 	return true;
 }
+*/

@@ -78,7 +78,7 @@ public:
 
 	void Clear();
 	bool isInRange(float x, float y, float r);
-	BYTE getPlayerIndex();
+	BYTE getPlayerIndex(BYTE index=0xff);
 
 	void valueSet(WORD eID, WORD ID, float x, float y, int angle, float speed, BYTE type, float life, int infitimer);
 

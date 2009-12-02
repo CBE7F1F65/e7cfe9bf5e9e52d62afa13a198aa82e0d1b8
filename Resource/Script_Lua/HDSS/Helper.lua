@@ -184,11 +184,14 @@ function hdssRETURN(ret)
 	)
 end
 
-function hdssSE(seid)
+function hdssSE(seid, x)
+	if x == nil then
+		x = TotalCenterX;
+	end
 	return hdss.Call(
 		HDSS_SE,
 		{
-			seid
+			seid, x
 		}
 	)
 end

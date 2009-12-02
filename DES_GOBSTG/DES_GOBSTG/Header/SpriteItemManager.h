@@ -47,16 +47,10 @@ public:
 	static float GetTexW(int index);
 	static float GetTexH(int index);
 
-	static bool ptFace(int index, hgeSprite * sprite, bool enemy = true);
-	static bool ptName(int index, hgeSprite * sprite, bool enemy = true);
+	static bool ptFace(int index, hgeSprite * sprite);
 
 public:
 	static HTEXTURE * tex;
-
-	static int faceIndexEnemy;
-	static int nameIndexEnemy;
-	static int faceIndexPlayer;
-	static int nameIndexPlayer;
 
 	static int yesIndex;
 	static int noIndex;

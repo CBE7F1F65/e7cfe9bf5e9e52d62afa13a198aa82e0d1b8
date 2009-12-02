@@ -14,7 +14,7 @@ VectorList<PlayerBullet> PlayerBullet::pb[M_PL_MATCHMAXPLAYER];
 
 int PlayerBullet::locked = PBLOCK_LOST;
 
-hgeSprite * PlayerBullet::sprite[PLAYERSHOOTTYPEMAX];
+hgeSprite * PlayerBullet::sprite[PLAYERSHOOTTYPEMAX][PLAYERBULLETTYPE];
 HTEXTURE * PlayerBullet::tex;
 
 DWORD PlayerBullet::bcol0;
@@ -67,7 +67,10 @@ void PlayerBullet::Init(HTEXTURE * _tex)
 
 	for (int i=0; i<PLAYERSHOOTTYPEMAX; i++)
 	{
-		sprite[i] = SpriteItemManager::CreateSprite(res.playershootdata[i].siid);
+		for (int j=0; j<4; j++)
+		{
+			sprite[i][j] = SpriteItemManager::CreateSprite(res.playershootdata[i].siid+(((res.playershootdata[i].flag)&PBFLAG_ANIMATION)?j:0));
+		}
 	}
 }
 
@@ -75,7 +78,10 @@ void PlayerBullet::Release()
 {
 	for (int i=0; i<PLAYERSHOOTTYPEMAX; i++)
 	{
-		SpriteItemManager::FreeSprite(&sprite[i]);
+		for (int j=0; j<PLAYERBULLETTYPE; j++)
+		{
+			SpriteItemManager::FreeSprite(&sprite[i][j]);
+		}
 
 	}
 	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
@@ -169,6 +175,7 @@ void PlayerBullet::valueSet(BYTE _playerindex, WORD _ID, BYTE _arrange, float _x
 	hscale	=	1.0f;
 	vscale	=	1.0f;
 	headangle =	0;
+	animation	=	0;
 
 	diffuse	=	0xffffff;
 	alpha	=	0xC0;
@@ -229,8 +236,8 @@ void PlayerBullet::valueSet(BYTE _playerindex, WORD _ID, BYTE _arrange, float _x
 
 void PlayerBullet::Render()
 {
-	sprite[ID]->SetColor((alpha<<24)|diffuse);
-	sprite[ID]->RenderEx(x, y, ARC(angle+headangle), hscale, vscale);
+	sprite[ID][animation]->SetColor((alpha<<24)|diffuse);
+	sprite[ID][animation]->RenderEx(x, y, ARC(angle+headangle), hscale, vscale);
 }
 
 bool PlayerBullet::GetLockAim(BObject ** obj)
@@ -500,7 +507,9 @@ void PlayerBullet::action()
 	else
 	{
 		if(timer == PB_FADEOUTTIME)
+		{
 			exist = false;
+		}
 		if (flag & PBFLAG_OUTTURN)
 		{
 			TurnBullet();
@@ -509,7 +518,11 @@ void PlayerBullet::action()
 		{
 			if (timer % (PB_FADEOUTTIME / 3 + 1) == 1)
 			{
-				ID++;
+				animation++;
+				if (animation >= PLAYERBULLETTYPE)
+				{
+					animation = PLAYERBULLETTYPE-1;
+				}
 			}
 		}
 		if (flag & PBFLAG_REBOUND)

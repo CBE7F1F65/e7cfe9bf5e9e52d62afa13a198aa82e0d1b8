@@ -62,6 +62,8 @@
 #define PLAYER_COMBORESET	45
 #define PLAYER_COMBOALERT	65
 
+#define PLAYER_GRAZE_R	40
+
 class Player : public BObject
 {
 public:
@@ -168,7 +170,6 @@ public:
 	float	slowspeed;
 	float	speedfactor;
 	float	r;
-	float	graze_r;
 
 	float	chargespeed;
 	int		infitimer;

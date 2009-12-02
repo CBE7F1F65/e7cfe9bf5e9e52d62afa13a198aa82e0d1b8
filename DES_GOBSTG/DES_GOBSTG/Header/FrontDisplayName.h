@@ -423,8 +423,8 @@
 #define	SI_SPELLRIBBON_06	"SI_SpellRibbon_06"
 #define	SI_SPELLRIBBON_07	"SI_SpellRibbon_07"
 */
-#define	SI_NAMECARD_01	"SI_NameCard_01"
 /*
+#define	SI_NAMECARD_01	"SI_NameCard_01"
 #define	SI_NAMECARD_02	"SI_NameCard_02"
 #define	SI_NAMECARD_03	"SI_NameCard_03"
 #define	SI_NAMECARD_04	"SI_NameCard_04"
@@ -457,7 +457,9 @@
 #define	SI_NAMECARD_31	"SI_NameCard_31"
 #define	SI_NAMECARD_32	"SI_NameCard_32"
 */
+/*
 #define SI_PLAYERNAMECARD_01	"SI_PlayerNameCard_01"
+*/
 #define SI_SENDITEM_00		"SI_SendItem_00"
 /*
 */
@@ -539,7 +541,9 @@
 #define	SI_FACE_34	"SI_Face_34"
 #define	SI_FACE_35	"SI_Face_35"
 */
+/*
 #define SI_PLAYERFACE_01	"SI_PlayerFace_01"
+*/
 /*
 #define	SI_MUSICNAME_01	"SI_MusicName_01"
 #define	SI_MUSICNAME_02	"SI_MusicName_02"

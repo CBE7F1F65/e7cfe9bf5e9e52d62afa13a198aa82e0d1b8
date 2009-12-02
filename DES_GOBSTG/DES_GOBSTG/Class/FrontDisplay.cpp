@@ -507,8 +507,6 @@ bool FrontDisplay::Init()
 
 	idx = SpriteItemManager::GetIndexByName(SI_FACE_01);
 	info.cutin = SpriteItemManager::CreateSprite(idx);
-	SpriteItemManager::faceIndexEnemy = idx;
-	SpriteItemManager::faceIndexPlayer = SpriteItemManager::GetIndexByName(SI_PLAYERFACE_01);
 //	info.cutin = SpriteItemManager::CreateSpriteByName(SI_FACE_01);
 	info.plchat_1 = SpriteItemManager::CreateSprite(idx);
 	info.plchat_2 = SpriteItemManager::CreateSprite(idx);
@@ -517,10 +515,6 @@ bool FrontDisplay::Init()
 	info.enchat_2 = SpriteItemManager::CreateSprite(idx);
 	info.enchat_3 = SpriteItemManager::CreateSprite(idx);
 
-	idx = SpriteItemManager::GetIndexByName(SI_NAMECARD_01);
-	info.namecard = SpriteItemManager::CreateSprite(idx);
-	SpriteItemManager::nameIndexEnemy = idx;
-	SpriteItemManager::nameIndexPlayer = SpriteItemManager::GetIndexByName(SI_PLAYERNAMECARD_01);
 	info.timecircle = SpriteItemManager::CreateSpriteByName(SI_BOSS_TIMECIRCLE);
 	info.enemyx = SpriteItemManager::CreateSpriteByName(SI_ENEMY_X);
 
@@ -672,7 +666,6 @@ void FrontDisplay::Release()
 		info.smallfont = NULL;
 	}
 	SpriteItemManager::FreeSprite(&info.cutin);
-	SpriteItemManager::FreeSprite(&info.namecard);
 	SpriteItemManager::FreeSprite(&info.plchat_1);
 	SpriteItemManager::FreeSprite(&info.plchat_2);
 	SpriteItemManager::FreeSprite(&info.plchat_3);

@@ -99,10 +99,10 @@ bool _DataTable::DataTableDefine()
 bool _DataTable::PackageTableDefine()
 {
 	ZeroMemory(res.resdata.packagefilename, sizeof(char) * PACKAGEMAX * M_PATHMAX);
-	_READSTRINGBUFFERLINE(2);
-
+	_READSTRINGBUFFERLINE(3);
 	while (!feof(file))
 	{
+		_BREAKCOMMENTBUFFER;
 		fscanf(file, "%d", &tindex);
 		_CHECKEOF_DATATABLE;
 		fscanf(file, "%s", res.resdata.packagefilename[tindex]);
@@ -113,9 +113,10 @@ bool _DataTable::PackageTableDefine()
 bool _DataTable::TextureTableDefine()
 {
 	ZeroMemory(res.resdata.texfilename, sizeof(char) * TEXMAX * M_PATHMAX);
-	_READSTRINGBUFFERLINE(2);
+	_READSTRINGBUFFERLINE(3);
 	while (!feof(file))
 	{
+		_BREAKCOMMENTBUFFER;
 		fscanf(file, "%d", &tindex);
 		_CHECKEOF_DATATABLE;
 		fscanf(file, "%s", res.resdata.texfilename[tindex]);
@@ -126,9 +127,10 @@ bool _DataTable::TextureTableDefine()
 bool _DataTable::EffectTableDefine()
 {
 	ZeroMemory(res.resdata.effectsysfilename, sizeof(char) * EFFECTSYSTYPEMAX * M_PATHMAX);
-	_READSTRINGBUFFERLINE(2);
+	_READSTRINGBUFFERLINE(3);
 	while (!feof(file))
 	{
+		_BREAKCOMMENTBUFFER;
 		fscanf(file, "%d", &tindex);
 		_CHECKEOF_DATATABLE;
 		fscanf(file, "%s", res.resdata.effectsysfilename[tindex]);
@@ -139,9 +141,10 @@ bool _DataTable::EffectTableDefine()
 bool _DataTable::SETableDefine()
 {
 	ZeroMemory(res.resdata.sefilename, sizeof(char) * SEMAX * M_PATHMAX);
-	_READSTRINGBUFFERLINE(2);
+	_READSTRINGBUFFERLINE(3);
 	while (!feof(file))
 	{
+		_BREAKCOMMENTBUFFER;
 		fscanf(file, "%d", &tindex);
 		_CHECKEOF_DATATABLE;
 		fscanf(file, "%s", res.resdata.sefilename[tindex]);
@@ -152,13 +155,14 @@ bool _DataTable::SETableDefine()
 bool _DataTable::SceneDefineFile()
 {
 	ZeroMemory(res.scenedata, RSIZE_SCENE);
-	_READSTRINGBUFFERLINE(2);
+	_READSTRINGBUFFERLINE(3);
 	while (!feof(file))
 	{
+		_BREAKCOMMENTBUFFER;
 		fscanf(file, "%d", &tindex);
 		sceneData * item = &(res.scenedata[tindex]);
 		_CHECKEOF_DATATABLE;
-		fscanf(file, "%[^\t\r\n]",
+		fscanf(file, "%[^\r\n]",
 			item->scenename);
 	}
 	return true;
@@ -191,10 +195,11 @@ bool _DataTable::SpellDefineFile()
 {
 //	res.spelldata.clear();
 	ZeroMemory(res.spelldata, RSIZE_SPELL);
-	_READSTRINGBUFFERLINE(10);
+	_READSTRINGBUFFERLINE(11);
 	while (!feof(file))
 	{
 		_INITTINT;
+		_BREAKCOMMENTBUFFER;
 		fscanf(file, "%d", &tindex);
 		_CHECKEOF_DATATABLE;
 		spellData * item = &(res.spelldata[tindex]);
@@ -224,15 +229,16 @@ bool _DataTable::SpellDefineFile()
 bool _DataTable::MusicDefineFile()
 {
 	ZeroMemory(res.musdata, RSIZE_MUSIC);
-	_READSTRINGBUFFERLINE(10);
+	_READSTRINGBUFFERLINE(11);
 	while (!feof(file))
 	{
 		_INITTINT;
+		_BREAKCOMMENTBUFFER;
 		fscanf(file, "%d", &tindex);
 		musicData * item = &(res.musdata[tindex]);
 		_CHECKEOF_DATATABLE;
 
-		fscanf(file, "%[^\t]%s%d%d%d\t%[^\t]\t%[^\t]\t%[^\t]\t%[^\t\r\n]", 
+		fscanf(file, "%[^\t]%s%d%d%d\t%[^\t]\t%[^\t]\t%[^\t]\t%[^\r\n]", 
 			item->musicname, 
 			item->musicfilename, 
 			&(item->startpos), 
@@ -300,7 +306,7 @@ bool _DataTable::EnemyDefineFile()
 		enemyData * item = &(res.enemydata[tindex]);
 		_CHECKEOF_DATATABLE;
 
-		fscanf(file, "%d%s%f%f%d%d%d%d%d%d%d%d%d%d%d%f%f\t%[^\t]\t%[^\t\r\n]", 
+		fscanf(file, "%d%s%f%f%d%d%d%d%d%d%d%d%d%d%d%f%f\t%[^\t]\t%[^\r\n]", 
 			_SAVETINT, 
 			strbuffer[0],
 			&(item->collision_w), 
@@ -341,7 +347,7 @@ bool _DataTable::EnemyDefineFile()
 bool _DataTable::PlayerDefineFile()
 {
 	ZeroMemory(res.playerdata, RSIZE_PLAYER);
-	_READSTRINGBUFFERLINE(26);
+	_READSTRINGBUFFERLINE(23);
 	while (!feof(file))
 	{
 		_INITTINT;
@@ -350,41 +356,36 @@ bool _DataTable::PlayerDefineFile()
 		playerData * item = &(res.playerdata[tindex]);
 		_CHECKEOF_DATATABLE;
 
-		fscanf(file, "%f%f%f%f%f%d%d%d%f%f%d%d%d%d%d%d%d%d%d%d%f%f\t%[^\t]\t%[^\t\r\n]", 
+		fscanf(file, "%f%f%f%f%d%d%f%f%s%s%s\t%[^\t]%s%d%d%d%d%d\t%[^\t]\t%[^\t]\t%[^\r\n]", 
 			&(item->collision_r), 
 			&(item->fastspeed), 
 			&(item->slowspeed), 
-			&(item->graze_r),
 			&(item->chargespeed), 
-			_SAVETINT, 
 			_SAVETINT, 
 			_SAVETINT, 
 			&(item->exsendparab),
 			&(item->exsendparaa),
+			strbuffer[0], 
+			strbuffer[1], 
+			strbuffer[2], 
+			item->spellname, 
+			strbuffer[3], 
 			_SAVETINT, 
 			_SAVETINT, 
 			_SAVETINT, 
 			_SAVETINT, 
 			_SAVETINT, 
-			_SAVETINT, 
-			_SAVETINT, 
-			_SAVETINT, 
-			_SAVETINT, 
-			_SAVETINT, 
-			&(item->usetexw),
-			&(item->usetexh),
-			(item->name),
-			(item->ename));
+			item->scenename, 
+			item->name,
+			item->ename);
 
 		_INITTINT;
 		item->shotdelay = _LOADTINT;
 		item->rechargedelay = _LOADTINT;
-		item->bomblast = _LOADTINT;
-		item->tex = _LOADTINT;
-		item->faceIndex = _LOADTINT;
-		item->tex_nCol = _LOADTINT;
-		item->tex_nRow = _LOADTINT;
-		item->startFrame = _LOADTINT;
+		item->siid = SpriteItemManager::GetIndexByName(strbuffer[0]);
+		item->faceSIID = SpriteItemManager::GetIndexByName(strbuffer[1]);
+		item->spellcutinSIID = SpriteItemManager::GetIndexByName(strbuffer[2]);
+		item->drainzoneSIID = SpriteItemManager::GetIndexByName(strbuffer[3]);
 		item->standFrame = _LOADTINT;
 		item->leftPreFrame = _LOADTINT;
 		item->leftFrame = _LOADTINT;
@@ -473,8 +474,8 @@ bool _DataTable::PlayerGhostDefineFile()
 		_CHECKEOF_DATATABLE;
 		playerghostData * item = &(res.playerghostdata[tindex]);
 
-		fscanf(file, "%d%f%f%f%x%d%f%d%d", 
-			&(item->siID), 
+		fscanf(file, "%s%f%f%f%x%d%f%d%d", 
+			strbuffer[0],  
 			&(item->xadj), 
 			&(item->yadj), 
 			&(item->speed), 
@@ -485,6 +486,7 @@ bool _DataTable::PlayerGhostDefineFile()
 			_SAVETINT);
 
 		_INITTINT;
+		item->siid = SpriteItemManager::GetIndexByName(strbuffer[0]);
 		item->flag = _LOADTINT;
 		item->blend = _LOADTINT;
 	}

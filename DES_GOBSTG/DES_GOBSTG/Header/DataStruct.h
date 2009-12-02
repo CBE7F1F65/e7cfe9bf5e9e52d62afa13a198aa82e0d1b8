@@ -172,23 +172,20 @@ struct playerData
 {
 	char name[M_STRMAX];
 	char ename[M_STRMAX];
+	char spellname[M_STRMAX];
+	char scenename[M_STRMAX];
 	float collision_r;
 	float fastspeed;
 	float slowspeed;
-	float usetexw;
-	float usetexh;
-	float graze_r;
 	float chargespeed;
 	float exsendparab;
 	float exsendparaa;
-	WORD bomblast;
+	int siid;
+	int faceSIID;
+	int spellcutinSIID;
+	int drainzoneSIID;
 	BYTE shotdelay;
 	BYTE rechargedelay;
-	BYTE tex;
-	BYTE faceIndex;
-	BYTE tex_nCol;
-	BYTE tex_nRow;
-	BYTE startFrame;
 	BYTE standFrame;
 	BYTE leftPreFrame;
 	BYTE leftFrame;
@@ -226,7 +223,7 @@ struct playershootData
 
 struct playerghostData 
 {
-	int siID;
+	int siid;
 	int shootangle;
 	int startangle;
 	float mover;

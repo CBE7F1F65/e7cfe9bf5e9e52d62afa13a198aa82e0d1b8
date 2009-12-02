@@ -1,57 +1,110 @@
 73	h5nc	53
-Index	Texture	
-0	Graphic/Other/word.png	
-1	Graphic/Other/white.png	
-2	Graphic/Sprite/Bullet/bullet.png	
-3	Graphic/Sprite/Ghost/ghost.png	
-4	Graphic/th09/enemy.png	
-5	Graphic/Other/panel.png	
-6	Graphic/th09/front.png	
-7	Graphic/th09/selectitem.png	
-10	Graphic/Sprite/Player/pl_01.png	
-11	Graphic/Sprite/Player/pl_02.png	
-12	Graphic/Sprite/Player/pl_03.png	
-19	Graphic/Sprite/Player/pl_10.png	
-23	Graphic/Sprite/Player/pl_14.png	
-24	Graphic/Sprite/Player/pl_15.png	
-28	Graphic/Sprite/Player/pl_19.png	
-29	Graphic/Sprite/Player/pl_20.png	
-30	Graphic/Sprite/Player/pl_21.png	
-31	Graphic/Sprite/Player/pl_22.png	
-36	Graphic/Sprite/Player/pl_01_ex.png	
-37	Graphic/Sprite/Player/pl_02_ex.png	
-41	Graphic/Sprite/Player/pl_07_ex.png	
-46	Graphic/Sprite/Player/pl_22_ex.png	
-58	Graphic/Sprite/Face/face_05.png	
-71	Graphic/Sprite/Face/face_18.png	
-78	Graphic/Sprite/Face/face_25.png	
-80	Graphic/Sprite/Face/face_27.png	
-81	Graphic/Sprite/Face/face_28.png	
-82	Graphic/Sprite/Face/face_29.png	
-85	Graphic/Sprite/Face/face_32.png	
-86	Graphic/Sprite/Face/face_33.png	
-87	Graphic/Sprite/Face/face_34.png	
-88	Graphic/Sprite/Face/face_35.png	
-100	Graphic/Sprite/Boss/boss_05.png	
-113	Graphic/Sprite/Boss/boss_18.png	
-127	Graphic/Sprite/Boss/boss_32.png	
-144	Graphic/Sprite/Boss/boss_31_ex.png	
-160	Graphic/th09/title00.png	
-161	Graphic/th09/select00.png	
-162	Graphic/UI/battle.png	
-163	Graphic/UI/musiclist.png	
-187	Graphic/Scene/s05a.png	
-188	Graphic/Scene/s05b.png	
-209	Graphic/Scene/s18a.png	
-210	Graphic/Scene/s18b.png	
-222	Graphic/Scene/s25a.png	
-223	Graphic/Scene/s25b.png	
-226	Graphic/Scene/s27a.png	
-227	Graphic/Scene/s28a.png	
-228	Graphic/Scene/s28b.png	
-229	Graphic/Scene/s29a.png	
-230	Graphic/Scene/s29b.png	
-235	Graphic/Scene/s32a.png	
-236	Graphic/Scene/s32b.png	
-237	Graphic/Scene/s33a.png	
-238	Graphic/Scene/s33b.png	
+Comment	Index	Texture
+-	0	Graphic/Other/word.png
+-	1	Graphic/Other/white.png
+-	2	Graphic/Sprite/Bullet/bullet.png
+-	3	Graphic/Sprite/Ghost/ghost.png
+-	4	Graphic/th09/enemy.png
+-	5	Graphic/Other/panel.png
+-	6	Graphic/th09/front.png
+-	7	Graphic/th09/selectitem.png
+#		Player(10~41)
+-	10	Graphic/Sprite/Player/Player/pl_01.png
+-	11	Graphic/Sprite/Player/Player/pl_02.png
+-	12	Graphic/Sprite/Player/Player/pl_03.png
+-	13	Graphic/Sprite/Player/Player/pl_04.png
+-	14	Graphic/Sprite/Player/Player/pl_05.png
+-	15	Graphic/Sprite/Player/Player/pl_06.png
+-	16	Graphic/Sprite/Player/Player/pl_07.png
+-	17	Graphic/Sprite/Player/Player/pl_08.png
+-	18	Graphic/Sprite/Player/Player/pl_09.png
+-	19	Graphic/Sprite/Player/Player/pl_10.png
+-	20	Graphic/Sprite/Player/Player/pl_11.png
+-	21	Graphic/Sprite/Player/Player/pl_12.png
+-	22	Graphic/Sprite/Player/Player/pl_13.png
+-	23	Graphic/Sprite/Player/Player/pl_14.png
+-	24	Graphic/Sprite/Player/Player/pl_15.png
+-	28	Graphic/Sprite/Player/Player/pl_19.png
+-	29	Graphic/Sprite/Player/Player/pl_20.png
+-	30	Graphic/Sprite/Player/Player/pl_21.png
+-	31	Graphic/Sprite/Player/Player/pl_22.png
+-	32	Graphic/Sprite/Player/Player/pl_23.png
+#		PlayerEx(42~73)
+-	42	Graphic/Sprite/Player/Player/pl_01_ex.png
+-	43	Graphic/Sprite/Player/Player/pl_02_ex.png
+-	48	Graphic/Sprite/Player/Player/pl_07_ex.png
+#		Face(74~105)
+-	74	Graphic/Sprite/Face/face_01.png
+-	75	Graphic/Sprite/Face/face_02.png
+-	76	Graphic/Sprite/Face/face_03.png
+-	77	Graphic/Sprite/Face/face_04.png
+-	78	Graphic/Sprite/Face/face_05.png
+-	79	Graphic/Sprite/Face/face_06.png
+-	80	Graphic/Sprite/Face/face_07.png
+-	81	Graphic/Sprite/Face/face_08.png
+-	82	Graphic/Sprite/Face/face_09.png
+-	83	Graphic/Sprite/Face/face_10.png
+-	84	Graphic/Sprite/Face/face_11.png
+-	85	Graphic/Sprite/Face/face_12.png
+-	86	Graphic/Sprite/Face/face_13.png
+-	87	Graphic/Sprite/Face/face_14.png
+-	88	Graphic/Sprite/Face/face_15.png
+-	89	Graphic/Sprite/Face/face_16.png
+-	90	Graphic/Sprite/Face/face_17.png
+-	91	Graphic/Sprite/Face/face_18.png
+-	92	Graphic/Sprite/Face/face_19.png
+-	93	Graphic/Sprite/Face/face_20.png
+-	94	Graphic/Sprite/Face/face_21.png
+-	95	Graphic/Sprite/Face/face_22.png
+-	96	Graphic/Sprite/Face/face_23.png
+#		Boss(106~137)
+-	106	Graphic/Sprite/Boss/boss_01.png
+-	107	Graphic/Sprite/Boss/boss_02.png
+-	108	Graphic/Sprite/Boss/boss_03.png
+-	109	Graphic/Sprite/Boss/boss_04.png
+-	110	Graphic/Sprite/Boss/boss_05.png
+-	111	Graphic/Sprite/Boss/boss_06.png
+-	112	Graphic/Sprite/Boss/boss_07.png
+-	113	Graphic/Sprite/Boss/boss_08.png
+-	114	Graphic/Sprite/Boss/boss_09.png
+-	115	Graphic/Sprite/Boss/boss_10.png
+-	116	Graphic/Sprite/Boss/boss_11.png
+-	117	Graphic/Sprite/Boss/boss_12.png
+-	118	Graphic/Sprite/Boss/boss_13.png
+-	119	Graphic/Sprite/Boss/boss_14.png
+-	120	Graphic/Sprite/Boss/boss_15.png
+-	121	Graphic/Sprite/Boss/boss_16.png
+-	122	Graphic/Sprite/Boss/boss_17.png
+-	123	Graphic/Sprite/Boss/boss_18.png
+-	124	Graphic/Sprite/Boss/boss_19.png
+-	125	Graphic/Sprite/Boss/boss_20.png
+-	126	Graphic/Sprite/Boss/boss_21.png
+-	127	Graphic/Sprite/Boss/boss_22.png
+-	128	Graphic/Sprite/Boss/boss_23.png
+#		PlayerSpellCutIn(138~169)
+-	138	Graphic/Sprite/Player/SpellCutIn/pl_01_cutin.png
+-	139	Graphic/Sprite/Player/SpellCutIn/pl_02_cutin.png
+#		PlayerDrainZone(170~201)
+-	170	Graphic/Sprite/Player/DrainZone/pl_01_drain.png
+-	171	Graphic/Sprite/Player/DrainZone/pl_02_drain.png
+#		Other(202~211)
+-	202	Graphic/th09/title00.png
+-	203	Graphic/th09/select00.png
+-	204	Graphic/UI/battle.png
+-	205	Graphic/UI/musiclist.png
+#		Scene(212~)
+-	212	Graphic/Scene/s05a.png
+-	213	Graphic/Scene/s05b.png
+-	214	Graphic/Scene/s18a.png
+-	215	Graphic/Scene/s18b.png
+-	216	Graphic/Scene/s25a.png
+-	217	Graphic/Scene/s25b.png
+-	218	Graphic/Scene/s27a.png
+-	219	Graphic/Scene/s28a.png
+-	220	Graphic/Scene/s28b.png
+-	221	Graphic/Scene/s29a.png
+-	222	Graphic/Scene/s29b.png
+-	223	Graphic/Scene/s32a.png
+-	224	Graphic/Scene/s32b.png
+-	225	Graphic/Scene/s33a.png
+-	226	Graphic/Scene/s33b.png

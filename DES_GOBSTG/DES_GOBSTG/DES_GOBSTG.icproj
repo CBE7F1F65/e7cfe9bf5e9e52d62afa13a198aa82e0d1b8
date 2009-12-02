@@ -294,6 +294,8 @@
 		<File 
 			RelativePath=".\Class\PlayerGhost.cpp"/>
 		<File 
+			RelativePath=".\Class\PlayerOtherAction.cpp"/>
+		<File 
 			RelativePath=".\Class\PushKey.cpp"/>
 		<File 
 			RelativePath=".\Class\Replay.cpp"/>
@@ -305,8 +307,6 @@
 			RelativePath=".\Class\SelectSystem.cpp"/>
 		<File 
 			RelativePath=".\Class\Target.cpp"/>
-		<File 
-			RelativePath=".\Class\PlayerOtherAction.cpp"/>
 		<File 
 			RelativePath=".\Process\frame.cpp"/>
 		<File 

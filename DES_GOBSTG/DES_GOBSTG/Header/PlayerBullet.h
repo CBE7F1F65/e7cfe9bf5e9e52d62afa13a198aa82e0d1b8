@@ -71,13 +71,14 @@ public:
 
 	int		locktimer;
 	int		hitonfactor;
+	int		animation;
 
 	WORD	flag;
 
 	BYTE	arrange;
 	BYTE	playerindex;
 
-	static hgeSprite * sprite[PLAYERSHOOTTYPEMAX];
+	static hgeSprite * sprite[PLAYERSHOOTTYPEMAX][PLAYERBULLETTYPE];
 	static DWORD bcol0, bcol1, bcol2, bcol3;
 	static HTEXTURE * tex;
 	static int locked;

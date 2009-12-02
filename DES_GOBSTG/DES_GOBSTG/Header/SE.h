@@ -59,14 +59,6 @@
 #define	SE_SYSTEM_SELECT		56
 #define	SE_SYSTEM_PAUSE			57
 
-struct seStruct
-{
-	HEFFECT eff;
-	HCHANNEL chn;
-	float sum;
-	WORD counter;
-};
-
 class SE
 {
 public:
@@ -77,7 +69,11 @@ public:
 	static void stop(BYTE type);
 
 public:
-	static seStruct se[SEMAX];
+	HEFFECT eff;
+	HCHANNEL chn;
+	float sum;
+	WORD counter;
+	static SE se[SEMAX];
 	static BYTE vol;
 };
 

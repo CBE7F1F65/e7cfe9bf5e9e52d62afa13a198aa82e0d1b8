@@ -65,9 +65,7 @@ Player::Player()
 
 Player::~Player()
 {
-	if(sprite)
-		delete sprite;
-	sprite = NULL;
+	SpriteItemManager::FreeSprite(&sprite);
 }
 
 void Player::ClearNC()
@@ -190,7 +188,6 @@ void Player::ClearSet(BYTE round)
 	esCollapse.valueSet(EFFSPSET_PLAYERUSE, EFFSP_PLAYERCOLLAPSE, SpriteItemManager::GetIndexByName(SI_PLAYER_SHOTITEM), x, y);
 	esCollapse.actionSet(0, 0, 160);
 	esCollapse.colorSet(0x80ffffff);
-
 }
 
 //add
@@ -216,7 +213,8 @@ void Player::valueSet(BYTE _playerindex, BYTE round)
 
 	if(!sprite)
 	{
-		sprite = new hgeSprite(mp.tex[res.playerdata[ID].tex], 0, 0, 0, 0);
+		sprite = SpriteItemManager::CreateSpriteByName(SI_NULL);
+//		sprite = new hgeSprite(mp.tex[res.playerdata[ID].tex], 0, 0, 0, 0);
 	}
 	setFrame(PLAYER_FRAME_STAND);
 
@@ -1242,7 +1240,7 @@ void Player::AddGhostPoint(int ghostpoint, float x, float y)
 		{
 			AddGhostPoint(-(60-rank*2), x, y);
 			AddBulletPoint(-10, x, y);
-			Ghost::SendGhost(!playerindex, x, y, false);
+			Ghost::SendGhost(1-playerindex, x, y, false);
 		}
 	}
 }
@@ -1258,7 +1256,7 @@ void Player::AddBulletPoint(int bulletpoint, float x, float y)
 		{
 			setID = EFFSPSET_SYSTEM_SENDREDBULLET_0;
 		}
-		Bullet::SendBullet(!playerindex, x, y, setID);
+		Bullet::SendBullet(1-playerindex, x, y, setID);
 	}
 }
 
