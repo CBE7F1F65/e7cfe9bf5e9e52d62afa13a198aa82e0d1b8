@@ -144,8 +144,9 @@ void Process::Release()
 	Chat::chatitem.Release();
 	EffectSp::Release();
 	FrontDisplay::fdisp.Release();
-	Enemy::ClearAll();
+	Enemy::Release();
 	SpriteItemManager::Release();
+	hgeEffectSystem::Release();
 
 	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
 	{

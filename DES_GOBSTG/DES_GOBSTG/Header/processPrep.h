@@ -15,7 +15,6 @@
 #include "Effectsys.h"
 #include "Bullet.h"
 #include "Enemy.h"
-#include "Ghost.h"
 #include "PlayerBullet.h"
 #include "PlayerGhost.h"
 #include "Item.h"

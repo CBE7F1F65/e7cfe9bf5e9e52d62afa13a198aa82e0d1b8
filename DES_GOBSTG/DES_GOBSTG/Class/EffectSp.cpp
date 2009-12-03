@@ -52,10 +52,13 @@ void EffectSp::ClearItem()
 
 void EffectSp::Render()
 {
-	SpriteItemManager::ChangeSprite(siidnow, sprite);
-	sprite->SetColor((alpha<<24)|diffuse);
-	sprite->SetBlendMode(blend);
-	sprite->RenderEx(x, y, ARC(angle+headangle), hscale, vscale);
+	if (sprite)
+	{
+		SpriteItemManager::ChangeSprite(siidnow, sprite);
+		sprite->SetColor((alpha<<24)|diffuse);
+		sprite->SetBlendMode(blend);
+		sprite->RenderEx(x, y, ARC(angle+headangle), hscale, vscale);
+	}
 }
 
 void EffectSp::Action()
@@ -156,6 +159,10 @@ void EffectSp::chaseSet(BYTE _chaseflag, float _aimx, float _aimy, int _chasetim
 
 EffectSp * EffectSp::Build(int setID, WORD ID, int siid, float x, float y, int headangle/* =0 */, float hscale/* =1.0f */, float vscale/* =0.0f */)
 {
+	if (effsp.size == EFFSPMAX)
+	{
+		return NULL;
+	}
 	EffectSp _effsp;
 	EffectSp * _peffsp = effsp.push_back(_effsp);
 	_peffsp->valueSet(setID, ID, siid, x, y, headangle, hscale, vscale);
@@ -173,6 +180,7 @@ void EffectSp::valueSet(int _setID, WORD _ID, int _siid, float _x, float _y, int
 	vscale = _vscale;
 	siid = _siid;
 	siidnow = _siid;
+	bAppend = false;
 
 	chaseflag = EFFSP_CHASE_NULL;
 	chasetimer = 0;
@@ -198,6 +206,13 @@ void EffectSp::colorSet(DWORD color, int _blend)
 	alpha = GETA(color);
 	diffuse = color & 0xffffff;
 	blend = _blend;
+}
+
+void EffectSp::AppendData(int ival, float fval)
+{
+	nAppend = ival;
+	fAppend = fval;
+	bAppend = true;
 }
 
 void EffectSp::action()

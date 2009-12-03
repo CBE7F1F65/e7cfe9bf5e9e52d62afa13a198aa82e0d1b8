@@ -104,6 +104,10 @@ void Bullet::BuildLine(BYTE playerindex, int num, int baseangle, float space, in
 
 int Bullet::Build(BYTE playerindex, float x, float y, bool absolute, int angle, float speed, BYTE type, BYTE color, int fadeinTime, float avoid, BYTE tarID)
 {
+	if (bu[playerindex].size == BULLETMAX)
+	{
+		return -1;
+	}
 	Bullet * _tbu = NULL;
 	_tbu = bu[playerindex].push_back();
 	int _index = bu[playerindex].getEndIndex();
@@ -199,8 +203,11 @@ void Bullet::RenderAll(BYTE renderflag)
 void Bullet::Render()
 {
 	int i = type*BULLETCOLORMAX + color;
-	sprite[i]->SetColor(alpha<<24 | diffuse);
-	sprite[i]->RenderEx(x, y, ARC(angle+headangle+BULLET_ANGLEOFFSET), hscale);
+	if (sprite[i])
+	{
+		sprite[i]->SetColor(alpha<<24 | diffuse);
+		sprite[i]->RenderEx(x, y, ARC(angle+headangle+BULLET_ANGLEOFFSET), hscale);
+	}
 }
 
 BYTE Bullet::getRenderDepth()
@@ -291,7 +298,7 @@ bool Bullet::valueSet(WORD _ID, float _x, float _y, bool absolute, int _angle, f
 
 	tarID	=	_tarID;
 
-	sendtime = 0xff;
+	sendtime = 0;
 	sendsetID = 0;
 
 	matchFadeInColorType();
@@ -455,7 +462,7 @@ void Bullet::passEvent(BYTE _eventID)
 	eventID[0] = _eventID;
 }
 
-void Bullet::SendBullet(BYTE playerindex, float x, float y, BYTE setID)
+void Bullet::SendBullet(BYTE playerindex, float x, float y, BYTE setID, BYTE * sendtime, float * speed)
 {
 	int siidindex = EFFSPSEND_COLOR_RED;
 	if (playerindex)
@@ -464,25 +471,29 @@ void Bullet::SendBullet(BYTE playerindex, float x, float y, BYTE setID)
 	}
 	float _hscale = hge->Random_Float(0.6f, 0.8f);
 	EffectSp * _peffsp = EffectSp::Build(setID, playerindex, EffectSp::senditemsiid[siidindex][0], x, y, 0, _hscale);
-	_peffsp->colorSet(0x80ffffff, BLEND_ALPHAADD);
-	float aimx;
-	float aimy;
-	aimx = hge->Random_Float(M_GAMESQUARE_LEFT_(playerindex) + 8, M_GAMESQUARE_RIGHT_(playerindex) - 8);
-	aimy = hge->Random_Float(M_GAMESQUARE_TOP, M_GAMESQUARE_TOP + 128);
-	_peffsp->chaseSet(EFFSP_CHASE_FREE, aimx, aimy, hge->Random_Int(45, 60));
-	_peffsp->animationSet(EFFSPSEND_ANIMATIONMAX);
+	if (_peffsp)
+	{
+		_peffsp->colorSet(0x80ffffff, BLEND_ALPHAADD);
+		float aimx;
+		float aimy;
+		aimx = hge->Random_Float(M_GAMESQUARE_LEFT_(playerindex) + 8, M_GAMESQUARE_RIGHT_(playerindex) - 8);
+		aimy = hge->Random_Float(M_GAMESQUARE_TOP, M_GAMESQUARE_TOP + 128);
+		_peffsp->chaseSet(EFFSP_CHASE_FREE, aimx, aimy, hge->Random_Int(45, 60));
+		_peffsp->animationSet(EFFSPSEND_ANIMATIONMAX);
+		if (sendtime && speed)
+		{
+			_peffsp->AppendData(*sendtime, *speed);
+		}
+		else
+		{
+			_peffsp->AppendData(-1, -1);
+		}
+	}
 }
 
-void Bullet::AddSendInfo(BYTE _sendsetID)
+void Bullet::AddSendInfo(BYTE _sendsetID, BYTE _sendtime)
 {
-	if (sendtime == 0xff)
-	{
-		sendtime = 0;
-	}
-	else
-	{
-		sendtime++;
-	}
+	sendtime = _sendtime;
 	sendsetID = _sendsetID;
 }
 
@@ -620,15 +631,15 @@ void Bullet::action(BYTE playerindex)
 						sendtime = 2;
 						if (hge->Random_Int(0, 4) == 0)
 						{
-							sendsetID += 6;
+							sendsetID += 2;
 						}
 					}
 				}
 				else
 				{
-					sendsetID = EFFSPSET_SYSTEM_SENDREDBULLET_0;
+					sendsetID = EFFSPSET_SYSTEM_SENDREDBULLET;
 				}
-				SendBullet(1-playerindex, x, y, sendsetID+sendtime*2);
+				SendBullet(1-playerindex, x, y, sendsetID, &sendtime, &speed);
 			}
 		}
 		else if(timer == 32)

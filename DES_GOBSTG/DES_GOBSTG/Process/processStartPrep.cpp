@@ -6,7 +6,7 @@ void Process::clearPrep(bool bclearkey)
 	Effectsys::ClearAll();
 	BGLayer::Init(tex);
 	Enemy::ClearAll();
-	Ghost::ClearAll();
+//	Ghost::ClearAll();
 	Target::ClearAll();
 	Bullet::ClearItem();
 	Item::ClearItem();

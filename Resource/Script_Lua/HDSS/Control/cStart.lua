@@ -59,7 +59,7 @@ function ControlExecute_cStart(con)
 		
 	end
 
-	if math.mod(con, 160) == 1 then	
+	if math.mod(con, 2) == 1 then	
 		for i=0, 1 do
 			hdss.Call(
 				HDSS_EB,

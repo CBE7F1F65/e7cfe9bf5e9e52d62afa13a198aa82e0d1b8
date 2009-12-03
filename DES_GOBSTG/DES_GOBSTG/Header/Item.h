@@ -60,7 +60,7 @@ public:
 	bool bDrained;
 	bool bFast;
 
-	static hgeSprite *spItem[ITEMSPRITEMAX];
+	static hgeSprite *sprite[ITEMSPRITEMAX];
 	static VectorList<infoFont>infofont;
 
 	static VectorList<Item>mi[M_PL_MATCHMAXPLAYER];

@@ -65,8 +65,11 @@ void PlayerGhost::valueSet(BYTE _playerindex, WORD _ID, bool move)
 
 void PlayerGhost::Render()
 {
-	sprite->SetColor((alpha<<24)|diffuse);
-	sprite->RenderEx(x, y, ARC(headangle), scale);
+	if (sprite)
+	{
+		sprite->SetColor((alpha<<24)|diffuse);
+		sprite->RenderEx(x, y, ARC(headangle), scale);
+	}
 }
 
 void PlayerGhost::AntiShooter(float aimx, float aimy)

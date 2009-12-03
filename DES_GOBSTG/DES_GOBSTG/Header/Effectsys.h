@@ -41,7 +41,7 @@ public:
 	void Render();
 
 public:
-	hgeEffectSystem * eff;
+	hgeEffectSystem eff;
 
 	int lifetime;
 	int chasetimer;

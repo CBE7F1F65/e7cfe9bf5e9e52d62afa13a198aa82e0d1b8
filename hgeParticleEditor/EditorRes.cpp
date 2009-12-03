@@ -208,6 +208,7 @@ void EditorRes::Release()
 	{
 		ReleaseEffect(i);
 	}
+	hgeEffectSystem::Release();
 }
 
 void EditorRes::ReleaseEffect(int ID)

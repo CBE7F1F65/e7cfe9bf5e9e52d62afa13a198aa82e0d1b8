@@ -219,8 +219,13 @@ public:
 	int GetAffectorAge(BYTE emitterID, BYTE affectorID);
 	int GetEffectObjectAlive(BYTE emitterID = 0, int * nobj=NULL);
 
-private:
-	void _EffectSystemInit();
+public:
+	void InitEffectSystem();
+	void InitEffectSystem(const char * filename, HTEXTURE tex = 0, HTEXTURE * texset = 0);
+	void InitEffectSystem(const hgeEffectSystem & eff);
+
+public:
+	static void Release();
 
 public:
 	hgeEffectBasicInfo	ebi;

@@ -7,7 +7,7 @@
 #include "FrontDisplay.h"
 #include "Export.h"
 
-hgeSprite * Item::spItem[ITEMSPRITEMAX];
+hgeSprite * Item::sprite[ITEMSPRITEMAX];
 
 VectorList<infoFont> Item::infofont;
 VectorList<Item> Item::mi[M_PL_MATCHMAXPLAYER];
@@ -136,7 +136,7 @@ void Item::Init()
 	int tidx = SpriteItemManager::GetIndexByName(SI_ITEM_GUARD);
 	for(int i=0;i<ITEMTYPEMAX;i++)
 	{
-		spItem[i] = SpriteItemManager::CreateSprite(tidx+i);
+		sprite[i] = SpriteItemManager::CreateSprite(tidx+i);
 	}
 }
 
@@ -161,6 +161,10 @@ void Item::valueSet(WORD type, float _x, float _y, bool _bDrained, int _angle, f
 
 void Item::Build(BYTE playerindex, WORD type, float _x, float _y, bool _bDrained /* = false */, int _angle, float _speed)
 {
+	if (mi[playerindex].size == ITEMMAX)
+	{
+		return;
+	}
 	mi[playerindex].push_back()->valueSet(type, _x, _y, _bDrained, _angle, _speed);
 }
 
@@ -168,8 +172,8 @@ void Item::Release()
 {
 	for (int i=0; i<ITEMSPRITEMAX; i++)
 	{
-		if(spItem[i])
-			SpriteItemManager::FreeSprite(&spItem[i]);
+		if(sprite[i])
+			SpriteItemManager::FreeSprite(&sprite[i]);
 	}
 	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
 	{
@@ -180,7 +184,10 @@ void Item::Release()
 
 void Item::Render()
 {
-	spItem[ID]->RenderEx(x, y, ARC(headangle));
+	if (sprite[ID])
+	{
+		sprite[ID]->RenderEx(x, y, ARC(headangle));
+	}
 }
 
 void Item::action(BYTE playerindex)

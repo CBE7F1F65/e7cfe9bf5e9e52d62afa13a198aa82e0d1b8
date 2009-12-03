@@ -8,11 +8,13 @@ function _eSendBulletSpeedRestrict(speed, rank)
 	return speed;
 end
 
-function eSendRedBullet(playerindex, x, y, setID, bSmall)
+function eSendRedBullet(playerindex, x, y, sendtime, speed, setID, bSmall)
 	local rank = hdss.Get(HDSS_RANK);
 	local angle = 9000 + hge.Random_Int(-1500, 1500);
-	local speed = 1.3 + rank * 0.11;
-	speed = _eSendBulletSpeedRestrict(speed, rank);
+	if speed < 0 then
+		speed = 1.3 + rank * 0.11;
+		speed = _eSendBulletSpeedRestrict(speed, rank);
+	end
 	local type = 3;
 	if bSmall then
 		type = 13;
@@ -24,16 +26,18 @@ function eSendRedBullet(playerindex, x, y, setID, bSmall)
 		}
 	)
 	if bSmall then
-		game.AddSendBulletInfo(setID+2, playerindex, index);
+		game.AddSendBulletInfo(setID, sendtime+1, playerindex, index);
 	end
 	return true;
 end
 
-function eSendBlueBullet(playerindex, x, y, setID, bSmall)
+function eSendBlueBullet(playerindex, x, y, sendtime, speed, setID, bSmall)
 	local rank = hdss.Get(HDSS_RANK);
 	local angle = hdssAMAP(playerindex, x, y, hge.Random_Int(-9000/7, 9000/7));
-	local speed = 1.3 + rank * 0.11;
-	speed = _eSendBulletSpeedRestrict(speed, rank);
+	if speed < 0 then
+		speed = 1.3 + rank * 0.11;
+		speed = _eSendBulletSpeedRestrict(speed, rank);
+	end
 	local type = 3;
 	if bSmall then
 		type = 13;
@@ -45,7 +49,7 @@ function eSendBlueBullet(playerindex, x, y, setID, bSmall)
 		}
 	)
 	if bSmall then
-		game.AddSendBulletInfo(setID+2, playerindex, index);
+		game.AddSendBulletInfo(setID, sendtime+1, playerindex, index);
 	end
 	return true;
 end
@@ -70,7 +74,39 @@ function eSendItemBullet(playerindex, x, y, setID)
 	return true;
 end
 
-function eSendGreenGhost(playerindex, x, y, setID)
+function eSendGhost(playerindex, x, y, sendtime, acceladd, setID)
+	local rank = hdss.Get(HDSS_RANK);
+	
+	local accel;
+	acceladd = acceladd + hge.Random_Float(0, 1/120);
+	if sendtime == 0 then
+		acceladd =  acceladd + rank / 600;
+		accel = 0.025;
+	elseif sendtime == 1 then
+		accel = 0.03;
+	else
+		accel = 0.11 / 3;
+	end
+	
+	sendtime = sendtime + 1;
+	if sendtime >= 3 then
+		sendtime = 3;
+	end
+	local angle = hge.Random_Int(8910, 9090);
+	--
+	local type = 8 + sendtime * 2;
+	local index = hdss.Call(
+		HDSS_EB,
+		{
+			type, playerindex, x, y, angle, 0, type, 20, 0
+		}
+	)
+	if accel+acceladd <= 0.0001 then
+		MB()
+	end
+	if index ~= nil then
+		game.AddSendGhostInfo(setID, sendtime, playerindex, accel+acceladd, acceladd, index);
+	end
 	return true;
 end
 

@@ -68,6 +68,7 @@ public:
 
 	static Enemy * Build(WORD eID, BYTE playerindex, float x, float y, int angle, float speed, BYTE type, float life, int infitimer);
 	static void Init(HTEXTURE * tex);
+	static void Release();
 	static void Action(bool notinstop);
 	static void ClearAll();
 	static void RenderAll(BYTE renderflag);
@@ -107,13 +108,12 @@ public:
 	void Render();
 	void RenderEffect();
 
+	static void SendGhost(BYTE playerindex, float x, float y, BYTE setID, BYTE * sendtime=NULL, float * acceladd=NULL);
+	void AddSendInfo(BYTE sendsetID, BYTE sendtime, float accel, float acceladd);
+
 public:
 	Effectsys	effCollapse;
 	Effectsys	effShot;
-
-//	EffectSp	esCircle;
-
-	hgeSprite * sprite;
 
 	float	para[ENEMY_PARAMAX];
 	Target	aim;
@@ -121,6 +121,9 @@ public:
 	float	life;
 	float	defrate;
 	DWORD	take;
+
+	float	accel;
+	float	acceladd;
 
 	BYTE	playerindex;
 
@@ -139,12 +142,16 @@ public:
 	BYTE	nowstate;
 	BYTE	faceindex;
 
+	BYTE	sendtime;
+	BYTE	sendsetID;
+
 	BYTE	frameindex[ENEMY_FRAME_STATEMAX];
 
 	static HTEXTURE * tex;
 	static BYTE actionflag[ENEMY_BOSSMAX];
 	static BYTE spelluptimer[ENEMY_BOSSMAX];
 	static BYTE storetimer[ENEMY_BOSSMAX];
+	static hgeSprite * sprite[ENEMYTYPEMAX];
 
 	static VectorList<Enemy> en[M_PL_MATCHMAXPLAYER];
 };

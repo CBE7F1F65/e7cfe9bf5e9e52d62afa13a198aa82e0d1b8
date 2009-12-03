@@ -434,14 +434,10 @@ void BGLayer::RenderFG(BYTE renderflag)
 
 void BGLayer::Render()
 {
-//	if (hge->System_GetState(HGE_2DMODE))
-//	{
-//		sprite->RenderEx(x, y, rotate?ARC(angle-9000):0, hscale, vscale);
-//	}
-//	else
-//	{
+	if (sprite)
+	{
 		hge->Gfx_RenderQuad(&(sprite->quad));
-//	}
+	}
 }
 
 void BGLayer::action()

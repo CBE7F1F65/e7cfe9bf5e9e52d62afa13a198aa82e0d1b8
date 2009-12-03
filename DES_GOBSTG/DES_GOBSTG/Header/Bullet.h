@@ -81,8 +81,8 @@ public:
 	void matchFadeInColorType();
 	void matchFadeOutColorType();
 
-	static void SendBullet(BYTE playerindex, float x, float y, BYTE setID);
-	void AddSendInfo(BYTE sendsetID);
+	static void SendBullet(BYTE playerindex, float x, float y, BYTE setID, BYTE * sendtime=NULL, float * speed = NULL);
+	void AddSendInfo(BYTE sendsetID, BYTE _sendtime);
 
 	bool passedEvent(BYTE eventID);
 	void passEvent(BYTE eventID);

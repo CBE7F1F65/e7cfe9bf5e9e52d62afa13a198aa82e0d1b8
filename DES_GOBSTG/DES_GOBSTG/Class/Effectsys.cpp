@@ -9,24 +9,19 @@ hgeEffectSystem Effectsys::efftype[EFFECTSYSTYPEMAX];
 
 Effectsys::Effectsys()
 {
-	eff = NULL;
 	exist = false;
 }
 
 Effectsys::~Effectsys()
 {
 	Clear();
+	eff.FreeList();
 }
 
 void Effectsys::Clear()
 {
 	exist = false;
-	if (eff)
-	{
-		eff->Stop(true);
-		delete eff;
-	}
-	eff = NULL;
+	eff.Stop(true);
 }
 
 void Effectsys::ClearAll()
@@ -142,7 +137,8 @@ void Effectsys::valueSet(WORD _ID, BYTE _renderflag, int _lifetime, float _x, fl
 		ID = 0;
 
 	Clear();
-	eff = new hgeEffectSystem(efftype[ID]);
+//	eff = new hgeEffectSystem(efftype[ID]);
+	eff.InitEffectSystem(efftype[ID]);
 
 	MoveTo(x, y, z, true);
 	Fire();
@@ -155,17 +151,17 @@ void Effectsys::SetRenderFlag(BYTE _renderflag)
 
 void Effectsys::Stop(bool bKill /* = false */)
 {
-	eff->Stop(bKill);
+	eff.Stop(bKill);
 }
 
 void Effectsys::Fire()
 {
-	eff->Fire();
+	eff.Fire();
 }
 
 void Effectsys::Render()
 {
-	eff->Render(Export::GetFarPoint(renderflag));
+	eff.Render(Export::GetFarPoint(renderflag));
 }
 
 void Effectsys::MoveTo(float _x, float _y, float _z, bool bForce)
@@ -173,7 +169,7 @@ void Effectsys::MoveTo(float _x, float _y, float _z, bool bForce)
 	x = _x;
 	y = _y;
 	z = _z;
-	eff->MoveTo(x, y, z, bForce);
+	eff.MoveTo(x, y, z, bForce);
 }
 
 void Effectsys::action()
@@ -217,5 +213,5 @@ void Effectsys::action()
 	{
 		Target::SetValue(tarID, x, y);
 	}
-	eff->Update();
+	eff.Update();
 }

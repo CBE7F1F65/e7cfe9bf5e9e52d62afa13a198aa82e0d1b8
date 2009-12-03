@@ -3,23 +3,30 @@
 
 HGE * hgeEffectSystem::hge = NULL;
 
-void hgeEffectSystem::_EffectSystemInit()
+void hgeEffectSystem::InitEffectSystem()
 {
-	ZeroMemory(this, sizeof(hgeEffectSystem));
-	hge = hgeCreate(HGE_VERSION);
+	FreeList();
+	if (!hge)
+	{
+		hge = hgeCreate(HGE_VERSION);
+	}
 
 	nAge = HGEEFFECT_AGE_STOP;
 	texnum = -1;
 }
 
-hgeEffectSystem::hgeEffectSystem()
+void hgeEffectSystem::Release()
 {
-	_EffectSystemInit();
+	if (hge)
+	{
+		hge->Release();
+		hge = NULL;
+	}
 }
 
-hgeEffectSystem::hgeEffectSystem(const hgeEffectSystem &eff)
+void hgeEffectSystem::InitEffectSystem(const hgeEffectSystem &eff)
 {
-	_EffectSystemInit();
+	InitEffectSystem();
 
 	memcpy(&ebi, &(eff.ebi), sizeof(hgeEffectBasicInfo));
 
@@ -42,16 +49,33 @@ hgeEffectSystem::hgeEffectSystem(const hgeEffectSystem &eff)
 	}
 }
 
+void hgeEffectSystem::InitEffectSystem(const char * filename, HTEXTURE tex, HTEXTURE * texset)
+{
+	InitEffectSystem();
+	texnum = Load(filename, tex, texset);
+}
+
+hgeEffectSystem::hgeEffectSystem()
+{
+	ZeroMemory(this, sizeof(hgeEffectSystem));
+	InitEffectSystem();
+}
+
+hgeEffectSystem::hgeEffectSystem(const hgeEffectSystem &eff)
+{
+	ZeroMemory(this, sizeof(hgeEffectSystem));
+	InitEffectSystem(eff);
+}
+
 hgeEffectSystem::hgeEffectSystem(const char * filename, HTEXTURE tex, HTEXTURE * texset)
 {
-	_EffectSystemInit();
-	texnum = Load(filename, tex, texset);
+	ZeroMemory(this, sizeof(hgeEffectSystem));
+	InitEffectSystem(filename, tex, texset);
 }
 
 hgeEffectSystem::~hgeEffectSystem()
 {
 	FreeList();
-	hge->Release();
 }
 
 int hgeEffectSystem::Load(const char * filename, HTEXTURE tex /* = 0 */, HTEXTURE * texset /* = 0 */)
@@ -187,9 +211,13 @@ void hgeEffectSystem::Render(hge3DPoint *ptfar)
 		hgeEffectObject * obj = emitterItem->emitter.obj;
 		for(int i=0; i<emitterItem->emitter.nEffectObjectsAlive; i++)
 		{
-			emitterItem->emitter.sprite->SetColor(*(DWORD *)&(obj->color));
-			emitterItem->emitter.sprite->SetZ(obj->z, obj->z + obj->zStretch, obj->z + obj->zStretch, obj->z, ptfar);
-			emitterItem->emitter.sprite->RenderEx(obj->x, obj->y, obj->fHeadDirection, obj->fScaleX, obj->fScaleY);
+			hgeSprite * _sprite = emitterItem->emitter.sprite;
+			if (_sprite)
+			{
+				_sprite->SetColor(*(DWORD *)&(obj->color));
+				_sprite->SetZ(obj->z, obj->z + obj->zStretch, obj->z + obj->zStretch, obj->z, ptfar);
+				_sprite->RenderEx(obj->x, obj->y, obj->fHeadDirection, obj->fScaleX, obj->fScaleY);
+			}
 			obj++;
 		}
 		emitterItem = emitterItem->next;

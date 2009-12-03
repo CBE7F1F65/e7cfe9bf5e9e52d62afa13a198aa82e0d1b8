@@ -1,3 +1,5 @@
+/*
+
 #include "Ghost.h"
 #include "Player.h"
 #include "Enemy.h"
@@ -126,7 +128,7 @@ void Ghost::actionInStop()
 	}
 }
 
-void Ghost::SendGhost(BYTE playerindex, float x, float y, bool bythis/* =true */)
+void Ghost::SendGhost(BYTE playerindex, float x, float y, bool bythis/ * =true * /)
 {
 	// TODO:
 }
@@ -365,4 +367,4 @@ void Ghost::action()
 
 	damage = false;
 	able = exist && !fadeout;
-}
+}*/

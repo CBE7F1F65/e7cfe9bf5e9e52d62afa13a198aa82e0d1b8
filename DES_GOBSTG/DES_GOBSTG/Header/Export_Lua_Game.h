@@ -19,6 +19,7 @@ public:
 	static int LuaFn_Game_GetSceneContentTable(LuaState * ls);
 	static int LuaFn_Game_GetSendItemInfo(LuaState * ls);
 	static int LuaFn_Game_AddSendBulletInfo(LuaState * ls);
+	static int LuaFn_Game_AddSendGhostInfo(LuaState * ls);
 };
 
 #endif

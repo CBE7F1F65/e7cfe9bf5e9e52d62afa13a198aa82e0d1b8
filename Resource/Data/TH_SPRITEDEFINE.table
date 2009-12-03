@@ -384,6 +384,42 @@ Comment	Index	SI_Name	Tex	Tex_x	Tex_y	Tex_w	Tex_h
 -	808	SI_EnemySprite_Lily_10	4	320	448	64	64
 -	809	SI_EnemySprite_Lily_11	4	384	448	64	64
 #		Ghost(850~949)					
+-	850	SI_GhostSprite_Green_0	4	352	192	32	32
+-	851	SI_GhostSprite_Green_1	4	384	192	32	32
+-	852	SI_GhostSprite_Green_2	4	416	192	32	32
+-	853	SI_GhostSprite_Green_3	4	448	192	32	32
+-	854	SI_GhostSprite_GreenActive_0	4	352	224	32	32
+-	855	SI_GhostSprite_GreenActive_1	4	384	224	32	32
+-	856	SI_GhostSprite_GreenActive_2	4	416	224	32	32
+-	857	SI_GhostSprite_GreenActive_3	4	448	224	32	32
+-	858	SI_GhostSprite_GreenActive_4	4	352	256	32	32
+-	859	SI_GhostSprite_GreenActive_5	4	384	256	32	32
+-	860	SI_GhostSprite_GreenActive_6	4	416	256	32	32
+-	861	SI_GhostSprite_GreenActive_7	4	448	256	32	32
+-	862	SI_GhostSprite_Yellow_0	4	192	192	40	40
+-	863	SI_GhostSprite_Yellow_1	4	232	192	40	40
+-	864	SI_GhostSprite_Yellow_2	4	272	192	40	40
+-	865	SI_GhostSprite_Yellow_3	4	312	192	40	40
+-	866	SI_GhostSprite_YellowActive_0	4	192	232	40	40
+-	867	SI_GhostSprite_YellowActive_1	4	232	232	40	40
+-	868	SI_GhostSprite_YellowActive_2	4	272	232	40	40
+-	869	SI_GhostSprite_YellowActive_3	4	312	232	40	40
+-	870	SI_GhostSprite_YellowActive_4	4	192	272	40	40
+-	871	SI_GhostSprite_YellowActive_5	4	232	272	40	40
+-	872	SI_GhostSprite_YellowActive_6	4	272	272	40	40
+-	873	SI_GhostSprite_YellowActive_7	4	312	272	40	40
+-	874	SI_GhostSprite_Red_0	4	0	336	48	48
+-	875	SI_GhostSprite_Red_1	4	48	192	48	48
+-	876	SI_GhostSprite_Red_2	4	96	192	48	48
+-	877	SI_GhostSprite_Red_3	4	144	192	48	48
+-	878	SI_GhostSprite_RedActive_0	4	0	384	48	48
+-	879	SI_GhostSprite_RedActive_1	4	48	240	48	48
+-	880	SI_GhostSprite_RedActive_2	4	96	240	48	48
+-	881	SI_GhostSprite_RedActive_3	4	144	240	48	48
+-	882	SI_GhostSprite_RedActive_4	4	0	432	48	48
+-	883	SI_GhostSprite_RedActive_5	4	48	288	48	48
+-	884	SI_GhostSprite_RedActive_6	4	96	288	48	48
+-	885	SI_GhostSprite_RedActive_7	4	144	288	48	48
 #		Unknown(950~999)					
 #		PlayerBullet(1000~1999)					
 -	1000	SI_PlayerBullet_0	10	0	176	64	16
@@ -1290,4 +1326,3 @@ Comment	Index	SI_Name	Tex	Tex_x	Tex_y	Tex_w	Tex_h
 #		PlayerDrainZone(3100~3199)					
 -	3100	SI_PlayerDrainZone_01	170	0	0	-1	-1
 -	3101	SI_PlayerDrainZone_02	171	0	0	-1	-1
-							

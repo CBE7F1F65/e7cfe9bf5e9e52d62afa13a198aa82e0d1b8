@@ -1,7 +1,6 @@
 #include "PlayerBullet.h"
 #include "Player.h"
 #include "Enemy.h"
-#include "Ghost.h"
 #include "SE.h"
 #include "Main.h"
 #include "SpriteItemManager.h"
@@ -145,6 +144,10 @@ void PlayerBullet::RenderAll(BYTE renderflag)
 
 void PlayerBullet::Build(BYTE playerindex, int shootdataID)
 {
+	if (pb[playerindex].size == PLAYERBULLETMAX)
+	{
+		return;
+	}
 	PlayerBullet _pb;
 	playershootData * item = &(res.playershootdata[shootdataID]);
 	pb[playerindex].push_back(_pb)->valueSet(playerindex, shootdataID, item->arrange, item->xbias, item->ybias, 
@@ -236,8 +239,11 @@ void PlayerBullet::valueSet(BYTE _playerindex, WORD _ID, BYTE _arrange, float _x
 
 void PlayerBullet::Render()
 {
-	sprite[ID][animation]->SetColor((alpha<<24)|diffuse);
-	sprite[ID][animation]->RenderEx(x, y, ARC(angle+headangle), hscale, vscale);
+	if (sprite[ID][animation])
+	{
+		sprite[ID][animation]->SetColor((alpha<<24)|diffuse);
+		sprite[ID][animation]->RenderEx(x, y, ARC(angle+headangle), hscale, vscale);
+	}
 }
 
 bool PlayerBullet::GetLockAim(BObject ** obj)
@@ -246,15 +252,8 @@ bool PlayerBullet::GetLockAim(BObject ** obj)
 	{
 		return false;
 	}
-	if (locked < PBLOCK_GHOST)
-	{
-		// TODO:
-		*obj = &(Enemy::en[0][locked]);
-	}
-	else
-	{
-		*obj = &Ghost::gh[locked-PBLOCK_GHOST];
-	}
+	// TODO:
+	*obj = &(Enemy::en[0][locked]);
 	return true;
 }
 
@@ -388,14 +387,7 @@ void PlayerBullet::DelayShoot()
 	else
 	{
 		BObject * _tpbobj;
-		if (locked < PBLOCK_GHOST)
-		{
-			_tpbobj = &Enemy::en[playerindex][locked];
-		}
-		else
-		{
-			_tpbobj = &Ghost::gh[locked-PBLOCK_GHOST];
-		}
+		_tpbobj = &Enemy::en[playerindex][locked];
 		if(timer == 1)
 		{
 			speed = -speed;

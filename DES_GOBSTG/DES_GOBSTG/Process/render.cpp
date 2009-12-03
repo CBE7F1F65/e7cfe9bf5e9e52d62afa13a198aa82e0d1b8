@@ -9,15 +9,13 @@ void Process::_Render(BYTE renderflag/* =M_RENDER_NULL */)
 	Export::clientSetMatrix(worldx, worldy, worldz, renderflag);
 	if(renderflag != M_RENDER_NULL)
 	{
-		FrontDisplay::fdisp.RenderBossTimeCircle();
-		Ghost::RenderAll(renderflag);
+//		Ghost::RenderAll(renderflag);
 		Enemy::RenderAll(renderflag);
 		PlayerBullet::RenderAll(renderflag);
 		Player::RenderAll(renderflag);
 		Effectsys::RenderAll(renderflag);
 		Beam::RenderAll(renderflag);
 		Bullet::RenderAll(renderflag);
-		FrontDisplay::fdisp.RenderBossInfo();
 		Item::RenderAll(renderflag);
 		Chat::chatitem.Render();
 		FrontDisplay::fdisp.RenderHeadInfo();

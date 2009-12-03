@@ -71,9 +71,15 @@ void Chat::Render()
 	}
 	for(int i = 0; i < CHATTERMAX-1; i++)
 	{
-		chatter[i]->RenderEx(x[i], y[i], 0, 0.8f);
+		if (chatter[i])
+		{
+			chatter[i]->RenderEx(x[i], y[i], 0, 0.8f);
+		}
 	}
-	textbox->RenderEx(x[CHATTER_TEXTBOX], y[CHATTER_TEXTBOX], ARC(9000), 1.5f, 1.0f);
+	if (textbox)
+	{
+		textbox->RenderEx(x[CHATTER_TEXTBOX], y[CHATTER_TEXTBOX], ARC(9000), 1.5f, 1.0f);
+	}
 	fschat.SetColor(0xFFFFFFFF, 0xFFFFFFFF, col, col);
 	fschat.Render(M_CLIENT_LEFT+70, M_CLIENT_CENTER_Y+138, 0xffffffff, col);
 }

@@ -6,7 +6,7 @@
 
 #include "PlayerBullet.h"
 #include "Item.h"
-#include "Ghost.h"
+#include "Enemy.h"
 #include "Bullet.h"
 #include "Chat.h"
 #include "BossInfo.h"
@@ -1125,8 +1125,11 @@ void Player::ResetPlayerGhost(bool move /* = false */)
 
 void Player::Render()
 {
-	sprite->SetColor(alpha<<24|diffuse);
-	sprite->RenderEx(x, y, 0, hscale, vscale);
+	if (sprite)
+	{
+		sprite->SetColor(alpha<<24|diffuse);
+		sprite->RenderEx(x, y, 0, hscale, vscale);
+	}
 }
 
 void Player::RenderEffect()
@@ -1240,7 +1243,7 @@ void Player::AddGhostPoint(int ghostpoint, float x, float y)
 		{
 			AddGhostPoint(-(60-rank*2), x, y);
 			AddBulletPoint(-10, x, y);
-			Ghost::SendGhost(1-playerindex, x, y, false);
+			Enemy::SendGhost(1-playerindex, x, y, EFFSPSET_SYSTEM_SENDGHOST);
 		}
 	}
 }
@@ -1251,10 +1254,10 @@ void Player::AddBulletPoint(int bulletpoint, float x, float y)
 	if (nBulletPoint >= 120-rank*4)
 	{
 		AddBulletPoint(-(120-rank*4), x, y);
-		BYTE setID = EFFSPSET_SYSTEM_SENDBLUEBULLET_0;
+		BYTE setID = EFFSPSET_SYSTEM_SENDBLUEBULLET;
 		if (hge->Random_Int(0, 2) == 0)
 		{
-			setID = EFFSPSET_SYSTEM_SENDREDBULLET_0;
+			setID = EFFSPSET_SYSTEM_SENDREDBULLET;
 		}
 		Bullet::SendBullet(1-playerindex, x, y, setID);
 	}

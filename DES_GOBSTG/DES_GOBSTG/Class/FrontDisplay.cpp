@@ -72,7 +72,10 @@ void FrontDisplay::RenderPostPrint()
 	{
 		for (list<fdPostPrint>::iterator it=postprintlist.begin(); it!=postprintlist.end(); it++)
 		{
-			it->font->RenderEx(it->x, it->y, it->align, it->str, it->scale, it->properation, it->rotation, it->tracking, it->spacing);
+			if (it->font)
+			{
+				it->font->RenderEx(it->x, it->y, it->align, it->str, it->scale, it->properation, it->rotation, it->tracking, it->spacing);
+			}
 		}
 	}
 	postprintlist.clear();
@@ -393,19 +396,21 @@ void FrontDisplay::BossMoveItemEffect(float x, float y)
 
 void FrontDisplay::RenderBossInfo()
 {
-	BYTE flag = BossInfo::flag;
-	if (flag)
-	{
-		bossinfo.exist = false;
-		infobody.effBossStore.Render();
-		if(flag < BOSSINFO_COLLAPSE)
+/*
+		BYTE flag = BossInfo::flag;
+		if (flag)
 		{
-//			hge->Gfx_RenderQuad(&infobody.iqBossBlood.quad);
-		}
-		else if(flag & BOSSINFO_COLLAPSE)
-		{
-		}
-	}
+			bossinfo.exist = false;
+			infobody.effBossStore.Render();
+			if(flag < BOSSINFO_COLLAPSE)
+			{
+	//			hge->Gfx_RenderQuad(&infobody.iqBossBlood.quad);
+			}
+			else if(flag & BOSSINFO_COLLAPSE)
+			{
+			}
+		}*/
+	
 }
 
 void FrontDisplay::RenderBossTimeCircle()

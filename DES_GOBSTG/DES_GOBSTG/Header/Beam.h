@@ -18,7 +18,7 @@ public:
 	virtual ~Beam();
 
 	static void Init();
-	static bool Build(BYTE playerindex, float x, float y, int angle, float speed, BYTE type, BYTE color, WORD length, BYTE flag, int fadeouttime, BYTE tarID);
+	static Beam * Build(BYTE playerindex, float x, float y, int angle, float speed, BYTE type, BYTE color, WORD length, BYTE flag, int fadeouttime, BYTE tarID);
 	static void ClearItem();
 	static void Action();
 	static void RenderAll(BYTE renderflag);

@@ -6,7 +6,7 @@ bool Process::reload()
 
 	BGLayer::Init(tex);
 	Enemy::ClearAll();
-	Ghost::ClearAll();
+//	Ghost::ClearAll();
 	Target::ClearAll();
 	SelectSystem::Init();
 	Effectsys::ClearAll();

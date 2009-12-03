@@ -2,8 +2,6 @@
 #define _PLAYERBULLET_H
 
 #define PBLOCK_LOST		0xffff
-#define PBLOCK_GHOST	0x8000
-
 
 #define PBFLAG_BEAM				0x0001
 #define PBFLAG_CHASE			0x0002

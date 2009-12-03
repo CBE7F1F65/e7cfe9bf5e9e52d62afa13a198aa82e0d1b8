@@ -23,7 +23,7 @@ void Process::frameEnd()
 		
 		PlayerBullet::locked = PBLOCK_LOST;
 		Enemy::Action(!(stopflag & FRAME_STOPFLAG_ENEMY));
-		Ghost::Action(!(stopflag & FRAME_STOPFLAG_GHOST));
+//		Ghost::Action(!(stopflag & FRAME_STOPFLAG_GHOST));
 		/*
 		for(int i=0;i<ENEMYMAX;i++)
 		{

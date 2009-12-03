@@ -931,6 +931,10 @@ int Export_Lua_HGEHelp::LuaFn_hgeSprite_Render(LuaState * ls)
 {
 	LuaStack args(ls);
 	hgeSprite * _sprite = _LuaHelper_hgeSprite_Get(&args);
+	if (!_sprite)
+	{
+		return 0;
+	}
 
 	int argscount = args.Count();
 

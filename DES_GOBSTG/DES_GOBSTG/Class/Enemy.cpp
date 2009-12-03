@@ -17,6 +17,7 @@
 VectorList<Enemy> Enemy::en[M_PL_MATCHMAXPLAYER];
 
 HTEXTURE * Enemy::tex = NULL;
+hgeSprite * Enemy::sprite[ENEMYTYPEMAX];
 BYTE Enemy::actionflag[ENEMY_BOSSMAX];
 BYTE Enemy::spelluptimer[ENEMY_BOSSMAX];
 BYTE Enemy::storetimer[ENEMY_BOSSMAX];
@@ -25,28 +26,41 @@ Enemy::Enemy()
 {
 	exist	= false;
 	able	= false;
-	sprite	= NULL;
 	ID		= 0;
-	effCollapse.exist = false;
-	effShot.exist = false;
 }
 
 Enemy::~Enemy()
 {
-	SpriteItemManager::FreeSprite(&sprite);
 }
 
 void Enemy::Init(HTEXTURE * _tex)
 {
+	Release();
 	tex = _tex;
 	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
 	{
 		en[i].init(ENEMYMAX);
 	}
+	for (int i=0; i<ENEMYTYPEMAX; i++)
+	{
+		sprite[i] = SpriteItemManager::CreateSprite(res.enemydata[i].siid);
+	}
+}
+
+void Enemy::Release()
+{
+	for (int i=0; i<ENEMYTYPEMAX; i++)
+	{
+		SpriteItemManager::FreeSprite(&sprite[i]);
+	}
 }
 
 Enemy * Enemy::Build(WORD eID, BYTE playerindex, float x, float y, int angle, float speed, BYTE type, float life, int infitimer)
 {
+	if (en[playerindex].size == ENEMYMAX)
+	{
+		return NULL;
+	}
 	Enemy _en;
 	Enemy * _pen = en[playerindex].push_back(_en);
 	_pen->valueSet(playerindex, eID, x, y, angle, speed, type, life, infitimer);
@@ -58,20 +72,15 @@ void Enemy::Clear()
 	exist = false;
 	able = false;
 	timer = 0;
-	effShot.~Effectsys();
-	effCollapse.~Effectsys();
-	SpriteItemManager::FreeSprite(&sprite);
 }
 
 void Enemy::ClearAll()
 {
 	for (int j=0; j<M_PL_MATCHMAXPLAYER; j++)
 	{
-		DWORD i = 0;
-		DWORD size = en[j].size;
-		for (en[j].toBegin(); i<size; en[j].toNext(), i++)
+		for (int i=0; i<en[j].capacity; i++)
 		{
-			(*en[j]).Clear();
+			en[j][i].Clear();
 		}
 		en[j].clear_item();
 	}
@@ -100,7 +109,6 @@ void Enemy::Action(bool notinstop)
 				}
 				else
 				{
-					(*en[j]).Clear();
 					en[j].pop();
 				}
 			}
@@ -119,6 +127,35 @@ void Enemy::GetIDBeginUntil(BYTE renderflag, int & idbegin, int & iduntil)
 	{
 		idbegin = ENID_RIGHTIDBEGIN;
 		iduntil = ENID_RIGHTIDUNTIL;
+	}
+}
+
+void Enemy::SendGhost(BYTE playerindex, float x, float y, BYTE setID, BYTE * sendtime, float * acceladd)
+{
+	int siidindex = EFFSPSEND_COLOR_RED;
+	if (playerindex)
+	{
+		siidindex = EFFSPSEND_COLOR_BLUE;
+	}
+	float _hscale = hge->Random_Float(1.2f, 1.4f);
+	EffectSp * _peffsp = EffectSp::Build(setID, playerindex, EffectSp::senditemsiid[siidindex][0], x, y, 0, _hscale);
+	if (_peffsp)
+	{
+		_peffsp->colorSet(0x80ffffff, BLEND_ALPHAADD);
+		float aimx;
+		float aimy;
+		aimx = hge->Random_Float(M_GAMESQUARE_LEFT_(playerindex) + 8, M_GAMESQUARE_RIGHT_(playerindex) - 8);
+		aimy = hge->Random_Float(M_GAMESQUARE_TOP, M_GAMESQUARE_TOP + 128);
+		_peffsp->chaseSet(EFFSP_CHASE_FREE, aimx, aimy, hge->Random_Int(45, 60));
+		_peffsp->animationSet(EFFSPSEND_ANIMATIONMAX);
+		if (sendtime)
+		{
+			_peffsp->AppendData(*sendtime, *acceladd);
+		}
+		else
+		{
+			_peffsp->AppendData(-1, 0);
+		}
 	}
 }
 
@@ -141,13 +178,16 @@ void Enemy::RenderAll(BYTE renderflag)
 }
 void Enemy::Render()
 {
-	sprite->SetColor(alpha<<24|diffuse);
-	sprite->RenderEx(x, y, 0, hscale, vscale);
+	if (sprite[type])
+	{
+		sprite[type]->SetColor(alpha<<24|diffuse);
+		sprite[type]->RenderEx(x, y, headangle, hscale, vscale);
+	}
 }
 
 void Enemy::RenderEffect()
 {
-	if(fadeout && timer && effCollapse.eff)
+	if(fadeout && timer)
 	{
 		effCollapse.Render();
 	}
@@ -179,6 +219,7 @@ void Enemy::valueSet(BYTE _playerindex, WORD _eID, float _x, float _y, int _angl
 	take	=	0;
 	infitimer = _infitimer;
 
+	headangle	=	0;
 	timer	=	0;
 	damagetimer = 0;
 	maxlife	=	life;
@@ -193,6 +234,12 @@ void Enemy::valueSet(BYTE _playerindex, WORD _eID, float _x, float _y, int _angl
 	diffuse	=	0xffffff;
 	faceindex = res.enemydata[type].faceIndex;
 
+	accel		=	0;
+	acceladd	=	0;
+
+	sendtime	=	0;
+	sendsetID	=	0;
+
 	actionflag[ID]		=	0;
 	spelluptimer[ID]	=	0;
 	storetimer[ID]		=	0;
@@ -203,17 +250,10 @@ void Enemy::valueSet(BYTE _playerindex, WORD _eID, float _x, float _y, int _angl
 	aim.x	=	0;
 	aim.y	=	0;
 
-	if (!sprite)
-	{
-		sprite = SpriteItemManager::CreateSprite(res.enemydata[type].siid);
-	}
-
 	for (int i=0; i<ENEMY_PARAMAX; i++)
 	{
 		para[i] = 0;
 	}
-
-	headangle = -angle;
 
 	initFrameIndex();
 	setFrame(ENEMY_FRAME_STAND);
@@ -441,8 +481,8 @@ void Enemy::updateFrame(BYTE frameenum, int usetimer /* = -1*/)
 		{
 			float thsx;
 			float thsy;
-			sprite->GetHotSpot(&thsx, &thsy);
-			sprite->SetHotSpot(thsx, sint(timer*512)*4.8f+thsy-2.4f);
+			sprite[type]->GetHotSpot(&thsx, &thsy);
+			sprite[type]->SetHotSpot(thsx, sint(timer*512)*4.8f+thsy-2.4f);
 		}
 		break;
 	case ENEMY_FRAME_RIGHTPRE:
@@ -705,17 +745,8 @@ void Enemy::setFrame(BYTE frameenum)
 void Enemy::setIndexFrame(BYTE index)
 {
 	enemyData * pdata = &(res.enemydata[type]);
-//	spriteData * pspdata = SpriteItemManager::CastSprite();
-	if (!sprite)
-	{
-		sprite = SpriteItemManager::CreateSprite(pdata->siid+index);
-//		sprite = new hgeSprite(tex[pspdata->tex], pspdata->tex_x, pspdata->tex_y, pspdata->tex_w, pspdata->tex_h);
-	}
-	else
-	{
-		SpriteItemManager::ChangeSprite(pdata->siid+index, sprite);
-		sprite->SetFlip(flipx, false);
-	}
+	SpriteItemManager::ChangeSprite(pdata->siid+index, sprite[type]);
+	sprite[type]->SetFlip(flipx, false);
 }
 
 void Enemy::GetCollisionRect(float * w, float * h)
@@ -836,9 +867,25 @@ void Enemy::DoShot()
 
 }
 
+void Enemy::AddSendInfo(BYTE _sendsetID, BYTE _sendtime, float _accel, float _acceladd)
+{
+	sendsetID = _sendsetID;
+	sendtime = _sendtime;
+	accel = _accel;
+	acceladd = _acceladd;
+}
+
 void Enemy::action()
 {
 	timer++;
+
+	if (timer < 60)
+	{
+		if (accel)
+		{
+			speed += accel;
+		}
+	}
 
 	if(infitimer)
 	{

@@ -85,23 +85,30 @@ void Beam::RenderAll(BYTE renderflag)
 	}
 }
 
-bool Beam::Build(BYTE playerindex, float x, float y, int angle, float speed, BYTE type, BYTE color, WORD length, BYTE flag, int fadeouttime, BYTE tarID)
+Beam * Beam::Build(BYTE playerindex, float x, float y, int angle, float speed, BYTE type, BYTE color, WORD length, BYTE flag, int fadeouttime, BYTE tarID)
 {
+	if (be[playerindex].size == BEAMMAX)
+	{
+		return NULL;
+	}
 	Beam * _tbe;
 	_tbe = be[playerindex].push_back();
 	index = be[playerindex].getEndIndex();
 	_tbe->valueSet(index, x, y, angle, speed, type, color, length, flag, fadeouttime, tarID);
-	return true;
+	return _tbe;
 }
 
 void Beam::Render()
 {
 	int i = type*BULLETCOLORMAX+color;
-	int tblend = Bullet::sprite[i]->GetBlendMode();
-	Bullet::sprite[i]->SetBlendMode(BLEND_ALPHAADD);
-	Bullet::sprite[i]->SetColor(alpha<<24|diffuse);
-	Bullet::sprite[i]->RenderEx(x, y, ARC(angle+headangle+BULLET_ANGLEOFFSET), vscale, hscale);
-	Bullet::sprite[i]->SetBlendMode(tblend);
+	if (Bullet::sprite[i])
+	{
+		int tblend = Bullet::sprite[i]->GetBlendMode();
+		Bullet::sprite[i]->SetBlendMode(BLEND_ALPHAADD);
+		Bullet::sprite[i]->SetColor(alpha<<24|diffuse);
+		Bullet::sprite[i]->RenderEx(x, y, ARC(angle+headangle+BULLET_ANGLEOFFSET), vscale, hscale);
+		Bullet::sprite[i]->SetBlendMode(tblend);
+	}
 }
 
 void Beam::valueSet(WORD _ID, float _x, float _y, int _angle, float _speed, BYTE _type, BYTE _color, WORD _length, BYTE _flag, int _fadeouttime, BYTE _tarID)

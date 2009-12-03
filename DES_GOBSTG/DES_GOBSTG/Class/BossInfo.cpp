@@ -8,7 +8,6 @@
 #include "BGLayer.h"
 #include "Fontsys.h"
 #include "Item.h"
-#include "Ghost.h"
 #include "BResource.h"
 #include "DataConnector.h"
 #include "Scripter.h"

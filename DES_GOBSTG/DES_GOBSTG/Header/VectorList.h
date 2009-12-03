@@ -77,6 +77,7 @@ public:
 		iend = index;
 		if (size && ibegin == iend)
 		{
+			pop();
 			ibegin = toNext();
 		}
 		else
@@ -127,6 +128,7 @@ public:
 
 		DWORD _index = index;
 		valid[index] = false;
+		item[index].~_Ty();
 		if (index == ibegin)
 		{
 			size--;

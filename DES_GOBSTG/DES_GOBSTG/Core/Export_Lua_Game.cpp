@@ -24,6 +24,7 @@ bool Export_Lua_Game::_LuaRegistFunction(LuaObject * obj)
 	_gameobj.Register("GetSceneContentTable", LuaFn_Game_GetSceneContentTable);
 	_gameobj.Register("GetSendItemInfo", LuaFn_Game_GetSendItemInfo);
 	_gameobj.Register("AddSendBulletInfo", LuaFn_Game_AddSendBulletInfo);
+	_gameobj.Register("AddSendGhostInfo", LuaFn_Game_AddSendGhostInfo);
 
 	return true;
 }
@@ -146,6 +147,12 @@ int Export_Lua_Game::LuaFn_Game_GetSendItemInfo(LuaState * ls)
 	ls->PushInteger(_peffsp->ID);
 	ls->PushNumber(_peffsp->x);
 	ls->PushNumber(_peffsp->y);
+	if (_peffsp->bAppend)
+	{
+		ls->PushInteger(_peffsp->nAppend);
+		ls->PushNumber(_peffsp->fAppend);
+		return 5;
+	}
 	return 3;
 }
 
@@ -154,13 +161,32 @@ int Export_Lua_Game::LuaFn_Game_AddSendBulletInfo(LuaState * ls)
 	LuaStack args(ls);
 	
 	BYTE sendsetID = args[1].GetInteger();
-	BYTE playerindex = args[2].GetInteger();
+	BYTE sendtime = args[2].GetInteger();
+	BYTE playerindex = args[3].GetInteger();
 	int index = Bullet::bu[playerindex].index;
-	if (args.Count() > 2)
+	if (args.Count() > 3)
 	{
-		index = args[3].GetInteger();
+		index = args[4].GetInteger();
 	}
-	Bullet::bu[playerindex][index].AddSendInfo(sendsetID);
+	Bullet::bu[playerindex][index].AddSendInfo(sendsetID, sendtime);
+	return 0;
+}
+
+int Export_Lua_Game::LuaFn_Game_AddSendGhostInfo(LuaState * ls)
+{
+	LuaStack args(ls);
+
+	BYTE sendsetID = args[1].GetInteger();
+	BYTE sendtime = args[2].GetInteger();
+	BYTE playerindex = args[3].GetInteger();
+	float accel = args[4].GetFloat();
+	float acceladd = args[5].GetFloat();
+	int index = Enemy::en[playerindex].index;
+	if (args.Count() > 5)
+	{
+		index = args[6].GetInteger();
+	}
+	Enemy::en[playerindex][index].AddSendInfo(sendsetID, sendtime, accel, acceladd);
 	return 0;
 }
 
