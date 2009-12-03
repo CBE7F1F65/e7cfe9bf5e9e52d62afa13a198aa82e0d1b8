@@ -64,13 +64,13 @@ function ControlExecute_cStart(con)
 			hdss.Call(
 				HDSS_EB,
 				{
-					2, 0, 0xff, hge.Random_Int(0, 16) * 10 + 80, 280, 9000, 0.1, 0, 20, 0
+					2, 0, hge.Random_Int(0, 16) * 10 + 80, 280, 9000, 0.1, 0, 20, 0
 				}
 			)
 			hdss.Call(
 				HDSS_EB,
 				{
-					2, 1, 0xff, hge.Random_Int(0, 16) * 10 + 400, 280, 9000, 0.1, 0, 20, 0
+					2, 1, hge.Random_Int(0, 16) * 10 + 400, 280, 9000, 0.1, 0, 20, 0
 				}
 			)
 		end

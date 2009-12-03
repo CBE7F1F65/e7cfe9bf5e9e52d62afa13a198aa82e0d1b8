@@ -102,13 +102,13 @@ void Ghost::CostLife(float power)
 	damage = true;
 	if (belong < ENEMYMAX)
 	{
-		Enemy::en[belong].CostLife(power * PB_SHOOTGHOST_ENEMYCOST);
+		Enemy::en[getPlayerIndex()][belong].CostLife(power * PB_SHOOTGHOST_ENEMYCOST);
 	}
 }
 
 void Ghost::valueSet(WORD ID, BYTE _belong, int angle, float speed, BYTE type, float life, int ac)
 {
-	valueSet(ID, Enemy::en[_belong].x, Enemy::en[_belong].y,angle, speed, type, life, ac);
+	valueSet(ID, Enemy::en[getPlayerIndex()][_belong].x, Enemy::en[getPlayerIndex()][_belong].y,angle, speed, type, life, ac);
 	belong = _belong;
 }
 
@@ -275,14 +275,14 @@ void Ghost::action()
 
 		if(belong != 0xff)
 		{
-			if(Enemy::en[belong].exist)
+			if(Enemy::en[getPlayerIndex()][belong].exist)
 			{
-				cenx = Enemy::en[belong].x;
-				ceny = Enemy::en[belong].y;
+				cenx = Enemy::en[getPlayerIndex()][belong].x;
+				ceny = Enemy::en[getPlayerIndex()][belong].y;
 			}
 			else
 			{
-				if(Enemy::en[belong].life >= 0)
+				if(Enemy::en[getPlayerIndex()][belong].life >= 0)
 				{
 					life = 0;
 				}

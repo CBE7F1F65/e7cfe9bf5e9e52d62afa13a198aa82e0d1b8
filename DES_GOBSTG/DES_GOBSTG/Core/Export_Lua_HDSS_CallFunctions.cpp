@@ -364,7 +364,6 @@ int _HDSSCallGet::Call_ENBUILD(LuaState * ls)
 	{
 		WORD _eID = _INEXT_HDSS_LUAPARA;
 		BYTE _playerindex = _INEXT_HDSS_LUAPARA;
-		BYTE _index = _INEXT_HDSS_LUAPARA;
 		float _x = _FNEXT_HDSS_LUAPARA;
 		float _y = _FNEXT_HDSS_LUAPARA;
 		int _angle = _INEXT_HDSS_LUAPARA;
@@ -372,26 +371,21 @@ int _HDSSCallGet::Call_ENBUILD(LuaState * ls)
 		BYTE _type = _INEXT_HDSS_LUAPARA;
 		float _life = _FNEXT_HDSS_LUAPARA;
 		int _infitimer = _INEXT_HDSS_LUAPARA;
-		bool bret = Enemy::Build(_eID, _playerindex, _index, _x, _y, _angle, _speed, _type, _life, _infitimer);
+		Enemy * _pen = Enemy::Build(_eID, _playerindex, _x, _y, _angle, _speed, _type, _life, _infitimer);
 
-		if (bret)
+		if (argscount > 2)
 		{
-			if (argscount > 2)
-			{
-				_GETPARAS_HDSS_LUAPARA(3);
-				BYTE _tarID = _INEXT_HDSS_LUAPARA;
-				Enemy::GetNowEnemy()->setTar(_tarID);
+			_GETPARAS_HDSS_LUAPARA(3);
+			BYTE _tarID = _INEXT_HDSS_LUAPARA;
+			_pen->setTar(_tarID);
 
-				if (argscount > 3)
-				{
-					_GETPARAS_HDSS_LUAPARA(4);
-					_JNEXT_HDSS_LUAPARA;
-					DWORD _take = _DOBJ_HDSS_LUA;
-					Enemy::GetNowEnemy()->setTake(_take);
-				}
+			if (argscount > 3)
+			{
+				_GETPARAS_HDSS_LUAPARA(4);
+				_JNEXT_HDSS_LUAPARA;
+				DWORD _take = _DOBJ_HDSS_LUA;
+				_pen->setTake(_take);
 			}
-			_PI_HDSS_LUA(Enemy::index);
-			return 1;
 		}
 	}
 	return 0;
@@ -403,6 +397,7 @@ int _HDSSCallGet::Call_ENACTIONSET(LuaState * ls)
 	if (true)
 	{
 		WORD _ac = _INEXT_HDSS_LUAPARA;
+		BYTE _playerindex = _INEXT_HDSS_LUAPARA;
 		float _para0 = 0;
 		float _para1 = 0;
 		float _para2 = 0;
@@ -427,7 +422,7 @@ int _HDSSCallGet::Call_ENACTIONSET(LuaState * ls)
 				}
 			}
 		}
-		Enemy::GetNowEnemy()->setAction(_ac, _para0, _para1, _para2, _para3);
+		(*Enemy::en[_playerindex]).setAction(_ac, _para0, _para1, _para2, _para3);
 	}
 	return 0;
 }

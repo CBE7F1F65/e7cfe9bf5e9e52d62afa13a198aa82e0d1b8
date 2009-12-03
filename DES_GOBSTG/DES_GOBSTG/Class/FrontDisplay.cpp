@@ -410,36 +410,40 @@ void FrontDisplay::RenderBossInfo()
 
 void FrontDisplay::RenderBossTimeCircle()
 {
-	BYTE flag = BossInfo::flag;
-	if (flag && bossinfo.isSpell())
-	{
-		WORD timer = bossinfo.timer;
-		BYTE limit = bossinfo.limit;
-		if (flag < BOSSINFO_COLLAPSE)
+/*
+		BYTE flag = BossInfo::flag;
+		if (flag && bossinfo.isSpell())
 		{
-			float scale;
-			if (timer >= 88)
+			WORD timer = bossinfo.timer;
+			BYTE limit = bossinfo.limit;
+			if (flag < BOSSINFO_COLLAPSE)
 			{
-				if (timer < 120)
+				float scale;
+				if (timer >= 88)
 				{
-					scale = (timer-88) * 0.1f;
+					if (timer < 120)
+					{
+						scale = (timer-88) * 0.1f;
+					}
+					else
+					{
+						scale = (timer-60*limit)*0.8f / (30-15*limit);
+					}
+					info.timecircle->RenderEx(Enemy::en[ENEMY_MAINBOSSINDEX].x, Enemy::en[ENEMY_MAINBOSSINDEX].y, timer/15.0f, scale);
 				}
-				else
-				{
-					scale = (timer-60*limit)*0.8f / (30-15*limit);
-				}
-				info.timecircle->RenderEx(Enemy::en[ENEMY_MAINBOSSINDEX].x, Enemy::en[ENEMY_MAINBOSSINDEX].y, timer/15.0f, scale);
 			}
-		}
-	}
+		}*/
+	
 }
 
 void FrontDisplay::RenderEnemyX()
 {
-	if (BossInfo::flag)
-	{
-		info.enemyx->Render(Enemy::en[ENEMY_MAINBOSSINDEX].x, 472);
-	}
+/*
+		if (BossInfo::flag)
+		{
+			info.enemyx->Render(Enemy::en[ENEMY_MAINBOSSINDEX].x, 472);
+		}*/
+	
 }
 
 void FrontDisplay::ItemInfoDisplay(infoFont * item)

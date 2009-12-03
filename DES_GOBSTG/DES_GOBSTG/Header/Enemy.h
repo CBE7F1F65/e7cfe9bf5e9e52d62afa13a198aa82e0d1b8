@@ -6,7 +6,7 @@
 #include "Effectsys.h"
 #include "Target.h"
 
-#define ENEMYMAX			0x80
+#define ENEMYMAX			0x40
 
 #define ENEMY_MAINBOSSINDEX	0
 
@@ -66,21 +66,18 @@ public:
 	Enemy();
 	virtual ~Enemy();
 
-	static bool Build(WORD eID, BYTE playerindex, BYTE index, float x, float y, int angle, float speed, BYTE type, float life, int infitimer);
+	static Enemy * Build(WORD eID, BYTE playerindex, float x, float y, int angle, float speed, BYTE type, float life, int infitimer);
 	static void Init(HTEXTURE * tex);
 	static void Action(bool notinstop);
 	static void ClearAll();
 	static void RenderAll(BYTE renderflag);
 
-	static Enemy * GetNowEnemy();
-
 	static void GetIDBeginUntil(BYTE renderflag, int & idbegin, int & iduntil);
 
 	void Clear();
 	bool isInRange(float x, float y, float r);
-	BYTE getPlayerIndex(BYTE index=0xff);
 
-	void valueSet(WORD eID, WORD ID, float x, float y, int angle, float speed, BYTE type, float life, int infitimer);
+	void valueSet(BYTE playerindex, WORD eID, float x, float y, int angle, float speed, BYTE type, float life, int infitimer);
 
 	void setTar(BYTE tarID=0xff);
 	void setTake(DWORD take=0);
@@ -93,7 +90,7 @@ public:
 	void updateFrame(BYTE frameenum, int usetimer = -1);
 	void updateFrameAsMove();
 
-	void DoShot(BYTE playerindex);
+	void DoShot();
 
 	virtual void action();
 	void actionInStop();
@@ -125,13 +122,14 @@ public:
 	float	defrate;
 	DWORD	take;
 
+	BYTE	playerindex;
+
 	bool	fadeout;
 	bool	able;
 	bool	damage;
 	int		infitimer;
 	float	maxlife;
 
-	WORD	eID;
 	WORD	ac;
 	BYTE	type;
 	BYTE	damagetimer;
@@ -147,9 +145,8 @@ public:
 	static BYTE actionflag[ENEMY_BOSSMAX];
 	static BYTE spelluptimer[ENEMY_BOSSMAX];
 	static BYTE storetimer[ENEMY_BOSSMAX];
-	static WORD index;
 
-	static Enemy en[ENEMYMAX];
+	static VectorList<Enemy> en[M_PL_MATCHMAXPLAYER];
 };
 
 #endif

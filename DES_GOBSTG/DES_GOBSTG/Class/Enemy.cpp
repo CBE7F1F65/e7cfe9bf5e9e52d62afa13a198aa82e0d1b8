@@ -14,10 +14,9 @@
 
 #define _DAMAGEZONEMAX	0x10
 
-Enemy Enemy::en[ENEMYMAX];
+VectorList<Enemy> Enemy::en[M_PL_MATCHMAXPLAYER];
 
 HTEXTURE * Enemy::tex = NULL;
-WORD Enemy::index;
 BYTE Enemy::actionflag[ENEMY_BOSSMAX];
 BYTE Enemy::spelluptimer[ENEMY_BOSSMAX];
 BYTE Enemy::storetimer[ENEMY_BOSSMAX];
@@ -27,63 +26,31 @@ Enemy::Enemy()
 	exist	= false;
 	able	= false;
 	sprite	= NULL;
-	eID		= 0;
+	ID		= 0;
 	effCollapse.exist = false;
 	effShot.exist = false;
 }
 
 Enemy::~Enemy()
 {
-	if(sprite)
-		delete sprite;
-	sprite = NULL;
+	SpriteItemManager::FreeSprite(&sprite);
 }
 
 void Enemy::Init(HTEXTURE * _tex)
 {
 	tex = _tex;
-	index = 0;
+	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
+	{
+		en[i].init(ENEMYMAX);
+	}
 }
 
-Enemy * Enemy::GetNowEnemy()
+Enemy * Enemy::Build(WORD eID, BYTE playerindex, float x, float y, int angle, float speed, BYTE type, float life, int infitimer)
 {
-	return &(en[index]);
-}
-
-bool Enemy::Build(WORD eID, BYTE playerindex, BYTE _index, float x, float y, int angle, float speed, BYTE type, float life, int infitimer)
-{
-	bool rv = false;
-	if (_index < ENEMYMAX)
-	{
-		index = _index;
-		rv = true;
-	}
-	else
-	{
-		if(type < ENEMY_BOSSTYPEBEGIN)
-		{
-			for(int j=0;j<ENEMYMAX;j++)
-			{
-				index++;
-				if(index == ENEMYMAX)
-				{
-					index = 0;
-				}
-				if (en[index].getPlayerIndex(index) == playerindex)
-				{
-					if(!en[index].exist)
-					{
-						rv = true;
-						break;
-					}
-				}
-			}
-		}
-	}
-	if(!rv)
-		return false;
-	en[index].valueSet(eID, index, x, y, angle, speed, type, life, infitimer);
-	return true;
+	Enemy _en;
+	Enemy * _pen = en[playerindex].push_back(_en);
+	_pen->valueSet(playerindex, eID, x, y, angle, speed, type, life, infitimer);
+	return _pen;
 }
 
 void Enemy::Clear()
@@ -91,30 +58,51 @@ void Enemy::Clear()
 	exist = false;
 	able = false;
 	timer = 0;
+	effShot.~Effectsys();
+	effCollapse.~Effectsys();
+	SpriteItemManager::FreeSprite(&sprite);
 }
 
 void Enemy::ClearAll()
 {
-	for (int i=0; i<ENEMYMAX; i++)
+	for (int j=0; j<M_PL_MATCHMAXPLAYER; j++)
 	{
-		en[i].Clear();
+		DWORD i = 0;
+		DWORD size = en[j].size;
+		for (en[j].toBegin(); i<size; en[j].toNext(), i++)
+		{
+			(*en[j]).Clear();
+		}
+		en[j].clear_item();
 	}
-	index = 0;
 }
 
 void Enemy::Action(bool notinstop)
 {
-	for (int i=0; i<ENEMYMAX; i++)
+	for (int j=0; j<M_PL_MATCHMAXPLAYER; j++)
 	{
-		if (en[i].exist)
+		DWORD i = 0;
+		DWORD size = en[j].size;
+		for (en[j].toBegin(); i<size; en[j].toNext(), i++)
 		{
-			if (notinstop)
+			if (en[j].isValid())
 			{
-				en[i].action();
-			}
-			else
-			{
-				en[i].actionInStop();
+				if ((*en[j]).exist)
+				{
+					if (notinstop)
+					{
+						(*en[j]).action();
+					}
+					else
+					{
+						(*en[j]).actionInStop();
+					}
+				}
+				else
+				{
+					(*en[j]).Clear();
+					en[j].pop();
+				}
 			}
 		}
 	}
@@ -136,21 +124,18 @@ void Enemy::GetIDBeginUntil(BYTE renderflag, int & idbegin, int & iduntil)
 
 void Enemy::RenderAll(BYTE renderflag)
 {
-	int idbegin;
-	int iduntil;
-	GetIDBeginUntil(renderflag, idbegin, iduntil);
-	for (int i=idbegin; i<iduntil; i++)
+	BYTE _playerindex = Export::GetPlayerIndexByRenderFlag(renderflag);
+	DWORD i = 0;
+	DWORD size = en[_playerindex].size;
+	for (en[_playerindex].toBegin(); i<size; en[_playerindex].toNext(), i++)
 	{
-		if (en[i].exist)
+		if (en[_playerindex].isValid())
 		{
-			en[i].Render();
-		}
-	}
-	for (int i=idbegin; i<iduntil; i++)
-	{
-		if (en[i].exist)
-		{
-			en[i].RenderEffect();
+			if ((*en[_playerindex]).exist)
+			{
+				(*en[_playerindex]).Render();
+				(*en[_playerindex]).RenderEffect();
+			}
 		}
 	}
 }
@@ -179,10 +164,10 @@ void Enemy::setTake(DWORD _take)
 	take = _take;
 }
 
-void Enemy::valueSet(WORD _eID, WORD _ID, float _x, float _y, int _angle, float _speed, BYTE _type, float _life, int _infitimer)
+void Enemy::valueSet(BYTE _playerindex, WORD _eID, float _x, float _y, int _angle, float _speed, BYTE _type, float _life, int _infitimer)
 {
-	eID		=	_eID;
-	ID		=	_ID;
+	playerindex	=	_playerindex;
+	ID		=	_eID;
 	x		=	_x;
 	lastx	=	x;
 	y		=	_y;
@@ -212,11 +197,16 @@ void Enemy::valueSet(WORD _eID, WORD _ID, float _x, float _y, int _angle, float 
 	spelluptimer[ID]	=	0;
 	storetimer[ID]		=	0;
 
-	eID		=	0;
+	ID		=	0;
 	tarID	=	0xff;
 
 	aim.x	=	0;
 	aim.y	=	0;
+
+	if (!sprite)
+	{
+		sprite = SpriteItemManager::CreateSprite(res.enemydata[type].siid);
+	}
 
 	for (int i=0; i<ENEMY_PARAMAX; i++)
 	{
@@ -235,7 +225,6 @@ void Enemy::valueSet(WORD _eID, WORD _ID, float _x, float _y, int _angle, float 
 
 void Enemy::matchAction()
 {
-	BYTE playerindex = getPlayerIndex();
 	switch(ac)
 	{
 	case ENAC_NONE:
@@ -716,15 +705,15 @@ void Enemy::setFrame(BYTE frameenum)
 void Enemy::setIndexFrame(BYTE index)
 {
 	enemyData * pdata = &(res.enemydata[type]);
-	spriteData * pspdata = SpriteItemManager::CastSprite(pdata->siid+index);
+//	spriteData * pspdata = SpriteItemManager::CastSprite();
 	if (!sprite)
 	{
-		sprite = new hgeSprite(tex[pspdata->tex], pspdata->tex_x, pspdata->tex_y, pspdata->tex_w, pspdata->tex_h);
+		sprite = SpriteItemManager::CreateSprite(pdata->siid+index);
+//		sprite = new hgeSprite(tex[pspdata->tex], pspdata->tex_x, pspdata->tex_y, pspdata->tex_w, pspdata->tex_h);
 	}
 	else
 	{
-		sprite->SetTexture(tex[pspdata->tex]);
-		sprite->SetTextureRect(pspdata->tex_x, pspdata->tex_y, pspdata->tex_w, pspdata->tex_h);
+		SpriteItemManager::ChangeSprite(pdata->siid+index, sprite);
 		sprite->SetFlip(flipx, false);
 	}
 }
@@ -765,28 +754,11 @@ void Enemy::actionInStop()
 {
 	if (!fadeout)
 	{
-		DoShot(getPlayerIndex());
+		DoShot();
 	}
 }
 
-BYTE Enemy::getPlayerIndex(BYTE index)
-{
-	if (index < ENEMYMAX)
-	{
-		ID = index;
-	}
-	if (ID >= ENID_LEFTIDBEGIN && ID < ENID_LEFTIDUNTIL)
-	{
-		return 0;
-	}
-	else if (ID >= ENID_RIGHTIDBEGIN && ID < ENID_RIGHTIDUNTIL)
-	{
-		return 1;
-	}
-	return 0;
-}
-
-void Enemy::DoShot(BYTE playerindex)
+void Enemy::DoShot()
 {
 	float tw;
 	float th;
@@ -849,10 +821,9 @@ void Enemy::DoShot(BYTE playerindex)
 	}
 	if(life < 0)
 	{
-		WORD tindex = index;
-		index = ID;
-		scr.Execute(SCR_EDEF, eID, SCRIPT_CON_POST);
-		index = tindex;
+		en[playerindex].pushIndex();
+		scr.Execute(SCR_EDEF, ID, SCRIPT_CON_POST);
+		en[playerindex].popIndex();
 
 		if (life < 0)
 		{
@@ -869,7 +840,6 @@ void Enemy::action()
 {
 	timer++;
 
-	BYTE playerindex = getPlayerIndex();
 	if(infitimer)
 	{
 		infitimer--;
@@ -890,12 +860,11 @@ void Enemy::action()
 			timer = 0;
 		}
 
-		if(eID && !Scripter::stopEdefScript)
+		if(ID && !Scripter::stopEdefScript)
 		{
-			WORD tindex = index;
-			index = ID;
-			scr.Execute(SCR_EDEF, eID, timer);
-			index = tindex;
+			en[playerindex].pushIndex();
+			scr.Execute(SCR_EDEF, ID, timer);
+			en[playerindex].popIndex();
 		}
 		matchAction();
 		updateMove();
@@ -926,7 +895,7 @@ void Enemy::action()
 			else
 				FrontDisplay::fdisp.info.enemyx->SetColor(0x80ffffff);
 		}
-		DoShot(playerindex);
+		DoShot();
 		if(x > M_DELETECLIENT_RIGHT_(playerindex) || x < M_DELETECLIENT_LEFT_(playerindex) || y > M_DELETECLIENT_BOTTOM || y < M_DELETECLIENT_TOP)
 			exist = false;
 	}

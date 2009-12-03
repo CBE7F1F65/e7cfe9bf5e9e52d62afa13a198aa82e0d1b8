@@ -144,6 +144,7 @@ void Process::Release()
 	Chat::chatitem.Release();
 	EffectSp::Release();
 	FrontDisplay::fdisp.Release();
+	Enemy::ClearAll();
 	SpriteItemManager::Release();
 
 	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)

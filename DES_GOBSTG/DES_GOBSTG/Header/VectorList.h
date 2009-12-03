@@ -339,6 +339,14 @@ public:
 	{
 		return iend;
 	}
+	void pushIndex()
+	{
+		pushedindex = index;
+	}
+	void popIndex()
+	{
+		index = pushedindex;
+	}
 
 	_Ty & operator*() const
 	{
@@ -360,6 +368,7 @@ public:
 	_Ty * item;
 	bool * valid;
 	DWORD index;
+	DWORD pushedindex;
 	DWORD ibegin;
 	DWORD zero;
 	DWORD iend;
