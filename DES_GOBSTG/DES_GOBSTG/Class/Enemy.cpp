@@ -17,7 +17,6 @@
 VectorList<Enemy> Enemy::en[M_PL_MATCHMAXPLAYER];
 
 HTEXTURE * Enemy::tex = NULL;
-hgeSprite * Enemy::sprite[ENEMYTYPEMAX];
 BYTE Enemy::actionflag[ENEMY_BOSSMAX];
 BYTE Enemy::spelluptimer[ENEMY_BOSSMAX];
 BYTE Enemy::storetimer[ENEMY_BOSSMAX];
@@ -27,10 +26,12 @@ Enemy::Enemy()
 	exist	= false;
 	able	= false;
 	ID		= 0;
+	sprite = NULL;
 }
 
 Enemy::~Enemy()
 {
+	SpriteItemManager::FreeSprite(&sprite);
 }
 
 void Enemy::Init(HTEXTURE * _tex)
@@ -41,30 +42,39 @@ void Enemy::Init(HTEXTURE * _tex)
 	{
 		en[i].init(ENEMYMAX);
 	}
-	for (int i=0; i<ENEMYTYPEMAX; i++)
-	{
-		sprite[i] = SpriteItemManager::CreateSprite(res.enemydata[i].siid);
-	}
 }
 
 void Enemy::Release()
 {
-	for (int i=0; i<ENEMYTYPEMAX; i++)
-	{
-		SpriteItemManager::FreeSprite(&sprite[i]);
-	}
 }
 
 Enemy * Enemy::Build(WORD eID, BYTE playerindex, float x, float y, int angle, float speed, BYTE type, float life, int infitimer)
 {
-	if (en[playerindex].size == ENEMYMAX)
-	{
-		return NULL;
-	}
 	Enemy _en;
-	Enemy * _pen = en[playerindex].push_back(_en);
-	_pen->valueSet(playerindex, eID, x, y, angle, speed, type, life, infitimer);
-	return _pen;
+	Enemy * _pen = NULL;
+	if (en[playerindex].size < ENEMYMAX)
+	{
+		_pen = en[playerindex].push_back(_en);
+	}
+	else
+	{
+		DWORD i = en[playerindex].index;
+		DWORD size = en[playerindex].size;
+		for (; i<size; en[playerindex].toNext(), i++)
+		{
+			if (!en[playerindex].isValid())
+			{
+				_pen = en[playerindex].push(_en);
+				break;
+			}
+		}
+	}
+	if (_pen)
+	{
+		_pen->valueSet(playerindex, eID, x, y, angle, speed, type, life, infitimer);
+		return _pen;
+	}
+	return NULL;
 }
 
 void Enemy::Clear()
@@ -178,10 +188,10 @@ void Enemy::RenderAll(BYTE renderflag)
 }
 void Enemy::Render()
 {
-	if (sprite[type])
+	if (sprite)
 	{
-		sprite[type]->SetColor(alpha<<24|diffuse);
-		sprite[type]->RenderEx(x, y, headangle, hscale, vscale);
+		sprite->SetColor(alpha<<24|diffuse);
+		sprite->RenderEx(x, y, headangle, hscale, vscale);
 	}
 }
 
@@ -253,6 +263,15 @@ void Enemy::valueSet(BYTE _playerindex, WORD _eID, float _x, float _y, int _angl
 	for (int i=0; i<ENEMY_PARAMAX; i++)
 	{
 		para[i] = 0;
+	}
+
+	if (sprite)
+	{
+		SpriteItemManager::ChangeSprite(res.enemydata[type].siid, sprite);
+	}
+	else
+	{
+		sprite = SpriteItemManager::CreateSprite(res.enemydata[type].siid);
 	}
 
 	initFrameIndex();
@@ -481,8 +500,8 @@ void Enemy::updateFrame(BYTE frameenum, int usetimer /* = -1*/)
 		{
 			float thsx;
 			float thsy;
-			sprite[type]->GetHotSpot(&thsx, &thsy);
-			sprite[type]->SetHotSpot(thsx, sint(timer*512)*4.8f+thsy-2.4f);
+			sprite->GetHotSpot(&thsx, &thsy);
+			sprite->SetHotSpot(thsx, sint(timer*512)*4.8f+thsy-2.4f);
 		}
 		break;
 	case ENEMY_FRAME_RIGHTPRE:
@@ -606,17 +625,24 @@ void Enemy::updateFrame(BYTE frameenum, int usetimer /* = -1*/)
 
 void Enemy::updateFrameAsMove()
 {
-	if(lastx - x > ENEMY_BOSSMOVELIMIT)
+	if (bturnhead)
 	{
-		updateFrame(ENEMY_FRAME_LEFTPRE);
-	}
-	else if(x - lastx > ENEMY_BOSSMOVELIMIT)
-	{
-		updateFrame(ENEMY_FRAME_RIGHTPRE);
+		updateFrame(ENEMY_FRAME_STAND);
 	}
 	else
 	{
-		updateFrame(ENEMY_FRAME_STAND);
+		if(lastx - x > ENEMY_BOSSMOVELIMIT)
+		{
+			updateFrame(ENEMY_FRAME_LEFTPRE);
+		}
+		else if(x - lastx > ENEMY_BOSSMOVELIMIT)
+		{
+			updateFrame(ENEMY_FRAME_RIGHTPRE);
+		}
+		else
+		{
+			updateFrame(ENEMY_FRAME_STAND);
+		}
 	}
 }
 
@@ -670,6 +696,15 @@ void Enemy::initFrameIndex()
 
 	bool bhr = pdata->rightPreFrame;
 	bool bhl = pdata->leftPreFrame;
+
+	if (!bhr && !bhl)
+	{
+		bturnhead = true;
+	}
+	else
+	{
+		bturnhead = false;
+	}
 
 	tfi += pdata->standFrame;
 	frameindex[ENEMY_FRAME_RIGHTPRE] = tfi;
@@ -745,8 +780,8 @@ void Enemy::setFrame(BYTE frameenum)
 void Enemy::setIndexFrame(BYTE index)
 {
 	enemyData * pdata = &(res.enemydata[type]);
-	SpriteItemManager::ChangeSprite(pdata->siid+index, sprite[type]);
-	sprite[type]->SetFlip(flipx, false);
+	SpriteItemManager::ChangeSprite(pdata->siid+index, sprite);
+	sprite->SetFlip(flipx, false);
 }
 
 void Enemy::GetCollisionRect(float * w, float * h)
@@ -942,6 +977,12 @@ void Enemy::action()
 			else
 				FrontDisplay::fdisp.info.enemyx->SetColor(0x80ffffff);
 		}
+
+		if (bturnhead)
+		{
+			headangle = -angle;
+		}
+
 		DoShot();
 		if(x > M_DELETECLIENT_RIGHT_(playerindex) || x < M_DELETECLIENT_LEFT_(playerindex) || y > M_DELETECLIENT_BOTTOM || y < M_DELETECLIENT_TOP)
 			exist = false;

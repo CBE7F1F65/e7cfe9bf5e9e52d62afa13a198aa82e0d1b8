@@ -66,6 +66,27 @@ public:
 		clear_item();
 	}
 
+
+	_Ty * push()
+	{
+		if (!isInRange())
+		{
+			return NULL;
+		}
+		pop();
+		valid[index] = true;
+		return &item[index];
+	}
+	_Ty * push(const _Ty &_item)
+	{
+		if (!isInRange())
+		{
+			return NULL;
+		}
+		memcpy(push(), &_item, sizeof(_Ty));
+		return &item[index];
+	}
+
 	_Ty * push_back()
 	{
 		DWORD _index = index;
@@ -77,13 +98,14 @@ public:
 		iend = index;
 		if (size && ibegin == iend)
 		{
-			pop();
 			ibegin = toNext();
 		}
 		else
 		{
 			size++;
 		}
+		toEnd();
+		pop();
 		index = _index;
 		valid[iend] = true;
 		return &item[iend];
@@ -110,6 +132,8 @@ public:
 		{
 			size++;
 		}
+		toBegin();
+		pop();
 		index = _index;
 		valid[ibegin] = true;
 		return &item[ibegin];

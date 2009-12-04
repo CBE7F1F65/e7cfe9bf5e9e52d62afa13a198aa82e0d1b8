@@ -132,6 +132,7 @@ public:
 	bool	damage;
 	int		infitimer;
 	float	maxlife;
+	bool	bturnhead;
 
 	WORD	ac;
 	BYTE	type;
@@ -147,11 +148,12 @@ public:
 
 	BYTE	frameindex[ENEMY_FRAME_STATEMAX];
 
+	hgeSprite * sprite;
+
 	static HTEXTURE * tex;
 	static BYTE actionflag[ENEMY_BOSSMAX];
 	static BYTE spelluptimer[ENEMY_BOSSMAX];
 	static BYTE storetimer[ENEMY_BOSSMAX];
-	static hgeSprite * sprite[ENEMYTYPEMAX];
 
 	static VectorList<Enemy> en[M_PL_MATCHMAXPLAYER];
 };
