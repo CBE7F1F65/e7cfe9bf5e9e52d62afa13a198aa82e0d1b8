@@ -128,6 +128,8 @@ public:
 	void GetNCharge(BYTE * ncharge=NULL, BYTE * nchargemax=NULL);
 	BYTE AddCharge(float addcharg=0, float addchargemaxe=0);
 
+	void SetDrainSpriteInfo(float x, float y, int headangle=0, float hscale=1.0f, float vscale=0.0f);
+
 	static void AddLostStack();
 	static void SetAble(bool setable);
 	static bool CheckAble();
@@ -194,8 +196,15 @@ public:
 	int nBounceAngle;
 
 	hgeSprite * sprite;
+	hgeSprite * spdrain;
 	BYTE	frameindex[M_PL_ONESETPLAYER][PLAYER_FRAME_STATEMAX];
 	BYTE	faceindex[M_PL_ONESETPLAYER];
+
+	float	drainx;
+	float	drainy;
+	int		drainheadangle;
+	float	drainhscale;
+	float	drainvscale;
 
 	WORD	flag;
 

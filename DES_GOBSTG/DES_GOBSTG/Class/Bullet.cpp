@@ -470,9 +470,10 @@ void Bullet::SendBullet(BYTE playerindex, float x, float y, BYTE setID, BYTE * s
 		siidindex = EFFSPSEND_COLOR_BLUE;
 	}
 	float _hscale = hge->Random_Float(0.6f, 0.8f);
-	EffectSp * _peffsp = EffectSp::Build(setID, playerindex, EffectSp::senditemsiid[siidindex][0], x, y, 0, _hscale);
-	if (_peffsp)
+	int esindex = EffectSp::Build(setID, playerindex, EffectSp::senditemsiid[siidindex][0], x, y, 0, _hscale);
+	if (esindex >= 0)
 	{
+		EffectSp * _peffsp = &(EffectSp::effsp[esindex]);
 		_peffsp->colorSet(0x80ffffff, BLEND_ALPHAADD);
 		float aimx;
 		float aimy;

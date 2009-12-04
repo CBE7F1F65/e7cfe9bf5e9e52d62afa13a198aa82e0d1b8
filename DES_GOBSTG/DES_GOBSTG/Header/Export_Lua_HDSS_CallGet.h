@@ -37,6 +37,8 @@ public:
 
 	static int Call_RAMA(LuaState * ls);
 
+	static int Call_COLLISION_CIRCLE(LuaState * ls);
+
 	static int Call_BGVALUE(LuaState * ls);
 	static int Call_BGVALEX(LuaState * ls);
 	static int Call_BGCOLOR(LuaState * ls);

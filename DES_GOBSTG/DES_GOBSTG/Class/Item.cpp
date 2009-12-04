@@ -159,13 +159,14 @@ void Item::valueSet(WORD type, float _x, float _y, bool _bDrained, int _angle, f
 	exist	=	true;
 }
 
-void Item::Build(BYTE playerindex, WORD type, float _x, float _y, bool _bDrained /* = false */, int _angle, float _speed)
+int Item::Build(BYTE playerindex, WORD type, float _x, float _y, bool _bDrained /* = false */, int _angle, float _speed)
 {
 	if (mi[playerindex].size == ITEMMAX)
 	{
 		return;
 	}
 	mi[playerindex].push_back()->valueSet(type, _x, _y, _bDrained, _angle, _speed);
+	return mi[playerindex].getEndIndex();
 }
 
 void Item::Release()

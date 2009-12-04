@@ -25,6 +25,9 @@ bool Export_Lua_Game::_LuaRegistFunction(LuaObject * obj)
 	_gameobj.Register("GetSendItemInfo", LuaFn_Game_GetSendItemInfo);
 	_gameobj.Register("AddSendBulletInfo", LuaFn_Game_AddSendBulletInfo);
 	_gameobj.Register("AddSendGhostInfo", LuaFn_Game_AddSendGhostInfo);
+	_gameobj.Register("GetPlayerDrainInfo", LuaFn_Game_GetPlayerDrainInfo);
+	_gameobj.Register("SetDrainSpriteInfo", LuaFn_Game_SetPlayerDrainSpriteInfo);
+	_gameobj.Register("SetGhostActiveInfo", LuaFn_Game_SetGhostActiveInfo);
 
 	return true;
 }
@@ -75,15 +78,15 @@ int Export_Lua_Game::LuaFn_Game_SetMatchMode(LuaState * ls)
 {
 	LuaStack args(ls);
 
-	BYTE mode = args[1].GetInteger();
-	mp.SetMatchMode(mode);
+	BYTE _mode = args[1].GetInteger();
+	mp.SetMatchMode(_mode);
 	return 0;
 }
 
 int Export_Lua_Game::LuaFn_Game_GetMatchMode(LuaState * ls)
 {
-	BYTE mode = mp.GetMatchMode();
-	ls->PushInteger(mode);
+	BYTE _mode = mp.GetMatchMode();
+	ls->PushInteger(_mode);
 	return 1;
 }
 
@@ -92,24 +95,24 @@ int Export_Lua_Game::LuaFn_Game_GetPlayerContentTable(LuaState * ls)
 	LuaStack args(ls);
 	if (!args.Count())
 	{
-		int playercount = PLAYERTYPEMAX;
+		int _playercount = PLAYERTYPEMAX;
 		for (int i=0; i<PLAYERTYPEMAX; i++)
 		{
 			if (!strlen(res.playerdata[i].name))
 			{
-				playercount = i;
+				_playercount = i;
 				break;
 			}
 		}
-		ls->PushInteger(playercount);
+		ls->PushInteger(_playercount);
 		return 1;
 	}
 	else
 	{
-		int index = args[1].GetInteger();
-		ls->PushInteger(res.playerdata[index].faceSIID);
-		_LuaHelper_PushString(ls, res.playerdata[index].name);
-		_LuaHelper_PushString(ls, res.playerdata[index].ename);
+		int _index = args[1].GetInteger();
+		ls->PushInteger(res.playerdata[_index].faceSIID);
+		_LuaHelper_PushString(ls, res.playerdata[_index].name);
+		_LuaHelper_PushString(ls, res.playerdata[_index].ename);
 		return 3;
 	}
 	return 0;
@@ -120,22 +123,22 @@ int Export_Lua_Game::LuaFn_Game_GetSceneContentTable(LuaState * ls)
 	LuaStack args(ls);
 	if (!args.Count())
 	{
-		int scenecount = SCENEMAX;
+		int _scenecount = SCENEMAX;
 		for (int i=0; i<SCENEMAX; i++)
 		{
 			if (!strlen(res.scenedata[i].scenename))
 			{
-				scenecount = i;
+				_scenecount = i;
 				break;
 			}
 		}
-		ls->PushInteger(scenecount);
+		ls->PushInteger(_scenecount);
 		return 1;
 	}
 	else
 	{
-		int index = args[1].GetInteger();
-		ls->PushString(res.scenedata[index].scenename);
+		int _index = args[1].GetInteger();
+		ls->PushString(res.scenedata[_index].scenename);
 		return 1;
 	}
 	return 0;
@@ -160,15 +163,15 @@ int Export_Lua_Game::LuaFn_Game_AddSendBulletInfo(LuaState * ls)
 {
 	LuaStack args(ls);
 	
-	BYTE sendsetID = args[1].GetInteger();
-	BYTE sendtime = args[2].GetInteger();
-	BYTE playerindex = args[3].GetInteger();
-	int index = Bullet::bu[playerindex].index;
+	BYTE _sendsetID = args[1].GetInteger();
+	BYTE _sendtime = args[2].GetInteger();
+	BYTE _playerindex = args[3].GetInteger();
+	int _index = Bullet::bu[_playerindex].index;
 	if (args.Count() > 3)
 	{
-		index = args[4].GetInteger();
+		_index = args[4].GetInteger();
 	}
-	Bullet::bu[playerindex][index].AddSendInfo(sendsetID, sendtime);
+	Bullet::bu[_playerindex][_index].AddSendInfo(_sendsetID, _sendtime);
 	return 0;
 }
 
@@ -176,17 +179,81 @@ int Export_Lua_Game::LuaFn_Game_AddSendGhostInfo(LuaState * ls)
 {
 	LuaStack args(ls);
 
-	BYTE sendsetID = args[1].GetInteger();
-	BYTE sendtime = args[2].GetInteger();
-	BYTE playerindex = args[3].GetInteger();
-	float accel = args[4].GetFloat();
-	float acceladd = args[5].GetFloat();
-	int index = Enemy::en[playerindex].index;
+	BYTE _sendsetID = args[1].GetInteger();
+	BYTE _sendtime = args[2].GetInteger();
+	BYTE _playerindex = args[3].GetInteger();
+	float _accel = args[4].GetFloat();
+	float _acceladd = args[5].GetFloat();
+	int _index = Enemy::en[_playerindex].index;
 	if (args.Count() > 5)
 	{
-		index = args[6].GetInteger();
+		_index = args[6].GetInteger();
 	}
-	Enemy::en[playerindex][index].AddSendInfo(sendsetID, sendtime, accel, acceladd);
+	Enemy::en[_playerindex][_index].AddSendInfo(_sendsetID, _sendtime, _accel, _acceladd);
+	return 0;
+}
+
+int Export_Lua_Game::LuaFn_Game_GetPlayerDrainInfo(LuaState * ls)
+{
+	LuaStack args(ls);
+
+	BYTE _playerindex = args[1].GetInteger();
+	int _eventID = args[2].GetInteger();
+	ls->PushInteger(Player::p[_playerindex].nowID);
+	ls->PushNumber(Player::p[_playerindex].x);
+	ls->PushNumber(Player::p[_playerindex].y);
+	ls->PushInteger(Player::p[_playerindex].draintimer);
+	if (_eventID == SCR_EVENT_PLAYERDRAINCHECK)
+	{
+		ls->PushNumber((*Enemy::en[_playerindex]).type);
+		ls->PushNumber((*Enemy::en[_playerindex]).x);
+		ls->PushNumber((*Enemy::en[_playerindex]).y);
+		return 7;
+	}
+	return 4;
+}
+
+int Export_Lua_Game::LuaFn_Game_SetPlayerDrainSpriteInfo(LuaState * ls)
+{
+	LuaStack args(ls);
+
+	int argscount = args.Count();
+
+	BYTE _playerindex = args[1].GetInteger();
+	float _x = args[2].GetFloat();
+	float _y = args[3].GetFloat();
+	int _headangle = 0;
+	float _hscale = 1.0f;
+	float _vscale = 0.0f;
+	if (argscount > 3)
+	{
+		_headangle = args[4].GetInteger();
+		if (argscount > 4)
+		{
+			_hscale = args[5].GetFloat();
+			if (argscount > 5)
+			{
+				_vscale = args[6].GetFloat();
+			}
+		}
+	}
+	Player::p[_playerindex].SetDrainSpriteInfo(_x, _y, _headangle, _hscale, _vscale);
+	return 0;
+}
+
+int Export_Lua_Game::LuaFn_Game_SetGhostActiveInfo(LuaState * ls)
+{
+	LuaStack args(ls);
+
+	BYTE _playerindex = args[1].GetInteger();
+	BYTE _activemaxtime = args[2].GetInteger();
+	WORD _eID = args[3].GetInteger();
+	BYTE _type = args[4].GetInteger();
+	int _angle = args[5].GetInteger();
+	float _speed = args[6].GetFloat();
+	float _damagerate = args[7].GetFloat();
+
+	(*Enemy::en[_playerindex]).SetActiveInfo(_activemaxtime, _eID, _type, _angle, _speed, _damagerate);
 	return 0;
 }
 

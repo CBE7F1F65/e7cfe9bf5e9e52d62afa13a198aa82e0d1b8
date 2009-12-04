@@ -162,8 +162,8 @@ struct enemyData
 	BYTE attackFrame;
 	BYTE storePreFrame;
 	BYTE storeFrame;
-	bool standshake;
 	BYTE blastmaxtime;
+	bool standshake;
 	float blastr;
 	float blastpower;
 };

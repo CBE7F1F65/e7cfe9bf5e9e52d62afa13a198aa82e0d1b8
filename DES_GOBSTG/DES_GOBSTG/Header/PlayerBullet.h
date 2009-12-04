@@ -31,7 +31,7 @@ public:
 	virtual ~PlayerBullet();
 
 	static void Init(HTEXTURE * tex);
-	static void Build(BYTE playerindex, int shootdataID);
+	static int Build(BYTE playerindex, int shootdataID);
 	static void ClearItem();
 	static void Action();
 	static void RenderAll(BYTE renderflag);

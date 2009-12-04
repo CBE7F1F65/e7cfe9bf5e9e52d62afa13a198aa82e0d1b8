@@ -282,6 +282,23 @@ void Player::UpdatePlayerData()
 	rechargedelay = pdata->rechargedelay;
 	fExSendParaB = pdata->exsendparab;
 	fExSendParaA = pdata->exsendparaa;
+	if (sprite)
+	{
+		SpriteItemManager::ChangeSprite(pdata->siid, sprite);
+	}
+	else
+	{
+		sprite = SpriteItemManager::CreateSprite(pdata->siid);
+	}
+	if (spdrain)
+	{
+		SpriteItemManager::ChangeSprite(pdata->drainzoneSIID, spdrain);
+	}
+	else
+	{
+		spdrain = SpriteItemManager::CreateSprite(pdata->drainzoneSIID);
+	}
+	spdrain->SetBlendMode(BLEND_ALPHAADD);
 }
 
 
@@ -314,11 +331,19 @@ void Player::SetInfi(BYTE reasonflag, int _infitimer/* =PLAYER_INFIMAX */)
 	infitimer = _infitimer;
 }
 
-
 void Player::SetChara(WORD id, WORD id_sub_1/* =0xffff */, WORD id_sub_2/* =0xffff */)
 {
 	ID = id;
 	nowID = ID;
 	ID_sub_1 = id_sub_1;
 	ID_sub_2 = id_sub_2;
+}
+
+void Player::SetDrainSpriteInfo(float _x, float _y, int _headangle/* =0 */, float _hscale/* =1.0f */, float _vscale/* =0.0f */)
+{
+	drainx = _x;
+	drainy = _y;
+	drainheadangle = _headangle;
+	drainhscale = _hscale;
+	drainvscale = _vscale;
 }

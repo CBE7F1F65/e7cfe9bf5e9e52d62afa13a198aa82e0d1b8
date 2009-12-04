@@ -276,3 +276,12 @@ function hdssAMAP(playerindex, x, y, angle)
 		}
 	)
 end
+
+function hdssCOLLISION_CIRCLE(x, y, aimx, aimy, r, bbig)
+	return hdss.Call(
+		HDSS_COLLISION_CIRCLE,
+		{
+			x, y, aimx, aimy, r, bbig
+		}
+	)
+end

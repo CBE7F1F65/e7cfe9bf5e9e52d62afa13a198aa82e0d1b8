@@ -48,13 +48,16 @@ void Enemy::Release()
 {
 }
 
-Enemy * Enemy::Build(WORD eID, BYTE playerindex, float x, float y, int angle, float speed, BYTE type, float life, int infitimer)
+int Enemy::Build(WORD eID, BYTE playerindex, float x, float y, int angle, float speed, BYTE type, float life, int infitimer)
 {
 	Enemy _en;
+	DWORD _index = en[playerindex].index;
+	int enindex = -1;
 	Enemy * _pen = NULL;
 	if (en[playerindex].size < ENEMYMAX)
 	{
 		_pen = en[playerindex].push_back(_en);
+		enindex = en[playerindex].getEndIndex();
 	}
 	else
 	{
@@ -65,16 +68,17 @@ Enemy * Enemy::Build(WORD eID, BYTE playerindex, float x, float y, int angle, fl
 			if (!en[playerindex].isValid())
 			{
 				_pen = en[playerindex].push(_en);
+				enindex = en[playerindex].index;
 				break;
 			}
 		}
 	}
+	en[playerindex].index = _index;
 	if (_pen)
 	{
 		_pen->valueSet(playerindex, eID, x, y, angle, speed, type, life, infitimer);
-		return _pen;
 	}
-	return NULL;
+	return enindex;
 }
 
 void Enemy::Clear()
@@ -126,20 +130,6 @@ void Enemy::Action(bool notinstop)
 	}
 }
 
-void Enemy::GetIDBeginUntil(BYTE renderflag, int & idbegin, int & iduntil)
-{
-	if (renderflag == M_RENDER_LEFT)
-	{
-		idbegin = ENID_LEFTIDBEGIN;
-		iduntil = ENID_LEFTIDUNTIL;
-	}
-	else if (renderflag == M_RENDER_RIGHT)
-	{
-		idbegin = ENID_RIGHTIDBEGIN;
-		iduntil = ENID_RIGHTIDUNTIL;
-	}
-}
-
 void Enemy::SendGhost(BYTE playerindex, float x, float y, BYTE setID, BYTE * sendtime, float * acceladd)
 {
 	int siidindex = EFFSPSEND_COLOR_RED;
@@ -148,9 +138,10 @@ void Enemy::SendGhost(BYTE playerindex, float x, float y, BYTE setID, BYTE * sen
 		siidindex = EFFSPSEND_COLOR_BLUE;
 	}
 	float _hscale = hge->Random_Float(1.2f, 1.4f);
-	EffectSp * _peffsp = EffectSp::Build(setID, playerindex, EffectSp::senditemsiid[siidindex][0], x, y, 0, _hscale);
-	if (_peffsp)
+	int esindex = EffectSp::Build(setID, playerindex, EffectSp::senditemsiid[siidindex][0], x, y, 0, _hscale);
+	if (esindex >= 0)
 	{
+		EffectSp * _peffsp = &(EffectSp::effsp[esindex]);
 		_peffsp->colorSet(0x80ffffff, BLEND_ALPHAADD);
 		float aimx;
 		float aimy;
@@ -164,7 +155,7 @@ void Enemy::SendGhost(BYTE playerindex, float x, float y, BYTE setID, BYTE * sen
 		}
 		else
 		{
-			_peffsp->AppendData(-1, 0);
+			_peffsp->AppendData(0, 0);
 		}
 	}
 }
@@ -191,7 +182,7 @@ void Enemy::Render()
 	if (sprite)
 	{
 		sprite->SetColor(alpha<<24|diffuse);
-		sprite->RenderEx(x, y, headangle, hscale, vscale);
+		sprite->RenderEx(x, y, ARC(headangle), hscale, vscale);
 	}
 }
 
@@ -229,11 +220,10 @@ void Enemy::valueSet(BYTE _playerindex, WORD _eID, float _x, float _y, int _angl
 	take	=	0;
 	infitimer = _infitimer;
 
-	headangle	=	0;
 	timer	=	0;
 	damagetimer = 0;
 	maxlife	=	life;
-	defrate	=	0;
+	damagerate	=	1;
 	exist	=	true;
 	fadeout	=	false;
 	able	=	true;
@@ -243,6 +233,17 @@ void Enemy::valueSet(BYTE _playerindex, WORD _eID, float _x, float _y, int _angl
 	alpha	=	0xff;
 	diffuse	=	0xffffff;
 	faceindex = res.enemydata[type].faceIndex;
+
+	if (!res.enemydata[type].rightPreFrame && !res.enemydata[type].leftPreFrame)
+	{
+		bturnhead = true;
+		headangle = angle;
+	}
+	else
+	{
+		bturnhead = false;
+		headangle	=	0;
+	}
 
 	accel		=	0;
 	acceladd	=	0;
@@ -276,6 +277,8 @@ void Enemy::valueSet(BYTE _playerindex, WORD _eID, float _x, float _y, int _angl
 
 	initFrameIndex();
 	setFrame(ENEMY_FRAME_STAND);
+	activetimer = 0;
+	activemaxtime = 0;
 
 	// TODO:
 	effShot.valueSet(EFF_EN_SHOT, M_RENDER_LEFT, *this);
@@ -697,15 +700,6 @@ void Enemy::initFrameIndex()
 	bool bhr = pdata->rightPreFrame;
 	bool bhl = pdata->leftPreFrame;
 
-	if (!bhr && !bhl)
-	{
-		bturnhead = true;
-	}
-	else
-	{
-		bturnhead = false;
-	}
-
 	tfi += pdata->standFrame;
 	frameindex[ENEMY_FRAME_RIGHTPRE] = tfi;
 	if (bhr)
@@ -792,10 +786,11 @@ void Enemy::GetCollisionRect(float * w, float * h)
 
 void Enemy::CostLife(float power)
 {
-//	if (!(bossinfo.spellflag & BISF_NOBOMBDAMAGE))
-//	{
-		life -= power * (1 - defrate);
-//	}
+	if (infitimer)
+	{
+		return;
+	}
+	life -= power * damagerate;
 	damage = true;
 }
 
@@ -925,9 +920,6 @@ void Enemy::action()
 	if(infitimer)
 	{
 		infitimer--;
-		defrate = 1.0f;
-		if(!infitimer)
-			defrate = 0;
 	}
 
 	effShot.MoveTo(x, y);
@@ -969,6 +961,7 @@ void Enemy::action()
 				Player::p[playerindex].DoShot();
 			}
 		}
+		/*
 		if(BossInfo::flag)
 		{
 			int txdiff = fabsf(Player::p[playerindex].x - x);
@@ -977,10 +970,27 @@ void Enemy::action()
 			else
 				FrontDisplay::fdisp.info.enemyx->SetColor(0x80ffffff);
 		}
+		*/
+
+		if (sendsetID && !activetimer && Player::p[playerindex].bDrain)
+		{
+			scr.Execute(SCR_EVENT, SCR_EVENT_PLAYERDRAINCHECK, playerindex);
+		}
+
+		if (activetimer)
+		{
+			activetimer++;
+			if (activetimer >= activemaxtime)
+			{
+				scr.Execute(SCR_EVENT, SCR_EVENT_ACTIVEGHOSTOVER, playerindex);
+				fadeout = true;
+				timer = 0;
+			}
+		}
 
 		if (bturnhead)
 		{
-			headangle = -angle;
+			headangle = angle;
 		}
 
 		DoShot();
@@ -1002,6 +1012,15 @@ void Enemy::action()
 			GetBlastInfo(&blastmaxtime, &blastr, &blastpower);
 			EventZone::Build(EVENTZONE_TYPE_SENDBULLET|EVENTZONE_TYPE_ENEMYGHOSTDAMAGE, playerindex, x, y, blastmaxtime, blastr, blastpower, EVENTZONE_EVENT_NULL);
 			Player::p[playerindex].DoEnemyCollapse(x, y);
+
+			if (sendsetID)
+			{
+				sendtime++;
+				if (sendtime < 3)
+				{
+					SendGhost(playerindex, x, y, sendsetID, &sendtime, &acceladd);
+				}
+			}
 		}
 		else if(timer == 32)
 		{
@@ -1036,6 +1055,24 @@ void Enemy::GetBlastInfo(BYTE * maxtime/* =NULL */, float * r/* =NULL */, float 
 	{
 		*power = res.enemydata[type].blastpower;
 	}
+}
+
+void Enemy::SetActiveInfo(BYTE _activemaxtime, WORD _eID, BYTE _type, int _angle, float _speed, float _damagerate)
+{
+	if (!exist || fadeout)
+	{
+		return;
+	}
+	activemaxtime = _activemaxtime;
+	ID = _eID;
+	type = _type;
+	angle = _angle;
+	speed = _speed;
+	accel = 0;
+	damagerate = _damagerate;
+	setAction();
+	updateAction();
+	activetimer = 1;
 }
 
 void Enemy::giveItem(BYTE playerindex)

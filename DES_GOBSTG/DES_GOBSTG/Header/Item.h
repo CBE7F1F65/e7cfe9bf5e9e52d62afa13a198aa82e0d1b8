@@ -41,7 +41,7 @@ public:
 	static void Action(bool notinpause);
 	static void RenderAll(BYTE renderflag);
 
-	static void Build(BYTE playerindex, WORD type, float x, float y, bool bDrained = false, int angle = 9000, float speed = ITEM_STARTSPEED);
+	static int Build(BYTE playerindex, WORD type, float x, float y, bool bDrained = false, int angle = 9000, float speed = ITEM_STARTSPEED);
 
 	void valueSet(WORD type, float x, float y, bool bDrained = false, int angle = 9000, float speed = ITEM_STARTSPEED);
 

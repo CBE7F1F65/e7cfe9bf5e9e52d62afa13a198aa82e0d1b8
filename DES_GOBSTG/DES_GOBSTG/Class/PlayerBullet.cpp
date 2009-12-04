@@ -142,7 +142,7 @@ void PlayerBullet::RenderAll(BYTE renderflag)
 	}
 }
 
-void PlayerBullet::Build(BYTE playerindex, int shootdataID)
+int PlayerBullet::Build(BYTE playerindex, int shootdataID)
 {
 	if (pb[playerindex].size == PLAYERBULLETMAX)
 	{
@@ -153,6 +153,7 @@ void PlayerBullet::Build(BYTE playerindex, int shootdataID)
 	pb[playerindex].push_back(_pb)->valueSet(playerindex, shootdataID, item->arrange, item->xbias, item->ybias, 
 		item->scale, item->angle, item->speed, item->accelspeed, 
 		item->power, item->hitonfactor, item->flag, item->seID);
+	return pb[playerindex].getEndIndex();
 }
 
 void PlayerBullet::valueSet(BYTE _playerindex, WORD _ID, BYTE _arrange, float _xbias, float _ybias, float _scale, int _angle, float _speed, float _accelspeed, float _power, int _hitonfactor, WORD _flag, BYTE seID)

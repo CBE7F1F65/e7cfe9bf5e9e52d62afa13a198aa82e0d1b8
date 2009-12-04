@@ -13,8 +13,6 @@
 
 VectorList<Beam> Beam::be[M_PL_MATCHMAXPLAYER];
 
-WORD Beam::index;
-
 Beam::Beam()
 {
 	able	= false;
@@ -30,7 +28,6 @@ void Beam::Init()
 	{
 		be[i].init(BEAMMAX);
 	}
-	index = 0;
 }
 
 void Beam::ClearItem()
@@ -85,7 +82,7 @@ void Beam::RenderAll(BYTE renderflag)
 	}
 }
 
-Beam * Beam::Build(BYTE playerindex, float x, float y, int angle, float speed, BYTE type, BYTE color, WORD length, BYTE flag, int fadeouttime, BYTE tarID)
+int Beam::Build(BYTE playerindex, float x, float y, int angle, float speed, BYTE type, BYTE color, WORD length, BYTE flag, int fadeouttime, BYTE tarID)
 {
 	if (be[playerindex].size == BEAMMAX)
 	{
@@ -93,9 +90,9 @@ Beam * Beam::Build(BYTE playerindex, float x, float y, int angle, float speed, B
 	}
 	Beam * _tbe;
 	_tbe = be[playerindex].push_back();
-	index = be[playerindex].getEndIndex();
-	_tbe->valueSet(index, x, y, angle, speed, type, color, length, flag, fadeouttime, tarID);
-	return _tbe;
+	int beindex = be[playerindex].getEndIndex();
+	_tbe->valueSet(beindex, x, y, angle, speed, type, color, length, flag, fadeouttime, tarID);
+	return beindex;
 }
 
 void Beam::Render()

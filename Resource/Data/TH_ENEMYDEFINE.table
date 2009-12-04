@@ -7,9 +7,9 @@ Comment	Index	FaceIndex	SIID	Collision_W	Collision_H	StandFrame	StandShake	Right
 -	3	-1	SI_EnemySprite_Big_0	16	16	4	0	3	1	3	1	0	0	0	0	13	68	3	_	_
 -	4	-1	SI_EnemySprite_Lily_0	16	16	4	0	3	1	3	1	0	0	0	0	0	0	0	_	_
 #		Ghost																		
--	8	-1	SI_GhostSprite_Green_0	12	12	4	0	0	0	0	0	0	0	0	0	8	24	3	_	_
--	9	-1	SI_GhostSprite_GreenActive_0	16	16	8	0	0	0	0	0	0	0	0	0	10	46	3	_	_
--	10	-1	SI_GhostSprite_Yellow_0	12	12	4	0	0	0	0	0	0	0	0	0	8	24	3	_	_
--	11	-1	SI_GhostSprite_YellowActive_0	16	16	8	0	0	0	0	0	0	0	0	0	12	52	3	_	_
--	12	-1	SI_GhostSprite_Red_0	12	12	4	0	0	0	0	0	0	0	0	0	8	24	3	_	_
--	13	-1	SI_GhostSprite_RedActive_0	16	16	8	0	0	0	0	0	0	0	0	0	12	52	3	_	_
+-	8	-1	SI_GhostSprite_Green_0	12	12	4	0	0	0	0	0	0	0	0	0	8	24	2	_	_
+-	9	-1	SI_GhostSprite_GreenActive_0	16	16	8	0	0	0	0	0	0	0	0	0	10	46	2	_	_
+-	10	-1	SI_GhostSprite_Yellow_0	12	12	4	0	0	0	0	0	0	0	0	0	8	24	2	_	_
+-	11	-1	SI_GhostSprite_YellowActive_0	16	16	8	0	0	0	0	0	0	0	0	0	12	52	2	_	_
+-	12	-1	SI_GhostSprite_Red_0	12	12	4	0	0	0	0	0	0	0	0	0	8	24	2	_	_
+-	13	-1	SI_GhostSprite_RedActive_0	16	16	8	0	0	0	0	0	0	0	0	0	12	52	2	_	_

@@ -409,17 +409,17 @@ Comment	Index	SI_Name	Tex	Tex_x	Tex_y	Tex_w	Tex_h
 -	872	SI_GhostSprite_YellowActive_6	4	272	272	40	40
 -	873	SI_GhostSprite_YellowActive_7	4	312	272	40	40
 -	874	SI_GhostSprite_Red_0	4	0	336	48	48
--	875	SI_GhostSprite_Red_1	4	48	192	48	48
--	876	SI_GhostSprite_Red_2	4	96	192	48	48
--	877	SI_GhostSprite_Red_3	4	144	192	48	48
+-	875	SI_GhostSprite_Red_1	4	48	336	48	48
+-	876	SI_GhostSprite_Red_2	4	96	336	48	48
+-	877	SI_GhostSprite_Red_3	4	144	336	48	48
 -	878	SI_GhostSprite_RedActive_0	4	0	384	48	48
--	879	SI_GhostSprite_RedActive_1	4	48	240	48	48
--	880	SI_GhostSprite_RedActive_2	4	96	240	48	48
--	881	SI_GhostSprite_RedActive_3	4	144	240	48	48
+-	879	SI_GhostSprite_RedActive_1	4	48	384	48	48
+-	880	SI_GhostSprite_RedActive_2	4	96	384	48	48
+-	881	SI_GhostSprite_RedActive_3	4	144	384	48	48
 -	882	SI_GhostSprite_RedActive_4	4	0	432	48	48
--	883	SI_GhostSprite_RedActive_5	4	48	288	48	48
--	884	SI_GhostSprite_RedActive_6	4	96	288	48	48
--	885	SI_GhostSprite_RedActive_7	4	144	288	48	48
+-	883	SI_GhostSprite_RedActive_5	4	48	432	48	48
+-	884	SI_GhostSprite_RedActive_6	4	96	432	48	48
+-	885	SI_GhostSprite_RedActive_7	4	144	432	48	48
 #		Unknown(950~999)					
 #		PlayerBullet(1000~1999)					
 -	1000	SI_PlayerBullet_0	10	0	176	64	16

@@ -53,7 +53,7 @@ public:
 	static void Init();
 	static void ClearItem();
 	static void Release();
-	static EffectSp * Build(int setID, WORD ID, int siid, float x, float y, int headangle=0, float hscale=1.0f, float vscale=0.0f);
+	static int Build(int setID, WORD ID, int siid, float x, float y, int headangle=0, float hscale=1.0f, float vscale=0.0f);
 	static void Action();
 	static void RenderAll();
 

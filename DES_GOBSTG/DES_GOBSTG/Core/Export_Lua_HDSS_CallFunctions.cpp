@@ -371,12 +371,13 @@ int _HDSSCallGet::Call_ENBUILD(LuaState * ls)
 		BYTE _type = _INEXT_HDSS_LUAPARA;
 		float _life = _FNEXT_HDSS_LUAPARA;
 		int _infitimer = _INEXT_HDSS_LUAPARA;
-		Enemy * _pen = Enemy::Build(_eID, _playerindex, _x, _y, _angle, _speed, _type, _life, _infitimer);
+		int _enindex = Enemy::Build(_eID, _playerindex, _x, _y, _angle, _speed, _type, _life, _infitimer);
 
-		if (_pen)
+		if (_enindex >= 0)
 		{
 			if (argscount > 2)
 			{
+				Enemy * _pen = &(Enemy::en[_playerindex][_enindex]);
 				_GETPARAS_HDSS_LUAPARA(3);
 				BYTE _tarID = _INEXT_HDSS_LUAPARA;
 				_pen->setTar(_tarID);
@@ -390,7 +391,7 @@ int _HDSSCallGet::Call_ENBUILD(LuaState * ls)
 				}
 			}
 
-			_PI_HDSS_LUA(Enemy::en[_playerindex].index);
+			_PI_HDSS_LUA(_enindex);
 			return 1;
 		}
 	}
@@ -464,6 +465,38 @@ int _HDSSCallGet::Call_RAMA(LuaState * ls)
 			iret = _tobj.aMainAngle(_aimx, _aimy, _angle);
 		}
 		_PI_HDSS_LUA(iret);
+		return 1;
+	}
+	return 0;
+}
+
+int _HDSSCallGet::Call_COLLISION_CIRCLE(LuaState * ls)
+{
+	_ENTERCALL_HDSS_LUA;
+	if (true)
+	{
+		float _x = _FNEXT_HDSS_LUAPARA;
+		float _y = _FNEXT_HDSS_LUAPARA;
+		float _aimx = _FNEXT_HDSS_LUAPARA;
+		float _aimy = _FNEXT_HDSS_LUAPARA;
+		float _r = _FNEXT_HDSS_LUAPARA;
+		bool _bbig = false;
+		_JNEXT_HDSS_LUAPARA;
+		if (bhavenext)
+		{
+			_bbig = _BOBJ_HDSS_LUA;
+		}
+		BObject _bobj(_x, _y);
+		bool bret;
+		if (_bbig)
+		{
+			bret = _bobj.checkCollisionBigCircle(_aimx, _aimy, _r);
+		}
+		else
+		{
+			bret = _bobj.checkCollisionCircle(_aimx, _aimy, _r);
+		}
+		ls->PushBoolean(bret);
 		return 1;
 	}
 	return 0;

@@ -57,6 +57,7 @@ Player::Player()
 	effBorderOn.exist = false;
 	effBorderOff.exist = false;
 	sprite			= NULL;
+	spdrain			= NULL;
 	nowID			= 0;
 	ID_sub_1		= 0;
 	ID_sub_2		= 0;
@@ -66,6 +67,7 @@ Player::Player()
 Player::~Player()
 {
 	SpriteItemManager::FreeSprite(&sprite);
+	SpriteItemManager::FreeSprite(&spdrain);
 }
 
 void Player::ClearNC()
@@ -200,6 +202,7 @@ void Player::valueSet(BYTE _playerindex, BYTE round)
 	ClearSet(round);
 	initFrameIndex();
 	UpdatePlayerData();
+	SetDrainSpriteInfo(x, y);
 
 	nLife		=	initlife;
 	nLifeCost	=	0;
@@ -211,11 +214,6 @@ void Player::valueSet(BYTE _playerindex, BYTE round)
 		lostStack		=	0;
 	}
 
-	if(!sprite)
-	{
-		sprite = SpriteItemManager::CreateSpriteByName(SI_NULL);
-//		sprite = new hgeSprite(mp.tex[res.playerdata[ID].tex], 0, 0, 0, 0);
-	}
 	setFrame(PLAYER_FRAME_STAND);
 
 	// TODO:
@@ -507,6 +505,7 @@ void Player::action()
 				if (!(flag & PLAYER_DRAIN))
 				{
 					draintimer = 0;
+					SetDrainSpriteInfo(x, y, 0, 0);
 					flag |= PLAYER_DRAIN;
 				}
 			}
@@ -1125,6 +1124,10 @@ void Player::ResetPlayerGhost(bool move /* = false */)
 
 void Player::Render()
 {
+	if (spdrain && bDrain)
+	{
+		spdrain->RenderEx(drainx, drainy, ARC(drainheadangle), drainhscale, drainvscale);
+	}
 	if (sprite)
 	{
 		sprite->SetColor(alpha<<24|diffuse);

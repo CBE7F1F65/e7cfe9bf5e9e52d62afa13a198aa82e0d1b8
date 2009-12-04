@@ -157,16 +157,18 @@ void EffectSp::chaseSet(BYTE _chaseflag, float _aimx, float _aimy, int _chasetim
 	aimy = _aimy;
 }
 
-EffectSp * EffectSp::Build(int setID, WORD ID, int siid, float x, float y, int headangle/* =0 */, float hscale/* =1.0f */, float vscale/* =0.0f */)
+int EffectSp::Build(int setID, WORD ID, int siid, float x, float y, int headangle/* =0 */, float hscale/* =1.0f */, float vscale/* =0.0f */)
 {
 	if (effsp.size == EFFSPMAX)
 	{
-		return NULL;
+		return -1;
 	}
+	int esindex = -1;
 	EffectSp _effsp;
 	EffectSp * _peffsp = effsp.push_back(_effsp);
+	esindex = effsp.getEndIndex();
 	_peffsp->valueSet(setID, ID, siid, x, y, headangle, hscale, vscale);
-	return _peffsp;
+	return esindex;
 }
 
 void EffectSp::valueSet(int _setID, WORD _ID, int _siid, float _x, float _y, int _headangle/*=0*/, float _hscale/*=1.0f*/, float _vscale/*=0.0f*/)

@@ -87,12 +87,14 @@ function eSendGhost(playerindex, x, y, sendtime, acceladd, setID)
 	else
 		accel = 0.11 / 3;
 	end
-	
-	sendtime = sendtime + 1;
-	if sendtime >= 3 then
-		sendtime = 3;
+		
+	local angle;
+	--
+	if hge.Random_Int(0, 4) == 0 then
+		angle = hdssAMAP(playerindex, x, y, hge.Random_Int(-2250, 2250));
+	else
+		angle = hge.Random_Int(8910, 9090);
 	end
-	local angle = hge.Random_Int(8910, 9090);
 	--
 	local type = 8 + sendtime * 2;
 	local index = hdss.Call(
@@ -100,10 +102,7 @@ function eSendGhost(playerindex, x, y, sendtime, acceladd, setID)
 		{
 			type, playerindex, x, y, angle, 0, type, 20, 0
 		}
-	)
-	if accel+acceladd <= 0.0001 then
-		MB()
-	end
+	);
 	if index ~= nil then
 		game.AddSendGhostInfo(setID, sendtime, playerindex, accel+acceladd, acceladd, index);
 	end

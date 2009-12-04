@@ -111,6 +111,15 @@ int Export_Lua_HDSS::LuaFn_HDSS_Call(LuaState * ls)
 			}
 			break;
 			/************************************************************************/
+			/* SPECIAL                                                              */
+			/************************************************************************/
+		case SCRKW_CLASS_SPECIAL:
+			switch (nowval)
+			{
+			case SCR_COLLISION_CIRCLE:
+				return _HDSSCallGet::Call_COLLISION_CIRCLE(ls);
+			}
+			/************************************************************************/
 			/* PLAYER                                                               */
 			/************************************************************************/
 		case SCRKW_CLASS_PLAYER:
