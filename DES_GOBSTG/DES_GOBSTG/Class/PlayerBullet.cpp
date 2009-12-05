@@ -101,10 +101,10 @@ void PlayerBullet::Action()
 {
 	for (int j=0; j<M_PL_MATCHMAXPLAYER; j++)
 	{
-		if (pb[j].size)
+		if (pb[j].getSize())
 		{
 			DWORD i = 0;
-			DWORD size = pb[j].size;
+			DWORD size = pb[j].getSize();
 			for (pb[j].toBegin(); i<size; pb[j].toNext(), i++)
 			{
 				if (!pb[j].isValid())
@@ -127,10 +127,10 @@ void PlayerBullet::Action()
 void PlayerBullet::RenderAll(BYTE renderflag)
 {
 	BYTE playerindex = Export::GetPlayerIndexByRenderFlag(renderflag);
-	if (pb[playerindex].size)
+	if (pb[playerindex].getSize())
 	{
 		DWORD i = 0;
-		DWORD size = pb[playerindex].size;
+		DWORD size = pb[playerindex].getSize();
 		for (pb[playerindex].toBegin(); i<size; pb[playerindex].toNext(), i++)
 		{
 			if (pb[playerindex].isValid())
@@ -144,7 +144,7 @@ void PlayerBullet::RenderAll(BYTE renderflag)
 
 int PlayerBullet::Build(BYTE playerindex, int shootdataID)
 {
-	if (pb[playerindex].size == PLAYERBULLETMAX)
+	if (pb[playerindex].getSize() == PLAYERBULLETMAX)
 	{
 		return;
 	}
@@ -570,10 +570,10 @@ void PlayerBullet::action()
 float PlayerBullet::CheckShoot(BYTE playerindex, float aimx, float aimy, float aimw, float aimh)
 {
 	float totalpower = 0.0f;
-	if (pb[playerindex].size)
+	if (pb[playerindex].getSize())
 	{
 		DWORD i = 0;
-		DWORD size = pb[playerindex].size;
+		DWORD size = pb[playerindex].getSize();
 		for (pb[playerindex].toBegin(); i<size; pb[playerindex].toNext(), i++)
 		{
 			if (pb[playerindex].isValid() && (*pb[playerindex]).able)

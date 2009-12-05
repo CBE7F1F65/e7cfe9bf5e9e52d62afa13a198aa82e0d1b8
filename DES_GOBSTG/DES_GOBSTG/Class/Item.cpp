@@ -44,10 +44,10 @@ void Item::Action(bool notinpause)
 {
 	for (int j=0; j<M_PL_MATCHMAXPLAYER; j++)
 	{
-		if (mi[j].size)
+		if (mi[j].getSize())
 		{
 			DWORD i = 0;
-			DWORD size = mi[j].size;
+			DWORD size = mi[j].getSize();
 			for (mi[j].toBegin(); i<size; mi[j].toNext(), i++)
 			{
 				if (!mi[j].isValid())
@@ -65,10 +65,10 @@ void Item::Action(bool notinpause)
 			}
 		}
 	}
-	if (infofont.size)
+	if (infofont.getSize())
 	{
 		DWORD i = 0;
-		DWORD size = infofont.size;
+		DWORD size = infofont.getSize();
 		for (infofont.toBegin(); i<size; infofont.toNext(), i++)
 		{
 			if (infofont.isValid())
@@ -97,10 +97,10 @@ void Item::Action(bool notinpause)
 void Item::RenderAll(BYTE renderflag)
 {
 	BYTE playerindex = Export::GetPlayerIndexByRenderFlag(renderflag);
-	if (mi[playerindex].size)
+	if (mi[playerindex].getSize())
 	{
 		DWORD i = 0;
-		DWORD size = mi[playerindex].size;
+		DWORD size = mi[playerindex].getSize();
 		for (mi[playerindex].toBegin(); i<size; mi[playerindex].toNext(), i++)
 		{
 			if (mi[playerindex].isValid())
@@ -109,10 +109,10 @@ void Item::RenderAll(BYTE renderflag)
 			}
 		}
 	}
-	if (infofont.size)
+	if (infofont.getSize())
 	{
 		DWORD i = 0;
-		DWORD size = infofont.size;
+		DWORD size = infofont.getSize();
 		for (infofont.toBegin(); i<size; infofont.toNext(), i++)
 		{
 			if (!infofont.isValid())
@@ -161,7 +161,7 @@ void Item::valueSet(WORD type, float _x, float _y, bool _bDrained, int _angle, f
 
 int Item::Build(BYTE playerindex, WORD type, float _x, float _y, bool _bDrained /* = false */, int _angle, float _speed)
 {
-	if (mi[playerindex].size == ITEMMAX)
+	if (mi[playerindex].getSize() == ITEMMAX)
 	{
 		return;
 	}
@@ -231,7 +231,7 @@ void Item::action(BYTE playerindex)
 	}
 	else
 	{
-		headangle += SIGN((int)mi[playerindex].index) * 600 * speed;
+		headangle += SIGN((int)mi[playerindex].getIndex()) * 600 * speed;
 	}
 
 	timer++;

@@ -51,34 +51,29 @@ void Enemy::Release()
 int Enemy::Build(WORD eID, BYTE playerindex, float x, float y, int angle, float speed, BYTE type, float life, int infitimer)
 {
 	Enemy _en;
-	DWORD _index = en[playerindex].index;
-	int enindex = -1;
 	Enemy * _pen = NULL;
-	if (en[playerindex].size < ENEMYMAX)
+	if (en[playerindex].getSize() < ENEMYMAX)
 	{
 		_pen = en[playerindex].push_back(_en);
-		enindex = en[playerindex].getEndIndex();
 	}
 	else
 	{
-		DWORD i = en[playerindex].index;
-		DWORD size = en[playerindex].size;
+		DWORD i = en[playerindex].getIndex();
+		DWORD size = en[playerindex].getSize();
 		for (; i<size; en[playerindex].toNext(), i++)
 		{
 			if (!en[playerindex].isValid())
 			{
 				_pen = en[playerindex].push(_en);
-				enindex = en[playerindex].index;
 				break;
 			}
 		}
 	}
-	en[playerindex].index = _index;
 	if (_pen)
 	{
 		_pen->valueSet(playerindex, eID, x, y, angle, speed, type, life, infitimer);
 	}
-	return enindex;
+	return en[playerindex].getIndex();
 }
 
 void Enemy::Clear()
@@ -92,7 +87,7 @@ void Enemy::ClearAll()
 {
 	for (int j=0; j<M_PL_MATCHMAXPLAYER; j++)
 	{
-		for (int i=0; i<en[j].capacity; i++)
+		for (int i=0; i<en[j].getCapacity(); i++)
 		{
 			en[j][i].Clear();
 		}
@@ -105,7 +100,7 @@ void Enemy::Action(bool notinstop)
 	for (int j=0; j<M_PL_MATCHMAXPLAYER; j++)
 	{
 		DWORD i = 0;
-		DWORD size = en[j].size;
+		DWORD size = en[j].getSize();
 		for (en[j].toBegin(); i<size; en[j].toNext(), i++)
 		{
 			if (en[j].isValid())
@@ -164,7 +159,7 @@ void Enemy::RenderAll(BYTE renderflag)
 {
 	BYTE _playerindex = Export::GetPlayerIndexByRenderFlag(renderflag);
 	DWORD i = 0;
-	DWORD size = en[_playerindex].size;
+	DWORD size = en[_playerindex].getSize();
 	for (en[_playerindex].toBegin(); i<size; en[_playerindex].toNext(), i++)
 	{
 		if (en[_playerindex].isValid())
@@ -188,6 +183,7 @@ void Enemy::Render()
 
 void Enemy::RenderEffect()
 {
+	eff.Render();
 	if(fadeout && timer)
 	{
 		effCollapse.Render();
@@ -213,9 +209,7 @@ void Enemy::valueSet(BYTE _playerindex, WORD _eID, float _x, float _y, int _angl
 	lastx	=	x;
 	y		=	_y;
 	speed	=	_speed;
-	type	=	_type;
 	life	=	_life;
-	ac		=	ENAC_NONE;
 	angle	=	_angle;
 	take	=	0;
 	infitimer = _infitimer;
@@ -232,9 +226,25 @@ void Enemy::valueSet(BYTE _playerindex, WORD _eID, float _x, float _y, int _angl
 	vscale	=	1.0f;
 	alpha	=	0xff;
 	diffuse	=	0xffffff;
-	faceindex = res.enemydata[type].faceIndex;
+	ac		=	ENAC_NONE;
+	acceladd	=	0;
+	sendtime	=	0;
+	sendsetID	=	0;
+	tarID	=	0xff;
+	aim.x	=	0;
+	aim.y	=	0;
+	activetimer = 0;
+	activemaxtime = 0;
 
-	if (!res.enemydata[type].rightPreFrame && !res.enemydata[type].leftPreFrame)
+	ChangeType(_type);
+}
+
+void Enemy::ChangeType(BYTE _type)
+{
+	type = _type;
+	enemyData * _enemydata = &(res.enemydata[type]);
+	faceindex = _enemydata->faceIndex;
+	if (!_enemydata->rightPreFrame && !_enemydata->leftPreFrame)
 	{
 		bturnhead = true;
 		headangle = angle;
@@ -246,20 +256,6 @@ void Enemy::valueSet(BYTE _playerindex, WORD _eID, float _x, float _y, int _angl
 	}
 
 	accel		=	0;
-	acceladd	=	0;
-
-	sendtime	=	0;
-	sendsetID	=	0;
-
-	actionflag[ID]		=	0;
-	spelluptimer[ID]	=	0;
-	storetimer[ID]		=	0;
-
-	ID		=	0;
-	tarID	=	0xff;
-
-	aim.x	=	0;
-	aim.y	=	0;
 
 	for (int i=0; i<ENEMY_PARAMAX; i++)
 	{
@@ -268,21 +264,22 @@ void Enemy::valueSet(BYTE _playerindex, WORD _eID, float _x, float _y, int _angl
 
 	if (sprite)
 	{
-		SpriteItemManager::ChangeSprite(res.enemydata[type].siid, sprite);
+		SpriteItemManager::ChangeSprite(_enemydata->siid, sprite);
 	}
 	else
 	{
-		sprite = SpriteItemManager::CreateSprite(res.enemydata[type].siid);
+		sprite = SpriteItemManager::CreateSprite(_enemydata->siid);
 	}
 
 	initFrameIndex();
 	setFrame(ENEMY_FRAME_STAND);
-	activetimer = 0;
-	activemaxtime = 0;
 
 	// TODO:
-	effShot.valueSet(EFF_EN_SHOT, M_RENDER_LEFT, *this);
+	eff.valueSet(_enemydata->effid, Export::GetRenderFlagByPlayerIndex(playerindex), *this);
+	effShot.valueSet(_enemydata->shotEffid, Export::GetRenderFlagByPlayerIndex(playerindex), *this);
 	effShot.Stop();
+	effCollapse.valueSet(_enemydata->collapseEffid, Export::GetRenderFlagByPlayerIndex(playerindex), *this);
+	effCollapse.Stop();
 }
 
 void Enemy::matchAction()
@@ -882,9 +879,9 @@ void Enemy::DoShot()
 	}
 	if(life < 0)
 	{
-		en[playerindex].pushIndex();
+		DWORD _index = en[playerindex].getIndex();
 		scr.Execute(SCR_EDEF, ID, SCRIPT_CON_POST);
-		en[playerindex].popIndex();
+		en[playerindex].toIndex(_index);
 
 		if (life < 0)
 		{
@@ -924,6 +921,8 @@ void Enemy::action()
 
 	effShot.MoveTo(x, y);
 	effShot.action();
+	eff.MoveTo(x, y);
+	eff.action();
 
 	if(!fadeout)
 	{
@@ -936,9 +935,9 @@ void Enemy::action()
 
 		if(ID && !Scripter::stopEdefScript)
 		{
-			en[playerindex].pushIndex();
+			DWORD _index = en[playerindex].getIndex();
 			scr.Execute(SCR_EDEF, ID, timer);
-			en[playerindex].popIndex();
+			en[playerindex].toIndex(_index);
 		}
 		matchAction();
 		updateMove();
@@ -1004,7 +1003,8 @@ void Enemy::action()
 			giveItem(playerindex);
 			effShot.Stop();
 			// TODO:
-			effCollapse.valueSet(EFF_EN_COLLAPSE, M_RENDER_LEFT, *this);
+			effCollapse.MoveTo(x, y, 0, true);
+			effCollapse.Fire();
 
 			BYTE blastmaxtime;
 			float blastr;
@@ -1024,6 +1024,7 @@ void Enemy::action()
 		}
 		else if(timer == 32)
 		{
+			eff.Stop();
 			effCollapse.Stop();
 			exist = false;
 		}
@@ -1065,11 +1066,11 @@ void Enemy::SetActiveInfo(BYTE _activemaxtime, WORD _eID, BYTE _type, int _angle
 	}
 	activemaxtime = _activemaxtime;
 	ID = _eID;
-	type = _type;
 	angle = _angle;
 	speed = _speed;
 	accel = 0;
 	damagerate = _damagerate;
+	ChangeType(_type);
 	setAction();
 	updateAction();
 	activetimer = 1;

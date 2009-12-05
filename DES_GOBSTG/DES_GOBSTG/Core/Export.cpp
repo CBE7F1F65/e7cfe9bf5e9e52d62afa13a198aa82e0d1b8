@@ -205,6 +205,19 @@ BYTE Export::GetPlayerIndexByRenderFlag(BYTE renderflag)
 	return 0;
 }
 
+BYTE Export::GetRenderFlagByPlayerIndex(BYTE playerindex)
+{
+	if (playerindex == 0)
+	{
+		return M_RENDER_LEFT;
+	}
+	else if (playerindex == 1)
+	{
+		return M_RENDER_RIGHT;
+	}
+	return M_RENDER_NULL;
+}
+
 bool Export::GetResourceFile(bool readbin)
 {
 	strcpy(resourcefilename, hge->Ini_GetString(RESCONFIGS_RESOURCE, RESCONFIGN_RESOURCEFILE, RESCONFIGDEFAULT_RESOURCEFILE));

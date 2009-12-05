@@ -95,6 +95,7 @@ public:
 	void actionInStop();
 	void matchAction();
 	void updateAction();
+	void ChangeType(BYTE type);
 
 	void GetBlastInfo(BYTE * maxtime=NULL, float * r=NULL, float * power=NULL);
 
@@ -113,6 +114,7 @@ public:
 public:
 	Effectsys	effCollapse;
 	Effectsys	effShot;
+	Effectsys	eff;
 
 	float	para[ENEMY_PARAMAX];
 	Target	aim;

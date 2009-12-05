@@ -150,6 +150,9 @@ struct enemyData
 	char name[M_STRMAX];
 	char ename[M_STRMAX];
 	int siid;
+	int effid;
+	int shotEffid;
+	int collapseEffid;
 	float collision_w;
 	float collision_h;
 	BYTE faceIndex;

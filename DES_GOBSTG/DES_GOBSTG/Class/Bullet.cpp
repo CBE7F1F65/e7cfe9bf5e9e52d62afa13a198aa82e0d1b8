@@ -104,7 +104,7 @@ void Bullet::BuildLine(BYTE playerindex, int num, int baseangle, float space, in
 
 int Bullet::Build(BYTE playerindex, float x, float y, bool absolute, int angle, float speed, BYTE type, BYTE color, int fadeinTime, float avoid, BYTE tarID)
 {
-	if (bu[playerindex].size == BULLETMAX)
+	if (bu[playerindex].getSize() == BULLETMAX)
 	{
 		return -1;
 	}
@@ -148,11 +148,11 @@ void Bullet::Action(bool notinstop)
 {
 	for (int j=0; j<M_PL_MATCHMAXPLAYER; j++)
 	{
-		if (bu[j].size)
+		if (bu[j].getSize())
 		{
 			ZeroMemory(Bullet::renderDepth[j], sizeof(RenderDepth) * BULLETTYPEMAX);
 			DWORD i = 0;
-			DWORD size = bu[j].size;
+			DWORD size = bu[j].getSize();
 			for (bu[j].toBegin(); i<size; bu[j].toNext(), i++)
 			{
 				if (!bu[j].isValid())
@@ -182,13 +182,13 @@ void Bullet::Action(bool notinstop)
 void Bullet::RenderAll(BYTE renderflag)
 {
 	BYTE playerindex = Export::GetPlayerIndexByRenderFlag(renderflag);
-	if (bu[playerindex].size)
+	if (bu[playerindex].getSize())
 	{
 		for (int i=0; i<BULLETTYPEMAX; i++)
 		{
 			if (Bullet::renderDepth[playerindex][i].haveType)
 			{
-				for (bu[playerindex].toIndex(Bullet::renderDepth[playerindex][i].startIndex); bu[playerindex].index != Bullet::renderDepth[playerindex][i].endIndex; bu[playerindex].toNext())
+				for (bu[playerindex].toIndex(Bullet::renderDepth[playerindex][i].startIndex); bu[playerindex].getIndex() != Bullet::renderDepth[playerindex][i].endIndex; bu[playerindex].toNext())
 				{
 					if (bu[playerindex].isValid() && (*bu[playerindex]).getRenderDepth() == i)
 					{

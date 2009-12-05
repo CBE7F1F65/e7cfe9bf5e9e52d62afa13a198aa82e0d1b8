@@ -166,7 +166,7 @@ int Export_Lua_Game::LuaFn_Game_AddSendBulletInfo(LuaState * ls)
 	BYTE _sendsetID = args[1].GetInteger();
 	BYTE _sendtime = args[2].GetInteger();
 	BYTE _playerindex = args[3].GetInteger();
-	int _index = Bullet::bu[_playerindex].index;
+	int _index = Bullet::bu[_playerindex].getIndex();
 	if (args.Count() > 3)
 	{
 		_index = args[4].GetInteger();
@@ -184,7 +184,7 @@ int Export_Lua_Game::LuaFn_Game_AddSendGhostInfo(LuaState * ls)
 	BYTE _playerindex = args[3].GetInteger();
 	float _accel = args[4].GetFloat();
 	float _acceladd = args[5].GetFloat();
-	int _index = Enemy::en[_playerindex].index;
+	int _index = Enemy::en[_playerindex].getIndex();
 	if (args.Count() > 5)
 	{
 		_index = args[6].GetInteger();

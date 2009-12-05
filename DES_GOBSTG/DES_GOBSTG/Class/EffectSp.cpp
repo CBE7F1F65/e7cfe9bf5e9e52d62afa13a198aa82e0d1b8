@@ -63,10 +63,10 @@ void EffectSp::Render()
 
 void EffectSp::Action()
 {
-	if (effsp.size)
+	if (effsp.getSize())
 	{
 		DWORD i = 0;
-		DWORD size = effsp.size;
+		DWORD size = effsp.getSize();
 		for (effsp.toBegin(); i<size; effsp.toNext(), i++)
 		{
 			if (effsp.isValid())
@@ -86,10 +86,10 @@ void EffectSp::Action()
 
 void EffectSp::RenderAll()
 {
-	if (effsp.size)
+	if (effsp.getSize())
 	{
 		DWORD i = 0;
-		DWORD size = effsp.size;
+		DWORD size = effsp.getSize();
 		for (effsp.toBegin(); i<size; effsp.toNext(), i++)
 		{
 			if (effsp.isValid())
@@ -110,11 +110,11 @@ void EffectSp::EffectSpOff(int _setID, int _ID)
 	{
 		return;
 	}
-	DWORD nowindex = effsp.index;
-	if (effsp.size)
+	DWORD nowindex = effsp.getIndex();
+	if (effsp.getSize())
 	{
 		DWORD i = 0;
-		DWORD size = effsp.size;
+		DWORD size = effsp.getSize();
 		for (effsp.toBegin(); i<size; effsp.toNext(), i++)
 		{
 			if (effsp.isValid())
@@ -132,7 +132,7 @@ void EffectSp::EffectSpOff(int _setID, int _ID)
 			}
 		}
 	}
-	effsp.index = nowindex;
+	effsp.toIndex(nowindex);
 }
 
 void EffectSp::actionSet(int _angle, float _speed, int _headangleadd/* =0 */)
@@ -159,7 +159,7 @@ void EffectSp::chaseSet(BYTE _chaseflag, float _aimx, float _aimy, int _chasetim
 
 int EffectSp::Build(int setID, WORD ID, int siid, float x, float y, int headangle/* =0 */, float hscale/* =1.0f */, float vscale/* =0.0f */)
 {
-	if (effsp.size == EFFSPMAX)
+	if (effsp.getSize() == EFFSPMAX)
 	{
 		return -1;
 	}

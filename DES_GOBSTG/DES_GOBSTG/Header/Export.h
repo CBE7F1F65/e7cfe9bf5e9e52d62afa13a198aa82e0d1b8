@@ -85,6 +85,7 @@ public:
 	static void clientAdjustWindow();
 	static void Release();
 	static BYTE GetPlayerIndexByRenderFlag(BYTE renderflag);
+	static BYTE GetRenderFlagByPlayerIndex(BYTE playerindex);
 	static bool SetIni(bool extuse = false);
 	static bool GetResourceFile(bool readbin = false);
 	static int GetPassword();

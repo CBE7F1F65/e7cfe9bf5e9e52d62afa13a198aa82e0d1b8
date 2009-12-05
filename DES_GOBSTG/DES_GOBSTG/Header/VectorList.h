@@ -15,6 +15,7 @@ public:
 	{
 		item = NULL;
 		valid = NULL;
+		init(0);
 	}
 	VectorList(DWORD count)
 	{
@@ -52,17 +53,17 @@ public:
 		size = 0;
 		zero = 0;
 		index = 0;
+		pushedindex = 0;
 	}
 	void init(DWORD count)
 	{
 		clear();
-		if (count < 1)
-		{
-			count = 1;
-		}
 		capacity = count;
-		item = new _Ty[capacity];
-		valid = new bool[capacity];
+		if (capacity > 0)
+		{
+			item = new _Ty[capacity];
+			valid = new bool[capacity];
+		}
 		clear_item();
 	}
 
@@ -89,7 +90,7 @@ public:
 
 	_Ty * push_back()
 	{
-		DWORD _index = index;
+		pushIndex();
 		toEnd();
 		if (size)
 		{
@@ -106,9 +107,8 @@ public:
 		}
 		toEnd();
 		pop();
-		index = _index;
-		valid[iend] = true;
-		return &item[iend];
+		valid[index] = true;
+		return &item[index];
 	}
 	_Ty * push_back(const _Ty & _item)
 	{
@@ -117,7 +117,7 @@ public:
 	}
 	_Ty * push_front()
 	{
-		DWORD _index = index;
+		pushIndex();
 		toBegin();
 		if (size)
 		{
@@ -134,9 +134,8 @@ public:
 		}
 		toBegin();
 		pop();
-		index = _index;
-		valid[ibegin] = true;
-		return &item[ibegin];
+		valid[index] = true;
+		return &item[index];
 	}
 	_Ty * push_front(const _Ty & _item)
 	{
@@ -365,10 +364,20 @@ public:
 	{
 		return iend;
 	}
+	DWORD getSize()
+	{
+		return size;
+	}
+	DWORD getCapacity()
+	{
+		return capacity;
+	}
+private:
 	void pushIndex()
 	{
 		pushedindex = index;
 	}
+public:
 	void popIndex()
 	{
 		index = pushedindex;

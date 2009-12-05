@@ -42,10 +42,10 @@ void Beam::Action()
 {
 	for (int j=0; j<M_PL_MATCHMAXPLAYER; j++)
 	{
-		if (be[j].size)
+		if (be[j].getSize())
 		{
 			DWORD i = 0;
-			DWORD size = be[j].size;
+			DWORD size = be[j].getSize();
 			for (be[j].toBegin(); i<size; be[j].toNext(), i++)
 			{
 				if (!be[j].isValid())
@@ -68,10 +68,10 @@ void Beam::Action()
 void Beam::RenderAll(BYTE renderflag)
 {
 	BYTE playerindex = Export::GetPlayerIndexByRenderFlag(renderflag);
-	if (be[playerindex].size)
+	if (be[playerindex].getSize())
 	{
 		DWORD i = 0;
-		DWORD size = be[playerindex].size;
+		DWORD size = be[playerindex].getSize();
 		for (be[playerindex].toBegin(); i<size; be[playerindex].toNext(), i++)
 		{
 			if (be[playerindex].isValid())
@@ -84,7 +84,7 @@ void Beam::RenderAll(BYTE renderflag)
 
 int Beam::Build(BYTE playerindex, float x, float y, int angle, float speed, BYTE type, BYTE color, WORD length, BYTE flag, int fadeouttime, BYTE tarID)
 {
-	if (be[playerindex].size == BEAMMAX)
+	if (be[playerindex].getSize() == BEAMMAX)
 	{
 		return NULL;
 	}
