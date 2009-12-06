@@ -163,7 +163,7 @@ int Item::Build(BYTE playerindex, WORD type, float _x, float _y, bool _bDrained 
 {
 	if (mi[playerindex].getSize() == ITEMMAX)
 	{
-		return;
+		return -1;
 	}
 	mi[playerindex].push_back()->valueSet(type, _x, _y, _bDrained, _angle, _speed);
 	return mi[playerindex].getEndIndex();
@@ -196,7 +196,7 @@ void Item::action(BYTE playerindex)
 	if(!bDrained && !(Player::p[playerindex].flag & PLAYER_COLLAPSE || Player::p[playerindex].flag & PLAYER_SHOT))
 	{
 		float rdrain = (Player::p[playerindex].bSlow) ? 64 : 48;
-		if (checkCollisionSquare(Player::p[playerindex], rdrain))
+		if (checkCollisionSquare(Player::p[playerindex].x, Player::p[playerindex].y, rdrain))
 		{
 			bDrained = true;
 			bFast = false;
@@ -247,7 +247,7 @@ void Item::action(BYTE playerindex)
 			y += speed;
 	}
 
-	if (checkCollisionSquare(Player::p[playerindex], _ITEM_GETR)
+	if (checkCollisionSquare(Player::p[playerindex].x, Player::p[playerindex].y, _ITEM_GETR)
 		&& !(Player::p[playerindex].flag & PLAYER_COLLAPSE)
 		&& !((ID == ITEM_SMALLFAITH || ID == ITEM_FAITH) && timer <= _ITEM_DRAINDELAY))
 	{

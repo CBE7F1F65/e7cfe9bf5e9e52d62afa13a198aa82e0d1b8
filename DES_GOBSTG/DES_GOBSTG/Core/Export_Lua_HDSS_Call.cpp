@@ -98,6 +98,8 @@ int Export_Lua_HDSS::LuaFn_HDSS_Call(LuaState * ls)
 				return _HDSSCallGet::Call_ENBUILD(ls);
 			case SCR_ENACTIONSET:
 				return _HDSSCallGet::Call_ENACTIONSET(ls);
+			case SCR_ENAZBUILD:
+				return _HDSSCallGet::Call_ENAZBUILD(ls);
 			}
 			break;
 			/************************************************************************/

@@ -149,7 +149,7 @@ void PlayerGhost::AntiShooter(float aimx, float aimy)
 		}
 	}
 	if((aimx != x || aimy != y) || timer < _PLAYERGHOST_ADJUSTTIME)
-		shootangle = aMainAngle(Player::p[playerindex], 18000);
+		shootangle = aMainAngle(Player::p[playerindex].x, Player::p[playerindex].y, 18000);
 }
 
 void PlayerGhost::action()
@@ -228,7 +228,7 @@ void PlayerGhost::action()
 	{
 		if (flag & PGFLAG_STAY)
 		{
-			shootangle = aMainAngle(Player::p[playerindex], 18000);
+			shootangle = aMainAngle(Player::p[playerindex].x, Player::p[playerindex].y, 18000);
 		}
 		else
 		{

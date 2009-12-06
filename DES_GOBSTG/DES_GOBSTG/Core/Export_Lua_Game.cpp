@@ -206,9 +206,7 @@ int Export_Lua_Game::LuaFn_Game_GetPlayerDrainInfo(LuaState * ls)
 	if (_eventID == SCR_EVENT_PLAYERDRAINCHECK)
 	{
 		ls->PushNumber((*Enemy::en[_playerindex]).type);
-		ls->PushNumber((*Enemy::en[_playerindex]).x);
-		ls->PushNumber((*Enemy::en[_playerindex]).y);
-		return 7;
+		return 5;
 	}
 	return 4;
 }

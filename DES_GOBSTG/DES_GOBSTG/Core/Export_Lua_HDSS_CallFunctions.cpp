@@ -98,7 +98,7 @@ int _HDSSCallGet::Call_SETCHARA(LuaState * ls)
 
 	if (true)
 	{
-		int _index = _INEXT_HDSS_LUAPARA;
+		BYTE _playerindex = _INEXT_HDSS_LUAPARA;
 		WORD _id = _INEXT_HDSS_LUAPARA;
 		WORD _id_sub_1 = 0xffff;
 		WORD _id_sub_2 = 0xffff;
@@ -112,7 +112,7 @@ int _HDSSCallGet::Call_SETCHARA(LuaState * ls)
 				_id_sub_2 = _IOBJ_HDSS_LUA;
 			}
 		}
-		Player::p[_index].SetChara(_id, _id_sub_1, _id_sub_2);
+		Player::p[_playerindex].SetChara(_id, _id_sub_1, _id_sub_2);
 	}
 	return 0;
 }
@@ -434,6 +434,33 @@ int _HDSSCallGet::Call_ENACTIONSET(LuaState * ls)
 	return 0;
 }
 
+int _HDSSCallGet::Call_ENAZBUILD(LuaState * ls)
+{
+	_ENTERCALL_HDSS_LUA;
+	if (true)
+	{
+		BYTE _playerindex = _INEXT_HDSS_LUAPARA;
+		BYTE _flag = _INEXT_HDSS_LUAPARA;
+		float _x = _FNEXT_HDSS_LUAPARA;
+		float _y = _FNEXT_HDSS_LUAPARA;
+		float _rPrep = _FNEXT_HDSS_LUAPARA;
+		float _rParal = 0;
+		int _angle = 9000;
+		_JNEXT_HDSS_LUAPARA;
+		if (bhavenext)
+		{
+			_rParal = _FOBJ_HDSS_LUA;
+			_JNEXT_HDSS_LUAPARA;
+			if (bhavenext)
+			{
+				_angle = _IOBJ_HDSS_LUA;
+			}
+		}
+		Enemy::BuildENAZ(_playerindex, _flag, _x, _y, _rPrep, _rParal, _angle);
+	}
+	return 0;
+}
+
 int _HDSSCallGet::Call_RAMA(LuaState * ls)
 {
 	_ENTERCALL_HDSS_LUA;
@@ -455,14 +482,13 @@ int _HDSSCallGet::Call_RAMA(LuaState * ls)
 		}
 		float _aimx = _FNEXT_HDSS_LUAPARA;
 		float _aimy = _FNEXT_HDSS_LUAPARA;
-		BObject _tobj(_x, _y);
 		if (_brma)
 		{
-			iret = _tobj.rMainAngle(_aimx, _aimy, _r);
+			iret = BObject::RMainAngle(_x, _y, _aimx, _aimy, _r);
 		}
 		else
 		{
-			iret = _tobj.aMainAngle(_aimx, _aimy, _angle);
+			iret = BObject::AMainAngle(_x, _y, _aimx, _aimy, _angle);
 		}
 		_PI_HDSS_LUA(iret);
 		return 1;
@@ -486,15 +512,14 @@ int _HDSSCallGet::Call_COLLISION_CIRCLE(LuaState * ls)
 		{
 			_bbig = _BOBJ_HDSS_LUA;
 		}
-		BObject _bobj(_x, _y);
 		bool bret;
 		if (_bbig)
 		{
-			bret = _bobj.checkCollisionBigCircle(_aimx, _aimy, _r);
+			bret = BObject::CheckCollisionBigCircle(_x, _y, _aimx, _aimy, _r);
 		}
 		else
 		{
-			bret = _bobj.checkCollisionCircle(_aimx, _aimy, _r);
+			bret = BObject::CheckCollisionCircle(_x, _y, _aimx, _aimy, _r);
 		}
 		ls->PushBoolean(bret);
 		return 1;
@@ -507,9 +532,9 @@ int _HDSSCallGet::Call_SETPINITLIFE(LuaState * ls)
 	_ENTERCALL_HDSS_LUA;
 	if (true)
 	{
-		int _index = _INEXT_HDSS_LUAPARA;
+		BYTE _playerindex = _INEXT_HDSS_LUAPARA;
 		BYTE _initlife = _INEXT_HDSS_LUAPARA;
-		Player::p[_index].SetInitLife(_initlife);
+		Player::p[_playerindex].SetInitLife(_initlife);
 	}
 	return 0;
 }

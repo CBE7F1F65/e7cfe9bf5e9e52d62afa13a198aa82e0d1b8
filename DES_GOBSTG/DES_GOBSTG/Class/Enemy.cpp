@@ -15,11 +15,9 @@
 #define _DAMAGEZONEMAX	0x10
 
 VectorList<Enemy> Enemy::en[M_PL_MATCHMAXPLAYER];
+list<EnemyActivationZone> Enemy::enaz[M_PL_MATCHMAXPLAYER];
 
 HTEXTURE * Enemy::tex = NULL;
-BYTE Enemy::actionflag[ENEMY_BOSSMAX];
-BYTE Enemy::spelluptimer[ENEMY_BOSSMAX];
-BYTE Enemy::storetimer[ENEMY_BOSSMAX];
 
 Enemy::Enemy()
 {
@@ -46,6 +44,11 @@ void Enemy::Init(HTEXTURE * _tex)
 
 void Enemy::Release()
 {
+	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
+	{
+		en[i].clear();
+		enaz[i].clear();
+	}
 }
 
 int Enemy::Build(WORD eID, BYTE playerindex, float x, float y, int angle, float speed, BYTE type, float life, int infitimer)
@@ -72,8 +75,9 @@ int Enemy::Build(WORD eID, BYTE playerindex, float x, float y, int angle, float 
 	if (_pen)
 	{
 		_pen->valueSet(playerindex, eID, x, y, angle, speed, type, life, infitimer);
+		return en[playerindex].getIndex();
 	}
-	return en[playerindex].getIndex();
+	return -1;
 }
 
 void Enemy::Clear()
@@ -92,6 +96,7 @@ void Enemy::ClearAll()
 			en[j][i].Clear();
 		}
 		en[j].clear_item();
+		enaz[j].clear();
 	}
 }
 
@@ -122,7 +127,21 @@ void Enemy::Action(bool notinstop)
 				}
 			}
 		}
+		enaz[j].clear();
 	}
+}
+
+void Enemy::BuildENAZ(BYTE playerindex, BYTE flag, float x, float y, float rPrep, float rParal, int angle)
+{
+	EnemyActivationZone _enaz;
+	enaz[playerindex].push_back(_enaz);
+	EnemyActivationZone * _penaz = &(*(enaz[playerindex].rbegin()));
+	_penaz->flag = flag;
+	_penaz->x = x;
+	_penaz->y = y;
+	_penaz->rPrep = rPrep;
+	_penaz->rParal = rParal;
+	_penaz->angle = angle;
 }
 
 void Enemy::SendGhost(BYTE playerindex, float x, float y, BYTE setID, BYTE * sendtime, float * acceladd)
@@ -236,6 +255,9 @@ void Enemy::valueSet(BYTE _playerindex, WORD _eID, float _x, float _y, int _angl
 	activetimer = 0;
 	activemaxtime = 0;
 
+	actionflag = ENEMYACTION_NONE;
+	storetimer = 0;
+
 	ChangeType(_type);
 }
 
@@ -301,7 +323,7 @@ void Enemy::matchAction()
 		//¿¿½üÖ÷½Ç
 		if(timer < para[0])
 		{
-			angle = aMainAngle(Player::p[playerindex]);
+			angle = aMainAngle(Player::p[playerindex].x, Player::p[playerindex].y);
 			speed *= para[1]/1000.0f;
 		}
 		else
@@ -388,7 +410,7 @@ void Enemy::matchAction()
 		else if(timer < para[2])
 		{
 			speed += 0.06f;
-			angle = aMainAngle(Player::p[playerindex]);
+			angle = aMainAngle(Player::p[playerindex].x, Player::p[playerindex].y);
 		}
 		break;
 
@@ -649,11 +671,11 @@ void Enemy::updateFrameAsMove()
 void Enemy::updateAction()
 {
 	enemyData * pdata = &(res.enemydata[type]);
-	if(!actionflag[ID])
+	if(!actionflag)
 	{
 		updateFrameAsMove();
 	}
-	if(actionflag[ID] & ENEMYACTION_ATTACK)
+	if(actionflag & ENEMYACTION_ATTACK)
 	{
 		if (!pdata->attackFrame)
 		{
@@ -663,9 +685,9 @@ void Enemy::updateAction()
 		{
 			updateFrame(ENEMY_FRAME_ATTACKPRE);
 		}
-		actionflag[ID] &= ~ENEMYACTION_ATTACK;
+		actionflag &= ~ENEMYACTION_ATTACK;
 	}
-	if(actionflag[ID] & ENEMYACTION_STORE)
+	if(actionflag & ENEMYACTION_STORE)
 	{
 		if (!pdata->storeFrame)
 		{
@@ -675,15 +697,15 @@ void Enemy::updateAction()
 		{
 			updateFrame(ENEMY_FRAME_STOREPRE);
 		}
-		storetimer[ID]++;
+		storetimer++;
 
-		if(storetimer[ID] == 1)
+		if(storetimer == 1)
 		{
 		}
-		else if(storetimer[ID] == 120)
+		else if(storetimer == 120)
 		{
-			storetimer[ID] = 0;
-			actionflag[ID] &= ~ENEMYACTION_STORE;
+			storetimer = 0;
+			actionflag &= ~ENEMYACTION_STORE;
 		}
 	}
 }
@@ -813,6 +835,7 @@ void Enemy::actionInStop()
 	if (!fadeout)
 	{
 		DoShot();
+		DoActivate();
 	}
 }
 
@@ -894,6 +917,72 @@ void Enemy::DoShot()
 
 }
 
+bool Enemy::DoActivate()
+{
+	if (!enaz[playerindex].size())
+	{
+		return false;
+	}
+	if (sendsetID && !activetimer && Player::p[playerindex].bDrain)
+	{
+		bool haveor = false;
+		bool orcheck = false;
+		for (list<EnemyActivationZone>::iterator it=enaz[playerindex].begin(); it!=enaz[playerindex].end(); it++)
+		{
+			bool checkret = true;
+			switch ((it->flag) & ENAZTYPEMASK)
+			{
+			case ENAZTYPE_CIRCLE:
+				checkret = BObject::CheckCollisionBigCircle(x, y, it->x, it->y, it->rPrep);
+				break;
+			case ENAZTYPE_ELLIPSE:
+				checkret = BObject::CheckCollisionEllipse(x, y, it->x, it->y, it->rPrep, it->rParal, it->angle);
+				break;
+			case ENAZTYPE_RECT:
+				checkret = BObject::CheckCollisionRect(x, y, it->x, it->y, it->rPrep, it->rParal, it->angle);
+				break;
+			case ENAZTYPE_RIGHTANGLED:
+				checkret = BObject::CheckCollisionRightAngled(x, y, it->x, it->y, it->rPrep, it->rParal, it->angle);
+				break;
+			}
+			switch ((it->flag) & ENAZOPMASK)
+			{
+			case ENAZOP_AND:
+				if (!checkret || haveor && !orcheck)
+				{
+					return false;
+				}
+				haveor = false;
+				break;
+			case ENAZOP_OR:
+				if (!orcheck && checkret)
+				{
+					orcheck = true;
+				}
+				haveor = true;
+				break;
+			case ENAZOP_NOTAND:
+				if (checkret || haveor && !orcheck)
+				{
+					return false;
+				}
+				haveor = false;
+				break;
+			case ENAZOP_NOTOR:
+				if (!orcheck && !checkret)
+				{
+					orcheck = true;
+				}
+				haveor = true;
+				break;
+			}
+		}
+		scr.Execute(SCR_EVENT, SCR_EVENT_PLAYERDRAINCHECK, playerindex);
+		return true;
+	}
+	return false;
+}
+
 void Enemy::AddSendInfo(BYTE _sendsetID, BYTE _sendtime, float _accel, float _acceladd)
 {
 	sendsetID = _sendsetID;
@@ -955,7 +1044,7 @@ void Enemy::action()
 		GetCollisionRect(&tw, &th);
 		if (!Player::p[playerindex].bInfi)
 		{
-			if (checkCollisionSquare(Player::p[playerindex], tw, th))
+			if (checkCollisionSquare(Player::p[playerindex].x, Player::p[playerindex].y, tw, th))
 			{
 				Player::p[playerindex].DoShot();
 			}
@@ -971,10 +1060,7 @@ void Enemy::action()
 		}
 		*/
 
-		if (sendsetID && !activetimer && Player::p[playerindex].bDrain)
-		{
-			scr.Execute(SCR_EVENT, SCR_EVENT_PLAYERDRAINCHECK, playerindex);
-		}
+		DoActivate();
 
 		if (activetimer)
 		{
@@ -982,8 +1068,22 @@ void Enemy::action()
 			if (activetimer >= activemaxtime)
 			{
 				scr.Execute(SCR_EVENT, SCR_EVENT_ACTIVEGHOSTOVER, playerindex);
-				fadeout = true;
+				exist = false;
 				timer = 0;
+			}
+			else if ((int)activetimer * 5 >= (int)activemaxtime * 4)
+			{
+				if (activetimer % 8 < 4)
+				{
+					alpha = 0x7f;
+					diffuse = 0xb40000;
+				}
+				else
+				{
+					alpha = 0xff;
+					diffuse = 0xffffff;
+				}
+				eff.SetColorMask((alpha<<24)|diffuse);
 			}
 		}
 
@@ -1032,7 +1132,7 @@ void Enemy::action()
 
 		if(type < ENEMY_BOSSTYPEBEGIN)
 		{
-			hscale	=	timer * 0.05f + 1.0f;
+//			hscale	=	timer * 0.05f + 1.0f;
 			vscale	=	(32 - timer) * 0.03225f;
 			alpha	=	(BYTE)((32 - timer) * 8);
 		}

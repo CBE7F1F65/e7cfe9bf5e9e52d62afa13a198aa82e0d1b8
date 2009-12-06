@@ -202,7 +202,7 @@ void hgeEffectSystem::FreeList()
 	eiList = NULL;
 }
 
-void hgeEffectSystem::Render(hge3DPoint *ptfar)
+void hgeEffectSystem::Render(hge3DPoint *ptfar, DWORD colormask)
 {
 	CEmitterList * emitterItem = eiList;
 
@@ -214,7 +214,7 @@ void hgeEffectSystem::Render(hge3DPoint *ptfar)
 			hgeSprite * _sprite = emitterItem->emitter.sprite;
 			if (_sprite)
 			{
-				_sprite->SetColor(*(DWORD *)&(obj->color));
+				_sprite->SetColor((*(DWORD *)&(obj->color))&colormask);
 				_sprite->SetZ(obj->z, obj->z + obj->zStretch, obj->z + obj->zStretch, obj->z, ptfar);
 				_sprite->RenderEx(obj->x, obj->y, obj->fHeadDirection, obj->fScaleX, obj->fScaleY);
 			}

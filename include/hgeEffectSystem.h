@@ -193,7 +193,7 @@ public:
 	bool Save(const char * filename, int _texnum = -1);
 
 	void FreeList();
-	void Render(hge3DPoint *ptfar=NULL);
+	void Render(hge3DPoint *ptfar=NULL, DWORD colormask=0xffffffff);
 	void MoveTo(float x, float y, float z = 0, bool bForce = false);
 	void Fire();
 	void Stop(bool bKill = false);

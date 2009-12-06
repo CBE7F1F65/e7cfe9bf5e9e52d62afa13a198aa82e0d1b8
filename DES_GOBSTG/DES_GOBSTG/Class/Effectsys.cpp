@@ -127,6 +127,7 @@ void Effectsys::valueSet(WORD _ID, BYTE _renderflag, int _lifetime, float _x, fl
 	hscale		= 1.0f;
 	vscale		= 1.0f;
 	timer		= 0;
+	SetColorMask(0xffffffff);
 	SetRenderFlag(_renderflag);
 
 	chasetimer = 0;
@@ -159,9 +160,15 @@ void Effectsys::Fire()
 	eff.Fire();
 }
 
+void Effectsys::SetColorMask(DWORD color)
+{
+	alpha = GETA(color);
+	diffuse = color & 0xffffff;
+}
+
 void Effectsys::Render()
 {
-	eff.Render(Export::GetFarPoint(renderflag));
+	eff.Render(Export::GetFarPoint(renderflag), (alpha<<24)|diffuse);
 }
 
 void Effectsys::MoveTo(float _x, float _y, float _z, bool bForce)
@@ -192,14 +199,7 @@ void Effectsys::action()
 	if (chasetimer)
 	{
 		chasetimer--;
-		if (tarAim == 0xff)
-		{
-			chaseAim(Player::p[0].x, Player::p[0].y, chasetimer);
-		}
-		else
-		{
-			chaseAim(Target::tar[tarAim].x, Target::tar[tarAim].y, chasetimer);
-		}
+		chaseAim(Target::tar[tarAim].x, Target::tar[tarAim].y, chasetimer);
 	}
 
 	if (speed)

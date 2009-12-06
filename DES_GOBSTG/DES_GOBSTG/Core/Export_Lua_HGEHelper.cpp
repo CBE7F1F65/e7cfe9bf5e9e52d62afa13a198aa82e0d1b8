@@ -741,7 +741,20 @@ int Export_Lua_HGEHelp::LuaFn_hgeES_Render(LuaState * ls)
 	LuaStack args(ls);
 	hgeEffectSystem * _es = _LuaHelper_hgeES_Get(&args);
 
-	_es->Render(Export::GetFarPoint(args[2].GetInteger()));
+	hge3DPoint * ptfar = NULL;
+	DWORD colormask = 0xffffffff;
+	int argscount = args.Count();
+	if (argscount > 1)
+	{
+		ptfar = Export::GetFarPoint(args[2].GetInteger());
+		if (argscount > 2)
+		{
+			LuaObject _obj = args[3];
+			colormask = _LuaHelper_GetDWORD(&_obj);
+		}
+	}
+
+	_es->Render(ptfar, colormask);
 
 	return 0;
 }

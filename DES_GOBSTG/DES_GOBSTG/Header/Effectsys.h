@@ -33,6 +33,8 @@ public:
 	void valueSet(WORD ID, BYTE renderflag, BObject & owner);
 	void SetRenderFlag(BYTE renderflag);
 
+	void SetColorMask(DWORD color);
+
 	void MoveTo(float x, float y, float z = 0, bool bForce = false);
 	void Fire();
 	void Stop(bool bKill = false);

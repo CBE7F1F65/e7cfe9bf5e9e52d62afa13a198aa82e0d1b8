@@ -34,6 +34,7 @@ public:
 
 	static int Call_ENBUILD(LuaState * ls);
 	static int Call_ENACTIONSET(LuaState * ls);
+	static int Call_ENAZBUILD(LuaState * ls);
 
 	static int Call_RAMA(LuaState * ls);
 
@@ -55,6 +56,9 @@ public:
 	static int Get_Du(LuaState * ls);
 	static int Get_RANK(LuaState * ls);
 	static int Get_CHARA(LuaState * ls);
+
+	static int Get_ENX(LuaState * ls);
+	static int Get_ENY(LuaState * ls);
 
 	static int Get_PX(LuaState * ls);
 	static int Get_PY(LuaState * ls);

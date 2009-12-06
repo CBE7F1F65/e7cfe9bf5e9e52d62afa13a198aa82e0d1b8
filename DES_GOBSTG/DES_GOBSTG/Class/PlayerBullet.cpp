@@ -146,7 +146,7 @@ int PlayerBullet::Build(BYTE playerindex, int shootdataID)
 {
 	if (pb[playerindex].getSize() == PLAYERBULLETMAX)
 	{
-		return;
+		return -1;
 	}
 	PlayerBullet _pb;
 	playershootData * item = &(res.playershootdata[shootdataID]);
@@ -272,7 +272,7 @@ void PlayerBullet::Lock()
 		return;
 	}
 
-	int aimangle = aMainAngle(*_tpbobj);
+	int aimangle = aMainAngle(_tpbobj->x, _tpbobj->y);
 	bool clockwise = false;
 
 	if(locktimer >= _PBLOCK_LOCKTIMERMAX)
@@ -395,7 +395,7 @@ void PlayerBullet::DelayShoot()
 		}
 		if(timer < PB_FADEOUTTIME)
 		{
-			angle = aMainAngle(*_tpbobj);
+			angle = aMainAngle(_tpbobj->x, _tpbobj->y);
 			if (flag & PBFLAG_TURNWHILEDELAY)
 			{
 				if(arrange & 1)
@@ -407,7 +407,7 @@ void PlayerBullet::DelayShoot()
 		}
 		else if(timer == PB_FADEOUTTIME)
 		{
-			angle = aMainAngle(*_tpbobj);
+			angle = aMainAngle(_tpbobj->x, _tpbobj->y);
 			headangle = 0;
 			speed = oldspeed;
 		}

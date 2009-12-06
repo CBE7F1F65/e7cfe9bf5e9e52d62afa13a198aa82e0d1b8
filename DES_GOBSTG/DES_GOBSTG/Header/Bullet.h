@@ -58,13 +58,13 @@ public:
 	void Render();
 
 //	virtual void action();
-	void action(BYTE playerindex);
-	void actionInStop(BYTE playerindex);
+	void action();
+	void actionInStop();
 
-	void DoIze(BYTE playerindex);
-	void DoCollision(BYTE playerindex);
-	void DoGraze(BYTE playerindex);
-	void DoUpdateRenderDepth(BYTE playerindex);
+	void DoIze();
+	void DoCollision();
+	void DoGraze();
+	void DoUpdateRenderDepth();
 
 	bool HaveGray();
 
@@ -72,7 +72,7 @@ public:
 
 	bool isInRect(float r,float aimx,float aimy);
 
-	bool valueSet(WORD ID, float x, float y, bool absolute, int angle, float speed, BYTE type, BYTE color, int fadeinTime, float avoid = 0, BYTE tarID = 0xff);
+	bool valueSet(BYTE playerindex, WORD ID, float x, float y, bool absolute, int angle, float speed, BYTE type, BYTE color, int fadeinTime, float avoid = 0, BYTE tarID = 0xff);
 
 	static int Build(BYTE playerindex, float x, float y, bool absolute, int angle, float speed, BYTE type, BYTE color, int fadeinTime=BULLET_FADEINTIME, float avoid=0, BYTE tarID=0xff);
 	static void BuildCircle(BYTE playerindex, int num, int baseangle, float baser, float x, float y, float speed, BYTE type, BYTE color, int fadeinTime, float avoid);
@@ -87,7 +87,7 @@ public:
 	bool passedEvent(BYTE eventID);
 	void passEvent(BYTE eventID);
 
-	void ChangeAction(BYTE playerindex);
+	void ChangeAction();
 
 public:
 	int		actionList[BULLETACTIONMAX];
@@ -111,6 +111,7 @@ public:
 	BYTE	color;
 	BYTE	oldcolor;
 	BYTE	toafter;
+	BYTE	playerindex;
 	BYTE	typechangetimer;
 	BYTE	eventID[BULLET_EVENTMAX];
 

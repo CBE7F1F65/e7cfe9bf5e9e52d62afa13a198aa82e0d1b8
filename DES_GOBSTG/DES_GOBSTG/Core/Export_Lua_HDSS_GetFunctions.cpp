@@ -53,11 +53,11 @@ int _HDSSCallGet::Get_CHARA(LuaState * ls)
 	_ENTERGET_HDSS_LUA;
 	if (argscount > 1)
 	{
-		int _index = _INEXT_HDSS_LUAFUNC;
-		_PI_HDSS_LUA(Player::p[_index].nowID);
-		_PI_HDSS_LUA(Player::p[_index].ID);
-		_PI_HDSS_LUA(Player::p[_index].ID_sub_1);
-		_PI_HDSS_LUA(Player::p[_index].ID_sub_2);
+		BYTE _playerindex = _INEXT_HDSS_LUAFUNC;
+		_PI_HDSS_LUA(Player::p[_playerindex].nowID);
+		_PI_HDSS_LUA(Player::p[_playerindex].ID);
+		_PI_HDSS_LUA(Player::p[_playerindex].ID_sub_1);
+		_PI_HDSS_LUA(Player::p[_playerindex].ID_sub_2);
 		return 4;
 	}
 	return 0;
@@ -91,14 +91,51 @@ int _HDSSCallGet::Get_SELCOMPLETE(LuaState * ls)
 	return 0;
 }
 
+int _HDSSCallGet::Get_ENX(LuaState * ls)
+{
+	_ENTERGET_HDSS_LUA;
+	if (argscount > 1)
+	{
+		BYTE _playerindex = _INEXT_HDSS_LUAFUNC;
+		BYTE _enindex = Enemy::en[_playerindex].getIndex();
+		_JNEXT_HDSS_LUAFUNC;
+		if (bhavenext)
+		{
+			_enindex = _IOBJ_HDSS_LUA;
+		}
+		_PF_HDSS_LUA(Enemy::en[_playerindex][_enindex].x);
+		return 1;
+	}
+	return 0;
+}
+
+int _HDSSCallGet::Get_ENY(LuaState * ls)
+{
+	_ENTERGET_HDSS_LUA;
+	if (argscount > 1)
+	{
+		BYTE _playerindex = _INEXT_HDSS_LUAFUNC;
+		BYTE _enindex = Enemy::en[_playerindex].getIndex();
+		_JNEXT_HDSS_LUAFUNC;
+		if (bhavenext)
+		{
+			_enindex = _IOBJ_HDSS_LUA;
+		}
+		_PF_HDSS_LUA(Enemy::en[_playerindex][_enindex].y);
+		return 1;
+	}
+	return 0;
+}
+
 int _HDSSCallGet::Get_PX(LuaState * ls)
 {
 	_ENTERGET_HDSS_LUA;
 	if (argscount > 1)
 	{
-		int _index = _INEXT_HDSS_LUAFUNC;
-		_PF_HDSS_LUA(Player::p[_index].x);
-		return 1;
+		BYTE _playerindex = _INEXT_HDSS_LUAFUNC;
+		_PF_HDSS_LUA(Player::p[_playerindex].x);
+		_PI_HDSS_LUA(Player::p[_playerindex].nowID);
+		return 2;
 	}
 	return 0;
 }
@@ -108,9 +145,10 @@ int _HDSSCallGet::Get_PY(LuaState * ls)
 	_ENTERGET_HDSS_LUA;
 	if (argscount > 1)
 	{
-		int _index = _INEXT_HDSS_LUAFUNC;
-		_PF_HDSS_LUA(Player::p[_index].y);
-		return 1;
+		BYTE _playerindex = _INEXT_HDSS_LUAFUNC;
+		_PF_HDSS_LUA(Player::p[_playerindex].y);
+		_PI_HDSS_LUA(Player::p[_playerindex].nowID);
+		return 2;
 	}
 	return 0;
 }
@@ -120,9 +158,9 @@ int _HDSSCallGet::Get_PLIFE(LuaState * ls)
 	_ENTERGET_HDSS_LUA;
 	if (argscount > 1)
 	{
-		int _index = _INEXT_HDSS_LUAFUNC;
-		_PI_HDSS_LUA(Player::p[_index].nLife);
-		_PI_HDSS_LUA(Player::p[_index].initlife);
+		BYTE _playerindex = _INEXT_HDSS_LUAFUNC;
+		_PI_HDSS_LUA(Player::p[_playerindex].nLife);
+		_PI_HDSS_LUA(Player::p[_playerindex].initlife);
 		return 2;
 	}
 	return 0;

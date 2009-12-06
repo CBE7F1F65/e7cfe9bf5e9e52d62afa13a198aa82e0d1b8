@@ -8,13 +8,28 @@ function _eSendBulletSpeedRestrict(speed, rank)
 	return speed;
 end
 
+function _eSendBulletSpeed(rank, bSmall)
+	return 1.3 + rank * 0.11;
+end
+
+function _eSendBigBulletAngle()
+	return hge.Random_Int(8250, 9750);
+end
+
 function eSendRedBullet(playerindex, x, y, sendtime, speed, setID, bSmall)
 	local rank = hdss.Get(HDSS_RANK);
-	local angle = 9000 + hge.Random_Int(-1500, 1500);
-	if speed < 0 then
-		speed = 1.3 + rank * 0.11;
-		speed = _eSendBulletSpeedRestrict(speed, rank);
+	local angle;
+	if bSmall then
+		angle = hge.Random_Int(7500, 10500);
+	else
+		angle = _eSendBigBulletAngle();
 	end
+	if speed < 0 then
+		speed = _eSendBulletSpeed(rank);
+	elseif not bSmall then
+		speed = speed + 0.3;
+	end
+	speed = _eSendBulletSpeedRestrict(speed, rank);
 	local type = 3;
 	if bSmall then
 		type = 13;
@@ -33,11 +48,18 @@ end
 
 function eSendBlueBullet(playerindex, x, y, sendtime, speed, setID, bSmall)
 	local rank = hdss.Get(HDSS_RANK);
-	local angle = hdssAMAP(playerindex, x, y, hge.Random_Int(-9000/7, 9000/7));
-	if speed < 0 then
-		speed = 1.3 + rank * 0.11;
-		speed = _eSendBulletSpeedRestrict(speed, rank);
+	local angle;
+	if bSmall then
+		angle = hdssAMAP(playerindex, x, y, hge.Random_Int(-9000/7, 9000/7));
+	else
+		angle = _eSendBigBulletAngle();
 	end
+	if speed < 0 then
+		speed = _eSendBulletSpeed(rank, bSmall);
+	elseif not bSmall then
+		speed = speed + 0.3;
+	end
+	speed = _eSendBulletSpeedRestrict(speed, rank);
 	local type = 3;
 	if bSmall then
 		type = 13;

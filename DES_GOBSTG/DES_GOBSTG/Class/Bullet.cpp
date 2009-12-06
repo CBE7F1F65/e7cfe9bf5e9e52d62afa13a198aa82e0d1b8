@@ -111,7 +111,7 @@ int Bullet::Build(BYTE playerindex, float x, float y, bool absolute, int angle, 
 	Bullet * _tbu = NULL;
 	_tbu = bu[playerindex].push_back();
 	int _index = bu[playerindex].getEndIndex();
-	if (!_tbu->valueSet(_index, x, y, absolute, angle, speed, type, color, fadeinTime, avoid, tarID))
+	if (!_tbu->valueSet(playerindex, _index, x, y, absolute, angle, speed, type, color, fadeinTime, avoid, tarID))
 	{
 		bu[playerindex].pop(_index);
 		return -1;
@@ -163,11 +163,11 @@ void Bullet::Action(bool notinstop)
 				{
 					if (notinstop)
 					{
-						(*bu[j]).action(j);
+						(*bu[j]).action();
 					}
 					else
 					{
-						(*bu[j]).actionInStop(j);
+						(*bu[j]).actionInStop();
 					}
 				}
 				else
@@ -270,21 +270,22 @@ void Bullet::matchFadeOutColorType()
 	}
 }
 
-bool Bullet::valueSet(WORD _ID, float _x, float _y, bool absolute, int _angle, float _speed, BYTE _type, BYTE _color, int _fadeinTime, float avoid, BYTE _tarID)
+bool Bullet::valueSet(BYTE _playerindex, WORD _ID, float _x, float _y, bool absolute, int _angle, float _speed, BYTE _type, BYTE _color, int _fadeinTime, float avoid, BYTE _tarID)
 {
+	playerindex	= _playerindex;
 	ID			=	_ID;
 	x			=	_x;
 	y			=	_y;
 	type		=	_type;
 	if(avoid)
 	{
-		if(isInRect(avoid, Player::p[0].x, Player::p[0].y))
+		if(isInRect(avoid, Player::p[playerindex].x, Player::p[playerindex].y))
 			return false;
 	}
 	if(absolute)
 		angle	=	_angle;
 	else
-		angle	=	rMainAngle(Player::p[0], _angle);
+		angle	=	rMainAngle(Player::p[playerindex].x, Player::p[playerindex].y, _angle);
 	speed		=	_speed;
 	oldtype		=	type;
 	color		=	_color;
@@ -327,7 +328,7 @@ bool Bullet::valueSet(WORD _ID, float _x, float _y, bool absolute, int _angle, f
 	return true;
 }
 
-void Bullet::DoIze(BYTE playerindex)
+void Bullet::DoIze()
 {
 	if (cancelable || bossinfo.flag>=BOSSINFO_COLLAPSE)
 	{
@@ -367,7 +368,7 @@ void Bullet::DoIze(BYTE playerindex)
 	}
 }
 
-void Bullet::DoGraze(BYTE playerindex)
+void Bullet::DoGraze()
 {
 	if(!grazed && res.bulletdata[type].collisiontype != BULLET_COLLISION_NONE)
 	{
@@ -379,7 +380,7 @@ void Bullet::DoGraze(BYTE playerindex)
 	}
 }
 
-void Bullet::DoCollision(BYTE playerindex)
+void Bullet::DoCollision()
 {
 	if(isInRect(Player::p[playerindex].r, Player::p[playerindex].x, Player::p[playerindex].y))
 	{
@@ -392,7 +393,7 @@ void Bullet::DoCollision(BYTE playerindex)
 	}
 }
 
-void Bullet::DoUpdateRenderDepth(BYTE playerindex)
+void Bullet::DoUpdateRenderDepth()
 {
 	if (exist)
 	{
@@ -419,18 +420,18 @@ bool Bullet::HaveGray()
 	return false;
 }
 
-void Bullet::actionInStop(BYTE playerindex)
+void Bullet::actionInStop()
 {
 	index = ID;
 	if (!fadeout)
 	{
-		DoIze(playerindex);
+		DoIze();
 		if (timer > fadeinTime)
 		{
-			DoGraze(playerindex);
+			DoGraze();
 		}
 	}
-	DoUpdateRenderDepth(playerindex);
+	DoUpdateRenderDepth();
 }
 
 bool Bullet::passedEvent(BYTE _eventID)
@@ -498,7 +499,7 @@ void Bullet::AddSendInfo(BYTE _sendsetID, BYTE _sendtime)
 	sendsetID = _sendsetID;
 }
 
-void Bullet::action(BYTE playerindex)
+void Bullet::action()
 {
 	index = ID;
 	if(angle != lastangle || lastspeed == 0)
@@ -567,7 +568,7 @@ void Bullet::action(BYTE playerindex)
 
 			if (able)
 			{
-				ChangeAction(playerindex);
+				ChangeAction();
 
 				if (res.bulletdata[type].nRoll && !(timer % BULLET_ANIMATIONSPEED))
 				{
@@ -601,12 +602,12 @@ void Bullet::action(BYTE playerindex)
 					}
 				}
 
-				DoCollision(playerindex);
-				DoGraze(playerindex);
+				DoCollision();
+				DoGraze();
 			}
 		}
 
-		DoIze(playerindex);
+		DoIze();
 		headangle += SIGN(color) * res.bulletdata[type].nTurnAngle;
 		if(tarID != 0xff)
 		{
@@ -665,7 +666,7 @@ void Bullet::action(BYTE playerindex)
 	}
 	able = exist && !fadeout;
 
-	DoUpdateRenderDepth(playerindex);
+	DoUpdateRenderDepth();
 }
 
 bool Bullet::isInRect(float r, float aimx, float aimy)
@@ -701,7 +702,7 @@ bool Bullet::isInRect(float r, float aimx, float aimy)
 	return false;
 }
 
-void Bullet::ChangeAction(BYTE playerindex)
+void Bullet::ChangeAction()
 {
 	bool doit = false;
 	for(int i=0;i<BULLETACTIONMAX;++i)
@@ -1005,7 +1006,7 @@ void Bullet::ChangeAction(BYTE playerindex)
 				case ANGLESETRMA:
 					if(doit)
 					{
-						angle = rMainAngle(actionList[i+1]*1.0f,actionList[i+2]*1.0f,actionList[i+3]*1.0f);
+						angle = rMainAngle(actionList[i+1]*1.0f, actionList[i+2]*1.0f, actionList[i+3]*1.0f);
 						SE::push(SE_BULLET_CHANGE_1, x);
 					}
 					i+=3;
@@ -1014,7 +1015,7 @@ void Bullet::ChangeAction(BYTE playerindex)
 				case ANGLESETRMAP:
 					if(doit)
 					{
-						angle = rMainAngle(Player::p[playerindex].x,Player::p[playerindex].y,actionList[i+1]*1.0f);
+						angle = rMainAngle(Player::p[playerindex].x, Player::p[playerindex].y, actionList[i+1]*1.0f);
 						SE::push(SE_BULLET_CHANGE_1, x);
 					}
 					++i;
@@ -1023,7 +1024,7 @@ void Bullet::ChangeAction(BYTE playerindex)
 				case ANGLESETRMAT:
 					if(doit)
 					{
-						angle = rMainAngle(Target::tar[actionList[i+1]].x,Target::tar[actionList[i+1]].y,actionList[i+2]*1.0f);
+						angle = rMainAngle(Target::tar[actionList[i+1]].x, Target::tar[actionList[i+1]].y, actionList[i+2]*1.0f);
 						SE::push(SE_BULLET_CHANGE_1, x);
 					}
 					i+=2;
@@ -1032,7 +1033,7 @@ void Bullet::ChangeAction(BYTE playerindex)
 				case ANGLESETAMA:
 					if(doit)
 					{
-						angle = aMainAngle(actionList[i+1]*1.0f,actionList[i+2]*1.0f,actionList[i+3]);
+						angle = aMainAngle(actionList[i+1]*1.0f, actionList[i+2]*1.0f, actionList[i+3]);
 						SE::push(SE_BULLET_CHANGE_1, x);
 					}
 					i+=3;
@@ -1041,7 +1042,7 @@ void Bullet::ChangeAction(BYTE playerindex)
 				case ANGLESETAMAP:
 					if(doit)
 					{
-						angle = aMainAngle(Player::p[playerindex].x,Player::p[playerindex].y,actionList[i+1]);
+						angle = aMainAngle(Player::p[playerindex].x, Player::p[playerindex].y, actionList[i+1]);
 						SE::push(SE_BULLET_CHANGE_1, x);
 					}
 					++i;
@@ -1050,7 +1051,7 @@ void Bullet::ChangeAction(BYTE playerindex)
 				case ANGLESETAMAT:
 					if(doit)
 					{
-						angle = aMainAngle(Target::tar[actionList[i+1]].x,Target::tar[actionList[i+1]].y,actionList[i+2]);
+						angle = aMainAngle(Target::tar[actionList[i+1]].x, Target::tar[actionList[i+1]].y, actionList[i+2]);
 						SE::push(SE_BULLET_CHANGE_1, x);
 					}
 					i+=2;

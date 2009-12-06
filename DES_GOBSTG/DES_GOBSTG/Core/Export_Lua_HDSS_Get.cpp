@@ -95,9 +95,9 @@ int Export_Lua_HDSS::LuaFn_HDSS_Get(LuaState * ls)
 		switch (nowval)
 		{
 		case SCR_ENX:
-			break;
+			return _HDSSCallGet::Get_ENX(ls);
 		case SCR_ENY:
-			break;
+			return _HDSSCallGet::Get_ENY(ls);
 		case SCR_ENTIMER:
 			break;
 		case SCR_ENI:

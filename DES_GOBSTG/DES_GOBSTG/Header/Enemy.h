@@ -44,6 +44,7 @@
 
 #define ENEMY_BOSSX_FADERANGE	32
 
+#define ENEMYACTION_NONE		0x00
 #define	ENEMYACTION_ATTACK		0x01
 #define	ENEMYACTION_STORE		0x02
 
@@ -60,6 +61,30 @@
 #define ENAC_OVERPLAYER_CXYT	0x81
 #define ENAC_CHASETO_CXY		0x82
 
+#define ENAZTYPEMASK	0x0f
+#define ENAZTYPE_NONE			0x00
+#define ENAZTYPE_CIRCLE			0x01
+#define ENAZTYPE_ELLIPSE		0x02
+#define ENAZTYPE_RECT			0x04
+#define ENAZTYPE_RIGHTANGLED	0x08
+
+#define ENAZOPMASK	0xf0
+#define ENAZOP_NONE		0x00
+#define ENAZOP_AND		0x10
+#define ENAZOP_OR		0x20
+#define ENAZOP_NOTAND	0x40
+#define ENAZOP_NOTOR	0x80
+
+struct EnemyActivationZone 
+{
+	float x;
+	float y;
+	float rPrep;
+	float rParal;
+	int angle;
+	BYTE flag;
+};
+
 class Enemy : public BObject
 {
 public:
@@ -72,6 +97,8 @@ public:
 	static void Action(bool notinstop);
 	static void ClearAll();
 	static void RenderAll(BYTE renderflag);
+
+	static void BuildENAZ(BYTE playerindex, BYTE flag, float x, float y, float rPrep, float rParal=0, int angle=9000);
 
 	void Clear();
 	bool isInRange(float x, float y, float r);
@@ -90,6 +117,7 @@ public:
 	void updateFrameAsMove();
 
 	void DoShot();
+	bool DoActivate();
 
 	virtual void action();
 	void actionInStop();
@@ -149,16 +177,15 @@ public:
 	BYTE	activetimer;
 	BYTE	activemaxtime;
 
+	BYTE	actionflag;
+	BYTE	storetimer;
+
 	BYTE	frameindex[ENEMY_FRAME_STATEMAX];
 
 	hgeSprite * sprite;
-
 	static HTEXTURE * tex;
-	static BYTE actionflag[ENEMY_BOSSMAX];
-	static BYTE spelluptimer[ENEMY_BOSSMAX];
-	static BYTE storetimer[ENEMY_BOSSMAX];
-
 	static VectorList<Enemy> en[M_PL_MATCHMAXPLAYER];
+	static list<EnemyActivationZone> enaz[M_PL_MATCHMAXPLAYER];
 };
 
 #endif
