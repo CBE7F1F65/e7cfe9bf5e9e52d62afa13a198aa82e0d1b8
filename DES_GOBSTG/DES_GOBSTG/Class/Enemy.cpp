@@ -17,6 +17,9 @@
 VectorList<Enemy> Enemy::en[M_PL_MATCHMAXPLAYER];
 list<EnemyActivationZone> Enemy::enaz[M_PL_MATCHMAXPLAYER];
 
+#define _SCOREDISPLAYMAX		(ENEMYMAX*2)
+VectorList<ScoreDisplay> Enemy::scoredisplay[M_PL_MATCHMAXPLAYER];
+
 HTEXTURE * Enemy::tex = NULL;
 
 Enemy::Enemy()
@@ -39,6 +42,7 @@ void Enemy::Init(HTEXTURE * _tex)
 	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
 	{
 		en[i].init(ENEMYMAX);
+		scoredisplay[i].init(_SCOREDISPLAYMAX);
 	}
 }
 
@@ -48,6 +52,7 @@ void Enemy::Release()
 	{
 		en[i].clear();
 		enaz[i].clear();
+		scoredisplay[i].clear();
 	}
 }
 
@@ -128,6 +133,34 @@ void Enemy::Action(bool notinstop)
 			}
 		}
 		enaz[j].clear();
+
+		i = 0;
+		size = scoredisplay[j].size;
+		for (scoredisplay[j].toBegin(); i<size; scoredisplay[j].toNext(), i++)
+		{
+			if (scoredisplay[j].isValid())
+			{
+				if(notinstop)
+				{
+					ScoreDisplay * _item = &(*(scoredisplay[j]));
+					_item->timer++;
+					if(_item->timer >= 48)
+					{
+						scoredisplay[j].pop();
+					}
+					if (_item->timer == 40 || _item->timer == 44)
+					{
+						if (strcmp(_item->cScore, "b"))
+						{
+							for(int i=0; i<(int)strlen(_item->cScore); i++)
+							{
+								_item->cScore[i] += 10;
+							}
+						}
+					}
+				}
+			}
+		}
 	}
 }
 
@@ -191,6 +224,26 @@ void Enemy::RenderAll(BYTE renderflag)
 		}
 	}
 }
+
+void Enemy::RenderScore(BYTE renderflag)
+{
+	BYTE _playerindex = Export::GetPlayerIndexByRenderFlag(renderflag);
+	DWORD i = 0;
+	DWORD size = scoredisplay[_playerindex].size;
+	for (scoredisplay[_playerindex].toBegin(); i<size; scoredisplay[_playerindex].toNext(), i++)
+	{
+		if (scoredisplay[_playerindex].isValid())
+		{
+			ScoreDisplay * _item = &(*(scoredisplay[_playerindex]));
+			if(_item->yellow)
+				FrontDisplay::fdisp.info.itemfont->SetColor(0xffffff00);
+			else
+				FrontDisplay::fdisp.info.itemfont->SetColor(0xffffffff);
+			FrontDisplay::fdisp.info.itemfont->RenderEx(_item->x, _item->y-10-_item->timer/4, HGETEXT_CENTER, _item->cScore);
+		}
+	}
+}
+
 void Enemy::Render()
 {
 	if (sprite)
@@ -1121,6 +1174,29 @@ void Enemy::action()
 					SendGhost(playerindex, x, y, sendsetID, &sendtime, &acceladd);
 				}
 			}
+
+			int tscore = Player::p[playerindex].nSpellPoint;
+			ScoreDisplay _item;
+			if (tscore < PLAYER_NSPELLPOINTMAX)
+			{
+				itoa(tscore, _item.cScore, 10);
+			}
+			else
+			{
+				strcpy(_item.cScore, "b");
+			}
+			_item.timer = 0;
+			_item.x = x;
+			_item.y = y;
+			if(tscore >= 300000)
+			{
+				_item.yellow = true;
+			}
+			else
+			{
+				_item.yellow = false;
+			}
+			scoredisplay[playerindex].push_back(_item);
 		}
 		else if(timer == 32)
 		{

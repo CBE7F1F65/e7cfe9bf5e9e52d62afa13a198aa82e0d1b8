@@ -28,6 +28,8 @@ bool Export_Lua_Game::_LuaRegistFunction(LuaObject * obj)
 	_gameobj.Register("GetPlayerDrainInfo", LuaFn_Game_GetPlayerDrainInfo);
 	_gameobj.Register("SetDrainSpriteInfo", LuaFn_Game_SetPlayerDrainSpriteInfo);
 	_gameobj.Register("SetGhostActiveInfo", LuaFn_Game_SetGhostActiveInfo);
+	_gameobj.Register("GetPlayerSendExInfo", LuaFn_Game_GetPlayerSendExInfo);
+	_gameobj.Register("PlayerSendEx", LuaFn_Game_PlayerSendEx);
 
 	return true;
 }
@@ -252,6 +254,65 @@ int Export_Lua_Game::LuaFn_Game_SetGhostActiveInfo(LuaState * ls)
 	float _damagerate = args[7].GetFloat();
 
 	(*Enemy::en[_playerindex]).SetActiveInfo(_activemaxtime, _eID, _type, _angle, _speed, _damagerate);
+	return 0;
+}
+
+int Export_Lua_Game::LuaFn_Game_GetPlayerSendExInfo(LuaState * ls)
+{
+	LuaStack args(ls);
+	int _esindex = args[1].GetInteger();
+	EffectSp * _peffsp = &(EffectSp::effsp[_esindex]);
+	BYTE _playerindex = _peffsp->ID;
+
+	ls->PushInteger(_playerindex);
+	ls->PushInteger(Player::p[1-_playerindex].nowID);
+	ls->PushNumber(Player::p[_playerindex].x);
+	ls->PushNumber(Player::p[_playerindex].y);
+	ls->PushNumber(Player::p[1-_playerindex].x);
+	ls->PushNumber(Player::p[1-_playerindex].y);
+	ls->PushInteger(Player::p[_playerindex].nowID);
+	return 7;
+}
+
+int Export_Lua_Game::LuaFn_Game_PlayerSendEx(LuaState * ls)
+{
+	LuaStack args(ls);
+
+	int _esindex = args[1].GetInteger();
+	EffectSp * _peffsp = &(EffectSp::effsp[_esindex]);
+	BYTE _playerindex = _peffsp->ID;
+	float _aimx = args[2].GetFloat();
+	float _aimy = args[3].GetFloat();
+	int _chasetimer = args[4].GetInteger();
+	DWORD _color = 0xa0ffffff;
+	int _headangleadd = SIGN(_playerindex) * 800;
+	float _appendfloat = 0;
+
+	int argscount = args.Count();
+	if (argscount > 4)
+	{
+		LuaObject _tobj = args[5];
+		_color = _LuaHelper_GetDWORD(&_tobj);
+		if (argscount > 5)
+		{
+			_headangleadd = args[6].GetInteger();
+			if (argscount > 6)
+			{
+				_appendfloat = args[7].GetFloat();
+				if (argscount > 7)
+				{
+					int _siid = args[8].GetInteger();
+					_peffsp->siid = _siid;
+				}
+			}
+		}
+
+	}
+	_peffsp->colorSet(_color, BLEND_ALPHAADD);
+	_peffsp->actionSet(9000, 0, _headangleadd);
+	_peffsp->chaseSet(EFFSP_CHASE_FREE, _aimx, _aimy, _chasetimer);
+	_peffsp->AppendData(Player::p[1-_playerindex].nowID, _appendfloat);
+
 	return 0;
 }
 

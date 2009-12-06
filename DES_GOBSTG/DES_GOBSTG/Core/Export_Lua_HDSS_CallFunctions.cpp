@@ -579,6 +579,31 @@ int _HDSSCallGet::Call_BUBUILD(LuaState * ls)
 	return 0;
 }
 
+int _HDSSCallGet::Call_BUACTIONSET(LuaState * ls)
+{
+	_ENTERCALL_HDSS_LUA;
+	if (true)
+	{
+		BYTE _playerindex = _INEXT_HDSS_LUAPARA;
+		int _i = 0;
+		if (argscount > 2)
+		{
+			_GETPARAS_HDSS_LUAPARA(3);
+			
+			_JNEXT_HDSS_LUAPARA;
+			_i = 0;
+			while (bhavenext)
+			{
+				Bullet::_actionList[_playerindex][_i] = _IOBJ_HDSS_LUA;
+				_i++;
+				_JNEXT_HDSS_LUAPARA;
+			}
+		}
+		Bullet::_actionList[_playerindex][_i] = 0;
+	}
+	return 0;
+}
+
 int _HDSSCallGet::Call_BGVALUE(LuaState * ls)
 {
 	_ENTERCALL_HDSS_LUA;

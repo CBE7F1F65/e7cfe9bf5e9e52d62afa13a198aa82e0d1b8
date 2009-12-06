@@ -44,6 +44,8 @@ bool Player::able = false;
 BYTE Player::rank = _GAMERANK_MIN;
 int Player::lilycount = 0;
 
+#define _PL_MERGETOPOS_X_(X)	(M_GAMESQUARE_CENTER_X_(X))
+#define _PL_MERGETOPOS_Y		(M_GAMESQUARE_BOTTOM - 64)
 
 
 Player::Player()
@@ -604,7 +606,7 @@ bool Player::Merge()
 	mergetimer++;
 	if(mergetimer == 1)
 	{
-		SetInfi(PLAYERINFI_MERGE, 240);
+		SetInfi(PLAYERINFI_MERGE, 60);
 		if(hge->Input_GetDIKey(KS_SLOW_MP_(playerindex)))
 		{
 			flag |= PLAYER_SLOWCHANGE;
@@ -618,24 +620,19 @@ bool Player::Merge()
 			flag &= ~PLAYER_SLOWCHANGE;
 		}
 	}
-	if(mergetimer < 48)
+	else if (mergetimer <= 24)
 	{
+		float interval = mergetimer / 24.0f;
+		x = INTER(PL_MERGEPOS_X_(playerindex), _PL_MERGETOPOS_X_(playerindex), interval);
+		y = INTER(PL_MERGEPOS_Y, _PL_MERGETOPOS_Y, interval);
 		flag &= ~PLAYER_SHOOT;
-		x = PL_MERGEPOS_X_(playerindex);
-		y = PL_MERGEPOS_Y - (mergetimer-16) * 4.5f;
-		alpha = (mergetimer-16) * 8;
+		alpha = INTER(0, 0xff, interval);
 	}
-	/*
-	else if(mergetimer == 48 && mp.spellmode)
-	{
-		mergetimer = 208;
-	}
-	*/
-	else if(mergetimer > 208 && mergetimer < 240)
+	else if(mergetimer < 60)
 	{
 		alpha = 0xff;
 	}
-	else if(mergetimer == 240)
+	else if(mergetimer == 60)
 	{
 		mergetimer = 0;
 		return true;
@@ -968,10 +965,6 @@ bool Player::Graze()
 
 void Player::DoEnemyCollapse(float x, float y)
 {
-	if (bInfi)
-	{
-		return;
-	}
 	float addcharge = nComboHitOri / 128.0f + 1.0f;
 	if (addcharge > 2.0f)
 	{
@@ -1029,10 +1022,9 @@ void Player::DoShot()
 {
 	if (!bInfi && !(flag & (PLAYER_SHOT | PLAYER_COLLAPSE)))
 	{
-//		if(nPower >= bombperpower)
-			flag |= PLAYER_SHOT;
-//		else
-//			flag |= PLAYER_COLLAPSE;
+		flag |= PLAYER_SHOT;
+		AddComboHit(-1, true);
+		AddSpellPoint(-1);
 	}
 }
 
@@ -1222,9 +1214,13 @@ void Player::shootCharge(BYTE nChargeLevel)
 	}
 }
 
-void Player::SendEx(float x, float y, bool bythis/* =true */)
+void Player::SendEx(BYTE playerindex, float x, float y)
 {
-
+	int _esindex = EffectSp::Build(EFFSPSET_SYSTEM_SENDEXATTACK, playerindex, EffectSp::senditemexsiid, x, y);
+	if (_esindex >= 0)
+	{
+		scr.Execute(SCR_EVENT, SCR_EVENT_PLAYERSENDEX, _esindex);
+	}
 }
 
 void Player::AddExPoint(int expoint, float x, float y)
@@ -1233,7 +1229,7 @@ void Player::AddExPoint(int expoint, float x, float y)
 	if (nExPoint >= fExSendParaB + fExSendParaA * rank)
 	{
 		AddExPoint(-(fExSendParaB + fExSendParaA * rank), x, y);
-		SendEx(x, y, false);
+		SendEx(1-playerindex, x, y);
 	}
 }
 
@@ -1274,6 +1270,10 @@ void Player::AddSpellPoint(int spellpoint)
 		return;
 	}
 	nSpellPoint += spellpoint;
+	if (nSpellPoint > PLAYER_NSPELLPOINTMAX)
+	{
+		nSpellPoint = PLAYER_NSPELLPOINTMAX;
+	}
 }
 
 void Player::AddComboHit(int combo, bool ori)
@@ -1285,9 +1285,17 @@ void Player::AddComboHit(int combo, bool ori)
 		return;
 	}
 	nComboHit += combo;
+	if (nComboHit > PLAYER_NCOMBOHITMAX)
+	{
+		nComboHit = PLAYER_NCOMBOHITMAX;
+	}
 	if (ori)
 	{
 		nComboHitOri += combo;
+		if (nComboHitOri > PLAYER_NCOMBOHITMAX)
+		{
+			nComboHitOri = PLAYER_NCOMBOHITMAX;
+		}
 	}
 
 	if (nComboGage < 74)

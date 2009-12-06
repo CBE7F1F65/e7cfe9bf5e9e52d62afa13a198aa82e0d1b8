@@ -5,3 +5,11 @@ function helper_GetActiveGhostOverInfo(playerindex)
 	local rank = hdss.Get(HDSS_RANK);
 	return x, y, angle, rank;
 end
+
+function helper_GetCenterX(playerindex)
+	if playerindex == 1 then
+		return CenterX_1;
+	else
+		return CenterX_0;
+	end
+end

@@ -1,22 +1,22 @@
 function EventExecute(name, con)
 
 	if name == EVENT_EFFSPCHASE then
-		local playerindex, x, y, sendtime, speed = game.GetSendItemInfo();
+		local playerindex, x, y, appendint, appendfloat = game.GetSendItemInfo();
 		
 		if con == EFFSPCHASE_SENDREDBULLET then
-			return eSendRedBullet(playerindex, x, y, sendtime, speed, con, true);
+			return eSendRedBullet(playerindex, x, y, appendint, appendfloat, con, true);
 		elseif con == EFFSPCHASE_SENDBLUEBULLET then
-			return eSendBlueBullet(playerindex, x, y, sendtime, speed, con, true);
+			return eSendBlueBullet(playerindex, x, y, appendint, appendfloat, con, true);
 		elseif con == EFFSPCHASE_SENDREDBIGBULLET then
-			return eSendRedBullet(playerindex, x, y, sendtime, speed, con, false);
+			return eSendRedBullet(playerindex, x, y, appendint, appendfloat, con, false);
 		elseif con == EFFSPCHASE_SENDBLUEBIGBULLET then
-			return eSendBlueBullet(playerindex, x, y, sendtime, speed, con, false);
+			return eSendBlueBullet(playerindex, x, y, appendint, appendfloat, con, false);
 		elseif con == EFFSPCHASE_SENDITEMBULLET then
 			return eSendItemBullet(playerindex, x, y, con);
 		elseif con == EFFSPCHASE_SENDGHOST then
-			return eSendGhost(playerindex, x, y, sendtime, speed, con);
+			return eSendGhost(playerindex, x, y, appendint, appendfloat, con);
 		elseif con == EFFSPCHASE_SENDEXATTACK then
-			return eSendExAttack(playerindex, x, y, con);
+			return eSendExAttack(playerindex, x, y, appendint, appendfloat, con);
 		end
 	elseif name == EVENT_PLAYERDRAIN or name == EVENT_PLAYERDRAINCHECK then
 		local playerID, x, y, draintimer, type = game.GetPlayerDrainInfo(con, name);
@@ -83,6 +83,39 @@ function EventExecute(name, con)
 		for i, it in pairs(playerfunctiontable) do
 			if it[1] == playerID then
 				return it[2](con);
+			end
+		end
+	elseif name == EVENT_PLAYERSENDEX then
+		local oplayerindex, playerID, opx, opy, px, py, oplayerID = game.GetPlayerSendExInfo(con);
+		local playerfunctiontable = 
+		{
+			{0,	ePlayerSendEx_0},
+			{1,	ePlayerSendEx_1},
+			{2,	ePlayerSendEx_2},
+			{3,	ePlayerSendEx_3},
+			{4,	ePlayerSendEx_4},
+			{5,	ePlayerSendEx_5},
+			{6,	ePlayerSendEx_6},
+			{7,	ePlayerSendEx_7},
+			{8,	ePlayerSendEx_8},
+			{9,	ePlayerSendEx_9},
+			{10,	ePlayerSendEx_10},
+			{11,	ePlayerSendEx_11},
+			{12,	ePlayerSendEx_12},
+			{13,	ePlayerSendEx_13},
+			{14,	ePlayerSendEx_14},
+			{15,	ePlayerSendEx_15},
+			{16,	ePlayerSendEx_16},
+			{17,	ePlayerSendEx_17},
+			{18,	ePlayerSendEx_18},
+			{19,	ePlayerSendEx_19},
+			{20,	ePlayerSendEx_20},
+			{21,	ePlayerSendEx_21},
+			{22,	ePlayerSendEx_22},
+		}
+		for i, it in pairs(playerfunctiontable) do
+			if it[1] == playerID then
+				return it[2](con, oplayerindex, playerID, opx, opy, px, py, oplayerID);
 			end
 		end
 	end

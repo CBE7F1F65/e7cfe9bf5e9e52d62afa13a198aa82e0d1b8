@@ -23,6 +23,8 @@ public:
 	static int LuaFn_Game_GetPlayerDrainInfo(LuaState * ls);
 	static int LuaFn_Game_SetPlayerDrainSpriteInfo(LuaState * ls);
 	static int LuaFn_Game_SetGhostActiveInfo(LuaState * ls);
+	static int LuaFn_Game_GetPlayerSendExInfo(LuaState * ls);
+	static int LuaFn_Game_PlayerSendEx(LuaState * ls);
 };
 
 #endif

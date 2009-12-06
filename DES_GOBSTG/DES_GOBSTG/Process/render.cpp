@@ -17,6 +17,7 @@ void Process::_Render(BYTE renderflag/* =M_RENDER_NULL */)
 		Beam::RenderAll(renderflag);
 		Bullet::RenderAll(renderflag);
 		Item::RenderAll(renderflag);
+		Enemy::RenderScore(renderflag);
 		Chat::chatitem.Render();
 		FrontDisplay::fdisp.RenderHeadInfo();
 	}

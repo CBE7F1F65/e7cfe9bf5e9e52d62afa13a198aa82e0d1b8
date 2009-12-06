@@ -294,3 +294,21 @@ function hdssENAZBUILD(playerindex, type, x, y, rPrep, rParal, angle)
 		}
 	)
 end
+
+function hdssA(playerindex, table)
+	if table == nil then
+		return hdss.Call(
+			HDSS_A,
+			{
+				playerindex
+			}
+		)
+	end
+	return hdss.Call(
+		HDSS_A,
+		{
+			playerindex
+		},
+		table
+	)
+end

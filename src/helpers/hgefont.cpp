@@ -36,7 +36,7 @@ void hgeFont::_FontInit()
 	hTexture=0;
 
 	fZ=0;
-	nBlend=BLEND_COLORMUL | BLEND_ALPHABLEND | BLEND_NOZWRITE;
+	nBlend=BLEND_DEFAULT;
 	for (int i=0; i<4; i++)
 	{
 		col[i] = 0xFFFFFFFF;

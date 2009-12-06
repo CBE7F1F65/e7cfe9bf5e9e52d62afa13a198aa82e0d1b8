@@ -31,6 +31,7 @@ public:
 	static int Call_SETPINITLIFE(LuaState * ls);
 
 	static int Call_BUBUILD(LuaState * ls);
+	static int Call_BUACTIONSET(LuaState * ls);
 
 	static int Call_ENBUILD(LuaState * ls);
 	static int Call_ENACTIONSET(LuaState * ls);

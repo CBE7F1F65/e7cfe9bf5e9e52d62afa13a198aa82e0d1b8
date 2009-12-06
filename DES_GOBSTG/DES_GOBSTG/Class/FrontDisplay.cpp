@@ -274,10 +274,6 @@ void FrontDisplay::RenderPanel()
 					}
 				}
 				int nComboHit = Player::p[i].nComboHit;
-				if (nComboHit > 999)
-				{
-					nComboHit = 999;
-				}
 				char buffer[M_STRITOAMAX];
 				sprintf(buffer, "%d%c", nComboHit, '0'+(usered?21:20));
 				if (usered)
@@ -289,10 +285,6 @@ void FrontDisplay::RenderPanel()
 				}
 				info.spellpointdigitfont->printf(spellpointx[i]+38, M_GAMESQUARE_TOP+16, HGETEXT_RIGHT, "%s", buffer);
 				int nSpellPoint = Player::p[i].nSpellPoint;
-				if (nSpellPoint > 999999)
-				{
-					nSpellPoint = 999999;
-				}
 				info.spellpointdigitfont->printf(spellpointx[i]+38, M_GAMESQUARE_TOP+16, HGETEXT_LEFT, "%06d", nSpellPoint);
 
 				_spd = SpriteItemManager::CastSprite(panel.slotindex);
@@ -451,15 +443,6 @@ void FrontDisplay::RenderEnemyX()
 	
 }
 
-void FrontDisplay::ItemInfoDisplay(infoFont * item)
-{
-	if(item->yellow)
-		info.itemfont->SetColor(0xafffff00);
-	else
-		info.itemfont->SetColor(0xafffffff);
-	info.itemfont->printf(item->x, item->y-10-item->timer, HGETEXT_CENTER, "%s", item->cScore);
-}
-
 bool FrontDisplay::Init()
 {
 	Release();
@@ -590,7 +573,7 @@ bool FrontDisplay::Init()
 	{
 		info.itemfont->ChangeSprite(i, itemnum.itemnum[i-'0']);
 	}
-	info.itemfont->SetScale(1.2f);
+	info.itemfont->ChangeSprite('b', itemnum.bonus);
 	
 	info.spellpointdigitfont = new hgeFont();
 	for (int i='0'; i<22+'0'; i++)

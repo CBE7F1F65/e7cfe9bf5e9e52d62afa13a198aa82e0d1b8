@@ -12,6 +12,7 @@ VectorList<EffectSp> EffectSp::effsp;
 hgeSprite * EffectSp::sprite = NULL;
 
 int EffectSp::senditemsiid[EFFSPSEND_COLORMAX][EFFSPSEND_ANIMATIONMAX];
+int EffectSp::senditemexsiid;
 
 EffectSp::EffectSp()
 {
@@ -33,6 +34,7 @@ void EffectSp::Init()
 			senditemsiid[i][j] = senditemsiidbegin + i*EFFSPSEND_ANIMATIONMAX + j;
 		}
 	}
+	senditemexsiid = SpriteItemManager::GetIndexByName(SI_SENDITEM_EX);
 	sprite = SpriteItemManager::CreateSpriteByName(SI_NULL);
 }
 

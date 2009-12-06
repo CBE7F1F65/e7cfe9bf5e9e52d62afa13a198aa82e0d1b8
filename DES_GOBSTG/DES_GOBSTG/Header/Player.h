@@ -27,8 +27,8 @@
 #define PL_MOVABLE_TOP		(M_GAMESQUARE_TOP+PL_MOVABLEDGE_Y)
 #define PL_MOVABLE_BOTTOM	(M_GAMESQUARE_BOTTOM-PL_MOVABLEDGE_Y)
 
-#define PL_MERGEPOS_X_(X)		M_GAMESQUARE_CENTER_X_(X)
-#define PL_MERGEPOS_Y		(M_GAMESQUARE_BOTTOM + 40)
+#define PL_MERGEPOS_X_(X)	((X)?M_GAMESQUARE_RIGHT_(X):M_GAMESQUARE_LEFT_(X))
+#define PL_MERGEPOS_Y		(M_GAMESQUARE_BOTTOM)
 
 #define PL_SAVELASTMAX		0x20
 
@@ -63,6 +63,9 @@
 #define PLAYER_COMBOALERT	65
 
 #define PLAYER_GRAZE_R	40
+
+#define PLAYER_NCOMBOHITMAX		999
+#define PLAYER_NSPELLPOINTMAX	999990
 
 class Player : public BObject
 {
@@ -133,7 +136,7 @@ public:
 	static void AddLostStack();
 	static void SetAble(bool setable);
 	static bool CheckAble();
-	static void SendEx(float x, float y, bool bythis=true);
+	static void SendEx(BYTE playerindex, float x, float y);
 
 	static void Init();
 	static void Action(bool * notinstop);

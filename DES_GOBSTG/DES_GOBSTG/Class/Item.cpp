@@ -9,7 +9,7 @@
 
 hgeSprite * Item::sprite[ITEMSPRITEMAX];
 
-VectorList<infoFont> Item::infofont;
+//VectorList<infoFont> Item::infofont;
 VectorList<Item> Item::mi[M_PL_MATCHMAXPLAYER];
 
 #define ITEMMAX				0x10
@@ -37,7 +37,7 @@ void Item::ClearItem()
 	{
 		mi[i].clear_item();
 	}
-	infofont.clear_item();
+//	infofont.clear_item();
 }
 
 void Item::Action(bool notinpause)
@@ -65,6 +65,7 @@ void Item::Action(bool notinpause)
 			}
 		}
 	}
+	/*
 	if (infofont.getSize())
 	{
 		DWORD i = 0;
@@ -92,6 +93,7 @@ void Item::Action(bool notinpause)
 			}
 		}
 	}
+	*/
 }
 
 void Item::RenderAll(BYTE renderflag)
@@ -109,6 +111,7 @@ void Item::RenderAll(BYTE renderflag)
 			}
 		}
 	}
+	/*
 	if (infofont.getSize())
 	{
 		DWORD i = 0;
@@ -123,6 +126,7 @@ void Item::RenderAll(BYTE renderflag)
 			FrontDisplay::fdisp.ItemInfoDisplay(_i);
 		}
 	}
+	*/
 }
 
 void Item::Init()
@@ -132,7 +136,7 @@ void Item::Init()
 	{
 		mi[i].init(ITEMMAX);
 	}
-	infofont.init(ITEMINFOFONTMAX);
+//	infofont.init(ITEMINFOFONTMAX);
 	int tidx = SpriteItemManager::GetIndexByName(SI_ITEM_GUARD);
 	for(int i=0;i<ITEMTYPEMAX;i++)
 	{
@@ -180,7 +184,7 @@ void Item::Release()
 	{
 		mi[i].clear();
 	}
-	infofont.clear();
+//	infofont.clear();
 }
 
 void Item::Render()
@@ -262,19 +266,21 @@ void Item::action(BYTE playerindex)
 
 		exist = false;
 
-		struct infoFont info;
+		/*
+		struct ScoreDisplay info;
 		itoa(score, info.cScore, 10);
 
 		info.timer = 0;
 		info.x = x;
 		info.y = y;
-		/*
+		
 		if(ID == ITEM_POINT && (Player::p[playerindex].fPoprate) >= 1.0f)
 			info.yellow = true;
 		else
-		*/
+		
 			info.yellow = false;
 		infofont.push_back(info);
+		*/
 	}
 	if(y > M_DELETECLIENT_BOTTOM)
 		exist = false;

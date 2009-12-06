@@ -242,7 +242,7 @@ Comment	Index	SI_Name	Tex	Tex_x	Tex_y	Tex_w	Tex_h
 -	297	SI_SendItem_14	7	480	256	16	16
 -	298	SI_SendItem_15	7	496	256	16	16
 -	299	SI_Player_Point	7	256	272	64	64
--	300	SI_Player_BombItem	7	320	272	64	64
+-	300	SI_SendItem_Ex	7	320	272	64	64
 -	301	SI_Enemy_Collapse_R	7	384	272	64	64
 -	302	SI_Enemy_Collapse_B	7	448	272	64	64
 -	303	SI_Enemy_Collapse_Y	7	256	272	64	64

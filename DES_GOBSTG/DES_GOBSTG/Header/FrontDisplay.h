@@ -5,7 +5,7 @@
 #include "Const.h"
 #include "Effectsys.h"
 #include "InfoQuad.h"
-#include "Item.h"
+#include "Enemy.h"
 
 #define FDISP_ASCII_BEGIN		0x20
 #define FDISP_ASCII_END			0x81
@@ -344,7 +344,6 @@ public:
 	void RenderPanel();
 	void RenderHeadInfo();
 	void InfoDisplay();
-	void ItemInfoDisplay(infoFont * item);
 
 	void BossInit();
 	void BossAction();

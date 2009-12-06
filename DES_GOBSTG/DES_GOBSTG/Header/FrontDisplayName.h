@@ -461,6 +461,7 @@
 #define SI_PLAYERNAMECARD_01	"SI_PlayerNameCard_01"
 */
 #define SI_SENDITEM_00		"SI_SendItem_00"
+#define SI_SENDITEM_EX		"SI_SendItem_Ex"
 /*
 */
 #define	SI_PLAYER_POINT	"SI_Player_Point"

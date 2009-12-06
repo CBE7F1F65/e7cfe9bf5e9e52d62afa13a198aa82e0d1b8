@@ -86,6 +86,8 @@ int Export_Lua_HDSS::LuaFn_HDSS_Call(LuaState * ls)
 			{
 			case SCR_BUBUILD:
 				return _HDSSCallGet::Call_BUBUILD(ls);
+			case SCR_BUACTIONSET:
+				return _HDSSCallGet::Call_BUACTIONSET(ls);
 			}
 			break;
 			/************************************************************************/

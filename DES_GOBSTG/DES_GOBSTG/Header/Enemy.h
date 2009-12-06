@@ -85,6 +85,15 @@ struct EnemyActivationZone
 	BYTE flag;
 };
 
+struct ScoreDisplay
+{
+	char	cScore[M_STRITOAMAX];
+	float	x;
+	float	y;
+	bool	yellow;
+	BYTE	timer;
+};
+
 class Enemy : public BObject
 {
 public:
@@ -97,6 +106,7 @@ public:
 	static void Action(bool notinstop);
 	static void ClearAll();
 	static void RenderAll(BYTE renderflag);
+	static void RenderScore(BYTE renderflag);
 
 	static void BuildENAZ(BYTE playerindex, BYTE flag, float x, float y, float rPrep, float rParal=0, int angle=9000);
 
@@ -186,6 +196,7 @@ public:
 	static HTEXTURE * tex;
 	static VectorList<Enemy> en[M_PL_MATCHMAXPLAYER];
 	static list<EnemyActivationZone> enaz[M_PL_MATCHMAXPLAYER];
+	static VectorList<ScoreDisplay> scoredisplay[M_PL_MATCHMAXPLAYER];
 };
 
 #endif

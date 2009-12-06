@@ -118,7 +118,7 @@ public:
 	BYTE	sendtime;
 	BYTE	sendsetID;
 
-	static int _actionList[BULLETACTIONMAX];
+	static int _actionList[M_PL_MATCHMAXPLAYER][BULLETACTIONMAX];
 
 	static RenderDepth renderDepth[M_PL_MATCHMAXPLAYER][BULLETTYPEMAX];
 	static hgeSprite * sprite[BULLETTYPECOLORMAX];

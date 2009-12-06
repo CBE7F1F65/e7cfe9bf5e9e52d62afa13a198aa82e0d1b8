@@ -14,7 +14,7 @@
 
 RenderDepth Bullet::renderDepth[M_PL_MATCHMAXPLAYER][BULLETTYPEMAX];
 
-int Bullet::_actionList[BULLETACTIONMAX];
+int Bullet::_actionList[M_PL_MATCHMAXPLAYER][BULLETACTIONMAX];
 hgeSprite * Bullet::sprite[BULLETTYPECOLORMAX];
 
 VectorList<Bullet> Bullet::bu[M_PL_MATCHMAXPLAYER];
@@ -116,7 +116,7 @@ int Bullet::Build(BYTE playerindex, float x, float y, bool absolute, int angle, 
 		bu[playerindex].pop(_index);
 		return -1;
 	}
-	memcpy(_tbu->actionList, _actionList, BULLETACTIONMAX*sizeof(int));
+	memcpy(_tbu->actionList, _actionList[playerindex], BULLETACTIONMAX*sizeof(int));
 	return _index;
 }
 
@@ -139,9 +139,9 @@ void Bullet::ClearItem()
 	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
 	{
 		bu[i].clear_item();
+		ZeroMemory(_actionList[i], sizeof(int) * BULLETACTIONMAX);
 	}
 	index = 0;
-	ZeroMemory(_actionList, sizeof(int) * BULLETACTIONMAX);
 }
 
 void Bullet::Action(bool notinstop)

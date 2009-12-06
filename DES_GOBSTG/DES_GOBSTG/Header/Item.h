@@ -5,7 +5,7 @@
 
 class Player;
 
-#define ITEMINFOFONTMAX		0x40
+//#define ITEMINFOFONTMAX		0x40
 
 #define ITEMTYPEMAX			0x04
 #define ITEMSPRITEMAX		ITEMTYPEMAX
@@ -21,14 +21,6 @@ class Player;
 #define	ITEM_EXTEND			0x6
 #define	ITEM_SMALLFAITH		0x7
 
-struct infoFont
-{
-	char	cScore[M_STRITOAMAX];
-	float	x;
-	float	y;
-	bool	yellow;
-	BYTE	timer;
-};
 
 class Item : public BObject
 {
@@ -61,7 +53,7 @@ public:
 	bool bFast;
 
 	static hgeSprite *sprite[ITEMSPRITEMAX];
-	static VectorList<infoFont>infofont;
+//	static VectorList<infoFont>infofont;
 
 	static VectorList<Item>mi[M_PL_MATCHMAXPLAYER];
 };

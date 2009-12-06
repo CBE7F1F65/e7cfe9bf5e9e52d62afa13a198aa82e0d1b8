@@ -92,6 +92,7 @@ public:
 	bool bAppend;
 
 	static int senditemsiid[EFFSPSEND_COLORMAX][EFFSPSEND_ANIMATIONMAX];
+	static int senditemexsiid;
 	static hgeSprite * sprite;
 
 	static VectorList<EffectSp> effsp;
