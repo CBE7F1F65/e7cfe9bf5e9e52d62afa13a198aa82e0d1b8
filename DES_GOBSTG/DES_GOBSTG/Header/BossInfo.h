@@ -60,8 +60,9 @@ public:
 	static BYTE flag;
 	static BYTE spellflag;
 	static Fontsys fsspellname;
+
+	static BossInfo bossinfo;
 };
 
-extern BossInfo bossinfo;
 
 #endif

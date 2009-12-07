@@ -1,4 +1,5 @@
 #include "EventZone.h"
+#include "ProcessDefine.h"
 
 list<EventZone> EventZone::ezone[M_PL_MATCHMAXPLAYER];
 
@@ -36,15 +37,19 @@ void EventZone::Build(DWORD _type, BYTE _playerindex, float _x, float _y, int _m
 	_pezone->rspeed = _rspeed;
 }
 
-void EventZone::Action()
+void EventZone::Action(DWORD stopflag)
 {
 	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
 	{
-		for (list<EventZone>::iterator it=ezone[i].begin(); it!=ezone[i].end(); it++)
+		bool binstop = FRAME_STOPFLAGCHECK_PLAYERINDEX_(stopflag, i, FRAME_STOPFLAG_EVENTZONE);
+		if (!binstop)
 		{
-			if (it->action())
+			for (list<EventZone>::iterator it=ezone[i].begin(); it!=ezone[i].end(); it++)
 			{
-				it = ezone[i].erase(it);
+				if (it->action())
+				{
+					it = ezone[i].erase(it);
+				}
 			}
 		}
 	}

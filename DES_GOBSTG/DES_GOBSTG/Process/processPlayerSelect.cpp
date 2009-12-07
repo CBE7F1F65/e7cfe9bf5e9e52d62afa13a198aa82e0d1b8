@@ -6,9 +6,9 @@ int Process::processPlayerSelect()
 	time++;
 	if(time == 1)
 	{
-		scr.Execute(SCR_EVENT, SCR_EVENT_ENTERSTATE, STATE_PLAYER_SELECT);
+		Scripter::scr.Execute(SCR_EVENT, SCR_EVENT_ENTERSTATE, STATE_PLAYER_SELECT);
 	}
 	retvalue = PGO;
-	scr.Execute(SCR_CONTROL, STATE_PLAYER_SELECT, time);
+	Scripter::scr.Execute(SCR_CONTROL, STATE_PLAYER_SELECT, time);
 	return retvalue;
 }

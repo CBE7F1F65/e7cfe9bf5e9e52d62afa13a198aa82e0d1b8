@@ -1,20 +1,12 @@
 #include "BGLayer.h"
 #include "Main.h"
 #include "SpriteItemManager.h"
-//#include "BResource.h"
 #include "Scripter.h"
 #include "Export.h"
-/*
-BGLayer * ubg[UBGLAYERMAX];
-BGLayer bg[BGLAYERMAX];
-BGLayer fg[FGLAYERMAX];
+#include "ProcessDefine.h"
 
-BGLayer bgmask;
-BGLayer fgpause;
-*/
-
-BGLayerSet BGLayer::set[BGLAYERSETMAX];
-BGLayer BGLayer::ubg[UBGLAYERMAX];
+BGLayerSet BGLayer::set[M_PL_MATCHMAXPLAYER][BGLAYERSETMAX];
+BGLayer BGLayer::ubg[M_PL_MATCHMAXPLAYER][UBGLAYERMAX];
 
 WORD BGLayer::setindex = 0;
 
@@ -37,27 +29,30 @@ BGLayer::~BGLayer()
 
 void BGLayer::Init(HTEXTURE * _tex)
 {
-	for(int i=0; i<BGLAYERSETMAX; i++)
+	for (int j=0; j<M_PL_MATCHMAXPLAYER; j++)
 	{
-		set[i].sID = 0;
-		set[i].timer = 0;
-	}
-	for (int i=0; i<UBGLAYERMAX; i++)
-	{
-		ubg[i].exist = false;
-		ubg[i].timer = 0;
-		ubg[i].changetimer = 0;
-		ubg[i].flag = 0;
+		for(int i=0; i<BGLAYERSETMAX; i++)
+		{
+			set[j][i].sID = 0;
+			set[j][i].timer = 0;
+		}
+		for (int i=0; i<UBGLAYERMAX; i++)
+		{
+			ubg[j][i].exist = false;
+			ubg[j][i].timer = 0;
+			ubg[j][i].changetimer = 0;
+			ubg[j][i].flag = 0;
+		}
 	}
 	setindex = 0;
 	tex = _tex;
 }
 
-void BGLayer::KillOtherLayer()
+void BGLayer::KillOtherLayer(BYTE playerindex)
 {
 	for (int i=0; i<BGLAYERMAX+FGLAYERMAX; i++)
 	{
-		ubg[i].exist = false;
+		ubg[playerindex][i].exist = false;
 	}
 }
 
@@ -322,113 +317,71 @@ void BGLayer::SetFlag(BYTE _flag, int maxtime)
 	changetimer = 0;
 }
 
-void BGLayer::Action(bool active)
+void BGLayer::Action(DWORD stopflag, bool active)
 {
-	if (active)
+	for (int j=0; j<M_PL_MATCHMAXPLAYER; j++)
 	{
-		for(int i=0; i<BGLAYERSETMAX; i++)
+		bool binstop = FRAME_STOPFLAGCHECK_PLAYERINDEX_(stopflag, j, FRAME_STOPFLAG_LAYER);
+		if (!binstop)
 		{
-			if(set[i].sID != 0)
+			if (active)
 			{
-				set[i].timer++;
-				setindex = i;
+				for(int i=0; i<BGLAYERSETMAX; i++)
+				{
+					if(set[j][i].sID != 0)
+					{
+						set[j][i].timer++;
+						setindex = i;
 
-				if (set[i].timer < set[i].quittime)
-				{
-					scr.Execute(SCR_SCENE, set[i].sID, set[i].timer);
+						if (set[j][i].timer < set[j][i].quittime)
+						{
+							Scripter::scr.Execute(SCR_SCENE, set[j][i].sID, set[j][i].timer);
+						}
+						else if (set[j][i].timer == set[j][i].quittime)
+						{
+							Scripter::scr.Execute(SCR_SCENE, set[j][i].sID, SCRIPT_CON_QUIT);
+						}
+					}
 				}
-				else if (set[i].timer == set[i].quittime)
+			}
+			for (int i=0; i<UBGLAYERMAX; i++)
+			{
+				if (ubg[j][i].exist)
 				{
-					scr.Execute(SCR_SCENE, set[i].sID, SCRIPT_CON_QUIT);
+					ubg[j][i].action();
 				}
 			}
 		}
 	}
-	for (int i=0; i<UBGLAYERMAX; i++)
+}
+
+void BGLayer::RenderBG(BYTE playerindex)
+{
+	for (int i=0; i<BGLAYERMAX; i++)
 	{
-		if (ubg[i].exist)
+		if (ubg[playerindex][i].exist)
 		{
-			ubg[i].action();
+			ubg[playerindex][i].Render();
 		}
+	}
+	if (ubg[playerindex][UBGID_BGMASK].exist)
+	{
+		ubg[playerindex][UBGID_BGMASK].Render();
 	}
 }
 
-void BGLayer::GetIDBeginUntil(BYTE renderflag, bool useforbg, int & idbegin, int & iduntil)
+void BGLayer::RenderFG(BYTE playerindex)
 {
-	if (renderflag == M_RENDER_NULL)
+	for (int i=BGLAYERMAX; i<BGFGLAYERMAX; i++)
 	{
-		if (useforbg)
+		if (ubg[playerindex][i].exist)
 		{
-			idbegin = UBGID_ALLIDBEGIN;
-			iduntil = UBGID_ALLIDUNTIL;
-		}
-		else
-		{
-			idbegin = UFGID_ALLIDBEGIN;
-			iduntil = UFGID_ALLIDUNTIL;
+			ubg[playerindex][i].Render();
 		}
 	}
-	else if (renderflag == M_RENDER_LEFT)
+	if (ubg[playerindex][UBGID_FGPAUSE].exist)
 	{
-		if (useforbg)
-		{
-			idbegin = UBGID_LEFTIDBEGIN;
-			iduntil = UBGID_LEFTIDUNTIL;
-		}
-		else
-		{
-			idbegin = UFGID_LEFTIDBEGIN;
-			iduntil = UFGID_LEFTIDUNTIL;
-		}
-	}
-	else if (renderflag == M_RENDER_RIGHT)
-	{
-		if (useforbg)
-		{
-			idbegin = UBGID_RIGHTIDBEGIN;
-			iduntil = UBGID_RIGHTIDUNTIL;
-		}
-		else
-		{
-			idbegin = UFGID_RIGHTIDBEGIN;
-			iduntil = UFGID_RIGHTIDUNTIL;
-		}
-	}
-}
-
-void BGLayer::RenderBG(BYTE renderflag)
-{
-	int idbegin;
-	int iduntil;
-	GetIDBeginUntil(renderflag, true, idbegin, iduntil);
-	for (int i=idbegin; i<iduntil; i++)
-	{
-		if (ubg[i].exist)
-		{
-			ubg[i].Render();
-		}
-	}
-	if (ubg[UBGID_BGMASK].exist)
-	{
-		ubg[UBGID_BGMASK].Render();
-	}
-}
-
-void BGLayer::RenderFG(BYTE renderflag)
-{
-	int idbegin;
-	int iduntil;
-	GetIDBeginUntil(renderflag, false, idbegin, iduntil);
-	for (int i=idbegin; i<iduntil; i++)
-	{
-		if (ubg[i].exist)
-		{
-			ubg[i].Render();
-		}
-	}
-	if (ubg[UBGID_FGPAUSE].exist)
-	{
-		ubg[UBGID_FGPAUSE].Render();
+		ubg[playerindex][UBGID_FGPAUSE].Render();
 	}
 }
 

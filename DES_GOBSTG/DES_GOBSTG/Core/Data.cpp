@@ -3,7 +3,7 @@
 #include "Export.h"
 #include "ConstResource.h"
 
-Data data;
+Data Data::data;
 
 Data::Data()
 {
@@ -192,29 +192,29 @@ void Data::raSetIndi(int sno, WORD _indi)
 
 int Data::getSpellNumber(int sno)
 {
-	return res.spelldata[sno].spellnumber;
+	return BResource::res.spelldata[sno].spellnumber;
 }
 
 int Data::getSpellUser(int sno)
 {
-	return res.spelldata[sno].userID;
+	return BResource::res.spelldata[sno].userID;
 }
 
 char * Data::getSpellName(int sno)
 {
-	strcpy(buf, res.spelldata[sno].spellname);
+	strcpy(buf, BResource::res.spelldata[sno].spellname);
 	return buf;
 }
 
 char * Data::getSpellUserName(int sno)
 {
-	strcpy(buf, getEnemyName(res.spelldata[sno].userID));
+	strcpy(buf, getEnemyName(BResource::res.spelldata[sno].userID));
 	return buf;
 }
 
 char * Data::getSpellUserEName(int sno)
 {
-	strcpy(buf, getEnemyEName(res.spelldata[sno].userID));
+	strcpy(buf, getEnemyEName(BResource::res.spelldata[sno].userID));
 	return buf;
 }
 
@@ -224,7 +224,7 @@ char * Data::getEnemyName(int type)
 	{
 		return NULL;
 	}
-	return res.enemydata[type].name;
+	return BResource::res.enemydata[type].name;
 }
 
 char * Data::getEnemyEName(int type)
@@ -233,7 +233,7 @@ char * Data::getEnemyEName(int type)
 	{
 		return NULL;
 	}
-	return res.enemydata[type].ename;
+	return BResource::res.enemydata[type].ename;
 }
 
 char * Data::getPlayerName(int type)
@@ -242,7 +242,7 @@ char * Data::getPlayerName(int type)
 	{
 		return NULL;
 	}
-	return res.playerdata[type].name;
+	return BResource::res.playerdata[type].name;
 }
 
 char * Data::getPlayerEName(int type)
@@ -251,7 +251,7 @@ char * Data::getPlayerEName(int type)
 	{
 		return NULL;
 	}
-	return res.playerdata[type].ename;
+	return BResource::res.playerdata[type].ename;
 }
 
 void Data::MoveDown(DWORD sec, BYTE i)
@@ -1070,7 +1070,7 @@ bool Data::SetEffectSystemResourceName(int effi, const char * filename)
 {
 	if(effi < 0 || effi >= EFFECTSYSTYPEMAX)
 		return false;
-	strcpy(res.resdata.effectsysfilename[effi], filename);
+	strcpy(BResource::res.resdata.effectsysfilename[effi], filename);
 	FILE * file = checkTableFile(DATA_EFFECTTABLEDEFINE);
 	if (file == NULL)
 	{
@@ -1091,9 +1091,9 @@ bool Data::SetEffectSystemResourceName(int effi, const char * filename)
 	fprintf(file, "%s\t%s\r\n", comment[0], comment[1]);
 	for (int i=0; i<EFFECTSYSTYPEMAX; i++)
 	{
-		if (strlen(res.resdata.effectsysfilename[i]))
+		if (strlen(BResource::res.resdata.effectsysfilename[i]))
 		{
-			fprintf(file, "%d\t%s\r\n", i, res.resdata.effectsysfilename[i]);
+			fprintf(file, "%d\t%s\r\n", i, BResource::res.resdata.effectsysfilename[i]);
 		}
 	}
 	fclose(file);
@@ -1117,11 +1117,11 @@ bool Data::GetEffectSystemResourceName(int effi, char * filename)
 {
 	if(!filename || effi < 0 || effi >= EFFECTSYSTYPEMAX)
 		return false;
-	if (!strlen(res.resdata.effectsysfilename[effi]))
+	if (!strlen(BResource::res.resdata.effectsysfilename[effi]))
 	{
 		return false;
 	}
-	strcpy(filename, res.resdata.effectsysfilename[effi]);
+	strcpy(filename, BResource::res.resdata.effectsysfilename[effi]);
 	/*
 	DWORD sec = sLinkType(RESDATAS_EFFECTSYS);
 	DWORD name = nLinkNum(nLinkType(RESDATAN_TYPE), effi+1);

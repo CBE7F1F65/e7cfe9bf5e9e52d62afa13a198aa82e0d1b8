@@ -20,7 +20,7 @@ int Process::frame()
 #ifdef __DEBUG
 	if(hge->Input_GetKeyState(HGEK_BACKSPACE))
 	{
-		scr.LoadAll(tex);
+		Scripter::scr.LoadAll(tex);
 		state = STATE_TITLE;
 		time = 0;
 		return PTURN;
@@ -145,12 +145,15 @@ int Process::frame()
 		return PQUIT;
 
 	frameEnd();
-	if (stopflag)
+	for (int i=0; i<FRAME_STOPINFOMAX; i++)
 	{
-		stoptimer--;
-		if (stoptimer == 0)
+		if (stopflag[i])
 		{
-			stopflag = 0;
+			stoptimer[i]--;
+			if (stoptimer[i] == 0)
+			{
+				stopflag[i] = 0;
+			}
 		}
 	}
 

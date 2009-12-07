@@ -12,22 +12,22 @@ int time = 0;
 bool RenderFunc()
 {
 
-	mp.render();
+	Process::mp.render();
 	
 	return false;
 }
 
 bool FrameFunc()
 {
-	mp.SyncInput();
+	Process::mp.SyncInput();
 	if (hge->Input_GetDIKey(KS_ESCAPE_MP))
 		return true;
 	if(hge->Input_GetDIKey(KS_CAPTURE_MP, DIKEY_DOWN))
 	{
-		mp.SnapShot();
+		Process::mp.SnapShot();
 	}
 
-	if(mp.frame() == PQUIT)
+	if(Process::mp.frame() == PQUIT)
 		return true;
 
 	return false;
@@ -52,12 +52,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	{
 		Export::clientAfterInitial();
 		time = 0;
-		mp.state = STATE_INIT;
+		Process::mp.state = STATE_INIT;
 		hge->System_Start();
 	}
 
 	//
-	mp.Release();
+	Process::mp.Release();
 
 //	hge->System_Shutdown();
 	hge->Release();

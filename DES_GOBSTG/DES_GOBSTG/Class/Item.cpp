@@ -6,6 +6,7 @@
 #include "FrontDisplayName.h"
 #include "FrontDisplay.h"
 #include "Export.h"
+#include "ProcessDefine.h"
 
 hgeSprite * Item::sprite[ITEMSPRITEMAX];
 
@@ -40,65 +41,39 @@ void Item::ClearItem()
 //	infofont.clear_item();
 }
 
-void Item::Action(bool notinpause)
+void Item::Action(DWORD stopflag)
 {
 	for (int j=0; j<M_PL_MATCHMAXPLAYER; j++)
 	{
-		if (mi[j].getSize())
+		bool binstop = FRAME_STOPFLAGCHECK_PLAYERINDEX_(stopflag, j, FRAME_STOPFLAG_ITEM);
+		if (!binstop)
 		{
-			DWORD i = 0;
-			DWORD size = mi[j].getSize();
-			for (mi[j].toBegin(); i<size; mi[j].toNext(), i++)
+			if (mi[j].getSize())
 			{
-				if (!mi[j].isValid())
+				DWORD i = 0;
+				DWORD size = mi[j].getSize();
+				for (mi[j].toBegin(); i<size; mi[j].toNext(), i++)
 				{
-					continue;
-				}
-				if ((*mi[j]).exist)
-				{
-					(*mi[j]).action(j);
-				}
-				else
-				{
-					mi[j].pop();
-				}
-			}
-		}
-	}
-	/*
-	if (infofont.getSize())
-	{
-		DWORD i = 0;
-		DWORD size = infofont.getSize();
-		for (infofont.toBegin(); i<size; infofont.toNext(), i++)
-		{
-			if (infofont.isValid())
-			{
-				infoFont * _i = &(*(infofont));
-				if(notinpause)
-				{
-					_i->timer++;
-					if(_i->timer >= 32)
+					if (!mi[j].isValid())
 					{
-						infofont.pop();
+						continue;
 					}
-					if (_i->timer == 24 || _i->timer == 28)
+					if ((*mi[j]).exist)
 					{
-						for(int i=0; i<(int)strlen(_i->cScore); i++)
-						{
-							_i->cScore[i] += 10;
-						}
+						(*mi[j]).action(j);
+					}
+					else
+					{
+						mi[j].pop();
 					}
 				}
 			}
 		}
 	}
-	*/
 }
 
-void Item::RenderAll(BYTE renderflag)
+void Item::RenderAll(BYTE playerindex)
 {
-	BYTE playerindex = Export::GetPlayerIndexByRenderFlag(renderflag);
 	if (mi[playerindex].getSize())
 	{
 		DWORD i = 0;
@@ -111,22 +86,6 @@ void Item::RenderAll(BYTE renderflag)
 			}
 		}
 	}
-	/*
-	if (infofont.getSize())
-	{
-		DWORD i = 0;
-		DWORD size = infofont.getSize();
-		for (infofont.toBegin(); i<size; infofont.toNext(), i++)
-		{
-			if (!infofont.isValid())
-			{
-				continue;
-			}
-			infoFont * _i = &(*(infofont));
-			FrontDisplay::fdisp.ItemInfoDisplay(_i);
-		}
-	}
-	*/
 }
 
 void Item::Init()

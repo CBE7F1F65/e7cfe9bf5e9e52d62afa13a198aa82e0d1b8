@@ -17,18 +17,15 @@ bool Process::reload()
 
 	frameskip = M_DEFAULT_FRAMESKIP;
 	strcpy(rpyfilename, "");
-	replayIndex = 0;
+	Replay::rpy.InitReplayIndex();
 	pauseinit = false;
 	replaymode = false;
 	replayFPS = 0;
 	scene = 0;
 //	scene = S100;
-	worldx = 0;
-	worldy = 0;
-	worldz = 0;
-	worldshaketimer = 0;
 	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
 	{
+		SetShake(i, 0, true);
 		if (rendertar[i])
 		{
 			hge->Target_Free(rendertar[i]);

@@ -2,7 +2,7 @@ function ePlayerSendEx_0(esindex, oplayerindex, playerID, opx, opy, px, py, opla
 	local aimx = helper_GetCenterX(oplayerindex) + hge.Random_Float(-136, 136);
 	local aimy = hge.Random_Float(0, 128);
 	local chasetimer = hge.Random_Int(45, 60);
-	game.PlayerSendEx(esindex, aimx, aimy, chasetimer);
+	game.PlayerSendEx(oplayerindex, esindex, aimx, aimy, chasetimer);
 	return true;
 end
 
@@ -10,7 +10,7 @@ function ePlayerSendEx_1(esindex, oplayerindex, playerID, opx, opy, px, py, opla
 	local aimx = helper_GetCenterX(oplayerindex) + hge.Random_Float(-136, 136);
 	local aimy = 448;
 	local chasetimer = hge.Random_Int(45, 60);
-	game.PlayerSendEx(esindex, aimx, aimy, chasetimer);
+	game.PlayerSendEx(oplayerindex, esindex, aimx, aimy, chasetimer);
 	return true;
 end
 

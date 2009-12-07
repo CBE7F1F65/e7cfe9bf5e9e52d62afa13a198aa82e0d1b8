@@ -30,8 +30,8 @@ public:
 
 	static void Init();
 	static void ClearItem();
-	static void Action(bool notinpause);
-	static void RenderAll(BYTE renderflag);
+	static void Action(DWORD stopflag);
+	static void RenderAll(BYTE playerindex);
 
 	static int Build(BYTE playerindex, WORD type, float x, float y, bool bDrained = false, int angle = 9000, float speed = ITEM_STARTSPEED);
 

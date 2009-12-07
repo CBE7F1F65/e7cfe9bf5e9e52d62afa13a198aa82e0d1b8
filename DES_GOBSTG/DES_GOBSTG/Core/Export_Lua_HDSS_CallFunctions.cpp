@@ -30,7 +30,7 @@ int _HDSSCallGet::Call_SD(LuaState * ls)
 	{
 		int _index = _INEXT_HDSS_LUAPARA;
 		int _ival = _INEXT_HDSS_LUAPARA;
-		scr.SetValue(_index, &_ival, false);
+		Scripter::scr.SetValue(_index, &_ival, false);
 	}
 	return 0;
 }
@@ -44,7 +44,7 @@ int _HDSSCallGet::Call_SDf(LuaState * ls)
 		int _index = _INEXT_HDSS_LUAPARA;
 		_ONEXT_HDSS_LUAPARA;
 		DWORD _dval = _DOBJ_HDSS_LUA;
-		scr.SetValue(_index, &_dval, true);
+		Scripter::scr.SetValue(_index, &_dval, true);
 	}
 	return 0;
 }
@@ -56,7 +56,7 @@ int _HDSSCallGet::Call_RETURN(LuaState * ls)
 	if (true)
 	{
 		int _retvalue = _INEXT_HDSS_LUAPARA;
-		mp.SetReturnValue(_retvalue);
+		Process::mp.SetReturnValue(_retvalue);
 	}
 	return 0;
 }
@@ -76,7 +76,7 @@ int _HDSSCallGet::Call_SETSTATE(LuaState * ls)
 			_time = _IOBJ_HDSS_LUA;
 		}
 
-		mp.SetState(_state, _time);
+		Process::mp.SetState(_state, _time);
 	}
 	return 0;
 }
@@ -129,7 +129,7 @@ int _HDSSCallGet::Call_STARTPREP(LuaState * ls)
 		{
 			_callinit = _BOBJ_HDSS_LUA;
 		}
-		mp.startPrep(_callinit);
+		Process::mp.startPrep(_callinit);
 	}
 	return 0;
 }
@@ -609,6 +609,7 @@ int _HDSSCallGet::Call_BGVALUE(LuaState * ls)
 	_ENTERCALL_HDSS_LUA;
 	if (true)
 	{
+		BYTE _playerindex = _INEXT_HDSS_LUAPARA;
 		int _index = _INEXT_HDSS_LUAPARA;
 		int _siid = _INEXT_HDSS_LUAPARA;
 		float _cenx = _FNEXT_HDSS_LUAPARA;
@@ -633,7 +634,7 @@ int _HDSSCallGet::Call_BGVALUE(LuaState * ls)
 			}
 		}
 
-		BGLayer::ubg[_index].valueSet(_siid, _cenx, _ceny, _w, _h, _col);
+		BGLayer::ubg[_playerindex][_index].valueSet(_siid, _cenx, _ceny, _w, _h, _col);
 	}
 	return 0;
 }
@@ -643,6 +644,7 @@ int _HDSSCallGet::Call_BGVALEX(LuaState * ls)
 	_ENTERCALL_HDSS_LUA;
 	if (true)
 	{
+		BYTE _playerindex = _INEXT_HDSS_LUAPARA;
 		int _index = _INEXT_HDSS_LUAPARA;
 		int _siid = _INEXT_HDSS_LUAPARA;
 
@@ -653,7 +655,7 @@ int _HDSSCallGet::Call_BGVALEX(LuaState * ls)
 			_col = _COBJ_HDSS_LUA;
 		}
 
-		BGLayer::ubg[_index].valueSet(_siid, 0, 0, 0, 0, _col);
+		BGLayer::ubg[_playerindex][_index].valueSet(_siid, 0, 0, 0, 0, _col);
 
 		if (argscount > 2)
 		{
@@ -700,8 +702,8 @@ int _HDSSCallGet::Call_BGVALEX(LuaState * ls)
 				}
 			}
 
-			BGLayer::ubg[_index].rectSet(_x, _y, _z, _w, _h, _rotx, _roty, _rotz);
-			BGLayer::ubg[_index].parallelogram(_paral);
+			BGLayer::ubg[_playerindex][_index].rectSet(_x, _y, _z, _w, _h, _rotx, _roty, _rotz);
+			BGLayer::ubg[_playerindex][_index].parallelogram(_paral);
 
 			if (argscount > 3)
 			{
@@ -728,7 +730,7 @@ int _HDSSCallGet::Call_BGVALEX(LuaState * ls)
 						}
 					}
 				}
-				BGLayer::ubg[_index].moveSet(_speed, _angle, _move, _rotate);
+				BGLayer::ubg[_playerindex][_index].moveSet(_speed, _angle, _move, _rotate);
 			}
 		}
 	}
@@ -741,6 +743,7 @@ int _HDSSCallGet::Call_BGFLAG(LuaState * ls)
 
 	if (true)
 	{
+		BYTE _playerindex = _INEXT_HDSS_LUAPARA;
 		int _index = _INEXT_HDSS_LUAPARA;
 		BYTE _flag = _INEXT_HDSS_LUAPARA;
 		int _maxtime = -1;
@@ -749,7 +752,7 @@ int _HDSSCallGet::Call_BGFLAG(LuaState * ls)
 		{
 			_maxtime = _IOBJ_HDSS_LUA;
 		}
-		BGLayer::ubg[_index].SetFlag(_flag, _maxtime);
+		BGLayer::ubg[_playerindex][_index].SetFlag(_flag, _maxtime);
 	}
 	return 0;
 }
@@ -760,6 +763,7 @@ int _HDSSCallGet::Call_BGCOLOR(LuaState * ls)
 
 	if (true)
 	{
+		BYTE _playerindex = _INEXT_HDSS_LUAPARA;
 		int _index = _INEXT_HDSS_LUAPARA;
 		DWORD col[4];
 		for (int i=0; i<4; i++)
@@ -768,7 +772,7 @@ int _HDSSCallGet::Call_BGCOLOR(LuaState * ls)
 			col[i] = _COBJ_HDSS_LUA;
 		}
 
-		BGLayer::ubg[_index].colorSet(col[0], col[1], col[2], col[3]);
+		BGLayer::ubg[_playerindex][_index].colorSet(col[0], col[1], col[2], col[3]);
 	}
 	return 0;
 }
@@ -779,14 +783,15 @@ int _HDSSCallGet::Call_BGOFF(LuaState * ls)
 
 	if (true)
 	{
+		BYTE _playerindex = _INEXT_HDSS_LUAPARA;
 		int _index = _INEXT_HDSS_LUAPARA;
 		if (_index < 0)
 		{
-			BGLayer::KillOtherLayer();
+			BGLayer::KillOtherLayer(_playerindex);
 		}
 		else
 		{
-			BGLayer::ubg[_index].exist = false;
+			BGLayer::ubg[_playerindex][_index].exist = false;
 		}
 	}
 	return 0;
@@ -823,7 +828,7 @@ int _HDSSCallGet::Call_SELBUILD(LuaState * ls)
 			}
 		}
 
-		Selector * _selector = selsys[_selsys].BuildSelector(_id, _siid, _cenx, _ceny, _hscale, _vscale, _flag);
+		Selector * _selector = SelectSystem::selsys[_selsys].BuildSelector(_id, _siid, _cenx, _ceny, _hscale, _vscale, _flag);
 
 		if (argscount > 2)
 		{
@@ -973,7 +978,7 @@ int _HDSSCallGet::Call_SELCLEAR(LuaState * ls)
 	if (true)
 	{
 		int _selsys = _INEXT_HDSS_LUAPARA;
-		selsys[_selsys].Clear();
+		SelectSystem::selsys[_selsys].Clear();
 	}
 	return 0;
 }
@@ -1018,7 +1023,7 @@ int _HDSSCallGet::Call_SELSETUP(LuaState * ls)
 				}
 			}
 		}
-		selsys[_selsys].Setup(_selsys, _nselect, _select, _keyplus, _keyminus, _keyok, _keycancel, _maxtime);
+		SelectSystem::selsys[_selsys].Setup(_selsys, _nselect, _select, _keyplus, _keyminus, _keyok, _keycancel, _maxtime);
 
 		if (argscount > 2)
 		{
@@ -1039,7 +1044,7 @@ int _HDSSCallGet::Call_SELSETUP(LuaState * ls)
 					_shiftangle = _IOBJ_HDSS_LUA;
 				}
 			}
-			selsys[_selsys].SetPageNumber(_nPageNumber, _fadebegin, _offset, _initshift, _shiftangle);
+			SelectSystem::selsys[_selsys].SetPageNumber(_nPageNumber, _fadebegin, _offset, _initshift, _shiftangle);
 
 			if (argscount > 3)
 			{
@@ -1047,7 +1052,7 @@ int _HDSSCallGet::Call_SELSETUP(LuaState * ls)
 				int _selectframeSIID = _INEXT_HDSS_LUAPARA;
 				float _x = _FNEXT_HDSS_LUAPARA;
 				float _y = _FNEXT_HDSS_LUAPARA;
-				selsys[_selsys].SetSelectFrame(_selectframeSIID, _x, _y);
+				SelectSystem::selsys[_selsys].SetSelectFrame(_selectframeSIID, _x, _y);
 			}
 		}
 	}
@@ -1066,7 +1071,7 @@ int _HDSSCallGet::Call_SELSET(LuaState * ls)
 		{
 			_select = _IOBJ_HDSS_LUA;
 		}
-		_select = selsys[_selsys].SetSelect(_select);
+		_select = SelectSystem::selsys[_selsys].SetSelect(_select);
 		ls->PushInteger(_select);
 		return 1;
 	}

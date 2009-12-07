@@ -254,8 +254,9 @@ public:
 	int varIndex;
 	DWORD strdescIndex;
 
-	static bool stopEdefScript;
 	static char strdesc[STRINGDESCMAX][M_STRMAX*2];
+
+	static Scripter scr;
 
 #ifndef __NOTUSELUA
 public:
@@ -263,7 +264,5 @@ public:
 	bool Execute_Lua(DWORD typeflag, DWORD name, DWORD con);
 #endif
 };
-
-extern Scripter scr;
 
 #endif

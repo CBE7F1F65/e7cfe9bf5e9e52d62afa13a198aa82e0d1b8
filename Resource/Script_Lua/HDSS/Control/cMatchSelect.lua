@@ -3,13 +3,13 @@ end
 
 function CEMatchSelect_SetBG()
 	--Mask
-	hdssBGVALUE(UBGID_BGMASK, SI_White, TotalCenterX, TotalCenterY, TotalW, TotalH, global.ARGB(0xFF, 0));
+	hdssBGVALUE(0, UBGID_BGMASK, SI_White, TotalCenterX, TotalCenterY, TotalW, TotalH, global.ARGB(0xFF, 0));
 	--BG
-	hdssBGVALUE(LConst_uibg_backgroundid, SI_SelectScene, TotalCenterX, TotalCenterY, TotalW, TotalH);
+	hdssBGVALUE(0, LConst_uibg_backgroundid, SI_SelectScene, TotalCenterX, TotalCenterY, TotalW, TotalH);
 	--TopContent
-	hdssBGVALUE(LConst_uibg_topcontentid, SI_TopContent_MatchMode, TotalCenterX, 96);
+	hdssBGVALUE(0, LConst_uibg_topcontentid, SI_TopContent_MatchMode, TotalCenterX, 96);
 	--Fade
-	hdssBGFLAG(UBGID_BGMASK, BG_FADEOUT);
+	hdssBGFLAG(0, UBGID_BGMASK, BG_FADEOUT);
 end
 
 function CEMatchSelect_CloseUsed(selsysmatchid, selsyslatencyid, bbottom)
@@ -18,9 +18,9 @@ function CEMatchSelect_CloseUsed(selsysmatchid, selsyslatencyid, bbottom)
 		bbottom = true;
 	end
 	if bbottom then
-		hdssBGOFF(LConst_uibg_bottomid);
+		hdssBGOFF(0, LConst_uibg_bottomid);
 	end
-	hdssBGOFF(LConst_uibg_infoid);
+	hdssBGOFF(0, LConst_uibg_infoid);
 	--Clear
 	hdssSELCLEAR(selsysmatchid, selsyslatencyid);
 end
@@ -72,13 +72,13 @@ function CEMatchSelect_DispatchSelect_Match(selsysmatchid)
 			game.SetMatchMode(MatchMode_N2N);
 			return true;
 		elseif select == 1 then
-			hdssBGVALUE(LConst_uibg_bottomid, SI_MatchSelect_P2P, TotalCenterX, 440);
+			hdssBGVALUE(0, LConst_uibg_bottomid, SI_MatchSelect_P2P, TotalCenterX, 440);
 			game.SetMatchMode(MatchMode_P2P);
 		elseif select == 2 then
-			hdssBGVALUE(LConst_uibg_bottomid, SI_MatchSelect_P2C, TotalCenterX, 440);
+			hdssBGVALUE(0, LConst_uibg_bottomid, SI_MatchSelect_P2C, TotalCenterX, 440);
 			game.SetMatchMode(MatchMode_P2C);
 		elseif select == 3 then
-			hdssBGVALUE(LConst_uibg_bottomid, SI_MatchSelect_C2P, TotalCenterX, 440);
+			hdssBGVALUE(0, LConst_uibg_bottomid, SI_MatchSelect_C2P, TotalCenterX, 440);
 			game.SetMatchMode(MatchMode_C2P);
 		end
 		CEMatchSelect_ExitState(STATE_PLAYER_SELECT, false);
@@ -90,8 +90,8 @@ function CEMatchSelect_DispatchSelect_Match(selsysmatchid)
 end
 
 function CEMatchSelect_SetBG_Waiting()
-	hdssBGVALUE(LConst_uibg_bottomid, SI_MatchSelect_N2N, TotalCenterX, 440);
-	hdssBGVALUE(LConst_uibg_infoid, SI_MatchMode_Waiting, TotalCenterX, 200, 384, 60);
+	hdssBGVALUE(0, LConst_uibg_bottomid, SI_MatchSelect_N2N, TotalCenterX, 440);
+	hdssBGVALUE(0, LConst_uibg_infoid, SI_MatchMode_Waiting, TotalCenterX, 200, 384, 60);
 end
 
 function CEMatchSelect_DispatchPasteIP(selsyslatencyid, _ipx, _ipport)
@@ -186,7 +186,7 @@ end
 
 function CEMatchSelect_SetSelect_Latency(selsyslatencyid, latency)
 	
-	hdssBGVALUE(LConst_uibg_infoid, SI_MatchMode_Latency, TotalCenterX, 200, 384, 30);
+	hdssBGVALUE(0, LConst_uibg_infoid, SI_MatchMode_Latency, TotalCenterX, 200, 384, 30);
 	hdssSELCLEAR(selsyslatencyid);
 	
 	local x = TotalCenterX;

@@ -1,17 +1,6 @@
 #include "processPrep.h"
 
-replayFrame replayframe[M_SAVEINPUTMAX];
-
-Process mp;
-
-DWORD replayIndex = 0;
-
-float worldx = 0;
-float worldy = 0;
-float worldz = 0;
-
-int randi = 0;
-BYTE tari = 0;
+Process Process::mp;
 
 Process::Process()
 {
@@ -63,6 +52,7 @@ Process::Process()
 	{
 		rendertar[i] = NULL;
 		sprendertar[i] = NULL;
+		SetShake(i, 0, true);
 	}
 
 	texInit = NULL;
@@ -128,9 +118,9 @@ void Process::Release()
 		if(playing)
 			DataConnector::addPlayTime();
 
-		if (!data.bin.empty())
+		if (!Data::data.bin.empty())
 		{
-			data.SaveBin();
+			Data::data.SaveBin();
 		}
 	}
 
@@ -183,30 +173,41 @@ void Process::musicSlide(float slidetime, int tovol, int pan, float pitch)
 	}
 }
 
-void Process::SetShake(BYTE round, bool force/* =false */)
+void Process::SetShake(BYTE playerindex, BYTE round, bool force/* =false */)
 {
-	if (force || worldshaketimer == 0)
+	if (force || worldshaketimer[playerindex] == 0)
 	{
-		worldshaketimer = round * 15;
+		worldshakeround[playerindex] = round;
+		worldshaketimer[playerindex] = worldshakeround[playerindex] * 15;
+		worldx[playerindex] = 0;
+		worldy[playerindex] = 0;
+		worldz[playerindex] = 0;
 	}
 }
 
-void Process::WorldShake()
+void Process::WorldShake(DWORD stopflag)
 {
-	if (worldshaketimer)
+	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
 	{
-		worldshaketimer--;
-		if (!worldshaketimer)
+		bool binstop = FRAME_STOPFLAGCHECK_PLAYERINDEX_(stopflag, i, FRAME_STOPFLAG_WORLDSHAKE);
+		if (!binstop)
 		{
-			round = 0;
-			worldx = 0;
-			worldy = 0;
-		}
-		else
-		{
-			int tangle = (round*15-worldshaketimer) * 4800;
-			worldx = sint(tangle) * 10;
-			worldy = cost(tangle) * 10;
+			if (worldshaketimer[i])
+			{
+				worldshaketimer[i]--;
+				if (!worldshaketimer[i])
+				{
+					worldshakeround[i] = 0;
+					worldx[i] = 0;
+					worldy[i] = 0;
+				}
+				else
+				{
+					int tangle = (worldshakeround[i]*15-worldshaketimer[i]) * 4800;
+					worldx[i] = sint(tangle) * 10;
+					worldy[i] = cost(tangle) * 10;
+				}
+			}
 		}
 	}
 }
@@ -223,16 +224,16 @@ void Process::musicChange(BYTE ID, bool force)
 	}
 	if(!hge->Channel_IsPlaying(channel) || musicID != ID-1 || force)
 	{
-		if (musicID < 0 || strcmp(res.musdata[ID-1].musicfilename, res.musdata[musicID].musicfilename))
+		if (musicID < 0 || strcmp(BResource::res.musdata[ID-1].musicfilename, BResource::res.musdata[musicID].musicfilename))
 		{
 			if(stream)
 				hge->Stream_Free(stream);
-			stream = hge->Stream_Load(res.musdata[ID-1].musicfilename, 0, false);
+			stream = hge->Stream_Load(BResource::res.musdata[ID-1].musicfilename, 0, false);
 		}
 		musicID = ID-1;
-		channelsyncinfo.startPos = res.musdata[musicID].startpos;
-		channelsyncinfo.introLength = res.musdata[musicID].introlength;
-		channelsyncinfo.allLength = res.musdata[musicID].alllength;
+		channelsyncinfo.startPos = BResource::res.musdata[musicID].startpos;
+		channelsyncinfo.introLength = BResource::res.musdata[musicID].introlength;
+		channelsyncinfo.allLength = BResource::res.musdata[musicID].alllength;
 		if (channel)
 		{
 			musicSlide(0, bgmvol);
@@ -253,7 +254,7 @@ void Process::SnapShot()
 	char snapshotfilename[M_PATHMAX];
 	strcpy(snapshotfilename, "");
 	sprintf(snapshotfilename, "%s%s_%04d_%02d_%02d_%02d_%02d_%02d_%04d.%s",
-		res.resdata.snapshotfoldername,
+		BResource::res.resdata.snapshotfoldername,
 		SNAPSHOT_PRIFIX,
 		systime.wYear, systime.wMonth, systime.wDay, systime.wHour, systime.wMinute, systime.wSecond, systime.wMilliseconds,
 		SNAPSHOT_EXTENSION);
@@ -649,4 +650,24 @@ bool Process::IsInGame()
 		return true;
 	}
 	return false;
+}
+
+void Process::SetStop(DWORD _stopflag, int _stoptimer)
+{
+	int useindex = 0;
+	int minstoptimer = 0;
+	for (int i=0; i<FRAME_STOPINFOMAX; i++)
+	{
+		if (!stopflag[i])
+		{
+			useindex = i;
+			break;
+		}
+		if (!minstoptimer || stoptimer[i] < minstoptimer)
+		{
+			useindex = i;
+		}
+	}
+	stopflag[useindex] = _stopflag;
+	stoptimer[useindex] = _stoptimer;
 }

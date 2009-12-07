@@ -61,7 +61,7 @@ int Export_Lua_Game::LuaFn_Game_GetLastIP(LuaState * ls)
 
 int Export_Lua_Game::LuaFn_Game_AccessIP(LuaState * ls)
 {
-	int iret = mp.AccessIP();
+	int iret = Process::mp.AccessIP();
 	ls->PushInteger(iret);
 	return 1;
 }
@@ -71,7 +71,7 @@ int Export_Lua_Game::LuaFn_Game_SetLatency(LuaState * ls)
 	LuaStack args(ls);
 
 	int _latency = args[1].GetInteger();
-	bool bret = mp.SetLatency(_latency);
+	bool bret = Process::mp.SetLatency(_latency);
 	ls->PushBoolean(bret);
 	return 1;
 }
@@ -81,13 +81,13 @@ int Export_Lua_Game::LuaFn_Game_SetMatchMode(LuaState * ls)
 	LuaStack args(ls);
 
 	BYTE _mode = args[1].GetInteger();
-	mp.SetMatchMode(_mode);
+	Process::mp.SetMatchMode(_mode);
 	return 0;
 }
 
 int Export_Lua_Game::LuaFn_Game_GetMatchMode(LuaState * ls)
 {
-	BYTE _mode = mp.GetMatchMode();
+	BYTE _mode = Process::mp.GetMatchMode();
 	ls->PushInteger(_mode);
 	return 1;
 }
@@ -100,7 +100,7 @@ int Export_Lua_Game::LuaFn_Game_GetPlayerContentTable(LuaState * ls)
 		int _playercount = PLAYERTYPEMAX;
 		for (int i=0; i<PLAYERTYPEMAX; i++)
 		{
-			if (!strlen(res.playerdata[i].name))
+			if (!strlen(BResource::res.playerdata[i].name))
 			{
 				_playercount = i;
 				break;
@@ -112,9 +112,9 @@ int Export_Lua_Game::LuaFn_Game_GetPlayerContentTable(LuaState * ls)
 	else
 	{
 		int _index = args[1].GetInteger();
-		ls->PushInteger(res.playerdata[_index].faceSIID);
-		_LuaHelper_PushString(ls, res.playerdata[_index].name);
-		_LuaHelper_PushString(ls, res.playerdata[_index].ename);
+		ls->PushInteger(BResource::res.playerdata[_index].faceSIID);
+		_LuaHelper_PushString(ls, BResource::res.playerdata[_index].name);
+		_LuaHelper_PushString(ls, BResource::res.playerdata[_index].ename);
 		return 3;
 	}
 	return 0;
@@ -128,7 +128,7 @@ int Export_Lua_Game::LuaFn_Game_GetSceneContentTable(LuaState * ls)
 		int _scenecount = SCENEMAX;
 		for (int i=0; i<SCENEMAX; i++)
 		{
-			if (!strlen(res.scenedata[i].scenename))
+			if (!strlen(BResource::res.scenedata[i].scenename))
 			{
 				_scenecount = i;
 				break;
@@ -140,7 +140,7 @@ int Export_Lua_Game::LuaFn_Game_GetSceneContentTable(LuaState * ls)
 	else
 	{
 		int _index = args[1].GetInteger();
-		ls->PushString(res.scenedata[_index].scenename);
+		ls->PushString(BResource::res.scenedata[_index].scenename);
 		return 1;
 	}
 	return 0;
@@ -148,8 +148,11 @@ int Export_Lua_Game::LuaFn_Game_GetSceneContentTable(LuaState * ls)
 
 int Export_Lua_Game::LuaFn_Game_GetSendItemInfo(LuaState * ls)
 {
-	EffectSp * _peffsp = &(*(EffectSp::effsp));
-	ls->PushInteger(_peffsp->ID);
+	LuaStack args(ls);
+	BYTE _playerindex = args[1].GetInteger();
+
+	EffectSp * _peffsp = &(*(EffectSp::effsp[_playerindex]));
+	ls->PushInteger(_peffsp->setID);
 	ls->PushNumber(_peffsp->x);
 	ls->PushNumber(_peffsp->y);
 	if (_peffsp->bAppend)
@@ -260,11 +263,11 @@ int Export_Lua_Game::LuaFn_Game_SetGhostActiveInfo(LuaState * ls)
 int Export_Lua_Game::LuaFn_Game_GetPlayerSendExInfo(LuaState * ls)
 {
 	LuaStack args(ls);
-	int _esindex = args[1].GetInteger();
-	EffectSp * _peffsp = &(EffectSp::effsp[_esindex]);
-	BYTE _playerindex = _peffsp->ID;
+	BYTE _playerindex = args[1].GetInteger();
+	int _esindex = EffectSp::effsp[_playerindex].getIndex();
+	EffectSp * _peffsp = &(*EffectSp::effsp[_playerindex]);
 
-	ls->PushInteger(_playerindex);
+	ls->PushInteger(_esindex);
 	ls->PushInteger(Player::p[1-_playerindex].nowID);
 	ls->PushNumber(Player::p[_playerindex].x);
 	ls->PushNumber(Player::p[_playerindex].y);
@@ -278,30 +281,31 @@ int Export_Lua_Game::LuaFn_Game_PlayerSendEx(LuaState * ls)
 {
 	LuaStack args(ls);
 
-	int _esindex = args[1].GetInteger();
-	EffectSp * _peffsp = &(EffectSp::effsp[_esindex]);
-	BYTE _playerindex = _peffsp->ID;
-	float _aimx = args[2].GetFloat();
-	float _aimy = args[3].GetFloat();
-	int _chasetimer = args[4].GetInteger();
+	BYTE _playerindex = args[1].GetInteger();
+	int _esindex = args[2].GetInteger();
+	EffectSp * _peffsp = &(EffectSp::effsp[_playerindex][_esindex]);
+
+	float _aimx = args[3].GetFloat();
+	float _aimy = args[4].GetFloat();
+	int _chasetimer = args[5].GetInteger();
 	DWORD _color = 0xa0ffffff;
 	int _headangleadd = SIGN(_playerindex) * 800;
 	float _appendfloat = 0;
 
 	int argscount = args.Count();
-	if (argscount > 4)
+	if (argscount > 5)
 	{
-		LuaObject _tobj = args[5];
+		LuaObject _tobj = args[6];
 		_color = _LuaHelper_GetDWORD(&_tobj);
-		if (argscount > 5)
+		if (argscount > 6)
 		{
-			_headangleadd = args[6].GetInteger();
-			if (argscount > 6)
+			_headangleadd = args[7].GetInteger();
+			if (argscount > 7)
 			{
-				_appendfloat = args[7].GetFloat();
-				if (argscount > 7)
+				_appendfloat = args[8].GetFloat();
+				if (argscount > 8)
 				{
-					int _siid = args[8].GetInteger();
+					int _siid = args[9].GetInteger();
 					_peffsp->siid = _siid;
 				}
 			}

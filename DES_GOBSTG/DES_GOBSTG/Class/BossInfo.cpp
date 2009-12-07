@@ -15,7 +15,7 @@
 #include "Bullet.h"
 #include "BResource.h"
 
-BossInfo bossinfo;
+BossInfo BossInfo::bossinfo;
 int BossInfo::sno;
 int BossInfo::turntoscene;
 bool BossInfo::failed;
@@ -43,12 +43,12 @@ void BossInfo::Clear()
 //bossinfo
 bool BossInfo::Fill(int _sno)
 {
-	spellData * item = &(res.spelldata[_sno]);
+	spellData * item = &(BResource::res.spelldata[_sno]);
 	sno = _sno;
 	spellflag = item->spellflag;
 	strcpy(spellname, item->spellname);
-	strcpy(enemyname, data.getEnemyName(item->userID));
-	strcpy(enemyename, data.getEnemyEName(item->userID));
+	strcpy(enemyname, Data::data.getEnemyName(item->userID));
+	strcpy(enemyename, Data::data.getEnemyEName(item->userID));
 	limit = item->timelimit;
 	remain = item->remain;
 	turntoscene = item->turntoscene;
@@ -72,7 +72,7 @@ void BossInfo::bossUp()
 
 	if(!(spellflag & BISF_NOTSPELL))
 	{
-		BGLayer::ubg[UBGID_BGMASK].SetFlag(BG_WHITEFLASH, BGMT_FLASH);
+//		BGLayer::ubg[UBGID_BGMASK].SetFlag(BG_WHITEFLASH, BGMT_FLASH);
 //		Enemy::actionflag[ENEMY_MAINBOSSINDEX] = BOSS_SPELLUP;
 		fsspellname.SignUp(spellname, FrontDisplay::fdisp.info.smallfont);
 //		get = DataConnector::nGet();

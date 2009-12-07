@@ -168,9 +168,9 @@ bool Export_Lua::_LuaRegistCustomConst(LuaObject * obj)
 	// CustomConst
 	for (int i=0; i<SCR_CUSTOMCONSTMAX; i++)
 	{
-		if (strlen(res.customconstdata[i].name))
+		if (strlen(BResource::res.customconstdata[i].name))
 		{
-			obj->SetInteger(res.customconstdata[i].name, res.customconstdata[i].value);
+			obj->SetInteger(BResource::res.customconstdata[i].name, BResource::res.customconstdata[i].value);
 		}
 	}
 

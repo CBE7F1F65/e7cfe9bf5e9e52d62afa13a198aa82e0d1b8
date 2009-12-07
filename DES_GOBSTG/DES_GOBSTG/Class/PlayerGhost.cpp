@@ -36,7 +36,7 @@ void PlayerGhost::valueSet(BYTE _playerindex, WORD _ID, bool move)
 	yshake	=	0.0f;
 	lastchasing	=	false;
 
-	playerghostData * _pgd = &(res.playerghostdata[ID]);
+	playerghostData * _pgd = &(BResource::res.playerghostdata[ID]);
 
 	
 	speed	=	_pgd->speed;
@@ -163,7 +163,7 @@ void PlayerGhost::action()
 	bool chasing = false;
 	bool shooting = Player::p[playerindex].flag & PLAYER_SHOOT;
 
-	playerghostData * _pgd = &(res.playerghostdata[ID]);
+	playerghostData * _pgd = &(BResource::res.playerghostdata[ID]);
 
 	if (flag & PGFLAG_TRACE)
 	{
@@ -176,7 +176,7 @@ void PlayerGhost::action()
 	{
 		chasetime = 8;
 		BObject * _tpbobj;
-		if (PlayerBullet::GetLockAim(&_tpbobj) && shooting)
+		if (PlayerBullet::GetLockAim(&_tpbobj, playerindex) && shooting)
 		{
 			aimx = _tpbobj->x - _pgd->xadj;
 			aimy = _tpbobj->y - _pgd->yadj;
@@ -289,7 +289,7 @@ void PlayerGhost::action()
 		headangle = 0;
 	}
 
-	SpriteItemManager::SetSprite(_pgd->siid, sprite, mp.tex);
+	SpriteItemManager::SetSprite(_pgd->siid, sprite, Process::mp.tex);
 	if (flag & PGFLAG_SYNCPLAYER)
 	{
 		float tex_x, tex_y, tex_w, tex_h;

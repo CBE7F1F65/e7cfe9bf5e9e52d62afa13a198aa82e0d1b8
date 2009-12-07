@@ -55,8 +55,8 @@ public:
 
 	void	SnapShot();
 
-	void	SetShake(BYTE round, bool force=false);
-	void	WorldShake();
+	void	SetShake(BYTE playerindex, BYTE round, bool force=false);
+	void	WorldShake(DWORD stopflag);
 
 	void	SyncInput();
 	void	SetState(int state, int time = 0);
@@ -67,6 +67,8 @@ public:
 	void	SetMatchMode(BYTE mode);
 	BYTE	GetMatchMode();
 	bool	IsInGame();
+
+	void	SetStop(DWORD stopflag, int stoptimer);
 
 public:
 	union{
@@ -126,16 +128,19 @@ public:
 	hgeChannelSyncInfo channelsyncinfo;
 
 	//shake
-	int worldshaketimer;
-	BYTE round;
+	int worldshaketimer[M_PL_MATCHMAXPLAYER];
+	BYTE worldshakeround[M_PL_MATCHMAXPLAYER];
+	float worldx[M_PL_MATCHMAXPLAYER];
+	float worldy[M_PL_MATCHMAXPLAYER];
+	float worldz[M_PL_MATCHMAXPLAYER];
 
 	//main
 	DWORD lasttime;
 	DWORD alltime;
 	bool	active;
 
-	DWORD	stopflag;
-	int		stoptimer;
+	DWORD	stopflag[FRAME_STOPINFOMAX];
+	int		stoptimer[FRAME_STOPINFOMAX];
 
 	int retvalue;
 
@@ -143,8 +148,10 @@ public:
 
 	//pause return
 	bool	pauseinit;
+
 	//Replayinfo
 	float	replayFPS;
+
 	//error
 	int	errorcode;
 
@@ -164,18 +171,8 @@ public:
 	//
 	HTARGET	rendertar[M_PL_MATCHMAXPLAYER];
 	hgeSprite * sprendertar[M_PL_MATCHMAXPLAYER];
+
+	static Process mp;
 };
-
-extern Process mp;
-
-extern int randi;
-extern BYTE tari;
-
-extern replayFrame replayframe[M_SAVEINPUTMAX];
-extern DWORD replayIndex;
-
-extern float worldx;
-extern float worldy;
-extern float worldz;
 
 #endif

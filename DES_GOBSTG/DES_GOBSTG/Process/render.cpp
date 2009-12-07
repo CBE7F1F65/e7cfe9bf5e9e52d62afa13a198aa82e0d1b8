@@ -2,29 +2,35 @@
 
 void Process::_Render(BYTE renderflag/* =M_RENDER_NULL */)
 {
+	BYTE playerindex = Export::GetPlayerIndexByRenderFlag(renderflag);
 	Export::clientSet3DMode();
-	Export::clientSetMatrix(worldx, worldy, worldz, renderflag);
-	BGLayer::RenderBG(renderflag);
+	Export::clientSetMatrix(worldx[playerindex], worldy[playerindex], worldz[playerindex], renderflag);
+	BGLayer::RenderBG(playerindex);
 	Export::clientSet2DMode();
-	Export::clientSetMatrix(worldx, worldy, worldz, renderflag);
+	Export::clientSetMatrix(worldx[playerindex], worldy[playerindex], worldz[playerindex], renderflag);
 	if(renderflag != M_RENDER_NULL)
 	{
-//		Ghost::RenderAll(renderflag);
-		Enemy::RenderAll(renderflag);
-		PlayerBullet::RenderAll(renderflag);
-		Player::RenderAll(renderflag);
-		Effectsys::RenderAll(renderflag);
-		Beam::RenderAll(renderflag);
-		Bullet::RenderAll(renderflag);
-		Item::RenderAll(renderflag);
-		Enemy::RenderScore(renderflag);
-		Chat::chatitem.Render();
-		FrontDisplay::fdisp.RenderHeadInfo();
+		Enemy::RenderAll(playerindex);
+		PlayerBullet::RenderAll(playerindex);
+		Player::RenderAll(playerindex);
+		Effectsys::RenderAll(playerindex);
+		Beam::RenderAll(playerindex);
+		Bullet::RenderAll(playerindex);
+		Item::RenderAll(playerindex);
+		Enemy::RenderScore(playerindex);
+		FrontDisplay::fdisp.RenderHeadInfo(playerindex);
 	}
-	BGLayer::RenderFG(renderflag);
-	SelectSystem::RenderAll();
-	SpriteItemManager::RenderFrontSprite();
-	FrontDisplay::fdisp.RenderPostPrint();
+	if (renderflag == M_RENDER_NULL)
+	{
+		Chat::chatitem.Render();
+	}
+	BGLayer::RenderFG(playerindex);
+	if (renderflag == M_RENDER_NULL)
+	{
+		SelectSystem::RenderAll();
+		SpriteItemManager::RenderFrontSprite();
+		FrontDisplay::fdisp.RenderPostPrint();
+	}
 }
 
 void Process::_RenderTar()

@@ -2,33 +2,20 @@
 #include "Player.h"
 #include "Data.h"
 #include "DataConnector.h"
+#include "Replay.h"
 
 void Process::frameStart()
 {
-	if(!(Player::p[0].flag & PLAYER_SHOT))
-	{
-		if (!(stopflag & FRAME_STOPFLAG_ENEMYSET))
-		{
-			time++;
-		}
-	}
+	time++;
 	if(!replaymode)
 	{
 		playing = true;
-		/*
-		if(!Player::p[0].ncCont)
-		{
-			replayIndex++;
-			replayframe[replayIndex].input = nowInput;
-			Export::rpySetBias(&(replayframe[replayIndex]));
-		}
-		*/
+		Replay::rpy.WriteInput(nowInput);
 	}
 	else if(true/*!Player::p[0].ncCont*/)
 	{
-		replayIndex++;
-		nowInput = replayframe[replayIndex].input;
-		replayFPS = Export::rpyGetReplayFPS(replayframe[replayIndex]);
+		nowInput = Replay::rpy.ReadInput();
+		replayFPS = Replay::rpy.GetReplayFPS();
 
 		if(nowInput == 0xffff)
 		{
@@ -75,12 +62,5 @@ void Process::frameStart()
 
 		}
 	}
-//	if(time == 1)
-//	{
-//		if(data.getSpellNumber(scene) > 0)
-//		{
-//			DataConnector::Meet();
-//		}
-//	}
 	active = true;
 }

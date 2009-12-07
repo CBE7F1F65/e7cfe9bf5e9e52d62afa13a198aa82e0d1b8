@@ -8,10 +8,11 @@
 #include "BResource.h"
 #include "Export.h"
 #include "EventZone.h"
+#include "ProcessDefine.h"
 
 VectorList<PlayerBullet> PlayerBullet::pb[M_PL_MATCHMAXPLAYER];
 
-int PlayerBullet::locked = PBLOCK_LOST;
+int PlayerBullet::locked[M_PL_MATCHMAXPLAYER];
 
 hgeSprite * PlayerBullet::sprite[PLAYERSHOOTTYPEMAX][PLAYERBULLETTYPE];
 HTEXTURE * PlayerBullet::tex;
@@ -68,7 +69,7 @@ void PlayerBullet::Init(HTEXTURE * _tex)
 	{
 		for (int j=0; j<4; j++)
 		{
-			sprite[i][j] = SpriteItemManager::CreateSprite(res.playershootdata[i].siid+(((res.playershootdata[i].flag)&PBFLAG_ANIMATION)?j:0));
+			sprite[i][j] = SpriteItemManager::CreateSprite(BResource::res.playershootdata[i].siid+(((BResource::res.playershootdata[i].flag)&PBFLAG_ANIMATION)?j:0));
 		}
 	}
 }
@@ -97,36 +98,39 @@ void PlayerBullet::ClearItem()
 	}
 }
 
-void PlayerBullet::Action()
+void PlayerBullet::Action(DWORD stopflag)
 {
 	for (int j=0; j<M_PL_MATCHMAXPLAYER; j++)
 	{
-		if (pb[j].getSize())
+		bool binstop = FRAME_STOPFLAGCHECK_PLAYERINDEX_(stopflag, j, FRAME_STOPFLAG_PLAYERBULLET);
+		if (!binstop)
 		{
-			DWORD i = 0;
-			DWORD size = pb[j].getSize();
-			for (pb[j].toBegin(); i<size; pb[j].toNext(), i++)
+			if (pb[j].getSize())
 			{
-				if (!pb[j].isValid())
+				DWORD i = 0;
+				DWORD size = pb[j].getSize();
+				for (pb[j].toBegin(); i<size; pb[j].toNext(), i++)
 				{
-					continue;
-				}
-				if ((*pb[j]).exist)
-				{
-					(*pb[j]).action();
-				}
-				else
-				{
-					pb[j].pop();
+					if (!pb[j].isValid())
+					{
+						continue;
+					}
+					if ((*pb[j]).exist)
+					{
+						(*pb[j]).action();
+					}
+					else
+					{
+						pb[j].pop();
+					}
 				}
 			}
 		}
 	}
 }
 
-void PlayerBullet::RenderAll(BYTE renderflag)
+void PlayerBullet::RenderAll(BYTE playerindex)
 {
-	BYTE playerindex = Export::GetPlayerIndexByRenderFlag(renderflag);
 	if (pb[playerindex].getSize())
 	{
 		DWORD i = 0;
@@ -149,7 +153,7 @@ int PlayerBullet::Build(BYTE playerindex, int shootdataID)
 		return -1;
 	}
 	PlayerBullet _pb;
-	playershootData * item = &(res.playershootdata[shootdataID]);
+	playershootData * item = &(BResource::res.playershootdata[shootdataID]);
 	pb[playerindex].push_back(_pb)->valueSet(playerindex, shootdataID, item->arrange, item->xbias, item->ybias, 
 		item->scale, item->angle, item->speed, item->accelspeed, 
 		item->power, item->hitonfactor, item->flag, item->seID);
@@ -209,8 +213,8 @@ void PlayerBullet::valueSet(BYTE _playerindex, WORD _ID, BYTE _arrange, float _x
 
 	if (flag & PBFLAG_BEAM)
 	{
-		hscale = M_GAMESQUARE_HEIGHT / SpriteItemManager::GetTexW(res.playershootdata[ID].siid);
-		vscale = scale / SpriteItemManager::GetTexH(res.playershootdata[ID].siid);
+		hscale = M_GAMESQUARE_HEIGHT / SpriteItemManager::GetTexW(BResource::res.playershootdata[ID].siid);
+		vscale = scale / SpriteItemManager::GetTexH(BResource::res.playershootdata[ID].siid);
 		angle = -9000;
 		alpha = 0x60;
 	}
@@ -247,15 +251,41 @@ void PlayerBullet::Render()
 	}
 }
 
-bool PlayerBullet::GetLockAim(BObject ** obj)
+void PlayerBullet::ClearLock()
 {
-	if(locked == PBLOCK_LOST)
+	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
+	{
+		locked[i] = PBLOCK_LOST;
+	}
+}
+
+bool PlayerBullet::CheckAndSetLock(BObject * pbobj, BYTE playerindex, int lockedid)
+{
+	if (locked[playerindex] != PBLOCK_LOST)
 	{
 		return false;
 	}
-	// TODO:
-	*obj = &(Enemy::en[0][locked]);
-	return true;
+	if (pbobj->x >= M_GAMESQUARE_LEFT_(playerindex) && pbobj->y <= M_GAMESQUARE_RIGHT_(playerindex) &&
+		pbobj->y >= M_GAMESQUARE_TOP && pbobj->y <= M_GAMESQUARE_BOTTOM)
+	{
+		locked[playerindex] = lockedid;
+		return true;
+	}
+	return false;
+}
+
+bool PlayerBullet::GetLockAim(BObject ** ppbobj, BYTE playerindex)
+{
+	if(locked[playerindex] == PBLOCK_LOST)
+	{
+		return false;
+	}
+	if (ppbobj)
+	{
+		*ppbobj = &(Enemy::en[playerindex][locked[playerindex]]);
+		return true;
+	}
+	return false;
 }
 
 void PlayerBullet::Lock()
@@ -263,7 +293,7 @@ void PlayerBullet::Lock()
 	locktimer++;
 	BObject * _tpbobj;
 
-	if (!GetLockAim(&_tpbobj))
+	if (!GetLockAim(&_tpbobj, playerindex))
 	{
 		if(speed < oldspeed)
 			speed += _PBLOCK_ACCSPEED;
@@ -376,7 +406,7 @@ bool PlayerBullet::isInRange(float aimx, float aimy, float w, float h)
 
 void PlayerBullet::DelayShoot()
 {
-	if(locked == PBLOCK_LOST)
+	if(locked[playerindex] == PBLOCK_LOST)
 	{
 		if(timer < PB_FADEOUTTIME)
 			timer = PB_FADEOUTTIME;
@@ -388,7 +418,7 @@ void PlayerBullet::DelayShoot()
 	else
 	{
 		BObject * _tpbobj;
-		_tpbobj = &Enemy::en[playerindex][locked];
+		_tpbobj = &(Enemy::en[playerindex][locked[playerindex]]);
 		if(timer == 1)
 		{
 			speed = -speed;
@@ -538,7 +568,7 @@ void PlayerBullet::action()
 				SE::push(SE_PLAYER_EXPLODE, x);
 			}
 
-			EventZone::Build(EVENTZONE_TYPE_ENEMYDAMAGE, playerindex, x, y, 1, SpriteItemManager::GetTexW(res.playershootdata[ID].siid), power);
+			EventZone::Build(EVENTZONE_TYPE_ENEMYDAMAGE, playerindex, x, y, 1, SpriteItemManager::GetTexW(BResource::res.playershootdata[ID].siid), power);
 		}
 		if (flag & PBFLAG_SCALEUP)
 		{

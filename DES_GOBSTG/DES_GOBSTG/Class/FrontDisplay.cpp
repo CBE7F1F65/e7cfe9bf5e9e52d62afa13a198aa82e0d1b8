@@ -96,139 +96,119 @@ void FrontDisplay::SetState(BYTE type, BYTE state/* =FDISP_STATE_COUNT */)
 	case FDISP_PANEL:
 		panelcountup = state;
 		break;
-	case FDISP_NEXTSTAGE:
-		nextstagecount = state;
-		break;
-	case FDISP_FULLPOWER:
-		fullpowercount = state;
-		break;
-	case FDISP_HISCORE:
-		hiscorecount = state;
-		break;
-	case FDISP_EXTEND:
-		extendcount = state;
-		break;
 	}
 }
 
-void FrontDisplay::RenderHeadInfo()
+void FrontDisplay::RenderHeadInfo(BYTE playerindex)
 {
 	float yoffset = 24.0f;
 	float ybottomoffset = 32.0f;
 	float yoffsetadd = 22.0f;
-	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
+	float px = Player::p[playerindex].x;
+	float py = Player::p[playerindex].y;
+	DWORD color = 0xffffffff;
+	BYTE alpha = 0xff;
+	if (Player::p[playerindex].bCharge)
 	{
-		float px = Player::p[i].x;
-		float py = Player::p[i].y;
-		DWORD color = 0xffffffff;
-		BYTE alpha = 0xff;
-		if (Player::p[i].bCharge)
+		float tyoffset = yoffset;
+		yoffset += yoffsetadd;
+		if (py-tyoffset < M_GAMESQUARE_TOP)
 		{
-			float tyoffset = yoffset;
-			yoffset += yoffsetadd;
-			if (py-tyoffset < M_GAMESQUARE_TOP)
-			{
-				tyoffset = -ybottomoffset;
-				ybottomoffset += yoffsetadd;
-			}
-			BYTE ncharge;
-			BYTE nchargemax;
-			if (Player::p[i].chargetimer < 16)
-			{
-				alpha = Player::p[i].chargetimer * 16;
-			}
-			Player::p[i].GetNCharge(&ncharge, &nchargemax);
-			if (Player::p[i].chargetimer % 16 < 8)
-			{
-				color = (alpha<<24)+0xA0ffA0;
-			}
-			else
-			{
-				color = (alpha<<24)+0xffffff;
-			}
-			gameinfodisplay.charge->SetColor(color);
-			gameinfodisplay.charge->Render(px, py-tyoffset-10);
-			info.headdigitfont->SetColor(color);
-			info.headdigitfont->printf(px, py-tyoffset-6, HGETEXT_CENTER, "%d / %d", ncharge, nchargemax);
+			tyoffset = -ybottomoffset;
+			ybottomoffset += yoffsetadd;
 		}
-		if (gameinfodisplay.lastlifecountdown[i])
+		BYTE ncharge;
+		BYTE nchargemax;
+		if (Player::p[playerindex].chargetimer < 16)
 		{
-			float tyoffset = yoffset;
-			yoffset += yoffsetadd;
-			if (py-tyoffset < M_GAMESQUARE_TOP)
-			{
-				tyoffset = -ybottomoffset;
-				ybottomoffset += yoffsetadd;
-			}
-			alpha = 0xff;
-			gameinfodisplay.lastlifecountdown[i]--;
-			if (gameinfodisplay.lastlifecountdown[i] < 16)
-			{
-				alpha = gameinfodisplay.lastlifecountdown[i] * 16;
-			}
+			alpha = Player::p[playerindex].chargetimer * 16;
+		}
+		Player::p[playerindex].GetNCharge(&ncharge, &nchargemax);
+		if (Player::p[playerindex].chargetimer % 16 < 8)
+		{
+			color = (alpha<<24)+0xA0ffA0;
+		}
+		else
+		{
 			color = (alpha<<24)+0xffffff;
-			gameinfodisplay.caution->SetColor(color);
-			gameinfodisplay.caution->Render(px, py-tyoffset-8);
-			gameinfodisplay.lastlife->SetColor(color);
-			gameinfodisplay.lastlife->Render(px, py-tyoffset);
 		}
-		if (gameinfodisplay.gaugefilledcountdown[i])
+		gameinfodisplay.charge->SetColor(color);
+		gameinfodisplay.charge->Render(px, py-tyoffset-10);
+		info.headdigitfont->SetColor(color);
+		info.headdigitfont->printf(px, py-tyoffset-6, HGETEXT_CENTER, "%d / %d", ncharge, nchargemax);
+	}
+	if (gameinfodisplay.lastlifecountdown[playerindex])
+	{
+		float tyoffset = yoffset;
+		yoffset += yoffsetadd;
+		if (py-tyoffset < M_GAMESQUARE_TOP)
 		{
-			float tyoffset = yoffset;
-			yoffset += yoffsetadd;
-			if (py-tyoffset < M_GAMESQUARE_TOP)
-			{
-				tyoffset = -ybottomoffset;
-				ybottomoffset += yoffsetadd;
-			}
-			BYTE ncharge;
-			BYTE nchargemax;
-			Player::p[i].GetNCharge(&ncharge, &nchargemax);
-			gameinfodisplay.gaugefilledcountdown[i]--;
-			alpha = 0xff;
-			if (gameinfodisplay.gaugefilledcountdown[i] < 16)
-			{
-				alpha = gameinfodisplay.gaugefilledcountdown[i] * 16;
-			}
-			color = (alpha<<24)+0xffffff;
-			gameinfodisplay.gaugefilled->SetColor(color);
-			gameinfodisplay.gaugefilled->Render(px, py-tyoffset-10);
-			gameinfodisplay.gaugelevel->SetColor(color);
-			gameinfodisplay.gaugelevel->Render(px-16, py-tyoffset);
-			info.headdigitfont->SetColor(color);
-			info.headdigitfont->printf(px+16, py-tyoffset-8, HGETEXT_CENTER, "%d", nchargemax);
+			tyoffset = -ybottomoffset;
+			ybottomoffset += yoffsetadd;
 		}
-		if (gameinfodisplay.lilycountdown)
+		alpha = 0xff;
+		gameinfodisplay.lastlifecountdown[playerindex]--;
+		if (gameinfodisplay.lastlifecountdown[playerindex] < 16)
 		{
-			float tyoffset = yoffset;
-			yoffset += yoffsetadd;
-			if (py-tyoffset < M_GAMESQUARE_TOP)
-			{
-				tyoffset = -ybottomoffset;
-				ybottomoffset += yoffsetadd;
-			}
-			alpha = 0xff;
-			gameinfodisplay.lilycountdown--;
-			if (gameinfodisplay.lilycountdown < 16)
-			{
-				alpha = gameinfodisplay.lilycountdown * 16;
-			}
-			color = (alpha<<24)+0xffffff;
-			gameinfodisplay.caution->SetColor(color);
-			gameinfodisplay.caution->Render(px, py-tyoffset-8);
-			gameinfodisplay.lily->SetColor(color);
-			gameinfodisplay.lily->Render(px, py-tyoffset);
+			alpha = gameinfodisplay.lastlifecountdown[playerindex] * 16;
 		}
+		color = (alpha<<24)+0xffffff;
+		gameinfodisplay.caution->SetColor(color);
+		gameinfodisplay.caution->Render(px, py-tyoffset-8);
+		gameinfodisplay.lastlife->SetColor(color);
+		gameinfodisplay.lastlife->Render(px, py-tyoffset);
+	}
+	if (gameinfodisplay.gaugefilledcountdown[playerindex])
+	{
+		float tyoffset = yoffset;
+		yoffset += yoffsetadd;
+		if (py-tyoffset < M_GAMESQUARE_TOP)
+		{
+			tyoffset = -ybottomoffset;
+			ybottomoffset += yoffsetadd;
+		}
+		BYTE ncharge;
+		BYTE nchargemax;
+		Player::p[playerindex].GetNCharge(&ncharge, &nchargemax);
+		gameinfodisplay.gaugefilledcountdown[playerindex]--;
+		alpha = 0xff;
+		if (gameinfodisplay.gaugefilledcountdown[playerindex] < 16)
+		{
+			alpha = gameinfodisplay.gaugefilledcountdown[playerindex] * 16;
+		}
+		color = (alpha<<24)+0xffffff;
+		gameinfodisplay.gaugefilled->SetColor(color);
+		gameinfodisplay.gaugefilled->Render(px, py-tyoffset-10);
+		gameinfodisplay.gaugelevel->SetColor(color);
+		gameinfodisplay.gaugelevel->Render(px-16, py-tyoffset);
+		info.headdigitfont->SetColor(color);
+		info.headdigitfont->printf(px+16, py-tyoffset-8, HGETEXT_CENTER, "%d", nchargemax);
+	}
+	if (gameinfodisplay.lilycountdown)
+	{
+		float tyoffset = yoffset;
+		yoffset += yoffsetadd;
+		if (py-tyoffset < M_GAMESQUARE_TOP)
+		{
+			tyoffset = -ybottomoffset;
+			ybottomoffset += yoffsetadd;
+		}
+		alpha = 0xff;
+		gameinfodisplay.lilycountdown--;
+		if (gameinfodisplay.lilycountdown < 16)
+		{
+			alpha = gameinfodisplay.lilycountdown * 16;
+		}
+		color = (alpha<<24)+0xffffff;
+		gameinfodisplay.caution->SetColor(color);
+		gameinfodisplay.caution->Render(px, py-tyoffset-8);
+		gameinfodisplay.lily->SetColor(color);
+		gameinfodisplay.lily->Render(px, py-tyoffset);
 	}
 }
 
 void FrontDisplay::RenderPanel()
 {
-	if (nextstagecount)
-	{
-		nextstagecount--;
-		RenderNextStage();
-	}
 	if (panelcountup)
 	{
 		if (panelcountup < 0xff)
@@ -343,9 +323,9 @@ void FrontDisplay::RenderPanel()
 	}
 	if(info.asciifont)
 	{
-		if (mp.replaymode)
+		if (Process::mp.replaymode)
 		{
-			info.asciifont->printf(385, 450, 0, "%.2f", mp.replayFPS);
+			info.asciifont->printf(385, 450, 0, "%.2f", Process::mp.replayFPS);
 		}
 #ifdef __DEBUG
 		info.asciifont->printf(
@@ -373,19 +353,6 @@ void FrontDisplay::RenderPanel()
 	}
 }
 
-void FrontDisplay::RenderNextStage()
-{
-}
-
-void FrontDisplay::BossAction()
-{
-}
-
-void FrontDisplay::BossMoveItemEffect(float x, float y)
-{
-	infobody.effBossItem.MoveTo(x, y);
-}
-
 void FrontDisplay::RenderBossInfo()
 {
 /*
@@ -400,34 +367,6 @@ void FrontDisplay::RenderBossInfo()
 			}
 			else if(flag & BOSSINFO_COLLAPSE)
 			{
-			}
-		}*/
-	
-}
-
-void FrontDisplay::RenderBossTimeCircle()
-{
-/*
-		BYTE flag = BossInfo::flag;
-		if (flag && bossinfo.isSpell())
-		{
-			WORD timer = bossinfo.timer;
-			BYTE limit = bossinfo.limit;
-			if (flag < BOSSINFO_COLLAPSE)
-			{
-				float scale;
-				if (timer >= 88)
-				{
-					if (timer < 120)
-					{
-						scale = (timer-88) * 0.1f;
-					}
-					else
-					{
-						scale = (timer-60*limit)*0.8f / (30-15*limit);
-					}
-					info.timecircle->RenderEx(Enemy::en[ENEMY_MAINBOSSINDEX].x, Enemy::en[ENEMY_MAINBOSSINDEX].y, timer/15.0f, scale);
-				}
 			}
 		}*/
 	
@@ -482,19 +421,6 @@ bool FrontDisplay::Init()
 		panel.lifeindi[i]->SetHotSpot(panel.lifeindi[i]->GetWidth()/2, 0);
 	}
 
-	//info
-	// TODO:
-	infobody.effBossCollapse.valueSet(EFF_BI_COLLAPSE, M_RENDER_LEFT, 0, 0);
-	infobody.effBossCollapse.Stop();
-	infobody.effBossItem.valueSet(EFF_BI_ITEM, M_RENDER_LEFT, 0, 0);
-	infobody.effBossItem.Stop();
-	infobody.effBossUp.valueSet(EFF_BI_BOSSUP, M_RENDER_LEFT, 0, 0);
-	infobody.effBossUp.Stop();
-	infobody.effBossStore.valueSet(EFF_BI_BOSSSTORE, M_RENDER_LEFT, 0, 0);
-	infobody.effBossStore.Stop();
-	/************************************************************************/
-	infobody.effLoading.valueSet(0, M_RENDER_NULL, 0, 0);
-	infobody.effLoading.Stop();
 	/************************************************************************/
 
 	idx = SpriteItemManager::GetIndexByName(SI_FACE_01);
@@ -596,14 +522,10 @@ bool FrontDisplay::Init()
 		info.asciifont->ChangeSprite(i, ascii.ascii[i-FDISP_ASCII_BEGIN]);
 	}
 
-	info.normalfont = hge->Font_Load(res.resdata.widefontname, 20);
-	info.smallfont = hge->Font_Load(res.resdata.widefontname, 16);
+	info.normalfont = hge->Font_Load(BResource::res.resdata.widefontname, 20);
+	info.smallfont = hge->Font_Load(BResource::res.resdata.widefontname, 16);
 
 	SetState(FDISP_PANEL, 0);
-	SetState(FDISP_NEXTSTAGE, 0);
-	SetState(FDISP_FULLPOWER, 0);
-	SetState(FDISP_HISCORE, 0);
-	SetState(FDISP_EXTEND, 0);
 
 	return true;
 }

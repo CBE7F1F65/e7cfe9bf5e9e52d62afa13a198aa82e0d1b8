@@ -68,8 +68,8 @@ public:
 	BYTE pushid;
 
 	list<Selector>sel;
-};
 
-extern SelectSystem selsys[SELSYSTEMMAX];
+	static SelectSystem selsys[SELSYSTEMMAX];
+};
 
 #endif

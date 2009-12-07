@@ -34,7 +34,7 @@ public:
 
 	static void Clear();
 	static void Build(DWORD type, BYTE playerindex, float x, float y, int maxtime=1, float r=EVENTZONE_OVERZONE, float power=0, DWORD eventID=EVENTZONE_EVENT_NULL, float rspeed=0);
-	static void Action();
+	static void Action(DWORD stopflag);
 
 	bool action();
 

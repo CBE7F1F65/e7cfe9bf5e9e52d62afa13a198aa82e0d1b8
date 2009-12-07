@@ -34,41 +34,41 @@ function hdssSTARTPREP(callinit)
 	)
 end
 
-function hdssBGVALUE(index, siid, cenx, ceny, w, h, col)
+function hdssBGVALUE(playerindex, index, siid, cenx, ceny, w, h, col)
 	return hdss.Call(
 		HDSS_BGVALUE,
 		{
-			index, siid, cenx, ceny, w, h, col
+			playerindex, index, siid, cenx, ceny, w, h, col
 		}
 	)
 end
 
-function hdssBGFLAG(index, flag)
+function hdssBGFLAG(playerindex, index, flag)
 	return hdss.Call(
 		HDSS_BGFLAG,
 		{
-			index, flag
+			playerindex, index, flag
 		}
 	)
 end
 
-function hdssBGCOLOR(index, col0, col1, col2, col3)
+function hdssBGCOLOR(playerindex, index, col0, col1, col2, col3)
 	return hdss.Call(
 		HDSS_BGCOLOR,
 		{
-			index, col0, col1, col2, col3
+			playerindex, index, col0, col1, col2, col3
 		}
 	)
 end
 
-function hdssBGOFF(index1, index2, index3, index4)
+function hdssBGOFF(playerindex, index1, index2, index3, index4)
 	if index1 == nil then
 		return;
 	end
 	hdss.Call(
 		HDSS_BGOFF,
 		{
-			index1
+			playerindex, index1
 		}
 	)
 	if index2 == nil then
@@ -77,7 +77,7 @@ function hdssBGOFF(index1, index2, index3, index4)
 	hdss.Call(
 		HDSS_BGOFF,
 		{
-			index2
+			playerindex, index2
 		}
 	)
 	if index3 == nil then
@@ -86,7 +86,7 @@ function hdssBGOFF(index1, index2, index3, index4)
 	hdss.Call(
 		HDSS_BGOFF,
 		{
-			index3
+			playerindex, index3
 		}
 	)
 	if index4 == nil then
@@ -95,7 +95,7 @@ function hdssBGOFF(index1, index2, index3, index4)
 	hdss.Call(
 		HDSS_BGOFF,
 		{
-			index4
+			playerindex, index4
 		}
 	)
 end

@@ -33,8 +33,8 @@ public:
 	static void Init(HTEXTURE * tex);
 	static int Build(BYTE playerindex, int shootdataID);
 	static void ClearItem();
-	static void Action();
-	static void RenderAll(BYTE renderflag);
+	static void Action(DWORD stopflag);
+	static void RenderAll(BYTE playerindex);
 	static float CheckShoot(BYTE playerindex, float aimx, float aimy, float aimw, float aimh=0.0f);
 
 	void valueSet(BYTE playerindex, WORD ID, BYTE arrange, float xbias, float ybias, float scale, int angle, float speed, float accelspeed, float power, int hitonfactor, WORD flag, BYTE seID);
@@ -50,7 +50,9 @@ public:
 	void DelayShoot();
 	void TurnBullet(float mul=1.0f);
 
-	static bool GetLockAim(BObject ** obj);
+	static void ClearLock();
+	static bool CheckAndSetLock(BObject * pbobj, BYTE playerindex, int lockedid);
+	static bool GetLockAim(BObject ** ppbobj, BYTE playerindex);
 	static void Release();
 
 public:
@@ -79,7 +81,7 @@ public:
 	static hgeSprite * sprite[PLAYERSHOOTTYPEMAX][PLAYERBULLETTYPE];
 	static DWORD bcol0, bcol1, bcol2, bcol3;
 	static HTEXTURE * tex;
-	static int locked;
+	static int locked[M_PL_MATCHMAXPLAYER];
 	static WORD beams;
 	static VectorList<PlayerBullet>pb[M_PL_MATCHMAXPLAYER];
 };

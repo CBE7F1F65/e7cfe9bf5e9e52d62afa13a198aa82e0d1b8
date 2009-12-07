@@ -15,7 +15,7 @@ function _CEPlayerSelect_TranslateName(name)
 end
 
 function CEPlayerSelect_SetBG()
-	hdssBGVALUE(LConst_uibg_topcontentid, SI_TopContent_Girl, TotalCenterX, 64);
+	hdssBGVALUE(0, LConst_uibg_topcontentid, SI_TopContent_Girl, TotalCenterX, 64);
 end
 
 function _CEPlayerSelect_GetKeys(bleft)
@@ -88,7 +88,7 @@ function CEPlayerSelect_SetSelect(bleft, x)
 	local selsysplayerid, selsysotherplayerid, uibgid, initid, pushkeyid = _CEPlayerSelect_GetValues(bleft);
 	local minuskey, pluskey, leftkey, rightkey, okkey, quickkey, slowkey, chargekey = _CEPlayerSelect_GetKeys(bleft);
 	
-	hdssBGOFF(uibgid);
+	hdssBGOFF(0, uibgid);
 	_CEPlayerSelect_SetInitLife(bleft, x);
 	
 	local playercount = game.GetPlayerContentTable();
@@ -130,7 +130,7 @@ end
 
 function CEPlayerSelect_CloseUsed(bcloseall)
 	if bcloseall == nil or bcloseall then
-		hdssBGOFF(LConst_uibg_player1id, LConst_uibg_player2id);
+		hdssBGOFF(0, LConst_uibg_player1id, LConst_uibg_player2id);
 		for i=0, 11 do
 			hdssFREEFRONTSPRITE(i);
 		end
@@ -155,7 +155,7 @@ function CEPlayerSelect_DispatchSelect(bleft, x, bothercomplete)
 	if complete then
 		
 		local siid = game.GetPlayerContentTable(select);
-		hdssBGVALUE(uibgid, siid, x, TotalCenterY, -0.75, -0.75, global.ARGB(0xff, 0));
+		hdssBGVALUE(0, uibgid, siid, x, TotalCenterY, -0.75, -0.75, global.ARGB(0xff, 0));
 		local pindex = _CEPlayerSelect_GetPIndex(bleft);
 		hdssSETCHARA(pindex, select);		
 		ret = 1;

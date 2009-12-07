@@ -18,15 +18,12 @@ void Process::clearPrep(bool bclearkey)
 	EventZone::Clear();
 
 	pauseinit = false;
-	worldx = 0;
-	worldy = 0;
-	worldz = 0;
 	frameskip = M_DEFAULT_FRAMESKIP;
-	Scripter::stopEdefScript = false;
 	FrontDisplay::fdisp.SetState(FDISP_PANEL, 1);
 
 	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
 	{
+		SetShake(i, 0, true);
 		Player::p[i].ClearSet();
 	}
 
@@ -55,28 +52,28 @@ void Process::clearPrep(bool bclearkey)
 void Process::startPrep(bool callinit)
 {
 	replayend = false;
-	replayIndex = 0;
 
 	SetCurrentDirectory(hge->Resource_MakePath(""));
 
+	BYTE part = 0;
 	if(replaymode)
 	{
-		rpy.Load(rpyfilename, true);
-		BYTE part = 0;
-		seed = rpy.partinfo[part].seed;
+		Replay::rpy.Load(rpyfilename, true);
+		seed = Replay::rpy.partinfo[part].seed;
 		for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
 		{
-			Player::p[i].SetChara(rpy.rpyinfo.usingchara[i][0], rpy.rpyinfo.usingchara[i][1], rpy.rpyinfo.usingchara[i][2]);
-			Player::p[i].SetInitLife(rpy.rpyinfo.initlife[i]);
+			Player::p[i].SetChara(Replay::rpy.rpyinfo.usingchara[i][0], Replay::rpy.rpyinfo.usingchara[i][1], Replay::rpy.rpyinfo.usingchara[i][2]);
+			Player::p[i].SetInitLife(Replay::rpy.rpyinfo.initlife[i]);
 		}
-		scene = rpy.rpyinfo.scene;
-
-		replayIndex = rpy.partinfo[part].offset - 1;
+		scene = Replay::rpy.rpyinfo.scene;
 	}
 	else
 	{
 		seed = timeGetTime();
 	}
+
+	Replay::rpy.InitReplayIndex(replaymode, part);
+
 	clearPrep();
 
 	srandt(seed);
@@ -84,7 +81,6 @@ void Process::startPrep(bool callinit)
 	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
 	{
 		Player::p[i].ClearNC();
-//		Player::p[i].nHiScore = DataConnector::nHiScore();
 	}
 
 	//set
@@ -94,11 +90,10 @@ void Process::startPrep(bool callinit)
 		Player::p[i].valueSet(i);
 	}
 	Player::ClearRound();
-//	DataConnector::Try(true);
 
 	if(!replaymode)
 	{
-		ZeroMemory(&rpy.rpyinfo, sizeof(replayInfo));
+		ZeroMemory(&Replay::rpy.rpyinfo, sizeof(replayInfo));
 
 		//partinfo
 		BYTE part = 0;
@@ -108,11 +103,11 @@ void Process::startPrep(bool callinit)
 		{
 			if(i != part)
 			{
-				ZeroMemory(&rpy.partinfo[i], sizeof(partInfo));
+				ZeroMemory(&Replay::rpy.partinfo[i], sizeof(partInfo));
 			}
 			else
 			{
-				rpy.partFill(part);
+				Replay::rpy.partFill(part);
 			}
 		}
 	}
@@ -125,24 +120,28 @@ void Process::startPrep(bool callinit)
 		{
 			if (part)
 			{
-				Player::p[i].changePlayerID(rpy.partinfo[part].nowID[i]);
+				Player::p[i].changePlayerID(Replay::rpy.partinfo[part].nowID[i]);
 			}
 		}
 	}
 
-	BGLayer::ubg[UBGID_BGMASK].valueSetByName(SI_WHITE, M_CLIENT_CENTER_X, M_CLIENT_CENTER_Y, M_CLIENT_WIDTH, M_CLIENT_HEIGHT, 0);
-	BGLayer::ubg[UBGID_FGPAUSE].valueSetByName(SI_WHITE, M_CLIENT_CENTER_X, M_CLIENT_CENTER_Y, M_CLIENT_WIDTH, M_CLIENT_HEIGHT, 0);
-	BGLayer::ubg[UBGID_FGPAUSE].exist = false;
+	for (int i=0; i<FRAME_STOPINFOMAX; i++)
+	{
+		SetStop(0, 0);
+	}
 
-	stopflag = 0;
-	stoptimer = 0;
+	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
+	{
+		BGLayer::ubg[i][UBGID_BGMASK].valueSetByName(SI_WHITE, M_CLIENT_CENTER_X, M_CLIENT_CENTER_Y, M_CLIENT_WIDTH, M_CLIENT_HEIGHT, 0);
+		BGLayer::ubg[i][UBGID_FGPAUSE].valueSetByName(SI_WHITE, M_CLIENT_CENTER_X, M_CLIENT_CENTER_Y, M_CLIENT_WIDTH, M_CLIENT_HEIGHT, 0);
+		BGLayer::ubg[i][UBGID_FGPAUSE].exist = false;
+	}
 
 	framecounter = 0;
 	time = 0;
-	alltime = 0;
 
 	if (callinit)
 	{
-		scr.Execute(SCR_STAGE, SCRIPT_CON_POST, scene);
+		Scripter::scr.Execute(SCR_STAGE, SCRIPT_CON_POST, scene);
 	}
 }

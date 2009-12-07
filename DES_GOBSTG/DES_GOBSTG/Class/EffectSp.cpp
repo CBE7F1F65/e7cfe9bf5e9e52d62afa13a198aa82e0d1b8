@@ -5,10 +5,11 @@
 #include "FrontDisplayName.h"
 #include "Bullet.h"
 #include "Scripter.h"
+#include "ProcessDefine.h"
 
-#define EFFSPMAX	(BULLETMAX * M_PL_MATCHMAXPLAYER)
+#define EFFSPMAX	(BULLETMAX)
 
-VectorList<EffectSp> EffectSp::effsp;
+VectorList<EffectSp> EffectSp::effsp[M_PL_MATCHMAXPLAYER];
 hgeSprite * EffectSp::sprite = NULL;
 
 int EffectSp::senditemsiid[EFFSPSEND_COLORMAX][EFFSPSEND_ANIMATIONMAX];
@@ -25,7 +26,10 @@ EffectSp::~EffectSp()
 void EffectSp::Init()
 {
 	Release();
-	effsp.init(EFFSPMAX);
+	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
+	{
+		effsp[i].init(EFFSPMAX);
+	}
 	int senditemsiidbegin = SpriteItemManager::GetIndexByName(SI_SENDITEM_00);
 	for (int i=0; i<EFFSPSEND_COLORMAX; i++)
 	{
@@ -49,7 +53,10 @@ void EffectSp::Release()
 
 void EffectSp::ClearItem()
 {
-	effsp.clear_item();
+	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
+	{
+		effsp[i].clear_item();
+	}
 }
 
 void EffectSp::Render()
@@ -63,23 +70,30 @@ void EffectSp::Render()
 	}
 }
 
-void EffectSp::Action()
+void EffectSp::Action(DWORD stopflag)
 {
-	if (effsp.getSize())
+	for (int j=0; j<M_PL_MATCHMAXPLAYER; j++)
 	{
-		DWORD i = 0;
-		DWORD size = effsp.getSize();
-		for (effsp.toBegin(); i<size; effsp.toNext(), i++)
+		bool binstop = FRAME_STOPFLAGCHECK_PLAYERINDEX_(stopflag, j, FRAME_STOPFLAG_EFFECTSP);
+		if (!binstop)
 		{
-			if (effsp.isValid())
+			if (effsp[j].getSize())
 			{
-				if ((*effsp).exist)
+				DWORD i = 0;
+				DWORD size = effsp[j].getSize();
+				for (effsp[j].toBegin(); i<size; effsp[j].toNext(), i++)
 				{
-					(*effsp).action();
-				}
-				else
-				{
-					effsp.pop();
+					if (effsp[j].isValid())
+					{
+						if ((*effsp[j]).exist)
+						{
+							(*effsp[j]).action();
+						}
+						else
+						{
+							effsp[j].pop();
+						}
+					}
 				}
 			}
 		}
@@ -88,17 +102,20 @@ void EffectSp::Action()
 
 void EffectSp::RenderAll()
 {
-	if (effsp.getSize())
+	for (int j=0; j<M_PL_MATCHMAXPLAYER; j++)
 	{
-		DWORD i = 0;
-		DWORD size = effsp.getSize();
-		for (effsp.toBegin(); i<size; effsp.toNext(), i++)
+		if (effsp[j].getSize())
 		{
-			if (effsp.isValid())
+			DWORD i = 0;
+			DWORD size = effsp[j].getSize();
+			for (effsp[j].toBegin(); i<size; effsp[j].toNext(), i++)
 			{
-				if ((*effsp).exist)
+				if (effsp[j].isValid())
 				{
-					(*effsp).Render();
+					if ((*effsp[j]).exist)
+					{
+						(*effsp[j]).Render();
+					}
 				}
 			}
 		}
@@ -106,35 +123,35 @@ void EffectSp::RenderAll()
 }
 
 
-void EffectSp::EffectSpOff(int _setID, int _ID)
+void EffectSp::EffectSpOff(BYTE _playerindex, int _setID, int _ID)
 {
 	if (_setID < EFFSPSET_LISTBEGIN || _setID >= EFFSPSET_LISTUNTIL)
 	{
 		return;
 	}
-	DWORD nowindex = effsp.getIndex();
-	if (effsp.getSize())
+	DWORD nowindex = effsp[_playerindex].getIndex();
+	if (effsp[_playerindex].getSize())
 	{
 		DWORD i = 0;
-		DWORD size = effsp.getSize();
-		for (effsp.toBegin(); i<size; effsp.toNext(), i++)
+		DWORD size = effsp[_playerindex].getSize();
+		for (effsp[_playerindex].toBegin(); i<size; effsp[_playerindex].toNext(), i++)
 		{
-			if (effsp.isValid())
+			if (effsp[_playerindex].isValid())
 			{
-				if ((*effsp).exist)
+				if ((*effsp[_playerindex]).exist)
 				{
-					if ((*effsp).setID == _setID)
+					if ((*effsp[_playerindex]).setID == _setID)
 					{
-						if (_ID < 0 || (*effsp).ID == _ID)
+						if (_ID < 0 || (*effsp[_playerindex]).ID == _ID)
 						{
-							effsp.pop();
+							effsp[_playerindex].pop();
 						}
 					}
 				}
 			}
 		}
 	}
-	effsp.toIndex(nowindex);
+	effsp[_playerindex].toIndex(nowindex);
 }
 
 void EffectSp::actionSet(int _angle, float _speed, int _headangleadd/* =0 */)
@@ -161,14 +178,14 @@ void EffectSp::chaseSet(BYTE _chaseflag, float _aimx, float _aimy, int _chasetim
 
 int EffectSp::Build(int setID, WORD ID, int siid, float x, float y, int headangle/* =0 */, float hscale/* =1.0f */, float vscale/* =0.0f */)
 {
-	if (effsp.getSize() == EFFSPMAX)
+	if (effsp[ID].getSize() == EFFSPMAX)
 	{
 		return -1;
 	}
 	int esindex = -1;
 	EffectSp _effsp;
-	EffectSp * _peffsp = effsp.push_back(_effsp);
-	esindex = effsp.getEndIndex();
+	EffectSp * _peffsp = effsp[ID].push_back(_effsp);
+	esindex = effsp[ID].getEndIndex();
 	_peffsp->valueSet(setID, ID, siid, x, y, headangle, hscale, vscale);
 	return esindex;
 }
@@ -259,7 +276,7 @@ void EffectSp::action()
 			y = aimy;
 			if (setID >= EFFSPSET_LISTBEGIN && setID < EFFSPSET_LISTUNTIL)
 			{
-				scr.Execute(SCR_EVENT, SCR_EVENT_EFFSPCHASE, setID);
+				Scripter::scr.Execute(SCR_EVENT, SCR_EVENT_EFFSPCHASE, ID);
 				if (setID >= EFFSPSET_SYSTEMBEGIN && setID < EFFSPSET_SYSTEMUNTIL)
 				{
 					exist = false;

@@ -103,10 +103,10 @@ public:
 	static int Build(WORD eID, BYTE playerindex, float x, float y, int angle, float speed, BYTE type, float life, int infitimer);
 	static void Init(HTEXTURE * tex);
 	static void Release();
-	static void Action(bool notinstop);
+	static void Action(DWORD stopflag);
 	static void ClearAll();
-	static void RenderAll(BYTE renderflag);
-	static void RenderScore(BYTE renderflag);
+	static void RenderAll(BYTE playerindex);
+	static void RenderScore(BYTE playerindex);
 
 	static void BuildENAZ(BYTE playerindex, BYTE flag, float x, float y, float rPrep, float rParal=0, int angle=9000);
 

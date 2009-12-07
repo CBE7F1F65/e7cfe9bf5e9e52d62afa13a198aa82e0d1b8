@@ -11,6 +11,7 @@
 #include "EventZone.h"
 #include "EffectSp.h"
 #include "SpriteItemManager.h"
+#include "ProcessDefine.h"
 
 RenderDepth Bullet::renderDepth[M_PL_MATCHMAXPLAYER][BULLETTYPEMAX];
 
@@ -43,11 +44,11 @@ void Bullet::Init(HTEXTURE _tex)
 	tex = _tex;
 	for (int i=0; i<BULLETTYPEMAX; i++)
 	{
-		bulletData * tbd = &res.bulletdata[i];
+		bulletData * tbd = &BResource::res.bulletdata[i];
 		int tnum = tbd->nRoll;
 		if (tnum < 2)
 		{
-			tnum = res.bulletdata[i].nColor;
+			tnum = BResource::res.bulletdata[i].nColor;
 		}
 		int j=0;
 		int index;
@@ -56,7 +57,7 @@ void Bullet::Init(HTEXTURE _tex)
 			index = i*BULLETCOLORMAX+j;
 			sprite[index] = SpriteItemManager::CreateSprite(tbd->siid+j);
 			sprite[index]->SetBlendMode(tbd->blendtype);
-			if (res.bulletdata[i].collisiontype != BULLET_COLLISION_ELLIPSE && tbd->collisionSub)
+			if (BResource::res.bulletdata[i].collisiontype != BULLET_COLLISION_ELLIPSE && tbd->collisionSub)
 			{
 				sprite[index]->SetHotSpot(SpriteItemManager::GetTexW(tbd->siid+j)/2.0f, SpriteItemManager::GetTexH(tbd->siid+j)/2.0f+tbd->collisionSub);
 			}
@@ -144,7 +145,7 @@ void Bullet::ClearItem()
 	index = 0;
 }
 
-void Bullet::Action(bool notinstop)
+void Bullet::Action(DWORD stopflag)
 {
 	for (int j=0; j<M_PL_MATCHMAXPLAYER; j++)
 	{
@@ -153,6 +154,7 @@ void Bullet::Action(bool notinstop)
 			ZeroMemory(Bullet::renderDepth[j], sizeof(RenderDepth) * BULLETTYPEMAX);
 			DWORD i = 0;
 			DWORD size = bu[j].getSize();
+			bool binstop = FRAME_STOPFLAGCHECK_PLAYERINDEX_(stopflag, j, FRAME_STOPFLAG_BULLET);
 			for (bu[j].toBegin(); i<size; bu[j].toNext(), i++)
 			{
 				if (!bu[j].isValid())
@@ -161,7 +163,7 @@ void Bullet::Action(bool notinstop)
 				}
 				if ((*bu[j]).exist)
 				{
-					if (notinstop)
+					if (!binstop)
 					{
 						(*bu[j]).action();
 					}
@@ -179,9 +181,8 @@ void Bullet::Action(bool notinstop)
 	}
 }
 
-void Bullet::RenderAll(BYTE renderflag)
+void Bullet::RenderAll(BYTE playerindex)
 {
-	BYTE playerindex = Export::GetPlayerIndexByRenderFlag(renderflag);
 	if (bu[playerindex].getSize())
 	{
 		for (int i=0; i<BULLETTYPEMAX; i++)
@@ -212,17 +213,17 @@ void Bullet::Render()
 
 BYTE Bullet::getRenderDepth()
 {
-	return res.bulletdata[type].renderdepth;
+	return BResource::res.bulletdata[type].renderdepth;
 }
 
 void Bullet::matchFadeInColorType()
 {
-	if( res.bulletdata[type].fadecolor < BULLETCOLORMAX)
+	if( BResource::res.bulletdata[type].fadecolor < BULLETCOLORMAX)
 	{
-		color = res.bulletdata[type].fadecolor;
+		color = BResource::res.bulletdata[type].fadecolor;
 		type = BULLET_FADEINTYPE;
 	}
-	else if (res.bulletdata[type].fadecolor == BULLET_FADECOLOR_16)
+	else if (BResource::res.bulletdata[type].fadecolor == BULLET_FADECOLOR_16)
 	{
 		type = BULLET_FADEINTYPE;
 		if (color == 0)
@@ -237,19 +238,19 @@ void Bullet::matchFadeInColorType()
 			color = (color-9)/3+5;
 		}
 	}
-	else if (res.bulletdata[type].fadecolor == BULLET_FADECOLOR_8)
+	else if (BResource::res.bulletdata[type].fadecolor == BULLET_FADECOLOR_8)
 	{
 		type = BULLET_FADEINTYPE;
 	}
 }
 void Bullet::matchFadeOutColorType()
 {
-	if (res.bulletdata[type].fadecolor < BULLETCOLORMAX)
+	if (BResource::res.bulletdata[type].fadecolor < BULLETCOLORMAX)
 	{
-		color = res.bulletdata[type].fadecolor;
+		color = BResource::res.bulletdata[type].fadecolor;
 		type = BULLET_FADEOUTTYPE;
 	}
-	else if (res.bulletdata[type].fadecolor == BULLET_FADECOLOR_16)
+	else if (BResource::res.bulletdata[type].fadecolor == BULLET_FADECOLOR_16)
 	{
 		type = BULLET_FADEOUTTYPE;
 		if (color == 0)
@@ -264,7 +265,7 @@ void Bullet::matchFadeOutColorType()
 			color = (color-9)/3+5;
 		}
 	}
-	else if (res.bulletdata[type].fadecolor == BULLET_FADECOLOR_8)
+	else if (BResource::res.bulletdata[type].fadecolor == BULLET_FADECOLOR_8)
 	{
 		type = BULLET_FADEOUTTYPE;
 	}
@@ -329,7 +330,7 @@ bool Bullet::valueSet(BYTE _playerindex, WORD _ID, float _x, float _y, bool abso
 
 void Bullet::DoIze()
 {
-	if (cancelable || bossinfo.flag>=BOSSINFO_COLLAPSE)
+	if (cancelable || BossInfo::bossinfo.flag>=BOSSINFO_COLLAPSE)
 	{
 		for (list<EventZone>::iterator it=EventZone::ezone[playerindex].begin(); it!=EventZone::ezone[playerindex].end(); it++)
 		{
@@ -358,7 +359,7 @@ void Bullet::DoIze()
 					{
 						if (!passedEvent(it->eventID))
 						{
-							scr.Execute(SCR_EVENT, SCR_EVENT_BULLETENTERZONE, it->eventID);
+							Scripter::scr.Execute(SCR_EVENT, SCR_EVENT_BULLETENTERZONE, it->eventID);
 							passEvent(it->eventID);
 						}
 
@@ -371,7 +372,7 @@ void Bullet::DoIze()
 
 void Bullet::DoGraze()
 {
-	if(!grazed && res.bulletdata[type].collisiontype != BULLET_COLLISION_NONE)
+	if(!grazed && BResource::res.bulletdata[type].collisiontype != BULLET_COLLISION_NONE)
 	{
 		if((Player::p[playerindex].x - x) * (Player::p[playerindex].x - x) + (Player::p[playerindex].y - y) * (Player::p[playerindex].y - y) < PLAYER_GRAZE_R * PLAYER_GRAZE_R)
 		{
@@ -414,7 +415,7 @@ void Bullet::DoUpdateRenderDepth()
 
 bool Bullet::HaveGray()
 {
-	if (!(res.bulletdata[type].nColor % 8))
+	if (!(BResource::res.bulletdata[type].nColor % 8))
 	{
 		return true;
 	}
@@ -475,7 +476,7 @@ void Bullet::SendBullet(BYTE playerindex, float x, float y, BYTE setID, BYTE * s
 	int esindex = EffectSp::Build(setID, playerindex, EffectSp::senditemsiid[siidindex][0], x, y, 0, _hscale);
 	if (esindex >= 0)
 	{
-		EffectSp * _peffsp = &(EffectSp::effsp[esindex]);
+		EffectSp * _peffsp = &(EffectSp::effsp[playerindex][esindex]);
 		_peffsp->colorSet(0x80ffffff, BLEND_ALPHAADD);
 		float aimx;
 		float aimy;
@@ -560,7 +561,7 @@ void Bullet::action()
 			type = oldtype;
 			color = oldcolor;
 			alpha = 0xff;
-			SE::push(res.bulletdata[type].seID, x);
+			SE::push(BResource::res.bulletdata[type].seID, x);
 		}
 		else
 		{
@@ -571,10 +572,10 @@ void Bullet::action()
 			{
 				ChangeAction();
 
-				if (res.bulletdata[type].nRoll && !(timer % BULLET_ANIMATIONSPEED))
+				if (BResource::res.bulletdata[type].nRoll && !(timer % BULLET_ANIMATIONSPEED))
 				{
 					color++;
-					if (color >= res.bulletdata[type].nRoll)
+					if (color >= BResource::res.bulletdata[type].nRoll)
 					{
 						color = 0;
 					}
@@ -609,7 +610,7 @@ void Bullet::action()
 		}
 
 		DoIze();
-		headangle += SIGN(color) * res.bulletdata[type].nTurnAngle;
+		headangle += SIGN(color) * BResource::res.bulletdata[type].nTurnAngle;
 		if(tarID != 0xff)
 		{
 			Target::SetValue(tarID, x, y);
@@ -665,7 +666,7 @@ void Bullet::action()
 
 bool Bullet::isInRect(float r, float aimx, float aimy)
 {
-	bulletData * tbd = &(res.bulletdata[type]);
+	bulletData * tbd = &(BResource::res.bulletdata[type]);
 	switch (tbd->collisiontype)
 	{
 	case BULLET_COLLISION_NONE:
@@ -860,22 +861,22 @@ void Bullet::ChangeAction()
 				switch (actionList[i])
 				{
 				case VALGREAT:
-					if(CAST(scr.d[actionList[i+1]]) >= actionList[i+2])
+					if(CAST(Scripter::scr.d[actionList[i+1]]) >= actionList[i+2])
 						doit = true;
 					i+=2;
 					break;
 				case VALEQUAL:
-					if(CAST(scr.d[actionList[i+1]]) == actionList[i+2])
+					if(CAST(Scripter::scr.d[actionList[i+1]]) == actionList[i+2])
 						doit = true;
 					i+=2;
 					break;
 				case VALLESS:
-					if(CAST(scr.d[actionList[i+1]]) <= actionList[i+2])
+					if(CAST(Scripter::scr.d[actionList[i+1]]) <= actionList[i+2])
 						doit = true;
 					i+=2;
 					break;
 				case VALRANGE:
-					if(CAST(scr.d[actionList[i+1]]) >= actionList[i+2] && CAST(scr.d[actionList[i+1]]) <= actionList[i+3])
+					if(CAST(Scripter::scr.d[actionList[i+1]]) >= actionList[i+2] && CAST(Scripter::scr.d[actionList[i+1]]) <= actionList[i+3])
 						doit = true;
 					i+=3;
 					break;
@@ -1155,8 +1156,8 @@ void Bullet::ChangeAction()
 				case VALSET:
 					if(doit)
 					{
-						scr.SetIntValue(actionList[i+1], actionList[i+2]);
-						scr.d[actionList[i+1]].bfloat = false;
+						Scripter::scr.SetIntValue(actionList[i+1], actionList[i+2]);
+						Scripter::scr.d[actionList[i+1]].bfloat = false;
 					}
 					i+=2;
 					doit = false;
@@ -1164,8 +1165,8 @@ void Bullet::ChangeAction()
 				case VALSETADD:
 					if(doit)
 					{
-						scr.SetIntValue(actionList[i+1], scr.GetIntValue(actionList[i+1])+actionList[i+2]);
-						scr.d[actionList[i+1]].bfloat = false;
+						Scripter::scr.SetIntValue(actionList[i+1], Scripter::scr.GetIntValue(actionList[i+1])+actionList[i+2]);
+						Scripter::scr.d[actionList[i+1]].bfloat = false;
 					}
 					i+=2;
 					doit = false;
@@ -1178,7 +1179,7 @@ void Bullet::ChangeAction()
 				case CALLEVENT:
 					if (doit)
 					{
-						scr.Execute(SCR_EVENT, actionList[i+1], actionList[i+2]);
+						Scripter::scr.Execute(SCR_EVENT, actionList[i+1], actionList[i+2]);
 					}
 					i+=2;
 					doit = false;

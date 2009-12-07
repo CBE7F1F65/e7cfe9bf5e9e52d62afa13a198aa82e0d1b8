@@ -12,13 +12,13 @@ int _HDSSCallGet::Get_D(LuaState * ls)
 	if (argscount > 1)
 	{
 		int _index = _INEXT_HDSS_LUAFUNC;
-		if (scr.d[_index].bfloat)
+		if (Scripter::scr.d[_index].bfloat)
 		{
-			_PD_HDSS_LUA(CUINT(scr.d[_index].value));
+			_PD_HDSS_LUA(CUINT(Scripter::scr.d[_index].value));
 		}
 		else
 		{
-			_PI_HDSS_LUA(CAST(scr.d[_index]));
+			_PI_HDSS_LUA(CAST(Scripter::scr.d[_index]));
 		}
 		return 1;
 	}
@@ -31,7 +31,7 @@ int _HDSSCallGet::Get_Du(LuaState * ls)
 	if (argscount > 1)
 	{
 		int _index = _INEXT_HDSS_LUAFUNC;
-		_PD_HDSS_LUA(UCAST(scr.d[_index]));
+		_PD_HDSS_LUA(UCAST(Scripter::scr.d[_index]));
 		return 1;
 	}
 	return 0;
@@ -79,11 +79,11 @@ int _HDSSCallGet::Get_SELCOMPLETE(LuaState * ls)
 
 		if (_selsys >= 0 && _selsys < SELSYSTEMMAX)
 		{
-			_PB_HDSS_LUA(selsys[_selsys].complete);
-			_PI_HDSS_LUA(selsys[_selsys].select);
-			if (selsys[_selsys].complete && _bclearaftercomplete)
+			_PB_HDSS_LUA(SelectSystem::selsys[_selsys].complete);
+			_PI_HDSS_LUA(SelectSystem::selsys[_selsys].select);
+			if (SelectSystem::selsys[_selsys].complete && _bclearaftercomplete)
 			{
-				selsys[_selsys].Clear();
+				SelectSystem::selsys[_selsys].Clear();
 			}
 			return 2;
 		}
@@ -174,7 +174,7 @@ int _HDSSCallGet::Get_SEL(LuaState * ls)
 		int _selsys = _INEXT_HDSS_LUAFUNC;
 		if (_selsys >= 0 && _selsys < SELSYSTEMMAX)
 		{
-			_PI_HDSS_LUA(selsys[_selsys].select);
+			_PI_HDSS_LUA(SelectSystem::selsys[_selsys].select);
 			return 1;
 		}
 	}
@@ -189,7 +189,7 @@ int _HDSSCallGet::Get_SELFIRSTID(LuaState * ls)
 		int _selsys = _INEXT_HDSS_LUAFUNC;
 		if (_selsys >= 0 && _selsys < SELSYSTEMMAX)
 		{
-			_PI_HDSS_LUA(selsys[_selsys].firstID);
+			_PI_HDSS_LUA(SelectSystem::selsys[_selsys].firstID);
 			return 1;
 		}
 	}

@@ -6,28 +6,14 @@
 #include "BObject.h"
 
 
-#define BGLAYERMAX			0x40
-#define FGLAYERMAX			0x04
+#define BGLAYERMAX			0x20
+#define FGLAYERMAX			0x02
 #define BGFGLAYERMAX		(BGLAYERMAX+FGLAYERMAX)
 #define UBGLAYERMAX			(BGLAYERMAX+FGLAYERMAX+2)
 #define UBGID_BGMASK		(UBGLAYERMAX-2)
 #define UBGID_FGPAUSE		(UBGLAYERMAX-1)
 
-#define BGLAYERSETMAX		0x10
-
-#define UBGID_LEFTIDBEGIN		0x0
-#define UBGID_LEFTIDUNTIL		(BGLAYERMAX/2)
-#define UBGID_RIGHTIDBEGIN		UBGID_LEFTIDUNTIL
-#define UBGID_RIGHTIDUNTIL		BGLAYERMAX
-#define UFGID_LEFTIDBEGIN		UBGID_RIGHTIDUNTIL
-#define UFGID_LEFTIDUNTIL		(BGLAYERMAX+FGLAYERMAX/2)
-#define UFGID_RIGHTIDBEGIN		UFGID_LEFTIDUNTIL
-#define UFGID_RIGHTIDUNTIL		BGFGLAYERMAX
-
-#define UBGID_ALLIDBEGIN	0x0
-#define UBGID_ALLIDUNTIL	BGLAYERMAX
-#define UFGID_ALLIDBEGIN	UBGID_ALLIDUNTIL
-#define UFGID_ALLIDUNTIL	BGFGLAYERMAX
+#define BGLAYERSETMAX		0x08
 
 #define BG_NONE			0x00
 
@@ -80,12 +66,10 @@ public:
 	virtual ~BGLayer();
 
 	static void Init(HTEXTURE * tex);
-	static void KillOtherLayer();
-	static void Action(bool active);
-	static void RenderBG(BYTE renderflag=M_RENDER_NULL);
-	static void RenderFG(BYTE renderflag=M_RENDER_NULL);
-
-	static void GetIDBeginUntil(BYTE renderflag, bool useforbg, int & idbegin, int & iduntil);
+	static void KillOtherLayer(BYTE playerindex);
+	static void Action(DWORD stopflag, bool active);
+	static void RenderBG(BYTE playerindex);
+	static void RenderFG(BYTE playerindex);
 
 	void Render();
 	void valueSet(int siID, float cenx, float ceny, float width, float height, DWORD col = 0xffffffff);
@@ -118,11 +102,11 @@ public:
 	BYTE	changetimer;
 	BYTE	mtimer;
 
-	static BGLayerSet set[BGLAYERSETMAX];
+	static BGLayerSet set[M_PL_MATCHMAXPLAYER][BGLAYERSETMAX];
 	static WORD setindex;
 	static HTEXTURE * tex;
 
-	static BGLayer ubg[UBGLAYERMAX];
+	static BGLayer ubg[M_PL_MATCHMAXPLAYER][UBGLAYERMAX];
 };
 
 #endif

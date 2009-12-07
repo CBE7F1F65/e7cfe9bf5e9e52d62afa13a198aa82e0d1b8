@@ -54,7 +54,7 @@ public:
 	static void ClearItem();
 	static void Release();
 	static int Build(int setID, WORD ID, int siid, float x, float y, int headangle=0, float hscale=1.0f, float vscale=0.0f);
-	static void Action();
+	static void Action(DWORD stopflag);
 	static void RenderAll();
 
 	void valueSet(int setID, WORD ID, int siid, float x, float y, int headangle=0, float hscale=1.0f, float vscale=0.0f);
@@ -65,7 +65,7 @@ public:
 
 	void AppendData(int ival, float fval);
 
-	void EffectSpOff(int setID, int ID=-1);
+	void EffectSpOff(BYTE playerindex, int setID, int ID=-1);
 
 	void action();
 	void Render();
@@ -95,7 +95,7 @@ public:
 	static int senditemexsiid;
 	static hgeSprite * sprite;
 
-	static VectorList<EffectSp> effsp;
+	static VectorList<EffectSp> effsp[M_PL_MATCHMAXPLAYER];
 };
 
 #endif

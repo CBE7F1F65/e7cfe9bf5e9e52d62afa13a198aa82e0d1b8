@@ -6,7 +6,7 @@
 #include "SE.h"
 #include "PushKey.h"
 
-SelectSystem selsys[SELSYSTEMMAX];
+SelectSystem SelectSystem::selsys[SELSYSTEMMAX];
 
 SelectSystem::SelectSystem()
 {

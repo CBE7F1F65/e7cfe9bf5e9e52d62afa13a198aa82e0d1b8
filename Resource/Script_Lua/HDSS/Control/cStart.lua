@@ -6,7 +6,7 @@ function ControlExecute_cStart(con)
 			hdss.Call(
 				HDSS_BGVALEX,
 				{
-					i*UBGID_RIGHTIDBEGIN, SI_TitleScene
+					i, 0, SI_TitleScene
 				},
 				{
 					xoffset, 480, -480, 320, 480, 9000, 0, 0
@@ -18,7 +18,7 @@ function ControlExecute_cStart(con)
 			hdss.Call(
 				HDSS_BGVALEX,
 				{
-					i*UBGID_RIGHTIDBEGIN+1, SI_TitleScene
+					i, 1, SI_TitleScene
 				},
 				{
 					xoffset, 0, -480, 320, 480, 9000, 0, 0
@@ -30,7 +30,7 @@ function ControlExecute_cStart(con)
 			hdss.Call(
 				HDSS_BGVALEX,
 				{
-					i*UBGID_RIGHTIDBEGIN+2, SI_TitleScene
+					i, 2, SI_TitleScene
 				},
 				{
 					xoffset, 0, -480, 480, 480, 0, 9000, 0
@@ -42,7 +42,7 @@ function ControlExecute_cStart(con)
 			hdss.Call(
 				HDSS_BGVALEX,
 				{
-					i*UBGID_RIGHTIDBEGIN+3, SI_TitleScene
+					i, 3, SI_TitleScene
 				},
 				{
 					xoffset+320, 0, -480, 480, 480, 0, 9000, 0
@@ -51,10 +51,10 @@ function ControlExecute_cStart(con)
 					0.008
 				}
 			)
-		hdssBGCOLOR(i*UBGID_RIGHTIDBEGIN, 0, 0, col, col);
-		hdssBGCOLOR(i*UBGID_RIGHTIDBEGIN+1, 0, 0, col, col);
-		hdssBGCOLOR(i*UBGID_RIGHTIDBEGIN+2, 0, col, col, 0);
-		hdssBGCOLOR(i*UBGID_RIGHTIDBEGIN+3, 0, col, col, 0);
+		hdssBGCOLOR(i, 0, 0, 0, col, col);
+		hdssBGCOLOR(i, 1, 0, 0, col, col);
+		hdssBGCOLOR(i, 2, 0, col, col, 0);
+		hdssBGCOLOR(i, 3, 0, col, col, 0);
 		end
 		
 	end

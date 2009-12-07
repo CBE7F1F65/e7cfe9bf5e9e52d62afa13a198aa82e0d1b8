@@ -3,8 +3,9 @@
 #include "Export.h"
 #include "Player.h"
 #include "Target.h"
+#include "ProcessDefine.h"
 
-Effectsys Effectsys::effsys[EFFECTSYSMAX];
+Effectsys Effectsys::effsys[M_PL_MATCHMAXPLAYER][EFFECTSYSMAX];
 hgeEffectSystem Effectsys::efftype[EFFECTSYSTYPEMAX];
 
 Effectsys::Effectsys()
@@ -26,52 +27,40 @@ void Effectsys::Clear()
 
 void Effectsys::ClearAll()
 {
-	for (int i=0; i<EFFECTSYSMAX; i++)
+	for (int j=0; j<M_PL_MATCHMAXPLAYER; j++)
 	{
-		effsys[i].Clear();
-	}
-}
-
-void Effectsys::Action()
-{
-	for (int i=0; i<EFFECTSYSMAX; i++)
-	{
-		if (effsys[i].exist)
+		for (int i=0; i<EFFECTSYSMAX; i++)
 		{
-			effsys[i].action();
+			effsys[j][i].Clear();
 		}
 	}
 }
 
-void Effectsys::GetIDBeginUntil(BYTE renderflag, int & idbegin, int & iduntil)
+void Effectsys::Action(DWORD stopflag)
 {
-	if (renderflag == M_RENDER_NULL)
+	for (int j=0; j<M_PL_MATCHMAXPLAYER; j++)
 	{
-		idbegin = 0x0;
-		iduntil = EFFECTSYSMAX;
-	}
-	else if (renderflag == M_RENDER_LEFT)
-	{
-		idbegin = EFFID_LEFTIDBEGIN;
-		iduntil = EFFID_LEFTIDUNTIL;
-	}
-	else if (renderflag == M_RENDER_RIGHT)
-	{
-		idbegin = EFFID_RIGHTIDBEGIN;
-		iduntil = EFFID_RIGHTIDUNTIL;
+		bool binstop = FRAME_STOPFLAGCHECK_PLAYERINDEX_(stopflag, j, FRAME_STOPFLAG_EFFECTSYS);
+		if (!binstop)
+		{
+			for (int i=0; i<EFFECTSYSMAX; i++)
+			{
+				if (effsys[j][i].exist)
+				{
+					effsys[j][i].action();
+				}
+			}
+		}
 	}
 }
 
-void Effectsys::RenderAll(BYTE _renderflag)
+void Effectsys::RenderAll(BYTE playerindex)
 {
-	int idbegin;
-	int iduntil;
-	GetIDBeginUntil(_renderflag, idbegin, iduntil);
-	for (int i=idbegin; i<iduntil; i++)
+	for (int i=0; i<EFFECTSYSMAX; i++)
 	{
-		if (effsys[i].exist)
+		if (effsys[playerindex][i].exist)
 		{
-			effsys[i].Render();
+			effsys[playerindex][i].Render();
 		}
 	}
 }
@@ -95,26 +84,27 @@ bool Effectsys::Init(HTEXTURE * tex, const char * foldername, char name[][M_PATH
 	return true;
 }
 
-void Effectsys::valueSet(WORD ID, BYTE renderflag, float x, float y, int lifetime)
+void Effectsys::valueSet(WORD ID, BYTE playerindex, float x, float y, int lifetime)
 {
-	valueSet(ID, renderflag, lifetime, x, y, 0, 0xff, 9000, 0, 0);
+	valueSet(ID, playerindex, lifetime, x, y, 0, 0xff, 9000, 0, 0);
 }
 
-void Effectsys::valueSet(WORD ID, BYTE renderflag, BObject & owner)
+void Effectsys::valueSet(WORD ID, BYTE playerindex, BObject & owner)
 {
-	valueSet(ID, renderflag, owner.x, owner.y);
+	valueSet(ID, playerindex, owner.x, owner.y);
 }
 
-void Effectsys::valueSet(WORD ID, BYTE renderflag, int lifetime, float x, float y, BYTE tarID, int _chasetimer, BYTE _tarAim)
+void Effectsys::valueSet(WORD ID, BYTE playerindex, int lifetime, float x, float y, BYTE tarID, int _chasetimer, BYTE _tarAim)
 {
-	valueSet(ID, renderflag, lifetime, x, y, 0, tarID, 9000, 0, 0);
+	valueSet(ID, playerindex, lifetime, x, y, 0, tarID, 9000, 0, 0);
 	chasetimer = _chasetimer;
 	tarAim = _tarAim;
 }
 
-void Effectsys::valueSet(WORD _ID, BYTE _renderflag, int _lifetime, float _x, float _y, float _z, BYTE _tarID, int _angle, float _speed, float _zSpeed)
+void Effectsys::valueSet(WORD _ID, BYTE _playerindex, int _lifetime, float _x, float _y, float _z, BYTE _tarID, int _angle, float _speed, float _zSpeed)
 {
 	ID			= _ID;
+	playerindex	= _playerindex;
 	tarID		= _tarID;
 	lifetime	= _lifetime;
 	x			= _x;
@@ -128,8 +118,7 @@ void Effectsys::valueSet(WORD _ID, BYTE _renderflag, int _lifetime, float _x, fl
 	vscale		= 1.0f;
 	timer		= 0;
 	SetColorMask(0xffffffff);
-	SetRenderFlag(_renderflag);
-
+	
 	chasetimer = 0;
 
 	exist = true;
@@ -143,11 +132,6 @@ void Effectsys::valueSet(WORD _ID, BYTE _renderflag, int _lifetime, float _x, fl
 
 	MoveTo(x, y, z, true);
 	Fire();
-}
-
-void Effectsys::SetRenderFlag(BYTE _renderflag)
-{
-	renderflag = _renderflag;
 }
 
 void Effectsys::Stop(bool bKill /* = false */)
@@ -168,6 +152,7 @@ void Effectsys::SetColorMask(DWORD color)
 
 void Effectsys::Render()
 {
+	BYTE renderflag = Export::GetRenderFlagByPlayerIndex(playerindex);
 	eff.Render(Export::GetFarPoint(renderflag), (alpha<<24)|diffuse);
 }
 

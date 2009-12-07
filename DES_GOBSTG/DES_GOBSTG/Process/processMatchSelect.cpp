@@ -15,10 +15,10 @@ int Process::processMatchSelect()
 	time++;
 	if (time == 1)
 	{
-		scr.Execute(SCR_EVENT, SCR_EVENT_ENTERSTATE, STATE_MATCH_SELECT);
+		Scripter::scr.Execute(SCR_EVENT, SCR_EVENT_ENTERSTATE, STATE_MATCH_SELECT);
 	}
 	retvalue = PGO;
-	scr.Execute(SCR_CONTROL, STATE_MATCH_SELECT, time);
+	Scripter::scr.Execute(SCR_CONTROL, STATE_MATCH_SELECT, time);
 	return retvalue;
 	/*
 	static int snolist[FONTSYSMAX];
@@ -26,22 +26,22 @@ int Process::processMatchSelect()
 	time++;
 	if(time == 1)
 	{
-		scr.Execute(SCR_EVENT, SCR_EVENT_ENTERSTATE, STATE_MATCH_SELECT);
+		Scripter::scr.Execute(SCR_EVENT, SCR_EVENT_ENTERSTATE, STATE_MATCH_SELECT);
 		fdisp.SetState(FDISP_PANEL, 0);
 		if(nowdifflv >= M_DIFFI_EXTRA_START)
 			nowdifflv = defaultdifflv;
 
-		scr.SetIntValue(SCR_RESERVEBEGIN, -1);
-		scr.SetIntValue(SCR_RESERVEBEGIN+1, 0);
-		scr.SetIntValue(SCR_RESERVEBEGIN+2, 0);
+		Scripter::scr.SetIntValue(SCR_RESERVEBEGIN, -1);
+		Scripter::scr.SetIntValue(SCR_RESERVEBEGIN+1, 0);
+		Scripter::scr.SetIntValue(SCR_RESERVEBEGIN+2, 0);
 	}
 	retvalue = PGO;
-	scr.Execute(SCR_CONTROL, STATE_MATCH_SELECT, time);
+	Scripter::scr.Execute(SCR_CONTROL, STATE_MATCH_SELECT, time);
 
-	int tsec = scr.GetIntValue(SCR_RESERVEBEGIN);
-	int tsnolistindex = scr.GetIntValue(SCR_RESERVEBEGIN+1);
-	int tselsys = scr.GetIntValue(SCR_RESERVEBEGIN+3);
-	int tspmode = scr.GetIntValue(SCR_RESERVEBEGIN+16);
+	int tsec = Scripter::scr.GetIntValue(SCR_RESERVEBEGIN);
+	int tsnolistindex = Scripter::scr.GetIntValue(SCR_RESERVEBEGIN+1);
+	int tselsys = Scripter::scr.GetIntValue(SCR_RESERVEBEGIN+3);
+	int tspmode = Scripter::scr.GetIntValue(SCR_RESERVEBEGIN+16);
 
 	if (tsec == 0)
 	{
@@ -138,8 +138,8 @@ int Process::processMatchSelect()
 		scene = snolist[InfoSelect::select];
 	}
 
-	scr.SetIntValue(SCR_RESERVEBEGIN, tsec);
-	scr.SetIntValue(SCR_RESERVEBEGIN+1, tsnolistindex);
+	Scripter::scr.SetIntValue(SCR_RESERVEBEGIN, tsec);
+	Scripter::scr.SetIntValue(SCR_RESERVEBEGIN+1, tsnolistindex);
 
 	return retvalue;
 	*/

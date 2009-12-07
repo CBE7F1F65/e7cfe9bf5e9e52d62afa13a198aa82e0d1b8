@@ -33,47 +33,47 @@ void SpriteItemManager::Release()
 
 HTEXTURE SpriteItemManager::GetTexture(int index)
 {
-	if (index < 0 || index >= res.spritenumber || !tex)
+	if (index < 0 || index >= BResource::res.spritenumber || !tex)
 	{
 		return NULL;
 	}
-	return tex[res.spritedata[index].tex];
+	return tex[BResource::res.spritedata[index].tex];
 }
 
 float SpriteItemManager::GetTexX(int index)
 {
-	if (index < 0 || index >= res.spritenumber)
+	if (index < 0 || index >= BResource::res.spritenumber)
 	{
 		return 0;
 	}
-	return res.spritedata[index].tex_x;
+	return BResource::res.spritedata[index].tex_x;
 }
 
 float SpriteItemManager::GetTexY(int index)
 {
-	if (index < 0 || index >= res.spritenumber)
+	if (index < 0 || index >= BResource::res.spritenumber)
 	{
 		return 0;
 	}
-	return res.spritedata[index].tex_y;
+	return BResource::res.spritedata[index].tex_y;
 }
 
 float SpriteItemManager::GetTexW(int index)
 {
-	if (index < 0 || index >= res.spritenumber)
+	if (index < 0 || index >= BResource::res.spritenumber)
 	{
 		return 0;
 	}
-	return res.spritedata[index].tex_w;
+	return BResource::res.spritedata[index].tex_w;
 }
 
 float SpriteItemManager::GetTexH(int index)
 {
-	if (index < 0 || index >= res.spritenumber)
+	if (index < 0 || index >= BResource::res.spritenumber)
 	{
 		return 0;
 	}
-	return res.spritedata[index].tex_h;
+	return BResource::res.spritedata[index].tex_h;
 }
 
 void SpriteItemManager::RenderFrontSprite()
@@ -97,9 +97,9 @@ int SpriteItemManager::GetIndexByName(const char * spritename)
 	{
 		return -1;
 	}
-	for (int i=0; i<res.spritenumber; i++)
+	for (int i=0; i<BResource::res.spritenumber; i++)
 	{
-		if (!strcmp(spritename, res.spritedata[i].spritename))
+		if (!strcmp(spritename, BResource::res.spritedata[i].spritename))
 		{
 			return i;
 			break;
@@ -110,9 +110,9 @@ int SpriteItemManager::GetIndexByName(const char * spritename)
 
 spriteData * SpriteItemManager::CastSprite(int index)
 {
-	if (index >= 0 && index < res.spritenumber)
+	if (index >= 0 && index < BResource::res.spritenumber)
 	{
-		return &(res.spritedata[index]);
+		return &(BResource::res.spritedata[index]);
 	}
 	return NULL;
 }
@@ -209,7 +209,7 @@ hgeSprite * SpriteItemManager::CreateSprite(int index)
 	}
 	else
 	{
-		sprite = new hgeSprite(tex[res.spritedata[index].tex], res.spritedata[index].tex_x, res.spritedata[index].tex_y, res.spritedata[index].tex_w, res.spritedata[index].tex_h);
+		sprite = new hgeSprite(tex[BResource::res.spritedata[index].tex], BResource::res.spritedata[index].tex_x, BResource::res.spritedata[index].tex_y, BResource::res.spritedata[index].tex_w, BResource::res.spritedata[index].tex_h);
 	}
 	return sprite;
 }
@@ -234,8 +234,8 @@ bool SpriteItemManager::ChangeSprite(int index, hgeSprite * sprite)
 	{
 		return false;
 	}
-	sprite->SetTexture(tex[res.spritedata[index].tex]);
-	sprite->SetTextureRect(res.spritedata[index].tex_x, res.spritedata[index].tex_y, res.spritedata[index].tex_w, res.spritedata[index].tex_h);
+	sprite->SetTexture(tex[BResource::res.spritedata[index].tex]);
+	sprite->SetTextureRect(BResource::res.spritedata[index].tex_x, BResource::res.spritedata[index].tex_y, BResource::res.spritedata[index].tex_w, BResource::res.spritedata[index].tex_h);
 	return true;
 }
 
@@ -283,7 +283,7 @@ bool SpriteItemManager::ptFace(int index, hgeSprite * sprite)
 		sprite->SetTextureRect(0, 0, 0, 0);
 		return true;
 	}
-	ChangeSprite(res.playerdata[index].faceSIID, sprite);
+	ChangeSprite(BResource::res.playerdata[index].faceSIID, sprite);
 	return true;
 }
 /*
@@ -298,7 +298,7 @@ bool SpriteItemManager::ptName(int index, hgeSprite * sprite, bool enemy)
 		sprite->SetTextureRect(0, 0, 0, 0);
 		return true;
 	}
-	spriteData * tsd = &(res.spritedata[index+(enemy?nameIndexEnemy:nameIndexPlayer)]);
+	spriteData * tsd = &(BResource::res.spritedata[index+(enemy?nameIndexEnemy:nameIndexPlayer)]);
 	sprite->SetTexture(tex[tsd->tex]);
 	sprite->SetTextureRect(tsd->tex_x, tsd->tex_y, tsd->tex_w, tsd->tex_h);
 	return true;

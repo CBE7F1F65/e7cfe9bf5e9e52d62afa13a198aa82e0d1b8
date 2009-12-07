@@ -11,12 +11,12 @@ int Process::processTitle()
 		reload();
 		for (int i=0; i<SELSYSTEMMAX; i++)
 		{
-			selsys[i].select = titleselect;
+			SelectSystem::selsys[i].select = titleselect;
 		}
 	}
 	retvalue = PGO;
-	scr.Execute(SCR_CONTROL, STATE_TITLE, time);
-	int tselsys = scr.GetIntValue(SCR_RESERVEBEGIN);
-	titleselect = selsys[tselsys].select;
+	Scripter::scr.Execute(SCR_CONTROL, STATE_TITLE, time);
+	int tselsys = Scripter::scr.GetIntValue(SCR_RESERVEBEGIN);
+	titleselect = SelectSystem::selsys[tselsys].select;
 	return retvalue;
 }

@@ -2,7 +2,7 @@ function CESceneSelect_Init()
 end
 
 function CESceneSelect_SetBG()
-	hdssBGVALUE(LConst_uibg_topcontentid, SI_TopContent_Scene, TotalCenterX, 64);
+	hdssBGVALUE(0, LConst_uibg_topcontentid, SI_TopContent_Scene, TotalCenterX, 64);
 end
 
 function CESceneSelect_SetSelect(selsyssceneid)
@@ -73,7 +73,7 @@ function CESceneSelect_SetSelect(selsyssceneid)
 end
 
 function CESceneSelect_CloseUsed()
-	hdssBGOFF(LConst_uibg_player1id, LConst_uibg_player2id);
+	hdssBGOFF(0, LConst_uibg_player1id, LConst_uibg_player2id);
 	for i=0, 11 do
 		hdssFREEFRONTSPRITE(i);
 	end

@@ -46,18 +46,6 @@ struct ftPanelSet
 	int combobarindex;
 };
 
-struct ftInfoBody
-{
-	Effectsys effBossCollapse;
-	Effectsys effBossItem;
-	Effectsys effBossUp;
-	Effectsys effBossStore;
-
-	Effectsys effLoading;
-
-	InfoQuad iqBossBlood;
-};
-
 struct ftInfoSet
 {
 	hgeFont * asciifont;
@@ -325,10 +313,6 @@ struct ftAscIISet
 
 
 #define FDISP_PANEL			0
-#define FDISP_NEXTSTAGE		1
-#define FDISP_FULLPOWER		2
-#define FDISP_HISCORE		3
-#define FDISP_EXTEND		4
 
 #define FDISP_STATE_COUNT	120
 
@@ -342,22 +326,10 @@ public:
 	void Release();
 
 	void RenderPanel();
-	void RenderHeadInfo();
-	void InfoDisplay();
-
-	void BossInit();
-	void BossAction();
-	void BossMoveItemEffect(float x, float y);
+	void RenderHeadInfo(BYTE playerindex);
 
 	void RenderBossInfo();
-	void RenderBossTimeCircle();
 	void RenderEnemyX();
-	void RenderNextStage();
-	void RenderFullPower();
-	void RenderHiScoreGet();
-	void RenderExtend();
-	void RenderDemo(int rpyindex);
-	void RenderLoading();
 
 	void SetState(BYTE type, BYTE state=FDISP_STATE_COUNT);
 	void SetValue(LONGLONG llval, int ival, float fval, bool bval);
@@ -372,7 +344,6 @@ public:
 	ftSpellPointNumSet spellpointnum;
 	ftGameInfoDisplaySet gameinfodisplay;
 	ftAscIISet ascii;
-	ftInfoBody infobody;
 
 	list<fdPostPrint>postprintlist;
 
@@ -382,10 +353,6 @@ public:
 	bool bval;
 
 	BYTE panelcountup;
-	BYTE nextstagecount;
-	BYTE fullpowercount;
-	BYTE hiscorecount;
-	BYTE extendcount;
 
 	static FrontDisplay fdisp;
 };

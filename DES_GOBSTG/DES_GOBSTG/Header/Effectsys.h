@@ -21,17 +21,14 @@ public:
 
 	static bool Init(HTEXTURE * tex, const char * foldername, char name[][M_PATHMAX]);
 	static void ClearAll();
-	static void Action();
-	static void RenderAll(BYTE renderflag);
-
-	static void GetIDBeginUntil(BYTE renderflag, int & idbegin, int & iduntil);
+	static void Action(DWORD stopflag);
+	static void RenderAll(BYTE playerindex);
 
 	void Clear();
-	void valueSet(WORD ID, BYTE renderflag, float x, float y, int lifetime = -1);
-	void valueSet(WORD ID, BYTE renderflag, int lifetime, float x, float y, float z, BYTE tarID, int angle, float speed, float zSpeed);
-	void valueSet(WORD ID, BYTE renderflag, int lifetime, float x, float y, BYTE tarID, int chasetimer, BYTE tarAim);
-	void valueSet(WORD ID, BYTE renderflag, BObject & owner);
-	void SetRenderFlag(BYTE renderflag);
+	void valueSet(WORD ID, BYTE playerindex, float x, float y, int lifetime = -1);
+	void valueSet(WORD ID, BYTE playerindex, int lifetime, float x, float y, float z, BYTE tarID, int angle, float speed, float zSpeed);
+	void valueSet(WORD ID, BYTE playerindex, int lifetime, float x, float y, BYTE tarID, int chasetimer, BYTE tarAim);
+	void valueSet(WORD ID, BYTE playerindex, BObject & owner);
 
 	void SetColorMask(DWORD color);
 
@@ -51,10 +48,10 @@ public:
 	float zSpeed;
 
 	BYTE tarAim;
-	BYTE renderflag;
+	BYTE playerindex;
 
 	static hgeEffectSystem efftype[EFFECTSYSTYPEMAX];
-	static Effectsys effsys[EFFECTSYSMAX];
+	static Effectsys effsys[M_PL_MATCHMAXPLAYER][EFFECTSYSMAX];
 };
 
 #endif

@@ -358,9 +358,10 @@ public:
 	char * texturedefinefilename;
 	char * effectdefinefilename;
 	char * sedefinefilename;
+
+	static Data data;
 };
 
-extern Data data;
 extern HGE * hge;
 
 #endif

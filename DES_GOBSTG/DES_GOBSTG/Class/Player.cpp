@@ -48,9 +48,15 @@ bool Player::able = false;
 BYTE Player::rank = _GAMERANK_MIN;
 int Player::lilycount = 0;
 
+DWORD Player::alltime = 0;
+
 #define _PL_MERGETOPOS_X_(X)	(M_GAMESQUARE_CENTER_X_(X))
 #define _PL_MERGETOPOS_Y		(M_GAMESQUARE_BOTTOM - 64)
 
+#define _PL_SHOOTINGCHARGE_1	0x01
+#define _PL_SHOOTINGCHARGE_2	0x20
+#define _PL_SHOOTINGCHARGE_3	0x30
+#define _PL_SHOOTINGCHARGE_4	0x40
 
 Player::Player()
 {
@@ -181,6 +187,7 @@ void Player::ClearSet(BYTE round)
 	}
 
 	changePlayerID(nowID, true);
+	setShootingCharge(0, 0);
 
 	esChange.valueSet(EFFSPSET_PLAYERUSE, EFFSP_PLAYERCHANGE, SpriteItemManager::GetIndexByName(SI_PLAYER_SHOTITEM), x, y, 0, 3.0f);
 	esChange.colorSet(0x7fffffff, BLEND_ALPHAADD);
@@ -213,6 +220,7 @@ void Player::ClearRound(BYTE round/* =0 */)
 	{
 		rank = _GAMERANK_MIN;
 		lilycount = 0;
+		alltime = 0;
 	}
 }
 
@@ -240,35 +248,32 @@ void Player::valueSet(BYTE _playerindex, BYTE round)
 
 	setFrame(PLAYER_FRAME_STAND);
 
-	// TODO:
-	effGraze.valueSet(EFF_PL_GRAZE, M_RENDER_LEFT, *this);
+	effGraze.valueSet(EFF_PL_GRAZE, playerindex, *this);
 	effGraze.Stop();
-	effChange.valueSet(EFF_PL_CHANGE, M_RENDER_LEFT, *this);
+	effChange.valueSet(EFF_PL_CHANGE, playerindex, *this);
 	effChange.Stop();
-	effInfi.valueSet(EFF_PL_INFI, M_RENDER_LEFT, *this);
+	effInfi.valueSet(EFF_PL_INFI, playerindex, *this);
 	effInfi.Stop();
-	effCollapse.valueSet(EFF_PL_COLLAPSE, M_RENDER_LEFT, *this);
+	effCollapse.valueSet(EFF_PL_COLLAPSE, playerindex, *this);
 	effCollapse.Stop();
-	effMerge.valueSet(EFF_PL_MERGE, M_RENDER_LEFT, *this);
+	effMerge.valueSet(EFF_PL_MERGE, playerindex, *this);
 	effMerge.Stop();
-	effBorder.valueSet(EFF_PL_BORDER, M_RENDER_LEFT, *this);
+	effBorder.valueSet(EFF_PL_BORDER, playerindex, *this);
 	effBorder.Stop();
-	effBorderOn.valueSet(EFF_PL_BORDERON, M_RENDER_LEFT, *this);
+	effBorderOn.valueSet(EFF_PL_BORDERON, playerindex, *this);
 	effBorderOn.Stop();
-	effBorderOff.valueSet(EFF_PL_BORDEROFF, M_RENDER_LEFT, *this);
+	effBorderOff.valueSet(EFF_PL_BORDEROFF, playerindex, *this);
 	effBorderOff.Stop();
 
 	SetAble(true);
 }
 
-void Player::Action(bool * notinstop)
+void Player::Action(DWORD stopflag)
 {
+	alltime++;
+	AddLostStack();
 	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
 	{
-		if (p[i].exist && notinstop[i])
-		{
-			p[i].action();
-		}
 		if (time % _CARDLEVEL_ADDINTERVAL == 0)
 		{
 			p[i].AddCardBossLevel(1, 0);
@@ -276,6 +281,14 @@ void Player::Action(bool * notinstop)
 		if (time % _BOSSLEVEL_ADDINTERVAL == 0)
 		{
 			p[i].AddCardBossLevel(0, 1);
+		}
+		bool binstop = FRAME_STOPFLAGCHECK_PLAYERINDEX_(stopflag, i, FRAME_STOPFLAG_PLAYER);
+		if (p[i].exist)
+		{
+			if (!binstop)
+			{
+				p[i].action();
+			}
 		}
 	}
 	if (time % _GAMERANK_ADDINTERVAL == 0)
@@ -318,6 +331,14 @@ void Player::action()
 	lasty[0] = y;
 
 	//flag
+	if (flag & PLAYER_SHOOTINGCHARGE)
+	{
+		if (ShootingCharge())
+		{
+			flag &= ~PLAYER_SHOOTINGCHARGE;
+		}
+	}
+	//
 	if(flag & PLAYER_MERGE)
 	{
 		if(Merge())
@@ -762,27 +783,10 @@ bool Player::Collapse()
 		{
 			EventZone::Build(EVENTZONE_TYPE_BULLETFADEOUT|EVENTZONE_TYPE_ENEMYDAMAGE|EVENTZONE_TYPE_NOSEND, i, p[i].x, p[i].y, 64, EVENTZONE_OVERZONE, 1000, EVENTZONE_EVENT_NULL, 16);
 		}
-//		Bullet::IzeBuild(playerindex, BULLETIZE_FADEOUT, x, y, 64);
 
-		if(bossinfo.isSpell())
-			BossInfo::failed = true;
 		esCollapse.x = x;
 		esCollapse.y = y;
 		SE::push(SE_PLAYER_DEAD, x);
-
-		/*
-		float aimx;
-		float aimy;
-		for(int i=0;i<5;i++)
-		{
-			aimx = (float)(randt()%360 + 40);
-			aimy = (float)(randt()%80 - 40 - (480 - y) / 2);
-			Item::Build(playerindex, nLife ? ITEM_POWER : ITEM_FULL, x, y + 36, false, 18000 + rMainAngle(aimx, aimy), -sqrt(2 * 0.1f * DIST(x, y, aimx, aimy)));
-		}
-		aimx = (float)(randt()%360 + 40);
-		aimy = (float)(randt()%80 - 40 - (480 - y) / 2);
-		Item::Build(playerindex, nLife ? ITEM_BIGPOWER : ITEM_FULL, x, y + 32, false, 18000 + rMainAngle(aimx, aimy), -sqrt(2 * 0.1f * DIST(x, y, aimx, aimy)));
-		*/
 
 		effCollapse.MoveTo(x, y , 0, true);
 		effCollapse.Fire();
@@ -808,7 +812,6 @@ bool Player::Collapse()
 		if(nLife)
 		{
 			nLife--;
-//			nPower = PL_DEFAULTNPOWER;
 		}
 		else
 		{
@@ -854,7 +857,7 @@ bool Player::Shoot()
 	playershootData * item;
 	for (int i=0; i<PLAYERSHOOTTYPEMAX; i++)
 	{
-		item = &(res.playershootdata[i]);
+		item = &(BResource::res.playershootdata[i]);
 		if (item->timeMod)
 		{
 			if (item->userID == nowID && item->timeMod && (item->timeMod == 1 || !(shoottimer % item->timeMod)))
@@ -876,7 +879,7 @@ bool Player::Shoot()
 bool Player::Drain()
 {
 	draintimer++;
-	scr.Execute(SCR_EVENT, SCR_EVENT_PLAYERDRAIN, playerindex);
+	Scripter::scr.Execute(SCR_EVENT, SCR_EVENT_PLAYERDRAIN, playerindex);
 	return false;
 }
 
@@ -953,7 +956,7 @@ bool Player::Charge()
 		SE::push(SE_PLAYER_CHARGEON, x);
 	}
 	BYTE nChargeLevel = AddCharge(chargespeed);
-	if (hge->Input_GetDIKey(KS_FIRE_MP_(playerindex), DIKEY_UP))
+	if (!hge->Input_GetDIKey(KS_FIRE_MP_(playerindex)))
 	{
 		shootCharge(nChargeLevel);
 		chargetimer = 0;
@@ -993,6 +996,18 @@ bool Player::Graze()
 	effGraze.Fire();
 	SE::push(SE_PLAYER_GRAZE, x);
 	return true;
+}
+
+bool Player::ShootingCharge()
+{
+	shootingchargetimer--;
+	Scripter::scr.Execute(SCR_EVENT, SCR_EVENT_PLAYERSHOOTCHARGE, playerindex);
+	if (shootingchargetimer == 0)
+	{
+		shootingchargeflag = 0;
+		return true;
+	}
+	return false;
 }
 
 void Player::DoEnemyCollapse(float x, float y)
@@ -1222,6 +1237,27 @@ void Player::callPlayerChange()
 	playerchangetimer = 0;
 }
 
+void Player::setShootingCharge(BYTE _shootingchargeflag, BYTE _shootingchargetimer)
+{
+	shootingchargeflag |= _shootingchargeflag;
+	if (shootingchargetimer < _shootingchargetimer)
+	{
+		shootingchargetimer = _shootingchargetimer;
+	}
+	if (!_shootingchargeflag)
+	{
+		shootingchargeflag = 0;
+	}
+	if (!_shootingchargetimer)
+	{
+		_shootingchargetimer = 0;
+	}
+	if (shootingchargeflag && shootingchargetimer)
+	{
+		flag |= PLAYER_SHOOTINGCHARGE;
+	}
+}
+
 void Player::shootCharge(BYTE nChargeLevel, bool bquick)
 {
 	if (!nChargeLevel)
@@ -1232,19 +1268,27 @@ void Player::shootCharge(BYTE nChargeLevel, bool bquick)
 	{
 	case 1:
 		SetInfi(PLAYERINFI_SHOOTCHARGE, _PL_SHOOTCHARGEINFI_1);
+		setShootingCharge(_PL_SHOOTINGCHARGE_1, _PL_SHOOTCHARGEINFI_1);
 		break;
 	case 2:
 		SetInfi(PLAYERINFI_SHOOTCHARGE, _PL_SHOOTCHARGEINFI_2);
+		setShootingCharge((bquick?0:_PL_SHOOTINGCHARGE_1)|_PL_SHOOTINGCHARGE_2, _PL_SHOOTCHARGEINFI_2);
 		break;
 	case 3:
 		SetInfi(PLAYERINFI_SHOOTCHARGE, _PL_SHOOTCHARGEINFI_3);
+		setShootingCharge((bquick?0:_PL_SHOOTINGCHARGE_1)|_PL_SHOOTINGCHARGE_3, _PL_SHOOTCHARGEINFI_3);
 		break;
 	case 4:
 		SetInfi(PLAYERINFI_SHOOTCHARGE, _PL_SHOOTCHARGEINFI_4);
+		setShootingCharge((bquick?0:_PL_SHOOTINGCHARGE_1)|_PL_SHOOTINGCHARGE_4, _PL_SHOOTCHARGEINFI_4);
+		break;
+	case 5:
+		setShootingCharge(_PL_SHOOTINGCHARGE_4, _PL_SHOOTCHARGEINFI_4);
 		break;
 	}
 	if (nChargeLevel > 1)
 	{
+		Process::mp.SetStop(FRAME_STOPFLAG_ALLSET|FRAME_STOPFLAG_PLAYERINDEX_0|FRAME_STOPFLAG_PLAYERINDEX_1, 32);
 		if (nChargeLevel < 5)
 		{
 			if (!bquick)
@@ -1263,7 +1307,6 @@ void Player::shootCharge(BYTE nChargeLevel, bool bquick)
 			AddCardBossLevel(0, 1);
 		}
 	}
-	scr.Execute(SCR_EVENT, SCR_EVENT_PLAYERSHOOTCHARGE, playerindex);
 }
 
 void Player::SendEx(BYTE playerindex, float x, float y)
@@ -1271,7 +1314,7 @@ void Player::SendEx(BYTE playerindex, float x, float y)
 	int _esindex = EffectSp::Build(EFFSPSET_SYSTEM_SENDEXATTACK, playerindex, EffectSp::senditemexsiid, x, y);
 	if (_esindex >= 0)
 	{
-		scr.Execute(SCR_EVENT, SCR_EVENT_PLAYERSENDEX, _esindex);
+		Scripter::scr.Execute(SCR_EVENT, SCR_EVENT_PLAYERSENDEX, playerindex);
 	}
 }
 
@@ -1425,7 +1468,7 @@ void Player::AddLilyCount(int addval, bool bytime/* =false */)
 	lilycount += addval;
 	if (lilycount > 10000)
 	{
-		scr.Execute(SCR_EVENT, SCR_EVENT_PLAYERSENDLILY, rank);
+		Scripter::scr.Execute(SCR_EVENT, SCR_EVENT_PLAYERSENDLILY, rank);
 		AddLilyCount(-10000);
 	}
 	else if (lilycount < 0)

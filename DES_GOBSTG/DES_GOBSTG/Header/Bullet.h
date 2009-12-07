@@ -53,8 +53,8 @@ public:
 	static void Init(HTEXTURE tex);
 	static void Release();
 	static void ClearItem();
-	static void Action(bool noninstop);
-	static void RenderAll(BYTE renderflag);
+	static void Action(DWORD stopflag);
+	static void RenderAll(BYTE playerindex);
 	void Render();
 
 //	virtual void action();

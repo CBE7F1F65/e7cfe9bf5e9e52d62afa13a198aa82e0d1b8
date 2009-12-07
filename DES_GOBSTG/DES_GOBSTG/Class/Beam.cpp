@@ -5,9 +5,9 @@
 #include "Chat.h"
 #include "BossInfo.h"
 #include "Item.h"
-//#include "Main.h"
 #include "Target.h"
 #include "Export.h"
+#include "ProcessDefine.h"
 
 #define	BEAMMAX				0x50
 
@@ -38,36 +38,39 @@ void Beam::ClearItem()
 	}
 }
 
-void Beam::Action()
+void Beam::Action(DWORD stopflag)
 {
 	for (int j=0; j<M_PL_MATCHMAXPLAYER; j++)
 	{
-		if (be[j].getSize())
+		bool binstop = FRAME_STOPFLAGCHECK_PLAYERINDEX_(stopflag, j, FRAME_STOPFLAG_BEAM);
+		if (!binstop)
 		{
-			DWORD i = 0;
-			DWORD size = be[j].getSize();
-			for (be[j].toBegin(); i<size; be[j].toNext(), i++)
+			if (be[j].getSize())
 			{
-				if (!be[j].isValid())
+				DWORD i = 0;
+				DWORD size = be[j].getSize();
+				for (be[j].toBegin(); i<size; be[j].toNext(), i++)
 				{
-					continue;
-				}
-				if ((*be[j]).exist)
-				{
-					(*be[j]).action(j);
-				}
-				else
-				{
-					be[j].pop();
+					if (!be[j].isValid())
+					{
+						continue;
+					}
+					if ((*be[j]).exist)
+					{
+						(*be[j]).action(j);
+					}
+					else
+					{
+						be[j].pop();
+					}
 				}
 			}
 		}
 	}
 }
 
-void Beam::RenderAll(BYTE renderflag)
+void Beam::RenderAll(BYTE playerindex)
 {
-	BYTE playerindex = Export::GetPlayerIndexByRenderFlag(renderflag);
 	if (be[playerindex].getSize())
 	{
 		DWORD i = 0;
