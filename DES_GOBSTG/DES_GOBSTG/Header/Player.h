@@ -78,6 +78,7 @@ public:
 	void ClearNC();
 	void UpdatePlayerData();       
 	void ResetPlayerGhost(bool move = false);
+	static void ClearRound(BYTE round=0);
 
 	virtual void action();
 
@@ -97,13 +98,15 @@ public:
 	bool Graze();
 
 	void changePlayerID(WORD toID, bool moveghost=false);
-	void shootCharge(BYTE nChargeLevel);
+	void shootCharge(BYTE nChargeLevel, bool bquick=false);
 
 	void AddComboHit(int combo, bool ori);
 	void AddSpellPoint(int spellpoint);
 	void AddExPoint(int expoint, float x, float y);
 	void AddGhostPoint(int ghostpoint, float x, float y);
 	void AddBulletPoint(int bulletpoint, float x, float y);
+	static void AddLilyCount(int lilycount, bool bytime=false);
+	void AddCardBossLevel(int cardlevel, int bosslevel);
 
 	void DoEnemyCollapse(float x, float y);
 	LONGLONG DoItemGet(WORD itemtype);

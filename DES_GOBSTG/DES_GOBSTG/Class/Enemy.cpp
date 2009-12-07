@@ -911,6 +911,11 @@ void Enemy::DoShot()
 				CostLife(it->power);
 				// TODO:
 				Player::p[playerindex].DoPlayerBulletHit();
+
+				if (life < 0 && (it->type & EVENTZONE_TYPE_NOSEND))
+				{
+					sendsetID = 0;
+				}
 			}
 		}
 	}
@@ -1163,7 +1168,10 @@ void Enemy::action()
 			float blastr;
 			float blastpower;
 			GetBlastInfo(&blastmaxtime, &blastr, &blastpower);
-			EventZone::Build(EVENTZONE_TYPE_SENDBULLET|EVENTZONE_TYPE_ENEMYGHOSTDAMAGE, playerindex, x, y, blastmaxtime, blastr, blastpower, EVENTZONE_EVENT_NULL);
+			if (blastmaxtime && blastr > 0)
+			{
+				EventZone::Build(EVENTZONE_TYPE_SENDBULLET|EVENTZONE_TYPE_ENEMYDAMAGE, playerindex, x, y, blastmaxtime, blastr, blastpower, EVENTZONE_EVENT_NULL);
+			}
 			Player::p[playerindex].DoEnemyCollapse(x, y);
 
 			if (sendsetID)

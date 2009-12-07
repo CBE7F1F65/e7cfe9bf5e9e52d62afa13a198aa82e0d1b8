@@ -30,6 +30,10 @@
 
 #define _PLAYER_DEFAULETCARDLEVEL_(X)	(X?9:8)
 #define _PLAYER_DEFAULETBOSSLEVEL_(X)	(X?9:8)
+#define _CARDLEVEL_ADDINTERVAL	3600
+#define _BOSSLEVEL_ADDINTERVAL	3600
+#define _CARDLEVEL_MAX	16
+#define _BOSSLEVEL_MAX	16
 
 #define _PLAYER_LIFECOSTMAX	2880
 #define _PLAYER_COMBOHITMAX	999
@@ -194,6 +198,24 @@ void Player::ClearSet(BYTE round)
 	esCollapse.colorSet(0x80ffffff);
 }
 
+void Player::ClearRound(BYTE round/* =0 */)
+{
+	if (round)
+	{
+		rank += _GAMERANK_STAGEOVERADD;
+		if (rank < _GAMERANK_MIN)
+		{
+			rank = _GAMERANK_MIN;
+		}
+		AddLilyCount(-1000);
+	}
+	else
+	{
+		rank = _GAMERANK_MIN;
+		lilycount = 0;
+	}
+}
+
 //add
 
 
@@ -247,6 +269,14 @@ void Player::Action(bool * notinstop)
 		{
 			p[i].action();
 		}
+		if (time % _CARDLEVEL_ADDINTERVAL == 0)
+		{
+			p[i].AddCardBossLevel(1, 0);
+		}
+		if (time % _BOSSLEVEL_ADDINTERVAL == 0)
+		{
+			p[i].AddCardBossLevel(0, 1);
+		}
 	}
 	if (time % _GAMERANK_ADDINTERVAL == 0)
 	{
@@ -256,6 +286,7 @@ void Player::Action(bool * notinstop)
 			rank = _GAMERANK_MAX;
 		}
 	}
+	AddLilyCount(0, true);
 }
 
 void Player::action()
@@ -671,6 +702,7 @@ bool Player::CostLife()
 	costlifetimer++;
 	if (costlifetimer == 1)
 	{
+		AddLilyCount(-1500);
 		if (nLife == 1)
 		{
 			flag |= PLAYER_COLLAPSE;
@@ -689,7 +721,7 @@ bool Player::CostLife()
 			nLife = 1;
 		}
 		SetInfi(PLAYERINFI_COSTLIFE, 120);
-		EventZone::Build(EVENTZONE_TYPE_BULLETFADEOUT|EVENTZONE_TYPE_ENEMYGHOSTDAMAGE, playerindex, x, y, 120, 0, 10, EVENTZONE_EVENT_NULL, 15.6);
+		EventZone::Build(EVENTZONE_TYPE_BULLETFADEOUT|EVENTZONE_TYPE_ENEMYDAMAGE|EVENTZONE_TYPE_NOSEND, playerindex, x, y, 120, 0, 10, EVENTZONE_EVENT_NULL, 15.6);
 		if (nLife == 1)
 		{
 			AddCharge(0, PLAYER_CHARGEMAX);
@@ -728,7 +760,7 @@ bool Player::Collapse()
 	{
 		for (int i=0; i<2; i++)
 		{
-			EventZone::Build(EVENTZONE_TYPE_BULLETFADEOUT|EVENTZONE_TYPE_ENEMYGHOSTDAMAGE, i, p[i].x, p[i].y, 64, EVENTZONE_OVERZONE, 1000, EVENTZONE_EVENT_NULL, 16);
+			EventZone::Build(EVENTZONE_TYPE_BULLETFADEOUT|EVENTZONE_TYPE_ENEMYDAMAGE|EVENTZONE_TYPE_NOSEND, i, p[i].x, p[i].y, 64, EVENTZONE_OVERZONE, 1000, EVENTZONE_EVENT_NULL, 16);
 		}
 //		Bullet::IzeBuild(playerindex, BULLETIZE_FADEOUT, x, y, 64);
 
@@ -855,7 +887,7 @@ bool Player::Bomb()
 	GetNCharge(&ncharge, &nchargemax);
 	if (nchargemax > 1)
 	{
-		shootCharge(nchargemax);
+		shootCharge(nchargemax, true);
 		AddCharge(-PLAYER_CHARGEMAX, -PLAYER_CHARGEMAX);
 	}
 	return true;
@@ -1190,28 +1222,48 @@ void Player::callPlayerChange()
 	playerchangetimer = 0;
 }
 
-void Player::shootCharge(BYTE nChargeLevel)
+void Player::shootCharge(BYTE nChargeLevel, bool bquick)
 {
+	if (!nChargeLevel)
+	{
+		return;
+	}
 	switch (nChargeLevel)
 	{
-	case 0:
-		return;
 	case 1:
 		SetInfi(PLAYERINFI_SHOOTCHARGE, _PL_SHOOTCHARGEINFI_1);
 		break;
 	case 2:
 		SetInfi(PLAYERINFI_SHOOTCHARGE, _PL_SHOOTCHARGEINFI_2);
-		AddCharge(-PLAYER_CHARGEONE, -PLAYER_CHARGEONE);
 		break;
 	case 3:
 		SetInfi(PLAYERINFI_SHOOTCHARGE, _PL_SHOOTCHARGEINFI_3);
-		AddCharge(-PLAYER_CHARGEONE*2, -PLAYER_CHARGEONE*2);
 		break;
 	case 4:
 		SetInfi(PLAYERINFI_SHOOTCHARGE, _PL_SHOOTCHARGEINFI_4);
-		AddCharge(-PLAYER_CHARGEONE*3, -PLAYER_CHARGEONE*3);
 		break;
 	}
+	if (nChargeLevel > 1)
+	{
+		if (nChargeLevel < 5)
+		{
+			if (!bquick)
+			{
+				shootCharge(1);
+			}
+			AddCharge(-PLAYER_CHARGEONE*(nChargeLevel-1), -PLAYER_CHARGEONE*(nChargeLevel-1));
+		}
+		AddLilyCount(-500);
+		if (nChargeLevel < 4)
+		{
+			AddCardBossLevel(1, 0);
+		}
+		else
+		{
+			AddCardBossLevel(0, 1);
+		}
+	}
+	scr.Execute(SCR_EVENT, SCR_EVENT_PLAYERSHOOTCHARGE, playerindex);
 }
 
 void Player::SendEx(BYTE playerindex, float x, float y)
@@ -1355,4 +1407,43 @@ BYTE Player::AddCharge(float addcharge, float addchargemax)
 		FrontDisplay::fdisp.gameinfodisplay.gaugefilledcountdown[playerindex] = FDISP_COUNTDOWNTIME;
 	}
 	return nchargenow;
+}
+
+void Player::AddLilyCount(int addval, bool bytime/* =false */)
+{
+	if (bytime)
+	{
+		if (time < 5400)
+		{
+			AddLilyCount(time/1800+3);
+		}
+		else
+		{
+			AddLilyCount(7);
+		}
+	}
+	lilycount += addval;
+	if (lilycount > 10000)
+	{
+		scr.Execute(SCR_EVENT, SCR_EVENT_PLAYERSENDLILY, rank);
+		AddLilyCount(-10000);
+	}
+	else if (lilycount < 0)
+	{
+		lilycount = 0;
+	}
+}
+
+void Player::AddCardBossLevel(int cardleveladd, int bossleveladd)
+{
+	cardlevel += cardleveladd;
+	bosslevel += bossleveladd;
+	if (cardlevel > _CARDLEVEL_MAX)
+	{
+		cardlevel = _CARDLEVEL_MAX;
+	}
+	if (bosslevel > _BOSSLEVEL_MAX)
+	{
+		bosslevel = _BOSSLEVEL_MAX;
+	}
 }

@@ -93,6 +93,7 @@ void Process::startPrep(bool callinit)
 	{
 		Player::p[i].valueSet(i);
 	}
+	Player::ClearRound();
 //	DataConnector::Try(true);
 
 	if(!replaymode)

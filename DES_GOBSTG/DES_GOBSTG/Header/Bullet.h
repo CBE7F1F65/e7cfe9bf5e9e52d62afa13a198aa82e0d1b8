@@ -110,7 +110,6 @@ public:
 	BYTE	oldtype;
 	BYTE	color;
 	BYTE	oldcolor;
-	BYTE	toafter;
 	BYTE	playerindex;
 	BYTE	typechangetimer;
 	BYTE	eventID[BULLET_EVENTMAX];

@@ -315,7 +315,6 @@ bool Bullet::valueSet(BYTE _playerindex, WORD _ID, float _x, float _y, bool abso
 	hscale			=	1.0f;
 	headangle		=	0;
 	alpha			=	0xff;
-	toafter			=	0;
 	cancelable		=	true;
 
 	xplus = speed * cost(angle);
@@ -345,12 +344,14 @@ void Bullet::DoIze()
 					}
 					if (it->type & EVENTZONE_TYPE_SENDBULLET)
 					{
-						if (sendsetID)
+						if (!(it->type & EVENTZONE_TYPE_NOSEND))
 						{
-							SE::push(SE_BULLET_ERASE, x);
-							fadeout = true;
-							timer = 0;
-							toafter = BULLETZONE_SEND;
+							if (sendsetID)
+							{
+								SE::push(SE_BULLET_ERASE, x);
+								fadeout = true;
+								timer = 0;
+							}
 						}
 					}
 					if (it->type & EVENTZONE_TYPE_BULLETEVENT)
@@ -624,22 +625,15 @@ void Bullet::action()
 	{
 		if(timer == 16)
 		{
-			if(toafter == BULLETZONE_SEND)
+			if (sendsetID)
 			{
-				if (sendsetID)
+				if (sendtime > 2)
 				{
-					if (sendtime > 2)
+					sendtime = 2;
+					if (hge->Random_Int(0, 4) == 0)
 					{
-						sendtime = 2;
-						if (hge->Random_Int(0, 4) == 0)
-						{
-							sendsetID += 2;
-						}
+						sendsetID += 2;
 					}
-				}
-				else
-				{
-					sendsetID = EFFSPSET_SYSTEM_SENDREDBULLET;
 				}
 				SendBullet(1-playerindex, x, y, sendsetID, &sendtime, &speed);
 			}

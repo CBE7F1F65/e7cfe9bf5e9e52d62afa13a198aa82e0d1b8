@@ -538,7 +538,7 @@ void PlayerBullet::action()
 				SE::push(SE_PLAYER_EXPLODE, x);
 			}
 
-			EventZone::Build(EVENTZONE_TYPE_ENEMYGHOSTDAMAGE, playerindex, x, y, 1, SpriteItemManager::GetTexW(res.playershootdata[ID].siid), power);
+			EventZone::Build(EVENTZONE_TYPE_ENEMYDAMAGE, playerindex, x, y, 1, SpriteItemManager::GetTexW(res.playershootdata[ID].siid), power);
 		}
 		if (flag & PBFLAG_SCALEUP)
 		{
