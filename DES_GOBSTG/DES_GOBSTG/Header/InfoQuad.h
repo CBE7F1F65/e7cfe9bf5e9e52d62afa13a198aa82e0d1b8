@@ -13,7 +13,7 @@ class InfoQuad
 {
 public:
 	InfoQuad();
-	virtual ~InfoQuad();
+	~InfoQuad();
 
 	static void Init(HTEXTURE tex);
 

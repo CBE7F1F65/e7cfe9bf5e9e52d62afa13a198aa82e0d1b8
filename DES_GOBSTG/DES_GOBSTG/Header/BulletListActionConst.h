@@ -121,9 +121,6 @@
 #define CHASE			0x8200
 #define	REMAIN			0x8300
 #define FADEOUT			0x8400
-#define FAITHLIZE		0x8500
-#define POINTLIZE		0x8600
-#define SCORELIZE		0x8700
 #define BOUNCE			0x8800
 
 #define BULA_SPECIALSTART	0x00

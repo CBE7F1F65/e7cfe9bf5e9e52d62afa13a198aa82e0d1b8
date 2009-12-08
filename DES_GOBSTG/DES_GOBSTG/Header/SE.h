@@ -67,7 +67,7 @@ public:
 	static bool have(BYTE type);
 	static void play();
 	static void push(BYTE type, float x = M_CLIENT_CENTER_X);
-	static void stop(BYTE type);
+	static void stop(int type=-1);
 
 public:
 	HEFFECT eff;

@@ -82,6 +82,18 @@ void SpriteItemManager::RenderFrontSprite()
 	{
 		if (frontsprite[i].sprite)
 		{
+			if (frontsprite[i].fadeoutmaxtime)
+			{
+				frontsprite[i].fadeouttimer++;
+				if (frontsprite[i].fadeouttimer == frontsprite[i].fadeoutmaxtime)
+				{
+					FreeFrontSprite(i);
+					return;
+				}
+				BYTE _alpha = INTER(0xff, 0, ((float)frontsprite[i].fadeouttimer)/frontsprite[i].fadeoutmaxtime);
+				frontsprite[i].col = (_alpha<<24)|0xffffff;
+			}
+			frontsprite[i].sprite->SetColor(frontsprite[i].col);
 			frontsprite[i].sprite->RenderEx(frontsprite[i].x, frontsprite[i].y, frontsprite[i].rot, frontsprite[i].hscale, frontsprite[i].vscale);
 		}
 	}
@@ -140,6 +152,56 @@ bool SpriteItemManager::SetSprite(int index, hgeSprite * sprite, HTEXTURE * tex)
 	return true;
 }
 
+bool SpriteItemManager::HaveFrontSprite(int ID)
+{
+	if (ID < 0 || ID >= FRONTSPRITEMAX)
+	{
+		return false;
+	}
+	if (frontsprite[ID].sprite)
+	{
+		return true;
+	}
+	return false;
+}
+
+void SpriteItemManager::ClearFrontSpriteVale(int ID)
+{
+	if (ID < 0 || ID >= FRONTSPRITEMAX)
+	{
+		return;
+	}
+	hgeSprite * _sprite = frontsprite[ID].sprite;
+	ZeroMemory(&frontsprite[ID], sizeof(FrontSprite));
+	frontsprite[ID].sprite = _sprite;
+}
+
+hgeSprite * SpriteItemManager::ChangeFrontSprite(int ID, int index)
+{
+	if (ID < 0 || ID >= FRONTSPRITEMAX)
+	{
+		return NULL;
+	}
+	if (HaveFrontSprite(ID))
+	{
+		if (ChangeSprite(index, frontsprite[ID].sprite))
+		{
+			return frontsprite[ID].sprite;
+		}
+		else
+		{
+			return NULL;
+		}
+	}
+	else
+	{
+		frontsprite[ID].sprite = CreateSprite(index);
+		return frontsprite[ID].sprite;
+	}
+	return NULL;
+
+}
+
 void SpriteItemManager::FreeFrontSprite(int ID/* =-1 */)
 {
 	if (ID >= FRONTSPRITEMAX)
@@ -155,35 +217,28 @@ void SpriteItemManager::FreeFrontSprite(int ID/* =-1 */)
 		return;
 	}
 	FreeSprite(&frontsprite[ID].sprite);
-	frontsprite[ID].sprite = NULL;
+	ClearFrontSpriteVale(ID);
 }
 
 hgeSprite * SpriteItemManager::BuildFrontSprite(int ID, int index)
 {
-	if (ID < 0 || ID >= FRONTSPRITEMAX)
-	{
-		return NULL;
-	}
 	if (index >= 0)
 	{
-		FreeFrontSprite(ID);
-		CreateSprite(index, &frontsprite[ID].sprite);
+		if (HaveFrontSprite(ID))
+		{
+			FreeFrontSprite(ID);
+		}
+		return ChangeFrontSprite(ID, index);
 	}
-	return frontsprite[ID].sprite;
+	return NULL;
 }
 
 hgeSprite * SpriteItemManager::BuildFrontSpriteByName(int ID, const char * spritename)
 {
-	if (ID < 0 || ID >= FRONTSPRITEMAX)
-	{
-		return NULL;
-	}
-	FreeFrontSprite(ID);
-	CreateSpriteByName(spritename, &frontsprite[ID].sprite);
-	return frontsprite[ID].sprite;
+	return BuildFrontSprite(ID, GetIndexByName(spritename));
 }
 
-void SpriteItemManager::SetFrontSpriteValue(int ID, float x, float y, int angle/* =0 */, float hscale/* =1.0f */, float vscale/* =0.0f */)
+void SpriteItemManager::SetFrontSpriteValue(int ID, float x, float y, int angle/* =0 */, float hscale/* =1.0f */, float vscale/* =0.0f */, DWORD col/* =0xffffffff */)
 {
 	if (ID < 0 || ID >= FRONTSPRITEMAX)
 	{
@@ -194,6 +249,16 @@ void SpriteItemManager::SetFrontSpriteValue(int ID, float x, float y, int angle/
 	frontsprite[ID].rot = ARC(angle);
 	frontsprite[ID].hscale = hscale;
 	frontsprite[ID].vscale = vscale;
+	frontsprite[ID].col = col;
+}
+
+void SpriteItemManager::SetFrontSpriteFadeoutTime(int ID, int fadeouttime)
+{
+	if (ID < 0 || ID >= FRONTSPRITEMAX)
+	{
+		return;
+	}
+	frontsprite[ID].fadeoutmaxtime = fadeouttime;
 }
 
 hgeSprite * SpriteItemManager::CreateSprite(int index)

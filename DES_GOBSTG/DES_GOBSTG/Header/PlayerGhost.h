@@ -31,7 +31,7 @@ public:
 
 	void AntiShooter(float aimx, float aimy);
 
-	virtual void action();
+	void action();
 
 public:
 	hgeSprite * sprite;

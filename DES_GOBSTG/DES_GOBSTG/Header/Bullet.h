@@ -48,7 +48,7 @@ class Bullet : public BObject
 {
 public:
 	Bullet();
-	virtual ~Bullet();
+	~Bullet();
 
 	static void Init(HTEXTURE tex);
 	static void Release();
@@ -57,7 +57,6 @@ public:
 	static void RenderAll(BYTE playerindex);
 	void Render();
 
-//	virtual void action();
 	void action();
 	void actionInStop();
 

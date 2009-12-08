@@ -21,17 +21,7 @@ void Process::_Render(BYTE renderflag/* =M_RENDER_NULL */)
 		Enemy::RenderScore(playerindex);
 		FrontDisplay::fdisp.RenderHeadInfo(playerindex);
 	}
-	if (renderflag == M_RENDER_NULL)
-	{
-		Chat::chatitem.Render();
-	}
 	BGLayer::RenderFG(playerindex);
-	if (renderflag == M_RENDER_NULL)
-	{
-		SelectSystem::RenderAll();
-		SpriteItemManager::RenderFrontSprite();
-		FrontDisplay::fdisp.RenderPostPrint();
-	}
 }
 
 void Process::_RenderTar()
@@ -84,7 +74,12 @@ int Process::render()
 	{
 		_RenderTar();
 	}
+	SelectSystem::RenderAll();
+	SpriteItemManager::RenderFrontSprite();
+	FrontDisplay::fdisp.RenderPostPrint();
+
 	FrontDisplay::fdisp.RenderPanel();
+	Chat::chatitem.Render();
 	EffectSp::RenderAll();
 
 	if(isingame)

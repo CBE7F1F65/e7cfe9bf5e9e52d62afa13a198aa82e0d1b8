@@ -98,7 +98,7 @@ class Enemy : public BObject
 {
 public:
 	Enemy();
-	virtual ~Enemy();
+	~Enemy();
 
 	static int Build(WORD eID, BYTE playerindex, float x, float y, int angle, float speed, BYTE type, float life, int infitimer);
 	static void Init(HTEXTURE * tex);
@@ -129,7 +129,7 @@ public:
 	void DoShot();
 	bool DoActivate();
 
-	virtual void action();
+	void action();
 	void actionInStop();
 	void matchAction();
 	void updateAction();

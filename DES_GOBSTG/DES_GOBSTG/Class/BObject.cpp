@@ -28,10 +28,6 @@ BObject::~BObject()
 {
 }
 
-void BObject::action()
-{
-}
-
 int BObject::rMainAngle(float destx, float desty, float r)
 {
 	//r>0 clockwise

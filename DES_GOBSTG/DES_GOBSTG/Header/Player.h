@@ -68,11 +68,13 @@
 #define PLAYER_NCOMBOHITMAX		999
 #define PLAYER_NSPELLPOINTMAX	999990
 
+#define PL_SHOOTINGCHARGE_STOPTIME	32
+
 class Player : public BObject
 {
 public:
 	Player();
-	virtual ~Player();
+	~Player();
 
 	void valueSet(BYTE playerindex, BYTE round = 0);
 	void ClearSet(BYTE round=0);
@@ -81,7 +83,8 @@ public:
 	void ResetPlayerGhost(bool move = false);
 	static void ClearRound(BYTE round=0);
 
-	virtual void action();
+	void action();
+	void actionInStop();
 
 	void RenderEffect();
 
@@ -135,6 +138,7 @@ public:
 	void SetInfi(BYTE reasonflag, int infitimer=PLAYER_INFIMAX);
 	bool HavePlayer(WORD ID);
 	void GetNCharge(BYTE * ncharge=NULL, BYTE * nchargemax=NULL);
+	void GetSpellClassAndLevel(BYTE * spellclass, BYTE * spelllevel);
 	BYTE AddCharge(float addcharg=0, float addchargemaxe=0);
 
 	void SetDrainSpriteInfo(float x, float y, int headangle=0, float hscale=1.0f, float vscale=0.0f);
@@ -227,6 +231,7 @@ public:
 	WORD	fasttimer;
 	WORD	playerchangetimer;
 	WORD	costlifetimer;
+	WORD	stoptimer;
 
 	BYTE	shootingchargeflag;
 	BYTE	shootingchargetimer;
@@ -260,6 +265,7 @@ public:
 	static bool able;
 
 	static DWORD alltime;
+	static BYTE	raisestopplayerindex;
 
 	static Player p[M_PL_MATCHMAXPLAYER];
 

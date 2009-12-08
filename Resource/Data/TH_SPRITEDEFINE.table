@@ -1321,9 +1321,15 @@ Comment	Index	SI_Name	Tex	Tex_x	Tex_y	Tex_w	Tex_h
 -	2504	SI_Player_Sanae_21	32	160	96	32	48
 -	2505	SI_Player_Sanae_22	32	192	96	32	48
 -	2506	SI_Player_Sanae_23	32	224	96	32	48
-#		PlayerSpellCutIn(3000~3099)					
--	3000	SI_PlayerSpellCutIn_01	138	0	0	-1	-1
--	3001	SI_PlayerSpellCutIn_02	139	0	0	-1	-1
-#		PlayerDrainZone(3100~3199)					
--	3100	SI_PlayerDrainZone_01	170	0	0	-1	-1
--	3101	SI_PlayerDrainZone_02	171	0	0	-1	-1
+#		PlayerSpellCutIn(3000~3399)					
+-	3000	SI_PlayerSpellCutIn_01_LL	138	0	0	256	85
+-	3001	SI_PlayerSpellCutIn_01_LR	138	0	85	32	85
+-	3002	SI_PlayerSpellCutIn_01_RL	138	0	170	256	85
+-	3003	SI_PlayerSpellCutIn_01_RR	138	224	85	32	85
+-	3004	SI_PlayerSpellCutIn_02_LL	139	0	0	256	85
+-	3005	SI_PlayerSpellCutIn_02_LR	139	0	85	32	85
+-	3006	SI_PlayerSpellCutIn_02_RL	139	0	170	256	85
+-	3007	SI_PlayerSpellCutIn_02_RR	139	224	85	32	85
+#		PlayerDrainZone(3400~3599)					
+-	3400	SI_PlayerDrainZone_01	170	0	0	-1	-1
+-	3401	SI_PlayerDrainZone_02	171	0	0	-1	-1

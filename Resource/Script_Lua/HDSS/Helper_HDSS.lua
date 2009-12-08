@@ -196,7 +196,19 @@ function hdssSE(seid, x)
 	)
 end
 
-function hdssFRONTSPRITE(index, siid, x, y, angle, hscale, vscale)
+function hdssSEOFF(seid)
+	if seid == nil then
+		seid = -1;
+	end
+	return hdss.Call(
+		HDSS_SEOFF,
+		{
+			seid
+		}
+	)
+end
+
+function hdssFRONTSPRITE(index, siid, x, y, angle, hscale, vscale, col)
 	if x == nil or y == nil then
 		return hdss.Call(
 			HDSS_FRONTSPRITE,
@@ -211,10 +223,19 @@ function hdssFRONTSPRITE(index, siid, x, y, angle, hscale, vscale)
 				index, siid
 			},
 			{
-				x, y, angle, hscale, vscale
+				x, y, angle, hscale, vscale, col
 			}
 		)
 	end
+end
+
+function hdssFADEOUTFRONTSPRITE(index, time)
+	return hdss.Call(
+		HDSS_FADEOUTFRONTSPRITE,
+		{
+			index, time
+		}
+	)
 end
 
 function hdssFREEFRONTSPRITE(index)
@@ -273,6 +294,15 @@ function hdssAMAP(playerindex, x, y, angle)
 		HDSS_RAMA,
 		{
 			false, x, y, angle, hdss.Get(HDSS_PX, playerindex), hdss.Get(HDSS_PY, playerindex)
+		}
+	)
+end
+
+function hdssINTER(a, b, x)
+	return hdss.Call(
+		HDSS_INTER,
+		{
+			a, b, x
 		}
 	)
 end

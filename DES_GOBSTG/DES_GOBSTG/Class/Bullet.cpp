@@ -393,6 +393,7 @@ void Bullet::DoCollision()
 	{
 		if (cancelable)
 		{
+			sendsetID = 0;
 			fadeout = true;
 			timer = 0;
 		}
@@ -411,7 +412,7 @@ void Bullet::DoUpdateRenderDepth()
 			renderDepth[playerindex][rdtype].startIndex = index;
 		}
 		renderDepth[playerindex][rdtype].endIndex = index + 1;
-		if (renderDepth[playerindex][rdtype].endIndex == BULLETMAX)
+		if (renderDepth[playerindex][rdtype].endIndex >= BULLETMAX)
 		{
 			renderDepth[playerindex][rdtype].endIndex = 0;
 		}
@@ -438,6 +439,7 @@ void Bullet::actionInStop()
 			DoGraze();
 		}
 	}
+	able = exist && !fadeout;
 	DoUpdateRenderDepth();
 }
 
@@ -1206,26 +1208,9 @@ void Bullet::ChangeAction()
 				case FADEOUT:
 					if(doit)
 					{
+						sendsetID = 0;
 						fadeout = true;
 						timer = 0;
-					}
-					break;
-				case FAITHLIZE:
-					if(doit)
-					{
-//						faithlize();
-					}
-					break;
-				case POINTLIZE:
-					if(doit)
-					{
-//						pointlize();
-					}
-					break;
-				case SCORELIZE:
-					if (doit)
-					{
-//						scorelize();
 					}
 					break;
 				case BOUNCE:

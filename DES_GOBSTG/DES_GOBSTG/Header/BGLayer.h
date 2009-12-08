@@ -63,7 +63,7 @@ class BGLayer : public BObject
 {
 public:
 	BGLayer();
-	virtual ~BGLayer();
+	~BGLayer();
 
 	static void Init(HTEXTURE * tex);
 	static void KillOtherLayer(BYTE playerindex);

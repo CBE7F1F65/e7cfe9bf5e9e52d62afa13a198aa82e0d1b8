@@ -217,6 +217,23 @@ int _HDSSCallGet::Call_SE(LuaState * ls)
 	return 0;
 }
 
+int _HDSSCallGet::Call_SEOFF(LuaState * ls)
+{
+	_ENTERCALL_HDSS_LUA;
+
+	if (true)
+	{
+		int _type = -1;
+		_JNEXT_HDSS_LUAPARA;
+		if (bhavenext)
+		{
+			_type = _IOBJ_HDSS_LUA;
+		}
+		SE::stop(_type);
+	}
+	return 0;
+}
+
 int _HDSSCallGet::Call_HSVTORGB(LuaState * ls)
 {
 	_ENTERCALL_HDSS_LUA;
@@ -305,7 +322,15 @@ int _HDSSCallGet::Call_FRONTSPRITE(LuaState * ls)
 		DWORD dret;
 		int _ID = _INEXT_HDSS_LUAPARA;
 		int _index = _INEXT_HDSS_LUAPARA;
-		dret = (DWORD)SpriteItemManager::BuildFrontSprite(_ID, _index);
+		if (SpriteItemManager::HaveFrontSprite(_ID) && argscount > 2)
+		{
+			dret = (DWORD)SpriteItemManager::ChangeFrontSprite(_ID, _index);
+			SpriteItemManager::ClearFrontSpriteVale(_ID);
+		}
+		else
+		{
+			dret = (DWORD)SpriteItemManager::BuildFrontSprite(_ID, _index);
+		}
 		
 		if (argscount > 2)
 		{
@@ -316,6 +341,7 @@ int _HDSSCallGet::Call_FRONTSPRITE(LuaState * ls)
 			int _angle = 0;
 			float _hscale = 1.0f;
 			float _vscale = 0.0f;
+			DWORD _col = 0xffffffff;
 			_JNEXT_HDSS_LUAPARA;
 			if (bhavenext)
 			{
@@ -328,14 +354,32 @@ int _HDSSCallGet::Call_FRONTSPRITE(LuaState * ls)
 					if (bhavenext)
 					{
 						_vscale = _FOBJ_HDSS_LUA;
+						_JNEXT_HDSS_LUAPARA;
+						if (bhavenext)
+						{
+							_col = _DOBJ_HDSS_LUA;
+						}
 					}
 				}
 			}
-			SpriteItemManager::SetFrontSpriteValue(_ID, _x, _y, _angle, _hscale, _vscale);
+			SpriteItemManager::SetFrontSpriteValue(_ID, _x, _y, _angle, _hscale, _vscale, _col);
 		}
 
 		_PD_HDSS_LUA(dret);
 		return 1;
+	}
+	return 0;
+}
+
+int _HDSSCallGet::Call_FADEOUTFRONTSPRITE(LuaState * ls)
+{
+	_ENTERCALL_HDSS_LUA;
+
+	if (true)
+	{
+		int _ID = _INEXT_HDSS_LUAPARA;
+		int _fadeouttime = _INEXT_HDSS_LUAPARA;
+		SpriteItemManager::SetFrontSpriteFadeoutTime(_ID, _fadeouttime);
 	}
 	return 0;
 }
@@ -491,6 +535,20 @@ int _HDSSCallGet::Call_RAMA(LuaState * ls)
 			iret = BObject::AMainAngle(_x, _y, _aimx, _aimy, _angle);
 		}
 		_PI_HDSS_LUA(iret);
+		return 1;
+	}
+	return 0;
+}
+
+int _HDSSCallGet::Call_INTER(LuaState * ls)
+{
+	_ENTERCALL_HDSS_LUA;
+	if (true)
+	{
+		float _a = _FNEXT_HDSS_LUAPARA;
+		float _b = _FNEXT_HDSS_LUAPARA;
+		float _x = _FNEXT_HDSS_LUAPARA;
+		_PF_HDSS_LUA(INTER(_a, _b, _x));
 		return 1;
 	}
 	return 0;

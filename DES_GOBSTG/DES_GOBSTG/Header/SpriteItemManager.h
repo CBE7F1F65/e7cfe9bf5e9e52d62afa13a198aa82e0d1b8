@@ -14,6 +14,9 @@ struct FrontSprite
 	float rot;
 	float hscale;
 	float vscale;
+	DWORD col;
+	int fadeoutmaxtime;
+	int fadeouttimer;
 };
 
 class SpriteItemManager
@@ -33,9 +36,13 @@ public:
 	static void FreeSprite(hgeSprite ** sprite);
 	static spriteData * CastSprite(int index);
 
+	static bool HaveFrontSprite(int ID);
+	static void ClearFrontSpriteVale(int ID);
+	static hgeSprite * ChangeFrontSprite(int ID, int index);
 	static hgeSprite * BuildFrontSprite(int ID, int index);
 	static hgeSprite * BuildFrontSpriteByName(int ID, const char * spritename);
-	static void SetFrontSpriteValue(int ID, float x, float y, int angle=0, float hscale=1.0f, float vscale=0.0f);
+	static void SetFrontSpriteValue(int ID, float x, float y, int angle=0, float hscale=1.0f, float vscale=0.0f, DWORD col=0xffffffff);
+	static void SetFrontSpriteFadeoutTime(int ID, int fadeouttime);
 	static void FreeFrontSprite(int ID=-1);
 	static void RenderFrontSprite();
 

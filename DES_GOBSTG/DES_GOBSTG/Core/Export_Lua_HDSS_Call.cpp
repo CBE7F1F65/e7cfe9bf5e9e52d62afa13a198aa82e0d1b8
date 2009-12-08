@@ -60,12 +60,16 @@ int Export_Lua_HDSS::LuaFn_HDSS_Call(LuaState * ls)
 			{
 			case SCR_SE:
 				return _HDSSCallGet::Call_SE(ls);
+			case SCR_SEOFF:
+				return _HDSSCallGet::Call_SEOFF(ls);
 			case SCR_HSVTORGB:
 				return _HDSSCallGet::Call_HSVTORGB(ls);
 			case SCR_PRINT:
 				return _HDSSCallGet::Call_PRINT(ls);
 			case SCR_FRONTSPRITE:
 				return _HDSSCallGet::Call_FRONTSPRITE(ls);
+			case SCR_FADEOUTFRONTSPRITE:
+				return _HDSSCallGet::Call_FADEOUTFRONTSPRITE(ls);
 			case SCR_FREEFRONTSPRITE:
 				return _HDSSCallGet::Call_FREEFRONTSPRITE(ls);
 			}
@@ -112,6 +116,8 @@ int Export_Lua_HDSS::LuaFn_HDSS_Call(LuaState * ls)
 			{
 			case SCR_RAMA:
 				return _HDSSCallGet::Call_RAMA(ls);
+			case SCR_INTER:
+				return _HDSSCallGet::Call_INTER(ls);
 			}
 			break;
 			/************************************************************************/

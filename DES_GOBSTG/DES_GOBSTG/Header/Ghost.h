@@ -21,7 +21,7 @@ class Ghost : public BObject
 {
 public:
 	Ghost();
-	virtual ~Ghost();
+	~Ghost();
 
 	static bool Build(WORD gID, BYTE tarID, BYTE belong, float x, float y, int angle, float speed, BYTE type, float life, int ac);
 	static void ClearAll();
@@ -40,7 +40,7 @@ public:
 
 	void DoShot(BYTE playerindex);
 
-	virtual void action();
+	void action();
 	void actionInStop();
 	void Render();
 

@@ -25,6 +25,7 @@ public:
 	static int LuaFn_Game_SetGhostActiveInfo(LuaState * ls);
 	static int LuaFn_Game_GetPlayerSendExInfo(LuaState * ls);
 	static int LuaFn_Game_PlayerSendEx(LuaState * ls);
+	static int LuaFn_Game_GetPlayerStopInfo(LuaState * ls);
 };
 
 #endif

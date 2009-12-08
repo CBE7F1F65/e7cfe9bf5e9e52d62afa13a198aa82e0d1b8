@@ -17,7 +17,7 @@ class Effectsys : public BObject
 {
 public:
 	Effectsys();
-	virtual ~Effectsys();
+	~Effectsys();
 
 	static bool Init(HTEXTURE * tex, const char * foldername, char name[][M_PATHMAX]);
 	static void ClearAll();

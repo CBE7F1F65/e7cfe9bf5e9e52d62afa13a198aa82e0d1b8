@@ -10,7 +10,7 @@ class Process
 {
 public:
 	Process();
-	virtual ~Process();
+	~Process();
 
 	void	Release();
 

@@ -23,9 +23,11 @@ public:
 	static int Call_UPDATEPUSHEVENT(LuaState * ls);
 
 	static int Call_SE(LuaState * ls);
+	static int Call_SEOFF(LuaState * ls);
 	static int Call_HSVTORGB(LuaState * ls);
 	static int Call_PRINT(LuaState * ls);
 	static int Call_FRONTSPRITE(LuaState * ls);
+	static int Call_FADEOUTFRONTSPRITE(LuaState * ls);
 	static int Call_FREEFRONTSPRITE(LuaState * ls);
 
 	static int Call_SETPINITLIFE(LuaState * ls);
@@ -38,6 +40,7 @@ public:
 	static int Call_ENAZBUILD(LuaState * ls);
 
 	static int Call_RAMA(LuaState * ls);
+	static int Call_INTER(LuaState * ls);
 
 	static int Call_COLLISION_CIRCLE(LuaState * ls);
 

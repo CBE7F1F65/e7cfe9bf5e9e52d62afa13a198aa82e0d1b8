@@ -13,7 +13,7 @@ public:
 	BObject();
 	BObject(float x, float y);
 	void _Init();
-	virtual ~BObject();
+	~BObject();
 
 	int rMainAngle(float destx, float desty, float r = 0);
 	int aMainAngle(float destx, float desty, int a = 0);
@@ -108,8 +108,6 @@ public:
 	};
 
 	void updateMove();
-
-	virtual void action();
 
 public:
 	float	x;

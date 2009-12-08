@@ -50,6 +50,8 @@ int Player::lilycount = 0;
 
 DWORD Player::alltime = 0;
 
+BYTE Player::raisestopplayerindex = 0;
+
 #define _PL_MERGETOPOS_X_(X)	(M_GAMESQUARE_CENTER_X_(X))
 #define _PL_MERGETOPOS_Y		(M_GAMESQUARE_BOTTOM - 64)
 
@@ -142,6 +144,8 @@ void Player::ClearSet(BYTE round)
 	shootpushtimer = 0;
 	shootnotpushtimer = 0;
 
+	stoptimer = 0;
+
 	speedfactor		=	1.0f;
 
 	// add
@@ -215,6 +219,7 @@ void Player::ClearSet(BYTE round)
 
 void Player::ClearRound(BYTE round/* =0 */)
 {
+	raisestopplayerindex = 0;
 	if (round)
 	{
 		rank += _GAMERANK_STAGEOVERADD;
@@ -296,6 +301,10 @@ void Player::Action(DWORD stopflag)
 			if (!binstop)
 			{
 				p[i].action();
+			}
+			else
+			{
+				p[i].actionInStop();
 			}
 		}
 	}
@@ -659,6 +668,12 @@ void Player::action()
 
 	for(int i=0;i<PLAYERGHOSTMAX;i++)
 		pg[i].action();
+}
+
+void Player::actionInStop()
+{
+	stoptimer++;
+	Scripter::scr.Execute(SCR_EVENT, SCR_EVENT_PLAYERINSTOP, playerindex);
 }
 
 bool Player::Merge()
@@ -1154,6 +1169,25 @@ void Player::GetNCharge(BYTE * ncharge, BYTE * nchargemax)
 	}
 }
 
+void Player::GetSpellClassAndLevel(BYTE * spellclass, BYTE * spelllevel)
+{
+	if (spellclass)
+	{
+		*spellclass = shootingchargeflag>>4;
+	}
+	if (spelllevel)
+	{
+		if (shootingchargeflag & _PL_SHOOTINGCHARGE_4)
+		{
+			*spelllevel = bosslevel;
+		}
+		else
+		{
+			*spelllevel = cardlevel;
+		}
+	}
+}
+
 
 void Player::ResetPlayerGhost(bool move /* = false */)
 {
@@ -1306,9 +1340,11 @@ void Player::shootCharge(BYTE nChargeLevel, bool bquick)
 	}
 	if (nChargeLevel > 1)
 	{
-		Process::mp.SetStop(FRAME_STOPFLAG_ALLSET|FRAME_STOPFLAG_PLAYERINDEX_0|FRAME_STOPFLAG_PLAYERINDEX_1, 32);
+		raisestopplayerindex = playerindex;
+		stoptimer = 0;
+		Process::mp.SetStop(FRAME_STOPFLAG_ALLSET|FRAME_STOPFLAG_PLAYERINDEX_0|FRAME_STOPFLAG_PLAYERINDEX_1, PL_SHOOTINGCHARGE_STOPTIME);
 		EventZone::Build(EVENTZONE_TYPE_BULLETFADEOUT|EVENTZONE_TYPE_ENEMYDAMAGE|EVENTZONE_TYPE_NOSEND, playerindex, x, y, chargezonemaxtime, 0, 10, EVENTZONE_EVENT_NULL, chargezoner/chargezonemaxtime, -2, SpriteItemManager::GetIndexByName(SI_PLAYER_CHARGEZONE), 400);
-		SE::push(SE_PLAYER_SPELLCUTIN, x);
+//		SE::push(SE_PLAYER_SPELLCUTIN, x);
 		if (nChargeLevel < 5)
 		{
 			if (!bquick)

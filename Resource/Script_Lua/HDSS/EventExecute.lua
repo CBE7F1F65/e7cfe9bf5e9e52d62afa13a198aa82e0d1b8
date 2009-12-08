@@ -52,13 +52,16 @@ function EventExecute(name, con)
 				return it[2](con, x, y, draintimer, type);
 			end
 		end
+	elseif name == EVENT_PLAYERINSTOP then
+		local bSpell, spellPlayerID, oplayerID, stoptimer, stopmaxtime, spellClass, spellLevel = game.GetPlayerStopInfo(con);
+		return ePlayerInStop(con, bSpell, spellPlayerID, oplayerID, stoptimer, stopmaxtime, spellClass, spellLevel);
 	elseif name == EVENT_PLAYERSHOOTCHARGE then
---		hdss.Call(
---			HDSS_B,
---			{
---				1-con, (1-con)*320+160, 0, true, hge.Random_Int(4500, 13500), hge.Random_Float(1.2, 1.4), 10, 2
---			}
---		)
+		hdss.Call(
+			HDSS_B,
+			{
+				1-con, (1-con)*320+160, 0, true, hge.Random_Int(4500, 13500), hge.Random_Float(1.2, 1.4), 10, 2
+			}
+		)
 	elseif name == EVENT_PLAYERSENDEX then
 		local esindex, playerID, opx, opy, px, py, oplayerID = game.GetPlayerSendExInfo(con);
 		local playerfunctiontable = 

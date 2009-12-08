@@ -24,3 +24,10 @@ LConst_uibg_player1id	=	4
 LConst_uibg_player2id	=	5
 LConst_uibg_initlife1id	=	6
 LConst_uibg_initlife2id	=	7
+
+LConst_game_FrontSprite_SpellCutInLeftID	=	0
+LConst_game_FrontSprite_SpellCutInRightID	=	1
+LConst_game_FrontSprite_WarningID	=	2
+LConst_game_FrontSprite_SpellClassID	=	3
+LConst_game_FrontSprite_LevelDigit_0ID	=	4
+LConst_game_FrontSprite_LevelDigit_1ID	=	5

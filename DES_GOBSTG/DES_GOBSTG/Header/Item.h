@@ -26,7 +26,7 @@ class Item : public BObject
 {
 public:
 	Item();
-	virtual ~Item();
+	~Item();
 
 	static void Init();
 	static void ClearItem();
@@ -42,7 +42,7 @@ public:
 
 	void Render();
 
-//	virtual void action();
+//	void action();
 	void action(BYTE playerindex);
 /*
 	static void undrainAll();

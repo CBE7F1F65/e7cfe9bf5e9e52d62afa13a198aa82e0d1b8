@@ -15,7 +15,7 @@ class Beam : public BObject
 {
 public:
 	Beam();
-	virtual ~Beam();
+	~Beam();
 
 	static void Init();
 	static int Build(BYTE playerindex, float x, float y, int angle, float speed, BYTE type, BYTE color, WORD length, BYTE flag, int fadeouttime, BYTE tarID);

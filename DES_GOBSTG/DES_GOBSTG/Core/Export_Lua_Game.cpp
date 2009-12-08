@@ -30,6 +30,7 @@ bool Export_Lua_Game::_LuaRegistFunction(LuaObject * obj)
 	_gameobj.Register("SetGhostActiveInfo", LuaFn_Game_SetGhostActiveInfo);
 	_gameobj.Register("GetPlayerSendExInfo", LuaFn_Game_GetPlayerSendExInfo);
 	_gameobj.Register("PlayerSendEx", LuaFn_Game_PlayerSendEx);
+	_gameobj.Register("GetPlayerStopInfo", LuaFn_Game_GetPlayerStopInfo);
 
 	return true;
 }
@@ -318,6 +319,33 @@ int Export_Lua_Game::LuaFn_Game_PlayerSendEx(LuaState * ls)
 	_peffsp->AppendData(Player::p[1-_playerindex].nowID, _appendfloat);
 
 	return 0;
+}
+
+int Export_Lua_Game::LuaFn_Game_GetPlayerStopInfo(LuaState * ls)
+{
+	LuaStack args(ls);
+
+	BYTE _playerindex = args[1].GetInteger();
+
+	if (Player::raisestopplayerindex == _playerindex)
+	{
+		ls->PushBoolean(true);
+	}
+	else
+	{
+		_playerindex = 1 - _playerindex;
+		ls->PushBoolean(false);
+	}
+	ls->PushInteger(Player::p[_playerindex].nowID);
+	ls->PushInteger(Player::p[1-_playerindex].nowID);
+	ls->PushInteger(Player::p[_playerindex].stoptimer);
+	ls->PushInteger(PL_SHOOTINGCHARGE_STOPTIME);
+	BYTE _spellclass = 0;
+	BYTE _spelllevel = 0;
+	Player::p[_playerindex].GetSpellClassAndLevel(&_spellclass, &_spelllevel);
+	ls->PushInteger(_spellclass);
+	ls->PushInteger(_spelllevel);
+	return 7;
 }
 
 #endif

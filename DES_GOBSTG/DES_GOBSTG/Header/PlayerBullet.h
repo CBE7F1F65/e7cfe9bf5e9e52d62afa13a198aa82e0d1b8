@@ -28,7 +28,7 @@ class PlayerBullet : public BObject
 {
 public:
 	PlayerBullet();
-	virtual ~PlayerBullet();
+	~PlayerBullet();
 
 	static void Init(HTEXTURE * tex);
 	static int Build(BYTE playerindex, int shootdataID);
@@ -39,7 +39,7 @@ public:
 
 	void valueSet(BYTE playerindex, WORD ID, BYTE arrange, float xbias, float ybias, float scale, int angle, float speed, float accelspeed, float power, int hitonfactor, WORD flag, BYTE seID);
 
-	virtual void action();
+	void action();
 	void Render();
 
 	void hitOn();

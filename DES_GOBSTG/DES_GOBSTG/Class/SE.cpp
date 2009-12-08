@@ -88,8 +88,17 @@ void SE::play()
 	}
 }
 
-void SE::stop(BYTE type)
+void SE::stop(int type)
 {
+	if (type < 0)
+	{
+		for (int i=0; i<SEMAX; i++)
+		{
+			stop(i);
+		}
+		return;
+	}
 	se[type].counter = 0;
 	se[type].sum = 0;
+	hge->Channel_Stop(se[type].chn);
 }
