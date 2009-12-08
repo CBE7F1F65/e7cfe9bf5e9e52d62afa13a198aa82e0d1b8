@@ -33,10 +33,12 @@ public:
 	~EventZone();
 
 	static void Clear();
-	static void Build(DWORD type, BYTE playerindex, float x, float y, int maxtime=1, float r=EVENTZONE_OVERZONE, float power=0, DWORD eventID=EVENTZONE_EVENT_NULL, float rspeed=0);
+	static void RenderAll(BYTE playerindex);
+	static void Build(DWORD type, BYTE playerindex, float x, float y, int maxtime=1, float r=EVENTZONE_OVERZONE, float power=0, DWORD eventID=EVENTZONE_EVENT_NULL, float rspeed=0, int inittimer=0, int siid=-1, int turnangle=0);
 	static void Action(DWORD stopflag);
 
 	bool action();
+	void Render();
 
 public:
 	BYTE playerindex;
@@ -45,10 +47,13 @@ public:
 	float r;
 	float rspeed;
 	float power;
+	float width;
 	int timer;
 	int maxtime;
+	int turnangle;
 	DWORD type;
 	DWORD eventID;
+	hgeSprite * sprite;
 
 	static list<EventZone>ezone[M_PL_MATCHMAXPLAYER];
 };

@@ -6,6 +6,7 @@ Comment	Index	SE
 -	3	SE/Player/player_dead.wav
 -	4	SE/default.wav
 -	5	SE/Player/player_alert.wav
+-	6	SE/Player/player_spellcutin.wav
 -	8	SE/default.wav
 -	9	SE/default.wav
 -	10	SE/Player/player_change.wav
@@ -36,7 +37,7 @@ Comment	Index	SE
 -	42	SE/Enemy/enemy_dead.wav
 -	44	SE/Ghost/ghost_dead.wav
 -	45	SE/Ghost/ghost_merge.wav
--	46	SE/default.wav
+-	46	SE/Ghost/ghost_activate.wav
 -	47	SE/Ghost/ghost_send.wav
 -	50	SE/Item/item_get.wav
 -	51	SE/Item/item_extend.wav

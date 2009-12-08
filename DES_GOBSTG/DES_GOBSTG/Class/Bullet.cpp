@@ -334,12 +334,17 @@ void Bullet::DoIze()
 	{
 		for (list<EventZone>::iterator it=EventZone::ezone[playerindex].begin(); it!=EventZone::ezone[playerindex].end(); it++)
 		{
+			if (it->timer < 0)
+			{
+				continue;
+			}
 			if ((it->type) & EVENTZONE_TYPEMASK_BULLET)
 			{
 				if (checkCollisionBigCircle(it->x, it->y, it->r))
 				{
 					if (it->type & EVENTZONE_TYPE_BULLETFADEOUT)
 					{
+						sendsetID = 0;
 						fadeout = true;
 						timer = 0;
 					}

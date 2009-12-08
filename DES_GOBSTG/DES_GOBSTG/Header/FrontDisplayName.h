@@ -472,6 +472,7 @@
 #define	SI_ENEMY_COLLAPSE_Y	"SI_Enemy_Collapse_Y"
 #define	SI_ENEMY_COLLAPSE_G	"SI_Enemy_Collapse_G"
 #define	SI_BOSS_TIMECIRCLE	"SI_Boss_TimeCircle"
+#define SI_PLAYER_CHARGEZONE	"SI_Player_ChargeZone"
 #define	SI_ITEM_GUARD	"SI_Item_Guard"
 #define	SI_ITEM_BULLET	"SI_Item_Bullet"
 #define	SI_ITEM_EX	"SI_Item_Ex"

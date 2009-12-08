@@ -909,6 +909,10 @@ void Enemy::DoShot()
 	}
 	for (list<EventZone>::iterator it=EventZone::ezone[playerindex].begin(); it!=EventZone::ezone[playerindex].end(); it++)
 	{
+		if (it->timer < 0)
+		{
+			continue;
+		}
 		if (it->type & EVENTZONE_TYPE_ENEMYDAMAGE)
 		{
 			if (isInRange(it->x, it->y, it->r))

@@ -58,6 +58,14 @@ DWORD Player::alltime = 0;
 #define _PL_SHOOTINGCHARGE_3	0x30
 #define _PL_SHOOTINGCHARGE_4	0x40
 
+#define _PL_CHARGEZONE_R_2	188.0f
+#define _PL_CHARGEZONE_R_3	252.0f
+#define _PL_CHARGEZONE_R_4	444.5f
+
+#define _PL_CHARGEZONE_MAXTIME_2	49
+#define _PL_CHARGEZONE_MAXTIME_3	65
+#define _PL_CHARGEZONE_MAXTIME_4	129
+
 Player::Player()
 {
 	effGraze.exist = false;
@@ -1264,6 +1272,8 @@ void Player::shootCharge(BYTE nChargeLevel, bool bquick)
 	{
 		return;
 	}
+	int chargezonemaxtime=1;
+	float chargezoner=0;
 	switch (nChargeLevel)
 	{
 	case 1:
@@ -1273,22 +1283,32 @@ void Player::shootCharge(BYTE nChargeLevel, bool bquick)
 	case 2:
 		SetInfi(PLAYERINFI_SHOOTCHARGE, _PL_SHOOTCHARGEINFI_2);
 		setShootingCharge((bquick?0:_PL_SHOOTINGCHARGE_1)|_PL_SHOOTINGCHARGE_2, _PL_SHOOTCHARGEINFI_2);
+		chargezonemaxtime = _PL_CHARGEZONE_MAXTIME_2;
+		chargezoner = _PL_CHARGEZONE_R_2;
 		break;
 	case 3:
 		SetInfi(PLAYERINFI_SHOOTCHARGE, _PL_SHOOTCHARGEINFI_3);
 		setShootingCharge((bquick?0:_PL_SHOOTINGCHARGE_1)|_PL_SHOOTINGCHARGE_3, _PL_SHOOTCHARGEINFI_3);
+		chargezonemaxtime = _PL_CHARGEZONE_MAXTIME_3;
+		chargezoner = _PL_CHARGEZONE_R_3;
 		break;
 	case 4:
 		SetInfi(PLAYERINFI_SHOOTCHARGE, _PL_SHOOTCHARGEINFI_4);
 		setShootingCharge((bquick?0:_PL_SHOOTINGCHARGE_1)|_PL_SHOOTINGCHARGE_4, _PL_SHOOTCHARGEINFI_4);
+		chargezonemaxtime = _PL_CHARGEZONE_MAXTIME_4;
+		chargezoner = _PL_CHARGEZONE_R_4;
 		break;
 	case 5:
 		setShootingCharge(_PL_SHOOTINGCHARGE_4, _PL_SHOOTCHARGEINFI_4);
+		chargezonemaxtime = _PL_CHARGEZONE_MAXTIME_4;
+		chargezoner = _PL_CHARGEZONE_R_4;
 		break;
 	}
 	if (nChargeLevel > 1)
 	{
 		Process::mp.SetStop(FRAME_STOPFLAG_ALLSET|FRAME_STOPFLAG_PLAYERINDEX_0|FRAME_STOPFLAG_PLAYERINDEX_1, 32);
+		EventZone::Build(EVENTZONE_TYPE_BULLETFADEOUT|EVENTZONE_TYPE_ENEMYDAMAGE|EVENTZONE_TYPE_NOSEND, playerindex, x, y, chargezonemaxtime, 0, 10, EVENTZONE_EVENT_NULL, chargezoner/chargezonemaxtime, -2, SpriteItemManager::GetIndexByName(SI_PLAYER_CHARGEZONE), 400);
+		SE::push(SE_PLAYER_SPELLCUTIN, x);
 		if (nChargeLevel < 5)
 		{
 			if (!bquick)

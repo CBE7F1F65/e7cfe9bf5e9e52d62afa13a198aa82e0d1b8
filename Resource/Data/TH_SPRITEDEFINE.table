@@ -247,12 +247,13 @@ Comment	Index	SI_Name	Tex	Tex_x	Tex_y	Tex_w	Tex_h
 -	302	SI_Enemy_Collapse_B	7	448	272	64	64
 -	303	SI_Enemy_Collapse_Y	7	256	272	64	64
 -	304	SI_Enemy_Collapse_G	7	320	272	64	64
--	305	SI_Boss_TimeCircle	7	384	334	128	128
--	306	SI_Item_Guard	7	256	464	16	16
--	307	SI_Item_Bullet	7	272	464	16	16
--	308	SI_Item_Ex	7	288	464	16	16
--	309	SI_Item_Point	7	304	464	16	16
--	310	SI_Player_ShotItem	7	320	480	32	32
+-	305	SI_Boss_TimeCircle	7	384	336	128	128
+	306	SI_Player_ChargeZone	7	384	336	128	128
+-	307	SI_Item_Guard	7	256	464	16	16
+-	308	SI_Item_Bullet	7	272	464	16	16
+-	309	SI_Item_Ex	7	288	464	16	16
+-	310	SI_Item_Point	7	304	464	16	16
+-	311	SI_Player_ShotItem	7	320	480	32	32
 #		Panel(320~399)					
 -	320	SI_FrontPanel_Left_0	6	496	0	16	448
 -	321	SI_FrontPanel_Right_0	6	448	0	16	448

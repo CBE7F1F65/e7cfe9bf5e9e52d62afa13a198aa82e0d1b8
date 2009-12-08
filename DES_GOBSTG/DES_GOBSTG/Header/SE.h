@@ -11,6 +11,7 @@
 #define	SE_PLAYER_DEAD			3
 #define SE_PLAYER_EXPLODE		4
 #define SE_PLAYER_ALERT			5
+#define SE_PLAYER_SPELLCUTIN	6
 
 #define	SE_PLAYER_SLOWON		8
 #define SE_PLAYER_SLOWOFF		9
@@ -47,7 +48,7 @@
 
 #define	SE_GHOST_DEAD			44
 #define SE_GHOST_MERGE			45
-#define SE_GHOST_HALF			46
+#define SE_GHOST_ACTIVATE		46
 #define SE_GHOST_SEND			47
 
 #define	SE_ITEM_GET				50

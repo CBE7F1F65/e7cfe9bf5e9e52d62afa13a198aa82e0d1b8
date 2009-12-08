@@ -10,6 +10,7 @@ void Process::_Render(BYTE renderflag/* =M_RENDER_NULL */)
 	Export::clientSetMatrix(worldx[playerindex], worldy[playerindex], worldz[playerindex], renderflag);
 	if(renderflag != M_RENDER_NULL)
 	{
+		EventZone::RenderAll(playerindex);
 		Enemy::RenderAll(playerindex);
 		PlayerBullet::RenderAll(playerindex);
 		Player::RenderAll(playerindex);
