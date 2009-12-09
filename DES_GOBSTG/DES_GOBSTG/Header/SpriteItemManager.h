@@ -15,6 +15,7 @@ struct FrontSprite
 	float hscale;
 	float vscale;
 	DWORD col;
+	int blend;
 	int fadeoutmaxtime;
 	int fadeouttimer;
 };
@@ -41,7 +42,7 @@ public:
 	static hgeSprite * ChangeFrontSprite(int ID, int index);
 	static hgeSprite * BuildFrontSprite(int ID, int index);
 	static hgeSprite * BuildFrontSpriteByName(int ID, const char * spritename);
-	static void SetFrontSpriteValue(int ID, float x, float y, int angle=0, float hscale=1.0f, float vscale=0.0f, DWORD col=0xffffffff);
+	static void SetFrontSpriteValue(int ID, float x, float y, int angle=0, float hscale=1.0f, float vscale=0.0f, DWORD col=0xffffffff, int blend=BLEND_DEFAULT);
 	static void SetFrontSpriteFadeoutTime(int ID, int fadeouttime);
 	static void FreeFrontSprite(int ID=-1);
 	static void RenderFrontSprite();

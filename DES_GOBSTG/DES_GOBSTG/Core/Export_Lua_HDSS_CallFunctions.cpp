@@ -342,6 +342,7 @@ int _HDSSCallGet::Call_FRONTSPRITE(LuaState * ls)
 			float _hscale = 1.0f;
 			float _vscale = 0.0f;
 			DWORD _col = 0xffffffff;
+			int _blend = BLEND_DEFAULT;
 			_JNEXT_HDSS_LUAPARA;
 			if (bhavenext)
 			{
@@ -358,11 +359,16 @@ int _HDSSCallGet::Call_FRONTSPRITE(LuaState * ls)
 						if (bhavenext)
 						{
 							_col = _DOBJ_HDSS_LUA;
+							_JNEXT_HDSS_LUAPARA;
+							if (bhavenext)
+							{
+								_blend = _IOBJ_HDSS_LUA;
+							}
 						}
 					}
 				}
 			}
-			SpriteItemManager::SetFrontSpriteValue(_ID, _x, _y, _angle, _hscale, _vscale, _col);
+			SpriteItemManager::SetFrontSpriteValue(_ID, _x, _y, _angle, _hscale, _vscale, _col, _blend);
 		}
 
 		_PD_HDSS_LUA(dret);

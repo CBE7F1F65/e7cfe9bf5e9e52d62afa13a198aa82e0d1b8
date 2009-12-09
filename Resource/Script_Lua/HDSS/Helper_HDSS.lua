@@ -208,7 +208,7 @@ function hdssSEOFF(seid)
 	)
 end
 
-function hdssFRONTSPRITE(index, siid, x, y, angle, hscale, vscale, col)
+function hdssFRONTSPRITE(index, siid, x, y, angle, hscale, vscale, col, blend)
 	if x == nil or y == nil then
 		return hdss.Call(
 			HDSS_FRONTSPRITE,
@@ -223,7 +223,7 @@ function hdssFRONTSPRITE(index, siid, x, y, angle, hscale, vscale, col)
 				index, siid
 			},
 			{
-				x, y, angle, hscale, vscale, col
+				x, y, angle, hscale, vscale, col, blend
 			}
 		)
 	end

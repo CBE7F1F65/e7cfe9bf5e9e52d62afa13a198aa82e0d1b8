@@ -94,6 +94,7 @@ void SpriteItemManager::RenderFrontSprite()
 				frontsprite[i].col = (_alpha<<24)|0xffffff;
 			}
 			frontsprite[i].sprite->SetColor(frontsprite[i].col);
+			frontsprite[i].sprite->SetBlendMode(frontsprite[i].blend);
 			frontsprite[i].sprite->RenderEx(frontsprite[i].x, frontsprite[i].y, frontsprite[i].rot, frontsprite[i].hscale, frontsprite[i].vscale);
 		}
 	}
@@ -173,6 +174,7 @@ void SpriteItemManager::ClearFrontSpriteVale(int ID)
 	}
 	hgeSprite * _sprite = frontsprite[ID].sprite;
 	ZeroMemory(&frontsprite[ID], sizeof(FrontSprite));
+	frontsprite[ID].blend = BLEND_DEFAULT;
 	frontsprite[ID].sprite = _sprite;
 }
 
@@ -238,7 +240,7 @@ hgeSprite * SpriteItemManager::BuildFrontSpriteByName(int ID, const char * sprit
 	return BuildFrontSprite(ID, GetIndexByName(spritename));
 }
 
-void SpriteItemManager::SetFrontSpriteValue(int ID, float x, float y, int angle/* =0 */, float hscale/* =1.0f */, float vscale/* =0.0f */, DWORD col/* =0xffffffff */)
+void SpriteItemManager::SetFrontSpriteValue(int ID, float x, float y, int angle/* =0 */, float hscale/* =1.0f */, float vscale/* =0.0f */, DWORD col/* =0xffffffff */, int blend/* =BLEND_DEFAULT */)
 {
 	if (ID < 0 || ID >= FRONTSPRITEMAX)
 	{
@@ -250,6 +252,7 @@ void SpriteItemManager::SetFrontSpriteValue(int ID, float x, float y, int angle/
 	frontsprite[ID].hscale = hscale;
 	frontsprite[ID].vscale = vscale;
 	frontsprite[ID].col = col;
+	frontsprite[ID].blend = blend;
 }
 
 void SpriteItemManager::SetFrontSpriteFadeoutTime(int ID, int fadeouttime)
