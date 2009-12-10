@@ -46,7 +46,7 @@ function CETitle_SetupSelect(selsysid)
 	hdss.Call(
 		HDSS_SELSETUP,
 		{
-			selsysid, 3, 0, KS_UP, KS_DOWN, KS_FIRE
+			selsysid, 3, 0, 0, KSI_UP, KSI_DOWN, KSI_FIRE
 		}
 	)
 end
@@ -66,7 +66,7 @@ function CETitle_DispatchSelect(selsysid)
 			hdssRETURN(PQUIT);
 		end
 	else
-		if hge.Input_GetDIKey(KS_QUICK, DIKEY_DOWN) then
+		if hdss.Get(HDSS_CHECKKEY, 0, KSI_QUICK, DIKEY_DOWN) then
 			hdssSE(SE_SYSTEM_CANCEL)
 			if select == 2 then
 				hdssRETURN(PQUIT);
@@ -74,7 +74,7 @@ function CETitle_DispatchSelect(selsysid)
 				hdss.Call(
 					HDSS_SELSETUP,
 					{
-						selsysid, 3, 2
+						selsysid, 3, 2, 0
 					}
 				)
 			end

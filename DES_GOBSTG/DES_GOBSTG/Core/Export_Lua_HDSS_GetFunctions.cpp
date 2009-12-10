@@ -140,6 +140,26 @@ int _HDSSCallGet::Get_PX(LuaState * ls)
 	return 0;
 }
 
+int _HDSSCallGet::Get_CHECKKEY(LuaState * ls)
+{
+	_ENTERGET_HDSS_LUA;
+	if (argscount > 2)
+	{
+		BYTE _playerindex = _INEXT_HDSS_LUAFUNC;
+		int _ksi = _INEXT_HDSS_LUAFUNC;
+		int _type = DIKEY_PRESSED;
+		_JNEXT_HDSS_LUAFUNC;
+		if (bhavenext)
+		{
+			_type = _IOBJ_HDSS_LUA;
+		}
+		bool bret = GameInput::GetKey(_playerindex, _ksi, _type);
+		_PB_HDSS_LUA(bret);
+		return 1;
+	}
+	return 0;
+}
+
 int _HDSSCallGet::Get_PY(LuaState * ls)
 {
 	_ENTERGET_HDSS_LUA;

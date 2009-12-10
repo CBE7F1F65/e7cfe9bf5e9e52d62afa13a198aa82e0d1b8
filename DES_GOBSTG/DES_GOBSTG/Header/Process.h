@@ -158,9 +158,6 @@ public:
 	//indicator
 	BYTE	titleselect;
 	BYTE	state;
-	//input
-	WORD	nowInput;
-	WORD	saveInput;
 
 	//Init
 	HTEXTURE	texInit;

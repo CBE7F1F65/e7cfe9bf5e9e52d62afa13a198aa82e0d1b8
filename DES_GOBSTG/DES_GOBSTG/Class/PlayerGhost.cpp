@@ -4,6 +4,7 @@
 #include "Process.h"
 #include "SpriteItemManager.h"
 #include "BResource.h"
+#include "GameInput.h"
 
 #define _PLAYERGHOST_ADJUSTTIME	0x10
 #define _PLAYERGHOST_LASTINDEX	0
@@ -80,7 +81,7 @@ void PlayerGhost::AntiShooter(float aimx, float aimy)
 		shootangle += 36000;
 	if(aimx == x)
 	{
-		if(hge->Input_GetDIKey(KS_UP_MP) && shootangle != 9000)
+		if(GameInput::GetKey(playerindex, KSI_UP) && shootangle != 9000)
 		{
 			if(shootangle > 9000)
 			{
@@ -95,7 +96,7 @@ void PlayerGhost::AntiShooter(float aimx, float aimy)
 					shootangle = 9000;
 			}
 		}
-		if(hge->Input_GetDIKey(KS_DOWN_MP) && shootangle != -9000)
+		if(GameInput::GetKey(playerindex, KSI_DOWN) && shootangle != -9000)
 		{
 			if(shootangle < 9000)
 			{
@@ -117,7 +118,7 @@ void PlayerGhost::AntiShooter(float aimx, float aimy)
 		shootangle += 36000;
 	if(aimy == y)
 	{
-		if(hge->Input_GetDIKey(KS_LEFT_MP) && shootangle != 0)
+		if(GameInput::GetKey(playerindex, KSI_LEFT) && shootangle != 0)
 		{
 			if(shootangle < 0)
 			{
@@ -132,7 +133,7 @@ void PlayerGhost::AntiShooter(float aimx, float aimy)
 					shootangle = 0;
 			}
 		}
-		if(hge->Input_GetDIKey(KS_RIGHT_MP) && shootangle != 18000)
+		if(GameInput::GetKey(playerindex, KSI_RIGHT) && shootangle != 18000)
 		{
 			if(shootangle > 0)
 			{

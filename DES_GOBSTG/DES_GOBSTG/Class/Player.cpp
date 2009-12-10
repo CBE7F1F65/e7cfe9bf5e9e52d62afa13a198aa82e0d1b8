@@ -17,6 +17,7 @@
 #include "EventZone.h"
 #include "BResource.h"
 #include "Scripter.h"
+#include "GameInput.h"
 
 #define _GAMERANK_MIN	8
 #define _GAMERANK_MAX	22
@@ -479,11 +480,11 @@ void Player::action()
 	//input
 	if(!(flag & PLAYER_SHOT || flag & PLAYER_COLLAPSE))
 	{
-		if (hge->Input_GetDIKey(KS_SLOW_MP_(playerindex)))
+		if (GameInput::GetKey(playerindex, KSI_SLOW))
 		{
 			bSlow = true;
 			flag &= ~PLAYER_FASTCHANGE;
-			if(hge->Input_GetDIKey(KS_SLOW_MP_(playerindex), DIKEY_DOWN))
+			if (GameInput::GetKey(playerindex, KSI_SLOW, DIKEY_DOWN))
 			{
 				if (!(flag & PLAYER_SLOWCHANGE))
 				{
@@ -496,7 +497,7 @@ void Player::action()
 		{
 			bSlow = false;
 			flag &= ~PLAYER_SLOWCHANGE;
-			if(hge->Input_GetDIKey(KS_SLOW_MP_(playerindex), DIKEY_UP))
+			if (GameInput::GetKey(playerindex, KSI_SLOW, DIKEY_UP))
 			{
 				if (!(flag & PLAYER_FASTCHANGE))
 				{
@@ -516,7 +517,7 @@ void Player::action()
 		nowspeed *= speedfactor;
 		speedfactor = 1.0f;
 
-		if(hge->Input_GetDIKey(KS_FIRE_MP_(playerindex)))
+		if(GameInput::GetKey(playerindex, KSI_FIRE))
 		{
 			if (!Chat::chatitem.IsChatting())
 			{
@@ -533,7 +534,7 @@ void Player::action()
 		}
 		if (shootpushtimer < _PLAYER_SHOOTPUSHOVER)
 		{
-			if (hge->Input_GetDIKey(KS_FIRE_MP_(playerindex)))
+			if (GameInput::GetKey(playerindex, KSI_FIRE))
 			{
 				shootpushtimer++;
 			}
@@ -544,7 +545,7 @@ void Player::action()
 		}
 		else
 		{
-			if (!hge->Input_GetDIKey(KS_FIRE_MP_(playerindex)))
+			if (!GameInput::GetKey(playerindex, KSI_FIRE))
 			{
 				bCharge = false;
 				flag &= ~PLAYER_CHARGE;
@@ -568,10 +569,10 @@ void Player::action()
 				}
 			}
 		}
-		if (hge->Input_GetDIKey(KS_DRAIN_MP_(playerindex)))
+		if (GameInput::GetKey(playerindex, KSI_DRAIN))
 		{
 			bDrain = true;
-			if (hge->Input_GetDIKey(KS_DRAIN_MP_(playerindex), DIKEY_DOWN))
+			if (GameInput::GetKey(playerindex, KSI_DRAIN, DIKEY_DOWN))
 			{
 				if (!(flag & PLAYER_DRAIN))
 				{
@@ -587,34 +588,21 @@ void Player::action()
 			flag &= ~PLAYER_DRAIN;
 		}
 
-		/*
-		if(!(flag & PLAYER_DRAIN || flag & PLAYER_CHARGE))
-		{
-			if(hge->Input_GetDIKey(KS_DRAIN_MP_(playerindex), DIKEY_DOWN))
-			{
-				if (!(flag & PLAYER_PLAYERCHANGE))
-				{
-					playerchangetimer = 0;
-					flag |= PLAYER_PLAYERCHANGE;
-				}
-			}
-		}
-		*/
-		if((hge->Input_GetDIKey(KS_UP_MP_(playerindex)) ^ hge->Input_GetDIKey(KS_DOWN_MP_(playerindex))) &&
-			hge->Input_GetDIKey(KS_LEFT_MP_(playerindex)) ^ hge->Input_GetDIKey(KS_RIGHT_MP_(playerindex)))
+		if((GameInput::GetKey(playerindex, KSI_UP) ^ GameInput::GetKey(playerindex, KSI_DOWN)) &&
+			GameInput::GetKey(playerindex, KSI_LEFT) ^ GameInput::GetKey(playerindex, KSI_RIGHT))
 			nowspeed *= M_SQUARE_2;
-		if(hge->Input_GetDIKey(KS_UP_MP_(playerindex)))
+		if(GameInput::GetKey(playerindex, KSI_UP))
 			y -= nowspeed;
-		if(hge->Input_GetDIKey(KS_DOWN_MP_(playerindex)))
+		if(GameInput::GetKey(playerindex, KSI_DOWN))
 			y += nowspeed;
-		if(hge->Input_GetDIKey(KS_LEFT_MP_(playerindex)))
+		if(GameInput::GetKey(playerindex, KSI_LEFT))
 		{
 			updateFrame(PLAYER_FRAME_LEFTPRE);
 			x -= nowspeed;
 		}
-		if(hge->Input_GetDIKey(KS_RIGHT_MP_(playerindex)))
+		if(GameInput::GetKey(playerindex, KSI_RIGHT))
 		{
-			if (!hge->Input_GetDIKey(KS_LEFT_MP_(playerindex)))
+			if (!GameInput::GetKey(playerindex, KSI_RIGHT))
 			{
 				updateFrame(PLAYER_FRAME_RIGHTPRE);
 			}
@@ -624,12 +612,12 @@ void Player::action()
 			}
 			x += nowspeed;
 		}
-		if (!hge->Input_GetDIKey(KS_LEFT_MP_(playerindex)) && !hge->Input_GetDIKey(KS_RIGHT_MP_(playerindex)))
+		if (!GameInput::GetKey(playerindex, KSI_LEFT) && !GameInput::GetKey(playerindex, KSI_RIGHT))
 		{
 			updateFrame(PLAYER_FRAME_STAND);
 		}
 	}
-	if(hge->Input_GetDIKey(KS_QUICK_MP_(playerindex)) && !(flag & PLAYER_MERGE))
+	if(GameInput::GetKey(playerindex, KSI_QUICK) && !(flag & PLAYER_MERGE))
 	{
 		callBomb();
 	}
@@ -682,7 +670,7 @@ bool Player::Merge()
 	if(mergetimer == 1)
 	{
 		SetInfi(PLAYERINFI_MERGE, 60);
-		if(hge->Input_GetDIKey(KS_SLOW_MP_(playerindex)))
+		if(GameInput::GetKey(playerindex, KSI_SLOW))
 		{
 			flag |= PLAYER_SLOWCHANGE;
 			slowtimer = 0;
@@ -783,14 +771,14 @@ bool Player::CostLife()
 	}
 	else
 	{
-		hge->Input_SetDIKey(KS_UP_MP_(playerindex), false);
-		hge->Input_SetDIKey(KS_DOWN_MP_(playerindex), false);
-		hge->Input_SetDIKey(KS_LEFT_MP_(playerindex), false);
-		hge->Input_SetDIKey(KS_RIGHT_MP_(playerindex), false);
-		hge->Input_SetDIKey(KS_FIRE_MP_(playerindex), false);
-		hge->Input_SetDIKey(KS_QUICK_MP_(playerindex), false);
-		hge->Input_SetDIKey(KS_SLOW_MP_(playerindex), false);
-		hge->Input_SetDIKey(KS_DRAIN_MP_(playerindex), false);
+		GameInput::SetKey(playerindex, KSI_UP, false);
+		GameInput::SetKey(playerindex, KSI_DOWN, false);
+		GameInput::SetKey(playerindex, KSI_LEFT, false);
+		GameInput::SetKey(playerindex, KSI_RIGHT, false);
+		GameInput::SetKey(playerindex, KSI_FIRE, false);
+		GameInput::SetKey(playerindex, KSI_QUICK, false);
+		GameInput::SetKey(playerindex, KSI_SLOW, false);
+		GameInput::SetKey(playerindex, KSI_DRAIN, false);
 		x += cost(nBounceAngle) * ((60-costlifetimer) / 20.0f);
 		y += sint(nBounceAngle) * ((60-costlifetimer) / 20.0f);
 	}
@@ -842,7 +830,7 @@ bool Player::Collapse()
 			return true;
 		}
 
-		if(hge->Input_GetDIKey(KS_SLOW_MP_(playerindex)))
+		if(GameInput::GetKey(playerindex, KSI_SLOW))
 		{
 			flag |= PLAYER_SLOWCHANGE;
 			slowtimer = 0;
@@ -921,7 +909,7 @@ bool Player::Bomb()
 
 bool Player::SlowChange()
 {
-	if(hge->Input_GetDIKey(KS_SLOW_MP_(playerindex), DIKEY_DOWN))
+	if(GameInput::GetKey(playerindex, KSI_SLOW, DIKEY_DOWN))
 		slowtimer = 0;
 	bSlow = true;
 	slowtimer++;
@@ -948,7 +936,7 @@ bool Player::SlowChange()
 
 bool Player::FastChange()
 {
-	if(hge->Input_GetDIKey(KS_SLOW_MP_(playerindex), DIKEY_UP))
+	if(GameInput::GetKey(playerindex, KSI_SLOW, DIKEY_UP))
 		fasttimer = 0;
 	bSlow = false;
 	fasttimer++;
@@ -979,7 +967,7 @@ bool Player::Charge()
 		SE::push(SE_PLAYER_CHARGEON, x);
 	}
 	BYTE nChargeLevel = AddCharge(chargespeed);
-	if (!hge->Input_GetDIKey(KS_FIRE_MP_(playerindex)))
+	if (!GameInput::GetKey(playerindex, KSI_FIRE))
 	{
 		shootCharge(nChargeLevel);
 		chargetimer = 0;
@@ -992,7 +980,7 @@ bool Player::Charge()
 
 bool Player::PlayerChange()
 {
-	if(hge->Input_GetDIKey(KS_DRAIN_MP_(playerindex), DIKEY_DOWN))
+	if(GameInput::GetKey(playerindex, KSI_DRAIN, DIKEY_DOWN))
 		playerchangetimer = 0;
 	playerchangetimer++;
 	if(playerchangetimer == 1)
@@ -1254,7 +1242,7 @@ void Player::callCollapse()
 
 bool Player::callBomb()
 {
-	if (Chat::chatitem.IsChatting() || (flag & PLAYER_COLLAPSE) || bInfi)
+	if (Chat::chatitem.IsChatting() || (flag & PLAYER_COLLAPSE))
 	{
 		return false;
 	}
@@ -1265,11 +1253,11 @@ void Player::callSlowFastChange(bool toslow)
 {
 	if (toslow)
 	{
-		hge->Input_SetDIKey(KS_SLOW_MP_(playerindex));
+		GameInput::SetKey(playerindex, KSI_SLOW);
 	}
 	else
 	{
-		hge->Input_SetDIKey(KS_SLOW_MP_(playerindex), false);
+		GameInput::SetKey(playerindex, KSI_SLOW, false);
 	}
 }
 

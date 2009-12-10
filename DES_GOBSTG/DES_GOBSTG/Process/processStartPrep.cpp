@@ -30,23 +30,26 @@ void Process::clearPrep(bool bclearkey)
 	if(!bclearkey)
 		return;
 
-	hge->Input_SetDIKey(KS_UP_(0), false);
-	hge->Input_SetDIKey(KS_DOWN_(0), false);
-	hge->Input_SetDIKey(KS_LEFT_(0), false);
-	hge->Input_SetDIKey(KS_RIGHT_(0), false);
-	hge->Input_SetDIKey(KS_FIRE_(0), false);
-	hge->Input_SetDIKey(KS_QUICK_(0), false);
-	hge->Input_SetDIKey(KS_DRAIN_(0), false);
-	hge->Input_SetDIKey(KS_SLOW_(0), false);
+	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
+	{
+		hge->Input_SetDIKey(GameInput::KS_UP_(i), false);
+		hge->Input_SetDIKey(GameInput::KS_DOWN_(i), false);
+		hge->Input_SetDIKey(GameInput::KS_LEFT_(i), false);
+		hge->Input_SetDIKey(GameInput::KS_RIGHT_(i), false);
+		hge->Input_SetDIKey(GameInput::KS_FIRE_(i), false);
+		hge->Input_SetDIKey(GameInput::KS_QUICK_(i), false);
+		hge->Input_SetDIKey(GameInput::KS_DRAIN_(i), false);
+		hge->Input_SetDIKey(GameInput::KS_SLOW_(i), false);
 
-	hge->Input_SetDIKey(KS_UP_(1), false);
-	hge->Input_SetDIKey(KS_DOWN_(1), false);
-	hge->Input_SetDIKey(KS_LEFT_(1), false);
-	hge->Input_SetDIKey(KS_RIGHT_(1), false);
-	hge->Input_SetDIKey(KS_FIRE_(1), false);
-	hge->Input_SetDIKey(KS_QUICK_(1), false);
-	hge->Input_SetDIKey(KS_DRAIN_(1), false);
-	hge->Input_SetDIKey(KS_SLOW_(1), false);
+		GameInput::SetKey(i, KSI_UP, false);
+		GameInput::SetKey(i, KSI_DOWN, false);
+		GameInput::SetKey(i, KSI_LEFT, false);
+		GameInput::SetKey(i, KSI_RIGHT, false);
+		GameInput::SetKey(i, KSI_FIRE, false);
+		GameInput::SetKey(i, KSI_QUICK, false);
+		GameInput::SetKey(i, KSI_SLOW, false);
+		GameInput::SetKey(i, KSI_DRAIN, false);
+	}
 }
 
 void Process::startPrep(bool callinit)

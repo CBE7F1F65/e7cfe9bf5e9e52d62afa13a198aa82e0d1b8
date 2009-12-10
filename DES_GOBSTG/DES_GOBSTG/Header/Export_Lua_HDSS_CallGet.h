@@ -19,6 +19,7 @@ public:
 	static int Call_SETTIME(LuaState * ls);
 	static int Call_SETCHARA(LuaState * ls);
 	static int Call_STARTPREP(LuaState * ls);
+	static int Call_SETKEY(LuaState * ls);
 	static int Call_SETPUSHEVENT(LuaState * ls);
 	static int Call_UPDATEPUSHEVENT(LuaState * ls);
 
@@ -63,6 +64,8 @@ public:
 
 	static int Get_ENX(LuaState * ls);
 	static int Get_ENY(LuaState * ls);
+
+	static int Get_CHECKKEY(LuaState * ls);
 
 	static int Get_PX(LuaState * ls);
 	static int Get_PY(LuaState * ls);

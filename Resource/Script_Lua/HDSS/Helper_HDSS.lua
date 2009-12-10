@@ -100,11 +100,20 @@ function hdssBGOFF(playerindex, index1, index2, index3, index4)
 	)
 end
 
-function hdssSETPUSHEVENT(index, key1, key2, key3, key4, pushfirst, pushrollto)
+function hdssSETKEY(playerindex, ksi, set)
+	return hdss.Call(
+		HDSS_SETKEY,
+		{
+			playerindex, ksi, set
+		}
+	)
+end
+
+function hdssSETPUSHEVENT(index, playerindex, key1, key2, key3, key4, pushfirst, pushrollto)
 	return hdss.Call(
 		HDSS_SETPUSHEVENT,
 		{
-			index, key1, key2, key3, key4, pushfirst, pushrollto
+			index, playerindex, key1, key2, key3, key4, pushfirst, pushrollto
 		}
 	)
 end

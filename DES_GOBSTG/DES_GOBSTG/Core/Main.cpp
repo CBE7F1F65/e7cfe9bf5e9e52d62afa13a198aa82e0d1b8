@@ -4,6 +4,7 @@
 #include "Fontsys.h"
 
 #include "Main.h"
+#include "GameInput.h"
 
 HGE *hge = NULL;
 
@@ -20,9 +21,9 @@ bool RenderFunc()
 bool FrameFunc()
 {
 	Process::mp.SyncInput();
-	if (hge->Input_GetDIKey(KS_ESCAPE_MP))
+	if (hge->Input_GetDIKey(GameInput::KS_ESCAPE))
 		return true;
-	if(hge->Input_GetDIKey(KS_CAPTURE_MP, DIKEY_DOWN))
+	if(hge->Input_GetDIKey(GameInput::KS_CAPTURE, DIKEY_DOWN))
 	{
 		Process::mp.SnapShot();
 	}

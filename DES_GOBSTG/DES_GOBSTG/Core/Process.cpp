@@ -1,4 +1,5 @@
 #include "processPrep.h"
+#include "GameInput.h"
 
 Process Process::mp;
 
@@ -38,49 +39,7 @@ void Process::Release()
 {
 	if (!errorcode)
 	{
-		hge->	Ini_SetInt(RESCONFIGS_KEYSETTING_1, RESCONFIGN_KEYUP, KS_UP_(0));
-		hge->	Ini_SetInt(RESCONFIGS_KEYSETTING_1, RESCONFIGN_KEYDOWN, KS_DOWN_(0));
-		hge->	Ini_SetInt(RESCONFIGS_KEYSETTING_1, RESCONFIGN_KEYLEFT, KS_LEFT_(0));
-		hge->	Ini_SetInt(RESCONFIGS_KEYSETTING_1, RESCONFIGN_KEYRIGHT, KS_RIGHT_(0));
-		hge->	Ini_SetInt(RESCONFIGS_KEYSETTING_1, RESCONFIGN_KEYFIRE, KS_FIRE_(0));
-		hge->	Ini_SetInt(RESCONFIGS_KEYSETTING_1, RESCONFIGN_KEYQUICK, KS_QUICK_(0));
-		hge->	Ini_SetInt(RESCONFIGS_KEYSETTING_1, RESCONFIGN_KEYSLOW, KS_SLOW_(0));
-		hge->	Ini_SetInt(RESCONFIGS_KEYSETTING_1, RESCONFIGN_KEYDRAIN, KS_DRAIN_(0));
-		hge->	Ini_SetInt(RESCONFIGS_KEYSETTING_1, RESCONFIGN_KEYPAUSE, KS_PAUSE_(0));
-		hge->	Ini_SetInt(RESCONFIGS_KEYSETTING_1, RESCONFIGN_KEYSKIP, KS_SKIP_(0));
-		hge->	Ini_SetInt(RESCONFIGS_KEYSETTING_1, RESCONFIGN_KEYENTER, KS_ENTER_(0));
-		hge->	Ini_SetInt(RESCONFIGS_KEYSETTING_1, RESCONFIGN_KEYESCAPE, KS_ESCAPE_(0));
-		hge->	Ini_SetInt(RESCONFIGS_KEYSETTING_1, RESCONFIGN_KEYCAPTURE, KS_CAPTURE_(0));
-
-		hge->	Ini_SetInt(RESCONFIGS_KEYSETTING_1, RESCONFIGN_JOYFIRE, JS_FIRE_(0));
-		hge->	Ini_SetInt(RESCONFIGS_KEYSETTING_1, RESCONFIGN_JOYQUICK, JS_QUICK_(0));
-		hge->	Ini_SetInt(RESCONFIGS_KEYSETTING_1, RESCONFIGN_JOYSLOW, JS_SLOW_(0));
-		hge->	Ini_SetInt(RESCONFIGS_KEYSETTING_1, RESCONFIGN_JOYDRAIN, JS_DRAIN_(0));
-		hge->	Ini_SetInt(RESCONFIGS_KEYSETTING_1, RESCONFIGN_JOYPAUSE, JS_PAUSE_(0));
-
-		hge->	Ini_SetInt(RESCONFIGS_KEYSETTING_2, RESCONFIGN_KEYUP, KS_UP_(1));
-		hge->	Ini_SetInt(RESCONFIGS_KEYSETTING_2, RESCONFIGN_KEYDOWN, KS_DOWN_(1));
-		hge->	Ini_SetInt(RESCONFIGS_KEYSETTING_2, RESCONFIGN_KEYLEFT, KS_LEFT_(1));
-		hge->	Ini_SetInt(RESCONFIGS_KEYSETTING_2, RESCONFIGN_KEYRIGHT, KS_RIGHT_(1));
-		hge->	Ini_SetInt(RESCONFIGS_KEYSETTING_2, RESCONFIGN_KEYFIRE, KS_FIRE_(1));
-		hge->	Ini_SetInt(RESCONFIGS_KEYSETTING_2, RESCONFIGN_KEYQUICK, KS_QUICK_(1));
-		hge->	Ini_SetInt(RESCONFIGS_KEYSETTING_2, RESCONFIGN_KEYSLOW, KS_SLOW_(1));
-		hge->	Ini_SetInt(RESCONFIGS_KEYSETTING_2, RESCONFIGN_KEYDRAIN, KS_DRAIN_(1));
-		hge->	Ini_SetInt(RESCONFIGS_KEYSETTING_2, RESCONFIGN_KEYPAUSE, KS_PAUSE_(1));
-		hge->	Ini_SetInt(RESCONFIGS_KEYSETTING_2, RESCONFIGN_KEYSKIP, KS_SKIP_(1));
-		hge->	Ini_SetInt(RESCONFIGS_KEYSETTING_2, RESCONFIGN_KEYENTER, KS_ENTER_(1));
-		hge->	Ini_SetInt(RESCONFIGS_KEYSETTING_2, RESCONFIGN_KEYESCAPE, KS_ESCAPE_(1));
-		hge->	Ini_SetInt(RESCONFIGS_KEYSETTING_2, RESCONFIGN_KEYCAPTURE, KS_CAPTURE_(1));
-
-		hge->	Ini_SetInt(RESCONFIGS_KEYSETTING_2, RESCONFIGN_JOYFIRE, JS_FIRE_(1));
-		hge->	Ini_SetInt(RESCONFIGS_KEYSETTING_2, RESCONFIGN_JOYQUICK, JS_QUICK_(1));
-		hge->	Ini_SetInt(RESCONFIGS_KEYSETTING_2, RESCONFIGN_JOYSLOW, JS_SLOW_(1));
-		hge->	Ini_SetInt(RESCONFIGS_KEYSETTING_2, RESCONFIGN_JOYDRAIN, JS_DRAIN_(1));
-		hge->	Ini_SetInt(RESCONFIGS_KEYSETTING_2, RESCONFIGN_JOYPAUSE, JS_PAUSE_(1));
-#ifdef __DEBUG
-		hge->	Ini_SetInt(RESCONFIGS_KEYSETTING_1, RESCONFIGN_DEBUG_JOYSPEEDUP, JS_DEBUG_SPEEDUP_(0));
-		hge->	Ini_SetInt(RESCONFIGS_KEYSETTING_2, RESCONFIGN_DEBUG_JOYSPEEDUP, JS_DEBUG_SPEEDUP_(1));
-#endif
+		GameInput::ReleaseInput();
 
 		hge->	Ini_SetInt(RESCONFIGS_VOLUME, RESCONFIGN_VOLMUSIC, bgmvol);
 		hge->	Ini_SetInt(RESCONFIGS_VOLUME, RESCONFIGN_VOLSE, sevol);
@@ -236,26 +195,32 @@ void Process::SnapShot()
 char Process::getInputNowChar(bool wide)
 {
 	char nowchar = -1;
-	if(hge->Input_GetDIKey(KS_FIRE) && hge->Input_GetDIJoy(JS_FIRE))
+	if(hge->Input_GetDIKey(GameInput::KS_FIRE) && hge->Input_GetDIJoy(GameInput::JS_FIRE))
 	{
-		hge->Input_SetDIKey(KS_FIRE, false);
+		hge->Input_SetDIKey(GameInput::KS_FIRE, false);
 	}
-	if(hge->Input_GetDIKey(KS_QUICK) && hge->Input_GetDIJoy(JS_QUICK))
+	if(hge->Input_GetDIKey(GameInput::KS_QUICK) && hge->Input_GetDIJoy(GameInput::JS_QUICK))
 	{
-		hge->Input_SetDIKey(KS_QUICK, false);
+		hge->Input_SetDIKey(GameInput::KS_QUICK, false);
 	}
-	if(hge->Input_GetDIKey(KS_SLOW) && hge->Input_GetDIJoy(JS_SLOW))
+	if(hge->Input_GetDIKey(GameInput::KS_SLOW) && hge->Input_GetDIJoy(GameInput::JS_SLOW))
 	{
-		hge->Input_SetDIKey(KS_SLOW, false);
+		hge->Input_SetDIKey(GameInput::KS_SLOW, false);
 	}
-	if(hge->Input_GetDIKey(KS_DRAIN) && hge->Input_GetDIJoy(JS_DRAIN))
+	if(hge->Input_GetDIKey(GameInput::KS_DRAIN) && hge->Input_GetDIJoy(GameInput::JS_DRAIN))
 	{
-		hge->Input_SetDIKey(KS_DRAIN, false);
+		hge->Input_SetDIKey(GameInput::KS_DRAIN, false);
 	}
-	if(hge->Input_GetDIKey(KS_PAUSE) && hge->Input_GetDIJoy(JS_PAUSE))
+	if(hge->Input_GetDIKey(GameInput::KS_PAUSE) && hge->Input_GetDIJoy(GameInput::JS_PAUSE))
 	{
-		hge->Input_SetDIKey(KS_PAUSE, false);
+		hge->Input_SetDIKey(GameInput::KS_PAUSE, false);
 	}
+#ifdef __DEBUG
+	if(hge->Input_GetDIKey(GameInput::KS_SKIP) && hge->Input_GetDIJoy(GameInput::JS_DEBUG_SPEEDUP))
+	{
+		hge->Input_SetDIKey(GameInput::KS_SKIP, false);
+	}
+#endif
 
 	if(hge->Input_GetDIKey(DIK_1, DIKEY_DOWN) || hge->Input_GetDIKey(DIK_NUMPAD1, DIKEY_DOWN))
 	{

@@ -3,6 +3,7 @@
 #include "Chat.h"
 #include "DataConnector.h"
 #include "BossInfo.h"
+#include "GameInput.h"
 
 int Process::frame()
 {
@@ -27,10 +28,10 @@ int Process::frame()
 	}
 #endif
 	if(
-		hge->Input_GetDIKey(KS_SKIP)
+		hge->Input_GetDIKey(GameInput::KS_SKIP)
 #ifdef __DEBUG
 		|| hge->Input_GetKeyState(HGEK_CTRL)
-		|| hge->Input_GetDIJoy(JS_DEBUG_SPEEDUP)
+		|| hge->Input_GetDIJoy(GameInput::JS_DEBUG_SPEEDUP)
 #endif
 		)
 	{
@@ -38,7 +39,7 @@ int Process::frame()
 		{
 			if (Chat::chatitem.IsChatting())
 			{
-				hge->Input_SetDIKey(KS_FIRE, (bool)(time%5 == 0));
+				hge->Input_SetDIKey(GameInput::KS_FIRE, (bool)(time%5 == 0));
 			}
 		}
 #ifndef __DEBUG

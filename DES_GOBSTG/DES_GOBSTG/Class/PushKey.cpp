@@ -1,9 +1,10 @@
 #include "PushKey.h"
 #include "BResource.h"
+#include "GameInput.h"
 
 pushkeyEvent PushKey::pushkeyevent[PUSHKEY_IDMAX];
 
-bool PushKey::SetPushEvent(BYTE ID, int pushkey_1/* =PUSHKEY_KEYNULL */, int pushkey_2/* =PUSHKEY_KEYNULL */, int pushkey_3/* =PUSHKEY_KEYNULL */, int pushkey_4/* =PUSHKEY_KEYNULL */, int pushfirst/* =M_PUSH_FIRST */, int pushrollto/* =M_PUSH_ROLLTO */)
+bool PushKey::SetPushEvent(BYTE ID, BYTE playerindex, int pushkey_1/* =PUSHKEY_KEYNULL */, int pushkey_2/* =PUSHKEY_KEYNULL */, int pushkey_3/* =PUSHKEY_KEYNULL */, int pushkey_4/* =PUSHKEY_KEYNULL */, int pushfirst/* =M_PUSH_FIRST */, int pushrollto/* =M_PUSH_ROLLTO */)
 {
 	if (ID >= PUSHKEY_IDMAX)
 	{
@@ -16,6 +17,7 @@ bool PushKey::SetPushEvent(BYTE ID, int pushkey_1/* =PUSHKEY_KEYNULL */, int pus
 	pushkeyevent[ID].pushfirst = pushfirst;
 	pushkeyevent[ID].pushrollto = pushrollto;
 	pushkeyevent[ID].timer = 0;
+	pushkeyevent[ID].playerindex = playerindex;
 	return true;
 }
 
@@ -32,7 +34,7 @@ bool PushKey::UpdatePushEvent(BYTE ID)
 	{
 		if (item->pushkey[i] != PUSHKEY_KEYNULL)
 		{
-			if (hge->Input_GetDIKey(item->pushkey[i]))
+			if (GameInput::GetKey(item->playerindex, item->pushkey[i]))
 			{
 				pushed = true;
 				break;
@@ -52,7 +54,7 @@ bool PushKey::UpdatePushEvent(BYTE ID)
 			{
 				if (item->pushkey[i] != PUSHKEY_KEYNULL)
 				{
-					hge->Input_SetDIKey(item->pushkey[i], false);
+					GameInput::SetKey(item->playerindex, item->pushkey[i], false);
 				}
 			}
 			return true;

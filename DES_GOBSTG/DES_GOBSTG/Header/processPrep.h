@@ -32,5 +32,6 @@
 #include "PushKey.h"
 #include "Target.h"
 #include "EventZone.h"
+#include "GameInput.h"
 
 #endif

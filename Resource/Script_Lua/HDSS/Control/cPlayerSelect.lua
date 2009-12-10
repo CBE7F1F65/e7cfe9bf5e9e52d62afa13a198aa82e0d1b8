@@ -18,15 +18,6 @@ function CEPlayerSelect_SetBG()
 	hdssBGVALUE(0, LConst_uibg_topcontentid, SI_TopContent_Girl, TotalCenterX, 64);
 end
 
-function _CEPlayerSelect_GetKeys(bleft)
-	if bleft then
-		return KS_UP_0, KS_DOWN_0, KS_LEFT_0, KS_RIGHT_0, KS_FIRE_0, KS_QUICK_0, KS_SLOW_0, KS_CHARGE_0;
-	else
-		return KS_UP_1, KS_DOWN_1, KS_LEFT_1, KS_RIGHT_1, KS_FIRE_1, KS_QUICK_1, KS_SLOW_1, KS_CHARGE_1;
-		
-	end
-end
-
 function _CEPlayerSelect_GetValues(bleft)
 	local nowID, lastID;
 	if bleft then
@@ -86,7 +77,6 @@ end
 
 function CEPlayerSelect_SetSelect(bleft, x)
 	local selsysplayerid, selsysotherplayerid, uibgid, initid, pushkeyid = _CEPlayerSelect_GetValues(bleft);
-	local minuskey, pluskey, leftkey, rightkey, okkey, quickkey, slowkey, chargekey = _CEPlayerSelect_GetKeys(bleft);
 	
 	hdssBGOFF(0, uibgid);
 	_CEPlayerSelect_SetInitLife(bleft, x);
@@ -116,16 +106,20 @@ function CEPlayerSelect_SetSelect(bleft, x)
 			}
 		)
 	end
+	local playerindex = 1;
+	if bleft then
+		playerindex = 0;
+	end
 	hdss.Call(
 		HDSS_SELSETUP,
 		{
-			selsysplayerid, playercount, initid, minuskey, pluskey, okkey
+			selsysplayerid, playercount, initid, playerindex, KSI_UP, KSI_DOWN, KSI_FIRE
 		},
 		{
 			1, x, TotalW / 4, initid, 0
 		}
 	)
-	hdssSETPUSHEVENT(pushkeyid, chargekey, PUSHKEY_KEYNULL, PUSHKEY_KEYNULL, PUSHKEY_KEYNULL, 8, 0);
+	hdssSETPUSHEVENT(pushkeyid, playerindex, KSI_DRAIN, PUSHKEY_KEYNULL, PUSHKEY_KEYNULL, PUSHKEY_KEYNULL, 8, 0);
 end
 
 function CEPlayerSelect_CloseUsed(bcloseall)
@@ -145,12 +139,16 @@ end
 
 function CEPlayerSelect_DispatchSelect(bleft, x, bothercomplete)
 	local selsysplayerid, selsysotherplayerid, uibgid, initid, pushkeyid = _CEPlayerSelect_GetValues(bleft);
-	local upkey, downkey, leftkey, rightkey, okkey, quickkey, slowkey, chargekey = _CEPlayerSelect_GetKeys(bleft);
 	
 	hdssUPDATEPUSHEVENT(pushkeyid);
 	
 	local ret = 0;
 	local complete, select = hdss.Get(HDSS_SELCOMPLETE, selsysplayerid);
+	
+	local playerindex = 1;
+	if bleft then
+		playerindex = 0;
+	end
 	
 	if complete then
 		
@@ -160,19 +158,19 @@ function CEPlayerSelect_DispatchSelect(bleft, x, bothercomplete)
 		hdssSETCHARA(pindex, select);		
 		ret = 1;
 		
-	elseif hge.Input_GetDIKey(chargekey, DIKEY_DOWN) then
+	elseif hdss.Get(HDSS_CHECKKEY, playerindex, KSI_DRAIN, DIKEY_DOWN) then
 		
 		hdssSELSET(selsysplayerid);
 		
-	elseif hge.Input_GetDIKey(slowkey) then
+	elseif hdss.Get(HDSS_CHECKKEY, playerindex, KSI_SLOW) then
 		
-		if hge.Input_GetDIKey(leftkey, DIKEY_DOWN) then
+		if hdss.Get(HDSS_CHECKKEY, playerindex, KSI_LEFT, DIKEY_DOWN) then
 			_CEPlayerSelect_SetInitLife(bleft, x, -1);
-		elseif hge.Input_GetDIKey(rightkey, DIKEY_DOWN) then
+		elseif hdss.Get(HDSS_CHECKKEY, playerindex, KSI_RIGHT, DIKEY_DOWN) then
 			_CEPlayerSelect_SetInitLife(bleft, x, 1);
 		end
 		
-	elseif hge.Input_GetDIKey(quickkey, DIKEY_DOWN) then
+	elseif hdss.Get(HDSS_CHECKKEY, playerindex, KSI_QUICK, DIKEY_DOWN) then
 		
 		if not bothercomplete then
 			hdssSE(SE_SYSTEM_CANCEL);
@@ -185,70 +183,62 @@ function CEPlayerSelect_DispatchSelect(bleft, x, bothercomplete)
 end
 
 function _CEPlayerSelect_SyncInput(bleftcomplete, brightcomplete)
-	if hge.Input_GetDIKey(KS_LEFT_0) then
-		hge.Input_SetDIKey(KS_UP_0);
-	end
-	if hge.Input_GetDIKey(KS_RIGHT_0) then
-		hge.Input_SetDIKey(KS_DOWN_0);
-	end
-	if hge.Input_GetDIKey(KS_LEFT_1) then
-		hge.Input_SetDIKey(KS_UP_1);
-	end
-	if hge.Input_GetDIKey(KS_RIGHT_1) then
-		hge.Input_SetDIKey(KS_DOWN_1);
-	end
-	if hge.Input_GetDIKey(KS_SLOW_0) then
-		hge.Input_SetDIKey(KS_UP_0, false);
-		hge.Input_SetDIKey(KS_DOWN_0, false);
-	end
-	if hge.Input_GetDIKey(KS_SLOW_1) then
-		hge.Input_SetDIKey(KS_UP_1, false);
-		hge.Input_SetDIKey(KS_DOWN_1, false);
+	for i=0,1 do
+		if hdss.Get(HDSS_CHECKKEY, i, KSI_LEFT) then
+			hdssSETKEY(i, KSI_UP);
+		end
+		if hdss.Get(HDSS_CHECKKEY, i, KSI_RIGHT) then
+			hdssSETKEY(i, KSI_DOWN);
+		end
+		if hdss.Get(HDSS_CHECKKEY, i, KSI_SLOW) then
+			hdssSETKEY(i, KSI_UP, false);
+			hdssSETKEY(i, KSI_DOWN, false);
+		end
 	end
 	
 	local matchmode = game.GetMatchMode();
 	if matchmode == MatchMode_P2C and bleftcomplete or
 		matchmode == MatchMode_C2P and not brightcomplete then
-		if hge.Input_GetDIKey(KS_UP_0) then
-			hge.Input_SetDIKey(KS_UP_1);
+		if hdss.Get(HDSS_CHECKKEY, 0, KSI_UP) then
+			hdssSETKEY(1, KSI_UP);
 		end
-		if hge.Input_GetDIKey(KS_DOWN_0) then
-			hge.Input_SetDIKey(KS_DOWN_1);
+		if hdss.Get(HDSS_CHECKKEY, 0, KSI_DOWN) then
+			hdssSETKEY(1, KSI_DOWN);
 		end
-		if hge.Input_GetDIKey(KS_LEFT_0) then
-			hge.Input_SetDIKey(KS_LEFT_1);
+		if hdss.Get(HDSS_CHECKKEY, 0, KSI_LEFT) then
+			hdssSETKEY(1, KSI_LEFT);
 		end
-		if hge.Input_GetDIKey(KS_RIGHT_0) then
-			hge.Input_SetDIKey(KS_RIGHT_1);
+		if hdss.Get(HDSS_CHECKKEY, 0, KSI_RIGHT) then
+			hdssSETKEY(1, KSI_RIGHT);
 		end
-		if hge.Input_GetDIKey(KS_FIRE_0) then
-			hge.Input_SetDIKey(KS_FIRE_1);
+		if hdss.Get(HDSS_CHECKKEY, 0, KSI_FIRE) then
+			hdssSETKEY(1, KSI_FIRE);
 		end
-		if hge.Input_GetDIKey(KS_SLOW_0) then
-			hge.Input_SetDIKey(KS_SLOW_1);
+		if hdss.Get(HDSS_CHECKKEY, 0, KSI_SLOW) then
+			hdssSETKEY(1, KSI_SLOW);
 		end
-		if hge.Input_GetDIKey(KS_CHARGE_0) then
-			hge.Input_SetDIKey(KS_CHARGE_1);
+		if hdss.Get(HDSS_CHECKKEY, 0, KSI_DRAIN) then
+			hdssSETKEY(1, KSI_DRAIN);
 		end
 		if matchmode == MatchMode_C2P then
-			hge.Input_SetDIKey(KS_UP_0, false);
-			hge.Input_SetDIKey(KS_DOWN_0, false);
-			hge.Input_SetDIKey(KS_LEFT_0, false);
-			hge.Input_SetDIKey(KS_RIGHT_0, false);
-			hge.Input_SetDIKey(KS_FIRE_0, false);
-			hge.Input_SetDIKey(KS_SLOW_0, false);
-			hge.Input_SetDIKey(KS_CHARGE_0, false);
+			hdssSETKEY(0, KSI_UP, false);
+			hdssSETKEY(0, KSI_DOWN, false);
+			hdssSETKEY(0, KSI_LEFT, false);
+			hdssSETKEY(0, KSI_RIGHT, false);
+			hdssSETKEY(0, KSI_FIRE, false);
+			hdssSETKEY(0, KSI_SLOW, false);
+			hdssSETKEY(0, KSI_DRAIN, false);
 		end
 	elseif matchmode == MatchMode_C2P then
-		if hge.Input_GetDIKey(KS_QUICK_0) then
-			hge.Input_SetDIKey(KS_QUICK_1);
+		if hdss.Get(HDSS_CHECKKEY, 0, KSI_QUICK) then
+			hdssSETKEY(1, KSI_QUICK);
 		end
 	end
 end
 
-function CEPlayerSelect_DispatchAfterSelect(quickkey)
+function CEPlayerSelect_DispatchAfterSelect(playerindex)
 	local ret = 0;
-	if hge.Input_GetDIKey(quickkey, DIKEY_DOWN) then
+	if hdss.Get(HDSS_CHECKKEY, playerindex, KSI_QUICK, DIKEY_DOWN) then
 		ret = -1;
 	end
 	return ret;
@@ -286,7 +276,7 @@ function ControlExecute_cPlayerSelect(con)
 	elseif _sel1complete == 2 then
 		_sel1complete = 3;
 	elseif _sel1complete == 3 then
-		local ret = CEPlayerSelect_DispatchAfterSelect(KS_QUICK_0);
+		local ret = CEPlayerSelect_DispatchAfterSelect(0);
 		if ret < 0 then
 			_sel1complete = 0;
 		end
@@ -302,7 +292,7 @@ function ControlExecute_cPlayerSelect(con)
 	elseif _sel2complete == 2 then
 		_sel2complete = 3;
 	elseif _sel2complete == 3 then
-		local ret = CEPlayerSelect_DispatchAfterSelect(KS_QUICK_1);
+		local ret = CEPlayerSelect_DispatchAfterSelect(1);
 		if ret < 0 then
 			_sel2complete = 0;
 		end

@@ -61,7 +61,7 @@ function CESceneSelect_SetSelect(selsyssceneid)
 	hdss.Call(
 		HDSS_SELSETUP,
 		{
-			selsyssceneid, scenecount+2, 0, KS_UP, KS_DOWN, KS_FIRE
+			selsyssceneid, scenecount+2, 0, 0, KSI_UP, KSI_DOWN, KSI_FIRE
 		},
 		{
 			12, ystart, yoffset
@@ -94,7 +94,7 @@ function CESceneSelect_DispatchSelect(selsyssceneid)
 		CESceneSelect_ExitState(STATE_START);
 	end
 
-	if hge.Input_GetDIKey(KS_QUICK, DIKEY_DOWN) then
+	if hdssCHECKKEY(0, KSI_QUICK, DIKEY_DOWN) then
 		hdssSE(SE_SYSTEM_CANCEL);
 		CESceneSelect_ExitState(STATE_PLAYER_SELECT);
 	end

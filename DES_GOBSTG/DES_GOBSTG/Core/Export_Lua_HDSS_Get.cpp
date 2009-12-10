@@ -208,7 +208,7 @@ int Export_Lua_HDSS::LuaFn_HDSS_Get(LuaState * ls)
 			break;
 
 		case SCR_CHECKKEY:
-			break;
+			return _HDSSCallGet::Get_CHECKKEY(ls);
 
 		case SCR_GETFLAG:
 			break;

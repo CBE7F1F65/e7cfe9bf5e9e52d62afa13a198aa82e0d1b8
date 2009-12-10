@@ -10,6 +10,7 @@
 #include "FrontDisplayName.h"
 #include "Enemy.h"
 #include "EventZone.h"
+#include "GameInput.h"
 
 Chat Chat::chatitem;
 
@@ -93,7 +94,7 @@ bool Chat::chat(BYTE ID, BYTE chatsprite, const char * _text)
 		return true;
 	}
 
-	if(hge->Input_GetDIKey(KS_FIRE_MP))
+	if(GameInput::GetKey(0, KSI_FIRE))
 	{
 		if(pushtimer < M_PUSH_FIRST)
 			pushtimer++;
@@ -105,7 +106,7 @@ bool Chat::chat(BYTE ID, BYTE chatsprite, const char * _text)
 		pushtimer = 0;
 	}
 
-	if(hge->Input_GetDIKey(KS_FIRE_MP, DIKEY_DOWN) || pushtimer == M_PUSH_FIRST || timer == M_NOPUSH_SKIP)
+	if(GameInput::GetKey(0, KSI_FIRE, DIKEY_DOWN) || pushtimer == M_PUSH_FIRST || timer == M_NOPUSH_SKIP)
 	{
 		chatinit = false;
 		timer = 0;

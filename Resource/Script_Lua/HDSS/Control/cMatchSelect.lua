@@ -59,7 +59,7 @@ function CEMatchSelect_SetSelect_Match(selsysmatchid)
 	hdss.Call(
 		HDSS_SELSETUP,
 		{
-			selsysmatchid, 4, 0, KS_UP, KS_DOWN, KS_FIRE
+			selsysmatchid, 4, 0, 0, KSI_UP, KSI_DOWN, KSI_FIRE
 		}
 	)
 end
@@ -82,7 +82,7 @@ function CEMatchSelect_DispatchSelect_Match(selsysmatchid)
 			game.SetMatchMode(MatchMode_C2P);
 		end
 		CEMatchSelect_ExitState(STATE_PLAYER_SELECT, false);
-	elseif hge.Input_GetDIKey(KS_QUICK, DIKEY_DOWN) then
+	elseif hdss.Get(HDSS_CHECKKEY, 0, KSI_QUICK, DIKEY_DOWN) then
 		hdssSE(SE_SYSTEM_CANCEL);
 		CEMatchSelect_ExitState(STATE_TITLE);
 	end
@@ -153,13 +153,13 @@ function CEMatchSelect_DispatchPasteIP(selsyslatencyid, _ipx, _ipport)
 			end
 		end
 		
-	elseif hge.Input_GetDIKey(KS_ENTER, DIKEY_DOWN) then
+	elseif hdss.Get(HDSS_CHECKKEY, 0, KSI_ENTER, DIKEY_DOWN) then
 		retipx, retipport = game.GetLastIP();
 		local ipd0, ipd1, ipd2, ipd3 = global.GetARGB(retipx);
 		if ipd0 ~= 0 then
 			ret = 1;
 		end
-	elseif hge.Input_GetDIKey(KS_QUICK, DIKEY_DOWN) then
+	elseif hdss.Get(HDSS_CHECKKEY, 0, KSI_QUICK, DIKEY_DOWN) then
 		hdssSE(SE_SYSTEM_CANCEL);
 		ret = -1;
 	end
@@ -214,7 +214,7 @@ function CEMatchSelect_SetSelect_Latency(selsyslatencyid, latency)
 	hdss.Call(
 		HDSS_SELSETUP,
 		{
-			selsyslatencyid, 9, latency-1, KS_UP, KS_DOWN, KS_FIRE
+			selsyslatencyid, 9, latency-1, 0, KSI_UP, KSI_DOWN, KSI_FIRE
 		},
 		{
 			1, ystart, yoffset, latency-1
@@ -226,7 +226,7 @@ end
 function CEMatchSelect_DispatchSelect_Latency(selsyslatencyid, latency)
 
 	local ret = 0;
-	if hge.Input_GetDIKey(KS_QUICK, DIKEY_DOWN) then
+	if hdss.Get(HDSS_CHECKKEY, 0, KSI_QUICK, DIKEY_DOWN) then
 		hdssSELCLEAR(selsyslatencyid);
 		ret = -1;
 	hdssSE(SE_SYSTEM_CANCEL);

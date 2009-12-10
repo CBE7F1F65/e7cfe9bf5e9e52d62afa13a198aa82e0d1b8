@@ -134,6 +134,25 @@ int _HDSSCallGet::Call_STARTPREP(LuaState * ls)
 	return 0;
 }
 
+int _HDSSCallGet::Call_SETKEY(LuaState * ls)
+{
+	_ENTERCALL_HDSS_LUA;
+
+	if (true)
+	{
+		BYTE _playerindex = _INEXT_HDSS_LUAPARA;
+		int _ksi = _INEXT_HDSS_LUAPARA;
+		bool _set = true;
+		_JNEXT_HDSS_LUAPARA;
+		if (bhavenext)
+		{
+			_set = _BOBJ_HDSS_LUA;
+		}
+		GameInput::SetKey(_playerindex, _ksi, _set);
+	}
+	return 0;
+}
+
 int _HDSSCallGet::Call_SETPUSHEVENT(LuaState * ls)
 {
 	_ENTERCALL_HDSS_LUA;
@@ -141,6 +160,7 @@ int _HDSSCallGet::Call_SETPUSHEVENT(LuaState * ls)
 	if (true)
 	{
 		BYTE _index = _INEXT_HDSS_LUAPARA;
+		BYTE _playerindex = _INEXT_HDSS_LUAPARA;
 		int _pushkey_1 = PUSHKEY_KEYNULL;
 		int _pushkey_2 = PUSHKEY_KEYNULL;
 		int _pushkey_3 = PUSHKEY_KEYNULL;
@@ -177,7 +197,7 @@ int _HDSSCallGet::Call_SETPUSHEVENT(LuaState * ls)
 				}
 			}
 		}
-		bool bret = PushKey::SetPushEvent(_index, _pushkey_1, _pushkey_2, _pushkey_3, _pushkey_4, _pushfirst, _pushrollto);
+		bool bret = PushKey::SetPushEvent(_index, _playerindex, _pushkey_1, _pushkey_2, _pushkey_3, _pushkey_4, _pushfirst, _pushrollto);
 		ls->PushBoolean(bret);
 		return 1;
 	}
@@ -1057,6 +1077,7 @@ int _HDSSCallGet::Call_SELSETUP(LuaState * ls)
 		int _nselect = _INEXT_HDSS_LUAPARA;
 		int _select = _INEXT_HDSS_LUAPARA;
 
+		BYTE _playerindex = 0;
 		BYTE _keyplus = PUSHKEY_KEYNULL;
 		BYTE _keyminus = PUSHKEY_KEYNULL;
 		BYTE _keyok = PUSHKEY_KEYNULL;
@@ -1065,29 +1086,34 @@ int _HDSSCallGet::Call_SELSETUP(LuaState * ls)
 		_JNEXT_HDSS_LUAPARA;
 		if (bhavenext)
 		{
-			_keyplus = _IOBJ_HDSS_LUA;
+			_playerindex = _IOBJ_HDSS_LUA;
 			_JNEXT_HDSS_LUAPARA;
 			if (bhavenext)
 			{
-				_keyminus = _IOBJ_HDSS_LUA;
+				_keyplus = _IOBJ_HDSS_LUA;
 				_JNEXT_HDSS_LUAPARA;
 				if (bhavenext)
 				{
-					_keyok = _IOBJ_HDSS_LUA;
+					_keyminus = _IOBJ_HDSS_LUA;
 					_JNEXT_HDSS_LUAPARA;
 					if (bhavenext)
 					{
-						_keycancel = _IOBJ_HDSS_LUA;
+						_keyok = _IOBJ_HDSS_LUA;
 						_JNEXT_HDSS_LUAPARA;
 						if (bhavenext)
 						{
-							_maxtime = _IOBJ_HDSS_LUA;
+							_keycancel = _IOBJ_HDSS_LUA;
+							_JNEXT_HDSS_LUAPARA;
+							if (bhavenext)
+							{
+								_maxtime = _IOBJ_HDSS_LUA;
+							}
 						}
 					}
 				}
 			}
 		}
-		SelectSystem::selsys[_selsys].Setup(_selsys, _nselect, _select, _keyplus, _keyminus, _keyok, _keycancel, _maxtime);
+		SelectSystem::selsys[_selsys].Setup(_selsys, _nselect, _select, _playerindex, _keyplus, _keyminus, _keyok, _keycancel, _maxtime);
 
 		if (argscount > 2)
 		{
