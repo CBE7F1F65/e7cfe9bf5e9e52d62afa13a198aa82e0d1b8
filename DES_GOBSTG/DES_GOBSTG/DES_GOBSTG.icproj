@@ -5,7 +5,7 @@
 	Name="DES_GOBSTG"
 	ProjectGUID="{A4938EF7-0CE1-47A3-BC8D-4D0B54F94F6D}"
 	VCNestedProjectGUID="{7329E15F-F0AE-44EE-BC64-27B9038C76D7}"
-	VCNestedProjectCRC32="2206038366"
+	VCNestedProjectCRC32="3175029877"
 	VCNestedProjectFileName="DES_GOBSTG.vcproj"
 	Keyword="Win32Proj">
 	<Configurations>
@@ -258,6 +258,8 @@
 		<File 
 			RelativePath=".\Core\Export_Lua_HGEHelper.cpp"/>
 		<File 
+			RelativePath=".\Core\GameInput.cpp"/>
+		<File 
 			RelativePath=".\Class\Beam.cpp"/>
 		<File 
 			RelativePath=".\Class\BGLayer.cpp"/>
@@ -409,6 +411,8 @@
 			RelativePath=".\Header\Export_Lua_HGE.h"/>
 		<File 
 			RelativePath=".\Header\Export_Lua_HGEHelp.h"/>
+		<File 
+			RelativePath=".\Header\GameInput.h"/>
 		<File 
 			RelativePath=".\Header\Beam.h"/>
 		<File 

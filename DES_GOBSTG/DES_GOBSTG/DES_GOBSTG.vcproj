@@ -316,6 +316,9 @@
 					RelativePath=".\Core\Export.cpp">
 				</File>
 				<File
+					RelativePath=".\Core\GameInput.cpp">
+				</File>
+				<File
 					RelativePath=".\Core\InitDllLoader.cpp">
 				</File>
 				<File
@@ -569,6 +572,9 @@
 				</File>
 				<File
 					RelativePath=".\Header\Export.h">
+				</File>
+				<File
+					RelativePath=".\Header\GameInput.h">
 				</File>
 				<File
 					RelativePath=".\Header\keytable.h">

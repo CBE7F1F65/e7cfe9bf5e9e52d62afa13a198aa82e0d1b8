@@ -98,7 +98,7 @@ public:
 			int	joyPause;
 			int debug_joySpeedUp;
 		}		keyJS[M_PL_MATCHMAXPLAYER];
-		int		joyKey[M_PL_MATCHMAXPLAYER][5];
+		int		joyKey[M_PL_MATCHMAXPLAYER][6];
 	};
 
 	//texture
