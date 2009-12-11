@@ -44,7 +44,6 @@
 #define PLAYER_CHARGE				0x0200
 #define	PLAYER_PLAYERCHANGE			0x0400
 #define	PLAYER_GRAZE				0x1000
-#define PLAYER_SHOOTINGCHARGE		0x2000
 
 #define PLAYER_INFIMAX		-1
 #define PLAYER_INFIUNSET	0
@@ -100,11 +99,10 @@ public:
 	bool Charge();
 	bool PlayerChange();
 	bool Graze();
-	bool ShootingCharge();
 
 	void changePlayerID(WORD toID, bool moveghost=false);
-	void shootCharge(BYTE nChargeLevel, bool bquick=false);
-	void setShootingCharge(BYTE shootingchargeflag, BYTE shootingchargetimer);
+	void shootCharge(BYTE nChargeLevel, bool nodelete=false);
+	void setShootingCharge(BYTE shootingchargeflag);
 
 	void AddComboHit(int combo, bool ori);
 	void AddSpellPoint(int spellpoint);
@@ -234,7 +232,7 @@ public:
 	WORD	stoptimer;
 
 	BYTE	shootingchargeflag;
-	BYTE	shootingchargetimer;
+	BYTE	shootchargetimer;
 
 	BYTE	shootpushtimer;
 	BYTE	shootnotpushtimer;

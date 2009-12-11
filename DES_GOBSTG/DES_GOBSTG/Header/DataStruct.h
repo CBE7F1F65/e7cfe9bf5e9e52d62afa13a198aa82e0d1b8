@@ -160,6 +160,8 @@ struct enemyData
 	BYTE attackFrame;
 	BYTE storePreFrame;
 	BYTE storeFrame;
+	BYTE nmaxset;
+	BYTE nmax;
 	BYTE blastmaxtime;
 	bool standshake;
 	float blastr;
@@ -184,6 +186,7 @@ struct playerData
 	int drainzoneSIID;
 	BYTE shotdelay;
 	BYTE rechargedelay;
+	BYTE shootchargetime;
 	BYTE standFrame;
 	BYTE leftPreFrame;
 	BYTE leftFrame;
@@ -206,6 +209,7 @@ struct playershootData
 	int angle;
 	int hitonfactor;
 	int siid;
+	bool bchargeshoot;
 	float xbias;
 	float ybias;
 	float scale;

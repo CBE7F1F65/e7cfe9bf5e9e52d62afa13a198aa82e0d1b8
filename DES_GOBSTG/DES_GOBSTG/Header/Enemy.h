@@ -20,8 +20,6 @@
 
 #define ENEMY_BOSSMAX		ENEMY_TEXMAX
 
-#define ENEMY_BOSSTYPEBEGIN	20
-
 #define ENEMY_ANIMATIONSPEED	8
 
 #define ENEMY_BOSSINFITIMER		240
@@ -74,6 +72,8 @@
 #define ENAZOP_OR		0x20
 #define ENAZOP_NOTAND	0x40
 #define ENAZOP_NOTOR	0x80
+
+#define ENEMY_NMAXSETMAX	0x10
 
 struct EnemyActivationZone 
 {
@@ -191,6 +191,9 @@ public:
 	BYTE	storetimer;
 
 	BYTE	frameindex[ENEMY_FRAME_STATEMAX];
+
+	static BYTE	bossindex[M_PL_MATCHMAXPLAYER];
+	static BYTE nEnemyNow[M_PL_MATCHMAXPLAYER][ENEMY_NMAXSETMAX];
 
 	hgeSprite * sprite;
 	static HTEXTURE * tex;

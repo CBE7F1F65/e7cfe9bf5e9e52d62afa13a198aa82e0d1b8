@@ -61,9 +61,9 @@ BYTE Player::raisestopplayerindex = 0;
 #define _PL_MERGETOPOS_Y		(M_GAMESQUARE_BOTTOM - 64)
 
 #define _PL_SHOOTINGCHARGE_1	0x01
-#define _PL_SHOOTINGCHARGE_2	0x20
-#define _PL_SHOOTINGCHARGE_3	0x30
-#define _PL_SHOOTINGCHARGE_4	0x40
+#define _PL_SHOOTINGCHARGE_2	0x02
+#define _PL_SHOOTINGCHARGE_3	0x04
+#define _PL_SHOOTINGCHARGE_4	0x08
 
 #define _PL_CHARGEZONE_R_2	188.0f
 #define _PL_CHARGEZONE_R_3	252.0f
@@ -204,7 +204,7 @@ void Player::ClearSet(BYTE round)
 	}
 
 	changePlayerID(nowID, true);
-	setShootingCharge(0, 0);
+	setShootingCharge(0);
 
 	esChange.valueSet(EFFSPSET_PLAYERUSE, EFFSP_PLAYERCHANGE, SpriteItemManager::GetIndexByName(SI_PLAYER_SHOTITEM), x, y, 0, 3.0f);
 	esChange.colorSet(0x7fffffff, BLEND_ALPHAADD);
@@ -353,14 +353,6 @@ void Player::action()
 	lastx[0] = x;
 	lasty[0] = y;
 
-	//flag
-	if (flag & PLAYER_SHOOTINGCHARGE)
-	{
-		if (ShootingCharge())
-		{
-			flag &= ~PLAYER_SHOOTINGCHARGE;
-		}
-	}
 	//
 	if(flag & PLAYER_MERGE)
 	{
@@ -455,6 +447,11 @@ void Player::action()
 	if (rechargedelaytimer)
 	{
 		rechargedelaytimer--;
+	}
+	if (shootchargetimer)
+	{
+		PlayerBullet::BuildShoot(playerindex, nowID, shootchargetimer, true);
+		shootchargetimer--;
 	}
 	if (infitimer > 0)
 	{
@@ -660,7 +657,12 @@ void Player::action()
 		effGraze.Stop();
 
 	for(int i=0;i<PLAYERGHOSTMAX;i++)
-		pg[i].action();
+	{
+		if (pg[i].exist)
+		{
+			pg[i].action();
+		}
+	}
 }
 
 void Player::actionInStop()
@@ -870,18 +872,7 @@ bool Player::Shoot()
 		return true;
 	}
 
-	playershootData * item;
-	for (int i=0; i<PLAYERSHOOTTYPEMAX; i++)
-	{
-		item = &(BResource::res.playershootdata[i]);
-		if (item->timeMod)
-		{
-			if (item->userID == nowID && item->timeMod && (item->timeMod == 1 || !(shoottimer % item->timeMod)))
-			{
-				PlayerBullet::Build(playerindex, i);
-			}
-		}
-	}
+	PlayerBullet::BuildShoot(playerindex, nowID, shoottimer);
 	shoottimer++;
 	//
 	if(shootnotpushtimer > _PLAYER_SHOOTNOTPUSHOVER)
@@ -1012,18 +1003,6 @@ bool Player::Graze()
 	effGraze.Fire();
 	SE::push(SE_PLAYER_GRAZE, x);
 	return true;
-}
-
-bool Player::ShootingCharge()
-{
-	shootingchargetimer--;
-	Scripter::scr.Execute(SCR_EVENT, SCR_EVENT_PLAYERSHOOTCHARGE, playerindex);
-	if (shootingchargetimer == 0)
-	{
-		shootingchargeflag = 0;
-		return true;
-	}
-	return false;
 }
 
 void Player::DoEnemyCollapse(float x, float y)
@@ -1166,7 +1145,29 @@ void Player::GetSpellClassAndLevel(BYTE * spellclass, BYTE * spelllevel)
 {
 	if (spellclass)
 	{
-		*spellclass = shootingchargeflag>>4;
+		if (shootingchargeflag & _PL_SHOOTINGCHARGE_4)
+		{
+			if ((shootingchargeflag & _PL_SHOOTINGCHARGE_3) || (shootingchargeflag & _PL_SHOOTINGCHARGE_2))
+			{
+				*spellclass = 4;
+			}
+			else
+			{
+				*spellclass = 3;
+			}
+		}
+		else if (shootingchargeflag & _PL_SHOOTINGCHARGE_3)
+		{
+			*spellclass = 2;
+		}
+		else if (shootingchargeflag & _PL_SHOOTINGCHARGE_2)
+		{
+			*spellclass = 1;
+		}
+		else
+		{
+			*spellclass = 0;
+		}
 	}
 	if (spelllevel)
 	{
@@ -1174,9 +1175,13 @@ void Player::GetSpellClassAndLevel(BYTE * spellclass, BYTE * spelllevel)
 		{
 			*spelllevel = bosslevel;
 		}
-		else
+		else if(shootingchargeflag)
 		{
 			*spelllevel = cardlevel;
+		}
+		else
+		{
+			*spelllevel = 0;
 		}
 	}
 }
@@ -1214,7 +1219,12 @@ void Player::RenderEffect()
 	effGraze.Render();
 
 	for(int i=0;i<PLAYERGHOSTMAX;i++)
-		pg[i].Render();
+	{
+		if (pg[i].exist)
+		{
+			pg[i].Render();
+		}
+	}
 	if(flag & PLAYER_PLAYERCHANGE)
 	{
 		esChange.Render();
@@ -1272,63 +1282,83 @@ void Player::callPlayerChange()
 	playerchangetimer = 0;
 }
 
-void Player::setShootingCharge(BYTE _shootingchargeflag, BYTE _shootingchargetimer)
+void Player::setShootingCharge(BYTE _shootingchargeflag)
 {
-	shootingchargeflag |= _shootingchargeflag;
-	if (shootingchargetimer < _shootingchargetimer)
-	{
-		shootingchargetimer = _shootingchargetimer;
-	}
 	if (!_shootingchargeflag)
 	{
 		shootingchargeflag = 0;
 	}
-	if (!_shootingchargetimer)
+	else
 	{
-		_shootingchargetimer = 0;
-	}
-	if (shootingchargeflag && shootingchargetimer)
-	{
-		flag |= PLAYER_SHOOTINGCHARGE;
+		shootingchargeflag |= _shootingchargeflag;
+		if (shootingchargeflag & _PL_SHOOTINGCHARGE_1)
+		{
+			shootchargetimer = BResource::res.playerdata[nowID].shootchargetime;
+		}
 	}
 }
 
-void Player::shootCharge(BYTE nChargeLevel, bool bquick)
+void Player::shootCharge(BYTE nChargeLevel, bool nodelete)
 {
 	if (!nChargeLevel)
 	{
 		return;
 	}
+	if (nChargeLevel > 3 && nChargeLevel < 7 && Enemy::bossindex[1-playerindex] != 0xff)
+	{
+		if (nChargeLevel == 4)
+		{
+			shootCharge(3, nodelete);
+		}
+		else if (nChargeLevel == 6)
+		{
+			shootCharge(7, nodelete);
+		}
+		return;
+	}
+	setShootingCharge(0);
 	int chargezonemaxtime=1;
 	float chargezoner=0;
 	switch (nChargeLevel)
 	{
 	case 1:
 		SetInfi(PLAYERINFI_SHOOTCHARGE, _PL_SHOOTCHARGEINFI_1);
-		setShootingCharge(_PL_SHOOTINGCHARGE_1, _PL_SHOOTCHARGEINFI_1);
+		setShootingCharge(_PL_SHOOTINGCHARGE_1);
+		AddCardBossLevel(1, 0);
 		break;
 	case 2:
 		SetInfi(PLAYERINFI_SHOOTCHARGE, _PL_SHOOTCHARGEINFI_2);
-		setShootingCharge((bquick?0:_PL_SHOOTINGCHARGE_1)|_PL_SHOOTINGCHARGE_2, _PL_SHOOTCHARGEINFI_2);
+		setShootingCharge((nodelete?0:_PL_SHOOTINGCHARGE_1)|_PL_SHOOTINGCHARGE_2);
+		AddCardBossLevel(1, 0);
 		chargezonemaxtime = _PL_CHARGEZONE_MAXTIME_2;
 		chargezoner = _PL_CHARGEZONE_R_2;
 		break;
 	case 3:
 		SetInfi(PLAYERINFI_SHOOTCHARGE, _PL_SHOOTCHARGEINFI_3);
-		setShootingCharge((bquick?0:_PL_SHOOTINGCHARGE_1)|_PL_SHOOTINGCHARGE_3, _PL_SHOOTCHARGEINFI_3);
+		setShootingCharge((nodelete?0:_PL_SHOOTINGCHARGE_1)|_PL_SHOOTINGCHARGE_3);
+		AddCardBossLevel(1, 0);
 		chargezonemaxtime = _PL_CHARGEZONE_MAXTIME_3;
 		chargezoner = _PL_CHARGEZONE_R_3;
 		break;
 	case 4:
 		SetInfi(PLAYERINFI_SHOOTCHARGE, _PL_SHOOTCHARGEINFI_4);
-		setShootingCharge((bquick?0:_PL_SHOOTINGCHARGE_1)|_PL_SHOOTINGCHARGE_4, _PL_SHOOTCHARGEINFI_4);
+		setShootingCharge((nodelete?0:_PL_SHOOTINGCHARGE_1)|_PL_SHOOTINGCHARGE_4);
+		AddCardBossLevel(0, 1);
 		chargezonemaxtime = _PL_CHARGEZONE_MAXTIME_4;
 		chargezoner = _PL_CHARGEZONE_R_4;
 		break;
 	case 5:
-		setShootingCharge(_PL_SHOOTINGCHARGE_4, _PL_SHOOTCHARGEINFI_4);
-		chargezonemaxtime = _PL_CHARGEZONE_MAXTIME_4;
-		chargezoner = _PL_CHARGEZONE_R_4;
+		setShootingCharge(_PL_SHOOTINGCHARGE_4);
+		AddCardBossLevel(0, 1);
+		break;
+	case 6:
+		setShootingCharge(_PL_SHOOTINGCHARGE_3);
+		setShootingCharge(_PL_SHOOTINGCHARGE_4);
+		AddCardBossLevel(1, 1);
+		break;
+	case 7:
+		setShootingCharge(_PL_SHOOTINGCHARGE_3);
+		AddCardBossLevel(1, 0);
 		break;
 	}
 	if (nChargeLevel > 1)
@@ -1336,26 +1366,17 @@ void Player::shootCharge(BYTE nChargeLevel, bool bquick)
 		raisestopplayerindex = playerindex;
 		stoptimer = 0;
 		Process::mp.SetStop(FRAME_STOPFLAG_ALLSET|FRAME_STOPFLAG_PLAYERINDEX_0|FRAME_STOPFLAG_PLAYERINDEX_1, PL_SHOOTINGCHARGE_STOPTIME);
-		EventZone::Build(EVENTZONE_TYPE_BULLETFADEOUT|EVENTZONE_TYPE_ENEMYDAMAGE|EVENTZONE_TYPE_NOSEND, playerindex, x, y, chargezonemaxtime, 0, 10, EVENTZONE_EVENT_NULL, chargezoner/chargezonemaxtime, -2, SpriteItemManager::GetIndexByName(SI_PLAYER_CHARGEZONE), 400);
-//		SE::push(SE_PLAYER_SPELLCUTIN, x);
+		if (chargezoner)
+		{
+			EventZone::Build(EVENTZONE_TYPE_BULLETFADEOUT|EVENTZONE_TYPE_ENEMYDAMAGE|EVENTZONE_TYPE_NOSEND, playerindex, x, y, chargezonemaxtime, 0, 10, EVENTZONE_EVENT_NULL, chargezoner/chargezonemaxtime, -2, SpriteItemManager::GetIndexByName(SI_PLAYER_CHARGEZONE), 400);
+		}
 		if (nChargeLevel < 5)
 		{
-			if (!bquick)
-			{
-				shootCharge(1);
-			}
 			AddCharge(-PLAYER_CHARGEONE*(nChargeLevel-1), -PLAYER_CHARGEONE*(nChargeLevel-1));
 		}
 		AddLilyCount(-500);
-		if (nChargeLevel < 4)
-		{
-			AddCardBossLevel(1, 0);
-		}
-		else
-		{
-			AddCardBossLevel(0, 1);
-		}
 	}
+	Scripter::scr.Execute(SCR_EVENT, SCR_EVENT_PLAYERSHOOTCHARGE, playerindex);
 }
 
 void Player::SendEx(BYTE playerindex, float x, float y)
@@ -1414,10 +1435,13 @@ void Player::AddSpellPoint(int spellpoint)
 		return;
 	}
 	if (nSpellPoint < _PL_SPELLBONUS_BOSS_1 && nSpellPoint + spellpoint >= _PL_SPELLBONUS_BOSS_1 ||
-		nSpellPoint < _PL_SPELLBONUS_BOSS_2 && nSpellPoint + spellpoint >= _PL_SPELLBONUS_BOSS_2 ||
-		nSpellPoint < _PL_SPELLBONUS_BOSS_3 && nSpellPoint + spellpoint >= _PL_SPELLBONUS_BOSS_3)
+		nSpellPoint < _PL_SPELLBONUS_BOSS_2 && nSpellPoint + spellpoint >= _PL_SPELLBONUS_BOSS_2)
 	{
 		shootCharge(5);
+	}
+	else if (nSpellPoint < _PL_SPELLBONUS_BOSS_3 && nSpellPoint + spellpoint >= _PL_SPELLBONUS_BOSS_3)
+	{
+		shootCharge(6);
 	}
 	nSpellPoint += spellpoint;
 	if (nSpellPoint > PLAYER_NSPELLPOINTMAX)

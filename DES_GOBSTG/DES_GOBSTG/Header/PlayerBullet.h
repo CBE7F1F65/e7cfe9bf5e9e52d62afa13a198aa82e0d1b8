@@ -31,6 +31,7 @@ public:
 	~PlayerBullet();
 
 	static void Init(HTEXTURE * tex);
+	static void BuildShoot(BYTE playerindex, BYTE playerID, int usetimer, bool bchargeshoot=false);
 	static int Build(BYTE playerindex, int shootdataID);
 	static void ClearItem();
 	static void Action(DWORD stopflag);

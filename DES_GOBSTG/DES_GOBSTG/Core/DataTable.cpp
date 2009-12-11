@@ -278,7 +278,7 @@ bool _DataTable::BulletDefineFile()
 bool _DataTable::EnemyDefineFile()
 {
 	ZeroMemory(BResource::res.enemydata, RSIZE_ENEMY);
-	_READSTRINGBUFFERLINE(24);
+	_READSTRINGBUFFERLINE(26);
 	while (!feof(file))
 	{
 		_INITTINT;
@@ -287,13 +287,15 @@ bool _DataTable::EnemyDefineFile()
 		enemyData * item = &(BResource::res.enemydata[tindex]);
 		_CHECKEOF_DATATABLE;
 
-		fscanf(file, "%d%s%f%f%d%d%d%d%d%d%d%d%d%d%d%d%d%d%f%f\t%[^\t]\t%[^\r\n]", 
+		fscanf(file, "%d%s%f%f%d%d%d%d%d%d%d%d%d%d%d%d%d%d%d%d%f%f\t%[^\t]\t%[^\r\n]", 
 			_SAVETINT, 
 			strbuffer[0],
 			&(item->collision_w), 
 			&(item->collision_h), 
 			_SAVETINT, 
 			&(item->standshake), 
+			_SAVETINT, 
+			_SAVETINT, 
 			_SAVETINT, 
 			_SAVETINT, 
 			_SAVETINT, 
@@ -323,6 +325,8 @@ bool _DataTable::EnemyDefineFile()
 		item->attackFrame = _LOADTINT;
 		item->storePreFrame  = _LOADTINT;
 		item->storeFrame  = _LOADTINT;
+		item->nmaxset	=	_LOADTINT;
+		item->nmax = _LOADTINT;
 		item->blastmaxtime = _LOADTINT;
 	}
 	return true;
@@ -331,7 +335,7 @@ bool _DataTable::EnemyDefineFile()
 bool _DataTable::PlayerDefineFile()
 {
 	ZeroMemory(BResource::res.playerdata, RSIZE_PLAYER);
-	_READSTRINGBUFFERLINE(23);
+	_READSTRINGBUFFERLINE(24);
 	while (!feof(file))
 	{
 		_INITTINT;
@@ -340,11 +344,12 @@ bool _DataTable::PlayerDefineFile()
 		playerData * item = &(BResource::res.playerdata[tindex]);
 		_CHECKEOF_DATATABLE;
 
-		fscanf(file, "%f%f%f%f%d%d%f%f%s%s%s\t%[^\t]%s%d%d%d%d%d\t%[^\t]\t%[^\t]\t%[^\r\n]", 
+		fscanf(file, "%f%f%f%f%d%d%d%f%f%s%s%s\t%[^\t]%s%d%d%d%d%d\t%[^\t]\t%[^\t]\t%[^\r\n]", 
 			&(item->collision_r), 
 			&(item->fastspeed), 
 			&(item->slowspeed), 
 			&(item->chargespeed), 
+			_SAVETINT, 
 			_SAVETINT, 
 			_SAVETINT, 
 			&(item->exsendparab),
@@ -366,6 +371,7 @@ bool _DataTable::PlayerDefineFile()
 		_INITTINT;
 		item->shotdelay = _LOADTINT;
 		item->rechargedelay = _LOADTINT;
+		item->shootchargetime = _LOADTINT;
 		item->siid = SpriteItemManager::GetIndexByName(strbuffer[0]);
 		item->faceSIID = SpriteItemManager::GetIndexByName(strbuffer[1]);
 		item->spellcutinSIID = SpriteItemManager::GetIndexByName(strbuffer[2]);
@@ -410,7 +416,7 @@ bool _DataTable::SpriteDefineFile()
 bool _DataTable::PlayerShootDefineFile()
 {
 	ZeroMemory(BResource::res.playershootdata, RSIZE_PLAYERSHOOT);
-	_READSTRINGBUFFERLINE(16);
+	_READSTRINGBUFFERLINE(17);
 	while (!feof(file))
 	{
 		_INITTINT;
@@ -419,7 +425,8 @@ bool _DataTable::PlayerShootDefineFile()
 		_CHECKEOF_DATATABLE;
 		playershootData * item = &(BResource::res.playershootdata[tindex]);
 
-		fscanf(file, "%d%s%d%x%f%d%d%d%f%f%f%f%f%d", 
+		fscanf(file, "%d%d%s%d%x%f%d%d%d%f%f%f%f%f%d", 
+			_SAVETINT, 
 			_SAVETINT, 
 			strbuffer[0],
 			_SAVETINT, 
@@ -437,6 +444,7 @@ bool _DataTable::PlayerShootDefineFile()
 
 		_INITTINT;
 		item->userID = _LOADTINT;
+		item->bchargeshoot = (bool)_LOADTINT;
 		item->siid = SpriteItemManager::GetIndexByName(strbuffer[0]);
 		item->timeMod = _LOADTINT;
 		item->flag = _LOADTINT;

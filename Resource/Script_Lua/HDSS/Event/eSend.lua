@@ -118,7 +118,7 @@ function eSendGhost(playerindex, x, y, sendtime, acceladd, setID)
 		angle = hge.Random_Int(8910, 9090);
 	end
 	--
-	local type = 8 + sendtime * 2;
+	local type = LConst_GhostTypeStart + sendtime * 2;
 	local index = hdss.Call(
 		HDSS_EB,
 		{

@@ -47,7 +47,7 @@ function ePlayerInStop(playerindex, bSpell, spellPlayerID, oplayerID, stoptimer,
 			local col = global.ARGB(0xff, 0xffffff);
 			hdssFRONTSPRITE(LConst_game_FrontSprite_WarningID, SI_GameInfo_Warning, x, 240, 0, hscale, 0, col, BLEND_ALPHAADD);
 			x = x + 48;
-			hdssFRONTSPRITE(LConst_game_FrontSprite_SpellClassID, SI_GameInfo_ClassFairy+spellClass-2, x, 288);
+			hdssFRONTSPRITE(LConst_game_FrontSprite_SpellClassID, SI_GameInfo_ClassFairy+spellClass-1, x, 288);
 			local digit0 = math.floor(spellLevel/10);
 			local digit1 = spellLevel - digit0 * 10;
 			x = x+ 56;

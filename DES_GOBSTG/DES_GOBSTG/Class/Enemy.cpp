@@ -17,6 +17,9 @@
 VectorList<Enemy> Enemy::en[M_PL_MATCHMAXPLAYER];
 list<EnemyActivationZone> Enemy::enaz[M_PL_MATCHMAXPLAYER];
 
+BYTE Enemy::bossindex[M_PL_MATCHMAXPLAYER];
+BYTE Enemy::nEnemyNow[M_PL_MATCHMAXPLAYER][ENEMY_NMAXSETMAX];
+
 #define _SCOREDISPLAYMAX		(ENEMYMAX*2)
 VectorList<ScoreDisplay> Enemy::scoredisplay[M_PL_MATCHMAXPLAYER];
 
@@ -43,6 +46,7 @@ void Enemy::Init(HTEXTURE * _tex)
 	{
 		en[i].init(ENEMYMAX);
 		scoredisplay[i].init(_SCOREDISPLAYMAX);
+		bossindex[i] = 0xff;
 	}
 }
 
@@ -58,6 +62,12 @@ void Enemy::Release()
 
 int Enemy::Build(WORD eID, BYTE playerindex, float x, float y, int angle, float speed, BYTE type, float life, int infitimer)
 {
+	BYTE nmaxset = BResource::res.enemydata[type].nmaxset;
+	BYTE nmax = BResource::res.enemydata[type].nmax;
+	if (nmax && nEnemyNow[playerindex][nmaxset] > nmax)
+	{
+		return -1;
+	}
 	Enemy _en;
 	Enemy * _pen = NULL;
 	if (en[playerindex].getSize() < ENEMYMAX)
@@ -110,6 +120,11 @@ void Enemy::Action(DWORD stopflag)
 	PlayerBullet::ClearLock();
 	for (int j=0; j<M_PL_MATCHMAXPLAYER; j++)
 	{
+		for (int i=0; i<ENEMY_NMAXSETMAX; i++)
+		{
+			nEnemyNow[j][i] = 0;
+		}
+		bossindex[j] = 0xff;
 		DWORD i = 0;
 		DWORD size = en[j].getSize();
 		bool binstop = FRAME_STOPFLAGCHECK_PLAYERINDEX_(stopflag, j, FRAME_STOPFLAG_ENEMY);
@@ -120,6 +135,8 @@ void Enemy::Action(DWORD stopflag)
 				Enemy * pen = &(*(en[j]));
 				if (pen->exist)
 				{
+					BYTE nmaxset = BResource::res.enemydata[(*en[j]).type].nmaxset;
+					nEnemyNow[j][nmaxset]++;
 					if (!binstop)
 					{
 						pen->action();
@@ -131,6 +148,10 @@ void Enemy::Action(DWORD stopflag)
 					if (pen->able)
 					{
 						PlayerBullet::CheckAndSetLock((BObject *)pen, j, en[j].getIndex());
+						if (pen->type < PLAYERTYPEMAX)
+						{
+							bossindex[j] = en[j].getIndex();
+						}
 					}
 				}
 				else
@@ -1223,12 +1244,8 @@ void Enemy::action()
 		}
 		effCollapse.action();
 
-		if(type < ENEMY_BOSSTYPEBEGIN)
-		{
-//			hscale	=	timer * 0.05f + 1.0f;
-			vscale	=	(32 - timer) * 0.03225f;
-			alpha	=	(BYTE)((32 - timer) * 8);
-		}
+		vscale	=	(32 - timer) * 0.03225f;
+		alpha	=	(BYTE)((32 - timer) * 8);
 	}
 
 	damage = false;

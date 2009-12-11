@@ -239,6 +239,7 @@ end
 function CEPlayerSelect_DispatchAfterSelect(playerindex)
 	local ret = 0;
 	if hdss.Get(HDSS_CHECKKEY, playerindex, KSI_QUICK, DIKEY_DOWN) then
+		hdssSE(SE_SYSTEM_CANCEL);
 		ret = -1;
 	end
 	return ret;

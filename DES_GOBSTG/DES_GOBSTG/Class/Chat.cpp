@@ -130,7 +130,6 @@ bool Chat::chat(BYTE ID, BYTE chatsprite, const char * _text)
 		}
 		else
 		{
-			ID -= ENEMY_BOSSTYPEBEGIN;
 			left->SetColor(0x80ffffff);
 			right->SetColor(0xffffffff);
 			textbox->SetColor(0xffff3333);
@@ -187,8 +186,6 @@ bool Chat::chatOn(BYTE leftID, BYTE rightID, BYTE chatsprite)
 		Player::p[i].SetInfi(PLAYERINFI_CHAT);
 	}
 	chatinit = false;
-
-	rightID -= ENEMY_BOSSTYPEBEGIN;
 	
 	if(timer == 1)
 	{

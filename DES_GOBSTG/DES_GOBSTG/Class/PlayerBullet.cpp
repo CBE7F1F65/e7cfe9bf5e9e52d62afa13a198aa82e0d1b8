@@ -32,7 +32,6 @@ WORD PlayerBullet::beams;
 
 #define _PBCHASE_TURNSPEEDDOWN	0.8f
 #define _PBDELAY_SPEEDDOWN		0.9f
-#define _DELAY_TURNMAX		1200
 
 #define _PB_DELETEBOLDER		M_GAMESQUARE_HEIGHT
 #define _PB_DELETE_LEFT_(X)		M_DELETECLIENT_LEFT_(X) - _PB_DELETEBOLDER
@@ -146,6 +145,26 @@ void PlayerBullet::RenderAll(BYTE playerindex)
 	}
 }
 
+void PlayerBullet::BuildShoot(BYTE playerindex, BYTE playerID, int usetimer, bool bchargeshoot/* =false */)
+{
+	playershootData * item;
+	for (int i=0; i<PLAYERSHOOTTYPEMAX; i++)
+	{
+		item = &(BResource::res.playershootdata[i]);
+		if (item->userID == playerID)
+		{
+			if ((bchargeshoot) ^ (item->bchargeshoot))
+			{
+				continue;
+			}
+			if (item->timeMod && (item->timeMod == 1 || !(usetimer % item->timeMod)))
+			{
+				Build(playerindex, i);
+			}
+		}
+	}
+}
+
 int PlayerBullet::Build(BYTE playerindex, int shootdataID)
 {
 	if (pb[playerindex].getSize() == PLAYERBULLETMAX)
@@ -216,7 +235,10 @@ void PlayerBullet::valueSet(BYTE _playerindex, WORD _ID, BYTE _arrange, float _x
 		hscale = M_GAMESQUARE_HEIGHT / SpriteItemManager::GetTexW(BResource::res.playershootdata[ID].siid);
 		vscale = scale / SpriteItemManager::GetTexH(BResource::res.playershootdata[ID].siid);
 		angle = -9000;
-		alpha = 0x60;
+		for (int i=0; i<PLAYERBULLETTYPE; i++)
+		{
+			sprite[ID][i]->SetBlendMode(BLEND_ALPHAADD);
+		}
 	}
 	else
 	{
@@ -406,41 +428,31 @@ bool PlayerBullet::isInRange(float aimx, float aimy, float w, float h)
 
 void PlayerBullet::DelayShoot()
 {
-	if(locked[playerindex] == PBLOCK_LOST)
+	BObject * _tpbobj = NULL;
+	if (locked[playerindex] != PBLOCK_LOST)
 	{
-		if(timer < PB_FADEOUTTIME)
-			timer = PB_FADEOUTTIME;
-		if(speed != oldspeed)
-		{
-			speed = oldspeed;
-		}
-	}
-	else
-	{
-		BObject * _tpbobj;
 		_tpbobj = &(Enemy::en[playerindex][locked[playerindex]]);
-		if(timer == 1)
+	}
+	if(timer == 1)
+	{
+		speed = -speed;
+	}
+	if(timer < PB_FADEOUTTIME)
+	{
+		if (flag & PBFLAG_TURNWHILEDELAY)
 		{
-			speed = -speed;
+			TurnBullet(oldspeed/6.0f);
 		}
-		if(timer < PB_FADEOUTTIME)
-		{
-			angle = aMainAngle(_tpbobj->x, _tpbobj->y);
-			if (flag & PBFLAG_TURNWHILEDELAY)
-			{
-				if(arrange & 1)
-					headangle += _DELAY_TURNMAX;
-				else
-					headangle -= _DELAY_TURNMAX;
-			}
-			speed *= _PBCHASE_TURNSPEEDDOWN;
-		}
-		else if(timer == PB_FADEOUTTIME)
-		{
-			angle = aMainAngle(_tpbobj->x, _tpbobj->y);
-			headangle = 0;
-			speed = oldspeed;
-		}
+		speed *= _PBCHASE_TURNSPEEDDOWN;
+	}
+	else if(timer == PB_FADEOUTTIME)
+	{
+		headangle = 0;
+		speed = oldspeed;
+	}
+	if (_tpbobj)
+	{
+		angle = aMainAngle(_tpbobj->x, _tpbobj->y);
 	}
 }
 
@@ -468,16 +480,21 @@ void PlayerBullet::action()
 			y += - M_GAMESQUARE_HEIGHT / 2 + ybias;
 			xplus = 0;
 			yplus = 0;
+			/*
 			float extramove = 0;
 			if (!(arrange && (Player::p[playerindex].pg[arrange-1].flag & PGFLAG_STAY) || (Player::p[playerindex].pg[arrange-1].flag & PGFLAG_ABSSTAY)))
 			{
 				extramove = (Player::p[playerindex].y-Player::p[playerindex].lasty[_PBBEAM_LASTINDEX]) / 2.5f;
 			}
 			float _tx, _ty, _tw, _th;
-//			sprite[ID]->GetTextureRect(&_tx, &_ty, &_tw, &_th);
-//			sprite[ID]->SetTextureRect(_tx - (2.0f + extramove) / accelspeed, _ty, _tw, _th);
-			timer = PB_FADEOUTTIME - 8;
-			fadeout = true;
+			sprite[ID]->GetTextureRect(&_tx, &_ty, &_tw, &_th);
+			sprite[ID]->SetTextureRect(_tx - (2.0f + extramove) / accelspeed, _ty, _tw, _th);
+			*/
+			if (timer == 8)
+			{
+				timer = PB_FADEOUTTIME - 16;
+				fadeout = true;
+			}
 		}
 
 		else
@@ -506,7 +523,7 @@ void PlayerBullet::action()
 
 			if (flag & PBFLAG_TURN)
 			{
-				TurnBullet(5.0f);
+				TurnBullet(speed/4.0f);
 			}
 			if (flag & PBFLAG_HEADUPWARD)
 			{
@@ -589,7 +606,8 @@ void PlayerBullet::action()
 			}
 			taimx += xbias;
 			taimy += -M_GAMESQUARE_HEIGHT / 2 + ybias;
-			chaseAim(taimx, taimy, (32-timer));
+			chaseAim(taimx, taimy, (64-timer));
+			updateMove();
 			angle = -9000;
 		}
 		alpha = (32 - timer) * 0x06;

@@ -29,7 +29,6 @@ void PlayerGhost::valueSet(BYTE _playerindex, WORD _ID, bool move)
 	ID		=	_ID;
 
 	timer	=	0;
-	exist	=	true;
 	headangle =	0;
 	alpha	=	0xff;
 	diffuse	=	0xffffff;
@@ -39,6 +38,15 @@ void PlayerGhost::valueSet(BYTE _playerindex, WORD _ID, bool move)
 
 	playerghostData * _pgd = &(BResource::res.playerghostdata[ID]);
 
+	if (_pgd->siid)
+	{
+		exist	=	true;
+	}
+	else
+	{
+		exist = false;
+		return;
+	}
 	
 	speed	=	_pgd->speed;
 	flag	=	_pgd->flag;

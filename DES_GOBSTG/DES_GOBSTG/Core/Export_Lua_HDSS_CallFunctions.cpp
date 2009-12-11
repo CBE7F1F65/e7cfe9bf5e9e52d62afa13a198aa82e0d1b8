@@ -342,10 +342,13 @@ int _HDSSCallGet::Call_FRONTSPRITE(LuaState * ls)
 		DWORD dret;
 		int _ID = _INEXT_HDSS_LUAPARA;
 		int _index = _INEXT_HDSS_LUAPARA;
-		if (SpriteItemManager::HaveFrontSprite(_ID) && argscount > 2)
+		if (SpriteItemManager::HaveFrontSprite(_ID))
 		{
 			dret = (DWORD)SpriteItemManager::ChangeFrontSprite(_ID, _index);
-			SpriteItemManager::ClearFrontSpriteVale(_ID);
+			if (argscount > 2)
+			{
+				SpriteItemManager::ClearFrontSpriteVale(_ID);
+			}
 		}
 		else
 		{

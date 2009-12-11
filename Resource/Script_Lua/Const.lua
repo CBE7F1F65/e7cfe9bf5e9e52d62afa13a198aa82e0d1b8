@@ -31,3 +31,18 @@ LConst_game_FrontSprite_WarningID	=	2
 LConst_game_FrontSprite_SpellClassID	=	3
 LConst_game_FrontSprite_LevelDigit_0ID	=	4
 LConst_game_FrontSprite_LevelDigit_1ID	=	5
+
+LConst_EnemyTypeStart	=	32
+LConst_EnemyTypeBlue	=	LConst_EnemyTypeStart
+LConst_EnemyTypeRed	=	LConst_EnemyTypeStart + 1
+LConst_EnemyTypeGreen	=	LConst_EnemyTypeStart + 2
+LConst_EnemyTypeBig	=	LConst_EnemyTypeStart + 3
+LConst_EnemyTypeLiLy	=	LConst_EnemyTypeStart + 4
+
+LConst_GhostTypeStart	=	37
+LConst_GhostTypeGreen	=	LConst_GhostTypeStart
+LConst_GhostTypeGreenActive	=	LConst_GhostTypeStart + 1
+LConst_GhostTypeYellow	=	LConst_GhostTypeStart + 2
+LConst_GhostTypeYellowActive	=	LConst_GhostTypeStart + 3
+LConst_GhostTypeRed	=	LConst_GhostTypeStart + 4
+LConst_GhostTypeRedActive	=	LConst_GhostTypeStart + 5
