@@ -167,12 +167,7 @@ function CEMatchSelect_DispatchPasteIP(selsyslatencyid, _ipx, _ipport)
 end
 
 function CEMatchSelect_SetBG_Accessing()
-	hdss.Call(
-		HDSS_BGVALUE,
-		{
-			LConst_uibg_infoid, SI_MatchMode_Accessing, TotalCenterX, 200, 384, 30
-		}
-	)
+	hdssBGVALUE(0, LConst_uibg_infoid, SI_MatchMode_Accessing, TotalCenterX, 200, 384, 30);
 	hdssSE(SE_SYSTEM_OK);
 end
 

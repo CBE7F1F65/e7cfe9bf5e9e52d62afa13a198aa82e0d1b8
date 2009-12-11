@@ -128,6 +128,8 @@ function EventExecute(name, con)
 				return it[2](con);
 			end
 		end
+	elseif name == EVENT_PLAYERSENDLILY then
+		hdssSE(SE_BOSS_WARNING);
 	end
 	return true;
 

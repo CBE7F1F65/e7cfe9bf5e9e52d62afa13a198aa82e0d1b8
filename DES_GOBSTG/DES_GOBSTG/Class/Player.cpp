@@ -42,6 +42,10 @@
 #define _PLAYER_SHOOTPUSHOVER	9
 #define _PLAYER_SHOOTNOTPUSHOVER	9
 
+#define _PL_SPELLBONUS_BOSS_1	100000
+#define _PL_SPELLBONUS_BOSS_2	300000
+#define _PL_SPELLBONUS_BOSS_3	500000
+
 Player Player::p[M_PL_MATCHMAXPLAYER];
 float Player::lostStack = 0;
 bool Player::able = false;
@@ -297,6 +301,7 @@ void Player::Action(DWORD stopflag)
 			p[i].AddCardBossLevel(0, 1);
 		}
 		bool binstop = FRAME_STOPFLAGCHECK_PLAYERINDEX_(stopflag, i, FRAME_STOPFLAG_PLAYER);
+		GameInput::gameinput[i].updateActiveInput(binstop);
 		if (p[i].exist)
 		{
 			if (!binstop)
@@ -1407,6 +1412,12 @@ void Player::AddSpellPoint(int spellpoint)
 	{
 		nSpellPoint = 0;
 		return;
+	}
+	if (nSpellPoint < _PL_SPELLBONUS_BOSS_1 && nSpellPoint + spellpoint >= _PL_SPELLBONUS_BOSS_1 ||
+		nSpellPoint < _PL_SPELLBONUS_BOSS_2 && nSpellPoint + spellpoint >= _PL_SPELLBONUS_BOSS_2 ||
+		nSpellPoint < _PL_SPELLBONUS_BOSS_3 && nSpellPoint + spellpoint >= _PL_SPELLBONUS_BOSS_3)
+	{
+		shootCharge(5);
 	}
 	nSpellPoint += spellpoint;
 	if (nSpellPoint > PLAYER_NSPELLPOINTMAX)

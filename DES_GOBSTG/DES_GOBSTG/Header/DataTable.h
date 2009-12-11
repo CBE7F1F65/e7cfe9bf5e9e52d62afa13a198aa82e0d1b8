@@ -12,7 +12,6 @@ public:
 	bool TextureTableDefine();
 	bool EffectTableDefine();
 	bool SETableDefine();
-	bool SceneDefineFile();
 	bool CustomConstFile();
 	bool SpellDefineFile();
 	bool MusicDefineFile();

@@ -72,9 +72,6 @@ bool _DataTable::DataTableDefine()
 	strcpy(BResource::res.resdata.musicdefinefilename, BResource::res.resdata.datafoldername);
 	_READSTRINGBUFFERLINE(2);
 	strcat(BResource::res.resdata.musicdefinefilename, buffer);
-	strcpy(BResource::res.resdata.scenedefinefilename, BResource::res.resdata.datafoldername);
-	_READSTRINGBUFFERLINE(2);
-	strcat(BResource::res.resdata.scenedefinefilename, buffer);
 	strcpy(BResource::res.resdata.bulletdefinefilename, BResource::res.resdata.datafoldername);
 	_READSTRINGBUFFERLINE(2);
 	strcat(BResource::res.resdata.bulletdefinefilename, buffer);
@@ -148,22 +145,6 @@ bool _DataTable::SETableDefine()
 		fscanf(file, "%d", &tindex);
 		_CHECKEOF_DATATABLE;
 		fscanf(file, "%s", BResource::res.resdata.sefilename[tindex]);
-	}
-	return true;
-}
-
-bool _DataTable::SceneDefineFile()
-{
-	ZeroMemory(BResource::res.scenedata, RSIZE_SCENE);
-	_READSTRINGBUFFERLINE(3);
-	while (!feof(file))
-	{
-		_BREAKCOMMENTBUFFER;
-		fscanf(file, "%d", &tindex);
-		sceneData * item = &(BResource::res.scenedata[tindex]);
-		_CHECKEOF_DATATABLE;
-		fscanf(file, "%[^\r\n]",
-			item->scenename);
 	}
 	return true;
 }
@@ -565,9 +546,6 @@ bool Data::GetTableFile(BYTE type)
 		break;
 	case DATA_MUSICDEFINEFILE:
 		_DataTable::datatable.MusicDefineFile();
-		break;
-	case DATA_SCENEDEFINEFILE:
-		_DataTable::datatable.SceneDefineFile();
 		break;
 
 	case DATA_BULLETDEFINEFILE:

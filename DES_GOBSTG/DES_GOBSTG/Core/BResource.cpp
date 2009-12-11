@@ -316,7 +316,6 @@ bool BResource::Pack(void * pStrdesc, void * pCustomConstData)
 		RSIZE_STRINGDESC + 
 		RSIZE_CUSTOMCONST + 
 		RSIZE_MUSIC + 
-		RSIZE_SCENE + 
 		RSIZE_BULLET + 
 		RSIZE_ENEMY + 
 		RSIZE_PLAYER + 
@@ -361,8 +360,6 @@ bool BResource::Pack(void * pStrdesc, void * pCustomConstData)
 	offset += RSIZE_CUSTOMCONST;
 	memcpy(content+offset, musdata, RSIZE_MUSIC);
 	offset += RSIZE_MUSIC;
-	memcpy(content+offset, scenedata, RSIZE_SCENE);
-	offset += RSIZE_SCENE;
 	memcpy(content+offset, bulletdata, RSIZE_BULLET);
 	offset += RSIZE_BULLET;
 	memcpy(content+offset, enemydata, RSIZE_ENEMY);
@@ -427,8 +424,6 @@ bool BResource::Gain(void * pStrdesc, void * pCustomConstData)
 			offset += RSIZE_CUSTOMCONST;
 			memcpy(musdata, content+offset, RSIZE_MUSIC);
 			offset += RSIZE_MUSIC;
-			memcpy(scenedata, content+offset, RSIZE_SCENE);
-			offset += RSIZE_SCENE;
 			memcpy(bulletdata, content+offset, RSIZE_BULLET);
 			offset += RSIZE_BULLET;
 			memcpy(enemydata, content+offset, RSIZE_ENEMY);
@@ -503,7 +498,6 @@ void BResource::CopyData()
 		Data::data.customconstfilename = resdata.customconstfilename;
 		Data::data.spelldefinefilename = resdata.spelldefinefilename;
 		Data::data.musicdefinefilename = resdata.musicdefinefilename;
-		Data::data.scenedefinefilename = resdata.scenedefinefilename;
 		Data::data.bulletdefinefilename = resdata.bulletdefinefilename;
 		Data::data.enemydefinefilename = resdata.enemydefinefilename;
 		Data::data.playerdefinefilename = resdata.playerdefinefilename;
@@ -533,8 +527,6 @@ bool BResource::SetDataFile()
 		if(!Data::data.SetFile(Data::data.spelldefinefilename, DATA_SPELLDEFINEFILE))
 			return false;
 		if(!Data::data.SetFile(Data::data.musicdefinefilename, DATA_MUSICDEFINEFILE))
-			return false;
-		if (!Data::data.SetFile(Data::data.scenedefinefilename, DATA_SCENEDEFINEFILE))
 			return false;
 		if (!Data::data.SetFile(Data::data.bulletdefinefilename, DATA_BULLETDEFINEFILE))
 			return false;

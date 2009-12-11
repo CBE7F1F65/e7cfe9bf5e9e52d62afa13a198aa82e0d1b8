@@ -271,6 +271,12 @@ WORD GameInput::updateActiveInput(bool copylast/* =false */)
 	if (copylast)
 	{
 		activeInput = lastActiveInput;
+		for (int i=0; i<GAMEACTIVEINPUTMAX; i++)
+		{
+			BYTE seti = 1<<i;
+			input &= ~seti;
+			input |= activeInput & seti;
+		}
 	}
 	else
 	{

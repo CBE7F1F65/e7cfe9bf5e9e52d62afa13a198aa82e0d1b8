@@ -129,7 +129,7 @@ int Export_Lua_Game::LuaFn_Game_GetSceneContentTable(LuaState * ls)
 		int _scenecount = SCENEMAX;
 		for (int i=0; i<SCENEMAX; i++)
 		{
-			if (!strlen(BResource::res.scenedata[i].scenename))
+			if (!strlen(BResource::res.playerdata[i].scenename))
 			{
 				_scenecount = i;
 				break;
@@ -141,7 +141,7 @@ int Export_Lua_Game::LuaFn_Game_GetSceneContentTable(LuaState * ls)
 	else
 	{
 		int _index = args[1].GetInteger();
-		ls->PushString(BResource::res.scenedata[_index].scenename);
+		ls->PushString(BResource::res.playerdata[_index].scenename);
 		return 1;
 	}
 	return 0;

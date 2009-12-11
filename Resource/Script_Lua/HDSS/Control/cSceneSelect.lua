@@ -5,7 +5,7 @@ function CESceneSelect_SetBG()
 	hdssBGVALUE(0, LConst_uibg_topcontentid, SI_TopContent_Scene, TotalCenterX, 64);
 end
 
-function CESceneSelect_SetSelect(selsyssceneid)
+function CESceneSelect_SetSelect(selsyssceneid, pushkeyid)
 	local scenecount = game.GetSceneContentTable();
 	
 	local ystart = 120;
@@ -70,6 +70,7 @@ function CESceneSelect_SetSelect(selsyssceneid)
 			SI_Select_Frame, TotalCenterX, ystart
 		}
 	)
+	hdssSETPUSHEVENT(pushkeyid, 0, KSI_DRAIN, PUSHKEY_KEYNULL, PUSHKEY_KEYNULL, PUSHKEY_KEYNULL, 2, 0);
 end
 
 function CESceneSelect_CloseUsed()
@@ -88,15 +89,19 @@ function CESceneSelect_ExitState(tostate)
 	end
 end
 
-function CESceneSelect_DispatchSelect(selsyssceneid)
+function CESceneSelect_DispatchSelect(selsyssceneid, pushkeyid)
 	local complete, select = hdss.Get(HDSS_SELCOMPLETE, selsyssceneid);
 	if complete then
 		CESceneSelect_ExitState(STATE_START);
 	end
+	
+	hdssUPDATEPUSHEVENT(pushkeyid);
 
-	if hdssCHECKKEY(0, KSI_QUICK, DIKEY_DOWN) then
+	if hdss.Get(HDSS_CHECKKEY, 0, KSI_QUICK, DIKEY_DOWN) then
 		hdssSE(SE_SYSTEM_CANCEL);
 		CESceneSelect_ExitState(STATE_PLAYER_SELECT);
+	elseif hdss.Get(HDSS_CHECKKEY, 0, KSI_DRAIN, DIKEY_DOWN) then
+		hdssSELSET(selsyssceneid);
 	end
 end
 
@@ -105,10 +110,10 @@ function ControlExecute_cSceneSelect(con)
 	if con == 1 then
 		CESceneSelect_Init();
 		CESceneSelect_SetBG();
-		CESceneSelect_SetSelect(LConst_selsys_sceneid);
+		CESceneSelect_SetSelect(LConst_selsys_sceneid, PUSHID_UIUSE_0);
 	end
 	
-	CESceneSelect_DispatchSelect(LConst_selsys_sceneid);
+	CESceneSelect_DispatchSelect(LConst_selsys_sceneid, PUSHID_UIUSE_0);
 		
 	return true;
 
