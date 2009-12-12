@@ -75,5 +75,7 @@ function ControlExecute_cStart(con)
 			)
 		end
 	end
+	
+	return true;
 
 end

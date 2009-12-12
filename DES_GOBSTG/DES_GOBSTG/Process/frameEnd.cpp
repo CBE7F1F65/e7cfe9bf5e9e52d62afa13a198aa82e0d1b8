@@ -44,6 +44,7 @@ void Process::frameEnd()
 		BGLayer::Action(_stopflag, active);
 		Effectsys::Action(_stopflag);
 	}
+	BGLayer::ActionSpecial();
 	SelectSystem::Action();
 
 	SE::play();

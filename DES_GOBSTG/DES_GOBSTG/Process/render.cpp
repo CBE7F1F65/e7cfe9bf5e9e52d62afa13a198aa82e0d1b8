@@ -74,7 +74,6 @@ int Process::render()
 	{
 		_RenderTar();
 	}
-	SelectSystem::RenderAll();
 	SpriteItemManager::RenderFrontSprite();
 	FrontDisplay::fdisp.RenderPostPrint();
 
@@ -86,6 +85,8 @@ int Process::render()
 	{
 		FrontDisplay::fdisp.RenderEnemyX();
 	}
+	BGLayer::RenderFGPause();
+	SelectSystem::RenderAll();
 	hge->Gfx_EndScene();
 	return PGO;
 }

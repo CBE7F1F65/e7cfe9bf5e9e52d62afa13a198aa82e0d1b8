@@ -68,8 +68,10 @@ public:
 	static void Init(HTEXTURE * tex);
 	static void KillOtherLayer(BYTE playerindex);
 	static void Action(DWORD stopflag, bool active);
+	static void ActionSpecial();
 	static void RenderBG(BYTE playerindex);
 	static void RenderFG(BYTE playerindex);
+	static void RenderFGPause();
 
 	void Render();
 	void valueSet(int siID, float cenx, float ceny, float width, float height, DWORD col = 0xffffffff);

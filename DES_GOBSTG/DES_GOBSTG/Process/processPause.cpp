@@ -6,17 +6,17 @@
 #include "BGLayer.h"
 #include "BossInfo.h"
 #include "FrontDisplay.h"
+#include "GameInput.h"
 
 int Process::processPause()
 {
-	/*
 	BYTE tstate = state;
 	if(!pauseinit)
 	{
 		hge->Channel_Pause(channel);
 
-		scr.d[SCR_RESERVEBEGIN].bfloat = false;
-		scr.SetIntValue(SCR_RESERVEBEGIN, 0x00);
+//		scr.d[SCR_RESERVEBEGIN].bfloat = false;
+//		scr.SetIntValue(SCR_RESERVEBEGIN, 0x00);
 		pauseinit = true;
 
 		if(replaymode)
@@ -26,14 +26,29 @@ int Process::processPause()
 				time = 0;
 			}
 		}
-		else if (Player::p[0].exist && Player::p[0].ncPause < 0xff)
-		{
-			Player::p[0].ncPause++;
-		}
 	}
-	if(scr.GetIntValue(SCR_RESERVEBEGIN) < 0x100)
-		scr.Execute(SCR_CONTROL, STATE_PAUSE, SCRIPT_CON_INIT);
-
+	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
+	{
+		GameInput::gameinput[i].updateActiveInput(true);
+	}
+	Scripter::scr.Execute(SCR_CONTROL, STATE_PAUSE, SCRIPT_CON_INIT);
+	if(GameInput::GetKey(0, KSI_PAUSE, DIKEY_DOWN))
+	{
+		for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
+		{
+			BGLayer::ubg[i][UBGID_FGPAUSE].SetFlag(FG_PAUSEOUT, FGMT_PAUSE);
+		}
+		SelectSystem::ClearAll();
+//		scr.SetIntValue(SCR_RESERVEBEGIN, 0xff);
+		SE::push(SE_SYSTEM_CANCEL);
+		if(replaymode && replayend)
+			state = STATE_TITLE;
+		else
+			state = STATE_START;
+		pauseinit = false;
+		return PTURN;
+	}
+/*
 	if(selsys[scr.GetIntValue(SCR_RESERVEBEGIN+1)].sel.size() && hge->Input_GetDIKey(KS_QUICK, DIKEY_UP))
 	{
 		SelectSystem::ClearAll();
@@ -49,16 +64,6 @@ int Process::processPause()
 			scr.SetIntValue(SCR_RESERVEBEGIN, 0x01);
 		SE::push(SE_SYSTEM_CANCEL);
 //		state = STATE_START;
-	}
-	if(hge->Input_GetDIKey(KS_PAUSE, DIKEY_DOWN))
-	{
-		SelectSystem::ClearAll();
-		scr.SetIntValue(SCR_RESERVEBEGIN, 0xff);
-		SE::push(SE_SYSTEM_CANCEL);
-		if(replaymode && replayend)
-			state = STATE_TITLE;
-		else
-			state = STATE_START;
 	}
 
 	if(scr.GetIntValue(SCR_RESERVEBEGIN) == 0xff)
@@ -143,6 +148,6 @@ int Process::processPause()
 			return PTURN;
 		}
 	}
-	*/
+*/
 	return PGO;
 }

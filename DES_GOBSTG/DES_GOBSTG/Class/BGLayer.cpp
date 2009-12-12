@@ -344,13 +344,28 @@ void BGLayer::Action(DWORD stopflag, bool active)
 					}
 				}
 			}
-			for (int i=0; i<UBGLAYERMAX; i++)
+			for (int i=0; i<BGFGLAYERMAX; i++)
 			{
 				if (ubg[j][i].exist)
 				{
 					ubg[j][i].action();
 				}
 			}
+		}
+	}
+}
+
+void BGLayer::ActionSpecial()
+{
+	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
+	{
+		if (ubg[i][UBGID_BGMASK].exist)
+		{
+			ubg[i][UBGID_BGMASK].action();
+		}
+		if (ubg[i][UBGID_FGPAUSE].exist)
+		{
+			ubg[i][UBGID_FGPAUSE].action();
 		}
 	}
 }
@@ -379,9 +394,16 @@ void BGLayer::RenderFG(BYTE playerindex)
 			ubg[playerindex][i].Render();
 		}
 	}
-	if (ubg[playerindex][UBGID_FGPAUSE].exist)
+}
+
+void BGLayer::RenderFGPause()
+{
+	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
 	{
-		ubg[playerindex][UBGID_FGPAUSE].Render();
+		if (ubg[i][UBGID_FGPAUSE].exist)
+		{
+			ubg[i][UBGID_FGPAUSE].Render();
+		}
 	}
 }
 
@@ -549,7 +571,7 @@ void BGLayer::action()
 				for(int i=0;i<4;i++)
 				{
 					acol[i] = ocol[i];
-					ocol[i] = 0xf0000000;
+					ocol[i] = 0xc0000000;
 				}
 				break;
 			case FG_PAUSEOUT:
