@@ -7,6 +7,7 @@ LConst_selsys_player1id	=	2
 LConst_selsys_player2id	=	3
 LConst_selsys_sceneid	=	0
 LConst_selsys_pauseid	=	0
+LConst_selsys_pauseconfirmid	=	0
 LConst_selsys_overid	=	0
 LConst_selsys_saveid	=	1
 LConst_selsys_overwriteid	=	2

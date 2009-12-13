@@ -169,6 +169,8 @@ int Export_Lua_HDSS::LuaFn_HDSS_Call(LuaState * ls)
 				return _HDSSCallGet::Call_SELBUILD(ls);
 			case SCR_SELCLEAR:
 				return _HDSSCallGet::Call_SELCLEAR(ls);
+			case SCR_SELCONFIRM:
+				return _HDSSCallGet::Call_SELCONFIRM(ls);
 			case SCR_SELSETUP:
 				return _HDSSCallGet::Call_SELSETUP(ls);
 			case SCR_SELSET:

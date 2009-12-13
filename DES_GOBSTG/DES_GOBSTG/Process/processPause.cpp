@@ -26,12 +26,25 @@ int Process::processPause()
 				time = 0;
 			}
 		}
+		Scripter::scr.Execute(SCR_CONTROL, STATE_PAUSE, SCRIPT_CON_INIT);
 	}
-	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
+	else
 	{
-		GameInput::gameinput[i].updateActiveInput(true);
+		Scripter::scr.Execute(SCR_CONTROL, STATE_PAUSE, ((replaymode && replayend) ? STATE_TITLE : STATE_START) | 0xff00);
+		if (state != STATE_PAUSE)
+		{
+			for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
+			{
+				GameInput::gameinput[i].updateActiveInput(true);
+			}
+			pauseinit = false;
+			if (state != STATE_START)
+			{
+				FrontDisplay::fdisp.SetState(FDISP_PANEL, 0);
+			}
+		}
 	}
-	Scripter::scr.Execute(SCR_CONTROL, STATE_PAUSE, SCRIPT_CON_INIT);
+	/*
 	if(GameInput::GetKey(0, KSI_PAUSE, DIKEY_DOWN))
 	{
 		for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
@@ -48,6 +61,7 @@ int Process::processPause()
 		pauseinit = false;
 		return PTURN;
 	}
+	*/
 /*
 	if(selsys[scr.GetIntValue(SCR_RESERVEBEGIN+1)].sel.size() && hge->Input_GetDIKey(KS_QUICK, DIKEY_UP))
 	{

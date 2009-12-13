@@ -540,7 +540,10 @@ char Process::getInputNowChar(bool wide)
 void Process::SetState(int _state, int _time /* = 0 */)
 {
 	state = _state;
-	time = _time;
+	if (time >= 0)
+	{
+		time = _time;
+	}
 }
 
 void Process::SetReturnValue(int _retval)

@@ -45,6 +45,7 @@ int Process::processStart()
 		Scripter::scr.Execute(SCR_CONTROL, STATE_START, time);
 	}
 
+	/*
 	if(GameInput::GetKey(0, KSI_PAUSE, DIKEY_DOWN) && state != STATE_CLEAR)
 	{
 		SE::push(SE_SYSTEM_PAUSE);
@@ -58,6 +59,7 @@ int Process::processStart()
 		state = STATE_PAUSE;
 		return PTURN;
 	}
+	*/
 
 	if(scene > S1 && state != STATE_CLEAR)
 	{

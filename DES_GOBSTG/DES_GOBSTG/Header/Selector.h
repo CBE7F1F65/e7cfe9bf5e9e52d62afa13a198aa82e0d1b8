@@ -54,7 +54,6 @@ public:
 	void infoSet(char * info, DWORD ucol = 0xffffffff, DWORD dcol = 0xffffffff, float shadow = FONTSYS_DEFAULT_SHADOW, float xoffset=0, float yoffset=0, float hscale=1.0f, float vscale=0.0f, BYTE alignflag=HGETEXT_CENTER|HGETEXT_MIDDLE, bool sync=false);
 	void actionSet(BYTE setflag, float xadj, float yadj);
 	void actionSet(BYTE setflag, seladj * adj=NULL);
-	int getAdjIndex(BYTE setflag);
 	void setAdj(int i, float xadj, float yadj);
 	void SetMaxtime(int maxtime);
 	void Complete();

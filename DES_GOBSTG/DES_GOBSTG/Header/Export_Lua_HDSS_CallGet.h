@@ -53,6 +53,7 @@ public:
 
 	static int Call_SELBUILD(LuaState * ls);
 	static int Call_SELCLEAR(LuaState * ls);
+	static int Call_SELCONFIRM(LuaState * ls);
 	static int Call_SELSETUP(LuaState * ls);
 	static int Call_SELSET(LuaState * ls);
 

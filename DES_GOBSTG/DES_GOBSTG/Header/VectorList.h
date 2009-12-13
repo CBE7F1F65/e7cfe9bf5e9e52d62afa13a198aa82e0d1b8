@@ -44,16 +44,7 @@ public:
 	}
 	void clear_item()
 	{
-		if (valid)
-		{
-			ZeroMemory(valid, sizeof(bool) * capacity);
-		}
-		ibegin = 0;
-		iend = 0;
-		size = 0;
-		zero = 0;
-		index = 0;
-		pushedindex = 0;
+		init(capacity);
 	}
 	void init(DWORD count)
 	{
@@ -64,7 +55,17 @@ public:
 			item = new _Ty[capacity];
 			valid = new bool[capacity];
 		}
-		clear_item();
+		if (valid)
+		{
+			ZeroMemory(valid, sizeof(bool) * capacity);
+		}
+		ibegin = 0;
+		iend = 0;
+		size = 0;
+		zero = 0;
+		index = 0;
+		pushedindex = 0;
+//		clear_item();
 	}
 
 
@@ -75,6 +76,10 @@ public:
 			return NULL;
 		}
 		pop();
+		if (!size)
+		{
+			size++;
+		}
 		valid[index] = true;
 		return &item[index];
 	}
@@ -100,13 +105,13 @@ public:
 		if (size && ibegin == iend)
 		{
 			ibegin = toNext();
+			toEnd();
+			pop();
 		}
 		else
 		{
 			size++;
 		}
-		toEnd();
-		pop();
 		valid[index] = true;
 		return &item[index];
 	}
@@ -127,13 +132,12 @@ public:
 		if (size && ibegin == iend)
 		{
 			iend = toPrev();
+			pop();
 		}
 		else
 		{
 			size++;
 		}
-		toBegin();
-		pop();
 		valid[index] = true;
 		return &item[index];
 	}

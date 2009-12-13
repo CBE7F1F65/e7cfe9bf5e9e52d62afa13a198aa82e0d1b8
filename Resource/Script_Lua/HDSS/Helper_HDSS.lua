@@ -136,6 +136,15 @@ function hdssSELSET(index, select)
 	)
 end
 
+function hdssSELCONFIRM(index, keyminus, keyplus, keyok, keycancel, cenx, ceny, settrue)
+	return hdss.Call(
+		HDSS_SELCONFIRM,
+		{
+			index, keyminus, keyplus, keyok, keycancel, cenx, ceny, settrue
+		}
+	)
+end
+
 function hdssSELCLEAR(index1, index2, index3, index4)
 	if index1 == nil then
 		return;
@@ -175,11 +184,11 @@ function hdssSELCLEAR(index1, index2, index3, index4)
 	)
 end
 
-function hdssSETSTATE(tostate)
+function hdssSETSTATE(tostate, time)
 	return hdss.Call(
 		HDSS_SETSTATE,
 		{
-			tostate
+			tostate, time
 		}
 	)
 end

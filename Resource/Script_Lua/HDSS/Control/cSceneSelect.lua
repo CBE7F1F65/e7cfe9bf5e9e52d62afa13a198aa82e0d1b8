@@ -2,6 +2,7 @@ function CESceneSelect_Init()
 end
 
 function CESceneSelect_SetBG()
+	hdssBGVALUE(0, LConst_uibg_backgroundid, SI_SelectScene, TotalCenterX, TotalCenterY, TotalW, TotalH);
 	hdssBGVALUE(0, LConst_uibg_topcontentid, SI_TopContent_Scene, TotalCenterX, 64);
 end
 

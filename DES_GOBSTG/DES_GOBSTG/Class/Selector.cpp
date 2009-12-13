@@ -71,24 +71,6 @@ void Selector::infoSet(char * info, DWORD ucol /* = 0xffffffff */, DWORD dcol /*
 	infosync = sync;
 }
 
-int Selector::getAdjIndex(BYTE setflag)
-{
-	int i = SELINFO_NONE;
-	switch (setflag)
-	{
-	case SEL_OVER:
-		i = SELINFO_OVER;
-		break;
-	case SEL_ENTER:
-		i = SELINFO_ENTER;
-		break;
-	case SEL_LEAVE:
-		i = SELINFO_LEAVE;
-		break;
-	}
-	return i;
-}
-
 void Selector::setAdj(int i, float xadj, float yadj)
 {
 	adj[i].xadj = xadj;
@@ -97,7 +79,7 @@ void Selector::setAdj(int i, float xadj, float yadj)
 
 void Selector::actionSet(BYTE setflag, float xadj, float yadj)
 {
-	setAdj(getAdjIndex(setflag), xadj, yadj);
+	setAdj(setflag, xadj, yadj);
 }
 
 void Selector::actionSet(BYTE setflag, seladj * adj)
@@ -106,8 +88,7 @@ void Selector::actionSet(BYTE setflag, seladj * adj)
 	{
 		return;
 	}
-	int i=getAdjIndex(setflag);
-	setAdj(i, adj[i].xadj, adj[i].yadj);
+	setAdj(setflag, adj[setflag].xadj, adj[setflag].yadj);
 }
 
 void Selector::Render()

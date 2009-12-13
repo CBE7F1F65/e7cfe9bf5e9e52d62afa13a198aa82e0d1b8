@@ -363,9 +363,9 @@ void BGLayer::ActionSpecial()
 		{
 			ubg[i][UBGID_BGMASK].action();
 		}
-		if (ubg[i][UBGID_FGPAUSE].exist)
+		if (ubg[i][UFGID_FGPAUSE].exist)
 		{
-			ubg[i][UBGID_FGPAUSE].action();
+			ubg[i][UFGID_FGPAUSE].action();
 		}
 	}
 }
@@ -400,9 +400,9 @@ void BGLayer::RenderFGPause()
 {
 	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
 	{
-		if (ubg[i][UBGID_FGPAUSE].exist)
+		if (ubg[i][UFGID_FGPAUSE].exist)
 		{
-			ubg[i][UBGID_FGPAUSE].Render();
+			ubg[i][UFGID_FGPAUSE].Render();
 		}
 	}
 }

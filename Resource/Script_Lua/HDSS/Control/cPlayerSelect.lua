@@ -15,6 +15,7 @@ function _CEPlayerSelect_TranslateName(name)
 end
 
 function CEPlayerSelect_SetBG()
+	hdssBGVALUE(0, LConst_uibg_backgroundid, SI_SelectScene, TotalCenterX, TotalCenterY, TotalW, TotalH);
 	hdssBGVALUE(0, LConst_uibg_topcontentid, SI_TopContent_Girl, TotalCenterX, 64);
 end
 

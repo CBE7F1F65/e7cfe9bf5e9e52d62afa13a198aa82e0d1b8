@@ -14,8 +14,8 @@ Comment	Index	SI_Name	Tex	Tex_x	Tex_y	Tex_w	Tex_h
 -	10	SI_TopContent_Level	7	256	48	256	48
 -	11	SI_TopContent_Girl	7	256	96	256	48
 -	12	SI_TopContent_Scene	7	256	144	256	48
--	13	SI_MatchMode_Waiting	7	0	414	256	40
--	14	SI_MatchMode_Accessing	7	0	454	256	20
+-	13	SI_MatchMode_Waiting	7	0	416	256	40
+-	14	SI_MatchMode_Accessing	7	0	456	256	20
 -	15	SI_MatchMode_Latency	7	256	224	256	20
 -	16	SI_InitialLife_Content	7	0	480	192	16
 -	17	SI_InitialLife_Full	7	0	496	16	16
@@ -23,17 +23,17 @@ Comment	Index	SI_Name	Tex	Tex_x	Tex_y	Tex_w	Tex_h
 -	19	SI_InitialLife_Empty	7	32	496	16	16
 -	20	SI_Select_Frame	7	48	496	160	16
 #		Confirm(30~39)					
--	30	SI_Confirm_Yes	0	384	256	32	32
--	31	SI_Confirm_No	0	416	256	32	32
--	32	SI_Confirm_Cancel	0	448	256	64	32
--	33	SI_Confirm	0	384	288	128	32
+-	30	SI_Confirm_Yes	7	120	256	64	32
+-	31	SI_Confirm_No	7	184	256	72	32
+-	32	SI_Confirm	7	160	288	96	32
+-	33	SI_Confirm_Cancel	7	120	256	64	32
 #		UIPause(40~49)					
--	40	SI_Pause_Pause	0	256	256	128	32
--	41	SI_Pause_Start	0	256	288	128	32
--	42	SI_Pause_Return	0	256	320	128	32
--	43	SI_Pause_Reset	0	256	352	128	32
--	44	SI_Pause_Continue	0	384	320	128	32
--	45	SI_Pause_Credit	0	384	352	128	32
+-	40	SI_Pause_Start	7	0	288	160	32
+-	41	SI_Pause_ResetGame	7	0	384	88	32
+-	42	SI_Pause_PlayerSelect	7	88	384	160	32
+-	43	SI_Pause_ReturnTitle	7	0	320	224	32
+-	44	SI_Pause_SaveReplay	7	0	352	256	32
+-	45	SI_Pause_Pause	7	0	256	120	32
 #		UIResult(50~59)					
 -	50	SI_Result_Save	0	512	256	256	32
 -	51	SI_Result_OverWrite	0	512	288	256	32

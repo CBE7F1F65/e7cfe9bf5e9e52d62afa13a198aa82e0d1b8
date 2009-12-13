@@ -82,10 +82,10 @@ Selector * SelectSystem::BuildSelector(BYTE ID, int siID, float cenx, float ceny
 	sel.push_back(_selector);
 	Selector * _pselector = &(*(sel.rbegin()));
 	_pselector->valueSet(ID, siID, cenx, ceny, hscale, vscale, flag);
-	_pselector->actionSet(SEL_NONE, adj);
-	_pselector->actionSet(SEL_OVER, adj);
-	_pselector->actionSet(SEL_ENTER, adj);
-	_pselector->actionSet(SEL_LEAVE, adj);
+	_pselector->actionSet(SELINFO_NONE, adj);
+	_pselector->actionSet(SELINFO_OVER, adj);
+	_pselector->actionSet(SELINFO_ENTER, adj);
+	_pselector->actionSet(SELINFO_LEAVE, adj);
 	return _pselector;
 }
 
@@ -375,13 +375,23 @@ bool SelectSystem::Confirm(BYTE _pushid, int _keyminus, int _keyplus, int _keyok
 	if(!confirminit)
 	{
 		Clear();
-		SetAction(SEL_OVER, 0, -4);
-		SetAction(SEL_ENTER, 0, 0);
-		SetAction(SEL_LEAVE, 16, 4);
 
-		BuildSelector(0, SpriteItemManager::yesIndex, cenx, ceny)->actionSet(SEL_NONE, -30, 45);
-		BuildSelector(0, SpriteItemManager::noIndex, cenx, ceny)->actionSet(SEL_NONE, 30, 45);
-		BuildSelector(0, SpriteItemManager::confirmIndex, cenx, ceny, 1, 0, SEL_NONACTIVE)->actionSet(SEL_NONE, 0, 0);
+		Selector * _sel;
+		_sel = BuildSelector(0, SpriteItemManager::yesIndex, cenx, ceny);
+		_sel->actionSet(SELINFO_NONE, cenx-30, ceny+45);
+		_sel->actionSet(SELINFO_OVER, cenx-30, ceny+40);
+		_sel->actionSet(SELINFO_ENTER, cenx-30, ceny+45);
+		_sel->actionSet(SELINFO_LEAVE, cenx-30, ceny+50);
+		_sel = BuildSelector(1, SpriteItemManager::noIndex, cenx, ceny);
+		_sel->actionSet(SELINFO_NONE, cenx+30, ceny+45);
+		_sel->actionSet(SELINFO_OVER, cenx+30, ceny+40);
+		_sel->actionSet(SELINFO_ENTER, cenx+30, ceny+45);
+		_sel->actionSet(SELINFO_LEAVE, cenx+30, ceny+50);
+		_sel = BuildSelector(2, SpriteItemManager::confirmIndex, cenx, ceny, 1, 0, SEL_NONACTIVE);
+		_sel->actionSet(SELINFO_NONE, cenx, ceny);
+		_sel->actionSet(SELINFO_OVER, cenx, ceny);
+		_sel->actionSet(SELINFO_ENTER, cenx, ceny);
+		_sel->actionSet(SELINFO_LEAVE, cenx, ceny);
 
 		Setup(_pushid, 2, settrue?0:1, playerindex, _keyplus, _keyminus, _keyok, _keycancel);
 		confirminit = true;

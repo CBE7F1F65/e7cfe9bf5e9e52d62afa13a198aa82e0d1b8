@@ -971,16 +971,16 @@ int _HDSSCallGet::Call_SELBUILD(LuaState * ls)
 			}
 			if (_havestate[0])
 			{
-				_selector->actionSet(SEL_NONE, _adj);
+				_selector->actionSet(SELINFO_NONE, _adj);
 				if (_havestate[1])
 				{
-					_selector->actionSet(SEL_OVER, _adj);
+					_selector->actionSet(SELINFO_OVER, _adj);
 					if (_havestate[2])
 					{
-						_selector->actionSet(SEL_ENTER, _adj);
+						_selector->actionSet(SELINFO_ENTER, _adj);
 						if (_havestate[3])
 						{
-							_selector->actionSet(SEL_LEAVE, _adj);
+							_selector->actionSet(SELINFO_LEAVE, _adj);
 						}
 					}
 				}
@@ -1066,6 +1066,62 @@ int _HDSSCallGet::Call_SELCLEAR(LuaState * ls)
 	{
 		int _selsys = _INEXT_HDSS_LUAPARA;
 		SelectSystem::selsys[_selsys].Clear();
+	}
+	return 0;
+}
+
+int _HDSSCallGet::Call_SELCONFIRM(LuaState * ls)
+{
+	_ENTERCALL_HDSS_LUA;
+
+	if (true)
+	{
+		int _selsys = _INEXT_HDSS_LUAPARA;
+		int _keyminus = PUSHKEY_KEYNULL;
+		int _keyplus = PUSHKEY_KEYNULL;
+		int _keyok = PUSHKEY_KEYNULL;
+		int _keycancel = PUSHKEY_KEYNULL;
+		float _cenx = M_CLIENT_CENTER_X;
+		float _ceny = M_CLIENT_CENTER_Y;
+		bool _settrue = true;
+		_JNEXT_HDSS_LUAPARA;
+		if (bhavenext)
+		{
+			_keyminus = _IOBJ_HDSS_LUA;
+			_JNEXT_HDSS_LUAPARA;
+			if (bhavenext)
+			{
+				_keyplus = _IOBJ_HDSS_LUA;
+				_JNEXT_HDSS_LUAPARA;
+				if (bhavenext)
+				{
+					_keyok = _IOBJ_HDSS_LUA;
+					_JNEXT_HDSS_LUAPARA;
+					if (bhavenext)
+					{
+						_keycancel = _IOBJ_HDSS_LUA;
+						_JNEXT_HDSS_LUAPARA;
+						if (bhavenext)
+						{
+							_cenx = _FOBJ_HDSS_LUA;
+							_JNEXT_HDSS_LUAPARA;
+							if (bhavenext)
+							{
+								_ceny = _FOBJ_HDSS_LUA;
+								_JNEXT_HDSS_LUAPARA;
+								if (bhavenext)
+								{
+									_settrue = _BOBJ_HDSS_LUA;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		bool bret = SelectSystem::selsys[_selsys].Confirm(_selsys, _keyminus, _keyplus, _keyok, _keycancel, _cenx, _ceny, _settrue);
+		_PB_HDSS_LUA(bret);
+		return 1;
 	}
 	return 0;
 }

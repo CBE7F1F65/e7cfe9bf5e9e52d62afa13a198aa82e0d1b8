@@ -76,6 +76,11 @@ function ControlExecute_cStart(con)
 		end
 	end
 	
+	if hdss.Get(HDSS_CHECKKEY, 0, KSI_PAUSE, DIKEY_DOWN) and hdss.Get(HDSS_STATE) ~= STATE_CLEAR then
+		hdssSE(SE_SYSTEM_PAUSE);
+		hdssSETSTATE(STATE_PAUSE);
+	end
+	
 	return true;
 
 end

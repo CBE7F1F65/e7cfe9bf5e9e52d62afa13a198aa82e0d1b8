@@ -146,17 +146,6 @@ int Process::frame()
 		return PQUIT;
 
 	frameEnd();
-	for (int i=0; i<FRAME_STOPINFOMAX; i++)
-	{
-		if (stopflag[i])
-		{
-			stoptimer[i]--;
-			if (stoptimer[i] == 0)
-			{
-				stopflag[i] = 0;
-			}
-		}
-	}
 
 	return PGO;
 }
