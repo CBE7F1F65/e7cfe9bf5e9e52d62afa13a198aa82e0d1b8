@@ -15,7 +15,7 @@ void Process::frameStart()
 		nowInput = GameInput::GetNowInput();
 		Replay::rpy.WriteInput(nowInput);
 	}
-	else if(true/*!Player::p[0].ncCont*/)
+	else
 	{
 		nowInput = Replay::rpy.ReadInput();
 		replayFPS = Replay::rpy.GetReplayFPS();

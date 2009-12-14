@@ -3,6 +3,11 @@
 
 #include "Export.h"
 
+struct _ReplayNameListItem 
+{
+	char filename[M_PATHMAX];
+};
+
 class Replay
 {
 public:
@@ -11,22 +16,26 @@ public:
 
 	void Fill();
 	void partFill(BYTE part);
-	bool Load(char * filename, bool getInput = false);
-	void Save(char * filename);
-	bool Check(char * filename);
+	bool Load(const char * filename, bool getInput = false);
+	void Save(const char * filename=NULL);
+	bool Check(const char * filename);
+	void CreateSaveFilename(char * filename);
 
 	void WriteInput(WORD nowinput);
 	WORD ReadInput();
 	float GetReplayFPS();
 	void InitReplayIndex(bool replaymode=false, BYTE part=0);
 
-	static void Free(char * filename);
+	static void Free(const char * filename);
+	static void Release(bool deletefiles=true);
 
 public:
 	partInfo partinfo[RPYPARTMAX];
 	replayInfo rpyinfo;
 	replayFrame replayframe[M_SAVEINPUTMAX];
 	int replayIndex;
+
+	static list<_ReplayNameListItem> _rpyfilenamelist;
 
 	static Replay rpy;
 };

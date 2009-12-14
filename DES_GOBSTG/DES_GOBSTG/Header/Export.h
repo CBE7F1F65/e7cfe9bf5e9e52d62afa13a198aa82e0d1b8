@@ -47,11 +47,10 @@ struct replayInfo
 	WORD hour;
 	WORD minute;
 
-	DWORD scene;
-
 	float lost;
 
 	BYTE modeflag;
+	BYTE scene;
 
 	BYTE usingchara[M_PL_MATCHMAXPLAYER][M_PL_ONESETPLAYER];
 	BYTE initlife[M_PL_MATCHMAXPLAYER];

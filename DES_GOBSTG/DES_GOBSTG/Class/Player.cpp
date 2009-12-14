@@ -154,7 +154,7 @@ void Player::ClearSet(BYTE round)
 	speedfactor		=	1.0f;
 
 	// add
-	initlife	=	PLAYER_DEFAULTINITLIFE;
+//	initlife	=	PLAYER_DEFAULTINITLIFE;
 
 	exist = true;
 
@@ -286,7 +286,7 @@ void Player::valueSet(BYTE _playerindex, BYTE round)
 	SetAble(true);
 }
 
-void Player::Action(DWORD stopflag)
+bool Player::Action(DWORD stopflag)
 {
 	alltime++;
 	AddLostStack();
@@ -312,6 +312,10 @@ void Player::Action(DWORD stopflag)
 			{
 				p[i].actionInStop();
 			}
+			if (!p[i].exist)
+			{
+				return false;
+			}
 		}
 	}
 	if (time % _GAMERANK_ADDINTERVAL == 0)
@@ -323,6 +327,7 @@ void Player::Action(DWORD stopflag)
 		}
 	}
 	AddLilyCount(0, true);
+	return true;
 }
 
 void Player::action()
@@ -380,6 +385,7 @@ void Player::action()
 		if(Collapse())
 		{
 			flag &= ~PLAYER_COLLAPSE;
+			return;
 		}
 	}
 	if(flag & PLAYER_SLOWCHANGE)
@@ -797,9 +803,10 @@ bool Player::Collapse()
 	collapsetimer++;
 	if(collapsetimer == 1)
 	{
-		for (int i=0; i<2; i++)
+		for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
 		{
 			EventZone::Build(EVENTZONE_TYPE_BULLETFADEOUT|EVENTZONE_TYPE_ENEMYDAMAGE|EVENTZONE_TYPE_NOSEND, i, p[i].x, p[i].y, 64, EVENTZONE_OVERZONE, 1000, EVENTZONE_EVENT_NULL, 16);
+			p[i].SetInfi(PLAYERINFI_COLLAPSE);
 		}
 
 		esCollapse.x = x;
@@ -826,16 +833,8 @@ bool Player::Collapse()
 		vscale = 1.0f;
 		flag |= PLAYER_MERGE;
 
-		SetInfi(PLAYERINFI_COLLAPSE);
-		if(nLife)
-		{
-			nLife--;
-		}
-		else
-		{
-			exist = false;
-			return true;
-		}
+//		SetInfi(PLAYERINFI_COLLAPSE);
+		exist = false;
 
 		if(GameInput::GetKey(playerindex, KSI_SLOW))
 		{

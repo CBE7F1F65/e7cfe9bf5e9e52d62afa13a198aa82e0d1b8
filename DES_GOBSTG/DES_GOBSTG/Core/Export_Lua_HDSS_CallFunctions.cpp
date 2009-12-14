@@ -117,6 +117,18 @@ int _HDSSCallGet::Call_SETCHARA(LuaState * ls)
 	return 0;
 }
 
+int _HDSSCallGet::Call_SETSCENE(LuaState * ls)
+{
+	_ENTERCALL_HDSS_LUA;
+
+	if (true)
+	{
+		BYTE _scene = _INEXT_HDSS_LUAPARA;
+		Process::mp.SetScene(_scene);
+	}
+	return 0;
+}
+
 int _HDSSCallGet::Call_STARTPREP(LuaState * ls)
 {
 	_ENTERCALL_HDSS_LUA;
@@ -214,6 +226,38 @@ int _HDSSCallGet::Call_UPDATEPUSHEVENT(LuaState * ls)
 		bool bret = PushKey::UpdatePushEvent(_index);
 		ls->PushBoolean(bret);
 		return 1;
+	}
+	return 0;
+}
+
+int _HDSSCallGet::Call_SAVEREPLAY(LuaState * ls)
+{
+	_ENTERCALL_HDSS_LUA;
+
+	if (true)
+	{
+		bool _bSave = false;
+		bool _bFill = false;
+		_JNEXT_HDSS_LUAPARA;
+		if (bhavenext)
+		{
+			_bSave = _BOBJ_HDSS_LUA;
+			_JNEXT_HDSS_LUAPARA;
+			if (bhavenext)
+			{
+				_bFill = _BOBJ_HDSS_LUA;
+			}
+		}
+
+		if (_bSave)
+		{
+			if (_bFill)
+			{
+				Replay::rpy.Fill();
+			}
+			Replay::rpy.Save();
+		}
+		Replay::Release(false);
 	}
 	return 0;
 }

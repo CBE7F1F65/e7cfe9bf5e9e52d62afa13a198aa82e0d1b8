@@ -5,9 +5,9 @@ function CEPause_SetBG()
 	hdssBGFLAG(0, UFGID_FGPAUSE, FG_PAUSEIN, FGMT_PAUSE);
 end
 
-function CEPause_SetSelect(selsyspauseid)
+function CEPause_SetSelect(selsyspauseid, select)
 	
-	local ystart = TotalCenterY;
+	local ystart = TotalCenterY - 48;
 	local yoffset = 36;
 
 	local tableSelectOffset =
@@ -36,7 +36,7 @@ function CEPause_SetSelect(selsyspauseid)
 	hdss.Call(
 		HDSS_SELSETUP,
 		{
-			selsyspauseid, 5, 0, 0, KSI_UP, KSI_DOWN, KSI_FIRE
+			selsyspauseid, 5, select, 0, KSI_UP, KSI_DOWN, KSI_FIRE
 		}
 	)
 end
@@ -113,11 +113,14 @@ function CEPause_DispatchConfirmSelect(selsyspauseconfirmid)
 	if complete then
 		if select == 0 then
 			return 1;
+		else
+			return -1;
 		end
 	end
 	
 	if hdss.Get(HDSS_CHECKKEY, 0, KSI_QUICK, DIKEY_DOWN) then
 		hdssSE(SE_SYSTEM_CANCEL);
+		hdssSELCLEAR(selsyspauseconfirmid);
 		return -1;
 	end
 	return 0;
@@ -137,7 +140,7 @@ function ControlExecute_cPause(con)
 		local _selcomplete = hdss.Get(HDSS_D, dselcomplete);
 		local _selselect = hdss.Get(HDSS_D, dselselect);
 		if _selcomplete == 0 then
-			CEPause_SetSelect(LConst_selsys_pauseid, 0);
+			CEPause_SetSelect(LConst_selsys_pauseid, _selselect);
 			_selcomplete = 1;
 		elseif _selcomplete == 1 then
 			_selselect = CEPause_DispatchSelect(LConst_selsys_pauseid, con-0xff00);
@@ -151,19 +154,22 @@ function ControlExecute_cPause(con)
 			local ret = CEPause_DispatchConfirmSelect(LConst_selsys_pauseconfirmid);
 			if ret > 0 then
 				if _selselect == 1 then
-					CEPause_ExitState(STATE_SCENE_SELECT);
+					hdssSTARTPREP()
+					CEPause_ExitState(STATE_START);
 				elseif _selselect == 2 then
 					CEPause_ExitState(STATE_PLAYER_SELECT);
 				elseif _selselect == 3 then
 					CEPause_ExitState(STATE_TITLE);
 				else
-					CEPause_ExitState(STATE_OVER);
+					hdssSAVEREPLAY(true, true);
+					CEPause_ExitState(STATE_TITLE);
 				end
 			elseif ret < 0 then
 				_selcomplete = 0;
 			end
 		end
 		hdssSD(dselcomplete, _selcomplete);
+		hdssSD(dselselect, _selselect);
 	end
 		
 	return true;

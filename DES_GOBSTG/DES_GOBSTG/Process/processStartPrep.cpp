@@ -50,6 +50,8 @@ void Process::clearPrep(bool bclearkey)
 		GameInput::SetKey(i, KSI_SLOW, false);
 		GameInput::SetKey(i, KSI_DRAIN, false);
 	}
+
+	alltime = 0;
 }
 
 void Process::startPrep(bool callinit)
@@ -68,7 +70,7 @@ void Process::startPrep(bool callinit)
 			Player::p[i].SetChara(Replay::rpy.rpyinfo.usingchara[i][0], Replay::rpy.rpyinfo.usingchara[i][1], Replay::rpy.rpyinfo.usingchara[i][2]);
 			Player::p[i].SetInitLife(Replay::rpy.rpyinfo.initlife[i]);
 		}
-		scene = Replay::rpy.rpyinfo.scene;
+		SetScene(Replay::rpy.rpyinfo.scene);
 	}
 	else
 	{

@@ -68,6 +68,7 @@ void Process::Release()
 	Enemy::Release();
 	SpriteItemManager::Release();
 	hgeEffectSystem::Release();
+	Replay::Release();
 
 	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
 	{
@@ -540,10 +541,15 @@ char Process::getInputNowChar(bool wide)
 void Process::SetState(int _state, int _time /* = 0 */)
 {
 	state = _state;
-	if (time >= 0)
+	if (_time >= 0)
 	{
 		time = _time;
 	}
+}
+
+void Process::SetScene(BYTE _scene)
+{
+	scene = _scene;
 }
 
 void Process::SetReturnValue(int _retval)

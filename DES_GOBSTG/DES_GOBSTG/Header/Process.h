@@ -60,6 +60,7 @@ public:
 
 	void	SyncInput();
 	void	SetState(int state, int time = 0);
+	void	SetScene(BYTE scene);
 	void	SetReturnValue(int retval);
 
 	int		AccessIP();
@@ -135,8 +136,8 @@ public:
 	float worldz[M_PL_MATCHMAXPLAYER];
 
 	//main
-	DWORD lasttime;
-	DWORD alltime;
+	int lasttime;
+	int alltime;
 	bool	active;
 
 	DWORD	stopflag[FRAME_STOPINFOMAX];
@@ -144,7 +145,6 @@ public:
 
 	int retvalue;
 
-	DWORD	scene;
 
 	//pause return
 	bool	pauseinit;
@@ -158,6 +158,7 @@ public:
 	//indicator
 	BYTE	titleselect;
 	BYTE	state;
+	BYTE	scene;
 
 	//Init
 	HTEXTURE	texInit;

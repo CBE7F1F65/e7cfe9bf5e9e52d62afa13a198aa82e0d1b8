@@ -22,7 +22,6 @@ bool Process::reload()
 	replaymode = false;
 	replayFPS = 0;
 	scene = 0;
-//	scene = S100;
 	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
 	{
 		SetShake(i, 0, true);
@@ -52,6 +51,8 @@ bool Process::reload()
 	FrontDisplay::fdisp.Init();
 	Fontsys::Init(FrontDisplay::fdisp.info.normalfont);
 	Fontsys::HeatUp();
+
+	Replay::Release();
 
 #ifdef __DEBUG
 	HGELOG("\nCleared up.\n");

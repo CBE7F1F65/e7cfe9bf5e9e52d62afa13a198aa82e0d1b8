@@ -17,9 +17,20 @@ void Process::frameEnd()
 
 		WorldShake(_stopflag);
 
-		if (state != STATE_CLEAR)
+		if (state == STATE_CLEAR)
 		{
-			Player::Action(_stopflag);
+			for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
+			{
+				GameInput::SetKey(i, KSI_FIRE, false);
+				GameInput::SetKey(i, KSI_QUICK, false);
+				GameInput::SetKey(i, KSI_SLOW, false);
+				GameInput::SetKey(i, KSI_DRAIN, false);
+			}
+		}
+		if (!Player::Action(_stopflag))
+		{
+			SetState(STATE_CLEAR, -1);
+			return;
 		}
 		Enemy::Action(_stopflag);
 		Bullet::Action(_stopflag);

@@ -93,6 +93,13 @@ end
 function CESceneSelect_DispatchSelect(selsyssceneid, pushkeyid)
 	local complete, select = hdss.Get(HDSS_SELCOMPLETE, selsyssceneid);
 	if complete then
+		local scene = select;
+		if select == 0 then
+			scene = hdss.Get(HDSS_CHARA, hge.Random_Int(0, 1));
+		elseif select == 1 then
+			scene = hge.Random_Int(0, game.GetSceneContentTable()-1);
+		end
+		hdssSETSCENE(scene);
 		CESceneSelect_ExitState(STATE_START);
 	end
 	

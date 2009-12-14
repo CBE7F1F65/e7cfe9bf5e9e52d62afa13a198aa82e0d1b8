@@ -21,6 +21,13 @@ int Process::processOver()
 	//static char savefilename[M_STRMAX];
 
 	time++;
+	if (time == 1)
+	{
+		Replay::rpy.Fill();
+		Replay::rpy.Save();
+		FrontDisplay::fdisp.SetState(FDISP_PANEL, 0);
+	}
+	Scripter::scr.Execute(SCR_CONTROL, STATE_OVER, time);
 	return PGO;
 	/*
 	

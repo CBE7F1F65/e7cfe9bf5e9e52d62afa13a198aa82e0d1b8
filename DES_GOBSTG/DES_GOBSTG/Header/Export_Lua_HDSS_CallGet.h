@@ -16,12 +16,14 @@ public:
 
 	static int Call_RETURN(LuaState * ls);
 	static int Call_SETSTATE(LuaState * ls);
+	static int Call_SETSCENE(LuaState * ls);
 	static int Call_SETTIME(LuaState * ls);
 	static int Call_SETCHARA(LuaState * ls);
 	static int Call_STARTPREP(LuaState * ls);
 	static int Call_SETKEY(LuaState * ls);
 	static int Call_SETPUSHEVENT(LuaState * ls);
 	static int Call_UPDATEPUSHEVENT(LuaState * ls);
+	static int Call_SAVEREPLAY(LuaState * ls);
 
 	static int Call_SE(LuaState * ls);
 	static int Call_SEOFF(LuaState * ls);

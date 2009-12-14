@@ -25,11 +25,29 @@ function hdssSETCHARA(index, id, id_sub_1, id_sub_2)
 	)
 end
 
+function hdssSETSCENE(scene)
+	return hdss.Call(
+		HDSS_SETSCENE,
+		{
+			scene
+		}
+	)
+end
+
 function hdssSTARTPREP(callinit)
 	return hdss.Call(
 		HDSS_STARTPREP,
 		{
 			callinit
+		}
+	)
+end
+
+function hdssSAVEREPLAY(bSave, bFill)
+	return hdss.Call(
+		HDSS_SAVEREPLAY,
+		{
+			bSave, bFill
 		}
 	)
 end

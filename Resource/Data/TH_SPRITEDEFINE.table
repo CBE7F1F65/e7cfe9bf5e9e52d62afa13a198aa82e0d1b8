@@ -317,12 +317,13 @@ Comment	Index	SI_Name	Tex	Tex_x	Tex_y	Tex_w	Tex_h
 #		Scene(650~749)					
 -	650	SI_TitleScene	202	0	0	-1	-1
 -	651	SI_SelectScene	203	0	0	-1	-1
--	652	SI_BG_01_1	212	0	0	512	512
--	653	SI_BG_01_2	213	0	0	-1	-1
--	654	SI_BG_02_1	214	0	0	-1	-1
--	655	SI_BG_02_2	215	0	0	-1	-1
--	656	SI_BG_03_1	216	0	0	384	448
--	657	SI_BG_03_2	217	0	0	384	384
+-	652	SI_ReplayScene	204	0	0	-1	-1
+-	653	SI_BG_01_1	212	0	0	512	512
+-	654	SI_BG_01_2	213	0	0	-1	-1
+-	655	SI_BG_02_1	214	0	0	-1	-1
+-	656	SI_BG_02_2	215	0	0	-1	-1
+-	657	SI_BG_03_1	216	0	0	384	448
+-	658	SI_BG_03_2	217	0	0	384	384
 #		Enemy(750~849)					
 -	750	SI_EnemySprite_Blue_0	4	0	0	32	32
 -	751	SI_EnemySprite_Blue_1	4	32	0	32	32

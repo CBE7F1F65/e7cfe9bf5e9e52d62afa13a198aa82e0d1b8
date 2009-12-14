@@ -147,7 +147,7 @@ public:
 	static void SendEx(BYTE playerindex, float x, float y);
 
 	static void Init();
-	static void Action(DWORD stopflag);
+	static bool Action(DWORD stopflag);
 	static void RenderAll(BYTE playerindex);
 
 public:

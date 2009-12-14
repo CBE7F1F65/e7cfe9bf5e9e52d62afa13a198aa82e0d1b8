@@ -339,17 +339,19 @@ void FrontDisplay::RenderPanel()
 			hge->Timer_GetTime()
 			);
 #endif
-		if (Player::CheckAble() && info.asciifont)
+		if ((Process::mp.state == STATE_START || Process::mp.state == STATE_PAUSE || Process::mp.state == STATE_CLEAR) && Player::CheckAble() && info.asciifont)
 		{
+			int usingtime = time;
+			if (Process::mp.state == STATE_CLEAR && Process::mp.alltime)
+			{
+				usingtime = Process::mp.alltime;
+			}
 			info.asciifont->printf(M_CLIENT_CENTER_X, M_CLIENT_BOTTOM-14, HGETEXT_CENTER, "%.2ffps", hge->Timer_GetFPS(35));
-			info.asciifont->printf(M_CLIENT_CENTER_X, M_CLIENT_TOP, HGETEXT_CENTER, "%02d:%02d", time/3600, (time/60)%60);
-		}
+			info.asciifont->printf(M_CLIENT_CENTER_X, M_CLIENT_TOP, HGETEXT_CENTER, "%02d:%02d", usingtime/3600, (usingtime/60)%60);
 #ifdef __DEBUG
-		if (Player::CheckAble())
-		{
 			info.asciifont->printf(8, 465, 0, "%d", time);
-		}
 #endif // __DEBUG
+		}
 	}
 }
 

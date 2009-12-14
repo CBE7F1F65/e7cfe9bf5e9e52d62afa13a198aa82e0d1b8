@@ -42,7 +42,10 @@ int Process::processStart()
 	else
 	{
 		frameStart();
-		Scripter::scr.Execute(SCR_CONTROL, STATE_START, time);
+		if (state == STATE_START)
+		{
+			Scripter::scr.Execute(SCR_CONTROL, STATE_START, time);
+		}
 	}
 
 	/*
@@ -61,12 +64,14 @@ int Process::processStart()
 	}
 	*/
 
+	/*
 	if(scene > S1 && state != STATE_CLEAR)
 	{
 		time = 0;
 		state = STATE_CLEAR;
 		return PTURN;
 	}
+	*/
 // Script::Stage
 
 	return PGO;

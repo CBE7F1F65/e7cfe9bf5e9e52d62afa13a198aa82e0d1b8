@@ -12,48 +12,50 @@
 int Process::processReplay()
 {
 	time++;
-/*
 
 	static Replay _rpy[RPYENUMMAX];
 	static char _rpyfilename[RPYENUMMAX][M_PATHMAX];
 
 	if(time == 1)
 	{
-		PushKey::SetPushEvent(PUSHKEY_ID_UIUSE_0, KS_LEFT, KS_RIGHT);
-		scr.SetIntValue(SCR_RESERVEBEGIN, 0);
-		scr.SetIntValue(SCR_RESERVEBEGIN+1, 0);
-		scr.SetIntValue(SCR_RESERVEBEGIN+2, 0);
-
-		SetCurrentDirectory(hge->Resource_MakePath(res.resdata.replayfoldername));
+		ZeroMemory(_rpyfilename, sizeof(char)*RPYENUMMAX*M_PATHMAX);
+		SetCurrentDirectory(hge->Resource_MakePath(BResource::res.resdata.replayfoldername));
 		char * buffer;
 		char enumfile[M_STRMAX];
-		strcpy(enumfile, res.resdata.replayfoldername);
+		strcpy(enumfile, BResource::res.resdata.replayfoldername);
 		strcat(enumfile, "*.");
-		strcat(enumfile, res.resdata.replayextensionname7);
+		strcat(enumfile, BResource::res.resdata.replayextensionname7);
 		buffer = hge->Resource_EnumFiles(enumfile);
 
 		int tnrpys = 0;
 		while(buffer != NULL && tnrpys < RPYENUMMAX)
 		{
-			if(strlen(buffer) < 4+RPYFILENAME_CONTENTMAX+1+strlen(res.resdata.replayextensionname7)+1)
+			if(strlen(buffer) < 4+RPYFILENAME_CONTENTMAX+1+strlen(BResource::res.resdata.replayextensionname7)+1)
 			{
 				strcpy(_rpyfilename[tnrpys], buffer);
 
 				if(_rpy[tnrpys].Load(_rpyfilename[tnrpys]))
 				{
+					/*
+					replaymode = true;
+					strcpy(rpyfilename, _rpyfilename[tnrpys]);
+					startPrep();
+					SetState(STATE_START);
+					*/
 					tnrpys++;
+				}
+				else
+				{
+					strcpy(_rpyfilename[tnrpys], "");
 				}
 			}
 			if(!hge->Resource_EnumFiles())
 				break;
 		}
-		scr.SetIntValue(SCR_RESERVEBEGIN+3, tnrpys);
-
-		InfoSelect::select = 0;
 	}
 
-	scr.Execute(SCR_CONTROL, STATE_REPLAY, time);
-
+	Scripter::scr.Execute(SCR_CONTROL, STATE_REPLAY, time);
+/*
 	//-> pushtimer page depth index nrpys rpydifflv
 	int tdepth = scr.GetIntValue(SCR_RESERVEBEGIN);
 	int tindex = scr.GetIntValue(SCR_RESERVEBEGIN+1);

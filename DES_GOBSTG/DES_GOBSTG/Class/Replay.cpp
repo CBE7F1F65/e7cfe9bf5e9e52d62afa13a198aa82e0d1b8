@@ -5,6 +5,8 @@
 #include "BResource.h"
 #include "Player.h"
 
+list<_ReplayNameListItem> Replay::_rpyfilenamelist;
+
 Replay Replay::rpy;
 
 Replay::Replay()
@@ -18,7 +20,19 @@ Replay::~Replay()
 {
 }
 
-void Replay::Free(char * filename)
+void Replay::Release(bool deletefiles/* =true */)
+{
+	for (list<_ReplayNameListItem>::iterator it=_rpyfilenamelist.begin(); it!=_rpyfilenamelist.end(); it++)
+	{
+		if (deletefiles)
+		{
+			DeleteFile(it->filename);
+		}
+		it = _rpyfilenamelist.erase(it);
+	}
+}
+
+void Replay::Free(const char * filename)
 {
 	if (filename)
 	{
@@ -28,6 +42,7 @@ void Replay::Free(char * filename)
 
 void Replay::Fill()
 {
+	WriteInput(0xffff);
 	SYSTEMTIME systime;
 	GetLocalTime(&systime);
 
@@ -42,7 +57,7 @@ void Replay::Fill()
 	}
 
 	rpyinfo.scene = Process::mp.scene;
-	rpyinfo.alltime = Player::alltime;
+	rpyinfo.alltime = Process::mp.alltime;
 	rpyinfo.year = systime.wYear;
 	rpyinfo.month = systime.wMonth;
 	rpyinfo.day = systime.wDay;
@@ -70,7 +85,7 @@ void Replay::partFill(BYTE part)
 	}
 }
 
-bool Replay::Check(char * filename)
+bool Replay::Check(const char * filename)
 {
 	BYTE * content;
 	bool ret = false;
@@ -126,7 +141,7 @@ void Replay::InitReplayIndex(bool replaymode, BYTE part)
 	}
 }
 
-bool Replay::Load(char * filename, bool getInput)
+bool Replay::Load(const char * filename, bool getInput)
 {
 	bool ret = false;
 	if(Check(filename))
@@ -143,10 +158,23 @@ bool Replay::Load(char * filename, bool getInput)
 	return ret;
 }
 
-void Replay::Save(char * filename)
+void Replay::CreateSaveFilename(char * filename)
 {
-	if(!filename)
-		return;
+	// TODO:
+	strcpy(filename, "DES_XXXXXX.rpy");
+}
+
+void Replay::Save(const char * replayfilename)
+{
+	char savefilename[M_PATHMAX];
+	if(!replayfilename)
+	{
+		CreateSaveFilename(savefilename);
+	}
+	else
+	{
+		strcpy(savefilename, replayfilename);
+	}
 
 	char buffer[M_STRITOAMAX];
 
@@ -173,17 +201,22 @@ void Replay::Save(char * filename)
 
 	char treplayfilename[M_PATHMAX];
 	strcpy(treplayfilename, BResource::res.resdata.replayfoldername);
-	strcat(treplayfilename, filename);
+	strcat(treplayfilename, savefilename);
 
 	char crcfilename[M_PATHMAX];
-	strcpy(crcfilename, filename);
+	strcpy(crcfilename, savefilename);
 	strcat(crcfilename, itoa(hge->Resource_GetCRC(_rpydata, _size), buffer, 10));
 	hgeMemoryFile memfile;
 	memfile.filename = crcfilename;
 	memfile.data = _rpydata;
 	memfile.size = _size;
 
-	hge->Resource_CreatePack(treplayfilename, Data::data.password ^ REPLAYPASSWORD_XORMAGICNUM, &memfile, NULL);
+	if (hge->Resource_CreatePack(treplayfilename, Data::data.password ^ REPLAYPASSWORD_XORMAGICNUM, &memfile, NULL))
+	{
+		_ReplayNameListItem _item;
+		strcpy(_item.filename, treplayfilename);
+		_rpyfilenamelist.push_back(_item);
+	}
 
 	free(_rpydata);
 }
