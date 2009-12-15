@@ -12,19 +12,19 @@
 
 int Process::processMatchSelect()
 {
-	time++;
-	if (time == 1)
+	gametime++;
+	if (gametime == 1)
 	{
 		Scripter::scr.Execute(SCR_EVENT, SCR_EVENT_ENTERSTATE, STATE_MATCH_SELECT);
 	}
 	retvalue = PGO;
-	Scripter::scr.Execute(SCR_CONTROL, STATE_MATCH_SELECT, time);
+	Scripter::scr.Execute(SCR_CONTROL, STATE_MATCH_SELECT, gametime);
 	return retvalue;
 	/*
 	static int snolist[FONTSYSMAX];
 
-	time++;
-	if(time == 1)
+	gametime++;
+	if(gametime == 1)
 	{
 		Scripter::scr.Execute(SCR_EVENT, SCR_EVENT_ENTERSTATE, STATE_MATCH_SELECT);
 		fdisp.SetState(FDISP_PANEL, 0);
@@ -36,7 +36,7 @@ int Process::processMatchSelect()
 		Scripter::scr.SetIntValue(SCR_RESERVEBEGIN+2, 0);
 	}
 	retvalue = PGO;
-	Scripter::scr.Execute(SCR_CONTROL, STATE_MATCH_SELECT, time);
+	Scripter::scr.Execute(SCR_CONTROL, STATE_MATCH_SELECT, gametime);
 
 	int tsec = Scripter::scr.GetIntValue(SCR_RESERVEBEGIN);
 	int tsnolistindex = Scripter::scr.GetIntValue(SCR_RESERVEBEGIN+1);

@@ -23,7 +23,7 @@ int Process::frame()
 	{
 		Scripter::scr.LoadAll(tex);
 		state = STATE_TITLE;
-		time = 0;
+		gametime = 0;
 		return PTURN;
 	}
 #endif
@@ -39,7 +39,7 @@ int Process::frame()
 		{
 			if (Chat::chatitem.IsChatting())
 			{
-				hge->Input_SetDIKey(GameInput::KS_FIRE, (bool)(time%5 == 0));
+				hge->Input_SetDIKey(GameInput::KS_FIRE, (bool)(gametime%5 == 0));
 			}
 		}
 #ifndef __DEBUG
@@ -58,7 +58,7 @@ int Process::frame()
 	hge->System_SetState(HGE_FRAMESKIP, frameskip);
 
 	getInput();
-	lasttime = time;
+	lasttime = gametime;
 
 	playing = false;
 
@@ -132,7 +132,7 @@ int Process::frame()
 	
 	if(rv == 0xffffffff)
 	{
-		time = 0;
+		gametime = 0;
 		state = STATE_TITLE;
 		rv = PTURN;
 	}

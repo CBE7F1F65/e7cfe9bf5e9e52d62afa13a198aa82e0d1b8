@@ -188,7 +188,7 @@ int Export_Lua_HDSS::LuaFn_HDSS_Get(LuaState * ls)
 		case SCR_MODE:
 			break;
 		case SCR_REPLAYMODE:
-			break;
+			return _HDSSCallGet::Get_REPLAYMODE(ls);
 		case SCR_FRAMESKIP:
 			break;
 		}

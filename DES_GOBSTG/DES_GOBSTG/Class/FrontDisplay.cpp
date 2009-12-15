@@ -99,6 +99,35 @@ void FrontDisplay::SetState(BYTE type, BYTE state/* =FDISP_STATE_COUNT */)
 	}
 }
 
+void FrontDisplay::action()
+{
+	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
+	{
+		if (gameinfodisplay.lastlifecountdown[i])
+		{
+			gameinfodisplay.lastlifecountdown[i]--;
+		}
+		if (gameinfodisplay.gaugefilledcountdown[i])
+		{
+			gameinfodisplay.gaugefilledcountdown[i]--;
+		}
+	}
+	if (gameinfodisplay.lilycountdown)
+	{
+		gameinfodisplay.lilycountdown--;
+	}
+	if (panelcountup)
+	{
+		int tcountup = panelcountup;
+		tcountup += 0x08;
+		if (tcountup > 0xff)
+		{
+			tcountup = 0xff;
+		}
+		panelcountup = tcountup;
+	}
+}
+
 void FrontDisplay::RenderHeadInfo(BYTE playerindex)
 {
 	float yoffset = 24.0f;
@@ -147,7 +176,6 @@ void FrontDisplay::RenderHeadInfo(BYTE playerindex)
 			ybottomoffset += yoffsetadd;
 		}
 		alpha = 0xff;
-		gameinfodisplay.lastlifecountdown[playerindex]--;
 		if (gameinfodisplay.lastlifecountdown[playerindex] < 16)
 		{
 			alpha = gameinfodisplay.lastlifecountdown[playerindex] * 16;
@@ -170,7 +198,6 @@ void FrontDisplay::RenderHeadInfo(BYTE playerindex)
 		BYTE ncharge;
 		BYTE nchargemax;
 		Player::p[playerindex].GetNCharge(&ncharge, &nchargemax);
-		gameinfodisplay.gaugefilledcountdown[playerindex]--;
 		alpha = 0xff;
 		if (gameinfodisplay.gaugefilledcountdown[playerindex] < 16)
 		{
@@ -194,7 +221,6 @@ void FrontDisplay::RenderHeadInfo(BYTE playerindex)
 			ybottomoffset += yoffsetadd;
 		}
 		alpha = 0xff;
-		gameinfodisplay.lilycountdown--;
 		if (gameinfodisplay.lilycountdown < 16)
 		{
 			alpha = gameinfodisplay.lilycountdown * 16;
@@ -213,13 +239,6 @@ void FrontDisplay::RenderPanel()
 	{
 		if (panelcountup < 0xff)
 		{
-			int tcountup = panelcountup;
-			tcountup += 0x08;
-			if (tcountup > 0xff)
-			{
-				tcountup = 0xff;
-			}
-			panelcountup = tcountup;
 			DWORD tcol = (panelcountup<<16)|(panelcountup<<8)|panelcountup|0xff000000;
 			for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
 			{
@@ -248,7 +267,7 @@ void FrontDisplay::RenderPanel()
 				bool usered = true;
 				if (Player::p[i].nComboGage < PLAYER_COMBOALERT && Player::p[i].nComboGage > PLAYER_COMBORESET)
 				{
-					if (time % 8 < 4)
+					if (gametime % 8 < 4)
 					{
 						usered = false;
 					}
@@ -323,10 +342,6 @@ void FrontDisplay::RenderPanel()
 	}
 	if(info.asciifont)
 	{
-		if (Process::mp.replaymode)
-		{
-			info.asciifont->printf(385, 450, 0, "%.2f", Process::mp.replayFPS);
-		}
 #ifdef __DEBUG
 		info.asciifont->printf(
 			520,
@@ -339,17 +354,26 @@ void FrontDisplay::RenderPanel()
 			hge->Timer_GetTime()
 			);
 #endif
-		if ((Process::mp.state == STATE_START || Process::mp.state == STATE_PAUSE || Process::mp.state == STATE_CLEAR) && Player::CheckAble() && info.asciifont)
+		if (Process::mp.IsInGame() && Player::CheckAble() && info.asciifont)
 		{
-			int usingtime = time;
+			int usingtime = gametime;
 			if (Process::mp.state == STATE_CLEAR && Process::mp.alltime)
 			{
 				usingtime = Process::mp.alltime;
 			}
-			info.asciifont->printf(M_CLIENT_CENTER_X, M_CLIENT_BOTTOM-14, HGETEXT_CENTER, "%.2ffps", hge->Timer_GetFPS(35));
+			char strfpsbuffer[M_STRMAX];
+			if (Process::mp.replaymode)
+			{
+				sprintf(strfpsbuffer, "%.2ffps(%.2f)", hge->Timer_GetFPS(35), Process::mp.replayFPS);
+			}
+			else
+			{
+				sprintf(strfpsbuffer, "%.2ffps", hge->Timer_GetFPS(35));
+			}
+			info.asciifont->Render(M_CLIENT_CENTER_X, M_CLIENT_BOTTOM-14, HGETEXT_CENTER, strfpsbuffer);
 			info.asciifont->printf(M_CLIENT_CENTER_X, M_CLIENT_TOP, HGETEXT_CENTER, "%02d:%02d", usingtime/3600, (usingtime/60)%60);
 #ifdef __DEBUG
-			info.asciifont->printf(8, 465, 0, "%d", time);
+			info.asciifont->printf(8, 465, 0, "%d", gametime);
 #endif // __DEBUG
 		}
 	}

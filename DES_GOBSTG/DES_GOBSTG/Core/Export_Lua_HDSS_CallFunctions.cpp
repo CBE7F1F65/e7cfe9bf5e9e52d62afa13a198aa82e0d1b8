@@ -87,7 +87,7 @@ int _HDSSCallGet::Call_SETTIME(LuaState * ls)
 
 	if (true)
 	{
-		time = _INEXT_HDSS_LUAPARA;
+		gametime = _INEXT_HDSS_LUAPARA;
 	}
 	return 0;
 }

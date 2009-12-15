@@ -136,8 +136,8 @@ public:
 	virtual	char*		CALL	Ini_GetString(const char *section, const char *name, const char *def_val);
 
 	virtual int			CALL	Random_Seed(int seed=0);
-	virtual int			CALL	Random_Int(int min, int max);
-	virtual float		CALL	Random_Float(float min, float max);
+	virtual int			CALL	Random_Int(int min, int max, bool bSelf=false);
+	virtual float		CALL	Random_Float(float min, float max, bool bSelf=false);
 
 	virtual float		CALL	Timer_GetTime();
 	virtual float		CALL	Timer_GetDelta();

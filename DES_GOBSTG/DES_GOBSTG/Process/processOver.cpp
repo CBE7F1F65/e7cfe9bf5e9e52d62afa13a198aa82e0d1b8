@@ -20,18 +20,25 @@ int Process::processOver()
 {
 	//static char savefilename[M_STRMAX];
 
-	time++;
-	if (time == 1)
+	gametime++;
+	if (gametime == 1)
 	{
-		Replay::rpy.Fill();
-		Replay::rpy.Save();
-		FrontDisplay::fdisp.SetState(FDISP_PANEL, 0);
+		if (!replaymode)
+		{
+			Replay::rpy.Fill();
+			Replay::rpy.Save();
+			FrontDisplay::fdisp.SetState(FDISP_PANEL, 0);
+		}
 	}
-	Scripter::scr.Execute(SCR_CONTROL, STATE_OVER, time);
+	Scripter::scr.Execute(SCR_CONTROL, STATE_OVER, gametime);
+	if (state != STATE_OVER)
+	{
+		return PTURN;
+	}
 	return PGO;
 	/*
 	
-		if(time == 1)
+		if(gametime == 1)
 		{
 			endscene = scene;
 	
@@ -56,7 +63,7 @@ int Process::processOver()
 			scr.SetIntValue(SCR_RESERVEBEGIN+3, DataConnector::Insert());
 		}
 		retvalue = PGO;
-		retvalue = scr.Execute(SCR_CONTROL, STATE_OVER, time);
+		retvalue = scr.Execute(SCR_CONTROL, STATE_OVER, gametime);
 		//pushtimer depth sec nowchar insert
 		int tdepth = scr.GetIntValue(SCR_RESERVEBEGIN);
 		int tsec = scr.GetIntValue(SCR_RESERVEBEGIN+1);
@@ -415,7 +422,7 @@ int Process::processOver()
 			InfoSelect::Clear();
 			if(tinsert < 0)
 			{
-				time = 0;
+				gametime = 0;
 				if(practicemode)
 					state = STATE_MATCH_SELECT;
 				else
@@ -600,7 +607,7 @@ int Process::processOver()
 				data.sWrite(DATA_BINFILE, sec, data.nLinkType(DATAN_USERNAME), username);
 	
 				SE::push(SE_SYSTEM_OK);
-				time = 0;
+				gametime = 0;
 				state = STATE_TITLE;
 				return PTURN;
 			}

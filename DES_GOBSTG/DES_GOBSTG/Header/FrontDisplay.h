@@ -325,6 +325,8 @@ public:
 	bool Init();
 	void Release();
 
+	void action();
+
 	void RenderPanel();
 	void RenderHeadInfo(BYTE playerindex);
 

@@ -627,8 +627,8 @@ public:
 	/* This function is modified by h5nc (h5nc@yahoo.com.cn)                */
 	/************************************************************************/
 	virtual int			CALL	Random_Seed(int seed=0) = 0;
-	virtual int			CALL	Random_Int(int min, int max) = 0;
-	virtual float		CALL	Random_Float(float min, float max) = 0;
+	virtual int			CALL	Random_Int(int min, int max, bool bSelf=false) = 0;
+	virtual float		CALL	Random_Float(float min, float max, bool bSelf=false) = 0;
 
 	virtual float		CALL	Timer_GetTime() = 0;
 	virtual float		CALL	Timer_GetDelta() = 0;

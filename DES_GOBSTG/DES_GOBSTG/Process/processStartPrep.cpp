@@ -16,6 +16,17 @@ void Process::clearPrep(bool bclearkey)
 	BossInfo::Clear();
 	EffectSp::ClearItem();
 	EventZone::Clear();
+	SpriteItemManager::FreeFrontSprite();
+
+	lasttime = 0;
+	
+	for (int i=0; i<FRAME_STOPINFOMAX; i++)
+	{
+		stopflag[i] = 0;
+		stoptimer[i] = 0;
+	}
+
+	replayFPS = 0;
 
 	pauseinit = false;
 	frameskip = M_DEFAULT_FRAMESKIP;
@@ -57,6 +68,7 @@ void Process::clearPrep(bool bclearkey)
 void Process::startPrep(bool callinit)
 {
 	replayend = false;
+	SetState(STATE_START);
 
 	SetCurrentDirectory(hge->Resource_MakePath(""));
 
@@ -76,20 +88,14 @@ void Process::startPrep(bool callinit)
 	{
 		seed = timeGetTime();
 	}
+	srandt(seed);
+	hge->Random_Seed(seed);
 
 	Replay::rpy.InitReplayIndex(replaymode, part);
 
 	clearPrep();
 
-	srandt(seed);
-
-	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
-	{
-		Player::p[i].ClearNC();
-	}
-
 	//set
-
 	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
 	{
 		Player::p[i].valueSet(i);
@@ -143,7 +149,7 @@ void Process::startPrep(bool callinit)
 	}
 
 	framecounter = 0;
-	time = 0;
+	gametime = 0;
 
 	if (callinit)
 	{

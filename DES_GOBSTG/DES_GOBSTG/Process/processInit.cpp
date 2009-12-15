@@ -128,9 +128,9 @@ rebuild:
 
 int Process::processInit()
 {
-	time++;
+	gametime++;
 
-	if (time == 1)
+	if (gametime == 1)
 	{
 		return processPreInitial();
 	}
@@ -297,7 +297,7 @@ int Process::processInit()
 	playing = false;
 	playtimeStart = 0;
 
-	time = 0;
+	gametime = 0;
 	state = STATE_TITLE;
 	return PTURN;
 }

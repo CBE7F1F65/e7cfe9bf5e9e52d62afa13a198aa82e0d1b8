@@ -5,8 +5,8 @@
 
 int Process::processTitle()
 {
-	time++;
-	if(time == 1)
+	gametime++;
+	if(gametime == 1)
 	{
 		reload();
 		for (int i=0; i<SELSYSTEMMAX; i++)
@@ -15,7 +15,7 @@ int Process::processTitle()
 		}
 	}
 	retvalue = PGO;
-	Scripter::scr.Execute(SCR_CONTROL, STATE_TITLE, time);
+	Scripter::scr.Execute(SCR_CONTROL, STATE_TITLE, gametime);
 	int tselsys = Scripter::scr.GetIntValue(SCR_RESERVEBEGIN);
 	titleselect = SelectSystem::selsys[tselsys].select;
 	return retvalue;

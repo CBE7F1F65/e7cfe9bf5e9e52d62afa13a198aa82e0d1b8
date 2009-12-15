@@ -63,6 +63,18 @@ int _HDSSCallGet::Get_CHARA(LuaState * ls)
 	return 0;
 }
 
+int _HDSSCallGet::Get_REPLAYMODE(LuaState * ls)
+{
+	_ENTERGET_HDSS_LUA;
+	if (true)
+	{
+		_PB_HDSS_LUA(Process::mp.replaymode);
+		_PB_HDSS_LUA(Process::mp.replayend);
+		return 2;
+	}
+	return 0;
+}
+
 int _HDSSCallGet::Get_SELCOMPLETE(LuaState * ls)
 {
 	_ENTERGET_HDSS_LUA;

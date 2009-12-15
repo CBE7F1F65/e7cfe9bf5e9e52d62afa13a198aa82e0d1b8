@@ -76,7 +76,7 @@ int Enemy::Build(WORD eID, BYTE playerindex, float x, float y, int angle, float 
 	}
 	else
 	{
-		DWORD i = en[playerindex].getIndex();
+		DWORD i = en[playerindex].toEnd();
 		DWORD size = en[playerindex].getSize();
 		for (; i<size; en[playerindex].toNext(), i++)
 		{
@@ -110,8 +110,14 @@ void Enemy::ClearAll()
 		{
 			en[j][i].Clear();
 		}
+		bossindex[j] = 0xff;
 		en[j].clear_item();
 		enaz[j].clear();
+		scoredisplay[j].clear_item();
+		for (int i=0; i<ENEMY_NMAXSETMAX; i++)
+		{
+			nEnemyNow[j][i] = 0;
+		}
 	}
 }
 
@@ -212,7 +218,7 @@ void Enemy::SendGhost(BYTE playerindex, float x, float y, BYTE setID, BYTE * sen
 	{
 		siidindex = EFFSPSEND_COLOR_BLUE;
 	}
-	float _hscale = hge->Random_Float(1.2f, 1.4f);
+	float _hscale = randtf(1.2f, 1.4f);
 	int esindex = EffectSp::Build(setID, playerindex, EffectSp::senditemsiid[siidindex][0], x, y, 0, _hscale);
 	if (esindex >= 0)
 	{
@@ -220,9 +226,9 @@ void Enemy::SendGhost(BYTE playerindex, float x, float y, BYTE setID, BYTE * sen
 		_peffsp->colorSet(0x80ffffff, BLEND_ALPHAADD);
 		float aimx;
 		float aimy;
-		aimx = hge->Random_Float(M_GAMESQUARE_LEFT_(playerindex) + 8, M_GAMESQUARE_RIGHT_(playerindex) - 8);
-		aimy = hge->Random_Float(M_GAMESQUARE_TOP, M_GAMESQUARE_TOP + 128);
-		_peffsp->chaseSet(EFFSP_CHASE_FREE, aimx, aimy, hge->Random_Int(45, 60));
+		aimx = randtf(M_GAMESQUARE_LEFT_(playerindex) + 8, M_GAMESQUARE_RIGHT_(playerindex) - 8);
+		aimy = randtf(M_GAMESQUARE_TOP, M_GAMESQUARE_TOP + 128);
+		_peffsp->chaseSet(EFFSP_CHASE_FREE, aimx, aimy, randt(45, 60));
 		_peffsp->animationSet(EFFSPSEND_ANIMATIONMAX);
 		if (sendtime)
 		{

@@ -14,12 +14,12 @@ int Process::processClear()
 {
 	if (!alltime)
 	{
-		alltime = time;
+		alltime = gametime;
 	}
 	processStart();
-	Scripter::scr.Execute(SCR_CONTROL, STATE_CLEAR, time-alltime);
+	Scripter::scr.Execute(SCR_CONTROL, STATE_CLEAR, gametime-alltime);
 	/*
-	if(time == 1)
+	if(gametime == 1)
 	{
 		frameskip = M_DEFAULT_FRAMESKIP;
 
@@ -56,12 +56,12 @@ int Process::processClear()
 		FrontDisplay::fdisp.SetState(FDISP_NEXTSTAGE, _PCLEAR_FDISP_TIME);
 	}
 
-	if (time == _PCLEAR_FDIPS_CANCELTIME)
+	if (gametime == _PCLEAR_FDIPS_CANCELTIME)
 	{
 //		musicChange(0, true);
 	}
 
-	if(time > _PCLEAR_FDISP_TIME  || time > _PCLEAR_FDIPS_CANCELTIME && hge->Input_GetDIKey(KS_FIRE, DIKEY_DOWN))
+	if(gametime > _PCLEAR_FDISP_TIME  || gametime > _PCLEAR_FDIPS_CANCELTIME && hge->Input_GetDIKey(KS_FIRE, DIKEY_DOWN))
 	{
 		FrontDisplay::fdisp.SetState(FDISP_NEXTSTAGE, 0);
 		BGLayer::ubg[UBGID_FGPAUSE].exist = false;
@@ -92,7 +92,7 @@ int Process::processClear()
 			seed = timeGetTime();
 			rpy.partFill(tpart);
 		}
-		time = 0;
+		gametime = 0;
 		if (!replaymode)
 		{
 			if (practicemode)

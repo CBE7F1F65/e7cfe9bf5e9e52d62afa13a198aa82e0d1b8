@@ -14,6 +14,8 @@ bool Export_Lua_Game::_LuaRegistFunction(LuaObject * obj)
 	LuaObject _gameobj;
 	_gameobj = obj->CreateTable("game");
 
+	_gameobj.Register("Random_Int", LuaFn_Game_Random_Int);
+	_gameobj.Register("Random_Float", LuaFn_Game_Random_Float);
 	_gameobj.Register("SetLastIP", LuaFn_Game_SetLastIP);
 	_gameobj.Register("GetLastIP", LuaFn_Game_GetLastIP);
 	_gameobj.Register("AccessIP", LuaFn_Game_AccessIP);
@@ -33,6 +35,46 @@ bool Export_Lua_Game::_LuaRegistFunction(LuaObject * obj)
 	_gameobj.Register("GetPlayerStopInfo", LuaFn_Game_GetPlayerStopInfo);
 
 	return true;
+}
+
+int Export_Lua_Game::LuaFn_Game_Random_Int(LuaState * ls)
+{
+	LuaStack args(ls);
+
+	int argscount = args.Count();
+	int _imin = 0;
+	int _imax = RAND_MAX;
+	if (argscount > 0)
+	{
+		_imin = args[1].GetInteger();
+		if (argscount > 1)
+		{
+			_imax = args[2].GetInteger() + 1;
+		}
+	}
+	int _iret = randt(_imin, _imax);
+	ls->PushInteger(_iret);
+	return 1;
+}
+
+int Export_Lua_Game::LuaFn_Game_Random_Float(LuaState * ls)
+{
+	LuaStack args(ls);
+
+	int argscount = args.Count();
+	float _fmin = 0.0f;
+	float _fmax = 1.0f;
+	if (argscount > 0)
+	{
+		_fmin = args[1].GetFloat();
+		if (argscount > 1)
+		{
+			_fmax = args[2].GetFloat();
+		}
+	}
+	float _fret = randtf(_fmin, _fmax);
+	ls->PushNumber(_fret);
+	return 1;
 }
 
 int Export_Lua_Game::LuaFn_Game_SetLastIP(LuaState * ls)
@@ -327,6 +369,11 @@ int Export_Lua_Game::LuaFn_Game_GetPlayerStopInfo(LuaState * ls)
 
 	BYTE _playerindex = args[1].GetInteger();
 
+	if (Player::raisestopplayerindex >= M_PL_MATCHMAXPLAYER)
+	{
+		return 0;
+	}
+
 	if (Player::raisestopplayerindex == _playerindex)
 	{
 		ls->PushBoolean(true);
@@ -347,6 +394,7 @@ int Export_Lua_Game::LuaFn_Game_GetPlayerStopInfo(LuaState * ls)
 	ls->PushInteger(_spelllevel);
 	return 7;
 }
+
 
 #endif
 #endif

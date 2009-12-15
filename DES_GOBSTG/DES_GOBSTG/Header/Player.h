@@ -77,7 +77,6 @@ public:
 
 	void valueSet(BYTE playerindex, BYTE round = 0);
 	void ClearSet(BYTE round=0);
-	void ClearNC();
 	void UpdatePlayerData();       
 	void ResetPlayerGhost(bool move = false);
 	static void ClearRound(BYTE round=0);
@@ -254,7 +253,6 @@ public:
 
 	BYTE cardlevel;
 	BYTE bosslevel;
-	BYTE damagelevel;
 
 	static BYTE rank;
 	static int lilycount;

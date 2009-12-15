@@ -13,7 +13,6 @@ void Player::Init()
 {
 	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
 	{
-		p[i].ClearNC();
 		p[i].exist = false;
 		p[i].ID = i;
 		p[i].nowID = i;

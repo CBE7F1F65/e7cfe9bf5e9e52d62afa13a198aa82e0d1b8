@@ -47,13 +47,19 @@ function CEPause_CloseUsed()
 	hdssSELCLEAR(LConst_selsys_pauseconfirmid);
 end
 
-function CEPause_ExitState(tostate)
+function CEPause_ExitState(tostate, bPrep)
 	CEPause_CloseUsed();
 	local time = 0;
-	if tostate == STATE_START then
+	if bPrep == nil then
+		bPrep = false;
+	end
+	if not bPrep and tostate == STATE_START then
 		time = -1;
 	end
 	hdssSETSTATE(tostate, time);
+	if bPrep then
+		hdssSTARTPREP();
+	end
 end
 
 function CEPause_DispatchSelect(selsyspauseid, tostate)
@@ -154,8 +160,7 @@ function ControlExecute_cPause(con)
 			local ret = CEPause_DispatchConfirmSelect(LConst_selsys_pauseconfirmid);
 			if ret > 0 then
 				if _selselect == 1 then
-					hdssSTARTPREP()
-					CEPause_ExitState(STATE_START);
+					CEPause_ExitState(STATE_START, true);
 				elseif _selselect == 2 then
 					CEPause_ExitState(STATE_PLAYER_SELECT);
 				elseif _selselect == 3 then

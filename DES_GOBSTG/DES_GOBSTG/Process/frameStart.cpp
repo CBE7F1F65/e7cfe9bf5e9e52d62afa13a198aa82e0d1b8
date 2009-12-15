@@ -7,7 +7,7 @@
 
 void Process::frameStart()
 {
-	time++;
+	gametime++;
 	WORD nowInput = 0;
 	if(!replaymode)
 	{
@@ -24,7 +24,7 @@ void Process::frameStart()
 		{
 			replayend = true;
 //			scene = S1;
-			clearPrep();
+//			clearPrep();
 			GameInput::SetKey(0, KSI_PAUSE);
 			GameInput::SetKey(1, KSI_PAUSE);
 		}

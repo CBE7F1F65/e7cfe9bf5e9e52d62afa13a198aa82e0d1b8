@@ -344,7 +344,7 @@ int SelectSystem::SetSelect(int _select)
 {
 	if (_select < 0)
 	{
-		select += hge->Random_Int(1, nselect-1);
+		select += randt(1, nselect-1);
 		select %= nselect;
 	}
 	else

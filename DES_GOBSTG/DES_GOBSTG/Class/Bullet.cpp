@@ -479,7 +479,7 @@ void Bullet::SendBullet(BYTE playerindex, float x, float y, BYTE setID, BYTE * s
 	{
 		siidindex = EFFSPSEND_COLOR_BLUE;
 	}
-	float _hscale = hge->Random_Float(0.6f, 0.8f);
+	float _hscale = randtf(0.6f, 0.8f);
 	int esindex = EffectSp::Build(setID, playerindex, EffectSp::senditemsiid[siidindex][0], x, y, 0, _hscale);
 	if (esindex >= 0)
 	{
@@ -487,9 +487,9 @@ void Bullet::SendBullet(BYTE playerindex, float x, float y, BYTE setID, BYTE * s
 		_peffsp->colorSet(0x80ffffff, BLEND_ALPHAADD);
 		float aimx;
 		float aimy;
-		aimx = hge->Random_Float(M_GAMESQUARE_LEFT_(playerindex) + 8, M_GAMESQUARE_RIGHT_(playerindex) - 8);
-		aimy = hge->Random_Float(M_GAMESQUARE_TOP, M_GAMESQUARE_TOP + 128);
-		_peffsp->chaseSet(EFFSP_CHASE_FREE, aimx, aimy, hge->Random_Int(45, 60));
+		aimx = randtf(M_GAMESQUARE_LEFT_(playerindex) + 8, M_GAMESQUARE_RIGHT_(playerindex) - 8);
+		aimy = randtf(M_GAMESQUARE_TOP, M_GAMESQUARE_TOP + 128);
+		_peffsp->chaseSet(EFFSP_CHASE_FREE, aimx, aimy, randt(45, 60));
 		_peffsp->animationSet(EFFSPSEND_ANIMATIONMAX);
 		if (sendtime && speed)
 		{

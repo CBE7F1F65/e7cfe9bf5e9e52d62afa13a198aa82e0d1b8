@@ -47,6 +47,9 @@ end
 function CEOver_ExitState(tostate)
 	CEOver_CloseUsed();
 	hdssSETSTATE(tostate);
+	if tostate == STATE_START then
+		hdssSTARTPREP();
+	end
 end
 
 function CEOver_DispatchSelect(selsysoverid, tostate)
@@ -75,7 +78,6 @@ function ControlExecute_cOver(con)
 			local ret = CEOver_DispatchSelect(LConst_selsys_overid, con-0xff00);
 			if ret >= 0 then
 				if ret == 0 then
-					hdssSTARTPREP()
 					CEOver_ExitState(STATE_START);
 				elseif ret == 1 then
 					CEOver_ExitState(STATE_PLAYER_SELECT);

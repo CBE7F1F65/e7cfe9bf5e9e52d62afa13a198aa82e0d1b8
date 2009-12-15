@@ -78,11 +78,11 @@ int Process::render()
 	FrontDisplay::fdisp.RenderPostPrint();
 
 	FrontDisplay::fdisp.RenderPanel();
-	Chat::chatitem.Render();
-	EffectSp::RenderAll();
 
 	if(isingame)
 	{
+		Chat::chatitem.Render();
+		EffectSp::RenderAll();
 		FrontDisplay::fdisp.RenderEnemyX();
 	}
 	BGLayer::RenderFGPause();

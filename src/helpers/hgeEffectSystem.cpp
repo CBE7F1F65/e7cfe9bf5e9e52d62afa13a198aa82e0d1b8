@@ -336,14 +336,14 @@ void hgeEffectSystem::Update()
 				//
 				_obj->fScaleX = 1.0f;
 				_obj->fScaleY = 1.0f;
-				_obj->nLifeTime = hge->Random_Int(emitter->eei.nLfieTimeMin, emitter->eei.nLifeTimeMax);
+				_obj->nLifeTime = hge->Random_Int(emitter->eei.nLfieTimeMin, emitter->eei.nLifeTimeMax, true);
 				float _x, _y, _z;
 				if(emitter->eei.fThetaStep)
 				{
 					float _r = (emitter->eei.fRadius - emitter->eei.fRadiusInner) / 2.0f;
 					float _arc = emitter->eei.fThetaStart + (emitter->eei.fThetaStep) * (emitter->nAge);
-					_x = hge->Random_Float(-_r, _r);
-					_y = hge->Random_Float(-_r, _r);
+					_x = hge->Random_Float(-_r, _r, true);
+					_y = hge->Random_Float(-_r, _r, true);
 					_r += emitter->eei.fRadiusInner;
 					_x += _r * cosf(_arc);
 					_y += _r * sinf(_arc);
@@ -352,15 +352,15 @@ void hgeEffectSystem::Update()
 				{
 					if(emitter->eei.fRadiusInner)
 					{
-						float _r = hge->Random_Float(emitter->eei.fRadiusInner, emitter->eei.fRadius);
-						float _arc = hge->Random_Float(0, M_PI * 2);
+						float _r = hge->Random_Float(emitter->eei.fRadiusInner, emitter->eei.fRadius, true);
+						float _arc = hge->Random_Float(0, M_PI * 2, true);
 						_x = _r * cosf(_arc);
 						_y = _r * sinf(_arc);
 					}
 					else
 					{
-						_x = hge->Random_Float(-emitter->eei.fRadius, emitter->eei.fRadius);
-						_y = hge->Random_Float(-emitter->eei.fRadius, emitter->eei.fRadius);
+						_x = hge->Random_Float(-emitter->eei.fRadius, emitter->eei.fRadius, true);
+						_y = hge->Random_Float(-emitter->eei.fRadius, emitter->eei.fRadius, true);
 					}
 				}
 				_z = 0;
@@ -512,7 +512,7 @@ void hgeEffectSystem::UpdateValue(float * value, float * bufferValue, hgeEffectA
 		updateBuffer = true;
 		if(eai->bUseStartValue)
 		{
-			*value = hge->Random_Float(eai->fStartValueMin, eai->fStartValueMax);
+			*value = hge->Random_Float(eai->fStartValueMin, eai->fStartValueMax, true);
 		}
 	}
 
@@ -525,7 +525,7 @@ void hgeEffectSystem::UpdateValue(float * value, float * bufferValue, hgeEffectA
 	{
 		if(updateBuffer)
 		{
-			*bufferValue = hge->Random_Float(eai->fEndValueMin, eai->fEndValueMax);
+			*bufferValue = hge->Random_Float(eai->fEndValueMin, eai->fEndValueMax, true);
 		}
 		if(eai->nAffectorEndTime > nAge)
 		{
@@ -540,7 +540,7 @@ void hgeEffectSystem::UpdateValue(float * value, float * bufferValue, hgeEffectA
 	{
 		if (updateBuffer)
 		{
-			*bufferValue = hge->Random_Float(eai->fIncrementValueMin, eai->fIncrementValueMax);
+			*bufferValue = hge->Random_Float(eai->fIncrementValueMin, eai->fIncrementValueMax, true);
 		}
 		*value += (eai->fIncrementScale) * (*bufferValue) + eai->fAcceleration * (nAge - eai->nAffectorStartTime);
 	}
@@ -570,10 +570,10 @@ void hgeEffectSystem::UpdateColorValue(float * value, float * bufferValue, hgeEf
 			DWORD scolmin = *(DWORD *)(&eai->fStartValueMin);
 			DWORD scolmax = *(DWORD *)(&eai->fStartValueMax);
 
-			_a = hge->Random_Int(GETA(scolmin), GETA(scolmax));
-			_r = hge->Random_Int(GETR(scolmin), GETR(scolmax));
-			_g = hge->Random_Int(GETG(scolmin), GETG(scolmax));
-			_b = hge->Random_Int(GETB(scolmin), GETB(scolmax));
+			_a = hge->Random_Int(GETA(scolmin), GETA(scolmax), true);
+			_r = hge->Random_Int(GETR(scolmin), GETR(scolmax), true);
+			_g = hge->Random_Int(GETG(scolmin), GETG(scolmax), true);
+			_b = hge->Random_Int(GETB(scolmin), GETB(scolmax), true);
 		}
 	}
 
@@ -587,10 +587,10 @@ void hgeEffectSystem::UpdateColorValue(float * value, float * bufferValue, hgeEf
 		{
 			DWORD ecolmin = *(DWORD *)(&eai->fEndValueMin);
 			DWORD ecolmax = *(DWORD *)(&eai->fEndValueMax);
-			_buffera = hge->Random_Int(GETA(ecolmin), GETA(ecolmax));
-			_bufferr = hge->Random_Int(GETR(ecolmin), GETR(ecolmax));
-			_bufferg = hge->Random_Int(GETG(ecolmin), GETG(ecolmax));
-			_bufferb = hge->Random_Int(GETB(ecolmin), GETB(ecolmax));
+			_buffera = hge->Random_Int(GETA(ecolmin), GETA(ecolmax), true);
+			_bufferr = hge->Random_Int(GETR(ecolmin), GETR(ecolmax), true);
+			_bufferg = hge->Random_Int(GETG(ecolmin), GETG(ecolmax), true);
+			_bufferb = hge->Random_Int(GETB(ecolmin), GETB(ecolmax), true);
 		}		
 		if(eai->nAffectorEndTime > nAge)
 		{
@@ -615,10 +615,10 @@ void hgeEffectSystem::UpdateColorValue(float * value, float * bufferValue, hgeEf
 			DWORD acolmin = *(DWORD *)(&eai->fIncrementValueMin);
 			DWORD acolmax = *(DWORD *)(&eai->fIncrementValueMax);
 
-			_buffera = hge->Random_Int(GETA(acolmin), GETA(acolmax));
-			_bufferr = hge->Random_Int(GETR(acolmin), GETR(acolmax));
-			_bufferg = hge->Random_Int(GETG(acolmin), GETG(acolmax));
-			_bufferb = hge->Random_Int(GETB(acolmin), GETB(acolmax));
+			_buffera = hge->Random_Int(GETA(acolmin), GETA(acolmax), true);
+			_bufferr = hge->Random_Int(GETR(acolmin), GETR(acolmax), true);
+			_bufferg = hge->Random_Int(GETG(acolmin), GETG(acolmax), true);
+			_bufferb = hge->Random_Int(GETB(acolmin), GETB(acolmax), true);
 		}
 		DWORD * accelcol = (DWORD *)&(eai->fAcceleration);
 		int _age = nAge - eai->nAffectorStartTime;

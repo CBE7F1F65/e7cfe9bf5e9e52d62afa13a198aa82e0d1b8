@@ -29,14 +29,17 @@ end
 
 function _EventExecute_PlayerInStop(playerindex)
 	local bSpell, spellPlayerID, oplayerID, stoptimer, stopmaxtime, spellClass, spellLevel = game.GetPlayerStopInfo(playerindex);
-	return ePlayerInStop(playerindex, bSpell, spellPlayerID, oplayerID, stoptimer, stopmaxtime, spellClass, spellLevel);
+	if bSpell ~= nil then
+		return ePlayerInStop(playerindex, bSpell, spellPlayerID, oplayerID, stoptimer, stopmaxtime, spellClass, spellLevel);
+	end
+	return false;
 end
 
 function _EventExecute_PlayerShootCharge(playerindex)
 	hdss.Call(
 		HDSS_B,
 		{
-			1-playerindex, (1-playerindex)*320+160, 0, true, hge.Random_Int(4500, 13500), hge.Random_Float(1.2, 1.4), 10, 2
+			1-playerindex, (1-playerindex)*320+160, 0, true, game.Random_Int(4500, 13500), game.Random_Float(1.2, 1.4), 10, 2
 		}
 	)
 	return true;

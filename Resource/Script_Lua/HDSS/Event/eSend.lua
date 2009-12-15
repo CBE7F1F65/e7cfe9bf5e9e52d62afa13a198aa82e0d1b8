@@ -1,5 +1,5 @@
 function _eSendBulletSpeedRestrict(speed, rank)
-	speed = speed + hge.Random_Float(-0.1, 0.1);
+	speed = speed + game.Random_Float(-0.1, 0.1);
 	if speed < 0.8 then
 		speed = 0.8;
 	elseif speed > 3.0 + rank * 0.1 then
@@ -13,14 +13,14 @@ function _eSendBulletSpeed(rank, bSmall)
 end
 
 function _eSendBigBulletAngle()
-	return hge.Random_Int(8250, 9750);
+	return game.Random_Int(8250, 9750);
 end
 
 function eSendRedBullet(playerindex, x, y, sendtime, speed, setID, bSmall)
 	local rank = hdss.Get(HDSS_RANK);
 	local angle;
 	if bSmall then
-		angle = hge.Random_Int(7500, 10500);
+		angle = game.Random_Int(7500, 10500);
 	else
 		angle = _eSendBigBulletAngle();
 	end
@@ -50,7 +50,7 @@ function eSendBlueBullet(playerindex, x, y, sendtime, speed, setID, bSmall)
 	local rank = hdss.Get(HDSS_RANK);
 	local angle;
 	if bSmall then
-		angle = hdssAMAP(playerindex, x, y, hge.Random_Int(-9000/7, 9000/7));
+		angle = hdssAMAP(playerindex, x, y, game.Random_Int(-9000/7, 9000/7));
 	else
 		angle = _eSendBigBulletAngle();
 	end
@@ -78,7 +78,7 @@ end
 
 function eSendExBullet(playerindex, x, y, setID)
 	local rank = hdss.Get(HDSS_RANK);
-	local angle = 9000 + hge.Random_Int(-7500, 7500);
+	local angle = 9000 + game.Random_Int(-7500, 7500);
 	local speed = 1.7 + rank * 0.1;
 	--aya
 	speed = speed + 0.3;
@@ -100,7 +100,7 @@ function eSendGhost(playerindex, x, y, sendtime, acceladd, setID)
 	local rank = hdss.Get(HDSS_RANK);
 	
 	local accel;
-	acceladd = acceladd + hge.Random_Float(0, 1/120);
+	acceladd = acceladd + game.Random_Float(0, 1/120);
 	if sendtime == 0 then
 		acceladd =  acceladd + rank / 600;
 		accel = 0.025;
@@ -112,10 +112,10 @@ function eSendGhost(playerindex, x, y, sendtime, acceladd, setID)
 		
 	local angle;
 	--
-	if hge.Random_Int(0, 4) == 0 then
-		angle = hdssAMAP(playerindex, x, y, hge.Random_Int(-2250, 2250));
+	if game.Random_Int(0, 4) == 0 then
+		angle = hdssAMAP(playerindex, x, y, game.Random_Int(-2250, 2250));
 	else
-		angle = hge.Random_Int(8910, 9090);
+		angle = game.Random_Int(8910, 9090);
 	end
 	--
 	local type = LConst_GhostTypeStart + sendtime * 2;

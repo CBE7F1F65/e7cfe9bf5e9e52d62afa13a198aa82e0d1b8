@@ -237,10 +237,10 @@ bool Selector::PostAction(int * select, int sellock, int nPageNum, float fadebeg
 		switch (tindex)
 		{
 		case SELINFO_NONE:
-			alpha = ROLL(time, 0x3f) + 0x80;
+			alpha = ROLL(gametime, 0x3f) + 0x80;
 			break;
 		case SELINFO_OVER:
-			alpha = ROLL(time, 0x3f) / 0x10 + 0xf0;
+			alpha = ROLL(gametime, 0x3f) / 0x10 + 0xf0;
 			break;
 		case SELINFO_ENTER:
 			alpha = 0xff;

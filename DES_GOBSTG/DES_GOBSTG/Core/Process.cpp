@@ -543,7 +543,7 @@ void Process::SetState(int _state, int _time /* = 0 */)
 	state = _state;
 	if (_time >= 0)
 	{
-		time = _time;
+		gametime = _time;
 	}
 }
 

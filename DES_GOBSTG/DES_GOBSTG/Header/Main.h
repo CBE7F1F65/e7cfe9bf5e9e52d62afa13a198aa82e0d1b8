@@ -4,6 +4,6 @@
 #include "MainDependency.h"
 
 extern HGE * hge;
-extern int time;
+extern int gametime;
 
 #endif

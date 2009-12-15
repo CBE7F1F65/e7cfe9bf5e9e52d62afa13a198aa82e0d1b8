@@ -11,12 +11,12 @@
 
 int Process::processReplay()
 {
-	time++;
+	gametime++;
 
 	static Replay _rpy[RPYENUMMAX];
 	static char _rpyfilename[RPYENUMMAX][M_PATHMAX];
 
-	if(time == 1)
+	if(gametime == 1)
 	{
 		ZeroMemory(_rpyfilename, sizeof(char)*RPYENUMMAX*M_PATHMAX);
 		SetCurrentDirectory(hge->Resource_MakePath(BResource::res.resdata.replayfoldername));
@@ -36,12 +36,11 @@ int Process::processReplay()
 
 				if(_rpy[tnrpys].Load(_rpyfilename[tnrpys]))
 				{
-					/*
 					replaymode = true;
 					strcpy(rpyfilename, _rpyfilename[tnrpys]);
 					startPrep();
 					SetState(STATE_START);
-					*/
+					return PTURN;
 					tnrpys++;
 				}
 				else
@@ -54,7 +53,7 @@ int Process::processReplay()
 		}
 	}
 
-	Scripter::scr.Execute(SCR_CONTROL, STATE_REPLAY, time);
+	Scripter::scr.Execute(SCR_CONTROL, STATE_REPLAY, gametime);
 /*
 	//-> pushtimer page depth index nrpys rpydifflv
 	int tdepth = scr.GetIntValue(SCR_RESERVEBEGIN);
@@ -70,7 +69,7 @@ int Process::processReplay()
 			Replay::Free(_rpyfilename[i]);
 		}
 		SetCurrentDirectory(hge->Resource_MakePath(""));
-		time = 0;
+		gametime = 0;
 		state = STATE_TITLE;
 		return PTURN;
 	}

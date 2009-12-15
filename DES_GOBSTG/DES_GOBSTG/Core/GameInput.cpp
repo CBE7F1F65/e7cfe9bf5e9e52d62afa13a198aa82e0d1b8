@@ -355,7 +355,7 @@ WORD GameInput::GetNowInput()
 	{
 		for (int i=0; i<GAMEACTIVEINPUTMAX; i++)
 		{
-			wret |= (GetKey(j, j, i)<<i)<<(j*8);
+			wret |= (GetKey(j, i)<<i)<<(j*8);
 		}
 	}
 	return wret;
@@ -370,7 +370,7 @@ void GameInput::SetNowInput(WORD nowinput)
 		{
 			seti = ((1<<i)<<(j*8));
 			gameinput[j].input &= ~seti;
-			gameinput[j].input |= (nowinput & seti);
+			gameinput[j].input |= (nowinput & seti)>>(j*8);
 		}
 	}
 }

@@ -88,17 +88,12 @@ Player::Player()
 	nowID			= 0;
 	ID_sub_1		= 0;
 	ID_sub_2		= 0;
-	ClearNC();
 }
 
 Player::~Player()
 {
 	SpriteItemManager::FreeSprite(&sprite);
 	SpriteItemManager::FreeSprite(&spdrain);
-}
-
-void Player::ClearNC()
-{
 }
 
 void Player::ClearSet(BYTE round)
@@ -123,6 +118,7 @@ void Player::ClearSet(BYTE round)
 	hscale		=	1.0f;
 	vscale		=	1.0f;
 	alpha		=	0xff;
+	diffuse		=	0xffffff;
 
 	mergetimer			=	0;
 	shottimer			=	0;
@@ -134,12 +130,19 @@ void Player::ClearSet(BYTE round)
 	fasttimer			=	0;
 	playerchangetimer	=	0;
 	costlifetimer		=	0;
+	shootchargetimer	=	0;
 
+	nLifeCost	=	0;
 	fCharge = 0;
 	if (round == 0)
 	{
 		fChargeMax = PLAYER_CHARGEONE;
+		nExPoint = 0;
+		nGhostPoint = 0;
+		nBulletPoint = 0;
+		nSpellPoint		=	0;
 	}
+
 	cardlevel = _PLAYER_DEFAULETCARDLEVEL_(round);
 	bosslevel = _PLAYER_DEFAULETBOSSLEVEL_(round);
 	infitimer = 0;
@@ -161,6 +164,15 @@ void Player::ClearSet(BYTE round)
 	nComboHit = 0;
 	nComboHitOri = 0;
 	nComboGage = 0;
+
+	nBounceAngle = 0;
+
+	drainx = x;
+	drainy = y;
+	drainheadangle = 0;
+	draintimer = 0;
+	drainhscale = 1;
+	drainvscale = 0;
 
 	if (effGraze.exist)
 	{
@@ -224,7 +236,7 @@ void Player::ClearSet(BYTE round)
 
 void Player::ClearRound(BYTE round/* =0 */)
 {
-	raisestopplayerindex = 0;
+	raisestopplayerindex = 0xff;
 	if (round)
 	{
 		rank += _GAMERANK_STAGEOVERADD;
@@ -255,9 +267,6 @@ void Player::valueSet(BYTE _playerindex, BYTE round)
 	SetDrainSpriteInfo(x, y);
 
 	nLife		=	initlife;
-	nLifeCost	=	0;
-
-	nSpellPoint		=	0;
 
 	if (round == 0)
 	{
@@ -292,11 +301,11 @@ bool Player::Action(DWORD stopflag)
 	AddLostStack();
 	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
 	{
-		if (time % _CARDLEVEL_ADDINTERVAL == 0)
+		if (gametime % _CARDLEVEL_ADDINTERVAL == 0)
 		{
 			p[i].AddCardBossLevel(1, 0);
 		}
-		if (time % _BOSSLEVEL_ADDINTERVAL == 0)
+		if (gametime % _BOSSLEVEL_ADDINTERVAL == 0)
 		{
 			p[i].AddCardBossLevel(0, 1);
 		}
@@ -318,7 +327,7 @@ bool Player::Action(DWORD stopflag)
 			}
 		}
 	}
-	if (time % _GAMERANK_ADDINTERVAL == 0)
+	if (gametime % _GAMERANK_ADDINTERVAL == 0)
 	{
 		rank++;
 		if (rank > _GAMERANK_MAX)
@@ -750,6 +759,7 @@ bool Player::CostLife()
 		AddLilyCount(-1500);
 		if (nLife == 1)
 		{
+			nLife = 0;
 			flag |= PLAYER_COLLAPSE;
 			costlifetimer = 0;
 			return true;
@@ -775,7 +785,7 @@ bool Player::CostLife()
 		{
 			AddCharge(0, 130-nLife * 10);
 		}
-		nBounceAngle = RANDA;
+		nBounceAngle = randt();
 	}
 	else if (costlifetimer == 60)
 	{
@@ -1028,8 +1038,8 @@ void Player::DoEnemyCollapse(float x, float y)
 	{
 		addbulletpoint = 60;
 	}
-	float _x = x + hge->Random_Float(-4, 4);
-	float _y = y + hge->Random_Float(-4, 4);
+	float _x = x + randtf(-4.0f, 4.0f);
+	float _y = y + randtf(-4.0f, 4.0f);
 	AddBulletPoint(addbulletpoint, _x, _y);
 	int addspellpoint;
 	if (nComboHitOri == 1)
@@ -1418,7 +1428,7 @@ void Player::AddBulletPoint(int bulletpoint, float x, float y)
 	{
 		AddBulletPoint(-(120-rank*4), x, y);
 		BYTE setID = EFFSPSET_SYSTEM_SENDBLUEBULLET;
-		if (hge->Random_Int(0, 2) == 0)
+		if (randt(0, 2) == 0)
 		{
 			setID = EFFSPSET_SYSTEM_SENDREDBULLET;
 		}
@@ -1534,9 +1544,9 @@ void Player::AddLilyCount(int addval, bool bytime/* =false */)
 {
 	if (bytime)
 	{
-		if (time < 5400)
+		if (gametime < 5400)
 		{
-			AddLilyCount(time/1800+3);
+			AddLilyCount(gametime/1800+3);
 		}
 		else
 		{

@@ -11,16 +11,16 @@
 
 int Process::processResult()
 {
-	time++;
+	gametime++;
 /*
 	
-		if (time == 1)
+		if (gametime == 1)
 		{
 			scr.SetIntValue(SCR_RESERVEBEGIN, -2);
 			scr.SetIntValue(SCR_RESERVEBEGIN+1, -1);
 			scr.SetIntValue(SCR_RESERVEBEGIN+2, 0);
 		}
-		scr.Execute(SCR_CONTROL, STATE_RESULT, time);
+		scr.Execute(SCR_CONTROL, STATE_RESULT, gametime);
 		int tsec = scr.GetIntValue(SCR_RESERVEBEGIN);
 		int tdiff = scr.GetIntValue(SCR_RESERVEBEGIN+1);
 		int tsel = scr.GetIntValue(SCR_RESERVEBEGIN+2);
@@ -31,7 +31,7 @@ int Process::processResult()
 			SE::push(SE_SYSTEM_CANCEL);
 			if (tsec < 0)
 			{
-				time = 0;
+				gametime = 0;
 				state = STATE_TITLE;
 				return PTURN;
 			}

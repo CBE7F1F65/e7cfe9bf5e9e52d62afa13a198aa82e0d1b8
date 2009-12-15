@@ -6,9 +6,9 @@
 
 int Process::processMusic()
 {
-	time++;
+	gametime++;
 	/*
-	if(time == 1)
+	if(gametime == 1)
 	{
 		scr.SetIntValue(SCR_RESERVEBEGIN, 0);
 		scr.SetIntValue(SCR_RESERVEBEGIN+1, 0);
@@ -28,12 +28,12 @@ int Process::processMusic()
 
 		InfoSelect::select = 0;
 	}
-	scr.Execute(SCR_CONTROL, STATE_MUSIC, time);
+	scr.Execute(SCR_CONTROL, STATE_MUSIC, gametime);
 
 	if(hge->Input_GetDIKey(KS_QUICK, DIKEY_DOWN))
 	{
 		SE::push(SE_SYSTEM_CANCEL);
-		time = 0;
+		gametime = 0;
 		state = STATE_TITLE;
 		return PTURN;
 	}

@@ -64,6 +64,7 @@ public:
 	static int Get_Du(LuaState * ls);
 	static int Get_RANK(LuaState * ls);
 	static int Get_CHARA(LuaState * ls);
+	static int Get_REPLAYMODE(LuaState * ls);
 
 	static int Get_ENX(LuaState * ls);
 	static int Get_ENY(LuaState * ls);

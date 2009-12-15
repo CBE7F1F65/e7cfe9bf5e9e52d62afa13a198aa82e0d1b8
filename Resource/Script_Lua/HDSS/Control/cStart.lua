@@ -64,13 +64,13 @@ function ControlExecute_cStart(con)
 			hdss.Call(
 				HDSS_EB,
 				{
-					LConst_EnemyTypeBlue, 0, hge.Random_Int(0, 16) * 10 + 80, 280, 9000, 0.1, LConst_EnemyTypeBlue, 20, 0
+					LConst_EnemyTypeBlue, 0, game.Random_Int(0, 16) * 10 + 80, 280, 9000, 0.1, LConst_EnemyTypeBlue, 20, 0
 				}
 			)
 			hdss.Call(
 				HDSS_EB,
 				{
-					LConst_EnemyTypeBlue, 1, hge.Random_Int(0, 16) * 10 + 400, 280, 9000, 0.1, LConst_EnemyTypeBlue, 20, 0
+					LConst_EnemyTypeBlue, 1, game.Random_Int(0, 16) * 10 + 400, 280, 9000, 0.1, LConst_EnemyTypeBlue, 20, 0
 				}
 			)
 		end
@@ -78,7 +78,7 @@ function ControlExecute_cStart(con)
 	
 	if hdss.Get(HDSS_CHECKKEY, 0, KSI_PAUSE, DIKEY_DOWN) and hdss.Get(HDSS_STATE) ~= STATE_CLEAR then
 		hdssSE(SE_SYSTEM_PAUSE);
-		hdssSETSTATE(STATE_PAUSE);
+		hdssSETSTATE(STATE_PAUSE, -1);
 	end
 	
 	return true;

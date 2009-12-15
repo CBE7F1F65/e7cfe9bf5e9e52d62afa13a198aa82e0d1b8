@@ -76,7 +76,7 @@ float SpriteItemManager::GetTexH(int index)
 	return BResource::res.spritedata[index].tex_h;
 }
 
-void SpriteItemManager::RenderFrontSprite()
+void SpriteItemManager::FrontSpriteAction()
 {
 	for (int i=0; i<FRONTSPRITEMAX; i++)
 	{
@@ -88,8 +88,20 @@ void SpriteItemManager::RenderFrontSprite()
 				if (frontsprite[i].fadeouttimer == frontsprite[i].fadeoutmaxtime)
 				{
 					FreeFrontSprite(i);
-					return;
 				}
+			}
+		}
+	}
+}
+
+void SpriteItemManager::RenderFrontSprite()
+{
+	for (int i=0; i<FRONTSPRITEMAX; i++)
+	{
+		if (frontsprite[i].sprite)
+		{
+			if (frontsprite[i].fadeoutmaxtime)
+			{
 				BYTE _alpha = INTER(0xff, 0, ((float)frontsprite[i].fadeouttimer)/frontsprite[i].fadeoutmaxtime);
 				frontsprite[i].col = (_alpha<<24)|0xffffff;
 			}

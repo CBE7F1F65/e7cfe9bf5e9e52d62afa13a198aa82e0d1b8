@@ -8,7 +8,7 @@
 
 HGE *hge = NULL;
 
-int time = 0;
+int gametime = 0;
 
 bool RenderFunc()
 {
@@ -52,7 +52,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	if(hge->System_Initiate())
 	{
 		Export::clientAfterInitial();
-		time = 0;
+		gametime = 0;
 		Process::mp.state = STATE_INIT;
 		hge->System_Start();
 	}

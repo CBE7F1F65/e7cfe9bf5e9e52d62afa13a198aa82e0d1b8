@@ -202,9 +202,15 @@ void EffectSp::valueSet(int _setID, WORD _ID, int _siid, float _x, float _y, int
 	siid = _siid;
 	siidnow = _siid;
 	bAppend = false;
+	nAppend = 0;
+	fAppend = 0;
 
+	blend = BLEND_DEFAULT;
 	chaseflag = EFFSP_CHASE_NULL;
+	chaseaim = 0xff;
 	chasetimer = 0;
+	aimx = 0;
+	aimy = 0;
 	angle = 0;
 	speed = 0;
 	timer = 0;

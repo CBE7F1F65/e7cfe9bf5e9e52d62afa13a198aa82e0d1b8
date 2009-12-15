@@ -8,6 +8,7 @@
 #endif
 
 #include <math.h>
+#include "stdlib.h"
 
 #define asin2t(X, Y)	ANGLE(asinf((float)(X)/(float)(Y)))
 #define acos2t(X, Y)	ANGLE(acosf((float)(X)/(float)(Y)))
@@ -17,6 +18,8 @@
 
 void srandt(int seed);
 int randt();
+int randt(int imin, int imax=RAND_MAX);
+float randtf(float fmin=0.0f, float fmax=1.0f);
 
 	#ifdef BUSE_MATHTABLE
 

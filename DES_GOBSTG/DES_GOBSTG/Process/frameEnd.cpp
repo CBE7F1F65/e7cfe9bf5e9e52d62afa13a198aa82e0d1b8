@@ -58,6 +58,9 @@ void Process::frameEnd()
 	BGLayer::ActionSpecial();
 	SelectSystem::Action();
 
+	SpriteItemManager::FrontSpriteAction();
+	FrontDisplay::fdisp.action();
+
 	SE::play();
 	if (active)
 	{

@@ -18,7 +18,7 @@ int Process::processStart()
 		replayend = true;
 		replaymode = false;
 //		scene = S1;
-		time = 0;
+		gametime = 0;
 		for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
 		{
 			BGLayer::KillOtherLayer(i);
@@ -44,7 +44,7 @@ int Process::processStart()
 		frameStart();
 		if (state == STATE_START)
 		{
-			Scripter::scr.Execute(SCR_CONTROL, STATE_START, time);
+			Scripter::scr.Execute(SCR_CONTROL, STATE_START, gametime);
 		}
 	}
 
@@ -67,7 +67,7 @@ int Process::processStart()
 	/*
 	if(scene > S1 && state != STATE_CLEAR)
 	{
-		time = 0;
+		gametime = 0;
 		state = STATE_CLEAR;
 		return PTURN;
 	}

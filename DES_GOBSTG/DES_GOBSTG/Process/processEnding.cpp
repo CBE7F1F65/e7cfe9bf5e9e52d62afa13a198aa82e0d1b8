@@ -8,10 +8,10 @@
 
 int Process::processEnding()
 {
-	time++;
+	gametime++;
 	return PGO;
 	/*
-	if (time == 1)
+	if (gametime == 1)
 	{
 		BGLayer::KillOtherLayer();
 
@@ -24,7 +24,7 @@ int Process::processEnding()
 		scr.SetIntValue(SCR_RESERVEBEGIN+1, 0);
 	}
 	retvalue = PGO;
-	retvalue = scr.Execute(SCR_CONTROL, STATE_ENDING, time);
+	retvalue = scr.Execute(SCR_CONTROL, STATE_ENDING, gametime);
 	//pushtimer depth
 	int tpushtimer = scr.GetIntValue(SCR_RESERVEBEGIN);
 	int tdepth = scr.GetIntValue(SCR_RESERVEBEGIN+1);
@@ -35,7 +35,7 @@ int Process::processEnding()
 	else if (tdepth == 0xff)
 	{
 		SelectSystem::ClearAll();
-		time = 0;
+		gametime = 0;
 		state = STATE_OVER;
 		return PTURN;
 	}
