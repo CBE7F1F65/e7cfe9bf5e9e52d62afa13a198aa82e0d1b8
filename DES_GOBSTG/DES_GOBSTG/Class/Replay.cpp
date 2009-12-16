@@ -4,16 +4,21 @@
 #include "Data.h"
 #include "BResource.h"
 #include "Player.h"
+#include "SE.h"
+#include "ConstResource.h"
 
 list<_ReplayNameListItem> Replay::_rpyfilenamelist;
 
 Replay Replay::rpy;
+Replay Replay::enumrpy[RPYENUMMAX];
+int Replay::nenumrpy = 0;
 
 Replay::Replay()
 {
 	replayIndex = 0;
 	ZeroMemory(&replayframe, sizeof(replayFrame) * M_SAVEINPUTMAX);
 	ZeroMemory(&rpyinfo, sizeof(replayInfo));
+	strcpy(filename, "");
 }
 
 Replay::~Replay()
@@ -40,6 +45,47 @@ void Replay::Free(const char * filename)
 	}
 }
 
+int Replay::GetEnumReplay()
+{
+	ReleaseEnumReplay();
+
+	SetCurrentDirectory(hge->Resource_MakePath(BResource::res.resdata.replayfoldername));
+	char * buffer;
+	char enumfile[M_STRMAX];
+	strcpy(enumfile, BResource::res.resdata.replayfoldername);
+	strcat(enumfile, "*.");
+	strcat(enumfile, BResource::res.resdata.replayextensionname7);
+	buffer = hge->Resource_EnumFiles(enumfile);
+
+	int tnrpys = 0;
+	while(buffer != NULL && tnrpys < RPYENUMMAX)
+	{
+		if(enumrpy[tnrpys].Load(buffer))
+		{
+			tnrpys++;
+		}
+		if(!hge->Resource_EnumFiles())
+		{
+			break;
+		}
+	}
+	nenumrpy = tnrpys;
+	return nenumrpy;
+}
+
+void Replay::ReleaseEnumReplay()
+{
+	for (int i=0; i<RPYENUMMAX; i++)
+	{
+		if (strlen(enumrpy[i].filename))
+		{
+			Export::rpyFree(enumrpy[i].filename);
+			strcpy(enumrpy[i].filename, "");
+		}
+	}
+	nenumrpy = 0;
+}
+
 void Replay::Fill()
 {
 	WriteInput(0xffff);
@@ -64,7 +110,11 @@ void Replay::Fill()
 	rpyinfo.hour = systime.wHour;
 	rpyinfo.minute = systime.wMinute;
 
-	strcpy(rpyinfo.username, Process::mp.username);
+	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
+	{
+		// TODO:
+		strcpy(rpyinfo.username[i], Process::mp.username);
+	}
 
 	rpyinfo.lost = Player::lostStack / Process::mp.framecounter;
 	rpyinfo.offset = replayIndex;
@@ -85,14 +135,19 @@ void Replay::partFill(BYTE part)
 	}
 }
 
-bool Replay::Check(const char * filename)
+bool Replay::Check(const char * _filename)
 {
+	if (!strlen(_filename))
+	{
+		return false;
+	}
 	BYTE * content;
-	bool ret = false;
+	bool bret = false;
 
+	strcpy(filename, _filename);
 	char treplayfilename[M_PATHMAX];
 	strcpy(treplayfilename, BResource::res.resdata.replayfoldername);
-	strcat(treplayfilename, filename);
+	strcat(treplayfilename, _filename);
 	hge->Resource_AttachPack(treplayfilename, Data::data.password ^ REPLAYPASSWORD_XORMAGICNUM);
 
 	content = hge->Resource_Load(hge->Resource_GetPackFirstFileName(treplayfilename));
@@ -104,11 +159,15 @@ bool Replay::Check(const char * filename)
 			goto exit;
 		if(strcmp((char *)(content + RPYOFFSET_COMPLETESIGN), BResource::res.resdata.replaycompletesign3))
 			goto exit;
-		ret = true;
+		bret = true;
 	}
 exit:
 	hge->Resource_Free(content);
-	return ret;
+	if (!bret)
+	{
+		strcpy(filename, "");
+	}
+	return bret;
 }
 
 void Replay::WriteInput(WORD nowinput)
@@ -141,14 +200,14 @@ void Replay::InitReplayIndex(bool replaymode, BYTE part)
 	}
 }
 
-bool Replay::Load(const char * filename, bool getInput)
+bool Replay::Load(const char * _filename, bool getInput)
 {
 	bool ret = false;
-	if(Check(filename))
+	if(Check(_filename))
 	{
         char treplayfilename[M_PATHMAX];
 		strcpy(treplayfilename, BResource::res.resdata.replayfoldername);
-		strcat(treplayfilename, filename);
+		strcat(treplayfilename, _filename);
 		ret = Export::rpyLoad(treplayfilename, &rpyinfo, partinfo, getInput ? replayframe : NULL);
 		if (getInput)
 		{
@@ -161,7 +220,41 @@ bool Replay::Load(const char * filename, bool getInput)
 void Replay::CreateSaveFilename(char * filename)
 {
 	// TODO:
-	strcpy(filename, "DES_XXXXXX.rpy");
+	GetEnumReplay();
+	char buffer[M_PATHMAX];
+	sprintf(buffer, "%s_%02d%02d%02d_", RESDEFAULT_RPYSIGNATURE11, rpyinfo.year%100, rpyinfo.month, rpyinfo.day);
+	char _filename[M_PATHMAX];
+	for (int i=0; i<10000; i++)
+	{
+		sprintf(_filename, "%s%04d_", buffer, i);
+		bool canuse = true;
+		for (int j=0; j<RPYENUMMAX; j++)
+		{
+			if (!strncmp(_filename, enumrpy[j].filename, strlen(_filename)))
+			{
+				canuse = false;
+				break;
+			}
+		}
+		if (canuse)
+		{
+			buffer[0] = randt('a', 'z');
+			buffer[1] = randt('0', '9');
+			buffer[2] = randt('a', 'z');
+			buffer[3] = randt('a', 'z');
+			buffer[4] = 0;
+			if (!strcmp(buffer, GAME_SIGNATURE))
+			{
+				SE::push(SE_ITEM_EXTEND);
+			}
+			strcat(_filename, buffer);
+			strcat(_filename, ".");
+			strcat(_filename, BResource::res.resdata.replayextensionname7);
+			break;;
+		}
+	}
+	strcpy(filename, _filename);
+	ReleaseEnumReplay();
 }
 
 void Replay::Save(const char * replayfilename)
@@ -175,6 +268,8 @@ void Replay::Save(const char * replayfilename)
 	{
 		strcpy(savefilename, replayfilename);
 	}
+
+	strcpy(filename, savefilename);
 
 	char buffer[M_STRITOAMAX];
 

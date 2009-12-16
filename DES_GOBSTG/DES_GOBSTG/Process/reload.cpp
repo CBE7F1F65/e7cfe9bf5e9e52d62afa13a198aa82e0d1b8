@@ -51,6 +51,7 @@ bool Process::reload()
 	FrontDisplay::fdisp.Init();
 	Fontsys::Init(FrontDisplay::fdisp.info.normalfont);
 	Fontsys::HeatUp();
+	Replay::ReleaseEnumReplay();
 
 	Replay::Release();
 

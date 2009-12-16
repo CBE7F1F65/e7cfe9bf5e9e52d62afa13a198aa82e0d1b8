@@ -112,7 +112,7 @@ public:
 	int		sevol;
 
 	//replay
-	char	rpyfilename[M_STRITOAMAX];
+	char	rpyfilename[M_PATHMAX];
 	DWORD	seed;
 	int		framecounter;
 	int		frameskip;

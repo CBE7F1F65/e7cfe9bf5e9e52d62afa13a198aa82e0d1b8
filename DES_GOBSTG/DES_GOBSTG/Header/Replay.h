@@ -28,16 +28,21 @@ public:
 
 	static void Free(const char * filename);
 	static void Release(bool deletefiles=true);
+	static int GetEnumReplay();
+	static void ReleaseEnumReplay();
 
 public:
 	partInfo partinfo[RPYPARTMAX];
 	replayInfo rpyinfo;
 	replayFrame replayframe[M_SAVEINPUTMAX];
 	int replayIndex;
+	char filename[M_PATHMAX];
 
 	static list<_ReplayNameListItem> _rpyfilenamelist;
 
 	static Replay rpy;
+	static Replay enumrpy[RPYENUMMAX];
+	static int nenumrpy;
 };
 
 #endif

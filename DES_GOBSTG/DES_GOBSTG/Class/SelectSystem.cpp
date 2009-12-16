@@ -345,7 +345,14 @@ int SelectSystem::SetSelect(int _select)
 	if (_select < 0)
 	{
 		select += randt(1, nselect-1);
-		select %= nselect;
+		if (nselect)
+		{
+			select %= nselect;
+		}
+		else
+		{
+			select = 0;
+		}
 	}
 	else
 	{

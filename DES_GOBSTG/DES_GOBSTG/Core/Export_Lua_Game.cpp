@@ -33,6 +33,8 @@ bool Export_Lua_Game::_LuaRegistFunction(LuaObject * obj)
 	_gameobj.Register("GetPlayerSendExInfo", LuaFn_Game_GetPlayerSendExInfo);
 	_gameobj.Register("PlayerSendEx", LuaFn_Game_PlayerSendEx);
 	_gameobj.Register("GetPlayerStopInfo", LuaFn_Game_GetPlayerStopInfo);
+	_gameobj.Register("GetEnumReplayInfo", LuaFn_Game_GetEnumReplayInfo);
+	_gameobj.Register("SetEnumReplayByIndex", LuaFn_Game_SetEnumReplayByIndex);
 
 	return true;
 }
@@ -395,6 +397,51 @@ int Export_Lua_Game::LuaFn_Game_GetPlayerStopInfo(LuaState * ls)
 	return 7;
 }
 
+int Export_Lua_Game::LuaFn_Game_GetEnumReplayInfo(LuaState * ls)
+{
+	LuaStack args(ls);
+
+	int _index = args[1].GetInteger();
+	_index = Replay::nenumrpy - _index - 1;
+	if (_index >= RPYENUMMAX || _index < 0)
+	{
+		ls->PushString("");
+		return 1;
+	}
+
+	LuaStackObject _table = ls->CreateTable();
+	_table.SetInteger("year", Replay::enumrpy[_index].rpyinfo.year);
+	_table.SetInteger("month", Replay::enumrpy[_index].rpyinfo.month);
+	_table.SetInteger("day", Replay::enumrpy[_index].rpyinfo.day);
+	LuaStackObject _usernametable = _table.CreateTable("username");
+	LuaStackObject _usingcharatable = _table.CreateTable("usingchara");
+	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
+	{
+		_usernametable.SetString(i+1, Replay::enumrpy[_index].rpyinfo.username[i]);
+		LuaStackObject _usingcharasubtable = _usingcharatable.CreateTable(i+1);
+		for (int j=0; j<M_PL_ONESETPLAYER; j++)
+		{
+			_usingcharasubtable.SetString(j+1, Data::data.getPlayerName(Replay::enumrpy[_index].rpyinfo.usingchara[i][j]));
+		}
+	}
+	ls->PushString(Replay::enumrpy[_index].filename);
+	ls->PushValue(_table);
+	return 2;
+}
+
+int Export_Lua_Game::LuaFn_Game_SetEnumReplayByIndex(LuaState * ls)
+{
+	LuaStack args(ls);
+
+	int _index = args[1].GetInteger();
+
+	if (strlen(Replay::enumrpy[_index].filename))
+	{
+		strcpy(Process::mp.rpyfilename, Replay::enumrpy[_index].filename);
+		Process::mp.replaymode = true;
+	}
+	return 0;
+}
 
 #endif
 #endif

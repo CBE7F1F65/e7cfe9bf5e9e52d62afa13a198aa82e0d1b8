@@ -28,6 +28,8 @@ public:
 	static int LuaFn_Game_GetPlayerSendExInfo(LuaState * ls);
 	static int LuaFn_Game_PlayerSendEx(LuaState * ls);
 	static int LuaFn_Game_GetPlayerStopInfo(LuaState * ls);
+	static int LuaFn_Game_GetEnumReplayInfo(LuaState * ls);
+	static int LuaFn_Game_SetEnumReplayByIndex(LuaState * ls);
 };
 
 #endif

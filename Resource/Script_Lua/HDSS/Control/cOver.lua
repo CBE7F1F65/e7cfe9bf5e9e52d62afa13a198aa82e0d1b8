@@ -6,7 +6,12 @@ end
 
 function CEOver_SetSelect(selsysoverid, select)
 	
-	local ystart = TotalCenterY - 36;
+	local replaymode, replayend = hdss.Get(HDSS_REPLAYMODE);
+	
+	local ystart = TotalCenterY;
+	if not replaymode then
+		ystart = ystart - 36;
+	end
 	local yoffset = 36;
 
 	local tableSelectOffset =
@@ -16,10 +21,15 @@ function CEOver_SetSelect(selsysoverid, select)
 		-8, 0,
 		8, 8
 	}
-	
+		
+	local nselect = 0;
 	for i=0, 4 do
+		if replaymode and (i == 1 or i == 3) then
+			continue;
+		end
+		
 		local flag = SEL_NULL;
-		local y = ystart + yoffset * i;
+		local y = ystart + yoffset * nselect;
 		if i == 4 then
 			flag = SEL_NONACTIVE;
 			y = ystart - yoffset * 1.5;
@@ -27,15 +37,16 @@ function CEOver_SetSelect(selsysoverid, select)
 		hdss.Call(
 			HDSS_SELBUILD,
 			{
-				selsysoverid, i, SI_Pause_ResetGame+i, TotalCenterX, y, 1, 0, flag
+				selsysoverid, nselect, SI_Pause_ResetGame+i, TotalCenterX, y, 1, 0, flag
 			},
 			tableSelectOffset
 		)
+		nselect = nselect + 1;
 	end
 	hdss.Call(
 		HDSS_SELSETUP,
 		{
-			selsysoverid, 4, 1, 0, KSI_UP, KSI_DOWN, KSI_FIRE
+			selsysoverid, nselect-1, 1, 0, KSI_UP, KSI_DOWN, KSI_FIRE
 		}
 	)
 end
@@ -76,11 +87,16 @@ function ControlExecute_cOver(con)
 			_selcomplete = 1;
 		elseif _selcomplete == 1 then
 			local ret = CEOver_DispatchSelect(LConst_selsys_overid, con-0xff00);
+			local replaymode, replayend = hdss.Get(HDSS_REPLAYMODE);
 			if ret >= 0 then
 				if ret == 0 then
 					CEOver_ExitState(STATE_START);
 				elseif ret == 1 then
-					CEOver_ExitState(STATE_PLAYER_SELECT);
+					if replaymode then
+						CEOver_ExitState(STATE_REPLAY);
+					else
+						CEOver_ExitState(STATE_PLAYER_SELECT);
+					end
 				elseif ret == 2 then
 					CEOver_ExitState(STATE_TITLE);
 				else

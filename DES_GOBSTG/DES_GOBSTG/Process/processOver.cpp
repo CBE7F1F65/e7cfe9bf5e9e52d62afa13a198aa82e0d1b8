@@ -29,10 +29,18 @@ int Process::processOver()
 			Replay::rpy.Save();
 			FrontDisplay::fdisp.SetState(FDISP_PANEL, 0);
 		}
+		else
+		{
+			replayend = true;
+		}
 	}
 	Scripter::scr.Execute(SCR_CONTROL, STATE_OVER, gametime);
 	if (state != STATE_OVER)
 	{
+		if (state != STATE_START)
+		{
+			FrontDisplay::fdisp.SetState(FDISP_PANEL, 0);
+		}
 		return PTURN;
 	}
 	return PGO;

@@ -36,7 +36,7 @@
 
 struct replayInfo
 {
-	char username[RPYINFO_USERNAMEMAX];
+	char username[M_PL_MATCHMAXPLAYER][RPYINFO_USERNAMEMAX];
 
 	DWORD alltime;
 	DWORD offset;
