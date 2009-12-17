@@ -135,7 +135,7 @@ public:
 	void SetInfi(BYTE reasonflag, int infitimer=PLAYER_INFIMAX);
 	bool HavePlayer(WORD ID);
 	void GetNCharge(BYTE * ncharge=NULL, BYTE * nchargemax=NULL);
-	void GetSpellClassAndLevel(BYTE * spellclass, BYTE * spelllevel);
+	void GetSpellClassAndLevel(BYTE * spellclass, BYTE * spelllevel, int _shootingchargeflag=-1);
 	BYTE AddCharge(float addcharg=0, float addchargemaxe=0);
 
 	void SetDrainSpriteInfo(float x, float y, int headangle=0, float hscale=1.0f, float vscale=0.0f);
@@ -148,6 +148,7 @@ public:
 	static void Init();
 	static bool Action(DWORD stopflag);
 	static void RenderAll(BYTE playerindex);
+	static int IsMatchEnd();
 
 public:
 	WORD	ID_sub_1;
@@ -231,6 +232,7 @@ public:
 	WORD	stoptimer;
 
 	BYTE	shootingchargeflag;
+	BYTE	nowshootingcharge;
 	BYTE	shootchargetimer;
 
 	BYTE	shootpushtimer;
@@ -251,6 +253,8 @@ public:
 	BYTE	initlife;
 	BYTE	playerindex;
 
+	BYTE	winflag;
+
 	BYTE cardlevel;
 	BYTE bosslevel;
 
@@ -262,6 +266,7 @@ public:
 
 	static DWORD alltime;
 	static BYTE	raisestopplayerindex;
+	static BYTE round;
 
 	static Player p[M_PL_MATCHMAXPLAYER];
 

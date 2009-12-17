@@ -9,6 +9,10 @@
 
 #define _PLAYER_ANIMATIONSPEED	8
 
+#define _PLAYER_WINFLAG_1	0x01
+#define _PLAYER_WINFLAG_2	0x02
+#define _PLAYER_WINFLAG_3	0x04
+
 void Player::Init()
 {
 	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
@@ -53,6 +57,31 @@ bool Player::HavePlayer(WORD _ID)
 		return true;
 	}
 	return false;
+}
+
+int Player::IsMatchEnd()
+{
+	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
+	{
+		BYTE wintime = 0;
+		if (p[i].winflag & _PLAYER_WINFLAG_1)
+		{
+			wintime++;
+		}
+		if (p[i].winflag & _PLAYER_WINFLAG_2)
+		{
+			wintime++;
+		}
+		if (p[i].winflag & _PLAYER_WINFLAG_3)
+		{
+			wintime++;
+		}
+		if (wintime >= 2)
+		{
+			return i;
+		}
+	}
+	return -1;
 }
 
 void Player::initFrameIndex()

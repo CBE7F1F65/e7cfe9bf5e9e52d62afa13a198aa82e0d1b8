@@ -42,6 +42,7 @@ struct ftPanelSet
 	hgeSprite * slot;
 	hgeSprite * slotback;
 	hgeSprite * lifeindi[FDISP_LIFEINDIMAX];
+	int winindiheadangle;
 	int slotindex;
 	int combobarindex;
 };

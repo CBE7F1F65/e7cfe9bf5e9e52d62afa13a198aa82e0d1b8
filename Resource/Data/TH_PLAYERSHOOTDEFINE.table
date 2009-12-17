@@ -2,10 +2,10 @@
 Comment	Index	UserID	ChargeBullet	SIID	TimeMod	Flag	Power	HitOnFactor	Arrange	Angle	Speed	Scale	Xbias	Ybias	AccelSpeed	SE
 -	0	0	0	SI_PlayerBullet_0_0_0	8	1700	10	50	0	0	18	1	10	0	0	60
 -	1	0	0	SI_PlayerBullet_0_0_0	8	1700	10	50	0	0	18	1	-10	0	0	60
--	2	0	1	SI_PlayerBullet_0_1_0	1	1736	10	50	1	-800	8	1.5	0	0	0	0
--	3	0	1	SI_PlayerBullet_0_1_0	1	1736	10	50	2	800	8	1.5	0	0	0	0
--	4	0	1	SI_PlayerBullet_0_1_0	1	1736	10	50	3	-1600	8	1.5	0	0	0	0
--	5	0	1	SI_PlayerBullet_0_1_0	1	1736	10	50	4	1600	8	1.5	0	0	0	0
+-	2	0	1	SI_PlayerBullet_0_1_0	1	1736	30	50	1	-800	8	1.5	0	0	0	0
+-	3	0	1	SI_PlayerBullet_0_1_0	1	1736	30	50	2	800	8	1.5	0	0	0	0
+-	4	0	1	SI_PlayerBullet_0_1_0	1	1736	30	50	3	-1600	8	1.5	0	0	0	0
+-	5	0	1	SI_PlayerBullet_0_1_0	1	1736	30	50	4	1600	8	1.5	0	0	0	0
 -	6	1	0	SI_PlayerBullet_1_0_0	8	1700	10	45	0	0	18	1.5	10	0	0	60
 -	7	1	0	SI_PlayerBullet_1_0_0	8	1700	10	45	0	0	18	1.5	-10	0	0	60
 -	8	1	1	SI_PlayerBullet_1_1_0	1	41	1	45	1	0	1	8	0	16	0	60

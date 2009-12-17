@@ -15,6 +15,7 @@ int Process::processReplay()
 
 	if(gametime == 1)
 	{
+		ClearAll();
 		Replay::GetEnumReplay();
 	}
 

@@ -811,6 +811,8 @@ Comment	Index	SI_Name	Tex	Tex_x	Tex_y	Tex_w	Tex_h
 -	1722	SI_Bullet_Score_3	2	120	274	40	12
 -	1723	SI_Bullet_Score_4	2	160	274	40	12
 -	1724	SI_Bullet_Score_5	2	200	274	40	12
+#		BulletEx					
+-	1750	SI_BulletEx_Reimu_0	42	128	0	64	64
 #		Player(2000~2999)					
 -	2000	SI_Player_Reimu_0	10	0	0	32	48
 -	2001	SI_Player_Reimu_1	10	32	0	32	48

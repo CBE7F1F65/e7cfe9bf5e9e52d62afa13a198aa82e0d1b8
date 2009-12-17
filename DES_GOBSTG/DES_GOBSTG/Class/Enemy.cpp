@@ -76,7 +76,8 @@ int Enemy::Build(WORD eID, BYTE playerindex, float x, float y, int angle, float 
 	}
 	else
 	{
-		DWORD i = en[playerindex].toEnd();
+		DWORD i = 0;
+		en[playerindex].toEnd();
 		DWORD size = en[playerindex].getSize();
 		for (; i<size; en[playerindex].toNext(), i++)
 		{
@@ -929,6 +930,10 @@ void Enemy::DoShot()
 	float tw;
 	float th;
 	GetCollisionRect(&tw, &th);
+	if (!tw && !th)
+	{
+		return;
+	}
 	float costpower = PlayerBullet::CheckShoot(playerindex, x, y ,tw, th);
 	if (costpower)
 	{
@@ -1107,6 +1112,10 @@ void Enemy::action()
 	eff.MoveTo(x, y);
 	eff.action();
 
+	float tw;
+	float th;
+	GetCollisionRect(&tw, &th);
+
 	if(!fadeout)
 	{
 		if((Chat::chatitem.IsChatting() || (BossInfo::flag >= BOSSINFO_COLLAPSE)))
@@ -1133,12 +1142,9 @@ void Enemy::action()
 			Target::SetValue(tarID, x, y);
 		}
 
-		float tw;
-		float th;
-		GetCollisionRect(&tw, &th);
 		if (!Player::p[playerindex].bInfi)
 		{
-			if (checkCollisionSquare(Player::p[playerindex].x, Player::p[playerindex].y, tw, th))
+			if ((tw || th) && checkCollisionSquare(Player::p[playerindex].x, Player::p[playerindex].y, tw, th))
 			{
 				Player::p[playerindex].DoShot();
 			}
@@ -1255,7 +1261,7 @@ void Enemy::action()
 	}
 
 	damage = false;
-	able = exist && !fadeout;
+	able = exist && !fadeout && (tw || th);
 }
 
 void Enemy::GetBlastInfo(BYTE * maxtime/* =NULL */, float * r/* =NULL */, float * power/* =NULL */)

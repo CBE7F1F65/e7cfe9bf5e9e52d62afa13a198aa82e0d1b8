@@ -2,41 +2,18 @@
 
 void Process::clearPrep(bool bclearkey)
 {
-	SelectSystem::ClearAll();
-	Effectsys::ClearAll();
-	BGLayer::Init(tex);
-	Enemy::ClearAll();
-//	Ghost::ClearAll();
-	Target::ClearAll();
-	Bullet::ClearItem();
-	Item::ClearItem();
-	PlayerBullet::ClearItem();
-	Beam::ClearItem();
-	Chat::chatitem.Clear();
-	BossInfo::Clear();
-	EffectSp::ClearItem();
-	EventZone::Clear();
-	SpriteItemManager::FreeFrontSprite();
-
+	gametime = 0;
 	lasttime = 0;
-	
-	for (int i=0; i<FRAME_STOPINFOMAX; i++)
-	{
-		stopflag[i] = 0;
-		stoptimer[i] = 0;
-	}
 
-	replayFPS = 0;
-
-	pauseinit = false;
-	frameskip = M_DEFAULT_FRAMESKIP;
-	FrontDisplay::fdisp.SetState(FDISP_PANEL, 1);
+	ClearAll();
 
 	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
 	{
-		SetShake(i, 0, true);
-		Player::p[i].ClearSet();
+		BGLayer::ubg[i][UBGID_BGMASK].valueSetByName(SI_WHITE, M_CLIENT_CENTER_X, M_CLIENT_CENTER_Y, M_CLIENT_WIDTH, M_CLIENT_HEIGHT, 0);
+		BGLayer::ubg[i][UFGID_FGPAUSE].valueSetByName(SI_WHITE, M_CLIENT_CENTER_X, M_CLIENT_CENTER_Y, M_CLIENT_WIDTH, M_CLIENT_HEIGHT, 0);
 	}
+	
+	FrontDisplay::fdisp.SetState(FDISP_PANEL, 1);
 
 	if(!bclearkey)
 		return;
@@ -139,13 +116,6 @@ void Process::startPrep(bool callinit)
 	for (int i=0; i<FRAME_STOPINFOMAX; i++)
 	{
 		SetStop(0, 0);
-	}
-
-	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
-	{
-		BGLayer::ubg[i][UBGID_BGMASK].valueSetByName(SI_WHITE, M_CLIENT_CENTER_X, M_CLIENT_CENTER_Y, M_CLIENT_WIDTH, M_CLIENT_HEIGHT, 0);
-		BGLayer::ubg[i][UFGID_FGPAUSE].valueSetByName(SI_WHITE, M_CLIENT_CENTER_X, M_CLIENT_CENTER_Y, M_CLIENT_WIDTH, M_CLIENT_HEIGHT, 0);
-//		BGLayer::ubg[i][UFGID_FGPAUSE].exist = false;
 	}
 
 	framecounter = 0;

@@ -30,6 +30,7 @@ public:
 	static int LuaFn_Game_GetPlayerStopInfo(LuaState * ls);
 	static int LuaFn_Game_GetEnumReplayInfo(LuaState * ls);
 	static int LuaFn_Game_SetEnumReplayByIndex(LuaState * ls);
+	static int LuaFn_Game_GetPlayerShootChargeInfo(LuaState * ls);
 };
 
 #endif

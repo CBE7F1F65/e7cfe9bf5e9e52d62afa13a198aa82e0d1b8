@@ -419,6 +419,8 @@ scrKeyWord scrKeyTable[] =
 	{"REMAIN",					REMAIN},
 	{"FADEOUT",					FADEOUT},
 	{"BOUNCE",					BOUNCE},
+	{"BOUNCELR",				BOUNCELR},
+	{"BOUNCETB",				BOUNCETB},
 
 	{"ENAC_NONE",				ENAC_NONE},
 	{"ENAC_DIRECTSET_XYAS",		ENAC_DIRECTSET_XYAS},

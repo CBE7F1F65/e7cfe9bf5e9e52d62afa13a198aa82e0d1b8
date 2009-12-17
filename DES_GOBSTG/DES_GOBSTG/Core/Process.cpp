@@ -96,6 +96,38 @@ void Process::Release()
 	hge->Stream_Free(stream);
 }
 
+void Process::ClearAll()
+{
+	SelectSystem::ClearAll();
+	Effectsys::ClearAll();
+	BGLayer::Init(tex);
+	Enemy::ClearAll();
+//	Ghost::ClearAll();
+	Target::ClearAll();
+	Bullet::ClearItem();
+	Item::ClearItem();
+	PlayerBullet::ClearItem();
+	Beam::ClearItem();
+	Chat::chatitem.Clear();
+	BossInfo::Clear();
+	EffectSp::ClearItem();
+	EventZone::Clear();
+	SpriteItemManager::FreeFrontSprite();
+	for (int i=0; i<FRAME_STOPINFOMAX; i++)
+	{
+		stopflag[i] = 0;
+		stoptimer[i] = 0;
+	}
+	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
+	{
+		SetShake(i, 0, true);
+	}
+	replayFPS = 0;
+
+	pauseinit = false;
+	frameskip = M_DEFAULT_FRAMESKIP;
+}
+
 
 void Process::musicSlide(float slidetime, int tovol, int pan, float pitch)
 {

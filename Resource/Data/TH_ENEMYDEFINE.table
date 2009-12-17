@@ -14,3 +14,5 @@ Comment	Index	FaceIndex	SIID	Collision_W	Collision_H	StandFrame	StandShake	Right
 -	40	-1	SI_GhostSprite_YellowActive_0	16	16	8	0	0	0	0	0	0	0	0	0	3	25	40	0	0	12	52	2	_	_
 -	41	-1	SI_GhostSprite_Red_0	12	12	4	0	0	0	0	0	0	0	0	0	3	25	0	0	0	0	0	0	_	_
 -	42	-1	SI_GhostSprite_RedActive_0	16	16	8	0	0	0	0	0	0	0	0	0	3	25	40	0	0	12	52	2	_	_
+#		Charge(44~60)																							
+-	44	-1	SI_Null	0	0	0	0	0	0	0	0	0	0	0	0	4	8	0	0	0	0	0	0	_	_

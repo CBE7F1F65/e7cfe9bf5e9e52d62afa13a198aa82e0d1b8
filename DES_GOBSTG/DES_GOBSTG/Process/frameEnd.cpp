@@ -29,8 +29,19 @@ void Process::frameEnd()
 		}
 		if (!Player::Action(_stopflag))
 		{
-			SetState(STATE_CLEAR, -1);
-			return;
+//			SetState(STATE_CLEAR, -1);
+//			return;
+			if (Player::IsMatchEnd() >= 0)
+			{
+				SetState(STATE_CLEAR, -1);
+				return;
+			}
+			else
+			{
+				Player::ClearRound(Player::round+1);
+				clearPrep();
+				return;
+			}
 		}
 		Enemy::Action(_stopflag);
 		Bullet::Action(_stopflag);

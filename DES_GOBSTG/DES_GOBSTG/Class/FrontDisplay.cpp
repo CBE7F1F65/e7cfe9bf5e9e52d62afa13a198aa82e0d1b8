@@ -126,6 +126,7 @@ void FrontDisplay::action()
 		}
 		panelcountup = tcountup;
 	}
+	panel.winindiheadangle += 400;
 }
 
 void FrontDisplay::RenderHeadInfo(BYTE playerindex)
@@ -254,6 +255,14 @@ void FrontDisplay::RenderPanel()
 			float spellpointx[M_PL_MATCHMAXPLAYER];
 			spellpointx[0] = M_GAMESQUARE_RIGHT_0-panel.spellpoint->GetWidth();
 			spellpointx[1] = M_GAMESQUARE_LEFT_1;
+			float winindix[M_PL_MATCHMAXPLAYER][2];
+			float winindiw = panel.winindi->GetWidth();
+			float winindih = panel.winindi->GetHeight();
+			for (int i=0; i<2; i++)
+			{
+				winindix[0][i] = M_GAMESQUARE_LEFT_0 + winindiw * (i+1);
+				winindix[1][i] = M_GAMESQUARE_RIGHT_1 - winindiw * (i+1);
+			}
 
 			for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
 			{
@@ -285,6 +294,15 @@ void FrontDisplay::RenderPanel()
 				info.spellpointdigitfont->printf(spellpointx[i]+38, M_GAMESQUARE_TOP+16, HGETEXT_RIGHT, "%s", buffer);
 				int nSpellPoint = Player::p[i].nSpellPoint;
 				info.spellpointdigitfont->printf(spellpointx[i]+38, M_GAMESQUARE_TOP+16, HGETEXT_LEFT, "%06d", nSpellPoint);
+
+				if (Player::p[i].winflag)
+				{
+					panel.winindi->RenderEx(winindix[i][0], M_GAMESQUARE_TOP+winindih, ARC(panel.winindiheadangle));
+					if (i == Player::IsMatchEnd())
+					{
+						panel.winindi->RenderEx(winindix[i][1], M_GAMESQUARE_TOP+winindih, ARC(panel.winindiheadangle));
+					}
+				}
 
 				_spd = SpriteItemManager::CastSprite(panel.slotindex);
 				float fslot = Player::p[i].fChargeMax / PLAYER_CHARGEMAX;

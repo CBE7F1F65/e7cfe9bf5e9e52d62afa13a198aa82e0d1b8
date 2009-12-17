@@ -17,18 +17,31 @@ end
 --
 
 function ePlayerSendExChase_0(playerindex, x, y, playerID, appendfloat)
-	local angle = 9000;
-	local speed = 2.0;
-	local type = 15;
+	
+	local rank, cardlevel, bosslevel = hdss.Get(HDSS_RANK, 1-playerindex);
+	local angle;
+	if x > LGlobal_GetCenterX(playerindex) then
+		angle = game.Random_Int(-6500, -4500);
+	else
+		angle = game.Random_Int(-13500, -11500);
+	end
+	local speed = 1.2;
+	local type = CC_BulletEx_Reimu;
+	local startacctime = 24;
+	local stopacctime = cardlevel * 6 + 32;
+	local acc = 6;
+	local afterstopadd = (stopacctime - startacctime) * acc
 	hdssA(playerindex, 
 		{
-			TIMERLESS, 60, ANGLESETADD, 600
+			TIMERLESS, stopacctime, YSETACCADD, startacctime, acc,
+			TIMERGREAT, stopacctime, YSETADD, afterstopadd,
+			EVERY, BOUNCELR, 0 ,16,
 		}
 	);
 	hdss.Call(
 		HDSS_B,
 		{
-			playerindex, x, y, true, angle, speed, type, 2
+			playerindex, x, y, true, angle, speed, type, 0
 		}
 	)
 	hdssA(playerindex);

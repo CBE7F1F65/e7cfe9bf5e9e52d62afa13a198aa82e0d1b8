@@ -1235,6 +1235,38 @@ void Bullet::ChangeAction()
 					i+=2;
 					doit = false;
 					break;
+				case BOUNCELR:
+					if (doit)
+					{
+						if (actionList[i+2])
+						{
+							if (x < M_GAMESQUARE_LEFT_(playerindex) + actionList[i+1] || x > M_GAMESQUARE_RIGHT_(playerindex) - actionList[i+1])
+							{
+								actionList[i+2]--;
+								SE::push(SE_BULLET_CHANGE_2, x);
+								angle = 18000 - angle;
+							}
+						}
+					}
+					i+=2;
+					doit = false;
+					break;
+				case BOUNCETB:
+					if (doit)
+					{
+						if (actionList[i+2])
+						{
+							if (y < M_GAMESQUARE_TOP + actionList[i+1] || y > M_GAMESQUARE_BOTTOM - actionList[i+1])
+							{
+								actionList[i+2]--;
+								SE::push(SE_BULLET_CHANGE_2, x);
+								angle = -angle;
+							}
+						}
+					}
+					i+=2;
+					doit = false;
+					break;
 				}
 				break;
 			}

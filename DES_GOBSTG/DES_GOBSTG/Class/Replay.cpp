@@ -88,7 +88,6 @@ void Replay::ReleaseEnumReplay()
 
 void Replay::Fill()
 {
-	WriteInput(0xffff);
 	SYSTEMTIME systime;
 	GetLocalTime(&systime);
 
@@ -270,6 +269,7 @@ void Replay::Save(const char * replayfilename)
 	}
 
 	strcpy(filename, savefilename);
+	WriteInput(0xffff);
 
 	char buffer[M_STRITOAMAX];
 
@@ -289,10 +289,12 @@ void Replay::Save(const char * replayfilename)
 	memcpy(_rpydata + RPYOFFSET_PARTINFO, partinfo, RPYSIZE_PARTINFO * RPYPARTMAX);
 	memcpy(_rpydata + RPYOFFSET_INPUTDATA, replayframe, replayIndex * RPYSIZE_FRAME);
 
+	/*
 	replayFrame buff;
 	buff.bias = 0;
 	buff.input = 0xffff;
 	memcpy(_rpydata + _size-sizeof(replayFrame), &buff, sizeof(replayFrame));
+	*/
 
 	char treplayfilename[M_PATHMAX];
 	strcpy(treplayfilename, BResource::res.resdata.replayfoldername);

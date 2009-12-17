@@ -57,6 +57,8 @@ DWORD Player::alltime = 0;
 
 BYTE Player::raisestopplayerindex = 0;
 
+BYTE Player::round = 0;
+
 #define _PL_MERGETOPOS_X_(X)	(M_GAMESQUARE_CENTER_X_(X))
 #define _PL_MERGETOPOS_Y		(M_GAMESQUARE_BOTTOM - 64)
 
@@ -96,10 +98,11 @@ Player::~Player()
 	SpriteItemManager::FreeSprite(&spdrain);
 }
 
-void Player::ClearSet(BYTE round)
+void Player::ClearSet(BYTE _round)
 {
 	x			=	PL_MERGEPOS_X_(playerindex);
 	y			=	PL_MERGEPOS_Y;
+	round	=	_round;
 
 	for(int i=0;i<PL_SAVELASTMAX;i++)
 	{
@@ -132,19 +135,23 @@ void Player::ClearSet(BYTE round)
 	costlifetimer		=	0;
 	shootchargetimer	=	0;
 
+	shootingchargeflag	=	0;
+	nowshootingcharge	=	0;
+
 	nLifeCost	=	0;
 	fCharge = 0;
-	if (round == 0)
+	if (_round == 0)
 	{
 		fChargeMax = PLAYER_CHARGEONE;
 		nExPoint = 0;
 		nGhostPoint = 0;
 		nBulletPoint = 0;
 		nSpellPoint		=	0;
+		winflag = 0;
 	}
 
-	cardlevel = _PLAYER_DEFAULETCARDLEVEL_(round);
-	bosslevel = _PLAYER_DEFAULETBOSSLEVEL_(round);
+	cardlevel = _PLAYER_DEFAULETCARDLEVEL_(_round);
+	bosslevel = _PLAYER_DEFAULETBOSSLEVEL_(_round);
 	infitimer = 0;
 	rechargedelaytimer = 0;
 	infireasonflag = 0;
@@ -245,6 +252,10 @@ void Player::ClearRound(BYTE round/* =0 */)
 			rank = _GAMERANK_MIN;
 		}
 		AddLilyCount(-1000);
+		for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
+		{
+			p[i].valueSet(i, round);
+		}
 	}
 	else
 	{
@@ -816,7 +827,7 @@ bool Player::Collapse()
 		for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
 		{
 			EventZone::Build(EVENTZONE_TYPE_BULLETFADEOUT|EVENTZONE_TYPE_ENEMYDAMAGE|EVENTZONE_TYPE_NOSEND, i, p[i].x, p[i].y, 64, EVENTZONE_OVERZONE, 1000, EVENTZONE_EVENT_NULL, 16);
-			p[i].SetInfi(PLAYERINFI_COLLAPSE);
+			p[i].SetInfi(PLAYERINFI_COLLAPSE, 64);
 		}
 
 		esCollapse.x = x;
@@ -825,6 +836,7 @@ bool Player::Collapse()
 
 		effCollapse.MoveTo(x, y , 0, true);
 		effCollapse.Fire();
+		p[1-playerindex].winflag |= 1<<round;
 	}
 	else if(collapsetimer == 64)
 	{
@@ -842,6 +854,8 @@ bool Player::Collapse()
 		collapsetimer = 0;
 		vscale = 1.0f;
 		flag |= PLAYER_MERGE;
+
+		AddCharge(0, 130);
 
 //		SetInfi(PLAYERINFI_COLLAPSE);
 		exist = false;
@@ -1150,13 +1164,18 @@ void Player::GetNCharge(BYTE * ncharge, BYTE * nchargemax)
 	}
 }
 
-void Player::GetSpellClassAndLevel(BYTE * spellclass, BYTE * spelllevel)
+void Player::GetSpellClassAndLevel(BYTE * spellclass, BYTE * spelllevel, int  _shootingchargeflag)
 {
+	BYTE usingshootingchargeflag = shootingchargeflag;
+	if (_shootingchargeflag > 0)
+	{
+		usingshootingchargeflag = _shootingchargeflag;
+	}
 	if (spellclass)
 	{
-		if (shootingchargeflag & _PL_SHOOTINGCHARGE_4)
+		if (usingshootingchargeflag & _PL_SHOOTINGCHARGE_4)
 		{
-			if ((shootingchargeflag & _PL_SHOOTINGCHARGE_3) || (shootingchargeflag & _PL_SHOOTINGCHARGE_2))
+			if ((usingshootingchargeflag & _PL_SHOOTINGCHARGE_3) || (usingshootingchargeflag & _PL_SHOOTINGCHARGE_2))
 			{
 				*spellclass = 4;
 			}
@@ -1165,11 +1184,11 @@ void Player::GetSpellClassAndLevel(BYTE * spellclass, BYTE * spelllevel)
 				*spellclass = 3;
 			}
 		}
-		else if (shootingchargeflag & _PL_SHOOTINGCHARGE_3)
+		else if (usingshootingchargeflag & _PL_SHOOTINGCHARGE_3)
 		{
 			*spellclass = 2;
 		}
-		else if (shootingchargeflag & _PL_SHOOTINGCHARGE_2)
+		else if (usingshootingchargeflag & _PL_SHOOTINGCHARGE_2)
 		{
 			*spellclass = 1;
 		}
@@ -1180,11 +1199,11 @@ void Player::GetSpellClassAndLevel(BYTE * spellclass, BYTE * spelllevel)
 	}
 	if (spelllevel)
 	{
-		if (shootingchargeflag & _PL_SHOOTINGCHARGE_4)
+		if (usingshootingchargeflag & _PL_SHOOTINGCHARGE_4)
 		{
 			*spelllevel = bosslevel;
 		}
-		else if(shootingchargeflag)
+		else if(usingshootingchargeflag)
 		{
 			*spelllevel = cardlevel;
 		}
@@ -1304,6 +1323,11 @@ void Player::setShootingCharge(BYTE _shootingchargeflag)
 		{
 			shootchargetimer = BResource::res.playerdata[nowID].shootchargetime;
 		}
+		if (_shootingchargeflag & ~_PL_SHOOTINGCHARGE_1)
+		{
+			nowshootingcharge = _shootingchargeflag;
+			Scripter::scr.Execute(SCR_EVENT, SCR_EVENT_PLAYERSHOOTCHARGE, playerindex);
+		}
 	}
 }
 
@@ -1337,21 +1361,33 @@ void Player::shootCharge(BYTE nChargeLevel, bool nodelete)
 		break;
 	case 2:
 		SetInfi(PLAYERINFI_SHOOTCHARGE, _PL_SHOOTCHARGEINFI_2);
-		setShootingCharge((nodelete?0:_PL_SHOOTINGCHARGE_1)|_PL_SHOOTINGCHARGE_2);
+		if (!nodelete)
+		{
+			setShootingCharge(_PL_SHOOTINGCHARGE_1);
+		}
+		setShootingCharge(_PL_SHOOTINGCHARGE_2);
 		AddCardBossLevel(1, 0);
 		chargezonemaxtime = _PL_CHARGEZONE_MAXTIME_2;
 		chargezoner = _PL_CHARGEZONE_R_2;
 		break;
 	case 3:
 		SetInfi(PLAYERINFI_SHOOTCHARGE, _PL_SHOOTCHARGEINFI_3);
-		setShootingCharge((nodelete?0:_PL_SHOOTINGCHARGE_1)|_PL_SHOOTINGCHARGE_3);
+		if (!nodelete)
+		{
+			setShootingCharge(_PL_SHOOTINGCHARGE_1);
+		}
+		setShootingCharge(_PL_SHOOTINGCHARGE_3);
 		AddCardBossLevel(1, 0);
 		chargezonemaxtime = _PL_CHARGEZONE_MAXTIME_3;
 		chargezoner = _PL_CHARGEZONE_R_3;
 		break;
 	case 4:
 		SetInfi(PLAYERINFI_SHOOTCHARGE, _PL_SHOOTCHARGEINFI_4);
-		setShootingCharge((nodelete?0:_PL_SHOOTINGCHARGE_1)|_PL_SHOOTINGCHARGE_4);
+		if (!nodelete)
+		{
+			setShootingCharge(_PL_SHOOTINGCHARGE_1);
+		}
+		setShootingCharge(_PL_SHOOTINGCHARGE_4);
 		AddCardBossLevel(0, 1);
 		chargezonemaxtime = _PL_CHARGEZONE_MAXTIME_4;
 		chargezoner = _PL_CHARGEZONE_R_4;
@@ -1385,7 +1421,6 @@ void Player::shootCharge(BYTE nChargeLevel, bool nodelete)
 		}
 		AddLilyCount(-500);
 	}
-	Scripter::scr.Execute(SCR_EVENT, SCR_EVENT_PLAYERSHOOTCHARGE, playerindex);
 }
 
 void Player::SendEx(BYTE playerindex, float x, float y)

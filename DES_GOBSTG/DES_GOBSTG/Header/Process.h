@@ -71,6 +71,8 @@ public:
 
 	void	SetStop(DWORD stopflag, int stoptimer);
 
+	void	ClearAll();
+
 public:
 	union{
 		struct{

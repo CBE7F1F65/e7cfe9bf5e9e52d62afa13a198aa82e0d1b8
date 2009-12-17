@@ -1,6 +1,7 @@
 73	h5nc	48											
 Comment	Type	SIID	nRoll	nColor	CollisionType	Collision_Main	Collision_Sub	FadeColor	BonusColor	nTurnAngle	seID	RenderType	RenderDepth
--	0	SI_Bullet_ShuttleBeam_0	0	16	2	16	5	160	0	0	90	4	20
+#		NormalBullet(0~31)											
+-	0	SI_Bullet_ShuttleBeam_0	0	16	2	16	5	160	0	0	90	4	24
 -	1	SI_Bullet_Scale_0	0	16	1	2	2.5	160	0	0	90	2	14
 -	2	SI_Bullet_Ring_0	0	16	1	5	0	160	0	0	90	2	13
 -	3	SI_Bullet_MiddleBall_0	0	16	1	5	0	160	0	0	90	2	11
@@ -25,10 +26,13 @@ Comment	Type	SIID	nRoll	nColor	CollisionType	Collision_Main	Collision_Sub	FadeCo
 -	22	SI_Bullet_Stupa_0	0	1	2	7	5	255	0	0	90	2	8
 -	23	SI_Bullet_EighthNote_0	0	4	1	7	0	255	0	240	90	2	4
 -	24	SI_Bullet_BigShuttle_0	0	8	2	7	5	160	0	0	90	2	5
--	40	SI_Bullet_RedFireBall_0	4	4	1	5	0	1	0	0	90	0	9
--	41	SI_Bullet_FadedRedFireBall_0	4	4	1	5	0	3	0	0	90	0	9
--	42	SI_Bullet_BlueFireBall_0	4	4	1	5	0	1	0	0	90	0	9
--	43	SI_Bullet_FadedBlueFireBall_0	4	4	1	5	0	3	0	0	90	0	9
+-	25	SI_Bullet_RedFireBall_0	4	4	1	5	0	1	0	0	90	0	9
+-	26	SI_Bullet_FadedRedFireBall_0	4	4	1	5	0	3	0	0	90	0	9
+-	27	SI_Bullet_BlueFireBall_0	4	4	1	5	0	1	0	0	90	0	9
+-	28	SI_Bullet_FadedBlueFireBall_0	4	4	1	5	0	3	0	0	90	0	9
+#		ExBullet(32~59)											
+-	32	SI_BulletEx_Reimu_0	0	1	1	18	0	255	0	240	90	2	20
+#		SpecialBullet(60~63)											
 -	60	SI_Null	0	16	0	0	0	0	0	0	90	2	0
 -	61	SI_Bullet_ShootItem_0	0	8	0	0	0	255	0	0	90	0	0
 -	62	SI_Bullet_FadeItem_0	0	8	0	0	0	255	0	0	90	0	0

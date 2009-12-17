@@ -35,6 +35,7 @@ bool Export_Lua_Game::_LuaRegistFunction(LuaObject * obj)
 	_gameobj.Register("GetPlayerStopInfo", LuaFn_Game_GetPlayerStopInfo);
 	_gameobj.Register("GetEnumReplayInfo", LuaFn_Game_GetEnumReplayInfo);
 	_gameobj.Register("SetEnumReplayByIndex", LuaFn_Game_SetEnumReplayByIndex);
+	_gameobj.Register("GetPlayerShootChargeInfo", LuaFn_Game_GetPlayerShootChargeInfo);
 
 	return true;
 }
@@ -434,6 +435,11 @@ int Export_Lua_Game::LuaFn_Game_SetEnumReplayByIndex(LuaState * ls)
 	LuaStack args(ls);
 
 	int _index = args[1].GetInteger();
+	_index = Replay::nenumrpy - _index - 1;
+	if (_index >= RPYENUMMAX || _index < 0)
+	{
+		return 0;
+	}
 
 	if (strlen(Replay::enumrpy[_index].filename))
 	{
@@ -441,6 +447,24 @@ int Export_Lua_Game::LuaFn_Game_SetEnumReplayByIndex(LuaState * ls)
 		Process::mp.replaymode = true;
 	}
 	return 0;
+}
+
+int Export_Lua_Game::LuaFn_Game_GetPlayerShootChargeInfo(LuaState * ls)
+{
+	LuaStack args(ls);
+	BYTE _playerindex = args[1].GetInteger();
+	BYTE _spellclass;
+	BYTE _spelllevel;
+	Player::p[_playerindex].GetSpellClassAndLevel(&_spellclass, &_spelllevel, Player::p[_playerindex].nowshootingcharge);
+	ls->PushInteger(_spellclass);
+	ls->PushInteger(_spelllevel);
+	ls->PushInteger(Player::p[_playerindex].nowID);
+	ls->PushNumber(Player::p[1-_playerindex].x);
+	ls->PushNumber(Player::p[1-_playerindex].y);
+	ls->PushNumber(Player::p[_playerindex].x);
+	ls->PushNumber(Player::p[_playerindex].y);
+	ls->PushInteger(Player::p[1-_playerindex].nowID);
+	return 8;
 }
 
 #endif
