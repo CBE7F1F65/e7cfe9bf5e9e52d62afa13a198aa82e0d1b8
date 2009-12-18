@@ -36,14 +36,14 @@ function _EventExecute_PlayerInStop(playerindex)
 end
 
 function _EventExecute_PlayerShootCharge(playerindex)
-	local charge, level, playerID, opx, opy, px, py, oplayerID = game.GetPlayerShootChargeInfo(playerindex);
-	MB(charge, level)
-	hdss.Call(
-		HDSS_B,
-		{
-			playerindex, (playerindex)*320+160, 0, true, game.Random_Int(4500, 13500), game.Random_Float(1.2, 1.4), 10, 2
-		}
-	)
+	local charge, level, oplayerID, px, py, opx, opy, playerID = game.GetPlayerShootChargeInfo(playerindex);
+	for i, it in pairs(LTable_ePlayerShootChargeFunction) do
+		if it[1] == oplayerID then
+			if it[2] == charge then
+				return it[3](1-playerindex, level, oplayerID, px, py, opx, opy, playerID);
+			end
+		end
+	end
 	return true;
 end
 

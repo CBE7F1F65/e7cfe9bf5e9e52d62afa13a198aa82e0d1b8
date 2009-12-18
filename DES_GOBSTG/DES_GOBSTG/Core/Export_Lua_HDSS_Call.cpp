@@ -98,6 +98,10 @@ int Export_Lua_HDSS::LuaFn_HDSS_Call(LuaState * ls)
 				return _HDSSCallGet::Call_BUBUILD(ls);
 			case SCR_BUACTIONSET:
 				return _HDSSCallGet::Call_BUACTIONSET(ls);
+			case SCR_BUBUILDCIRCLE:
+				return _HDSSCallGet::Call_BUBUILDCIRCLE(ls);
+			case SCR_BUBUILDLINE:
+				return _HDSSCallGet::Call_BUBUILDLINE(ls);
 			}
 			break;
 			/************************************************************************/
@@ -110,6 +114,8 @@ int Export_Lua_HDSS::LuaFn_HDSS_Call(LuaState * ls)
 				return _HDSSCallGet::Call_ENBUILD(ls);
 			case SCR_ENACTIONSET:
 				return _HDSSCallGet::Call_ENACTIONSET(ls);
+			case SCR_ENSAIM:
+				return _HDSSCallGet::Call_ENSAIM(ls);
 			case SCR_ENAZBUILD:
 				return _HDSSCallGet::Call_ENAZBUILD(ls);
 			}
@@ -143,6 +149,8 @@ int Export_Lua_HDSS::LuaFn_HDSS_Call(LuaState * ls)
 			{
 			case SCR_SETPINITLIFE:
 				return _HDSSCallGet::Call_SETPINITLIFE(ls);
+			case SCR_SETPBINFI:
+				return _HDSSCallGet::Call_SETPBINFI(ls);
 			}
 			break;
 			/************************************************************************/

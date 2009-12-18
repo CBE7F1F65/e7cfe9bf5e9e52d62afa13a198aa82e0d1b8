@@ -257,6 +257,8 @@ public:
 
 	BYTE cardlevel;
 	BYTE bosslevel;
+	BYTE nowcardlevel;
+	BYTE nowbosslevel;
 
 	static BYTE rank;
 	static int lilycount;

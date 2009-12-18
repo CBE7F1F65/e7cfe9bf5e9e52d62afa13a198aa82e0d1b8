@@ -136,7 +136,7 @@ struct bulletData
 	BYTE blendtype;
 	BYTE collisiontype;
 	BYTE fadecolor;
-	BYTE bonuscolor;
+	BYTE autosendsetID;
 	BYTE renderdepth;
 };
 
@@ -201,7 +201,7 @@ struct spriteData
 	int tex_y;
 	int tex_w;
 	int tex_h;
-	BYTE tex;
+	int tex;
 };
 
 struct playershootData 

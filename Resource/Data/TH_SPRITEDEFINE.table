@@ -202,7 +202,7 @@ Comment	Index	SI_Name	Tex	Tex_x	Tex_y	Tex_w	Tex_h
 -	249	SI_GameInfo_Ready	6	0	464	128	48
 -	250	SI_GameInfo_GameStart	6	144	464	208	48
 #		UIOther(260~319)					
--	260	SI_Enemy_X	0	208	368	48	16
+-	260	SI_Enemy_X	6	208	416	48	16
 -	261	SI_SpellPointDigitCharacter_0	6	320	32	8	11
 -	262	SI_SpellPointDigitCharacter_1	6	328	32	8	11
 -	263	SI_SpellPointDigitCharacter_2	6	336	32	8	11
@@ -274,35 +274,35 @@ Comment	Index	SI_Name	Tex	Tex_x	Tex_y	Tex_w	Tex_h
 -	336	SI_FrontPanel_LifeIndi_Empty	6	432	0	16	16
 -	337	SI_Front_Text	5	464	160	48	352
 #		Face(400~499)					
--	400	SI_Face_01	74	0	0	-1	-1
--	401	SI_Face_02	75	0	0	-1	-1
--	402	SI_Face_03	76	0	0	-1	-1
--	403	SI_Face_04	77	0	0	-1	-1
--	404	SI_Face_05	78	0	0	-1	-1
--	405	SI_Face_06	79	0	0	-1	-1
--	406	SI_Face_07	80	0	0	-1	-1
--	407	SI_Face_08	81	0	0	-1	-1
--	408	SI_Face_09	82	0	0	-1	-1
--	409	SI_Face_10	83	0	0	-1	-1
--	410	SI_Face_11	84	0	0	-1	-1
--	411	SI_Face_12	85	0	0	-1	-1
--	412	SI_Face_13	86	0	0	-1	-1
--	413	SI_Face_14	87	0	0	-1	-1
--	414	SI_Face_15	88	0	0	-1	-1
--	415	SI_Face_16	89	0	0	-1	-1
--	416	SI_Face_17	90	0	0	-1	-1
--	417	SI_Face_18	91	0	0	-1	-1
--	418	SI_Face_19	92	0	0	-1	-1
--	419	SI_Face_20	93	0	0	-1	-1
--	420	SI_Face_21	94	0	0	-1	-1
--	421	SI_Face_22	95	0	0	-1	-1
--	422	SI_Face_23	96	0	0	-1	-1
+-	400	SI_Face_01	110	0	0	-1	-1
+-	401	SI_Face_02	111	0	0	-1	-1
+-	402	SI_Face_03	112	0	0	-1	-1
+-	403	SI_Face_04	113	0	0	-1	-1
+-	404	SI_Face_05	114	0	0	-1	-1
+-	405	SI_Face_06	115	0	0	-1	-1
+-	406	SI_Face_07	116	0	0	-1	-1
+-	407	SI_Face_08	117	0	0	-1	-1
+-	408	SI_Face_09	118	0	0	-1	-1
+-	409	SI_Face_10	119	0	0	-1	-1
+-	410	SI_Face_11	120	0	0	-1	-1
+-	411	SI_Face_12	121	0	0	-1	-1
+-	412	SI_Face_13	122	0	0	-1	-1
+-	413	SI_Face_14	123	0	0	-1	-1
+-	414	SI_Face_15	124	0	0	-1	-1
+-	415	SI_Face_16	125	0	0	-1	-1
+-	416	SI_Face_17	126	0	0	-1	-1
+-	417	SI_Face_18	127	0	0	-1	-1
+-	418	SI_Face_19	128	0	0	-1	-1
+-	419	SI_Face_20	129	0	0	-1	-1
+-	420	SI_Face_21	130	0	0	-1	-1
+-	421	SI_Face_22	131	0	0	-1	-1
+-	422	SI_Face_23	132	0	0	-1	-1
 #		MusicName(500~549)					
--	500	SI_MusicName_01	205	0	0	256	13
--	501	SI_MusicName_02	205	0	13	256	13
--	502	SI_MusicName_03	205	0	26	256	13
--	503	SI_MusicName_04	205	0	39	256	13
--	504	SI_MusicName_05	205	0	52	256	13
+-	500	SI_MusicName_01	363	0	0	256	13
+-	501	SI_MusicName_02	363	0	13	256	13
+-	502	SI_MusicName_03	363	0	26	256	13
+-	503	SI_MusicName_04	363	0	39	256	13
+-	504	SI_MusicName_05	363	0	52	256	13
 #		PlayerGhost(550~649)					
 -	550	SI_PlayerGhost_01_1	10	64	144	16	16
 -	551	SI_PlayerGhost_01_2	10	80	144	16	16
@@ -313,17 +313,17 @@ Comment	Index	SI_Name	Tex	Tex_x	Tex_y	Tex_w	Tex_h
 -	556	SI_PlayerGhost_04_2	28	32	192	32	16
 -	557	SI_PlayerGhost_05	29	64	144	16	16
 -	558	SI_PlayerGhost_06	30	192	144	32	32
--	559	SI_PlayerGhost_07	46	0	0	0	0
+-	559	SI_PlayerGhost_07	31	0	0	0	0
 #		Scene(650~749)					
--	650	SI_TitleScene	202	0	0	-1	-1
--	651	SI_SelectScene	203	0	0	-1	-1
--	652	SI_ReplayScene	204	0	0	-1	-1
--	653	SI_BG_01_1	212	0	0	512	512
--	654	SI_BG_01_2	213	0	0	-1	-1
--	655	SI_BG_02_1	214	0	0	-1	-1
--	656	SI_BG_02_2	215	0	0	-1	-1
--	657	SI_BG_03_1	216	0	0	384	448
--	658	SI_BG_03_2	217	0	0	384	384
+-	650	SI_TitleScene	360	0	0	-1	-1
+-	651	SI_SelectScene	361	0	0	-1	-1
+-	652	SI_ReplayScene	362	0	0	-1	-1
+-	653	SI_BG_01_1	560	0	0	512	512
+-	654	SI_BG_01_2	561	0	0	-1	-1
+-	655	SI_BG_02_1	562	0	0	-1	-1
+-	656	SI_BG_02_2	563	0	0	-1	-1
+-	657	SI_BG_03_1	564	0	0	384	448
+-	658	SI_BG_03_2	565	0	0	384	384
 #		Enemy(750~849)					
 -	750	SI_EnemySprite_Blue_0	4	0	0	32	32
 -	751	SI_EnemySprite_Blue_1	4	32	0	32	32
@@ -812,7 +812,7 @@ Comment	Index	SI_Name	Tex	Tex_x	Tex_y	Tex_w	Tex_h
 -	1723	SI_Bullet_Score_4	2	160	274	40	12
 -	1724	SI_Bullet_Score_5	2	200	274	40	12
 #		BulletEx					
--	1750	SI_BulletEx_Reimu_0	42	128	0	64	64
+-	1750	SI_BulletEx_Reimu_0	50	128	0	64	64
 #		Player(2000~2999)					
 -	2000	SI_Player_Reimu_0	10	0	0	32	48
 -	2001	SI_Player_Reimu_1	10	32	0	32	48
@@ -1322,14 +1322,40 @@ Comment	Index	SI_Name	Tex	Tex_x	Tex_y	Tex_w	Tex_h
 -	2505	SI_Player_Sanae_22	32	192	96	32	48
 -	2506	SI_Player_Sanae_23	32	224	96	32	48
 #		PlayerSpellCutIn(3000~3399)					
--	3000	SI_PlayerSpellCutIn_01_LL	138	0	0	256	85
--	3001	SI_PlayerSpellCutIn_01_LR	138	0	85	32	85
--	3002	SI_PlayerSpellCutIn_01_RL	138	0	170	256	85
--	3003	SI_PlayerSpellCutIn_01_RR	138	224	85	32	85
--	3004	SI_PlayerSpellCutIn_02_LL	139	0	0	256	85
--	3005	SI_PlayerSpellCutIn_02_LR	139	0	85	32	85
--	3006	SI_PlayerSpellCutIn_02_RL	139	0	170	256	85
--	3007	SI_PlayerSpellCutIn_02_RR	139	224	85	32	85
+-	3000	SI_PlayerSpellCutIn_01_LL	260	0	0	256	85
+-	3001	SI_PlayerSpellCutIn_01_LR	260	0	85	32	85
+-	3002	SI_PlayerSpellCutIn_01_RL	260	0	170	256	85
+-	3003	SI_PlayerSpellCutIn_01_RR	260	224	85	32	85
+-	3004	SI_PlayerSpellCutIn_02_LL	261	0	0	256	85
+-	3005	SI_PlayerSpellCutIn_02_LR	261	0	85	32	85
+-	3006	SI_PlayerSpellCutIn_02_RL	261	0	170	256	85
+-	3007	SI_PlayerSpellCutIn_02_RR	261	224	85	32	85
 #		PlayerDrainZone(3400~3599)					
--	3400	SI_PlayerDrainZone_01	170	0	0	-1	-1
--	3401	SI_PlayerDrainZone_02	171	0	0	-1	-1
+-	3400	SI_PlayerDrainZone_01	310	0	0	-1	-1
+-	3401	SI_PlayerDrainZone_02	311	0	0	-1	-1
+#		Unknown(3600~3999)					
+#		Boss(4000~4999)					
+-	4000	SI_Boss_Reimu_0	160	0	0	64	80
+-	4001	SI_Boss_Reimu_1	160	64	0	64	80
+-	4002	SI_Boss_Reimu_2	160	128	0	64	80
+-	4003	SI_Boss_Reimu_3	160	192	0	64	80
+-	4004	SI_Boss_Reimu_4	160	0	80	64	80
+-	4005	SI_Boss_Reimu_5	160	64	80	64	80
+-	4006	SI_Boss_Reimu_6	160	128	80	64	80
+-	4007	SI_Boss_Reimu_7	160	192	80	64	80
+-	4008	SI_Boss_Reimu_8	160	0	160	64	80
+-	4009	SI_Boss_Reimu_9	160	64	160	64	80
+-	4010	SI_Boss_Reimu_10	160	128	160	64	80
+-	4011	SI_Boss_Reimu_11	160	192	160	64	80
+-	4012	SI_Boss_Marisa_0	161	0	0	64	80
+-	4013	SI_Boss_Marisa_1	161	64	0	64	80
+-	4014	SI_Boss_Marisa_2	161	128	0	64	80
+-	4015	SI_Boss_Marisa_3	161	192	0	64	80
+-	4016	SI_Boss_Marisa_4	161	0	80	64	80
+-	4017	SI_Boss_Marisa_5	161	64	80	64	80
+-	4018	SI_Boss_Marisa_6	161	128	80	64	80
+-	4019	SI_Boss_Marisa_7	161	192	80	64	80
+-	4020	SI_Boss_Marisa_8	161	0	160	64	80
+-	4021	SI_Boss_Marisa_9	161	64	160	64	80
+-	4022	SI_Boss_Marisa_10	161	128	160	64	80
+-	4023	SI_Boss_Marisa_11	161	192	160	64	80

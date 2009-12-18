@@ -306,6 +306,13 @@ void Enemy::setTake(DWORD _take)
 	take = _take;
 }
 
+void Enemy::setLevelAim(int _level, float aimx, float aimy)
+{
+	level = _level;
+	aim.x = aimx;
+	aim.y = aimy;
+}
+
 void Enemy::valueSet(BYTE _playerindex, WORD _eID, float _x, float _y, int _angle, float _speed, BYTE _type, float _life, int _infitimer)
 {
 	playerindex	=	_playerindex;
@@ -336,14 +343,13 @@ void Enemy::valueSet(BYTE _playerindex, WORD _eID, float _x, float _y, int _angl
 	sendtime	=	0;
 	sendsetID	=	0;
 	tarID	=	0xff;
-	aim.x	=	0;
-	aim.y	=	0;
 	activetimer = 0;
 	activemaxtime = 0;
 
 	actionflag = ENEMYACTION_NONE;
 	storetimer = 0;
 
+	setLevelAim();
 	ChangeType(_type);
 }
 
@@ -497,6 +503,16 @@ void Enemy::matchAction()
 		{
 			speed += 0.06f;
 			angle = aMainAngle(Player::p[playerindex].x, Player::p[playerindex].y);
+		}
+		break;
+
+	case ENAC_FADEOUT_T:
+		//消失时间
+		//直接消失
+		if (timer > para[0])
+		{
+			timer = 0;
+			fadeout = true;
 		}
 		break;
 
@@ -1002,7 +1018,7 @@ void Enemy::DoShot()
 	if(life < 0)
 	{
 		DWORD _index = en[playerindex].getIndex();
-		Scripter::scr.Execute(SCR_EDEF, ID, SCRIPT_CON_POST);
+		Scripter::scr.Execute(SCR_EDEF, ID|(playerindex<<16), SCRIPT_CON_POST);
 		en[playerindex].toIndex(_index);
 
 		if (life < 0)
@@ -1128,7 +1144,7 @@ void Enemy::action()
 		if(ID)
 		{
 			DWORD _index = en[playerindex].getIndex();
-			Scripter::scr.Execute(SCR_EDEF, ID, timer);
+			Scripter::scr.Execute(SCR_EDEF, ID|(playerindex<<16), timer);
 			en[playerindex].toIndex(_index);
 		}
 		matchAction();

@@ -147,6 +147,78 @@ int _HDSSCallGet::Get_ENY(LuaState * ls)
 	return 0;
 }
 
+int _HDSSCallGet::Get_ENLEVEL(LuaState * ls)
+{
+	_ENTERGET_HDSS_LUA;
+	if (argscount > 1)
+	{
+		BYTE _playerindex = _INEXT_HDSS_LUAFUNC;
+		BYTE _enindex = Enemy::en[_playerindex].getIndex();
+		_JNEXT_HDSS_LUAFUNC;
+		if (bhavenext)
+		{
+			_enindex = _IOBJ_HDSS_LUA;
+		}
+		_PF_HDSS_LUA(Enemy::en[_playerindex][_enindex].level);
+		return 1;
+	}
+	return 0;
+}
+
+int _HDSSCallGet::Get_ENAIMX(LuaState * ls)
+{
+	_ENTERGET_HDSS_LUA;
+	if (argscount > 1)
+	{
+		BYTE _playerindex = _INEXT_HDSS_LUAFUNC;
+		BYTE _enindex = Enemy::en[_playerindex].getIndex();
+		_JNEXT_HDSS_LUAFUNC;
+		if (bhavenext)
+		{
+			_enindex = _IOBJ_HDSS_LUA;
+		}
+		_PF_HDSS_LUA(Enemy::en[_playerindex][_enindex].aim.x);
+		return 1;
+	}
+	return 0;
+}
+
+int _HDSSCallGet::Get_ENAIMY(LuaState * ls)
+{
+	_ENTERGET_HDSS_LUA;
+	if (argscount > 1)
+	{
+		BYTE _playerindex = _INEXT_HDSS_LUAFUNC;
+		BYTE _enindex = Enemy::en[_playerindex].getIndex();
+		_JNEXT_HDSS_LUAFUNC;
+		if (bhavenext)
+		{
+			_enindex = _IOBJ_HDSS_LUA;
+		}
+		_PF_HDSS_LUA(Enemy::en[_playerindex][_enindex].aim.y);
+		return 1;
+	}
+	return 0;
+}
+
+int _HDSSCallGet::Get_ENLIFE(LuaState * ls)
+{
+	_ENTERGET_HDSS_LUA;
+	if (argscount > 1)
+	{
+		BYTE _playerindex = _INEXT_HDSS_LUAFUNC;
+		BYTE _enindex = Enemy::en[_playerindex].getIndex();
+		_JNEXT_HDSS_LUAFUNC;
+		if (bhavenext)
+		{
+			_enindex = _IOBJ_HDSS_LUA;
+		}
+		_PF_HDSS_LUA(Enemy::en[_playerindex][_enindex].life);
+		return 1;
+	}
+	return 0;
+}
+
 int _HDSSCallGet::Get_PX(LuaState * ls)
 {
 	_ENTERGET_HDSS_LUA;

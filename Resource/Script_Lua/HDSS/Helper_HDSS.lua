@@ -283,11 +283,20 @@ function hdssFREEFRONTSPRITE(index)
 	)
 end
 
-function hdssSETPINITLIFE(index, life)
+function hdssSETPINITLIFE(playerindex, life)
 	return hdss.Call(
 		HDSS_SETPINITLIFE,
 		{
-			index, life
+			playerindex, life
+		}
+	)
+end
+
+function hdssSETPBINFI(playerindex, reasonflag, infitimer)
+	return hdss.Call(
+		HDSS_SETPBINFI,
+		{
+			playerindex, reasonflag, infitimer
 		}
 	)
 end
@@ -348,6 +357,24 @@ function hdssCOLLISION_CIRCLE(x, y, aimx, aimy, r, bbig)
 		HDSS_COLLISION_CIRCLE,
 		{
 			x, y, aimx, aimy, r, bbig
+		}
+	)
+end
+
+function hdssEA(playerindex, ac, para0, para1, para2, para3)
+	return hdss.Call(
+		HDSS_EA,
+		{
+			playerindex, ac, para0, para1, para2, para3
+		}
+	)
+end
+
+function hdssENSAIM(playerindex, level, aimx, aimy)
+	return hdss.Call(
+		HDSS_ENSAIM,
+		{
+			playerindex, level, aimx, aimy
 		}
 	)
 end

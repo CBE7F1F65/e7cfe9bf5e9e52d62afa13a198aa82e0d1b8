@@ -57,6 +57,9 @@ function ControlExecute_cStart(con)
 		hdssBGCOLOR(i, 3, 0, col, col, 0);
 		end
 		
+		--
+		hdssSETPBINFI(1, 0);
+		
 	end
 
 	if math.mod(con, 2) == 1 then	

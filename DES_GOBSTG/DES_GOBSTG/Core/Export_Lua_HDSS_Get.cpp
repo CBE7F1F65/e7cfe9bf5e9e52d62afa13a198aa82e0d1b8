@@ -110,11 +110,17 @@ int Export_Lua_HDSS::LuaFn_HDSS_Get(LuaState * ls)
 			break;
 		case SCR_ENRMAP:
 			break;
+		case SCR_ENLEVEL:
+			return _HDSSCallGet::Get_ENLEVEL(ls);
+			break;
 		case SCR_ENAIMX:
+			return _HDSSCallGet::Get_ENAIMX(ls);
 			break;
 		case SCR_ENAIMY:
+			return _HDSSCallGet::Get_ENAIMY(ls);
 			break;
 		case SCR_ENLIFE:
+			return _HDSSCallGet::Get_ENLIFE(ls);
 			break;
 		}
 		break;

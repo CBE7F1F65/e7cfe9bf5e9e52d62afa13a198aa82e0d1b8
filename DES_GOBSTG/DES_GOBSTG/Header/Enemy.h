@@ -55,6 +55,8 @@
 #define ENAC_BROKENLINE_CATE	0x05
 #define ENAC_STOPANDSTRIKE_TEA	0x06
 
+#define ENAC_FADEOUT_T			0x40
+
 #define ENAC_REPOSITION_T		0x80
 #define ENAC_OVERPLAYER_CXYT	0x81
 #define ENAC_CHASETO_CXY		0x82
@@ -118,6 +120,7 @@ public:
 	void setTar(BYTE tarID=0xff);
 	void setTake(DWORD take=0);
 	void setAction(WORD ac=ENAC_NONE, float para0=0, float para1=0, float para2=0, float para3=0);
+	void setLevelAim(int level=0, float aimx=0, float aimy=0);
 
 	void initFrameIndex();
 	void setFrame(BYTE frameenum);
@@ -156,6 +159,7 @@ public:
 
 	float	para[ENEMY_PARAMAX];
 	Target	aim;
+	int	level;
 	float	lastx;
 	float	life;
 	float	damagerate;

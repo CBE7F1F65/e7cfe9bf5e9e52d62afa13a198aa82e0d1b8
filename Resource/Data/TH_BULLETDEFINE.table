@@ -1,5 +1,5 @@
 73	h5nc	48											
-Comment	Type	SIID	nRoll	nColor	CollisionType	Collision_Main	Collision_Sub	FadeColor	BonusColor	nTurnAngle	seID	RenderType	RenderDepth
+Comment	Type	SIID	nRoll	nColor	CollisionType	Collision_Main	Collision_Sub	FadeColor	AutoSendSetID	nTurnAngle	seID	RenderType	RenderDepth
 #		NormalBullet(0~31)											
 -	0	SI_Bullet_ShuttleBeam_0	0	16	2	16	5	160	0	0	90	4	24
 -	1	SI_Bullet_Scale_0	0	16	1	2	2.5	160	0	0	90	2	14
@@ -14,7 +14,7 @@ Comment	Type	SIID	nRoll	nColor	CollisionType	Collision_Main	Collision_Sub	FadeCo
 -	10	SI_Bullet_Star_0	0	16	1	3	0	160	0	320	90	2	16
 -	11	SI_Bullet_RollingBall_0	0	16	1	5	0	160	0	240	90	2	11
 -	12	SI_Bullet_SmallStar_0	0	16	1	2	0	160	0	240	90	2	19
--	13	SI_Bullet_SmallBall_0	0	16	1	3	0	160	0	240	90	2	19
+-	13	SI_Bullet_SmallBall_0	0	16	1	3	0	160	1	240	90	2	19
 -	14	SI_Bullet_Coin_0	0	3	1	4	0	255	0	0	90	2	12
 -	15	SI_Bullet_HugeBall_0	0	4	1	15	0	255	0	0	90	4	1
 -	16	SI_Bullet_BigStar_0	0	8	1	7	0	160	0	240	90	2	3

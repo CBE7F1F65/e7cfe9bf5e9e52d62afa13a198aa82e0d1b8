@@ -8,7 +8,7 @@ Comment	Index	Texture
 -	5	Graphic/Other/panel.png
 -	6	Graphic/th09/front.png
 -	7	Graphic/th09/selectitem.png
-#		Player(10~41)
+#		Player(10~59)
 -	10	Graphic/Sprite/Player/Player/pl_01.png
 -	11	Graphic/Sprite/Player/Player/pl_02.png
 -	12	Graphic/Sprite/Player/Player/pl_03.png
@@ -29,82 +29,84 @@ Comment	Index	Texture
 -	30	Graphic/Sprite/Player/Player/pl_21.png
 -	31	Graphic/Sprite/Player/Player/pl_22.png
 -	32	Graphic/Sprite/Player/Player/pl_23.png
-#		PlayerEx(42~73)
--	42	Graphic/Sprite/Player/Player/pl_01_ex.png
--	43	Graphic/Sprite/Player/Player/pl_02_ex.png
--	48	Graphic/Sprite/Player/Player/pl_07_ex.png
-#		Face(74~105)
--	74	Graphic/Sprite/Face/face_01.png
--	75	Graphic/Sprite/Face/face_02.png
--	76	Graphic/Sprite/Face/face_03.png
--	77	Graphic/Sprite/Face/face_04.png
--	78	Graphic/Sprite/Face/face_05.png
--	79	Graphic/Sprite/Face/face_06.png
--	80	Graphic/Sprite/Face/face_07.png
--	81	Graphic/Sprite/Face/face_08.png
--	82	Graphic/Sprite/Face/face_09.png
--	83	Graphic/Sprite/Face/face_10.png
--	84	Graphic/Sprite/Face/face_11.png
--	85	Graphic/Sprite/Face/face_12.png
--	86	Graphic/Sprite/Face/face_13.png
--	87	Graphic/Sprite/Face/face_14.png
--	88	Graphic/Sprite/Face/face_15.png
--	89	Graphic/Sprite/Face/face_16.png
--	90	Graphic/Sprite/Face/face_17.png
--	91	Graphic/Sprite/Face/face_18.png
--	92	Graphic/Sprite/Face/face_19.png
--	93	Graphic/Sprite/Face/face_20.png
--	94	Graphic/Sprite/Face/face_21.png
--	95	Graphic/Sprite/Face/face_22.png
--	96	Graphic/Sprite/Face/face_23.png
-#		Boss(106~137)
--	106	Graphic/Sprite/Boss/boss_01.png
--	107	Graphic/Sprite/Boss/boss_02.png
--	108	Graphic/Sprite/Boss/boss_03.png
--	109	Graphic/Sprite/Boss/boss_04.png
--	110	Graphic/Sprite/Boss/boss_05.png
--	111	Graphic/Sprite/Boss/boss_06.png
--	112	Graphic/Sprite/Boss/boss_07.png
--	113	Graphic/Sprite/Boss/boss_08.png
--	114	Graphic/Sprite/Boss/boss_09.png
--	115	Graphic/Sprite/Boss/boss_10.png
--	116	Graphic/Sprite/Boss/boss_11.png
--	117	Graphic/Sprite/Boss/boss_12.png
--	118	Graphic/Sprite/Boss/boss_13.png
--	119	Graphic/Sprite/Boss/boss_14.png
--	120	Graphic/Sprite/Boss/boss_15.png
--	121	Graphic/Sprite/Boss/boss_16.png
--	122	Graphic/Sprite/Boss/boss_17.png
--	123	Graphic/Sprite/Boss/boss_18.png
--	124	Graphic/Sprite/Boss/boss_19.png
--	125	Graphic/Sprite/Boss/boss_20.png
--	126	Graphic/Sprite/Boss/boss_21.png
--	127	Graphic/Sprite/Boss/boss_22.png
--	128	Graphic/Sprite/Boss/boss_23.png
-#		PlayerSpellCutIn(138~169)
--	138	Graphic/Sprite/Player/SpellCutIn/pl_01_cutin.png
--	139	Graphic/Sprite/Player/SpellCutIn/pl_02_cutin.png
-#		PlayerDrainZone(170~201)
--	170	Graphic/Sprite/Player/DrainZone/pl_01_drain.png
--	171	Graphic/Sprite/Player/DrainZone/pl_02_drain.png
-#		Other(202~211)
--	202	Graphic/th09/title00.png
--	203	Graphic/th09/select00.png
--	204	Graphic/th09/replay00.png
--	205	Graphic/UI/musiclist.png
-#		Scene(212~)
--	212	Graphic/Scene/s05a.png
--	213	Graphic/Scene/s05b.png
--	214	Graphic/Scene/s18a.png
--	215	Graphic/Scene/s18b.png
--	216	Graphic/Scene/s25a.png
--	217	Graphic/Scene/s25b.png
--	218	Graphic/Scene/s27a.png
--	219	Graphic/Scene/s28a.png
--	220	Graphic/Scene/s28b.png
--	221	Graphic/Scene/s29a.png
--	222	Graphic/Scene/s29b.png
--	223	Graphic/Scene/s32a.png
--	224	Graphic/Scene/s32b.png
--	225	Graphic/Scene/s33a.png
--	226	Graphic/Scene/s33b.png
+#		PlayerEx(50~109)
+-	50	Graphic/Sprite/Player/Player/pl_01_ex.png
+-	51	Graphic/Sprite/Player/Player/pl_02_ex.png
+-	52	Graphic/Sprite/Player/Player/pl_07_ex.png
+#		Face(110~159)
+-	110	Graphic/Sprite/Face/face_01.png
+-	111	Graphic/Sprite/Face/face_02.png
+-	112	Graphic/Sprite/Face/face_03.png
+-	113	Graphic/Sprite/Face/face_04.png
+-	114	Graphic/Sprite/Face/face_05.png
+-	115	Graphic/Sprite/Face/face_06.png
+-	116	Graphic/Sprite/Face/face_07.png
+-	117	Graphic/Sprite/Face/face_08.png
+-	118	Graphic/Sprite/Face/face_09.png
+-	119	Graphic/Sprite/Face/face_10.png
+-	120	Graphic/Sprite/Face/face_11.png
+-	121	Graphic/Sprite/Face/face_12.png
+-	122	Graphic/Sprite/Face/face_13.png
+-	123	Graphic/Sprite/Face/face_14.png
+-	124	Graphic/Sprite/Face/face_15.png
+-	125	Graphic/Sprite/Face/face_16.png
+-	126	Graphic/Sprite/Face/face_17.png
+-	127	Graphic/Sprite/Face/face_18.png
+-	128	Graphic/Sprite/Face/face_19.png
+-	129	Graphic/Sprite/Face/face_20.png
+-	130	Graphic/Sprite/Face/face_21.png
+-	131	Graphic/Sprite/Face/face_22.png
+-	132	Graphic/Sprite/Face/face_23.png
+#		Boss(160~209)
+-	160	Graphic/Sprite/Boss/boss_01.png
+-	161	Graphic/Sprite/Boss/boss_02.png
+-	162	Graphic/Sprite/Boss/boss_03.png
+-	163	Graphic/Sprite/Boss/boss_04.png
+-	164	Graphic/Sprite/Boss/boss_05.png
+-	165	Graphic/Sprite/Boss/boss_06.png
+-	166	Graphic/Sprite/Boss/boss_07.png
+-	167	Graphic/Sprite/Boss/boss_08.png
+-	168	Graphic/Sprite/Boss/boss_09.png
+-	169	Graphic/Sprite/Boss/boss_10.png
+-	170	Graphic/Sprite/Boss/boss_11.png
+-	171	Graphic/Sprite/Boss/boss_12.png
+-	172	Graphic/Sprite/Boss/boss_13.png
+-	173	Graphic/Sprite/Boss/boss_14.png
+-	174	Graphic/Sprite/Boss/boss_15.png
+-	175	Graphic/Sprite/Boss/boss_16.png
+-	176	Graphic/Sprite/Boss/boss_17.png
+-	177	Graphic/Sprite/Boss/boss_18.png
+-	178	Graphic/Sprite/Boss/boss_19.png
+-	179	Graphic/Sprite/Boss/boss_20.png
+-	180	Graphic/Sprite/Boss/boss_21.png
+-	181	Graphic/Sprite/Boss/boss_22.png
+-	182	Graphic/Sprite/Boss/boss_23.png
+#		BossEx(210~259)
+#		PlayerSpellCutIn(260~309)
+-	260	Graphic/Sprite/Player/SpellCutIn/pl_01_cutin.png
+-	261	Graphic/Sprite/Player/SpellCutIn/pl_02_cutin.png
+#		PlayerDrainZone(310~359)
+-	310	Graphic/Sprite/Player/DrainZone/pl_01_drain.png
+-	311	Graphic/Sprite/Player/DrainZone/pl_02_drain.png
+#		Other(360~459)
+-	360	Graphic/th09/title00.png
+-	361	Graphic/th09/select00.png
+-	362	Graphic/th09/replay00.png
+-	363	Graphic/UI/musiclist.png
+#		Effect(460~569)
+#		Scene(560~)
+-	560	Graphic/Scene/s05a.png
+-	561	Graphic/Scene/s05b.png
+-	562	Graphic/Scene/s18a.png
+-	563	Graphic/Scene/s18b.png
+-	564	Graphic/Scene/s25a.png
+-	565	Graphic/Scene/s25b.png
+-	566	Graphic/Scene/s27a.png
+-	567	Graphic/Scene/s28a.png
+-	568	Graphic/Scene/s28b.png
+-	569	Graphic/Scene/s29a.png
+-	570	Graphic/Scene/s29b.png
+-	571	Graphic/Scene/s32a.png
+-	572	Graphic/Scene/s32b.png
+-	573	Graphic/Scene/s33a.png
+-	574	Graphic/Scene/s33b.png

@@ -300,8 +300,15 @@ bool Bullet::valueSet(BYTE _playerindex, WORD _ID, float _x, float _y, bool abso
 
 	tarID	=	_tarID;
 
-	sendtime = 0;
-	sendsetID = 0;
+	if (BResource::res.bulletdata[type].autosendsetID)
+	{
+		sendsetID = randt(0, 1) ? EFFSPSET_SYSTEM_SENDREDBULLET: EFFSPSET_SYSTEM_SENDBLUEBULLET;
+	}
+	else
+	{
+		sendsetID = 0;
+	}
+	AddSendInfo(sendsetID, 0);
 
 	matchFadeInColorType();
 
@@ -628,6 +635,7 @@ void Bullet::action()
 			if(x > M_DELETECLIENT_RIGHT_(playerindex) || x < M_DELETECLIENT_LEFT_(playerindex) || y > M_DELETECLIENT_BOTTOM || y < M_DELETECLIENT_TOP)
 				exist = false;
 		}
+		remain = false;
 	}
 	else
 	{

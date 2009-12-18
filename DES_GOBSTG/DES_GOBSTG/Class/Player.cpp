@@ -152,6 +152,8 @@ void Player::ClearSet(BYTE _round)
 
 	cardlevel = _PLAYER_DEFAULETCARDLEVEL_(_round);
 	bosslevel = _PLAYER_DEFAULETBOSSLEVEL_(_round);
+	nowcardlevel = cardlevel;
+	nowbosslevel = bosslevel;
 	infitimer = 0;
 	rechargedelaytimer = 0;
 	infireasonflag = 0;
@@ -1201,11 +1203,11 @@ void Player::GetSpellClassAndLevel(BYTE * spellclass, BYTE * spelllevel, int  _s
 	{
 		if (usingshootingchargeflag & _PL_SHOOTINGCHARGE_4)
 		{
-			*spelllevel = bosslevel;
+			*spelllevel = nowbosslevel;
 		}
 		else if(usingshootingchargeflag)
 		{
-			*spelllevel = cardlevel;
+			*spelllevel = nowcardlevel;
 		}
 		else
 		{
@@ -1327,12 +1329,24 @@ void Player::setShootingCharge(BYTE _shootingchargeflag)
 		{
 			nowshootingcharge = _shootingchargeflag;
 			Scripter::scr.Execute(SCR_EVENT, SCR_EVENT_PLAYERSHOOTCHARGE, playerindex);
+			if (_shootingchargeflag & _PL_SHOOTINGCHARGE_4)
+			{
+				nowbosslevel = bosslevel;
+			}
+			else
+			{
+				nowcardlevel = cardlevel;
+			}
 		}
 	}
 }
 
 void Player::shootCharge(BYTE nChargeLevel, bool nodelete)
 {
+	if (flag & PLAYER_COLLAPSE)
+	{
+		return;
+	}
 	if (!nChargeLevel)
 	{
 		return;

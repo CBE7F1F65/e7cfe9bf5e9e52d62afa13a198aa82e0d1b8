@@ -520,8 +520,8 @@ int _HDSSCallGet::Call_ENACTIONSET(LuaState * ls)
 	_ENTERCALL_HDSS_LUA;
 	if (true)
 	{
-		WORD _ac = _INEXT_HDSS_LUAPARA;
 		BYTE _playerindex = _INEXT_HDSS_LUAPARA;
+		WORD _ac = _INEXT_HDSS_LUAPARA;
 		float _para0 = 0;
 		float _para1 = 0;
 		float _para2 = 0;
@@ -547,6 +547,35 @@ int _HDSSCallGet::Call_ENACTIONSET(LuaState * ls)
 			}
 		}
 		(*Enemy::en[_playerindex]).setAction(_ac, _para0, _para1, _para2, _para3);
+	}
+	return 0;
+}
+
+int _HDSSCallGet::Call_ENSAIM(LuaState * ls)
+{
+	_ENTERCALL_HDSS_LUA;
+	if (true)
+	{
+		BYTE _playerindex = _INEXT_HDSS_LUAPARA;
+		int _level = 0;
+		float _aimx = 0;
+		float _aimy = 0;
+		_JNEXT_HDSS_LUAPARA;
+		if (bhavenext)
+		{
+			_level = _IOBJ_HDSS_LUA;
+			_JNEXT_HDSS_LUAPARA;
+			if (bhavenext)
+			{
+				_aimx = _FOBJ_HDSS_LUA;
+				_JNEXT_HDSS_LUAPARA;
+				if (bhavenext)
+				{
+					_aimy = _FOBJ_HDSS_LUA;
+				}
+			}
+		}
+		(*Enemy::en[_playerindex]).setLevelAim(_level, _aimx, _aimy);
 	}
 	return 0;
 }
@@ -670,6 +699,26 @@ int _HDSSCallGet::Call_SETPINITLIFE(LuaState * ls)
 	return 0;
 }
 
+int _HDSSCallGet::Call_SETPBINFI(LuaState * ls)
+{
+	_ENTERCALL_HDSS_LUA;
+	if (true)
+	{
+		BYTE _playerindex = _INEXT_HDSS_LUAPARA;
+		BYTE _reasonflag = _INEXT_HDSS_LUAPARA;
+		int _infitimer = PLAYER_INFIMAX;
+
+		_JNEXT_HDSS_LUAPARA;
+		if (bhavenext)
+		{
+			_infitimer = _IOBJ_HDSS_LUA;
+		}
+
+		Player::p[_playerindex].SetInfi(_reasonflag, _infitimer);
+	}
+	return 0;
+}
+
 int _HDSSCallGet::Call_BUBUILD(LuaState * ls)
 {
 	_ENTERCALL_HDSS_LUA;
@@ -731,6 +780,78 @@ int _HDSSCallGet::Call_BUACTIONSET(LuaState * ls)
 			}
 		}
 		Bullet::_actionList[_playerindex][_i] = 0;
+	}
+	return 0;
+}
+
+int _HDSSCallGet::Call_BUBUILDCIRCLE(LuaState * ls)
+{
+	_ENTERCALL_HDSS_LUA;
+	if (true)
+	{
+		BYTE _playerindex = _INEXT_HDSS_LUAPARA;
+		int _num = _INEXT_HDSS_LUAPARA;
+		int _baseangle = _INEXT_HDSS_LUAPARA;
+		float _baser = _FNEXT_HDSS_LUAPARA;
+		float _x = _FNEXT_HDSS_LUAPARA;
+		float _y = _FNEXT_HDSS_LUAPARA;
+		float _speed = _FNEXT_HDSS_LUAPARA;
+		BYTE _type = _INEXT_HDSS_LUAPARA;
+		BYTE _color = _INEXT_HDSS_LUAPARA;
+
+		BYTE _fadeintime = BULLET_FADEINTIME;
+		float _avoid = 0;
+
+		_JNEXT_HDSS_LUAPARA;
+		if (bhavenext)
+		{
+			_fadeintime = _IOBJ_HDSS_LUA;
+			_JNEXT_HDSS_LUAPARA;
+			if (bhavenext)
+			{
+				_avoid = _FOBJ_HDSS_LUA;
+			}
+		}
+
+		Bullet::BuildCircle(_playerindex, _num, _baseangle, _baser, _x, _y, _speed, _type, _color, _fadeintime, _avoid);
+	}
+	return 0;
+}
+
+int _HDSSCallGet::Call_BUBUILDLINE(LuaState * ls)
+{
+	_ENTERCALL_HDSS_LUA;
+	if (true)
+	{
+		BYTE _playerindex = _INEXT_HDSS_LUAPARA;
+		int _num = _INEXT_HDSS_LUAPARA;
+		int _baseangle = _INEXT_HDSS_LUAPARA;
+		float _space = _FNEXT_HDSS_LUAPARA;
+		int _baseindex = _INEXT_HDSS_LUAPARA;
+		float _x = _FNEXT_HDSS_LUAPARA;
+		float _y = _FNEXT_HDSS_LUAPARA;
+		int _angle = _INEXT_HDSS_LUAPARA;
+		float _anglefactor = _FNEXT_HDSS_LUAPARA;
+		float _speed = _FNEXT_HDSS_LUAPARA;
+		float _speedfactor = _FNEXT_HDSS_LUAPARA;
+		BYTE _type = _INEXT_HDSS_LUAPARA;
+		BYTE _color = _INEXT_HDSS_LUAPARA;
+
+		BYTE _fadeintime = BULLET_FADEINTIME;
+		float _avoid = 0;
+
+		_JNEXT_HDSS_LUAPARA;
+		if (bhavenext)
+		{
+			_fadeintime = _IOBJ_HDSS_LUA;
+			_JNEXT_HDSS_LUAPARA;
+			if (bhavenext)
+			{
+				_avoid = _FOBJ_HDSS_LUA;
+			}
+		}
+
+		Bullet::BuildLine(_playerindex, _num, _baseangle, _space, _baseindex, _x, _y, _angle, _anglefactor, _speed, _speedfactor, _type, _color, _fadeintime, _avoid);
 	}
 	return 0;
 }

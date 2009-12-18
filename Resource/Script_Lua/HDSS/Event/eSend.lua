@@ -86,7 +86,7 @@ function eSendExBullet(playerindex, x, y, setID)
 	local index = hdss.Call(
 		HDSS_B,
 		{
-			playerindex, x, y, true, angle, speed, 3, 5
+			playerindex, x, y, true, angle, speed, CC_Bullet_MiddleBall, 5
 		}
 	)
 	return true;

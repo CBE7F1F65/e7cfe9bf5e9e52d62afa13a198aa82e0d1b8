@@ -8,6 +8,13 @@ function LGlobal_GetCenterX(playerindex)
 	return CenterX_0;
 end
 
+function LGlobal_GetCenterBossX(playerindex)
+	if playerindex == 1 then
+		return CenterBossX_1;
+	end
+	return CenterBossX_0;
+end
+
 LTable_ePlayerDrainFunction = 
 {
 	{0,	ePlayerDrain_0},
@@ -116,4 +123,77 @@ LTable_ePlayerSendExChaseFunction	=
 	{21,	ePlayerSendExChase_21},
 	{22,	ePlayerSendExChase_22},
 	{23,	ePlayerSendExChase_23},
+}
+
+LTable_ePlayerShootChargeFunction	=
+{	
+	{0,	1,	ePlayerShootCharge_0_1},
+	{0,	2,	ePlayerShootCharge_0_2},
+	{0,	3,	ePlayerShootCharge_0_3},
+	{1,	1,	ePlayerShootCharge_1_1},
+	{1,	2,	ePlayerShootCharge_1_2},
+	{1,	3,	ePlayerShootCharge_1_3},
+	{2,	1,	ePlayerShootCharge_2_1},
+	{2,	2,	ePlayerShootCharge_2_2},
+	{2,	3,	ePlayerShootCharge_2_3},
+	{3,	1,	ePlayerShootCharge_3_1},
+	{3,	2,	ePlayerShootCharge_3_2},
+	{3,	3,	ePlayerShootCharge_3_3},
+	{4,	1,	ePlayerShootCharge_4_1},
+	{4,	2,	ePlayerShootCharge_4_2},
+	{4,	3,	ePlayerShootCharge_4_3},
+	{5,	1,	ePlayerShootCharge_5_1},
+	{5,	2,	ePlayerShootCharge_5_2},
+	{5,	3,	ePlayerShootCharge_5_3},
+	{6,	1,	ePlayerShootCharge_6_1},
+	{6,	2,	ePlayerShootCharge_6_2},
+	{6,	3,	ePlayerShootCharge_6_3},
+	{7,	1,	ePlayerShootCharge_7_1},
+	{7,	2,	ePlayerShootCharge_7_2},
+	{7,	3,	ePlayerShootCharge_7_3},
+	{8,	1,	ePlayerShootCharge_8_1},
+	{8,	2,	ePlayerShootCharge_8_2},
+	{8,	3,	ePlayerShootCharge_8_3},
+	{9,	1,	ePlayerShootCharge_9_1},
+	{9,	2,	ePlayerShootCharge_9_2},
+	{9,	3,	ePlayerShootCharge_9_3},
+	{10,	1,	ePlayerShootCharge_10_1},
+	{10,	2,	ePlayerShootCharge_10_2},
+	{10,	3,	ePlayerShootCharge_10_3},
+	{11,	1,	ePlayerShootCharge_11_1},
+	{11,	2,	ePlayerShootCharge_11_2},
+	{11,	3,	ePlayerShootCharge_11_3},
+	{12,	1,	ePlayerShootCharge_12_1},
+	{12,	2,	ePlayerShootCharge_12_2},
+	{12,	3,	ePlayerShootCharge_12_3},
+	{13,	1,	ePlayerShootCharge_13_1},
+	{13,	2,	ePlayerShootCharge_13_2},
+	{13,	3,	ePlayerShootCharge_13_3},
+	{14,	1,	ePlayerShootCharge_14_1},
+	{14,	2,	ePlayerShootCharge_14_2},
+	{14,	3,	ePlayerShootCharge_14_3},
+	{15,	1,	ePlayerShootCharge_15_1},
+	{15,	2,	ePlayerShootCharge_15_2},
+	{15,	3,	ePlayerShootCharge_15_3},
+	{16,	1,	ePlayerShootCharge_16_1},
+	{16,	2,	ePlayerShootCharge_16_2},
+	{16,	3,	ePlayerShootCharge_16_3},
+	{17,	1,	ePlayerShootCharge_17_1},
+	{17,	2,	ePlayerShootCharge_17_2},
+	{17,	3,	ePlayerShootCharge_17_3},
+	{18,	1,	ePlayerShootCharge_18_1},
+	{18,	2,	ePlayerShootCharge_18_2},
+	{18,	3,	ePlayerShootCharge_18_3},
+	{19,	1,	ePlayerShootCharge_19_1},
+	{19,	2,	ePlayerShootCharge_19_2},
+	{19,	3,	ePlayerShootCharge_19_3},
+	{20,	1,	ePlayerShootCharge_20_1},
+	{20,	2,	ePlayerShootCharge_20_2},
+	{20,	3,	ePlayerShootCharge_20_3},
+	{21,	1,	ePlayerShootCharge_21_1},
+	{21,	2,	ePlayerShootCharge_21_2},
+	{21,	3,	ePlayerShootCharge_21_3},
+	{22,	1,	ePlayerShootCharge_22_1},
+	{22,	2,	ePlayerShootCharge_22_2},
+	{22,	3,	ePlayerShootCharge_22_3},
 }

@@ -267,7 +267,7 @@ bool _DataTable::BulletDefineFile()
 		item->nColor = _LOADTINT;
 		item->collisiontype = _LOADTINT;
 		item->fadecolor = _LOADTINT;
-		item->bonuscolor = _LOADTINT;
+		item->autosendsetID = _LOADTINT;
 		item->seID = _LOADTINT;
 		item->blendtype = _LOADTINT;
 		item->renderdepth = _LOADTINT;
@@ -401,14 +401,13 @@ bool _DataTable::SpriteDefineFile()
 
 		fscanf(file, "%s%d%d%d%d%d", 
 			item->spritename, 
-			_SAVETINT, 
+			&(item->tex),
 			&(item->tex_x), 
 			&(item->tex_y), 
 			&(item->tex_w), 
 			&(item->tex_h));
 
 		_INITTINT;
-		item->tex = _LOADTINT;
 	}
 	return true;
 }

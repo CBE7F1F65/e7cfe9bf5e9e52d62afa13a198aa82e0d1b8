@@ -1,6 +1,7 @@
 73	h5nc	41	
 Comment	CustomConst	Name	Value
 -	0	CC_jump	0
+#		BulletType(50~149)	
 -	50	CC_Bullet_ShuttleBeam	0
 -	51	CC_Bullet_Scale	1
 -	52	CC_Bullet_Ring	2
@@ -34,3 +35,10 @@ Comment	CustomConst	Name	Value
 -	80	CC_Bullet_ShootItem	60
 -	81	CC_Bullet_FadeItem	61
 -	82	CC_Bullet_Score	62
+#		SpecialEnemyEID(150~249)	
+-	150	CC_ShootChargeEnemyEID_0_1	256
+-	151	CC_ShootChargeEnemyEID_0_2	257
+-	152	CC_ShootChargeEnemyEID_0_3	258
+-	153	CC_ShootChargeEnemyEID_1_1	259
+-	154	CC_ShootChargeEnemyEID_1_2	260
+-	155	CC_ShootChargeEnemyEID_1_3	261

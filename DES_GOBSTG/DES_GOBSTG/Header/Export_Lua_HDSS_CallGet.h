@@ -34,12 +34,16 @@ public:
 	static int Call_FREEFRONTSPRITE(LuaState * ls);
 
 	static int Call_SETPINITLIFE(LuaState * ls);
+	static int Call_SETPBINFI(LuaState * ls);
 
 	static int Call_BUBUILD(LuaState * ls);
 	static int Call_BUACTIONSET(LuaState * ls);
+	static int Call_BUBUILDCIRCLE(LuaState * ls);
+	static int Call_BUBUILDLINE(LuaState * ls);
 
 	static int Call_ENBUILD(LuaState * ls);
 	static int Call_ENACTIONSET(LuaState * ls);
+	static int Call_ENSAIM(LuaState * ls);
 	static int Call_ENAZBUILD(LuaState * ls);
 
 	static int Call_RAMA(LuaState * ls);
@@ -68,6 +72,10 @@ public:
 
 	static int Get_ENX(LuaState * ls);
 	static int Get_ENY(LuaState * ls);
+	static int Get_ENLEVEL(LuaState * ls);
+	static int Get_ENAIMX(LuaState * ls);
+	static int Get_ENAIMY(LuaState * ls);
+	static int Get_ENLIFE(LuaState * ls);
 
 	static int Get_CHECKKEY(LuaState * ls);
 

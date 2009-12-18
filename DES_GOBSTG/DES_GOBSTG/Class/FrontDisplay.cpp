@@ -418,6 +418,25 @@ void FrontDisplay::RenderBossInfo()
 
 void FrontDisplay::RenderEnemyX()
 {
+	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
+	{
+		if (Enemy::bossindex[i] != 0xff)
+		{
+			float bossx = Enemy::en[i][Enemy::bossindex[i]].x;
+			float px = Player::p[i].x;
+			float xdiff = fabsf(bossx-px);
+			if (xdiff < 48)
+			{
+				BYTE alpha = INTER(0x60, 0xff, xdiff/48.0);
+				info.enemyx->SetColor((alpha<<24)|0xffffff);
+			}
+			else
+			{
+				info.enemyx->SetColor(0xffffffff);
+			}
+			info.enemyx->Render(bossx, M_CLIENT_BOTTOM);
+		}
+	}
 /*
 		if (BossInfo::flag)
 		{
@@ -478,7 +497,9 @@ bool FrontDisplay::Init()
 	info.enchat_3 = SpriteItemManager::CreateSprite(idx);
 
 	info.timecircle = SpriteItemManager::CreateSpriteByName(SI_BOSS_TIMECIRCLE);
-	info.enemyx = SpriteItemManager::CreateSpriteByName(SI_ENEMY_X);
+	int enemyxsiid = SpriteItemManager::GetIndexByName(SI_ENEMY_X);
+	info.enemyx = SpriteItemManager::CreateSprite(enemyxsiid);
+	info.enemyx->SetHotSpot(SpriteItemManager::GetTexW(enemyxsiid)/2, SpriteItemManager::GetTexH(enemyxsiid));
 
 	info.lifebar = SpriteItemManager::CreateSpriteByName(SI_WHITE);
 	info.textbox = SpriteItemManager::CreateSpriteByName(SI_FRONT_TEXT);

@@ -13,10 +13,7 @@ Process::Process()
 	ZeroMemory(&channelsyncinfo, sizeof(hgeChannelSyncInfo));
 	retvalue	= PGO;
 	errorcode	= PROC_ERROR_INIFILE;
-	for(int i=0;i<TEXMAX;i++)
-	{
-		tex[i] = NULL;
-	}
+	ZeroMemory(tex, sizeof(HTEXTURE) * TEXMAX);
 
 	musicID = -1;
 	screenmode = 0;

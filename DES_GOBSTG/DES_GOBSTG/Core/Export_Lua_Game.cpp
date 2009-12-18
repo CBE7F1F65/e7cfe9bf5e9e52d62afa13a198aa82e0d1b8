@@ -36,6 +36,7 @@ bool Export_Lua_Game::_LuaRegistFunction(LuaObject * obj)
 	_gameobj.Register("GetEnumReplayInfo", LuaFn_Game_GetEnumReplayInfo);
 	_gameobj.Register("SetEnumReplayByIndex", LuaFn_Game_SetEnumReplayByIndex);
 	_gameobj.Register("GetPlayerShootChargeInfo", LuaFn_Game_GetPlayerShootChargeInfo);
+	_gameobj.Register("GetEdefInfo", LuaFn_Game_GetEdefInfo);
 
 	return true;
 }
@@ -465,6 +466,21 @@ int Export_Lua_Game::LuaFn_Game_GetPlayerShootChargeInfo(LuaState * ls)
 	ls->PushNumber(Player::p[_playerindex].y);
 	ls->PushInteger(Player::p[1-_playerindex].nowID);
 	return 8;
+}
+
+int Export_Lua_Game::LuaFn_Game_GetEdefInfo(LuaState * ls)
+{
+	LuaStack args(ls);
+	int _name = args[1].GetInteger();
+	BYTE _playerindex = _name>>16;
+	WORD _eID = _name & 0xffff;
+	ls->PushInteger(_playerindex);
+	ls->PushInteger(_eID);
+	ls->PushNumber((*Enemy::en[_playerindex]).x);
+	ls->PushNumber((*Enemy::en[_playerindex]).y);
+	ls->PushNumber(Player::p[_playerindex].x);
+	ls->PushNumber(Player::p[_playerindex].y);
+	return 6;
 }
 
 #endif
