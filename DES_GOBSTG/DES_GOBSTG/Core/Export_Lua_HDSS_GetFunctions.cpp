@@ -219,6 +219,18 @@ int _HDSSCallGet::Get_ENLIFE(LuaState * ls)
 	return 0;
 }
 
+int _HDSSCallGet::Get_SIGN(LuaState * ls)
+{
+	_ENTERGET_HDSS_LUA;
+	if (argscount > 1)
+	{
+		int _X = _INEXT_HDSS_LUAFUNC;
+		_PI_HDSS_LUA(SIGN(_X));
+		return 1;
+	}
+	return 0;
+}
+
 int _HDSSCallGet::Get_PX(LuaState * ls)
 {
 	_ENTERGET_HDSS_LUA;

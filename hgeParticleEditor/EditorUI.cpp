@@ -748,7 +748,26 @@ bool EditorUI::Save()
 {
 	if(!eres.eff[ebnum])
 		return false;
-	return eres.Save(ebnum);
+	bool bret = eres.Save(ebnum);
+	if (bret)
+	{
+		SetupEB(true);
+		BYTE _info = 0;
+		switch(editmode)
+		{
+		case UIEDITMODE_EB:
+			_info = UIITEM_EBINFO;
+			break;
+		case UIEDITMODE_EE:
+			_info = UIITEM_EEINFO;
+			break;
+		case UIEDITMODE_EA:
+			_info = UIITEM_EAINFO;
+			break;
+		}
+		ChangePanel(_info);
+	}
+	return bret;
 }
 
 bool EditorUI::isListNull()

@@ -23,12 +23,12 @@ public:
 	static void ClearAll();
 	static void Action(DWORD stopflag);
 	static void RenderAll(BYTE playerindex);
+	static int Build(WORD ID, BYTE playerindex, float x, float y, float z=0, int lifetime=-1, BYTE tarID=0xff, int angle=9000, float speed=0.0f, float zSpeed=0.0f);
 
 	void Clear();
-	void valueSet(WORD ID, BYTE playerindex, float x, float y, int lifetime = -1);
-	void valueSet(WORD ID, BYTE playerindex, int lifetime, float x, float y, float z, BYTE tarID, int angle, float speed, float zSpeed);
-	void valueSet(WORD ID, BYTE playerindex, int lifetime, float x, float y, BYTE tarID, int chasetimer, BYTE tarAim);
+	void valueSet(WORD ID, BYTE playerindex, float x, float y, float z=0, int lifetime=-1, BYTE tarID=0xff, int angle=9000, float speed=0.0f, float zSpeed=0.0f);
 	void valueSet(WORD ID, BYTE playerindex, BObject & owner);
+	void chaseSet(int chasetimer, BYTE tarAim);
 
 	void SetColorMask(DWORD color);
 
@@ -51,7 +51,7 @@ public:
 	BYTE playerindex;
 
 	static hgeEffectSystem efftype[EFFECTSYSTYPEMAX];
-	static Effectsys effsys[M_PL_MATCHMAXPLAYER][EFFECTSYSMAX];
+	static VectorList<Effectsys> effsys[M_PL_MATCHMAXPLAYER];
 };
 
 #endif

@@ -100,7 +100,7 @@ public:
 	bool Graze();
 
 	void changePlayerID(WORD toID, bool moveghost=false);
-	void shootCharge(BYTE nChargeLevel, bool nodelete=false);
+	BYTE shootCharge(BYTE nChargeLevel, bool nodelete=false);
 	void setShootingCharge(BYTE shootingchargeflag);
 
 	void AddComboHit(int combo, bool ori);

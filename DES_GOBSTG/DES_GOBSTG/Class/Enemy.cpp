@@ -77,9 +77,8 @@ int Enemy::Build(WORD eID, BYTE playerindex, float x, float y, int angle, float 
 	else
 	{
 		DWORD i = 0;
-		en[playerindex].toEnd();
 		DWORD size = en[playerindex].getSize();
-		for (; i<size; en[playerindex].toNext(), i++)
+		for (en[playerindex].toEnd(); i<size; en[playerindex].toNext(), i++)
 		{
 			if (!en[playerindex].isValid())
 			{
@@ -534,15 +533,9 @@ void Enemy::matchAction()
 	case ENAC_OVERPLAYER_CXYT:
 		//作用时间[计数器]，目标x，目标y，更替周期
 		//在主角上方随机
-		if((int)para[0])
+		if(timer % (int)para[3] == 0)
 		{
-			chaseAim(para[1], para[2], para[0]);
-			para[0] -= 0.8f;
-			para[0] = (int)para[0];
-		}
-		else if(timer % (int)para[3] == 0)
-		{
-			para[0] = 2 * para[3] > 120 ? 120 : 2 * para[3];
+			para[0] = para[3] > 60 ? 60 : para[3];
 			if(Player::p[playerindex].x > x)
 				para[1] = Player::p[playerindex].x + randt() % 60;
 			else
@@ -565,6 +558,12 @@ void Enemy::matchAction()
 					para[1] = rightedge;
 			}
 			para[2] = randt() % 80 + M_GAMESQUARE_BOSSY - 40;
+		}
+		else if((int)para[0])
+		{
+			chaseAim(para[1], para[2], para[0]);
+			para[0] -= 0.8f;
+			para[0] = (int)para[0];
 		}
 		break;
 	case ENAC_CHASETO_CXY:
@@ -1216,7 +1215,6 @@ void Enemy::action()
 	{
 		if(timer == 1)
 		{
-			giveItem(playerindex);
 			effShot.Stop();
 			// TODO:
 			effCollapse.MoveTo(x, y, 0, true);
@@ -1229,8 +1227,31 @@ void Enemy::action()
 			if (blastmaxtime && blastr > 0)
 			{
 				EventZone::Build(EVENTZONE_TYPE_SENDBULLET|EVENTZONE_TYPE_ENEMYDAMAGE, playerindex, x, y, blastmaxtime, blastr, blastpower, EVENTZONE_EVENT_NULL);
+				Player::p[playerindex].DoEnemyCollapse(x, y);
+				giveItem(playerindex);
+				int tscore = Player::p[playerindex].nSpellPoint;
+				ScoreDisplay _item;
+				if (tscore < PLAYER_NSPELLPOINTMAX)
+				{
+					itoa(tscore, _item.cScore, 10);
+				}
+				else
+				{
+					strcpy(_item.cScore, "b");
+				}
+				_item.timer = 0;
+				_item.x = x;
+				_item.y = y;
+				if(tscore >= 300000)
+				{
+					_item.yellow = true;
+				}
+				else
+				{
+					_item.yellow = false;
+				}
+				scoredisplay[playerindex].push_back(_item);
 			}
-			Player::p[playerindex].DoEnemyCollapse(x, y);
 
 			if (sendsetID)
 			{
@@ -1241,28 +1262,6 @@ void Enemy::action()
 				}
 			}
 
-			int tscore = Player::p[playerindex].nSpellPoint;
-			ScoreDisplay _item;
-			if (tscore < PLAYER_NSPELLPOINTMAX)
-			{
-				itoa(tscore, _item.cScore, 10);
-			}
-			else
-			{
-				strcpy(_item.cScore, "b");
-			}
-			_item.timer = 0;
-			_item.x = x;
-			_item.y = y;
-			if(tscore >= 300000)
-			{
-				_item.yellow = true;
-			}
-			else
-			{
-				_item.yellow = false;
-			}
-			scoredisplay[playerindex].push_back(_item);
 		}
 		else if(timer == 32)
 		{

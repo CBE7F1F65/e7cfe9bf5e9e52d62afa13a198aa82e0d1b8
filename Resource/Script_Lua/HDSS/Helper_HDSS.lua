@@ -361,6 +361,15 @@ function hdssCOLLISION_CIRCLE(x, y, aimx, aimy, r, bbig)
 	)
 end
 
+function hdssEFFSETUP(playerindex, effID, x, y, lifetime)
+	return hdss.Call(
+		HDSS_EFFSETUP,
+		{
+			effID, playerindex, x, y, 0, lifetime
+		}
+	)
+end
+
 function hdssEA(playerindex, ac, para0, para1, para2, para3)
 	return hdss.Call(
 		HDSS_EA,

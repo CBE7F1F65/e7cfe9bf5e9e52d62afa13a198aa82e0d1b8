@@ -476,11 +476,12 @@ int Export_Lua_Game::LuaFn_Game_GetEdefInfo(LuaState * ls)
 	WORD _eID = _name & 0xffff;
 	ls->PushInteger(_playerindex);
 	ls->PushInteger(_eID);
+	ls->PushInteger((*Enemy::en[_playerindex]).level);
 	ls->PushNumber((*Enemy::en[_playerindex]).x);
 	ls->PushNumber((*Enemy::en[_playerindex]).y);
 	ls->PushNumber(Player::p[_playerindex].x);
 	ls->PushNumber(Player::p[_playerindex].y);
-	return 6;
+	return 7;
 }
 
 #endif

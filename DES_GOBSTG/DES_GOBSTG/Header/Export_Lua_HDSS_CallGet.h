@@ -41,6 +41,8 @@ public:
 	static int Call_BUBUILDCIRCLE(LuaState * ls);
 	static int Call_BUBUILDLINE(LuaState * ls);
 
+	static int Call_BEBUILD(LuaState * ls);
+
 	static int Call_ENBUILD(LuaState * ls);
 	static int Call_ENACTIONSET(LuaState * ls);
 	static int Call_ENSAIM(LuaState * ls);
@@ -50,6 +52,8 @@ public:
 	static int Call_INTER(LuaState * ls);
 
 	static int Call_COLLISION_CIRCLE(LuaState * ls);
+
+	static int Call_EFFSETUP(LuaState * ls);
 
 	static int Call_BGVALUE(LuaState * ls);
 	static int Call_BGVALEX(LuaState * ls);
@@ -76,6 +80,8 @@ public:
 	static int Get_ENAIMX(LuaState * ls);
 	static int Get_ENAIMY(LuaState * ls);
 	static int Get_ENLIFE(LuaState * ls);
+
+	static int Get_SIGN(LuaState * ls);
 
 	static int Get_CHECKKEY(LuaState * ls);
 

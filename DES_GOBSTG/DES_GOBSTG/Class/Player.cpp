@@ -922,8 +922,15 @@ bool Player::Bomb()
 	GetNCharge(&ncharge, &nchargemax);
 	if (nchargemax > 1)
 	{
-		shootCharge(nchargemax, true);
-		AddCharge(-PLAYER_CHARGEMAX, -PLAYER_CHARGEMAX);
+		BYTE nChargeLevel = shootCharge(nchargemax, true);
+		if (nChargeLevel == nchargemax)
+		{
+			AddCharge(-PLAYER_CHARGEMAX, -PLAYER_CHARGEMAX);
+		}
+		else
+		{
+			AddCharge((nChargeLevel-nchargemax)*PLAYER_CHARGEONE, (nChargeLevel-nchargemax)*PLAYER_CHARGEONE);
+		}
 	}
 	return true;
 }
@@ -1341,27 +1348,27 @@ void Player::setShootingCharge(BYTE _shootingchargeflag)
 	}
 }
 
-void Player::shootCharge(BYTE nChargeLevel, bool nodelete)
+BYTE Player::shootCharge(BYTE nChargeLevel, bool nodelete)
 {
 	if (flag & PLAYER_COLLAPSE)
 	{
-		return;
+		return 0;
 	}
 	if (!nChargeLevel)
 	{
-		return;
+		return 0;
 	}
 	if (nChargeLevel > 3 && nChargeLevel < 7 && Enemy::bossindex[1-playerindex] != 0xff)
 	{
 		if (nChargeLevel == 4)
 		{
-			shootCharge(3, nodelete);
+			return shootCharge(3, nodelete);
 		}
 		else if (nChargeLevel == 6)
 		{
-			shootCharge(7, nodelete);
+			return shootCharge(7, nodelete);
 		}
-		return;
+		return 0;
 	}
 	setShootingCharge(0);
 	int chargezonemaxtime=1;
@@ -1435,6 +1442,7 @@ void Player::shootCharge(BYTE nChargeLevel, bool nodelete)
 		}
 		AddLilyCount(-500);
 	}
+	return nChargeLevel;
 }
 
 void Player::SendEx(BYTE playerindex, float x, float y)

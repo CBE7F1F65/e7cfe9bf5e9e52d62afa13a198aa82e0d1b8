@@ -10,6 +10,7 @@
 #define BEAMFLAG_STOP		0x02
 #define BEAMFLAG_HS			(BEAMFLAG_HORIZON + BEAMFLAG_STOP)
 #define BEAMFLAG_NOGRAZE	0x10
+#define BEAMFLAG_DELAY		0x20
 
 class Beam : public BObject
 {
@@ -18,12 +19,12 @@ public:
 	~Beam();
 
 	static void Init();
-	static int Build(BYTE playerindex, float x, float y, int angle, float speed, BYTE type, BYTE color, WORD length, BYTE flag, int fadeouttime, BYTE tarID);
+	static int Build(BYTE playerindex, float x, float y, int angle, float speed, BYTE type, BYTE color, float length, BYTE flag = BEAMFLAG_NONE, int fadeouttime = 0, BYTE tarID = 0xff);
 	static void ClearItem();
 	static void Action(DWORD stopflag);
 	static void RenderAll(BYTE playerindex);
 
-	void valueSet(WORD ID, float x, float y,int angle, float speed, BYTE type, BYTE color, WORD length, BYTE flag, int fadeouttime = 0, BYTE tarID = 0xff);
+	void valueSet(WORD ID, float x, float y,int angle, float speed, BYTE type, BYTE color, float length, BYTE flag = BEAMFLAG_NONE, int fadeouttime = 0, BYTE tarID = 0xff);
 	bool isInRect(float r, float aimx, float aimy);
 
 	void SetVector(const BObject &ori, const BObject &aim);
@@ -47,13 +48,15 @@ public:
 	bool	fadeout;
 	bool	able;
 
-	WORD	length;
+	float	length;
 	BYTE	flag;
 	BYTE	type;
 	BYTE	color;
 	BYTE	grazetimer;
 	BYTE	holdtar;
 	BYTE	pintar;
+
+	BYTE	delaytimer;
 
 	static VectorList<Beam> be[M_PL_MATCHMAXPLAYER];
 };

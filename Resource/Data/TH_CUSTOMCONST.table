@@ -39,6 +39,8 @@ Comment	CustomConst	Name	Value
 -	150	CC_ShootChargeEnemyEID_0_1	256
 -	151	CC_ShootChargeEnemyEID_0_2	257
 -	152	CC_ShootChargeEnemyEID_0_3	258
--	153	CC_ShootChargeEnemyEID_1_1	259
--	154	CC_ShootChargeEnemyEID_1_2	260
--	155	CC_ShootChargeEnemyEID_1_3	261
+-	153	CC_ShootChargeEnemyEID_0_3_B	259
+-	154	CC_ShootChargeEnemyEID_0_3_E	260
+-	155	CC_ShootChargeEnemyEID_1_1	261
+-	156	CC_ShootChargeEnemyEID_1_2	262
+-	157	CC_ShootChargeEnemyEID_1_3	263

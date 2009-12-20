@@ -1,6 +1,6 @@
 function ePlayerSendEx_0(esindex, oplayerindex, playerID, opx, opy, px, py, oplayerID)
 	local aimx = helper_GetCenterX(oplayerindex) + game.Random_Float(-136, 136);
-	local aimy = game.Random_Float(0, 128);
+	local aimy = game.Random_Float(16, 144);
 	local chasetimer = game.Random_Int(45, 60);
 	game.PlayerSendEx(oplayerindex, esindex, aimx, aimy, chasetimer);
 	return true;
@@ -8,7 +8,7 @@ end
 
 function ePlayerSendEx_1(esindex, oplayerindex, playerID, opx, opy, px, py, oplayerID)
 	local aimx = helper_GetCenterX(oplayerindex) + game.Random_Float(-136, 136);
-	local aimy = 448;
+	local aimy = 464;
 	local chasetimer = game.Random_Int(45, 60);
 	game.PlayerSendEx(oplayerindex, esindex, aimx, aimy, chasetimer);
 	return true;
@@ -20,12 +20,11 @@ function ePlayerSendExChase_0(playerindex, x, y, playerID, appendfloat)
 	
 	local rank, cardlevel, bosslevel = hdss.Get(HDSS_RANK, 1-playerindex);
 	local angle;
-	if x > LGlobal_GetCenterX(playerindex) then
-		angle = game.Random_Int(-6500, -4500);
-	else
-		angle = game.Random_Int(-13500, -11500);
+	angle = game.Random_Int(-5500, -2500);
+	if game.Random_Int(0, 1) == 1 then
+		angle = -18000 - angle;
 	end
-	local speed = 1.2;
+	local speed = 1.4;
 	local type = CC_BulletEx_Reimu;
 	local startacctime = 24;
 	local stopacctime = cardlevel * 6 + 32;
@@ -49,5 +48,15 @@ function ePlayerSendExChase_0(playerindex, x, y, playerID, appendfloat)
 end
 
 function ePlayerSendExChase_1(playerindex, x, y, playerID, appendfloat)
+	
+	local rank, cardlevel, bosslevel = hdss.Get(HDSS_RANK, 1-playerindex);
+	local speed = 18;
+	hdss.Call(
+		HDSS_BEB,
+		{
+			playerindex, x, y, -9000, speed, CC_Bullet_ShuttleBeam, 5, 720, BEAMFLAG_DELAY
+		}
+	)
+	hdssEFFSETUP(playerindex, 83, x, y, 64);
 	return true;
 end

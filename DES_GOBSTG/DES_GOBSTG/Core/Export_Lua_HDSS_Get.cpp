@@ -151,6 +151,7 @@ int Export_Lua_HDSS::LuaFn_HDSS_Get(LuaState * ls)
 		case SCR_SQRT:
 			break;
 		case SCR_SIGN:
+			return _HDSSCallGet::Get_SIGN(ls);
 			break;
 		case SCR_ROLL:
 			break;

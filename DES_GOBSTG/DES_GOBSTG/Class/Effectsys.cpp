@@ -5,7 +5,7 @@
 #include "Target.h"
 #include "ProcessDefine.h"
 
-Effectsys Effectsys::effsys[M_PL_MATCHMAXPLAYER][EFFECTSYSMAX];
+VectorList<Effectsys> Effectsys::effsys[M_PL_MATCHMAXPLAYER];
 hgeEffectSystem Effectsys::efftype[EFFECTSYSTYPEMAX];
 
 Effectsys::Effectsys()
@@ -43,24 +43,29 @@ void Effectsys::Action(DWORD stopflag)
 		bool binstop = FRAME_STOPFLAGCHECK_PLAYERINDEX_(stopflag, j, FRAME_STOPFLAG_EFFECTSYS);
 		if (!binstop)
 		{
-			for (int i=0; i<EFFECTSYSMAX; i++)
+			DWORD i = 0;
+			DWORD size = effsys[j].getSize();
+			for (effsys[j].toBegin(); i<size; effsys[j].toNext(), i++)
 			{
-				if (effsys[j][i].exist)
+				if ((*effsys[j]).exist)
 				{
-					effsys[j][i].action();
+					(*effsys[j]).action();
 				}
 			}
 		}
 	}
 }
 
+
 void Effectsys::RenderAll(BYTE playerindex)
 {
-	for (int i=0; i<EFFECTSYSMAX; i++)
+	DWORD i = 0;
+	DWORD size = effsys[playerindex].getSize();
+	for (effsys[playerindex].toBegin(); i<size; effsys[playerindex].toNext(), i++)
 	{
-		if (effsys[playerindex][i].exist)
+		if ((*effsys[playerindex]).exist)
 		{
-			effsys[playerindex][i].Render();
+			(*effsys[playerindex]).Render();
 		}
 	}
 }
@@ -81,35 +86,65 @@ bool Effectsys::Init(HTEXTURE * tex, const char * foldername, char name[][M_PATH
 			efftype[i].SetBasicInfo(&ebi);
 		}
 	}
+	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
+	{
+		effsys[i].init(EFFECTSYSMAX);
+	}
 	return true;
 }
 
-void Effectsys::valueSet(WORD ID, BYTE playerindex, float x, float y, int lifetime)
+int Effectsys::Build(WORD ID, BYTE playerindex, float x, float y, float z, int lifetime/* =-1 */, BYTE tarID/* =0xff */, int angle/* =9000 */, float speed/* =0.0f */, float zSpeed/* =0.0f */)
 {
-	valueSet(ID, playerindex, lifetime, x, y, 0, 0xff, 9000, 0, 0);
+	Effectsys _effsys;
+	Effectsys * _peffsys = NULL;
+	if (effsys[playerindex].getSize() < EFFECTSYSMAX)
+	{
+		_peffsys = effsys[playerindex].push_back(_effsys);
+	}
+	else
+	{
+		DWORD i = 0;
+		DWORD size = effsys[playerindex].getSize();
+		for (effsys[playerindex].toEnd(); i<size; effsys[playerindex].toNext(), i++)
+		{
+			if (!effsys[playerindex].isValid())
+			{
+				_peffsys = effsys[playerindex].push(_effsys);
+			}
+		}
+	}
+	if (_peffsys)
+	{
+		_peffsys->valueSet(ID, playerindex, x, y, z, lifetime, tarID, angle, speed, zSpeed);
+		return effsys[playerindex].getIndex();
+	}
+	else
+	{
+		return -1;
+	}
 }
+
 
 void Effectsys::valueSet(WORD ID, BYTE playerindex, BObject & owner)
 {
 	valueSet(ID, playerindex, owner.x, owner.y);
 }
 
-void Effectsys::valueSet(WORD ID, BYTE playerindex, int lifetime, float x, float y, BYTE tarID, int _chasetimer, BYTE _tarAim)
+void Effectsys::chaseSet(int _chasetimer, BYTE _tarAim)
 {
-	valueSet(ID, playerindex, lifetime, x, y, 0, tarID, 9000, 0, 0);
 	chasetimer = _chasetimer;
 	tarAim = _tarAim;
 }
 
-void Effectsys::valueSet(WORD _ID, BYTE _playerindex, int _lifetime, float _x, float _y, float _z, BYTE _tarID, int _angle, float _speed, float _zSpeed)
+void Effectsys::valueSet(WORD _ID, BYTE _playerindex, float _x, float _y, float _z, int _lifetime, BYTE _tarID, int _angle, float _speed, float _zSpeed)
 {
 	ID			= _ID;
 	playerindex	= _playerindex;
 	tarID		= _tarID;
-	lifetime	= _lifetime;
 	x			= _x;
 	y			= _y;
 	z			= _z;
+	lifetime	= _lifetime;
 	angle		= _angle;
 	speed		= _speed;
 	zSpeed		= _zSpeed;
@@ -118,16 +153,14 @@ void Effectsys::valueSet(WORD _ID, BYTE _playerindex, int _lifetime, float _x, f
 	vscale		= 1.0f;
 	timer		= 0;
 	SetColorMask(0xffffffff);
-	
-	chasetimer = 0;
+	chaseSet(0, 0xff);
+	Clear();
 
 	exist = true;
 
 	if(ID >= EFFECTSYSTYPEMAX)
 		ID = 0;
 
-	Clear();
-//	eff = new hgeEffectSystem(efftype[ID]);
 	eff.InitEffectSystem(efftype[ID]);
 
 	MoveTo(x, y, z, true);

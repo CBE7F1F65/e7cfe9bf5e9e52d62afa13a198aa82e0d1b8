@@ -687,6 +687,71 @@ int _HDSSCallGet::Call_COLLISION_CIRCLE(LuaState * ls)
 	return 0;
 }
 
+int _HDSSCallGet::Call_EFFSETUP(LuaState * ls)
+{
+	_ENTERCALL_HDSS_LUA;
+	if (true)
+	{
+		WORD _ID = _INEXT_HDSS_LUAPARA;
+		BYTE _playerindex = _INEXT_HDSS_LUAPARA;
+		float _x = _FNEXT_HDSS_LUAPARA;
+		float _y = _FNEXT_HDSS_LUAPARA;
+
+		float _z = 0;
+		int _lifetime = -1;
+		BYTE _tarID = 0xff;
+		int _angle = 9000;
+		float _speed = 0;
+		float _zSpeed = 0;
+
+		_JNEXT_HDSS_LUAPARA;
+		if (bhavenext)
+		{
+			_z = _FOBJ_HDSS_LUA;
+			_JNEXT_HDSS_LUAPARA;
+			if (bhavenext)
+			{
+				_lifetime = _IOBJ_HDSS_LUA;
+				_JNEXT_HDSS_LUAPARA;
+				if (bhavenext)
+				{
+					_tarID = _IOBJ_HDSS_LUA;
+					_JNEXT_HDSS_LUAPARA;
+					if (bhavenext)
+					{
+						_angle = _IOBJ_HDSS_LUA;
+						_JNEXT_HDSS_LUAPARA;
+						if (bhavenext)
+						{
+							_speed = _FOBJ_HDSS_LUA;
+							_JNEXT_HDSS_LUAPARA;
+							if (bhavenext)
+							{
+								_zSpeed = _FOBJ_HDSS_LUA;
+							}
+						}
+					}
+				}
+			}
+		}
+
+		int _index = Effectsys::Build(_ID, _playerindex, _x, _y, _z, _lifetime, _tarID, _angle, _speed, _zSpeed);
+		if (_index >= 0)
+		{
+			if (argscount > 2)
+			{
+				_GETPARAS_HDSS_LUAPARA(3);
+				int _chasetimer = _INEXT_HDSS_LUAFUNC;
+				BYTE _tarAim = _INEXT_HDSS_LUAFUNC;
+				Effectsys::effsys[_playerindex][_index].chaseSet(_chasetimer, _tarAim);
+			}
+		}
+		_PI_HDSS_LUA(_index);
+		return 1;
+	}
+	return 0;
+}
+
 int _HDSSCallGet::Call_SETPINITLIFE(LuaState * ls)
 {
 	_ENTERCALL_HDSS_LUA;
@@ -852,6 +917,47 @@ int _HDSSCallGet::Call_BUBUILDLINE(LuaState * ls)
 		}
 
 		Bullet::BuildLine(_playerindex, _num, _baseangle, _space, _baseindex, _x, _y, _angle, _anglefactor, _speed, _speedfactor, _type, _color, _fadeintime, _avoid);
+	}
+	return 0;
+}
+
+int _HDSSCallGet::Call_BEBUILD(LuaState * ls)
+{
+	_ENTERCALL_HDSS_LUA;
+	if (true)
+	{
+		BYTE _playerindex = _INEXT_HDSS_LUAPARA;
+		float _x = _FNEXT_HDSS_LUAPARA;
+		float _y = _FNEXT_HDSS_LUAPARA;
+		int _angle = _INEXT_HDSS_LUAPARA;
+		float _speed = _FNEXT_HDSS_LUAPARA;
+		BYTE _type = _INEXT_HDSS_LUAPARA;
+		BYTE _color = _INEXT_HDSS_LUAPARA;
+		float _length = _FNEXT_HDSS_LUAPARA;
+
+		BYTE _flag = BEAMFLAG_NONE;
+		int _fadeouttime = 0;
+		BYTE _tarID = 0xff;
+
+		_JNEXT_HDSS_LUAPARA;
+		if (bhavenext)
+		{
+			_flag = _IOBJ_HDSS_LUA;
+			_JNEXT_HDSS_LUAPARA;
+			if (bhavenext)
+			{
+				_fadeouttime = _IOBJ_HDSS_LUA;
+				_JNEXT_HDSS_LUAPARA;
+				if (bhavenext)
+				{
+					_tarID = _IOBJ_HDSS_LUA;
+				}
+			}
+		}
+
+		int iret = Beam::Build(_playerindex, _x, _y, _angle, _speed, _type, _color, _length, _flag, _fadeouttime, _tarID);
+		_PI_HDSS_LUA(iret);
+		return 1;
 	}
 	return 0;
 }

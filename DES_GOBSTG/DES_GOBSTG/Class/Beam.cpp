@@ -11,6 +11,8 @@
 
 #define	BEAMMAX				0x50
 
+#define BEAM_DELAYTIME	32
+
 VectorList<Beam> Beam::be[M_PL_MATCHMAXPLAYER];
 
 Beam::Beam()
@@ -85,7 +87,7 @@ void Beam::RenderAll(BYTE playerindex)
 	}
 }
 
-int Beam::Build(BYTE playerindex, float x, float y, int angle, float speed, BYTE type, BYTE color, WORD length, BYTE flag, int fadeouttime, BYTE tarID)
+int Beam::Build(BYTE playerindex, float x, float y, int angle, float speed, BYTE type, BYTE color, float length, BYTE flag, int fadeouttime, BYTE tarID)
 {
 	if (be[playerindex].getSize() == BEAMMAX)
 	{
@@ -111,7 +113,7 @@ void Beam::Render()
 	}
 }
 
-void Beam::valueSet(WORD _ID, float _x, float _y, int _angle, float _speed, BYTE _type, BYTE _color, WORD _length, BYTE _flag, int _fadeouttime, BYTE _tarID)
+void Beam::valueSet(WORD _ID, float _x, float _y, int _angle, float _speed, BYTE _type, BYTE _color, float _length, BYTE _flag, int _fadeouttime, BYTE _tarID)
 {
 	ID			=	_ID;
 	x			=	_x;
@@ -128,6 +130,15 @@ void Beam::valueSet(WORD _ID, float _x, float _y, int _angle, float _speed, BYTE
 	holdtar		=	0xff;
 	pintar		=	0xff;
 	holdoffset	=	0;
+
+	if (flag & BEAMFLAG_DELAY)
+	{
+		delaytimer = BEAM_DELAYTIME;
+	}
+	else
+	{
+		delaytimer	=	0;
+	}
 
 	timer			=	0;
 	grazetimer		=	0;
@@ -186,6 +197,11 @@ void Beam::SetHold(BYTE _holdtar, BYTE _pintar, float holdoffset)
 
 void Beam::action(BYTE playerindex)
 {
+	if (delaytimer)
+	{
+		delaytimer--;
+		return;
+	}
 	if(angle != lastangle)
 	{
 		xplus = speed * cost(angle);

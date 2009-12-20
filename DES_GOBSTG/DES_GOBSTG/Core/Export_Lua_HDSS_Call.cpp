@@ -102,6 +102,8 @@ int Export_Lua_HDSS::LuaFn_HDSS_Call(LuaState * ls)
 				return _HDSSCallGet::Call_BUBUILDCIRCLE(ls);
 			case SCR_BUBUILDLINE:
 				return _HDSSCallGet::Call_BUBUILDLINE(ls);
+			case SCR_BEBUILD:
+				return _HDSSCallGet::Call_BEBUILD(ls);
 			}
 			break;
 			/************************************************************************/
@@ -141,6 +143,17 @@ int Export_Lua_HDSS::LuaFn_HDSS_Call(LuaState * ls)
 			case SCR_COLLISION_CIRCLE:
 				return _HDSSCallGet::Call_COLLISION_CIRCLE(ls);
 			}
+			break;
+			/************************************************************************/
+			/* EFFECT                                                               */
+			/************************************************************************/
+		case SCRKW_CLASS_EFFECT:
+			switch (nowval)
+			{
+			case SCR_EFFSETUP:
+				return _HDSSCallGet::Call_EFFSETUP(ls);
+			}
+			break;
 			/************************************************************************/
 			/* PLAYER                                                               */
 			/************************************************************************/
