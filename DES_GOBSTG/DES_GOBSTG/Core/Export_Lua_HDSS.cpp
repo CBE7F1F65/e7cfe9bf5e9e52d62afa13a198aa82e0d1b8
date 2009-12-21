@@ -168,7 +168,12 @@ bool Export_Lua_HDSS::Execute(DWORD typeflag, DWORD name, DWORD con)
 		_f = eventExecute;
 		break;
 	}
-	return (*_f)(name, con);
+	bool bret = (*_f)(name, con);
+	if (state->CheckError())
+	{
+		Export_Lua::ShowError(LUAERROR_LUAERROR, state->GetError());
+	}
+	return bret;
 }
 
 #endif

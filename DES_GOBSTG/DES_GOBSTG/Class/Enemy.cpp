@@ -143,6 +143,7 @@ void Enemy::Action(DWORD stopflag)
 				{
 					BYTE nmaxset = BResource::res.enemydata[(*en[j]).type].nmaxset;
 					nEnemyNow[j][nmaxset]++;
+					DWORD _index = en[j].getIndex();
 					if (!binstop)
 					{
 						pen->action();
@@ -151,6 +152,7 @@ void Enemy::Action(DWORD stopflag)
 					{
 						pen->actionInStop();
 					}
+					en[j].toIndex(_index);
 					if (pen->able)
 					{
 						PlayerBullet::CheckAndSetLock((BObject *)pen, j, en[j].getIndex());

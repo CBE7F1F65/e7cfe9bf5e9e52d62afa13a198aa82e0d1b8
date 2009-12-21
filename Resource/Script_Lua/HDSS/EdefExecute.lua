@@ -3,11 +3,19 @@ LTable_EnemyEIDFunction	=
 	{CC_ShootChargeEnemyEID_0_1, Edef_ShootChargeEnemyEID_0_1},
 	{CC_ShootChargeEnemyEID_0_2, Edef_ShootChargeEnemyEID_0_2},
 	{CC_ShootChargeEnemyEID_0_3, Edef_ShootChargeEnemyEID_0_3},
+	{CC_ShootChargeEnemyEID_0_3_A, Edef_ShootChargeEnemyEID_0_3_A},
 	{CC_ShootChargeEnemyEID_0_3_B, Edef_ShootChargeEnemyEID_0_3_B},
+	{CC_ShootChargeEnemyEID_0_3_C, Edef_ShootChargeEnemyEID_0_3_C},
+	{CC_ShootChargeEnemyEID_0_3_D, Edef_ShootChargeEnemyEID_0_3_D},
 	{CC_ShootChargeEnemyEID_0_3_E, Edef_ShootChargeEnemyEID_0_3_E},
 	{CC_ShootChargeEnemyEID_1_1, Edef_ShootChargeEnemyEID_1_1},
 	{CC_ShootChargeEnemyEID_1_2, Edef_ShootChargeEnemyEID_1_2},
 	{CC_ShootChargeEnemyEID_1_3, Edef_ShootChargeEnemyEID_1_3},
+	{CC_ShootChargeEnemyEID_1_3_A, Edef_ShootChargeEnemyEID_1_3_A},
+	{CC_ShootChargeEnemyEID_1_3_B, Edef_ShootChargeEnemyEID_1_3_B},
+	{CC_ShootChargeEnemyEID_1_3_C, Edef_ShootChargeEnemyEID_1_3_C},
+	{CC_ShootChargeEnemyEID_1_3_D, Edef_ShootChargeEnemyEID_1_3_D},
+	{CC_ShootChargeEnemyEID_1_3_E, Edef_ShootChargeEnemyEID_1_3_E},
 }
 
 

@@ -1335,7 +1335,6 @@ void Player::setShootingCharge(BYTE _shootingchargeflag)
 		if (_shootingchargeflag & ~_PL_SHOOTINGCHARGE_1)
 		{
 			nowshootingcharge = _shootingchargeflag;
-			Scripter::scr.Execute(SCR_EVENT, SCR_EVENT_PLAYERSHOOTCHARGE, playerindex);
 			if (_shootingchargeflag & _PL_SHOOTINGCHARGE_4)
 			{
 				nowbosslevel = bosslevel;
@@ -1344,6 +1343,7 @@ void Player::setShootingCharge(BYTE _shootingchargeflag)
 			{
 				nowcardlevel = cardlevel;
 			}
+			Scripter::scr.Execute(SCR_EVENT, SCR_EVENT_PLAYERSHOOTCHARGE, playerindex);
 		}
 	}
 }

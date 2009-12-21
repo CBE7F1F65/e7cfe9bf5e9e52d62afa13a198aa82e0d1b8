@@ -76,6 +76,7 @@ public:
 
 	static int Get_ENX(LuaState * ls);
 	static int Get_ENY(LuaState * ls);
+	static int Get_ENSPEED(LuaState * ls);
 	static int Get_ENLEVEL(LuaState * ls);
 	static int Get_ENAIMX(LuaState * ls);
 	static int Get_ENAIMY(LuaState * ls);

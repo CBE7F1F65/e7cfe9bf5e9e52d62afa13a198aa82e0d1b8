@@ -163,6 +163,7 @@ void Bullet::Action(DWORD stopflag)
 				}
 				if ((*bu[j]).exist)
 				{
+					DWORD _index = bu[j].getIndex();
 					if (!binstop)
 					{
 						(*bu[j]).action();
@@ -171,6 +172,7 @@ void Bullet::Action(DWORD stopflag)
 					{
 						(*bu[j]).actionInStop();
 					}
+					bu[j].toIndex(_index);
 				}
 				else
 				{

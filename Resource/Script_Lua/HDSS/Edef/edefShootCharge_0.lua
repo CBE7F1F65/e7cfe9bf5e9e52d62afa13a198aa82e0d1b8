@@ -10,7 +10,7 @@ function Edef_ShootChargeEnemyEID_0_1(playerindex, level, x, y, timer, px, py)
 		local num = level * 2 + 32;
 		local baseangle = game.Random_Int(1, 36000);
 		local addangle = 18000 / num;
-		local speed = level * 0.2 + 0.4
+		local speed = level * 0.2 + 0.4;
 		hdss.Call(
 			HDSS_BC,
 			{
