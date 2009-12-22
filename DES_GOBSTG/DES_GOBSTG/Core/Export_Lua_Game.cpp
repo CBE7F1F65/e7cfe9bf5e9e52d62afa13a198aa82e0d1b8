@@ -37,6 +37,7 @@ bool Export_Lua_Game::_LuaRegistFunction(LuaObject * obj)
 	_gameobj.Register("SetEnumReplayByIndex", LuaFn_Game_SetEnumReplayByIndex);
 	_gameobj.Register("GetPlayerShootChargeInfo", LuaFn_Game_GetPlayerShootChargeInfo);
 	_gameobj.Register("GetEdefInfo", LuaFn_Game_GetEdefInfo);
+	_gameobj.Register("SendItemBullet", LuaFn_Game_SendItemBullet);
 
 	return true;
 }
@@ -482,6 +483,18 @@ int Export_Lua_Game::LuaFn_Game_GetEdefInfo(LuaState * ls)
 	ls->PushNumber(Player::p[_playerindex].x);
 	ls->PushNumber(Player::p[_playerindex].y);
 	return 7;
+}
+
+int Export_Lua_Game::LuaFn_Game_SendItemBullet(LuaState * ls)
+{
+	LuaStack args(ls);
+	BYTE _playerindex = args[1].GetInteger();
+	int _num = args[2].GetInteger();
+	for (int i=0; i<_num; i++)
+	{
+		Item::SendBullet(1-_playerindex, (*Item::mi[_playerindex]).x, (*Item::mi[_playerindex]).y, EFFSPSET_SYSTEM_SENDITEMBULLET);
+	}
+	return 0;
 }
 
 #endif

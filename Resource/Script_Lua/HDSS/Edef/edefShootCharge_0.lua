@@ -1,6 +1,12 @@
 function Edef_ShootChargeEnemyEID_0_1(playerindex, level, x, y, timer, px, py)
 	if timer == 1 then
-		hdssEA(playerindex, ENAC_FADEOUT_T, 100);
+		hdssEA(playerindex, ENAC_FADEOUT_OOOOOTOO,
+			{
+			},
+			{
+				0, 100
+			}
+		);
 	end
 	if math.mod(timer, 32) == 2 then
 		local turn = math.floor(timer / 32);
@@ -8,7 +14,7 @@ function Edef_ShootChargeEnemyEID_0_1(playerindex, level, x, y, timer, px, py)
 			return;
 		end
 		local num = level * 2 + 32;
-		local baseangle = game.Random_Int(1, 36000);
+		local baseangle = RANDT(1, 36000);
 		local addangle = 18000 / num;
 		local speed = level * 0.2 + 0.4;
 		hdss.Call(
@@ -25,7 +31,7 @@ function Edef_ShootChargeEnemyEID_0_1(playerindex, level, x, y, timer, px, py)
 			}
 		)
 		
-		baseangle = game.Random_Int(1, 36000);
+		baseangle = RANDT(1, 36000);
 		hdssA(playerindex,
 			{
 				TIMERLESS, 90, SPEEDSETADD, -2,
@@ -54,7 +60,13 @@ end
 
 function Edef_ShootChargeEnemyEID_0_2(playerindex, level, x, y, timer, px, py)
 	if timer == 1 then
-		hdssEA(playerindex, ENAC_FADEOUT_T, 100);
+		hdssEA(playerindex, ENAC_FADEOUT_OOOOOTOO,
+			{
+			},
+			{
+				0, 100
+			}
+		);
 	end
 	if math.mod(timer, 32) == 2 then
 		local turn = math.floor(timer / 32);
@@ -62,7 +74,7 @@ function Edef_ShootChargeEnemyEID_0_2(playerindex, level, x, y, timer, px, py)
 			return;
 		end
 		local num = level * 2 + 48;
-		local baseangle = game.Random_Int(1, 36000);
+		local baseangle = RANDT(1, 36000);
 		local speed = level * 0.08 + 1.4;
 		hdss.Call(
 			HDSS_BC,
@@ -97,14 +109,27 @@ function Edef_ShootChargeEnemyEID_0_3(playerindex, level, x, y, timer, px, py)
 	if timer == 1 then
 		local cx = LGlobal_GetCenterBossX(playerindex);
 		local cy = CenterBossY;
-		hdssEA(playerindex, ENAC_OVERPLAYER_CXYT, 60, cx, cy, 90);
+		hdssEA(playerindex, ENAC_OVERPLAYER_XYOOOTCE,
+			{
+				cx, cy
+			},
+			{
+				0, 90, 60, 60
+			}
+		);
 	elseif timer == 810 then
-		hdssEA(playerindex, ENAC_FADEOUT_T, 810);
+		hdssEA(playerindex, ENAC_FADEOUT_OOOOOTOO,
+			{
+			},
+			{
+				0, 810
+			}
+		);
 	elseif math.mod(timer, 90) == 60 then
-		local pattern = game.Random_Int(0, 4);
+		local pattern = RANDT(0, 4);
 		if pattern == 0 then
 			
-			local baseangle = game.Random_Int(1, 36000);
+			local baseangle = RANDT(1, 36000);
 			local num = 40 + level * 4;
 			for i=0, 4 do
 				local speed = level * 0.1 + i * 0.5 + 0.4;
@@ -127,7 +152,7 @@ function Edef_ShootChargeEnemyEID_0_3(playerindex, level, x, y, timer, px, py)
 		elseif pattern == 2 then
 			
 			local num = 40 + level * 2;
-			local baseangle = game.Random_Int(1, 36000);
+			local baseangle = RANDT(1, 36000);
 			local speed = level * 0.08 + 1.2;
 			hdssA(playerindex,
 				{
@@ -150,7 +175,7 @@ function Edef_ShootChargeEnemyEID_0_3(playerindex, level, x, y, timer, px, py)
 		elseif pattern == 3 then
 			
 			local num = 30 + level;
-			local baseangle = game.Random_Int(1, 36000);
+			local baseangle = RANDT(1, 36000);
 			local speed = level * 0.02 + 0.8;
 			for i=0, 1 do
 				hdssA(playerindex,
@@ -182,7 +207,13 @@ end
 
 function Edef_ShootChargeEnemyEID_0_3_B(playerindex, level, x, y, timer, px, py)
 	if timer == 1 then
-		hdssEA(playerindex, ENAC_FADEOUT_T, 8+math.floor(level/2));
+		hdssEA(playerindex, ENAC_FADEOUT_OOOOOTOO,
+			{
+			},
+			{
+				0, 8+math.floor(level/2)
+			}
+		);
 	else
 		local baseangle = hdssAMAP(playerindex, x, y);
 		local speed = 0.5 + timer * 0.1 + level * 0.02;
@@ -208,7 +239,13 @@ end
 
 function Edef_ShootChargeEnemyEID_0_3_E(playerindex, level, x, y, timer, px, py)
 	if timer == 1 then
-		hdssEA(playerindex, ENAC_FADEOUT_T, 48+level*4);
+		hdssEA(playerindex, ENAC_FADEOUT_OOOOOTOO,
+			{
+			},
+			{
+				0, 48 + level * 4
+			}
+		);
 	elseif math.mod(timer, 12) == 0 then
 		ePlayerSendExChase_0(playerindex, x, y);
 	end

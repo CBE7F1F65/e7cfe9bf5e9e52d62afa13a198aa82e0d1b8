@@ -37,9 +37,20 @@ end
 
 function _EventExecute_PlayerShootCharge(playerindex)
 	local charge, level, oplayerID, px, py, opx, opy, playerID = game.GetPlayerShootChargeInfo(playerindex);
+	if charge > 3 then
+		charge = 3;
+	end
 	for i, it in pairs(LTable_ePlayerShootChargeFunction) do
 		if it[1] == oplayerID then
 			if it[2] == charge then
+				if charge == 3 then
+					local enindex, bossindex = hdss.Get(HDSS_ENI, playerindex);
+					if bossindex ~= 0xff then
+						hdssENTOI(playerindex, bossindex);
+						hdssEA(playerindex, ENAC_FADEOUT_OOOOOTOO)
+						hdssENTOI(playerindex, enindex);
+					end
+				end
 				return it[3](1-playerindex, level, oplayerID, px, py, opx, opy, playerID);
 			end
 		end
@@ -65,9 +76,30 @@ function _EventExecute_ActiveGhostOver(playerindex)
 	end
 end
 
-function _EventExecute_PlayerSendLily(playerindex)
+function _EventExecute_PlayerSendLily(rank)
 	hdssSE(SE_BOSS_WARNING);
+	local randomitem = LGlobal_GetRandomItem();
+	for i=0, 1 do
+		hdss.Call(
+			HDSS_EB,
+			{
+				CC_EnemyEID_Lily, i, LGlobal_GetCenterX(i), 0, 9000, 0, LConst_EnemyTypeLiLy, 10, 0
+			},
+			{
+				i+2
+			},
+			{
+				randomitem
+			}
+		)
+		hdssENSAIM(i, rank);
+	end
 	return true;
+end
+
+function _EventExecute_PlayerSendItemBullet(playerindex)
+	local rank = hdss.Get(HDSS_RANK);
+	game.SendItemBullet(playerindex, 16+rank);
 end
 
 function EventExecute(name, con)
@@ -86,6 +118,8 @@ function EventExecute(name, con)
 		return _EventExecute_ActiveGhostOver(con);
 	elseif name == EVENT_PLAYERSENDLILY then
 		return _EventExecute_PlayerSendLily(con);
+	elseif name == EVENT_PLAYERSENDITEMBULLET then
+		return _EventExecute_PlayerSendItemBullet(con);
 	end
 	return true;
 

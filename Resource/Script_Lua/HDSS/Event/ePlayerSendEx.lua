@@ -1,15 +1,15 @@
 function ePlayerSendEx_0(esindex, oplayerindex, playerID, opx, opy, px, py, oplayerID)
-	local aimx = helper_GetCenterX(oplayerindex) + game.Random_Float(-136, 136);
-	local aimy = game.Random_Float(16, 144);
-	local chasetimer = game.Random_Int(45, 60);
+	local aimx = helper_GetCenterX(oplayerindex) + RANDTF(-136, 136);
+	local aimy = RANDTF(16, 144);
+	local chasetimer = RANDT(45, 60);
 	game.PlayerSendEx(oplayerindex, esindex, aimx, aimy, chasetimer);
 	return true;
 end
 
 function ePlayerSendEx_1(esindex, oplayerindex, playerID, opx, opy, px, py, oplayerID)
-	local aimx = helper_GetCenterX(oplayerindex) + game.Random_Float(-136, 136);
+	local aimx = helper_GetCenterX(oplayerindex) + RANDTF(-136, 136);
 	local aimy = 464;
-	local chasetimer = game.Random_Int(45, 60);
+	local chasetimer = RANDT(45, 60);
 	game.PlayerSendEx(oplayerindex, esindex, aimx, aimy, chasetimer);
 	return true;
 end
@@ -20,8 +20,8 @@ function ePlayerSendExChase_0(playerindex, x, y, playerID, appendfloat)
 	
 	local rank, cardlevel, bosslevel = hdss.Get(HDSS_RANK, 1-playerindex);
 	local angle;
-	angle = game.Random_Int(-5500, -2500);
-	if game.Random_Int(0, 1) == 1 then
+	angle = RANDT(-5500, -2500);
+	if RANDT(0, 1) == 1 then
 		angle = -18000 - angle;
 	end
 	local speed = 1.4;

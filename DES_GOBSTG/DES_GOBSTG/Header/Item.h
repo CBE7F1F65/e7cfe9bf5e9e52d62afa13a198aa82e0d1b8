@@ -12,14 +12,10 @@ class Player;
 
 #define ITEM_STARTSPEED		-5
 
-#define	ITEM_POWER			0x0
-#define	ITEM_POINT			0x1
-#define	ITEM_FAITH			0x2
-#define	ITEM_BIGPOWER		0x3
-#define	ITEM_BOMB			0x4
-#define	ITEM_FULL			0x5
-#define	ITEM_EXTEND			0x6
-#define	ITEM_SMALLFAITH		0x7
+#define	ITEM_GAUGE			0x0
+#define	ITEM_BULLET			0x1
+#define	ITEM_EX				0x2
+#define	ITEM_POINT			0x3
 
 
 class Item : public BObject
@@ -32,6 +28,8 @@ public:
 	static void ClearItem();
 	static void Action(DWORD stopflag);
 	static void RenderAll(BYTE playerindex);
+
+	static void SendBullet(BYTE playerindex, float x, float y, BYTE setID);
 
 	static int Build(BYTE playerindex, WORD type, float x, float y, bool bDrained = false, int angle = 9000, float speed = ITEM_STARTSPEED);
 

@@ -1,6 +1,9 @@
 MB	=	global.MessageBox;
 LOG	=	hge.System_Log;
 
+RANDT	=	game.Random_Int;
+RANDTF	=	game.Random_Float;
+
 function LGlobal_GetCenterX(playerindex)
 	if playerindex == 1 then
 		return CenterX_1;
@@ -13,6 +16,11 @@ function LGlobal_GetCenterBossX(playerindex)
 		return CenterBossX_1;
 	end
 	return CenterBossX_0;
+end
+
+function LGlobal_GetRandomItem()
+	local ret = math.pow(4, RANDT(0, 3));
+	return ret;
 end
 
 LTable_ePlayerDrainFunction = 

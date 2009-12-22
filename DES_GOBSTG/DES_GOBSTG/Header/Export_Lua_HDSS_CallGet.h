@@ -46,6 +46,7 @@ public:
 	static int Call_ENBUILD(LuaState * ls);
 	static int Call_ENACTIONSET(LuaState * ls);
 	static int Call_ENSAIM(LuaState * ls);
+	static int Call_ENTOI(LuaState * ls);
 	static int Call_ENAZBUILD(LuaState * ls);
 
 	static int Call_RAMA(LuaState * ls);
@@ -81,6 +82,7 @@ public:
 	static int Get_ENAIMX(LuaState * ls);
 	static int Get_ENAIMY(LuaState * ls);
 	static int Get_ENLIFE(LuaState * ls);
+	static int Get_ENI(LuaState * ls);
 
 	static int Get_SIGN(LuaState * ls);
 

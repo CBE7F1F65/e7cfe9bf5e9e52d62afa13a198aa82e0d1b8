@@ -502,8 +502,7 @@ int _HDSSCallGet::Call_ENBUILD(LuaState * ls)
 				if (argscount > 3)
 				{
 					_GETPARAS_HDSS_LUAPARA(4);
-					_JNEXT_HDSS_LUAPARA;
-					DWORD _take = _DOBJ_HDSS_LUA;
+					int _take = _INEXT_HDSS_LUAPARA;
 					_pen->setTake(_take);
 				}
 			}
@@ -522,31 +521,55 @@ int _HDSSCallGet::Call_ENACTIONSET(LuaState * ls)
 	{
 		BYTE _playerindex = _INEXT_HDSS_LUAPARA;
 		WORD _ac = _INEXT_HDSS_LUAPARA;
-		float _para0 = 0;
-		float _para1 = 0;
-		float _para2 = 0;
-		float _para3 = 0;
+		float _para_x = 0;
+		float _para_y = 0;
+		float _para_speed = 0;
+		float _para_friction = 0;
+		int _para_angle = 0;
+		int _para_time = 0;
+		int _para_counter = 0;
+		int _para_endtime = 0;
 		_JNEXT_HDSS_LUAPARA;
 		if (bhavenext)
 		{
-			_para0 = _FOBJ_HDSS_LUA;
+			_para_x = _FOBJ_HDSS_LUA;
 			_JNEXT_HDSS_LUAPARA;
 			if (bhavenext)
 			{
-				_para1 = _FOBJ_HDSS_LUA;
+				_para_y = _FOBJ_HDSS_LUA;
 				_JNEXT_HDSS_LUAPARA;
 				if (bhavenext)
 				{
-					_para2 = _FOBJ_HDSS_LUA;
+					_para_speed = _FOBJ_HDSS_LUA;
 					_JNEXT_HDSS_LUAPARA;
 					if (bhavenext)
 					{
-						_para3 = _FOBJ_HDSS_LUA;
+						_para_friction = _FOBJ_HDSS_LUA;
+						_JNEXT_HDSS_LUAPARA;
+						if (bhavenext)
+						{
+							_para_angle = _IOBJ_HDSS_LUA;
+							_JNEXT_HDSS_LUAPARA;
+							if (bhavenext)
+							{
+								_para_time = _IOBJ_HDSS_LUA;
+								_JNEXT_HDSS_LUAPARA;
+								if (bhavenext)
+								{
+									_para_counter = _IOBJ_HDSS_LUA;
+									_JNEXT_HDSS_LUAPARA;
+									if (bhavenext)
+									{
+										_para_endtime = _IOBJ_HDSS_LUA;
+									}
+								}
+							}
+						}
 					}
 				}
 			}
 		}
-		(*Enemy::en[_playerindex]).setAction(_ac, _para0, _para1, _para2, _para3);
+		(*Enemy::en[_playerindex]).setAction(_ac, _para_x, _para_y, _para_speed, _para_friction, _para_angle, _para_time, _para_counter, _para_endtime);
 	}
 	return 0;
 }
@@ -576,6 +599,18 @@ int _HDSSCallGet::Call_ENSAIM(LuaState * ls)
 			}
 		}
 		(*Enemy::en[_playerindex]).setLevelAim(_level, _aimx, _aimy);
+	}
+	return 0;
+}
+
+int _HDSSCallGet::Call_ENTOI(LuaState * ls)
+{
+	_ENTERCALL_HDSS_LUA;
+	if (true)
+	{
+		BYTE _playerindex = _INEXT_HDSS_LUAPARA;
+		int _index = _INEXT_HDSS_LUAPARA;
+		Enemy::en[_playerindex].toIndex(_index);
 	}
 	return 0;
 }

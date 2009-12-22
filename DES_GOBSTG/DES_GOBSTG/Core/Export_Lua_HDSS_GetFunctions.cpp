@@ -237,6 +237,19 @@ int _HDSSCallGet::Get_ENLIFE(LuaState * ls)
 	return 0;
 }
 
+int _HDSSCallGet::Get_ENI(LuaState * ls)
+{
+	_ENTERGET_HDSS_LUA;
+	if (argscount > 1)
+	{
+		BYTE _playerindex = _INEXT_HDSS_LUAFUNC;
+		_PI_HDSS_LUA(Enemy::en[_playerindex].getIndex());
+		_PI_HDSS_LUA(Enemy::bossindex[_playerindex]);
+		return 2;
+	}
+	return 0;
+}
+
 int _HDSSCallGet::Get_SIGN(LuaState * ls)
 {
 	_ENTERGET_HDSS_LUA;

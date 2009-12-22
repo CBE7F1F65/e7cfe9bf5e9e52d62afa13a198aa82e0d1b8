@@ -112,7 +112,7 @@ public:
 	void AddCardBossLevel(int cardlevel, int bosslevel);
 
 	void DoEnemyCollapse(float x, float y);
-	LONGLONG DoItemGet(WORD itemtype);
+	void DoItemGet(WORD itemtype, float x, float y);
 	void DoGraze(float x, float y);
 	void DoPlayerBulletHit(int hitonfactor = PL_HITONFACTORDEFAULT);
 	void DoShot();

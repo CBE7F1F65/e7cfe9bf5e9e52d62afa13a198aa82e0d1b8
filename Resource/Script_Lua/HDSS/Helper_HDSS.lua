@@ -370,11 +370,25 @@ function hdssEFFSETUP(playerindex, effID, x, y, lifetime)
 	)
 end
 
-function hdssEA(playerindex, ac, para0, para1, para2, para3)
+function hdssEA(playerindex, ac, fpara, ipara)
+	if fpara == nil then
+		fpara = {0, 0, 0, 0};
+	end
+	if ipara == nil then
+		ipara = {0, 0, 0, 0};
+	end
+	for i=1, 4 do
+		if fpara[i] == nil then
+			fpara[i] = 0;
+		end
+		if ipara[i] == nil then
+			ipara[i] = 0;
+		end
+	end
 	return hdss.Call(
 		HDSS_EA,
 		{
-			playerindex, ac, para0, para1, para2, para3
+			playerindex, ac, fpara[1], fpara[2], fpara[3], fpara[4], ipara[1], ipara[2], ipara[3], ipara[4], 
 		}
 	)
 end
@@ -384,6 +398,15 @@ function hdssENSAIM(playerindex, level, aimx, aimy)
 		HDSS_ENSAIM,
 		{
 			playerindex, level, aimx, aimy
+		}
+	)
+end
+
+function hdssENTOI(playerindex, enindex)
+	return hdss.Call(
+		HDSS_ENTOI,
+		{
+			playerindex, enindex
 		}
 	)
 end

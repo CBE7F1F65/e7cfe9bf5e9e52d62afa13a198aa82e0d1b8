@@ -48,18 +48,15 @@
 
 #define ENAC_NONE			0x00
 
-#define ENAC_DIRECTSET_XYAS		0x01
-#define ENAC_CHASEPLAYER_TFR	0x02
-#define ENAC_ATTENUATION_TFER	0x03
-#define ENAC_CIRCLE_TXYE		0x04
-#define ENAC_BROKENLINE_CATE	0x05
-#define ENAC_STOPANDSTRIKE_TEA	0x06
+#define ENAC_DIRECTSET_XYSOAOOO		0x01
+#define ENAC_CHASEPLAYER_OOSFATOO	0x02
+#define ENAC_CHASEAIM_XYSOAOCO		0x03
+#define ENAC_TURNANGLE_OOOOATOE		0x04
 
-#define ENAC_FADEOUT_T			0x40
+#define ENAC_FADEOUT_OOOOOTOO			0x40
 
-#define ENAC_REPOSITION_T		0x80
-#define ENAC_OVERPLAYER_CXYT	0x81
-#define ENAC_CHASETO_CXY		0x82
+#define ENAC_REPOSITION_OOOOOOCO		0x80
+#define ENAC_OVERPLAYER_XYOOOTCE		0x81
 
 #define ENAZTYPEMASK	0x0f
 #define ENAZTYPE_NONE			0x00
@@ -114,12 +111,13 @@ public:
 
 	void Clear();
 	bool isInRange(float x, float y, float r);
+	void Fadeout();
 
 	void valueSet(BYTE playerindex, WORD eID, float x, float y, int angle, float speed, BYTE type, float life, int infitimer);
 
 	void setTar(BYTE tarID=0xff);
-	void setTake(DWORD take=0);
-	void setAction(WORD ac=ENAC_NONE, float para0=0, float para1=0, float para2=0, float para3=0);
+	void setTake(int take=0);
+	void setAction(WORD ac=ENAC_NONE, float para_x=0, float para_y=0, float para_speed=0, float para_friction=0, int para_angle=0, int para_time=0, int para_counter=0, int para_endtime=0);
 	void setLevelAim(int level=0, float aimx=0, float aimy=0);
 
 	void initFrameIndex();
@@ -157,13 +155,31 @@ public:
 	Effectsys	effShot;
 	Effectsys	eff;
 
-	float	para[ENEMY_PARAMAX];
+	union{
+		struct{
+			float para_x;
+			float para_y;
+			float para_speed;
+			float para_friction;
+		};
+		float fpara[ENEMY_PARAMAX];
+	};
+	union{
+		struct{
+			int para_angle;
+			int para_time;
+			int para_counter;
+			int para_endtime;
+		};
+		int ipara[ENEMY_PARAMAX];
+	};
+//	float	para[ENEMY_PARAMAX];
 	Target	aim;
 	int	level;
 	float	lastx;
 	float	life;
 	float	damagerate;
-	DWORD	take;
+	int		take;
 
 	float	accel;
 	float	acceladd;

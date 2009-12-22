@@ -101,7 +101,7 @@ int Export_Lua_HDSS::LuaFn_HDSS_Get(LuaState * ls)
 		case SCR_ENTIMER:
 			break;
 		case SCR_ENI:
-			break;
+			return _HDSSCallGet::Get_ENI(ls);
 		case SCR_ENANGLE:
 			break;
 		case SCR_ENSPEED:
@@ -120,7 +120,6 @@ int Export_Lua_HDSS::LuaFn_HDSS_Get(LuaState * ls)
 			return _HDSSCallGet::Get_ENAIMY(ls);
 		case SCR_ENLIFE:
 			return _HDSSCallGet::Get_ENLIFE(ls);
-			break;
 		}
 		break;
 		/************************************************************************/

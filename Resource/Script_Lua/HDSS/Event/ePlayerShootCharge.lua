@@ -31,6 +31,12 @@ function ePlayerShootCharge_0_3(playerindex, level, oplayerID, px, py)
 		HDSS_EB,
 		{
 			CC_ShootChargeEnemyEID_0_3, playerindex, x, y, 9000, 0, oplayerID, 1400, 0
+		},
+		{
+			playerindex
+		},
+		{
+			LGlobal_GetRandomItem();
 		}
 	)
 	hdssENSAIM(playerindex, level);
@@ -78,6 +84,12 @@ function ePlayerShootCharge_1_3(playerindex, level, oplayerID, px, py)
 		HDSS_EB,
 		{
 			CC_ShootChargeEnemyEID_1_3, playerindex, x, y, 9000, 0, oplayerID, 1400, 0
+		},
+		{
+			playerindex
+		},
+		{
+			LGlobal_GetRandomItem();
 		}
 	)
 	hdssENSAIM(playerindex, level);

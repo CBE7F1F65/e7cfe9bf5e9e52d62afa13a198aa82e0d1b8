@@ -1102,63 +1102,25 @@ void Player::DoShot()
 	}
 }
 
-LONGLONG Player::DoItemGet(WORD itemtype)
+void Player::DoItemGet(WORD itemtype, float _x, float _y)
 {
-	LONGLONG retscore = 0;
 	switch (itemtype)
 	{
+	case ITEM_GAUGE:
+		AddCharge(0, PLAYER_CHARGEMAX);
+		break;
+	case ITEM_BULLET:
+		Scripter::scr.Execute(SCR_EVENT, SCR_EVENT_PLAYERSENDITEMBULLET, playerindex);
+//		Item::SendBullet(1-playerindex, _x, _y, EFFSPSET_SYSTEM_SENDITEMBULLET);
+		break;
+	case ITEM_EX:
+		AddBulletPoint(1, _x, _y);
+		AddExPoint(100, _x, _y);
+		break;
 	case ITEM_POINT:
-		//		nPoint++;
-		//		retscore = nFaith * (fPoprate + fPopratebase);
-		//		if (fPoprate >= 1.0f)
-		//		{
-		//			retscore *= 2;
-		//		}
-		break;
-	case ITEM_POWER:
-		//		nPower+=_PL_POWERADD;
-		retscore = 100;
-		break;
-	case ITEM_BIGPOWER:
-		//		nPower += _PL_BIGPOWERADD;
-		retscore = 500;
-		SE::push(SE_ITEM_POWERUP, x);
-		break;
-	case ITEM_FULL:
-		//		nPower += _PL_FULLPOWERADD;
-		//		Item::ChangeItemID(ITEM_FULL, ITEM_SMALLFAITH);
-		SE::push(SE_ITEM_POWERUP, x);
-		retscore = 1000;
-		break;
-	case ITEM_BOMB:
-		//		nPower += _PL_BOMBPOWERADD;
-		SE::push(SE_ITEM_EXTEND, x);
-		retscore = 1000;
-		break;
-	case ITEM_EXTEND:
-		SE::push(SE_ITEM_EXTEND, x);
-		nLife++;
-		if (nLife > initlife)
-		{
-			nLife = initlife;
-		}
-//		if(nLife > PL_NPLAYERMAX)
-//		{
-//			nLife = PL_NPLAYERMAX;
-			//			nPower += _PL_BOMBPOWERADD;
-//		}
-		retscore = 1000;
-		break;
-	case ITEM_FAITH:
-		//		nFaith += _PL_FAITHADD;
-		//		retscore = nPower;
-		break;
-	case ITEM_SMALLFAITH:
-		//		nFaith += _PL_SMALLFAITHADD;
-		//		retscore = nPower / 100;
+		AddSpellPoint(70000+rank*7000);
 		break;
 	}
-	return retscore;
 }
 
 void Player::GetNCharge(BYTE * ncharge, BYTE * nchargemax)

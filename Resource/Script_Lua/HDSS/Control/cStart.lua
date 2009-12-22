@@ -67,13 +67,13 @@ function ControlExecute_cStart(con)
 			hdss.Call(
 				HDSS_EB,
 				{
-					LConst_EnemyTypeBlue, 0, game.Random_Int(0, 16) * 10 + 80, 280, 9000, 0.1, LConst_EnemyTypeBlue, 20, 0
+					LConst_EnemyTypeBlue, 0, RANDT(0, 16) * 10 + 80, 280, 9000, 0.1, LConst_EnemyTypeBlue, 20, 0
 				}
 			)
 			hdss.Call(
 				HDSS_EB,
 				{
-					LConst_EnemyTypeBlue, 1, game.Random_Int(0, 16) * 10 + 400, 280, 9000, 0.1, LConst_EnemyTypeBlue, 20, 0
+					LConst_EnemyTypeBlue, 1, RANDT(0, 16) * 10 + 400, 280, 9000, 0.1, LConst_EnemyTypeBlue, 20, 0
 				}
 			)
 		end

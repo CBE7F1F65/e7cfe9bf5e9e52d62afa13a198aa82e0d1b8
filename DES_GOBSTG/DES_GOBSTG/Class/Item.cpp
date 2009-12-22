@@ -19,7 +19,7 @@ VectorList<Item> Item::mi[M_PL_MATCHMAXPLAYER];
 #define _ITEM_DRAINDELAY		24
 #define _ITEM_DRAINFASTSPEED	8.8f
 #define _ITEM_DRAINSLOWSPEED	5.0f
-#define _ITEM_FAITHUPSPEED		-1.0f
+#define _ITEM_UPSPEED		-1.0f
 #define _ITEM_DROPSPEEDMAX		2.8f
 #define _ITEM_DROPSPEEDACC		0.1f
 #define _ITEM_RETHROWSPEED		-3.0f
@@ -154,6 +154,29 @@ void Item::Render()
 	}
 }
 
+void Item::SendBullet(BYTE playerindex, float x, float y, BYTE setID)
+{
+	int siidindex = EFFSPSEND_COLOR_RED;
+	if (playerindex)
+	{
+		siidindex = EFFSPSEND_COLOR_BLUE;
+	}
+	float _hscale = randtf(1.2f, 1.4f);
+	int esindex = EffectSp::Build(setID, playerindex, EffectSp::senditemsiid[siidindex][0], x, y, 0, _hscale);
+	if (esindex >= 0)
+	{
+		EffectSp * _peffsp = &(EffectSp::effsp[playerindex][esindex]);
+		_peffsp->colorSet(0x80ffffff, BLEND_ALPHAADD);
+		float aimx;
+		float aimy;
+		aimx = randtf(M_GAMESQUARE_LEFT_(playerindex) + 8, M_GAMESQUARE_RIGHT_(playerindex) - 8);
+		aimy = randtf(M_GAMESQUARE_TOP, M_GAMESQUARE_TOP + 128);
+		_peffsp->chaseSet(EFFSP_CHASE_FREE, aimx, aimy, randt(45, 60));
+		_peffsp->animationSet(EFFSPSEND_ANIMATIONMAX);
+		_peffsp->AppendData(0, 0);
+	}
+}
+
 void Item::action(BYTE playerindex)
 {
 	if(!bDrained && !(Player::p[playerindex].flag & PLAYER_COLLAPSE || Player::p[playerindex].flag & PLAYER_SHOT))
@@ -179,7 +202,7 @@ void Item::action(BYTE playerindex)
 		}
 		else
 		{
-			speed = _ITEM_FAITHUPSPEED;
+			speed = _ITEM_UPSPEED;
 			y += speed;
 		}
 	}
@@ -207,39 +230,19 @@ void Item::action(BYTE playerindex)
 			updateMove();
 		}
 		else
+		{
 			y += speed;
+		}
 	}
 
 	if (checkCollisionSquare(Player::p[playerindex].x, Player::p[playerindex].y, _ITEM_GETR)
-		&& !(Player::p[playerindex].flag & PLAYER_COLLAPSE)
-		&& !((ID == ITEM_SMALLFAITH || ID == ITEM_FAITH) && timer <= _ITEM_DRAINDELAY))
+		&& !(Player::p[playerindex].flag & PLAYER_COLLAPSE))
 	{
-		DWORD score;
+		SE::push(SE_ITEM_POWERUP, x);
 
-		if(ID != ITEM_BOMB && ID != ITEM_EXTEND)
-			SE::push(SE_ITEM_GET, x);
-		else
-			SE::push(SE_ITEM_EXTEND, x);
-
-		score = Player::p[playerindex].DoItemGet(ID);
+		Player::p[playerindex].DoItemGet(ID, x, y);
 
 		exist = false;
-
-		/*
-		struct ScoreDisplay info;
-		itoa(score, info.cScore, 10);
-
-		info.timer = 0;
-		info.x = x;
-		info.y = y;
-		
-		if(ID == ITEM_POINT && (Player::p[playerindex].fPoprate) >= 1.0f)
-			info.yellow = true;
-		else
-		
-			info.yellow = false;
-		infofont.push_back(info);
-		*/
 	}
 	if(y > M_DELETECLIENT_BOTTOM)
 		exist = false;

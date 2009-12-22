@@ -1,5 +1,6 @@
 LTable_EnemyEIDFunction	=	
 {
+	{CC_EnemyEID_Lily,	Edef_Lily},
 	{CC_ShootChargeEnemyEID_0_1, Edef_ShootChargeEnemyEID_0_1},
 	{CC_ShootChargeEnemyEID_0_2, Edef_ShootChargeEnemyEID_0_2},
 	{CC_ShootChargeEnemyEID_0_3, Edef_ShootChargeEnemyEID_0_3},

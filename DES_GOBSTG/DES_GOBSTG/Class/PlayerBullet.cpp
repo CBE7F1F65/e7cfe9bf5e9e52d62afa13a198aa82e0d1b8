@@ -209,7 +209,7 @@ void PlayerBullet::valueSet(BYTE _playerindex, WORD _ID, BYTE _arrange, float _x
 
 	if (flag & PBFLAG_RANDOMANGLE)
 	{
-		angle = randt() % (angle * 2 + 1) - angle;
+		angle = randt(0, angle*2) - angle;
 	}
 	if (arrange)
 	{
