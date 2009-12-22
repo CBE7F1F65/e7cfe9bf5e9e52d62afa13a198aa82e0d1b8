@@ -64,22 +64,12 @@ void SE::play()
 		if(se[i].counter)
 		{
 			int pan = (int)((se[i].sum / se[i].counter) * M_SE_PAN);
-			
-			if(i != SE_ENEMY_DAMAGE_2)
-			{
-				if(hge->Channel_IsPlaying(se[i].chn))
-					hge->Channel_SetPos(se[i].chn, 0);
-				else
-				{
-					se[i].chn = hge->Effect_PlayEx(se[i].eff, vol/3, pan);
-				}
-			}
+
+			if(hge->Channel_IsPlaying(se[i].chn))
+				hge->Channel_SetPos(se[i].chn, 0);
 			else
 			{
-				if(hge->Channel_IsPlaying(se[i].chn))
-					hge->Channel_SetPos(se[i].chn, 0);
-				else
-					se[i].chn = hge->Effect_PlayEx(se[i].eff, vol/2, pan);
+				se[i].chn = hge->Effect_PlayEx(se[i].eff, vol/3, pan);
 			}
 				
 		}
