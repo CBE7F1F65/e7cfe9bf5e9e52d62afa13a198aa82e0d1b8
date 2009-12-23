@@ -361,11 +361,11 @@ function hdssCOLLISION_CIRCLE(x, y, aimx, aimy, r, bbig)
 	)
 end
 
-function hdssEFFSETUP(playerindex, effID, x, y, lifetime)
+function hdssEFFSETUP(playerindex, effID, x, y, lifetime, angle, speed)
 	return hdss.Call(
 		HDSS_EFFSETUP,
 		{
-			effID, playerindex, x, y, 0, lifetime
+			effID, playerindex, x, y, 0, lifetime, 0xff, angle, speed
 		}
 	)
 end
@@ -389,6 +389,24 @@ function hdssEA(playerindex, ac, fpara, ipara)
 		HDSS_EA,
 		{
 			playerindex, ac, fpara[1], fpara[2], fpara[3], fpara[4], ipara[1], ipara[2], ipara[3], ipara[4], 
+		}
+	)
+end
+
+function hdssEA_FADEOUT(playerindex, time)
+	return hdss.Call(
+		HDSS_EA,
+		{
+			playerindex, ENAC_FADEOUT_OOOOOTOO, 0, 0, 0, 0, 0, time
+		}
+	)
+end
+
+function hdssEA_OVERPLAYER(playerindex, x, y, time, counter, endtime)
+	return hdss.Call(
+		HDSS_EA,
+		{
+			playerindex, ENAC_OVERPLAYER_XYOOOTCE, x, y, 0, 0, 0, time, counter, endtime
 		}
 	)
 end
@@ -436,4 +454,37 @@ function hdssA(playerindex, table)
 		},
 		table
 	)
+end
+
+function hdssB(playerindex, x, y, angle, speed, type, color, fadeintime, avoid)
+	return hdss.Call(
+		HDSS_B,
+		{
+			playerindex, x, y, angle, speed, type, color, fadeintime, avoid
+		}
+	)
+end
+
+function hdssEB(eID, playerindex, x, y, angle, speed, type, life, take)
+	if take == nil or take == 0 then
+		return hdss.Call(
+			HDSS_EB,
+			{
+				eID, playerindex, x, y, angle, speed, type, life
+			}
+		)
+	else
+		return hdss.Call(
+			HDSS_EB,
+			{
+				eID, playerindex, x, y, angle, speed, type, life
+			},
+			{
+				0xff
+			},
+			{
+				take
+			}
+		)
+	end
 end

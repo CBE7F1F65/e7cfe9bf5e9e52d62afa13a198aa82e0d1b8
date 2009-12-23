@@ -789,7 +789,6 @@ bool Player::CostLife()
 			nLife = 1;
 		}
 		SetInfi(PLAYERINFI_COSTLIFE, 120);
-		EventZone::Build(EVENTZONE_TYPE_BULLETFADEOUT|EVENTZONE_TYPE_ENEMYDAMAGE|EVENTZONE_TYPE_NOSEND, playerindex, x, y, 120, 0, 10, EVENTZONE_EVENT_NULL, 15.6);
 		if (nLife == 1)
 		{
 			AddCharge(0, PLAYER_CHARGEMAX);
@@ -799,6 +798,10 @@ bool Player::CostLife()
 			AddCharge(0, 130-nLife * 10);
 		}
 		nBounceAngle = randt();
+	}
+	else if (costlifetimer == 50)
+	{
+		EventZone::Build(EVENTZONE_TYPE_BULLETFADEOUT|EVENTZONE_TYPE_ENEMYDAMAGE|EVENTZONE_TYPE_NOSEND, playerindex, x, y, 10, 0, 10, EVENTZONE_EVENT_NULL, 15.6);
 	}
 	else if (costlifetimer == 60)
 	{

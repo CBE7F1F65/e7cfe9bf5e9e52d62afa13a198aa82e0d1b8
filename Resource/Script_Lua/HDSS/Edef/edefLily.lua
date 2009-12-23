@@ -15,30 +15,10 @@ function Edef_Lily(playerindex, rank, x, y, timer, px, py)
 			local angle = (timer-actiontime) * 231 - 9000 - oneset * 47;
 			local speed = rank * 0.04 + 1.8 - oneset * 0.05;
 			for i=0, 2 do
-				hdss.Call(
-					HDSS_B,
-					{
-						playerindex, x, y, true, angle, speed, CC_Bullet_Ring, 2
-					}
-				)
-				hdss.Call(
-					HDSS_B,
-					{
-						playerindex, x, y, true, 18000-angle, speed, CC_Bullet_Ring, 5
-					}
-				)
-				hdss.Call(
-					HDSS_B,
-					{
-						playerindex, x, y, true, angle+1000, speed+0.3, CC_Bullet_SmallBall, 2
-					}
-				)
-				hdss.Call(
-					HDSS_B,
-					{
-						playerindex, x, y, true, 18000-angle-1000, speed+0.3, CC_Bullet_SmallBall, 5
-					}
-				)
+				hdssB(playerindex, x, y, angle, speed, CC_Bullet_Ring, 2);
+				hdssB(playerindex, x, y, 18000-angle, speed, CC_Bullet_Ring, 5);
+				hdssB(playerindex, x, y, angle+1000, speed+0.3, CC_Bullet_SmallBall, 2);
+				hdssB(playerindex, x, y, 18000-angle-1000, speed+0.3, CC_Bullet_SmallBall, 5);
 				angle = angle + 3000;
 				speed = speed + 0.5
 			end

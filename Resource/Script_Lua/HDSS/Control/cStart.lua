@@ -59,23 +59,14 @@ function ControlExecute_cStart(con)
 		
 		--
 		hdssSETPBINFI(1, 0);
+		hdssSETPBINFI(0, 0);
 		
 	end
 
 	if math.mod(con, 2) == 1 then	
 		for i=0, 1 do
-			hdss.Call(
-				HDSS_EB,
-				{
-					LConst_EnemyTypeBlue, 0, RANDT(0, 16) * 10 + 80, 280, 9000, 0.1, LConst_EnemyTypeBlue, 20, 0
-				}
-			)
-			hdss.Call(
-				HDSS_EB,
-				{
-					LConst_EnemyTypeBlue, 1, RANDT(0, 16) * 10 + 400, 280, 9000, 0.1, LConst_EnemyTypeBlue, 20, 0
-				}
-			)
+			hdssEB(LConst_EnemyTypeBlue, 0, RANDT(0, 16) * 10 + 80, 280, 9000, 0.1, LConst_EnemyTypeBlue, 20);
+			hdssEB(LConst_EnemyTypeBlue, 1, RANDT(0, 16) * 10 + 400, 280, 9000, 0.1, LConst_EnemyTypeBlue, 20);
 		end
 	end
 	

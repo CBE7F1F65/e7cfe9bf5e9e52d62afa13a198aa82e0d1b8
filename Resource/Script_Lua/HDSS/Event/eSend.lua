@@ -38,12 +38,7 @@ function eSendRedBullet(playerindex, x, y, sendtime, speed, setID, bSmall)
 	if bSmall then
 		type = CC_Bullet_SmallBall;
 	end
-	local index = hdss.Call(
-		HDSS_B,
-		{
-			playerindex, x, y, true, angle, speed, type, 4
-		}
-	)
+	local index = hdssB(playerindex, x, y, angle, speed, type, 4);
 	if bSmall then
 		game.AddSendBulletInfo(setID, sendtime+1, playerindex, index);
 	end
@@ -68,12 +63,7 @@ function eSendBlueBullet(playerindex, x, y, sendtime, speed, setID, bSmall)
 	if bSmall then
 		type = CC_Bullet_SmallBall;
 	end
-	local index = hdss.Call(
-		HDSS_B,
-		{
-			playerindex, x, y, true, angle, speed, type, 6
-		}
-	)
+	local index = hdssB(playerindex, x, y, angle, speed, type, 6);
 	if bSmall then
 		game.AddSendBulletInfo(setID, sendtime+1, playerindex, index);
 	end
@@ -87,12 +77,7 @@ function eSendExBullet(playerindex, x, y, setID)
 	--aya
 	speed = speed + 0.3;
 	speed = _eSendBulletSpeedRestrict(speed, rank);
-	local index = hdss.Call(
-		HDSS_B,
-		{
-			playerindex, x, y, true, angle, speed, CC_Bullet_MiddleBall, 5
-		}
-	)
+	hdssB(playerindex, x, y, angle, speed, CC_Bullet_MiddleBall, 5);
 	return true;
 end
 
@@ -102,12 +87,7 @@ function eSendItemBullet(playerindex, x, y, setID)
 	local speed = _eSendItemBulletSpeed(rank);
 	speed = _eSendBulletSpeedRestrict(speed, rank);
 	local type = CC_Bullet_MiddleBall;
-	local index = hdss.Call(
-		HDSS_B,
-		{
-			playerindex, x, y, true, angle, speed, type, 3
-		}
-	)
+	hdssB(playerindex, x, y, angle, speed, type, 3);
 	return true;
 end
 
@@ -134,12 +114,7 @@ function eSendGhost(playerindex, x, y, sendtime, acceladd, setID)
 	end
 	--
 	local type = LConst_GhostTypeStart + sendtime * 2;
-	local index = hdss.Call(
-		HDSS_EB,
-		{
-			type, playerindex, x, y, angle, 0, type, 20, 0
-		}
-	);
+	local index = hdssEB(type, playerindex, x, y, angle, 0, type, 20);
 	if index ~= nil then
 		game.AddSendGhostInfo(setID, sendtime, playerindex, accel+acceladd, acceladd, index);
 	end

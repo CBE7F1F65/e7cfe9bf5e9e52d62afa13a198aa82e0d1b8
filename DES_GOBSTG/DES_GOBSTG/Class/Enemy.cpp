@@ -1046,7 +1046,7 @@ void Enemy::Fadeout()
 		{
 			SE::push(SE_BOSS_DEAD, x);
 		}
-		else
+		else if (life <= 0)
 		{
 			SE::push(SE_ENEMY_DEAD, x);
 		}

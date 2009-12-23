@@ -8,7 +8,7 @@ end
 
 function ePlayerSendEx_1(esindex, oplayerindex, playerID, opx, opy, px, py, oplayerID)
 	local aimx = helper_GetCenterX(oplayerindex) + RANDTF(-136, 136);
-	local aimy = 464;
+	local aimy = CenterH + 16;
 	local chasetimer = RANDT(45, 60);
 	game.PlayerSendEx(oplayerindex, esindex, aimx, aimy, chasetimer);
 	return true;
@@ -37,26 +37,24 @@ function ePlayerSendExChase_0(playerindex, x, y, playerID, appendfloat)
 			EVERY, BOUNCELR, 0 ,16,
 		}
 	);
-	hdss.Call(
-		HDSS_B,
-		{
-			playerindex, x, y, true, angle, speed, type, 0
-		}
-	)
+	hdssB(playerindex, x, y, angle, speed, type, 0);
 	hdssA(playerindex);
 	return true;
 end
 
-function ePlayerSendExChase_1(playerindex, x, y, playerID, appendfloat)
+function ePlayerSendExChase_1(playerindex, x, y, playerID, appendfloat, angleoffset)
 	
+	if angleoffset == nil then
+		angleoffset = 0;
+	end
 	local rank, cardlevel, bosslevel = hdss.Get(HDSS_RANK, 1-playerindex);
 	local speed = 18;
 	hdss.Call(
 		HDSS_BEB,
 		{
-			playerindex, x, y, -9000, speed, CC_Bullet_ShuttleBeam, 5, 720, BEAMFLAG_DELAY
+			playerindex, x, y, -9000+angleoffset, speed, CC_Bullet_ShuttleBeam, 5, 720, BEAMFLAG_DELAY
 		}
 	)
-	hdssEFFSETUP(playerindex, 83, x, y, 64);
+	hdssEFFSETUP(playerindex, 83, x, y, 64, angleoffset, 0.01);
 	return true;
 end

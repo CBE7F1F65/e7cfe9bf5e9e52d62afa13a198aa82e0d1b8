@@ -84,7 +84,7 @@ void Bullet::BuildCircle(BYTE playerindex, int num, int baseangle, float baser, 
 		int tnowangle = baseangle + i * anglestep;
 		float tx = x + cost(tnowangle) * baser;
 		float ty = y + sint(tnowangle) * baser;
-		Build(playerindex, tx, ty, true, tnowangle, speed, type, color, fadeinTime, avoid, 0xff);
+		Build(playerindex, tx, ty, tnowangle, speed, type, color, fadeinTime, avoid, 0xff);
 	}
 }
 
@@ -99,11 +99,11 @@ void Bullet::BuildLine(BYTE playerindex, int num, int baseangle, float space, in
 		int tindex = i - baseindex;
 		float tx = x + tindex * cost(baseangle) * space;
 		float ty = y + tindex * sint(baseangle) * space;
-		Build(playerindex, tx, ty, true, angle + anglefactor * tindex, speed + speedfactor * abs(tindex), type, color, fadeinTime, avoid, 0xff);
+		Build(playerindex, tx, ty, angle + anglefactor * tindex, speed + speedfactor * abs(tindex), type, color, fadeinTime, avoid, 0xff);
 	}
 }
 
-int Bullet::Build(BYTE playerindex, float x, float y, bool absolute, int angle, float speed, BYTE type, BYTE color, int fadeinTime, float avoid, BYTE tarID)
+int Bullet::Build(BYTE playerindex, float x, float y, int angle, float speed, BYTE type, BYTE color, int fadeinTime, float avoid, BYTE tarID)
 {
 	if (bu[playerindex].getSize() == BULLETMAX)
 	{
@@ -112,7 +112,7 @@ int Bullet::Build(BYTE playerindex, float x, float y, bool absolute, int angle, 
 	Bullet * _tbu = NULL;
 	_tbu = bu[playerindex].push_back();
 	int _index = bu[playerindex].getEndIndex();
-	if (!_tbu->valueSet(playerindex, _index, x, y, absolute, angle, speed, type, color, fadeinTime, avoid, tarID))
+	if (!_tbu->valueSet(playerindex, _index, x, y, angle, speed, type, color, fadeinTime, avoid, tarID))
 	{
 		bu[playerindex].pop(_index);
 		return -1;
@@ -273,7 +273,7 @@ void Bullet::matchFadeOutColorType()
 	}
 }
 
-bool Bullet::valueSet(BYTE _playerindex, WORD _ID, float _x, float _y, bool absolute, int _angle, float _speed, BYTE _type, BYTE _color, int _fadeinTime, float avoid, BYTE _tarID)
+bool Bullet::valueSet(BYTE _playerindex, WORD _ID, float _x, float _y, int _angle, float _speed, BYTE _type, BYTE _color, int _fadeinTime, float avoid, BYTE _tarID)
 {
 	playerindex	= _playerindex;
 	ID			=	_ID;
@@ -285,10 +285,7 @@ bool Bullet::valueSet(BYTE _playerindex, WORD _ID, float _x, float _y, bool abso
 		if(isInRect(avoid, Player::p[playerindex].x, Player::p[playerindex].y))
 			return false;
 	}
-	if(absolute)
-		angle	=	_angle;
-	else
-		angle	=	rMainAngle(Player::p[playerindex].x, Player::p[playerindex].y, _angle);
+	angle	=	_angle;
 	speed		=	_speed;
 	oldtype		=	type;
 	color		=	_color;

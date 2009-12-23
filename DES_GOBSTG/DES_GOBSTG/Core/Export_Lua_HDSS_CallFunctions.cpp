@@ -487,7 +487,14 @@ int _HDSSCallGet::Call_ENBUILD(LuaState * ls)
 		float _speed = _FNEXT_HDSS_LUAPARA;
 		BYTE _type = _INEXT_HDSS_LUAPARA;
 		float _life = _FNEXT_HDSS_LUAPARA;
-		int _infitimer = _INEXT_HDSS_LUAPARA;
+
+		int _infitimer = 0;
+		_JNEXT_HDSS_LUAPARA;
+		if (bhavenext)
+		{
+			_infitimer = _IOBJ_HDSS_LUA;
+		}
+
 		int _enindex = Enemy::Build(_eID, _playerindex, _x, _y, _angle, _speed, _type, _life, _infitimer);
 
 		if (_enindex >= 0)
@@ -827,7 +834,6 @@ int _HDSSCallGet::Call_BUBUILD(LuaState * ls)
 		BYTE _playerindex = _INEXT_HDSS_LUAPARA;
 		float _x = _FNEXT_HDSS_LUAPARA;
 		float _y = _FNEXT_HDSS_LUAPARA;
-		bool _absolute = _BNEXT_HDSS_LUAPARA;
 		int _angle = _INEXT_HDSS_LUAPARA;
 		float _speed = _FNEXT_HDSS_LUAPARA;
 		BYTE _type = _INEXT_HDSS_LUAPARA;
@@ -852,7 +858,7 @@ int _HDSSCallGet::Call_BUBUILD(LuaState * ls)
 			}
 		}
 
-		int iret = Bullet::Build(_playerindex, _x, _y, _absolute, _angle, _speed, _type, _color, _fadeintime, _avoid, _tarID);
+		int iret = Bullet::Build(_playerindex, _x, _y, _angle, _speed, _type, _color, _fadeintime, _avoid, _tarID);
 		_PI_HDSS_LUA(iret);
 		return 1;
 	}

@@ -33,6 +33,7 @@ void Effectsys::ClearAll()
 		{
 			effsys[j][i].Clear();
 		}
+		effsys[j].clear_item();
 	}
 }
 

@@ -47,7 +47,7 @@ function _EventExecute_PlayerShootCharge(playerindex)
 					local enindex, bossindex = hdss.Get(HDSS_ENI, playerindex);
 					if bossindex ~= 0xff then
 						hdssENTOI(playerindex, bossindex);
-						hdssEA(playerindex, ENAC_FADEOUT_OOOOOTOO)
+						hdssEA_FADEOUT(playerindex, 0);
 						hdssENTOI(playerindex, enindex);
 					end
 				end
@@ -80,18 +80,7 @@ function _EventExecute_PlayerSendLily(rank)
 	hdssSE(SE_BOSS_WARNING);
 	local randomitem = LGlobal_GetRandomItem();
 	for i=0, 1 do
-		hdss.Call(
-			HDSS_EB,
-			{
-				CC_EnemyEID_Lily, i, LGlobal_GetCenterX(i), 0, 9000, 0, LConst_EnemyTypeLiLy, 10, 0
-			},
-			{
-				i+2
-			},
-			{
-				randomitem
-			}
-		)
+		hdssEB(CC_EnemyEID_Lily, i, LGlobal_GetCenterX(i), 0, 9000, 0, LConst_EnemyTypeLiLy, 830, randomitem);
 		hdssENSAIM(i, rank);
 	end
 	return true;

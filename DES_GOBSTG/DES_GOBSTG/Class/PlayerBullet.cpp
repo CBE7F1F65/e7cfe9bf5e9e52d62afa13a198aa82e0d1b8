@@ -406,7 +406,10 @@ bool PlayerBullet::isInRange(float aimx, float aimy, float w, float h)
 	{
 		hiton = false;
 		w += scale / 2;
-		aimy += M_GAMESQUARE_HEIGHT / 2;
+		if (timer == 0)
+		{
+			aimy += M_GAMESQUARE_HEIGHT / 2;
+		}
 		h = M_GAMESQUARE_HEIGHT / 2;
 	}
 	if (checkCollisionSquare(aimx, aimy, w, h))
@@ -416,7 +419,7 @@ bool PlayerBullet::isInRange(float aimx, float aimy, float w, float h)
 			xplus = aimx - x;
 			hitOn();
 		}
-		else if ((flag & PBFLAG_BEAM) && !(timer % 24))
+		else if ((flag & PBFLAG_BEAM)/* && !(timer % 24)*/)
 		{
 			Player::p[playerindex].DoPlayerBulletHit(hitonfactor);
 		}

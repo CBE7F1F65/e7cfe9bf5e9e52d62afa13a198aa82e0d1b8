@@ -99,7 +99,7 @@ public:
 	Enemy();
 	~Enemy();
 
-	static int Build(WORD eID, BYTE playerindex, float x, float y, int angle, float speed, BYTE type, float life, int infitimer);
+	static int Build(WORD eID, BYTE playerindex, float x, float y, int angle, float speed, BYTE type, float life, int infitimer=0);
 	static void Init(HTEXTURE * tex);
 	static void Release();
 	static void Action(DWORD stopflag);
