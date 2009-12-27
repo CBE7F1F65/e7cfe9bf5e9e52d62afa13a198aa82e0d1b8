@@ -250,6 +250,31 @@ int _HDSSCallGet::Get_ENI(LuaState * ls)
 	return 0;
 }
 
+int _HDSSCallGet::Get_ENNUM(LuaState * ls)
+{
+	_ENTERGET_HDSS_LUA;
+	if (argscount > 2)
+	{
+		BYTE _playerindex = _INEXT_HDSS_LUAFUNC;
+		int _set = _INEXT_HDSS_LUAFUNC;
+		int iret = 0;
+		if (_set < 0 || _set >= ENEMY_NMAXSETMAX)
+		{
+			for (int i=0; i<ENEMY_NMAXSETMAX; i++)
+			{
+				iret += Enemy::nEnemyNow[_playerindex][i];
+			}
+		}
+		else
+		{
+			iret = Enemy::nEnemyNow[_playerindex][_set];
+		}
+		_PI_HDSS_LUA(iret);
+		return 1;
+	}
+	return 0;
+}
+
 int _HDSSCallGet::Get_SIGN(LuaState * ls)
 {
 	_ENTERGET_HDSS_LUA;
@@ -317,6 +342,18 @@ int _HDSSCallGet::Get_PLIFE(LuaState * ls)
 		_PI_HDSS_LUA(Player::p[_playerindex].nLife);
 		_PI_HDSS_LUA(Player::p[_playerindex].initlife);
 		return 2;
+	}
+	return 0;
+}
+
+int _HDSSCallGet::Get_PBDRAIN(LuaState * ls)
+{
+	_ENTERGET_HDSS_LUA;
+	if (argscount > 1)
+	{
+		BYTE _playerindex = _INEXT_HDSS_LUAFUNC;
+		_PB_HDSS_LUA(Player::p[_playerindex].bDrain);
+		return 1;
 	}
 	return 0;
 }

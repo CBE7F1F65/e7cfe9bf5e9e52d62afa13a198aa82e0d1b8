@@ -120,6 +120,8 @@ int Export_Lua_HDSS::LuaFn_HDSS_Get(LuaState * ls)
 			return _HDSSCallGet::Get_ENAIMY(ls);
 		case SCR_ENLIFE:
 			return _HDSSCallGet::Get_ENLIFE(ls);
+		case SCR_ENNUM:
+			return _HDSSCallGet::Get_ENNUM(ls);
 		}
 		break;
 		/************************************************************************/
@@ -258,8 +260,8 @@ int Export_Lua_HDSS::LuaFn_HDSS_Get(LuaState * ls)
 			break;
 		case SCR_PPOINT:
 			break;
-		case SCR_PBBORDER:
-			break;
+		case SCR_PBDRAIN:
+			return _HDSSCallGet::Get_PBDRAIN(ls);
 		case SCR_PBSLOW:
 			break;
 		case SCR_PBINFI:

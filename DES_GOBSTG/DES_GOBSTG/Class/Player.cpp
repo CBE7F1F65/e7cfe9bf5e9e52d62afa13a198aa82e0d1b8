@@ -914,6 +914,7 @@ bool Player::Shoot()
 bool Player::Drain()
 {
 	draintimer++;
+	bDrain = true;
 	Scripter::scr.Execute(SCR_EVENT, SCR_EVENT_PLAYERDRAIN, playerindex);
 	return false;
 }
@@ -1006,6 +1007,7 @@ bool Player::Charge()
 		rechargedelaytimer = rechargedelay;
 		return true;
 	}
+	bCharge = true;
 	return false;
 }
 

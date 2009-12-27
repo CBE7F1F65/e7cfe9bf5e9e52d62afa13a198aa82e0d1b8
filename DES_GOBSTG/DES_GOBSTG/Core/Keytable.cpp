@@ -259,6 +259,7 @@ scrKeyWord scrKeyTable[] =
 	{"ENAIMX",					SCR_ENAIMX},
 	{"ENAIMY",					SCR_ENAIMY},
 	{"ENLIFE",					SCR_ENLIFE},
+	{"ENNUM",					SCR_ENNUM},
 
 	{"RAND",					SCR_RAND},
 	{"RANDR",					SCR_RANDR},
@@ -320,7 +321,7 @@ scrKeyWord scrKeyTable[] =
 	{"PPOWER",					SCR_PPOWER},
 	{"PFAITH",					SCR_PFAITH},
 	{"PPOINT",					SCR_PPOINT},
-	{"PBBORDER",				SCR_PBBORDER},
+	{"PBDRAIN",					SCR_PBDRAIN},
 	{"PBSLOW",					SCR_PBSLOW},
 	{"PBINFI",					SCR_PBINFI},
 	{"PSPEED",					SCR_PSPEED},

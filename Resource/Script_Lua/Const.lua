@@ -51,3 +51,10 @@ LConst_GhostTypeYellow	=	LConst_GhostTypeStart + 2
 LConst_GhostTypeYellowActive	=	LConst_GhostTypeStart + 3
 LConst_GhostTypeRed	=	LConst_GhostTypeStart + 4
 LConst_GhostTypeRedActive	=	LConst_GhostTypeStart + 5
+
+LConst_EnemyMergeInterval	=	16
+
+LConst_Desc_EnemyTimeCounter	=	FREEBEGIN
+LConst_Desc_EnemyRandom	=	FREEBEGIN + 2
+LConst_Desc_EnemyNowLine	=	FREEBEGIN + 4
+LConst_Desc_EnemyNowLineNum	=	FREEBEGIN + 6

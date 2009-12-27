@@ -25,6 +25,11 @@ VectorList<ScoreDisplay> Enemy::scoredisplay[M_PL_MATCHMAXPLAYER];
 
 HTEXTURE * Enemy::tex = NULL;
 
+#define _ENEMYDELETE_LEFT_(X)	(M_GAMESQUARE_LEFT_(X)-M_GAMESQUARE_EDGE)
+#define _ENEMYDELETE_RIGHT_(X)	(M_GAMESQUARE_RIGHT_(X)+M_GAMESQUARE_EDGE)
+#define _ENEMYDELETE_TOP		(M_GAMESQUARE_TOP-M_GAMESQUARE_EDGE)
+#define _ENEMYDELETE_BOTTOM		(M_GAMESQUARE_BOTTOM+M_GAMESQUARE_EDGE)
+
 Enemy::Enemy()
 {
 	exist	= false;
@@ -1157,7 +1162,8 @@ void Enemy::action()
 		}
 
 		DoShot();
-		if(x > M_DELETECLIENT_RIGHT_(playerindex) || x < M_DELETECLIENT_LEFT_(playerindex) || y > M_DELETECLIENT_BOTTOM || y < M_DELETECLIENT_TOP)
+//		if(x > M_DELETECLIENT_RIGHT_(playerindex) || x < M_DELETECLIENT_LEFT_(playerindex) || y > M_DELETECLIENT_BOTTOM || y < M_DELETECLIENT_TOP)
+		if(x > _ENEMYDELETE_RIGHT_(playerindex) || x < _ENEMYDELETE_LEFT_(playerindex) || y > _ENEMYDELETE_BOTTOM || y < _ENEMYDELETE_TOP)
 			exist = false;
 	}
 	else

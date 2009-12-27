@@ -18,8 +18,9 @@
 
 void srandt(int seed);
 int randt();
-int randt(int imin, int imax=RAND_MAX);
-float randtf(float fmin=0.0f, float fmax=1.0f);
+int randts(int *seed);
+int randt(int imin, int imax=RAND_MAX, int *seed=NULL);
+float randtf(float fmin=0.0f, float fmax=1.0f, int *seed=NULL);
 
 	#ifdef BUSE_MATHTABLE
 

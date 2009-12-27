@@ -49,16 +49,28 @@ int Export_Lua_Game::LuaFn_Game_Random_Int(LuaState * ls)
 	int argscount = args.Count();
 	int _imin = 0;
 	int _imax = RAND_MAX;
+	int _seed;
+	int * _pseed = NULL;
 	if (argscount > 0)
 	{
 		_imin = args[1].GetInteger();
 		if (argscount > 1)
 		{
-			_imax = args[2].GetInteger() + 1;
+			_imax = args[2].GetInteger();
+			if (argscount > 2)
+			{
+				_seed = args[3].GetInteger();
+				_pseed = &_seed;
+			}
 		}
 	}
-	int _iret = randt(_imin, _imax);
+	int _iret = randt(_imin, _imax, _pseed);
 	ls->PushInteger(_iret);
+	if (_pseed)
+	{
+		ls->PushInteger(_seed);
+		return 2;
+	}
 	return 1;
 }
 
@@ -69,16 +81,28 @@ int Export_Lua_Game::LuaFn_Game_Random_Float(LuaState * ls)
 	int argscount = args.Count();
 	float _fmin = 0.0f;
 	float _fmax = 1.0f;
+	int _seed;
+	int * _pseed = NULL;
 	if (argscount > 0)
 	{
 		_fmin = args[1].GetFloat();
 		if (argscount > 1)
 		{
 			_fmax = args[2].GetFloat();
+			if (argscount > 2)
+			{
+				_seed = args[3].GetInteger();
+				_pseed = &_seed;
+			}
 		}
 	}
 	float _fret = randtf(_fmin, _fmax);
 	ls->PushNumber(_fret);
+	if (_pseed)
+	{
+		ls->PushInteger(_seed);
+		return 2;
+	}
 	return 1;
 }
 

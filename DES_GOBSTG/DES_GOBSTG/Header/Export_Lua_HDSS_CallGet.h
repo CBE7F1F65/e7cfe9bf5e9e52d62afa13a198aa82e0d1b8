@@ -83,6 +83,7 @@ public:
 	static int Get_ENAIMY(LuaState * ls);
 	static int Get_ENLIFE(LuaState * ls);
 	static int Get_ENI(LuaState * ls);
+	static int Get_ENNUM(LuaState * ls);
 
 	static int Get_SIGN(LuaState * ls);
 
@@ -91,6 +92,7 @@ public:
 	static int Get_PX(LuaState * ls);
 	static int Get_PY(LuaState * ls);
 	static int Get_PLIFE(LuaState * ls);
+	static int Get_PBDRAIN(LuaState * ls);
 
 	static int Get_SELCOMPLETE(LuaState * ls);
 	static int Get_SEL(LuaState * ls);
