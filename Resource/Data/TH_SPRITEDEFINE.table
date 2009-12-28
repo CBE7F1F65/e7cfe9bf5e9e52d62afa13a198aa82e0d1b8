@@ -314,16 +314,10 @@ Comment	Index	SI_Name	Tex	Tex_x	Tex_y	Tex_w	Tex_h
 -	557	SI_PlayerGhost_05	29	64	144	16	16
 -	558	SI_PlayerGhost_06	30	192	144	32	32
 -	559	SI_PlayerGhost_07	31	0	0	0	0
-#		Scene(650~749)					
+#		SystemScene(650~749)					
 -	650	SI_TitleScene	360	0	0	-1	-1
 -	651	SI_SelectScene	361	0	0	-1	-1
 -	652	SI_ReplayScene	362	0	0	-1	-1
--	653	SI_BG_01_1	560	0	0	512	512
--	654	SI_BG_01_2	561	0	0	-1	-1
--	655	SI_BG_02_1	562	0	0	-1	-1
--	656	SI_BG_02_2	563	0	0	-1	-1
--	657	SI_BG_03_1	564	0	0	384	448
--	658	SI_BG_03_2	565	0	0	384	384
 #		Enemy(750~849)					
 -	750	SI_EnemySprite_Blue_0	4	0	0	32	32
 -	751	SI_EnemySprite_Blue_1	4	32	0	32	32
@@ -811,8 +805,8 @@ Comment	Index	SI_Name	Tex	Tex_x	Tex_y	Tex_w	Tex_h
 -	1722	SI_Bullet_Score_3	2	376	482	40	12
 -	1723	SI_Bullet_Score_4	2	416	482	40	12
 -	1724	SI_Bullet_Score_5	2	456	482	40	12
-#		BulletEx					
--	1750	SI_BulletEx_Reimu_0	50	128	0	64	64
+#		BulletEx(1800~1999)					
+-	1800	SI_BulletEx_Reimu_0	50	128	0	64	64
 #		Player(2000~2999)					
 -	2000	SI_Player_Reimu_0	10	0	0	32	48
 -	2001	SI_Player_Reimu_1	10	32	0	32	48
@@ -1333,7 +1327,12 @@ Comment	Index	SI_Name	Tex	Tex_x	Tex_y	Tex_w	Tex_h
 #		PlayerDrainZone(3400~3599)					
 -	3400	SI_PlayerDrainZone_01	310	0	0	-1	-1
 -	3401	SI_PlayerDrainZone_02	311	0	0	-1	-1
-#		Unknown(3600~3999)					
+#		Scene(3600~3799)					
+-	3600	SI_Scene_01_1	560	0	0	256	256
+-	3601	SI_Scene_01_2	560	256	0	240	240
+-	3602	SI_Scene_01_3	560	0	256	320	256
+-	3603	SI_Scene_01_4	560	496	0	16	512
+#		Spell(3800~3999)					
 #		Boss(4000~4999)					
 -	4000	SI_Boss_Reimu_0	160	0	0	64	80
 -	4001	SI_Boss_Reimu_1	160	64	0	64	80
