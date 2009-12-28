@@ -5,7 +5,7 @@
 #include "Export.h"
 #include "ProcessDefine.h"
 
-BGLayerSet BGLayer::set[M_PL_MATCHMAXPLAYER][BGLAYERSETMAX];
+BGLayerSet BGLayer::bglayerset[M_PL_MATCHMAXPLAYER][BGLAYERSETMAX];
 BGLayer BGLayer::ubg[M_PL_MATCHMAXPLAYER][UBGLAYERMAX];
 
 WORD BGLayer::setindex = 0;
@@ -33,8 +33,8 @@ void BGLayer::Init(HTEXTURE * _tex)
 	{
 		for(int i=0; i<BGLAYERSETMAX; i++)
 		{
-			set[j][i].sID = 0;
-			set[j][i].timer = 0;
+			bglayerset[j][i].sID = BGLAYERSET_NONE;
+			bglayerset[j][i].timer = 0;
 		}
 		for (int i=0; i<UBGLAYERMAX; i++)
 		{
@@ -328,19 +328,12 @@ void BGLayer::Action(DWORD stopflag, bool active)
 			{
 				for(int i=0; i<BGLAYERSETMAX; i++)
 				{
-					if(set[j][i].sID != 0)
+					if(bglayerset[j][i].sID != BGLAYERSET_NONE)
 					{
-						set[j][i].timer++;
+						bglayerset[j][i].timer++;
 						setindex = i;
 
-						if (set[j][i].timer < set[j][i].quittime)
-						{
-							Scripter::scr.Execute(SCR_SCENE, set[j][i].sID, set[j][i].timer);
-						}
-						else if (set[j][i].timer == set[j][i].quittime)
-						{
-							Scripter::scr.Execute(SCR_SCENE, set[j][i].sID, SCRIPT_CON_QUIT);
-						}
+						Scripter::scr.Execute(SCR_SCENE, bglayerset[j][i].sID+j*PLAYERTYPEMAX, bglayerset[j][i].timer);
 					}
 				}
 			}
@@ -404,6 +397,20 @@ void BGLayer::RenderFGPause()
 		{
 			ubg[i][UFGID_FGPAUSE].Render();
 		}
+	}
+}
+
+void BGLayer::BGLayerSetup(BYTE playerindex, BYTE setID, WORD sID/* =BGLAYERSET_NONE */, bool bForce/* =false */)
+{
+	WORD osID = bglayerset[playerindex][setID].sID;
+	if (bForce || osID != setID)
+	{
+		if (osID != BGLAYERSET_NONE && osID != setID)
+		{
+			Scripter::scr.Execute(SCR_SCENE, osID+playerindex*PLAYERTYPEMAX, SCRIPT_CON_POST);
+		}
+		bglayerset[playerindex][setID].sID = sID;
+		bglayerset[playerindex][setID].timer = 0;
 	}
 }
 

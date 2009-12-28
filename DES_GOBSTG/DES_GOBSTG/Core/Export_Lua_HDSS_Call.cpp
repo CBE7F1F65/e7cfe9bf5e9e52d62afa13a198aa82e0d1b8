@@ -184,6 +184,8 @@ int Export_Lua_HDSS::LuaFn_HDSS_Call(LuaState * ls)
 				return _HDSSCallGet::Call_BGFLAG(ls);
 			case SCR_BGOFF:
 				return _HDSSCallGet::Call_BGOFF(ls);
+			case SCR_BGSETUP:
+				return _HDSSCallGet::Call_BGSETUP(ls);
 			}
 			break;
 			/************************************************************************/

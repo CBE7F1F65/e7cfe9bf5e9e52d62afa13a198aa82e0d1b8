@@ -3,6 +3,7 @@ luaFileTable	=	{
 									"Script_Lua/HDSS/Control/*.lua",
 									"Script_Lua/HDSS/Event/*.lua",
 									"Script_Lua/HDSS/Edef/*.lua",
+									"Script_Lua/HDSS/Scene/*.lua",
 									"Script_Lua/HDSS/*.lua",
 									"Script_Lua/Global.lua",
 								}

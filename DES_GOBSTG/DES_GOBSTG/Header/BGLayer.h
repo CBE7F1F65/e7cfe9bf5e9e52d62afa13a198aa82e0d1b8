@@ -53,11 +53,10 @@
 struct BGLayerSet
 {
 	DWORD timer;
-	DWORD quittime;
 	WORD sID;
 };
 
-#define BGLAYERSET_NONE	0
+#define BGLAYERSET_NONE	0xffff
 
 class BGLayer : public BObject
 {
@@ -72,6 +71,7 @@ public:
 	static void RenderBG(BYTE playerindex);
 	static void RenderFG(BYTE playerindex);
 	static void RenderFGPause();
+	static void BGLayerSetup(BYTE playerindex, BYTE setID, WORD sID=BGLAYERSET_NONE, bool bForce=false);
 
 	void Render();
 	void valueSet(int siID, float cenx, float ceny, float width, float height, DWORD col = 0xffffffff);
@@ -104,7 +104,7 @@ public:
 	BYTE	changetimer;
 	BYTE	mtimer;
 
-	static BGLayerSet set[M_PL_MATCHMAXPLAYER][BGLAYERSETMAX];
+	static BGLayerSet bglayerset[M_PL_MATCHMAXPLAYER][BGLAYERSETMAX];
 	static WORD setindex;
 	static HTEXTURE * tex;
 

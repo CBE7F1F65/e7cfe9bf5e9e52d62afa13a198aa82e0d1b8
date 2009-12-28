@@ -29,11 +29,11 @@ LGlobal_EnemyBasicData	=
 		{LConst_EnemyTypeBig,	LConst_EnemyTypeGreen,	LConst_EnemyTypeRed,	LConst_EnemyTypeRed,	LConst_EnemyTypeBlue,	LConst_EnemyTypeBlue},
 	},
 	{
-		{-48,	0,	4500,	140,	80,	160},
+		{-48,	0,	4500,	100,	70,	200},
 		{LConst_EnemyTypeBig,	LConst_EnemyTypeGreen,	LConst_EnemyTypeRed,	LConst_EnemyTypeBlue,	LConst_EnemyTypeBlue,	LConst_EnemyTypeBlue,	LConst_EnemyTypeBlue,	LConst_EnemyTypeRed,	LConst_EnemyTypeGreen,	LConst_EnemyTypeBig},
 	},
 	{
-		{-12,	0,	4500,	160,	80,	160},
+		{-12,	0,	4500,	100,	80,	210},
 		{LConst_EnemyTypeBig,	LConst_EnemyTypeGreen,	LConst_EnemyTypeRed,	LConst_EnemyTypeBlue,	LConst_EnemyTypeBlue,	LConst_EnemyTypeBlue,	LConst_EnemyTypeBlue,	LConst_EnemyTypeRed,	LConst_EnemyTypeGreen,	LConst_EnemyTypeBig},
 	},
 	{

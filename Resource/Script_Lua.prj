@@ -20,11 +20,13 @@ Working Time=587706
 1=HDSS - Control
 2=HDSS - Event
 3=HDSS - Edef
+4=HDSS - Scene
 [Folders]
 HDSS=1
 HDSS - Control=1
 HDSS - Edef=1
 HDSS - Event=1
+HDSS - Scene=1
 [uemakeXp]
 ReleaseMode=0
 [Debug Settings]
@@ -92,3 +94,5 @@ Open File5=
 0=Script_Lua\HDSS\Edef\edefShootCharge_0.lua
 1=Script_Lua\HDSS\Edef\edefShootCharge_1.lua
 2=Script_Lua\HDSS\Edef\edefLily.lua
+[Files - HDSS - Scene]
+0=Script_Lua\HDSS\Scene\scene00.lua

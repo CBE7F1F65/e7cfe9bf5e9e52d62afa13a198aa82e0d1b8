@@ -6,63 +6,8 @@ function ControlExecute_cStart(con)
 			hdssSD(LConst_Desc_EnemyTimeCounter+i, 0);
 			hdssSD(LConst_Desc_EnemyRandom+i, enemyrandrom);
 			LGlobal_GetNextEnemyRandom(i);
-		end
-		
-		local col = global.ARGB(0xff, 0xffffff);
-		for i=0,1 do
-			local xoffset = i * 320;
-			hdss.Call(
-				HDSS_BGVALEX,
-				{
-					i, 0, SI_TitleScene
-				},
-				{
-					xoffset, 480, -480, 320, 480, 9000, 0, 0
-				},
-				{
-					0.008, 9000
-				}
-			)
-			hdss.Call(
-				HDSS_BGVALEX,
-				{
-					i, 1, SI_TitleScene
-				},
-				{
-					xoffset, 0, -480, 320, 480, 9000, 0, 0
-				},
-				{
-					0.008, 9000
-				}
-			)
-			hdss.Call(
-				HDSS_BGVALEX,
-				{
-					i, 2, SI_TitleScene
-				},
-				{
-					xoffset, 0, -480, 480, 480, 0, 9000, 0
-				},
-				{
-					0.008
-				}
-			)
-			hdss.Call(
-				HDSS_BGVALEX,
-				{
-					i, 3, SI_TitleScene
-				},
-				{
-					xoffset+320, 0, -480, 480, 480, 0, 9000, 0
-				},
-				{
-					0.008
-				}
-			)
-		hdssBGCOLOR(i, 0, 0, 0, col, col);
-		hdssBGCOLOR(i, 1, 0, 0, col, col);
-		hdssBGCOLOR(i, 2, 0, col, col, 0);
-		hdssBGCOLOR(i, 3, 0, col, col, 0);
+			
+			hdssBGSETUP(i, 0, 0);
 		end
 		
 		--
@@ -76,7 +21,8 @@ function ControlExecute_cStart(con)
 		local enemytimecounter = hdss.Get(HDSS_D, LConst_Desc_EnemyTimeCounter+i);
 		local nowlinenum = hdss.Get(HDSS_D, LConst_Desc_EnemyNowLineNum+i);
 		local bdrain = hdss.Get(HDSS_PBDRAIN, i);
-		if nowlinenum <= 0 and bdrain and (hdss.Get(HDSS_ENNUM, i, 1) > 0 or hdss.Get(HDSS_ENNUM, i, 2) > 0) then
+		local bhaveenemy = hdss.Get(HDSS_ENNUM, i, 1) > 0 or hdss.Get(HDSS_ENNUM, i, 2) > 0;
+		if nowlinenum <= 0 and bdrain and bhaveenemy then
 			enemytimecounter = LConst_EnemyMergeInterval - 1;
 		else
 			enemytimecounter = enemytimecounter + 1;
@@ -100,7 +46,7 @@ function ControlExecute_cStart(con)
 			end
 			nowlinenum = nowlinenum - 1;
 			if nowlinenum <= 0 then
-				if bdrain then
+				if bdrain and bhaveenemy then
 					hdssSD(LConst_Desc_EnemyNowLineNum+i, 0);
 				else
 					LGlobal_GetNextEnemyRandom(i);

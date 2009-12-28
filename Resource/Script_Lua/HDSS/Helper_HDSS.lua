@@ -118,6 +118,15 @@ function hdssBGOFF(playerindex, index1, index2, index3, index4)
 	)
 end
 
+function hdssBGSETUP(playerindex, setID, sID, bForce)
+	return hdss.Call(
+		HDSS_BGSETUP,
+		{
+			playerindex, setID, sID, bForce
+		}
+	)
+end
+
 function hdssSETKEY(playerindex, ksi, set)
 	return hdss.Call(
 		HDSS_SETKEY,

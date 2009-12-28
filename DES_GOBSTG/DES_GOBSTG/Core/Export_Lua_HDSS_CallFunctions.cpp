@@ -1196,6 +1196,34 @@ int _HDSSCallGet::Call_BGOFF(LuaState * ls)
 	return 0;
 }
 
+int _HDSSCallGet::Call_BGSETUP(LuaState * ls)
+{
+	_ENTERCALL_HDSS_LUA;
+
+	if (true)
+	{
+		BYTE _playerindex = _INEXT_HDSS_LUAPARA;
+		BYTE _setID = _INEXT_HDSS_LUAPARA;
+
+		WORD _sID = BGLAYERSET_NONE;
+		bool _bForce = false;
+
+		_JNEXT_HDSS_LUAPARA;
+		if (bhavenext)
+		{
+			_sID = _IOBJ_HDSS_LUA;
+			_JNEXT_HDSS_LUAPARA;
+			if (bhavenext)
+			{
+				_bForce = _BOBJ_HDSS_LUA;
+			}
+		}
+
+		BGLayer::BGLayerSetup(_playerindex, _setID, _sID, _bForce);
+	}
+	return 0;
+}
+
 int _HDSSCallGet::Call_SELBUILD(LuaState * ls)
 {
 	_ENTERCALL_HDSS_LUA;

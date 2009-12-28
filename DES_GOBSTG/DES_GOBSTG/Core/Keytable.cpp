@@ -27,6 +27,8 @@ scrKeyWord scrKeyTable[] =
 
 	{"#",						SCR_FILENAME},
 	{"@",						SCR_BLOCKCON},
+	{"SCRFILENAME",				SCR_FILENAME},
+	{"SCRBLOCKCON",				SCR_BLOCKCON},
 
 	/************************************************************************/
 	/* Action                                                               */
@@ -223,6 +225,7 @@ scrKeyWord scrKeyTable[] =
 	{"BUX",						SCR_BUX},
 	{"BUY",						SCR_BUY},
 	{"BU@",						SCR_BUTIMER},
+	{"BUTIMER",					SCR_BUTIMER},
 	{"BUCANCELABLE",			SCR_BUCANCELABLE},
 	{"BUHAVEGRAY",				SCR_BUHAVEGRAY},
 	{"BEI",						SCR_BEI},
@@ -231,12 +234,14 @@ scrKeyWord scrKeyTable[] =
 	{"BEX",						SCR_BEX},
 	{"BEY",						SCR_BEY},
 	{"BE@",						SCR_BETIMER},
+	{"BETIMER",					SCR_BETIMER},
 	{"BEHOLDTAR",				SCR_BEHOLDTAR},
 	{"BEPINTAR",				SCR_BEPINTAR},
 
 	{"GHX",						SCR_GHX},
 	{"GHY",						SCR_GHY},
 	{"GH@",						SCR_GHTIMER},
+	{"GHTIMER",					SCR_GHTIMER},
 	{"GHI",						SCR_GHI},
 	{"GHANGLE",					SCR_GHANGLE},
 	{"GHSPEED",					SCR_GHSPEED},
@@ -250,6 +255,7 @@ scrKeyWord scrKeyTable[] =
 	{"ENX",						SCR_ENX},
 	{"ENY",						SCR_ENY},
 	{"EN@",						SCR_ENTIMER},
+	{"ENTIMER",					SCR_ENTIMER},
 	{"ENI",						SCR_ENI},
 	{"ENANGLE",					SCR_ENANGLE},
 	{"ENSPEED",					SCR_ENSPEED},
@@ -282,6 +288,8 @@ scrKeyWord scrKeyTable[] =
 	{"TIME",					SCR_TIME},
 	{"NOW#",					SCR_NOWNAME},
 	{"NOW@",					SCR_NOWCON},
+	{"NOWNAME",					SCR_NOWNAME},
+	{"NOWCON",					SCR_NOWCON},
 	{"RANK",					SCR_RANK},
 	{"SNOSTAGE",				SCR_SNOSTAGE},
 	{"SNODIFFI",				SCR_SNODIFFI},
@@ -305,6 +313,7 @@ scrKeyWord scrKeyTable[] =
 	{"SPELLUSERENAME",			SCR_SPELLUSERENAME},
 
 	{"BGS@",					SCR_BGSTIMER},
+	{"BGSTIMER",				SCR_BGSTIMER},
 	{"BGSI",					SCR_BGSINDEX},
 
 	{"SELCOMPLETE",				SCR_SELCOMPLETE},
@@ -501,6 +510,8 @@ scrKeyWord scrKeyTable[] =
 	{"BEAMFLAG_NOGRAZE",		BEAMFLAG_NOGRAZE},
 	{"BEAMFLAG_DELAY",			BEAMFLAG_DELAY},
 
+	{"PLAYERTYPEMAX",			PLAYERTYPEMAX},
+
 	{"SE_DEFAULT",				SE_DEFAULT},
 	{"SE_PLAYER_GRAZE",			SE_PLAYER_GRAZE},
 	{"SE_PLAYER_SHOT",			SE_PLAYER_SHOT},
@@ -556,6 +567,9 @@ scrKeyWord scrKeyTable[] =
 	{"INIT@",					SCRIPT_CON_INIT},
 	{"POST@",					SCRIPT_CON_POST},
 	{"QUIT@",					SCRIPT_CON_QUIT},
+	{"INITAT",					SCRIPT_CON_INIT},
+	{"POSTAT",					SCRIPT_CON_POST},
+	{"QUITAT",					SCRIPT_CON_QUIT},
 
 	{"BTYPE_BULLET",			BTYPE_BULLET},
 	{"BTYPE_BEAM",				BTYPE_BEAM},
