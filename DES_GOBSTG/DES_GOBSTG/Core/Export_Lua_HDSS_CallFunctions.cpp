@@ -1110,6 +1110,7 @@ int _HDSSCallGet::Call_BGVALEX(LuaState * ls)
 
 				float _speed = _FNEXT_HDSS_LUAPARA;
 
+				float _zSpeed = 0;
 				int _angle = 9000;
 				bool _move = false;
 				bool _rotate = false;
@@ -1117,19 +1118,24 @@ int _HDSSCallGet::Call_BGVALEX(LuaState * ls)
 				_JNEXT_HDSS_LUAPARA;
 				if (bhavenext)
 				{
-					_angle = _IOBJ_HDSS_LUA;
+					_zSpeed = _FOBJ_HDSS_LUA;
 					_JNEXT_HDSS_LUAPARA;
 					if (bhavenext)
 					{
-						_move = _BOBJ_HDSS_LUA;
+						_angle = _IOBJ_HDSS_LUA;
 						_JNEXT_HDSS_LUAPARA;
 						if (bhavenext)
 						{
-							_rotate = _BOBJ_HDSS_LUA;
+							_move = _BOBJ_HDSS_LUA;
+							_JNEXT_HDSS_LUAPARA;
+							if (bhavenext)
+							{
+								_rotate = _BOBJ_HDSS_LUA;
+							}
 						}
 					}
 				}
-				BGLayer::ubg[_playerindex][_index].moveSet(_speed, _angle, _move, _rotate);
+				BGLayer::ubg[_playerindex][_index].moveSet(_speed, _zSpeed, _angle, _move, _rotate);
 			}
 		}
 	}
@@ -1165,6 +1171,7 @@ int _HDSSCallGet::Call_BGCOLOR(LuaState * ls)
 		BYTE _playerindex = _INEXT_HDSS_LUAPARA;
 		int _index = _INEXT_HDSS_LUAPARA;
 		DWORD col[4];
+		int _blend = BLEND_DEFAULT;
 		for (int i=0; i<4; i++)
 		{
 			_JNEXT_HDSS_LUAPARA;
@@ -1172,6 +1179,26 @@ int _HDSSCallGet::Call_BGCOLOR(LuaState * ls)
 		}
 
 		BGLayer::ubg[_playerindex][_index].colorSet(col[0], col[1], col[2], col[3]);
+		_JNEXT_HDSS_LUAPARA;
+		if (bhavenext)
+		{
+			_blend = _IOBJ_HDSS_LUA;
+			BGLayer::ubg[_playerindex][_index].SetBlend(_blend);
+		}
+	}
+	return 0;
+}
+
+int _HDSSCallGet::Call_BGBLEND(LuaState * ls)
+{
+	_ENTERCALL_HDSS_LUA;
+
+	if (true)
+	{
+		BYTE _playerindex = _INEXT_HDSS_LUAPARA;
+		int _index = _INEXT_HDSS_LUAPARA;
+		int _blend = _INEXT_HDSS_LUAPARA;
+		BGLayer::ubg[_playerindex][_index].SetBlend(_blend);
 	}
 	return 0;
 }

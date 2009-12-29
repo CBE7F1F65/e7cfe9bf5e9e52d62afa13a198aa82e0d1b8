@@ -70,11 +70,20 @@ function hdssBGFLAG(playerindex, index, flag)
 	)
 end
 
-function hdssBGCOLOR(playerindex, index, col0, col1, col2, col3)
+function hdssBGCOLOR(playerindex, index, col0, col1, col2, col3, blend)
 	return hdss.Call(
 		HDSS_BGCOLOR,
 		{
-			playerindex, index, col0, col1, col2, col3
+			playerindex, index, col0, col1, col2, col3, blend
+		}
+	)
+end
+
+function hdssBGBLEND(playerindex, index, blend)
+	return hdss.Call(
+		HDSS_BGBLEND,
+		{
+			playerindex, index, blend
 		}
 	)
 end

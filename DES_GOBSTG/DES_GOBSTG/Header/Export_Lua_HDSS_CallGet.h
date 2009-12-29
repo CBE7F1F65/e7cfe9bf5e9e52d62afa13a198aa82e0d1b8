@@ -59,6 +59,7 @@ public:
 	static int Call_BGVALUE(LuaState * ls);
 	static int Call_BGVALEX(LuaState * ls);
 	static int Call_BGCOLOR(LuaState * ls);
+	static int Call_BGBLEND(LuaState * ls);
 	static int Call_BGFLAG(LuaState * ls);
 	static int Call_BGOFF(LuaState * ls);
 	static int Call_BGSETUP(LuaState * ls);

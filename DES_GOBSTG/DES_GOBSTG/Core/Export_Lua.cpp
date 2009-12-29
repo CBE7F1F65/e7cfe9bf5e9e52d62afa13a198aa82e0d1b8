@@ -99,6 +99,8 @@ int Export_Lua::_LoadLuaFile(LuaState * ls, const char * filename, bool bDoFile 
 		fwrite(&buffer, 1, 1, outputfile);
 		buffer = '\n';
 		fwrite(&buffer, 1, 1, outputfile);
+
+		fclose(infile);
 	}
 	if (iret == 0)
 	{

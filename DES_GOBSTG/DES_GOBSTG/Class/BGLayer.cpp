@@ -82,6 +82,7 @@ void BGLayer::valueSet(int siID, float cenx, float ceny, float w, float h, DWORD
 	exist = true;
 	move = false;
 	rotate = false;
+	zSpeed = 0;
 
 	spriteData * _sd = SpriteItemManager::CastSprite(siID);
 	HTEXTURE _tex = tex[_sd->tex];
@@ -109,7 +110,6 @@ void BGLayer::valueSet(int siID, float cenx, float ceny, float w, float h, DWORD
 	_y -= h / 2;
 	width	=	w;
 	height	=	h;
-
 	if (sprite)
 	{
 		sprite->SetTexture(_tex);
@@ -174,13 +174,14 @@ void BGLayer::colorSet(DWORD col0, DWORD col1, DWORD col2, DWORD col3)
 	ocol[3] = col3;
 }
 
-void BGLayer::moveSet(float _speed, int _angle, bool _move, bool _rotate)
+void BGLayer::moveSet(float _speed, float _zSpeed, int _angle, bool _move, bool _rotate)
 {
 	if (!exist)
 	{
 		return;
 	}
 	speed = _speed;
+	zSpeed = _zSpeed;
 	angle = _angle;
 	move = _move;
 	rotate = _rotate;
@@ -429,25 +430,34 @@ void BGLayer::action()
 	float costa = cost(angle);
 	float sinta = sint(angle);
 
+	if (zSpeed)
+	{
+		for (int i=0; i<4; i++)
+		{
+			sprite->quad.v[i].z += zSpeed;
+		}
+	}
+
 	if(!move)
 	{
 		//roll the layer
-		if(angle!=9000)
+		if (angle != 9000)
 		{
 			float xt = speed * costa;
 			float yt = speed * sinta;
 
-			sprite->quad.v[0].tx -= xt;	sprite->quad.v[0].ty -= yt;
-			sprite->quad.v[1].tx -= xt;	sprite->quad.v[1].ty -= yt;
-			sprite->quad.v[2].tx -= xt;	sprite->quad.v[2].ty -= yt;
-			sprite->quad.v[3].tx -= xt;	sprite->quad.v[3].ty -= yt;
+			for (int i=0; i<4; i++)
+			{
+				sprite->quad.v[i].tx -= xt;
+				sprite->quad.v[i].ty -= yt;
+			}
 		}
-		else if(speed != 0)
+		else if (speed != 0)
 		{
-			sprite->quad.v[0].ty -= speed;
-			sprite->quad.v[1].ty -= speed;
-			sprite->quad.v[2].ty -= speed;
-			sprite->quad.v[3].ty -= speed;
+			for (int i=0; i<4; i++)
+			{
+				sprite->quad.v[i].ty -= speed;
+			}
 		}
 	}
 	else if(!rotate)
@@ -456,40 +466,30 @@ void BGLayer::action()
 		float xt = speed * costa;
 		float yt = speed * sinta;
 
-//		if (hge->System_GetState(HGE_2DMODE))
-//		{
-//			x += xt;
-//			y += yt;
-//		}
-//		else
-//		{
-			sprite->quad.v[0].x += xt;	sprite->quad.v[0].y += yt;
-			sprite->quad.v[1].x += xt;	sprite->quad.v[1].y += yt;
-			sprite->quad.v[2].x += xt;	sprite->quad.v[2].y += yt;
-			sprite->quad.v[3].x += xt;	sprite->quad.v[3].y += yt;
-//		}
+		for (int i=0; i<4; i++)
+		{
+			sprite->quad.v[i].x += xt;
+			sprite->quad.v[i].y += yt;
+		}
 
 	}
 	else
 	{
-//		if (!hge->System_GetState(HGE_2DMODE))
-//		{
-			//rotate the layer for XY-plane
-			float x = ((sprite->quad.v[0].x + sprite->quad.v[2].x) / 2);
-			float y = ((sprite->quad.v[0].y + sprite->quad.v[2].y) / 2);
-					
-			sprite->quad.v[0].x  = (-width/2)*costa - (-height/2)*sinta + x;
-			sprite->quad.v[0].y  = (-width/2)*sinta + (-height/2)*costa + y;	
+		float x = ((sprite->quad.v[0].x + sprite->quad.v[2].x) / 2);
+		float y = ((sprite->quad.v[0].y + sprite->quad.v[2].y) / 2);
 
-			sprite->quad.v[1].x  = (width/2)*costa - (-height/2)*sinta + x;
-			sprite->quad.v[1].y  = (width/2)*sinta + (-height/2)*costa + y;	
+		sprite->quad.v[0].x  = (-width/2)*costa - (-height/2)*sinta + x;
+		sprite->quad.v[0].y  = (-width/2)*sinta + (-height/2)*costa + y;
 
-			sprite->quad.v[2].x  = (width/2)*costa - (height/2)*sinta + x;
-			sprite->quad.v[2].y  = (width/2)*sinta + (height/2)*costa + y;	
+		sprite->quad.v[1].x  = (width/2)*costa - (-height/2)*sinta + x;
+		sprite->quad.v[1].y  = (width/2)*sinta + (-height/2)*costa + y;	
 
-			sprite->quad.v[3].x  = (-width/2)*costa - (height/2)*sinta + x;
-			sprite->quad.v[3].y  = (-width/2)*sinta + (height/2)*costa + y;	
-//		}
+		sprite->quad.v[2].x  = (width/2)*costa - (height/2)*sinta + x;
+		sprite->quad.v[2].y  = (width/2)*sinta + (height/2)*costa + y;	
+
+		sprite->quad.v[3].x  = (-width/2)*costa - (height/2)*sinta + x;
+		sprite->quad.v[3].y  = (-width/2)*sinta + (height/2)*costa + y;	
+
 		if(angle > 0)
 			angle += (int)(speed*100);
 		else
@@ -557,20 +557,18 @@ void BGLayer::action()
 				for(int i=0;i<4;i++)
 				{
 					acol[i] = 0x00000000;
-					ocol[i] = 0xffffffff;
 				}
 				break;
 			case BG_LIGHTUPNORMAL:
 				for (int i=0; i<4; i++)
 				{
-					acol[i] = 0xffffffff;
+					acol[i] = ocol[i] & 0xffffff;
 				}
 				break;
 			case BG_LIGHTRED:
 				for(int i=0;i<4;i++)
 				{
 					acol[i] = 0xffff0000;
-					ocol[i] = 0xffffffff;
 				}
 				break;
 
