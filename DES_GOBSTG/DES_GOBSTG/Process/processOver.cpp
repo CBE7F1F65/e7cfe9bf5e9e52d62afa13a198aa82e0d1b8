@@ -27,7 +27,7 @@ int Process::processOver()
 		{
 			Replay::rpy.Fill();
 			Replay::rpy.Save();
-			FrontDisplay::fdisp.SetState(FDISP_PANEL, 0);
+//			FrontDisplay::fdisp.SetState(FDISP_PANEL, 0);
 		}
 		else
 		{

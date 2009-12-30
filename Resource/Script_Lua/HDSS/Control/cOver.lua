@@ -71,12 +71,12 @@ function CEOver_DispatchSelect(selsysoverid, tostate)
 	return -1;
 end
 
-function ControlExecute_cOver(con)
+function ControlExecute_cOver(timer)
 
 	local dselcomplete = RESERVEBEGIN;
 	local dselselect = RESERVEBEGIN + 1;
 	
-	if con == 1 then
+	if timer == 1 then
 		CEOver_Init();
 		hdssSD(dselcomplete, 0);
 		CEOver_SetBG();
@@ -86,7 +86,7 @@ function ControlExecute_cOver(con)
 			CEOver_SetSelect(LConst_selsys_overid, _selselect);
 			_selcomplete = 1;
 		elseif _selcomplete == 1 then
-			local ret = CEOver_DispatchSelect(LConst_selsys_overid, con-0xff00);
+			local ret = CEOver_DispatchSelect(LConst_selsys_overid, timer-0xff00);
 			local replaymode, replayend = hdss.Get(HDSS_REPLAYMODE);
 			if ret >= 0 then
 				if ret == 0 then

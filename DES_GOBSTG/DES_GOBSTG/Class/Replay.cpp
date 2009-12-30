@@ -287,7 +287,7 @@ void Replay::Save(const char * replayfilename)
 	memcpy(_rpydata + RPYOFFSET_APPEND, buffer, RPYSIZE_APPEND);
 	memcpy(_rpydata + RPYOFFSET_RPYINFO, &rpyinfo, RPYSIZE_RPYINFO);
 	memcpy(_rpydata + RPYOFFSET_PARTINFO, partinfo, RPYSIZE_PARTINFO * RPYPARTMAX);
-	memcpy(_rpydata + RPYOFFSET_INPUTDATA, replayframe, replayIndex * RPYSIZE_FRAME);
+	memcpy(_rpydata + RPYOFFSET_INPUTDATA, replayframe, (replayIndex+1) * RPYSIZE_FRAME);
 
 	/*
 	replayFrame buff;

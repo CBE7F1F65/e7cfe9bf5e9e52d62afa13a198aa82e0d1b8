@@ -4,17 +4,15 @@ function Scene_s00(playerindex, timer)
 	
 	if timer == POSTAT then
 		
-		hdssBGOFF(playerindex, 0);
-		hdssBGOFF(playerindex, 1);
-		hdssBGOFF(playerindex, 2);
-		hdssBGOFF(playerindex, 3);
+		for i=0, 9 do
+			hdssBGOFF(playerindex, i);
+		end
 		
 	elseif timer == QUITAT then
 		
-		hdssBGFLAG(playerindex, 0, BG_FADEOUT, BGMT_FADE/2);
-		hdssBGFLAG(playerindex, 1, BG_FADEOUT, BGMT_FADE/2);
-		hdssBGFLAG(playerindex, 2, BG_FADEOUT, BGMT_FADE/2);
-		hdssBGFLAG(playerindex, 3, BG_FADEOUT, BGMT_FADE/2);
+		for i=0, 9 do
+			hdssBGFLAG(playerindex, i, BG_FADEOUT, BGMT_FADE/2);
+		end
 		
 	elseif timer == 1 then
 		local col = global.ARGB(0xff, 0xffffff);

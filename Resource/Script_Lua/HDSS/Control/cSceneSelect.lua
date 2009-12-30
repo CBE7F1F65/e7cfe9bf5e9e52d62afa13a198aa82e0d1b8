@@ -113,9 +113,9 @@ function CESceneSelect_DispatchSelect(selsyssceneid, pushkeyid)
 	end
 end
 
-function ControlExecute_cSceneSelect(con)
+function ControlExecute_cSceneSelect(timer)
 
-	if con == 1 then
+	if timer == 1 then
 		CESceneSelect_Init();
 		CESceneSelect_SetBG();
 		CESceneSelect_SetSelect(LConst_selsys_sceneid, PUSHID_UIUSE_0);

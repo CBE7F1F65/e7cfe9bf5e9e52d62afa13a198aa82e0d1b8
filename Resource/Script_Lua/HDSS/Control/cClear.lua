@@ -1,13 +1,57 @@
+LTable_PlayerWinLoseChat	=	
+{				
+	{0,	0,	"winner",	"loser"},
+	{1,	0,	"winner",	"loser"},
+	{2,	0,	"winner",	"loser"},
+	{3,	0,	"winner",	"loser"},
+	{4,	0,	"winner",	"loser"},
+	{5,	0,	"winner",	"loser"},
+	{6,	0,	"winner",	"loser"},
+	{7,	0,	"winner",	"loser"},
+	{8,	0,	"winner",	"loser"},
+	{9,	0,	"winner",	"loser"},
+	{10,	0,	"winner",	"loser"},
+	{11,	0,	"winner",	"loser"},
+	{12,	0,	"winner",	"loser"},
+	{13,	0,	"winner",	"loser"},
+	{14,	0,	"winner",	"loser"},
+	{15,	0,	"winner",	"loser"},
+	{16,	0,	"winner",	"loser"},
+	{17,	0,	"winner",	"loser"},
+	{18,	0,	"winner",	"loser"},
+	{19,	0,	"winner",	"loser"},
+	{20,	0,	"winner",	"loser"},
+	{21,	0,	"winner",	"loser"},
+	{22,	0,	"winner",	"loser"},
+}
+
 function CEClear_CloseUsed()
 end
 
 function CEClear_ExitState(tostate)
 	CEClear_CloseUsed();
 	hdssSETSTATE(tostate);
+	hdssCLEARALL();
 end
 
-function ControlExecute_cClear(con)
-	if con > 60 then
+function ControlExecute_cClear(timer)
+	local chati = hdss.Get(HDSS_CHATI);
+	local winner = 0;
+	local csbegin = CS_L;
+	local csafter = CS_L;
+	if hdss.Get(HDSS_PLIFE, 1) > 0 then
+		winner = 1;
+		csbegin = CS_R;
+		csafter = CS_L;
+	end
+	if chati == 0 then
+		hdssCHATON(-1, -1, csbegin);
+	elseif chati == 1 then
+		hdssCHAT(-1, csbegin, 0);
+	elseif chati == 2 then
+		hdssCHAT(-1, csafter, 1);
+	elseif chati == 3 then
+		hdssCHATOFF();
 		CEClear_ExitState(STATE_OVER);
 	end
 end

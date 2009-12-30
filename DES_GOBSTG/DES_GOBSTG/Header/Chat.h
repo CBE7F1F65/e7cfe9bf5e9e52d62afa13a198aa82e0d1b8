@@ -6,13 +6,11 @@
 #include "BGLayer.h"
 #include "Fontsys.h"
 
-#define CHATTERMAX	5
+#define CHATTERMAX	3
 
 #define CHATTER_LEFT		0
-#define CHATTER_LEFTNAME	1
-#define CHATTER_RIGHT		2
-#define CHATTER_RIGHTNAME	3
-#define CHATTER_TEXTBOX		4
+#define CHATTER_RIGHT		1
+#define CHATTER_TEXTBOX		2
 
 #define CHATSPRITE_LEFT			0x01
 #define CHATSPRITE_LEFTFLIP		0x02

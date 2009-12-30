@@ -82,7 +82,7 @@ void Chat::Render()
 		textbox->RenderEx(x[CHATTER_TEXTBOX], y[CHATTER_TEXTBOX], ARC(9000), 1.5f, 1.0f);
 	}
 	fschat.SetColor(0xFFFFFFFF, 0xFFFFFFFF, col, col);
-	fschat.Render(M_CLIENT_LEFT+70, M_CLIENT_CENTER_Y+138, 0xffffffff, col);
+	fschat.Render(M_CLIENT_CENTER_X-160, M_CLIENT_CENTER_Y+152, FONTSYS_DEFAULT_SHADOW, 1, 0, HGETEXT_LEFT|HGETEXT_MIDDLE);
 }
 
 bool Chat::chat(BYTE ID, BYTE chatsprite, const char * _text)
@@ -110,6 +110,7 @@ bool Chat::chat(BYTE ID, BYTE chatsprite, const char * _text)
 	{
 		chatinit = false;
 		timer = 0;
+		chati++;
 		return true;
 	}
 
@@ -163,15 +164,16 @@ bool Chat::chat(BYTE ID, BYTE chatsprite, const char * _text)
 	}
 	else
 	{
+		float timerscale = timer/16.0f;
 		if (chatsprite & CHATSPRITE_LEFT)
 		{
-			x[CHATTER_LEFT] = INTER(x[CHATTER_LEFT], M_CLIENT_CENTER_X-80, 1.0/(16-timer));
-			x[CHATTER_RIGHT] = INTER(x[CHATTER_RIGHT], M_CLIENT_CENTER_X+132, 1.0/(16-timer));
+			x[CHATTER_LEFT] = INTER(x[CHATTER_LEFT], M_GAMESQUARE_CENTER_X_(0)+40, timerscale);
+			x[CHATTER_RIGHT] = INTER(x[CHATTER_RIGHT], M_GAMESQUARE_CENTER_X_(1), timerscale);
 		}
 		else
 		{
-			x[CHATTER_LEFT] = INTER(x[CHATTER_LEFT], M_CLIENT_CENTER_X-132, 1.0/(16-timer));
-			x[CHATTER_RIGHT] = INTER(x[CHATTER_RIGHT], M_CLIENT_CENTER_X+80, 1.0/(16-timer));
+			x[CHATTER_LEFT] = INTER(x[CHATTER_LEFT], M_GAMESQUARE_CENTER_X_(0), timerscale);
+			x[CHATTER_RIGHT] = INTER(x[CHATTER_RIGHT], M_GAMESQUARE_CENTER_X_(1)-40, timerscale);
 		}
 	}
 	return false;
@@ -227,13 +229,16 @@ bool Chat::chatOn(BYTE leftID, BYTE rightID, BYTE chatsprite)
 		{
 			textbox->SetColor(0xffff3333);
 		}
+		chati = 0;
 	}
 	if(timer <= 36)
 	{
-		x[CHATTER_LEFT] = M_CLIENT_CENTER_X-492+timer*10;
-		y[CHATTER_LEFT] = M_CLIENT_CENTER_Y+80;
-		x[CHATTER_RIGHT] = M_CLIENT_CENTER_X+492-timer*10;
-		y[CHATTER_RIGHT] = M_CLIENT_CENTER_Y+80;
+		float timerscale = timer / 36.0f;
+		x[CHATTER_LEFT] = INTER(M_CLIENT_LEFT-192, M_GAMESQUARE_CENTER_X_(0), timerscale);
+		y[CHATTER_LEFT] = INTER(M_CLIENT_BOTTOM, M_CLIENT_CENTER_Y+108, timerscale);
+		x[CHATTER_RIGHT] = INTER(M_CLIENT_RIGHT+192, M_GAMESQUARE_CENTER_X_(1), timerscale);
+		y[CHATTER_RIGHT] = INTER(M_CLIENT_BOTTOM, M_CLIENT_CENTER_Y+108, timerscale);
+
 		if(chatsprite & CHATSPRITE_LEFT)
 		{
 			right->SetColor(0x80ffffff);
@@ -247,21 +252,22 @@ bool Chat::chatOn(BYTE leftID, BYTE rightID, BYTE chatsprite)
 	}
 	else
 	{
+		/*
 		if (leftID != 0xff)
 		{
-			x[CHATTER_LEFTNAME] = M_CLIENT_CENTER_X-90;
+			x[CHATTER_LEFTNAME] = M_GAMESQUARE_CENTER_X_(0);
 			y[CHATTER_LEFTNAME] = M_CLIENT_CENTER_Y+108;
 		}
 		if (rightID != 0xff)
 		{
-			x[CHATTER_RIGHTNAME] = M_CLIENT_CENTER_X+90;
+			x[CHATTER_RIGHTNAME] = M_GAMESQUARE_CENTER_X_(1);
 			y[CHATTER_RIGHTNAME] = M_CLIENT_CENTER_Y+108;
 		}
-		/*
 		match(CHATTER_LEFTNAME, left);
 		match(CHATTER_RIGHTNAME, right);
 		*/
 		timer = 0;
+		chati = 1;
 		return true;
 	}
 	return false;
@@ -292,6 +298,7 @@ bool Chat::chatOff()
 		}
 		timer = 0;
 		chatting = false;
+		chati = 0;
 		return true;
 	}
 	return false;

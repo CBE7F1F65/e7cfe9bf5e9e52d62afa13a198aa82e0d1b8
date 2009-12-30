@@ -218,7 +218,7 @@ void Fontsys::SignUp(const char * _text, HD3DFONT _font)
 
 //	float w = strlen(text) * M_FONTWIDTH;
 //	float h = lines * M_FONTHEIGHT;
-	float w = (fontheight / lines) * 0.55f * maxcharinline;
+	float w = (fontheight / lines) * 0.55f * (maxcharinline+1);
 	float h = fontheight;
 	if (w > FONTSYS_TARGETWIDTH)
 	{

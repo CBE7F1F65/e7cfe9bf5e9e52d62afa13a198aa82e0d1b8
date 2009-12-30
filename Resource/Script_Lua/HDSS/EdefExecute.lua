@@ -20,12 +20,12 @@ LTable_EnemyEIDFunction	=
 }
 
 
-function EdefExecute(name, con)
+function EdefExecute(name, timer)
 
 	local playerindex, eID, level, x, y, px, py = game.GetEdefInfo(name);
 	for i, it in pairs(LTable_EnemyEIDFunction) do
 		if it[1] == eID then
-			return it[2](playerindex, level, x, y, con, px, py);
+			return it[2](playerindex, level, x, y, timer, px, py);
 		end
 	end
 	return true;

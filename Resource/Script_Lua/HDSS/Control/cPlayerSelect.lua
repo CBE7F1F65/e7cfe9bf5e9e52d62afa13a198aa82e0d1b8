@@ -246,12 +246,12 @@ function CEPlayerSelect_DispatchAfterSelect(playerindex)
 	return ret;
 end
 
-function ControlExecute_cPlayerSelect(con)
+function ControlExecute_cPlayerSelect(timer)
 	
 	local dsel1complete = RESERVEBEGIN;
 	local dsel2complete = RESERVEBEGIN + 1;
 	
-	if con == 1 then
+	if timer == 1 then
 		CEPlayerSelect_Init();
 		hdssSD(dsel1complete, 0);
 		hdssSD(dsel2complete, 0);

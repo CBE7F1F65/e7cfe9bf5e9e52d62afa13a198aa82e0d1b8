@@ -114,7 +114,7 @@ function eSendGhost(playerindex, x, y, sendtime, acceladd, setID)
 	end
 	--
 	local type = LConst_GhostTypeStart + sendtime * 2;
-	local index = hdssEB(type, playerindex, x, y, angle, 0, type, 20);
+	local index = hdssEB(type, playerindex, x, y, angle, 0, type, 80);
 	if index ~= nil then
 		game.AddSendGhostInfo(setID, sendtime, playerindex, accel+acceladd, acceladd, index);
 	end

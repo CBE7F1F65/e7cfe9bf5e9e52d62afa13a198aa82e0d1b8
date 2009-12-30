@@ -71,6 +71,17 @@ int _HDSSCallGet::Get_CHARA(LuaState * ls)
 	return 0;
 }
 
+int _HDSSCallGet::Get_SCENE(LuaState * ls)
+{
+	_ENTERGET_HDSS_LUA;
+	if (true)
+	{
+		_PI_HDSS_LUA(Process::mp.scene);
+		return 1;
+	}
+	return 0;
+}
+
 int _HDSSCallGet::Get_REPLAYMODE(LuaState * ls)
 {
 	_ENTERGET_HDSS_LUA;
@@ -275,6 +286,19 @@ int _HDSSCallGet::Get_ENNUM(LuaState * ls)
 	return 0;
 }
 
+int _HDSSCallGet::Get_ATAN2(LuaState * ls)
+{
+	_ENTERGET_HDSS_LUA;
+	if (argscount > 2)
+	{
+		float _x = _FNEXT_HDSS_LUAFUNC;
+		float _y = _FNEXT_HDSS_LUAFUNC;
+		_PI_HDSS_LUA(atan2t(_x, _y));
+		return 1;
+	}
+	return 0;
+}
+
 int _HDSSCallGet::Get_SIGN(LuaState * ls)
 {
 	_ENTERGET_HDSS_LUA;
@@ -384,6 +408,17 @@ int _HDSSCallGet::Get_SELFIRSTID(LuaState * ls)
 			_PI_HDSS_LUA(SelectSystem::selsys[_selsys].firstID);
 			return 1;
 		}
+	}
+	return 0;
+}
+
+int _HDSSCallGet::Get_CHATI(LuaState * ls)
+{
+	_ENTERGET_HDSS_LUA;
+	if (true)
+	{
+		_PI_HDSS_LUA(Chat::chatitem.chati);
+		return 1;
 	}
 	return 0;
 }

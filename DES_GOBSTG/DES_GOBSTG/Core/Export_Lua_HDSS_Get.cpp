@@ -147,7 +147,7 @@ int Export_Lua_HDSS::LuaFn_HDSS_Get(LuaState * ls)
 		case SCR_ACOS2:
 			break;
 		case SCR_ATAN2:
-			break;
+			return _HDSSCallGet::Get_ATAN2(ls);
 		case SCR_SQRT:
 			break;
 		case SCR_SIGN:
@@ -191,7 +191,7 @@ int Export_Lua_HDSS::LuaFn_HDSS_Get(LuaState * ls)
 		case SCR_CHARA:
 			return _HDSSCallGet::Get_CHARA(ls);
 		case SCR_GETSCENE:
-			break;
+			return _HDSSCallGet::Get_SCENE(ls);
 		case SCR_MODE:
 			break;
 		case SCR_REPLAYMODE:
@@ -207,7 +207,7 @@ int Export_Lua_HDSS::LuaFn_HDSS_Get(LuaState * ls)
 		switch (nowval)
 		{
 		case SCR_CHATI:
-			break;
+			return _HDSSCallGet::Get_CHATI(ls);
 
 		case SCR_BOSSFAILED:
 			break;

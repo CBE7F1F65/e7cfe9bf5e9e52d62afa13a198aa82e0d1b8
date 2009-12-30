@@ -1,4 +1,4 @@
-function StageExecute(name, con)
+function StageExecute(name, timer)
 
 	return true;
 

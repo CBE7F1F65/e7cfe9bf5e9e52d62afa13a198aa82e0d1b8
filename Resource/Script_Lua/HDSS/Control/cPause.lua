@@ -72,6 +72,9 @@ function CEPause_ExitState(tostate, bPrep)
 	if bPrep then
 		hdssSTARTPREP();
 	end
+	if tostate ~= STATE_START then
+		hdssCLEARALL();
+	end
 end
 
 function CEPause_DispatchSelect(selsyspauseid, tostate)
@@ -144,12 +147,12 @@ function CEPause_DispatchConfirmSelect(selsyspauseconfirmid)
 	return 0;
 end
 
-function ControlExecute_cPause(con)
+function ControlExecute_cPause(timer)
 
 	local dselcomplete = RESERVEBEGIN;
 	local dselselect = RESERVEBEGIN + 1;
 	
-	if con == 0 then
+	if timer == 0 then
 		CEPause_Init();
 		hdssSD(dselcomplete, 0);
 		hdssSD(dselselect, 0);
@@ -161,7 +164,7 @@ function ControlExecute_cPause(con)
 			CEPause_SetSelect(LConst_selsys_pauseid, _selselect);
 			_selcomplete = 1;
 		elseif _selcomplete == 1 then
-			_selselect = CEPause_DispatchSelect(LConst_selsys_pauseid, con-0xff00);
+			_selselect = CEPause_DispatchSelect(LConst_selsys_pauseid, timer-0xff00);
 			if _selselect > 0 then
 				_selcomplete = 2;
 			end

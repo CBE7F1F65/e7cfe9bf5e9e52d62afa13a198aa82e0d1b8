@@ -25,7 +25,7 @@ LTable_SceneIDFunction	=
 	{22,	Scene_s22},
 }
 
-function SceneExecute(name, con)
+function SceneExecute(name, timer)
 	
 	local playerindex = 0;
 	if name >= PLAYERTYPEMAX then
@@ -35,7 +35,7 @@ function SceneExecute(name, con)
 	
 	for i, it in pairs(LTable_SceneIDFunction) do
 		if it[1] == name then
-			return it[2](playerindex, con);
+			return it[2](playerindex, timer);
 		end
 	end
 

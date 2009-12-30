@@ -92,6 +92,16 @@ int _HDSSCallGet::Call_SETTIME(LuaState * ls)
 	return 0;
 }
 
+int _HDSSCallGet::Call_CLEARALL(LuaState * ls)
+{
+	_ENTERCALL_HDSS_LUA;
+	if (true)
+	{
+		Process::mp.ClearAll();
+	}
+	return 0;
+}
+
 int _HDSSCallGet::Call_SETCHARA(LuaState * ls)
 {
 	_ENTERCALL_HDSS_LUA;
@@ -1590,6 +1600,46 @@ int _HDSSCallGet::Call_SELSET(LuaState * ls)
 		_select = SelectSystem::selsys[_selsys].SetSelect(_select);
 		ls->PushInteger(_select);
 		return 1;
+	}
+	return 0;
+}
+
+int _HDSSCallGet::Call_CHATON(LuaState * ls)
+{
+	_ENTERCALL_HDSS_LUA;
+	if (true)
+	{
+		BYTE _leftID = _INEXT_HDSS_LUAPARA;
+		BYTE _rightID = _INEXT_HDSS_LUAPARA;
+		BYTE _chatsprite = _INEXT_HDSS_LUAPARA;
+		bool bret = Chat::chatitem.chatOn(_leftID, _rightID, _chatsprite);
+		_PB_HDSS_LUA(bret);
+		return 1;
+	}
+	return 0;
+}
+
+int _HDSSCallGet::Call_CHAT(LuaState * ls)
+{
+	_ENTERCALL_HDSS_LUA;
+	if (true)
+	{
+		BYTE _ID = _INEXT_HDSS_LUAPARA;
+		BYTE _chatsprite = _INEXT_HDSS_LUAPARA;
+		const char * _text = _SNEXT_HDSS_LUAPARA;
+		bool bret = Chat::chatitem.chat(_ID, _chatsprite, _text);
+		_PB_HDSS_LUA(bret);
+		return 1;
+	}
+	return 0;
+}
+
+int _HDSSCallGet::Call_CHATOFF(LuaState * ls)
+{
+	_ENTERCALL_HDSS_LUA;
+	if (true)
+	{
+		Chat::chatitem.chatOff();
 	}
 	return 0;
 }

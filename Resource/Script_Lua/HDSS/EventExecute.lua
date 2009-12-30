@@ -40,6 +40,13 @@ function _EventExecute_PlayerShootCharge(playerindex)
 	if charge > 3 then
 		charge = 3;
 	end
+	
+	local col = {global.ARGB(0x80, 0x808080), global.ARGB(0x80, 0xff0000)};
+	for i=0, 1 do
+		hdssBGVALUE(i, LConst_gamefg_fadeIid, SI_White, LGlobal_GetCenterX(i), TotalH/2, TotalW/2, TotalH, col[i+1]);
+		hdssBGBLEND(i, LConst_gamefg_fadeIid, BLEND_ALPHAADD)
+	end
+	
 	for i, it in pairs(LTable_ePlayerShootChargeFunction) do
 		if it[1] == oplayerID then
 			if it[2] == charge then

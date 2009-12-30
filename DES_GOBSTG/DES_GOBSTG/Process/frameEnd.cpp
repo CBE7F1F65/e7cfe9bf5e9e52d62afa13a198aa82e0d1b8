@@ -16,6 +16,7 @@ void Process::frameEnd()
 		framecounter++;
 
 		WorldShake(_stopflag);
+/*
 
 		if (state == STATE_CLEAR)
 		{
@@ -26,7 +27,8 @@ void Process::frameEnd()
 				GameInput::SetKey(i, KSI_SLOW, false);
 				GameInput::SetKey(i, KSI_DRAIN, false);
 			}
-		}
+		}*/
+
 		if (!Player::Action(_stopflag))
 		{
 //			SetState(STATE_CLEAR, -1);

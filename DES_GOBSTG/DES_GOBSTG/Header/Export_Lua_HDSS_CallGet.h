@@ -18,6 +18,7 @@ public:
 	static int Call_SETSTATE(LuaState * ls);
 	static int Call_SETSCENE(LuaState * ls);
 	static int Call_SETTIME(LuaState * ls);
+	static int Call_CLEARALL(LuaState * ls);
 	static int Call_SETCHARA(LuaState * ls);
 	static int Call_STARTPREP(LuaState * ls);
 	static int Call_SETKEY(LuaState * ls);
@@ -70,11 +71,16 @@ public:
 	static int Call_SELSETUP(LuaState * ls);
 	static int Call_SELSET(LuaState * ls);
 
+	static int Call_CHATON(LuaState * ls);
+	static int Call_CHAT(LuaState * ls);
+	static int Call_CHATOFF(LuaState * ls);
+
 public:
 	static int Get_D(LuaState * ls);
 	static int Get_Du(LuaState * ls);
 	static int Get_RANK(LuaState * ls);
 	static int Get_CHARA(LuaState * ls);
+	static int Get_SCENE(LuaState * ls);
 	static int Get_REPLAYMODE(LuaState * ls);
 
 	static int Get_ENX(LuaState * ls);
@@ -87,6 +93,7 @@ public:
 	static int Get_ENI(LuaState * ls);
 	static int Get_ENNUM(LuaState * ls);
 
+	static int Get_ATAN2(LuaState * ls);
 	static int Get_SIGN(LuaState * ls);
 
 	static int Get_CHECKKEY(LuaState * ls);
@@ -99,6 +106,8 @@ public:
 	static int Get_SELCOMPLETE(LuaState * ls);
 	static int Get_SEL(LuaState * ls);
 	static int Get_SELFIRSTID(LuaState * ls);
+
+	static int Get_CHATI(LuaState * ls);
 
 public:
 	static bool bhavenext;

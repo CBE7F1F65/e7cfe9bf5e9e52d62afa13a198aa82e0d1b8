@@ -12,6 +12,7 @@ int Process::processPause()
 {
 	if (replaymode && replayend)
 	{
+		ClearAll();
 		SetState(STATE_OVER);
 		return PTURN;
 	}

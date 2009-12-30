@@ -131,6 +131,10 @@ void FrontDisplay::action()
 
 void FrontDisplay::RenderHeadInfo(BYTE playerindex)
 {
+	if (!Player::CheckAble() || !Player::p[playerindex].exist)
+	{
+		return;
+	}
 	float yoffset = 24.0f;
 	float ybottomoffset = 32.0f;
 	float yoffsetadd = 22.0f;
@@ -238,6 +242,7 @@ void FrontDisplay::RenderPanel()
 {
 	if (panelcountup)
 	{
+		/*
 		if (panelcountup < 0xff)
 		{
 			DWORD tcol = (panelcountup<<16)|(panelcountup<<8)|panelcountup|0xff000000;
@@ -251,6 +256,8 @@ void FrontDisplay::RenderPanel()
 		}
 
 		if (panelcountup == 0xff)
+		*/
+		if (true)
 		{
 			float spellpointx[M_PL_MATCHMAXPLAYER];
 			spellpointx[0] = M_GAMESQUARE_RIGHT_0-panel.spellpoint->GetWidth();
@@ -339,16 +346,12 @@ void FrontDisplay::RenderPanel()
 						panel.lifeindi[FDISP_LIFEINDI_EMPTY]->Render(tempx, M_GAMESQUARE_TOP);
 					}
 				}
-			}
-			for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
-			{
 				if (info.spellpointdigitfont)
 				{
 					info.spellpointdigitfont->printf(M_GAMESQUARE_LEFT_(i)+2, M_GAMESQUARE_BOTTOM-11, HGETEXT_LEFT, "%02d", Player::p[i].cardlevel);
 					info.spellpointdigitfont->printf(M_GAMESQUARE_RIGHT_(i)-2, M_GAMESQUARE_BOTTOM-11, HGETEXT_RIGHT, "%02d", Player::p[i].bosslevel);
 				}
 			}
-
 		}
 		for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
 		{
@@ -356,6 +359,18 @@ void FrontDisplay::RenderPanel()
 			panel.rightedge[i]->Render(M_GAMESQUARE_RIGHT_(i)+M_GAMESQUARE_EDGE/2, M_GAMESQUARE_CENTER_Y);
 			panel.topedge[i]->Render(M_GAMESQUARE_CENTER_X_(i), M_GAMESQUARE_TOP-M_GAMESQUARE_EDGE/2);
 			panel.bottomedge[i]->Render(M_GAMESQUARE_CENTER_X_(i), M_GAMESQUARE_BOTTOM+M_GAMESQUARE_EDGE/2);
+			if (Player::p[i].flag & PLAYER_COSTLIFE)
+			{
+				DWORD col = 0xffffffff;
+				if (gametime % 2)
+				{
+					col = 0xffff0000;
+				}
+				hge->Gfx_RenderLine(M_GAMESQUARE_LEFT_(i), M_GAMESQUARE_TOP, M_GAMESQUARE_RIGHT_(i), M_GAMESQUARE_TOP, col);
+				hge->Gfx_RenderLine(M_GAMESQUARE_RIGHT_(i), M_GAMESQUARE_TOP, M_GAMESQUARE_RIGHT_(i), M_GAMESQUARE_BOTTOM, col);
+				hge->Gfx_RenderLine(M_GAMESQUARE_RIGHT_(i), M_GAMESQUARE_BOTTOM, M_GAMESQUARE_LEFT_(i), M_GAMESQUARE_BOTTOM, col);
+				hge->Gfx_RenderLine(M_GAMESQUARE_LEFT_(i), M_GAMESQUARE_BOTTOM, M_GAMESQUARE_LEFT_(i), M_GAMESQUARE_TOP, col);
+			}
 		}
 	}
 	if(info.asciifont)
@@ -372,10 +387,10 @@ void FrontDisplay::RenderPanel()
 			hge->Timer_GetTime()
 			);
 #endif
-		if (Process::mp.IsInGame() && Player::CheckAble() && info.asciifont)
+		if (((Process::mp.IsInGame() && Player::CheckAble()) || Process::mp.state == STATE_OVER) && info.asciifont)
 		{
 			int usingtime = gametime;
-			if (Process::mp.state == STATE_CLEAR && Process::mp.alltime)
+			if ((Process::mp.state == STATE_CLEAR || Process::mp.state == STATE_OVER) && Process::mp.alltime)
 			{
 				usingtime = Process::mp.alltime;
 			}

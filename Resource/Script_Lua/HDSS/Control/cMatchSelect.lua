@@ -257,14 +257,14 @@ function CEMatchSelect_ExitState(tostate, bbottom)
 	CEMatchSelect_CloseUsed(LConst_selsys_matchid, LConst_selsys_latencyid, bbottom);
 end
 
-function ControlExecute_cMatchSelect(con)
+function ControlExecute_cMatchSelect(timer)
 
 	local dselcomplete = RESERVEBEGIN;
 	local dipx = RESERVEBEGIN + 1;
 	local dipport = RESERVEBEGIN + 2;
 	local dlatency = RESERVEBEGIN + 3;
 	
-	if con == 1 then
+	if timer == 1 then
 		CEMatchSelect_Init();
 		hdssSD(dselcomplete, 0);
 		hdssSDf(dipx, 0);

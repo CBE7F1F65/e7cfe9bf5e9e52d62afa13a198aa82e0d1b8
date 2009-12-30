@@ -9,10 +9,7 @@ void Process::SyncInput()
 int Process::getInput()
 {
 	GameInput::UpdateInput();
-	if(!(replaymode && !replayend && (state == STATE_START || state == STATE_CLEAR)))
-	{
-	}
-	else
+	if (replaymode && !replayend && (state == STATE_START || state == STATE_CLEAR))
 	{
 		for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
 		{

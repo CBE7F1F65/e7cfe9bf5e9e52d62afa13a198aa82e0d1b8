@@ -13,11 +13,11 @@ LConst_selsys_saveid	=	1
 LConst_selsys_overwriteid	=	2
 LConst_selsys_replayid	=	0
 
-LConst_selsys_ucol = global.ARGB(0xFF, 0xFFFFFF);
-LConst_selsys_dcol = global.ARGB(0xFF, 0xFF3333);
-LConst_selsys_shadow = 0.4;
-LConst_selsys_align = HGETEXT_CENTER + HGETEXT_MIDDLE;
-LConst_selsys_align_left	=	HGETEXT_LEFT + HGETEXT_MIDDLE;
+LConst_selsys_ucol = global.ARGB(0xFF, 0xFFFFFF)
+LConst_selsys_dcol = global.ARGB(0xFF, 0xFF3333)
+LConst_selsys_shadow = 0.4
+LConst_selsys_align = HGETEXT_CENTER + HGETEXT_MIDDLE
+LConst_selsys_align_left	=	HGETEXT_LEFT + HGETEXT_MIDDLE
 
 LConst_uibg_backgroundid	=	0
 LConst_uibg_topcontentid	=	1
@@ -58,3 +58,10 @@ LConst_Desc_EnemyTimeCounter	=	FREEBEGIN
 LConst_Desc_EnemyRandom	=	FREEBEGIN + 2
 LConst_Desc_EnemyNowLine	=	FREEBEGIN + 4
 LConst_Desc_EnemyNowLineNum	=	FREEBEGIN + 6
+
+LConst_gamefg_fadeIid	=	BGLAYERMAX 
+LConst_gamefg_fadeIIid	=	BGLAYERMAX + 1
+LConst_gamefg_infoIid	=	BGLAYERMAX + 2
+LConst_gamefg_infoIIid	=	BGLAYERMAX + 3
+
+LConst_bgset_sceneid	=	0

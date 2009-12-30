@@ -7,6 +7,12 @@ function ePlayerInStop(playerindex, bSpell, spellPlayerID, oplayerID, stoptimer,
 		x = CenterBossX_1;
 	end
 	
+	if stoptimer == stopmaxtime - 2 then
+		for i=0, 1 do
+			hdssBGOFF(i, LConst_gamefg_fadeIid);
+		end
+	end
+		
 	if bSpell then
 		if stoptimer == 1 then
 			hdssSEOFF();

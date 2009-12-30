@@ -82,11 +82,11 @@ function CETitle_DispatchSelect(selsysid)
 	end
 end
 
-function ControlExecute_cTitle(con)
+function ControlExecute_cTitle(timer)
 
 	local selsysid = LConst_selsys_titleid;
 	
-	if con == 1 then
+	if timer == 1 then
 		CETitle_Init();
 		CETitle_SetBG();
 		CETitle_SetupSelect(LConst_selsys_titleid);

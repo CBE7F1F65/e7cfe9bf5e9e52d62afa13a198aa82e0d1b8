@@ -45,6 +45,8 @@ int Export_Lua_HDSS::LuaFn_HDSS_Call(LuaState * ls)
 				return _HDSSCallGet::Call_SETSTATE(ls);
 			case SCR_SETTIME:
 				return _HDSSCallGet::Call_SETTIME(ls);
+			case SCR_CLEARALL:
+				return _HDSSCallGet::Call_CLEARALL(ls);
 			case SCR_SETCHARA:
 				return _HDSSCallGet::Call_SETCHARA(ls);
 			case SCR_SETSCENE:
@@ -209,6 +211,21 @@ int Export_Lua_HDSS::LuaFn_HDSS_Call(LuaState * ls)
 			}
 			break;
 		}
+		break;
+		/************************************************************************/
+		/* CONTROL                                                              */
+		/************************************************************************/
+	case SCRKW_CONTROL:
+		switch (nowval)
+		{
+		case SCR_CHATON:
+			return _HDSSCallGet::Call_CHATON(ls);
+		case SCR_CHAT:
+			return _HDSSCallGet::Call_CHAT(ls);
+		case SCR_CHATOFF:
+			return _HDSSCallGet::Call_CHATOFF(ls);
+		}
+		break;
 	}
 	return 0;
 }

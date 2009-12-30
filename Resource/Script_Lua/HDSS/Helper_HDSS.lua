@@ -238,6 +238,14 @@ function hdssRETURN(ret)
 	)
 end
 
+function hdssCLEARALL()
+	return hdss.Call(
+		HDSS_CLEARALL,
+		{
+		}
+	)
+end
+
 function hdssSE(seid, x)
 	if x == nil then
 		x = TotalCenterX;
@@ -505,4 +513,76 @@ function hdssEB(eID, playerindex, x, y, angle, speed, type, life, take)
 			}
 		)
 	end
+end
+
+function hdssCHATON(leftID, rightID, flag)
+	if leftID < 0 then
+		leftID = hdss.Get(HDSS_CHARA, 0);
+	end
+	if rightID < 0 then
+		rightID = hdss.Get(HDSS_CHARA, 1);
+	end
+	local blf = false;
+	local brf = false;
+	for i, it in pairs(LTable_PlayerWinLoseChat) do
+		if it[1] == leftID and it[2] == 1 then
+			blf = true;
+		end
+		if it[1] == rightID and it[2] == 1 then
+			brf = true;
+		end
+	end
+	if blf then
+		flag = flag + CS_LF;
+	end
+	if not brf then
+		flag = flag + CS_RF;
+	end
+	return hdss.Call(
+		HDSS_CHATON,
+		{
+			leftID, rightID, flag
+		}
+	)
+end
+
+function hdssCHAT(ID, flag, text)
+	if ID < 0 then
+		if flag == CS_L then
+			ID = hdss.Get(HDSS_CHARA, 0);
+		else
+			ID = hdss.Get(HDSS_CHARA, 1);
+		end
+	end
+	
+	for i, it in pairs(LTable_PlayerWinLoseChat) do
+		if it[1] == ID then
+			if it[2] == 0 then
+				if flag == CS_R then
+					flag = CS_R + CS_RF;
+				end
+			else
+				if flag == CS_L then
+					flag = CS_L + CS_LF;
+				end
+			end
+			if text == 0 or text == 1 then
+				text = it[3+text];
+			end
+		end
+	end
+	return hdss.Call(
+		HDSS_CHAT,
+		{
+			ID, flag, text
+		}
+	)
+end
+
+function hdssCHATOFF()
+	return hdss.Call(
+		HDSS_CHATOFF,
+		{
+		}
+	)
 end

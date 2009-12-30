@@ -108,10 +108,10 @@ function CEReplay_DispatchSelect(selsysreplayid, nselect, pushkeyid)
 	end
 end
 
-function ControlExecute_cReplay(con)
+function ControlExecute_cReplay(timer)
 	
 	local dnselect = RESERVEBEGIN;
-	if con == 1 then
+	if timer == 1 then
 		CEReplay_Init();
 		hdssSD(dnselect, 0);
 		CEReplay_SetBG();
