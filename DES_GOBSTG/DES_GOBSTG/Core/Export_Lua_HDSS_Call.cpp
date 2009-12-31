@@ -66,6 +66,10 @@ int Export_Lua_HDSS::LuaFn_HDSS_Call(LuaState * ls)
 		case SCRKW_CLASS_EFFECT:
 			switch (nowval)
 			{
+			case SCR_MUSICCHANGE:
+				return _HDSSCallGet::Call_MUSICCHANGE(ls);
+			case SCR_MUSICSLIDE:
+				return _HDSSCallGet::Call_MUSICSLIDE(ls);
 			case SCR_SE:
 				return _HDSSCallGet::Call_SE(ls);
 			case SCR_SEOFF:
@@ -166,6 +170,8 @@ int Export_Lua_HDSS::LuaFn_HDSS_Call(LuaState * ls)
 			{
 			case SCR_SETPINITLIFE:
 				return _HDSSCallGet::Call_SETPINITLIFE(ls);
+			case SCR_ADDPNCHARGE:
+				return _HDSSCallGet::Call_ADDPNCHARGE(ls);
 			case SCR_SETPBINFI:
 				return _HDSSCallGet::Call_SETPBINFI(ls);
 			}

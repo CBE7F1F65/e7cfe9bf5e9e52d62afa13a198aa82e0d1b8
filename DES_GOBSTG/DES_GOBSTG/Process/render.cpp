@@ -19,6 +19,7 @@ void Process::_Render(BYTE renderflag/* =M_RENDER_NULL */)
 		Bullet::RenderAll(playerindex);
 		Item::RenderAll(playerindex);
 		Enemy::RenderScore(playerindex);
+		FrontDisplay::fdisp.RenderSpellName(playerindex);
 		FrontDisplay::fdisp.RenderHeadInfo(playerindex);
 	}
 	BGLayer::RenderFG(playerindex);

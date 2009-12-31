@@ -246,6 +246,24 @@ function hdssCLEARALL()
 	)
 end
 
+function hdssMUSICCHANGE(ID, bForce)
+	return hdss.Call(
+		HDSS_MUSICCHANGE,
+		{
+			ID, bForce
+		}
+	)
+end
+
+function hdssMUSICSLIDE(slidetime, tovol, pan, pitch)
+	return hdss.Call(
+		HDSS_MUSICSLIDE,
+		{
+			slidetime, tovol, pan, pitch
+		}
+	)
+end
+
 function hdssSE(seid, x)
 	if x == nil then
 		x = TotalCenterX;
@@ -314,6 +332,15 @@ function hdssSETPINITLIFE(playerindex, life)
 		HDSS_SETPINITLIFE,
 		{
 			playerindex, life
+		}
+	)
+end
+
+function hdssADDPNCHARGE(playerindex, addcharge, addchargemax)
+	return hdss.Call(
+		HDSS_ADDPNCHARGE,
+		{
+			playerindex, addcharge, addchargemax
 		}
 	)
 end
@@ -433,6 +460,15 @@ function hdssEA_OVERPLAYER(playerindex, x, y, time, counter, endtime)
 		HDSS_EA,
 		{
 			playerindex, ENAC_OVERPLAYER_XYOOOTCE, x, y, 0, 0, 0, time, counter, endtime
+		}
+	)
+end
+
+function hdssEA_DELAY(playerindex, time)
+	return hdss.Call(
+		HDSS_EA,
+		{
+			playerindex, ENAC_DELAY_OOOOOTOO, 0, 0, 0, 0, 0, time
 		}
 	)
 end

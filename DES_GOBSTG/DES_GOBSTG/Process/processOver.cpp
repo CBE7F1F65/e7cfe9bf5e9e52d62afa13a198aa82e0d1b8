@@ -19,7 +19,6 @@
 int Process::processOver()
 {
 	//static char savefilename[M_STRMAX];
-
 	gametime++;
 	if (gametime == 1)
 	{
@@ -39,7 +38,12 @@ int Process::processOver()
 	{
 		if (state != STATE_START)
 		{
-			FrontDisplay::fdisp.SetState(FDISP_PANEL, 0);
+			FrontDisplay::fdisp.SetState(FDISP_PANEL, FDISPSTATE_OFF);
+			for (int i=0; i<M_PL_ONESETPLAYER; i++)
+			{
+				FrontDisplay::fdisp.SetState(FDISP_SPELLNAME_0+i, FDISPSTATE_OFF);
+			}
+			FrontDisplay::fdisp.SetState(FDISP_MUSICNAME, FDISPSTATE_OFF);
 		}
 		return PTURN;
 	}

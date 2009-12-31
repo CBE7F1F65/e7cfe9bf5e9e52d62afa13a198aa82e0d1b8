@@ -55,6 +55,6 @@ function ePlayerSendExChase_1(playerindex, x, y, playerID, appendfloat, angleoff
 			playerindex, x, y, -9000+angleoffset, speed, CC_Bullet_ShuttleBeam, 5, 720, BEAMFLAG_DELAY
 		}
 	)
-	hdssEFFSETUP(playerindex, 83, x, y, 64, angleoffset, 0.01);
+	hdssEFFSETUP(playerindex, LConst_effid_sendex_01, x, y, 64, angleoffset, 0.01);
 	return true;
 end

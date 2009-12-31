@@ -1,8 +1,8 @@
 73	h5nc	49																							
 Comment	Index	FaceIndex	SIID	Collision_W	Collision_H	StandFrame	StandShake	RightPreFrame	RightFrame	LeftPreFrame	LeftFrame	AttackPreFrame	AttackFrame	StorePreFrame	StoreFrame	NMaxSet	Nmax	EffID	ShotEffID	CollapseEffID	BlastMaxtime	BlastR	BlastPower	Name	Ename
 #		Boss(0~31)																							
--	0	0	SI_Boss_Reimu_0	16	24	4	1	3	1	0	0	0	4	0	0	6	1	0	31	32	0	0	0	≤©˚ê°§ÎëâÙ	Hakurei Reimu
--	1	1	SI_Boss_Marisa_0	16	24	4	1	3	1	0	0	0	4	0	0	6	1	0	31	32	0	0	0	ÏF”Í°§ƒß¿Ì…≥	Kirisame Marisa
+-	0	0	SI_Boss_Reimu_0	16	24	4	1	3	1	0	0	0	4	0	0	6	1	0	31	36	0	0	0	≤©˚ê°§ÎëâÙ	Hakurei Reimu
+-	1	1	SI_Boss_Marisa_0	16	24	4	1	3	1	0	0	0	4	0	0	6	1	0	31	36	0	0	0	ÏF”Í°§ƒß¿Ì…≥	Kirisame Marisa
 #		Enemy(32~36)																							
 -	32	-1	SI_EnemySprite_Blue_0	16	16	4	0	4	4	0	0	0	0	0	0	1	25	0	31	32	10	46	3	_	_
 -	33	-1	SI_EnemySprite_Red_0	16	16	4	0	4	4	0	0	0	0	0	0	1	25	0	31	32	12	58	3	_	_

@@ -35,6 +35,7 @@ function CEClear_ExitState(tostate)
 end
 
 function ControlExecute_cClear(timer)
+	
 	local chati = hdss.Get(HDSS_CHATI);
 	local winner = 0;
 	local csbegin = CS_L;
@@ -44,6 +45,20 @@ function ControlExecute_cClear(timer)
 		csbegin = CS_R;
 		csafter = CS_L;
 	end
+	
+	if timer == 1 then
+		for i=0, 1 do
+			local siadd = 1;
+			if i == winner then
+				siadd = 0;
+			end
+			hdssBGVALUE(i, LConst_gamefg_infoid, SI_GameInfo_Winner+siadd, LGlobal_GetCenterX(i), CenterY-100);
+			hdssFRONTSPRITE(LConst_game_FrontSprite_WinLoseID_0+i, SI_GameInfo_GameSet, LGlobal_GetCenterX(i), TotalCenterY-160);
+			hdssFADEOUTFRONTSPRITE(LConst_game_FrontSprite_WinLoseID_0+i, 64);
+		end
+	end
+		
+	
 	if chati == 0 then
 		hdssCHATON(-1, -1, csbegin);
 	elseif chati == 1 then

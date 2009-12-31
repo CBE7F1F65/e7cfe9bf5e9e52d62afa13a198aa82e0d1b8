@@ -11,16 +11,6 @@ struct customconstData{
 struct musicData{
 	char musicname[M_STRMAX];
 	char musicfilename[M_PATHMAX];
-	union{
-		struct  
-		{
-			char explain_1[M_STRMAX];
-			char explain_2[M_STRMAX];
-			char explain_3[M_STRMAX];
-			char explain_4[M_STRMAX];
-		};
-		char explain[4][M_STRMAX];
-	};
 	LONGLONG startpos;
 	LONGLONG introlength;
 	LONGLONG alllength;
@@ -172,7 +162,7 @@ struct playerData
 {
 	char name[M_STRMAX];
 	char ename[M_STRMAX];
-	char spellname[M_STRMAX];
+	char spellname[3][M_STRMAX];
 	char scenename[M_STRMAX];
 	float collision_r;
 	float fastspeed;
@@ -184,6 +174,7 @@ struct playerData
 	int faceSIID;
 	int spellcutinSIID;
 	int drainzoneSIID;
+	BYTE musicID;
 	BYTE shotdelay;
 	BYTE rechargedelay;
 	BYTE shootchargetime;

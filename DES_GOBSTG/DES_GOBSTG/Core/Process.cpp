@@ -173,9 +173,9 @@ void Process::WorldShake(DWORD stopflag)
 	}
 }
 
-void Process::musicChange(BYTE ID, bool force)
+void Process::musicChange(int ID, bool force)
 {
-	if(!ID)
+	if (ID < 0)
 	{
 		hge->Channel_RemoveLoop(channel, &channelsyncinfo);
 		ZeroMemory(&channelsyncinfo, sizeof(hgeChannelSyncInfo));
@@ -183,15 +183,15 @@ void Process::musicChange(BYTE ID, bool force)
 		musicID = -1;
 		return;
 	}
-	if(!hge->Channel_IsPlaying(channel) || musicID != ID-1 || force)
+	if(!hge->Channel_IsPlaying(channel) || musicID != ID || force)
 	{
-		if (musicID < 0 || strcmp(BResource::res.musdata[ID-1].musicfilename, BResource::res.musdata[musicID].musicfilename))
+		if (musicID < 0 || strcmp(BResource::res.musdata[ID].musicfilename, BResource::res.musdata[musicID].musicfilename))
 		{
 			if(stream)
 				hge->Stream_Free(stream);
-			stream = hge->Stream_Load(BResource::res.musdata[ID-1].musicfilename, 0, false);
+			stream = hge->Stream_Load(BResource::res.musdata[ID].musicfilename, 0, false);
 		}
-		musicID = ID-1;
+		musicID = ID;
 		channelsyncinfo.startPos = BResource::res.musdata[musicID].startpos;
 		channelsyncinfo.introLength = BResource::res.musdata[musicID].introlength;
 		channelsyncinfo.allLength = BResource::res.musdata[musicID].alllength;
@@ -204,6 +204,10 @@ void Process::musicChange(BYTE ID, bool force)
 		hge->Channel_SetPitch(channel, 1.0f);
 		hge->Channel_SetLoop(channel, &channelsyncinfo);
 		hge->Channel_SetStartPos(channel, &channelsyncinfo);
+		if (IsInGame())
+		{
+			FrontDisplay::fdisp.OnChangeMusic(musicID);
+		}
 	}
 }
 

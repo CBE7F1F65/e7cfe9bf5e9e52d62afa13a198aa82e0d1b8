@@ -1408,6 +1408,7 @@ BYTE Player::shootCharge(BYTE nChargeLevel, bool nodelete)
 			AddCharge(-PLAYER_CHARGEONE*(nChargeLevel-1), -PLAYER_CHARGEONE*(nChargeLevel-1));
 		}
 		AddLilyCount(-500);
+		FrontDisplay::fdisp.OnShootCharge(playerindex, nowshootingcharge);
 	}
 	return nChargeLevel;
 }

@@ -34,6 +34,8 @@ LConst_game_FrontSprite_WarningID	=	2
 LConst_game_FrontSprite_SpellClassID	=	3
 LConst_game_FrontSprite_LevelDigit_0ID	=	4
 LConst_game_FrontSprite_LevelDigit_1ID	=	5
+LConst_game_FrontSprite_WinLoseID_0	=	6
+LConst_game_FrontSprite_WinLoseID_1	=	6
 
 LConst_EnemyTypeStart	=	32
 LConst_EnemyTypeBlue	=	LConst_EnemyTypeStart
@@ -61,7 +63,15 @@ LConst_Desc_EnemyNowLineNum	=	FREEBEGIN + 6
 
 LConst_gamefg_fadeIid	=	BGLAYERMAX 
 LConst_gamefg_fadeIIid	=	BGLAYERMAX + 1
-LConst_gamefg_infoIid	=	BGLAYERMAX + 2
-LConst_gamefg_infoIIid	=	BGLAYERMAX + 3
+LConst_gamefg_infoid	=	BGLAYERMAX + 2
+LConst_gamefg_spellflashid	=	BGLAYERMAX + 3
 
 LConst_bgset_sceneid	=	0
+
+LConst_effid_shootcharge	=	34
+
+LConst_effid_sendex_01	=	83
+
+LConst_ShootCharge_EnemyDelay	=	32
+
+LConst_musicid_title	=	6

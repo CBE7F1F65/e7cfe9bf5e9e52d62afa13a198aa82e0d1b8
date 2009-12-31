@@ -9,7 +9,7 @@ function ePlayerInStop(playerindex, bSpell, spellPlayerID, oplayerID, stoptimer,
 	
 	if stoptimer == stopmaxtime - 2 then
 		for i=0, 1 do
-			hdssBGOFF(i, LConst_gamefg_fadeIid);
+			hdssBGOFF(i, LConst_gamefg_spellflashid);
 		end
 	end
 		

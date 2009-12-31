@@ -12,6 +12,11 @@ int Process::processPause()
 {
 	if (replaymode && replayend)
 	{
+		if (!alltime)
+		{
+			alltime = gametime;
+		}
+		musicChange(-1);
 		ClearAll();
 		SetState(STATE_OVER);
 		return PTURN;
@@ -46,8 +51,22 @@ int Process::processPause()
 			pauseinit = false;
 			if (state != STATE_START)
 			{
-				FrontDisplay::fdisp.SetState(FDISP_PANEL, 0);
+				FrontDisplay::fdisp.SetState(FDISP_PANEL, FDISPSTATE_OFF);
+				for (int i=0; i<M_PL_ONESETPLAYER; i++)
+				{
+					FrontDisplay::fdisp.SetState(FDISP_SPELLNAME_0+i, FDISPSTATE_OFF);
+				}
+				FrontDisplay::fdisp.SetState(FDISP_MUSICNAME, FDISPSTATE_OFF);
 				return PTURN;
+			}
+			else
+			{
+				if (musicID >= 0)
+				{
+					hge->Channel_SetVolume(channel, 0);
+					hge->Channel_Resume(channel);
+					musicSlide(1.5f, -1);
+				}
 			}
 		}
 	}

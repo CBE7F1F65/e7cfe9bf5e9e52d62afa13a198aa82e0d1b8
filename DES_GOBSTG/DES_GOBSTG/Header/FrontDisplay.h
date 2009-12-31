@@ -6,6 +6,7 @@
 #include "Effectsys.h"
 #include "InfoQuad.h"
 #include "Enemy.h"
+#include "Fontsys.h"
 
 #define FDISP_ASCII_BEGIN		0x20
 #define FDISP_ASCII_END			0x81
@@ -55,6 +56,7 @@ struct ftInfoSet
 	hgeFont * headdigitfont;
 	HD3DFONT normalfont;
 	HD3DFONT smallfont;
+	HD3DFONT tinyfont;
 
 	hgeSprite * cutin;
 	hgeSprite * plchat_1;
@@ -203,6 +205,8 @@ struct ftGameInfoDisplaySet
 	BYTE gaugefilledcountdown[M_PL_MATCHMAXPLAYER];
 	BYTE lastlifecountdown[M_PL_MATCHMAXPLAYER];
 	BYTE lilycountdown;
+	Fontsys fsSpell[M_PL_MATCHMAXPLAYER][3];
+	Fontsys fsMusic;
 };
 
 struct ftAscIISet 
@@ -314,8 +318,12 @@ struct ftAscIISet
 
 
 #define FDISP_PANEL			0
+#define FDISP_SPELLNAME_0	1
+#define FDISP_SPELLNAME_1	2
+#define FDISP_MUSICNAME		3
 
-#define FDISP_STATE_COUNT	120
+#define FDISPSTATE_ON	1
+#define FDISPSTATE_OFF	0
 
 class FrontDisplay
 {
@@ -330,12 +338,16 @@ public:
 
 	void RenderPanel();
 	void RenderHeadInfo(BYTE playerindex);
+	void RenderSpellName(BYTE playerindex);
 
-	void RenderBossInfo();
 	void RenderEnemyX();
 
-	void SetState(BYTE type, BYTE state=FDISP_STATE_COUNT);
+	void SetState(BYTE type, BYTE state=FDISPSTATE_ON);
 	void SetValue(LONGLONG llval, int ival, float fval, bool bval);
+
+	void SignUpSpell();
+	void OnShootCharge(BYTE playerindex, BYTE nowshootingcharge);
+	void OnChangeMusic(int musicID);
 
 	void BuildPostPrint(hgeFont * font, float x, float y, const char * str, int align=HGETEXT_CENTER|HGETEXT_MIDDLE, float scale=1.0f, float properation=1.0f, float rotation=0, float tracking=0, float spacing=1.0f);
 	void RenderPostPrint();
@@ -348,14 +360,17 @@ public:
 	ftGameInfoDisplaySet gameinfodisplay;
 	ftAscIISet ascii;
 
-	list<fdPostPrint>postprintlist;
+	list<fdPostPrint> postprintlist;
 
 	LONGLONG llval;
 	int ival;
 	float fval;
 	bool bval;
 
-	BYTE panelcountup;
+	BYTE panelstate;
+	BYTE spellnamestate[M_PL_MATCHMAXPLAYER];
+	BYTE spellnameclass[M_PL_MATCHMAXPLAYER];
+	BYTE musicstate;
 
 	static FrontDisplay fdisp;
 };

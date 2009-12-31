@@ -1,4 +1,5 @@
 function CEMatchSelect_Init()
+	hdssMUSICCHANGE(LConst_musicid_title);
 end
 
 function CEMatchSelect_SetBG()

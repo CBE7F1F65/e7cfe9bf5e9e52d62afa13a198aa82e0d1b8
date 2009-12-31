@@ -26,6 +26,8 @@ public:
 	static int Call_UPDATEPUSHEVENT(LuaState * ls);
 	static int Call_SAVEREPLAY(LuaState * ls);
 
+	static int Call_MUSICCHANGE(LuaState * ls);
+	static int Call_MUSICSLIDE(LuaState * ls);
 	static int Call_SE(LuaState * ls);
 	static int Call_SEOFF(LuaState * ls);
 	static int Call_HSVTORGB(LuaState * ls);
@@ -35,6 +37,7 @@ public:
 	static int Call_FREEFRONTSPRITE(LuaState * ls);
 
 	static int Call_SETPINITLIFE(LuaState * ls);
+	static int Call_ADDPNCHARGE(LuaState * ls);
 	static int Call_SETPBINFI(LuaState * ls);
 
 	static int Call_BUBUILD(LuaState * ls);

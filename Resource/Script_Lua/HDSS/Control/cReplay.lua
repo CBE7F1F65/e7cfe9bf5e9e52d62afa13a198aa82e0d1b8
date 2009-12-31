@@ -1,4 +1,5 @@
 function CEReplay_Init()
+	hdssMUSICCHANGE(LConst_musicid_title);
 end
 
 function CEReplay_SetBG()

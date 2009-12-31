@@ -1,6 +1,7 @@
 function ControlExecute_cStart(timer)
 	if timer == 1 then
 		
+		local scene = hdss.Get(HDSS_GETSCENE);
 		local col = global.ARGB(0xff, 0);
 		local baseangle = hdss.Get(HDSS_ATAN2, TotalH, TotalW);
 		local enemyrandrom = RANDT();
@@ -24,12 +25,13 @@ function ControlExecute_cStart(timer)
 			hdssSD(LConst_Desc_EnemyRandom+i, enemyrandrom);
 			LGlobal_GetNextEnemyRandom(i);
 			
-			hdssBGSETUP(i, LConst_bgset_sceneid, hdss.Get(HDSS_GETSCENE), true);
+			hdssBGSETUP(i, LConst_bgset_sceneid, scene, true);
 						
 		end
 		
 		--
 		hdssSETPBINFI(1, 0);
+		hdssSETPBINFI(0, 0);
 		
 	elseif timer == 32 then
 		for i=0, 1 do
@@ -37,27 +39,30 @@ function ControlExecute_cStart(timer)
 		end
 	end
 		
+		hdssADDPNCHARGE(0, 0, 400);
+		hdssADDPNCHARGE(1, 0, 400);
+		
 	if timer <= 8 then
 		local scale = hdssINTER(1.5, 1, timer/8);
 		for i=0, 1 do
-			hdssBGVALUE(i, LConst_gamefg_infoIid, SI_GameInfo_Ready, LGlobal_GetCenterX(i), CenterY, 128*scale, 48*scale);
+			hdssBGVALUE(i, LConst_gamefg_infoid, SI_GameInfo_Ready, LGlobal_GetCenterX(i), CenterY, 128*scale, 48*scale);
 		end
 	elseif timer == 32 then
 		for i=0, 1 do
-			hdssBGFLAG(i, LConst_gamefg_infoIid, BG_FADEOUT, 16);
+			hdssBGFLAG(i, LConst_gamefg_infoid, BG_FADEOUT, 16);
 		end
 	elseif timer > 48 and timer <= 56 then
 		local scale = hdssINTER(1.5, 1, (timer-48)/8);
 		for i=0, 1 do
-			hdssBGVALUE(i, LConst_gamefg_infoIid, SI_GameInfo_GameStart, LGlobal_GetCenterX(i), CenterY, 208*scale, 48*scale);
+			hdssBGVALUE(i, LConst_gamefg_infoid, SI_GameInfo_GameStart, LGlobal_GetCenterX(i), CenterY, 208*scale, 48*scale);
 		end
 	elseif timer == 80 then
 		for i=0, 1 do
-			hdssBGFLAG(i, LConst_gamefg_infoIid, BG_FADEOUT, 16);
+			hdssBGFLAG(i, LConst_gamefg_infoid, BG_FADEOUT, 16);
 		end
 	elseif timer == 96 then
 		for i=0, 1 do
-			hdssBGOFF(i, LConst_gamefg_infoIid);
+			hdssBGOFF(i, LConst_gamefg_infoid);
 		end
 		
 	elseif timer > 96 then

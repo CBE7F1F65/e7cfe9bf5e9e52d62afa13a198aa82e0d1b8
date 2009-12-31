@@ -1,4 +1,5 @@
 function CEPlayerSelect_Init()
+	hdssMUSICCHANGE(LConst_musicid_title);
 end
 
 function _CEPlayerSelect_TranslateName(name)

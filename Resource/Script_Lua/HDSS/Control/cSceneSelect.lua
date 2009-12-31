@@ -1,4 +1,5 @@
 function CESceneSelect_Init()
+	hdssMUSICCHANGE(LConst_musicid_title);
 end
 
 function CESceneSelect_SetBG()
@@ -98,6 +99,8 @@ function CESceneSelect_DispatchSelect(selsyssceneid, pushkeyid)
 			scene = hdss.Get(HDSS_CHARA, RANDT(0, 1));
 		elseif select == 1 then
 			scene = RANDT(0, game.GetSceneContentTable()-1);
+		else
+			scene = scene - 2;
 		end
 		hdssSETSCENE(scene);
 		CESceneSelect_ExitState(STATE_START);

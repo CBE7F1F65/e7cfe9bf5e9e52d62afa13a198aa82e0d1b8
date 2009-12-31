@@ -23,6 +23,14 @@ FrontDisplay::FrontDisplay()
 	ZeroMemory(&gameinfodisplay, sizeof(ftGameInfoDisplaySet));
 	ZeroMemory(&ascii, sizeof(ftAscIISet));
 	postprintlist.clear();
+
+	panelstate = FDISPSTATE_OFF;
+	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
+	{
+		spellnamestate[i] = FDISPSTATE_OFF;
+		spellnameclass[i] = 0;
+	}
+	musicstate = FDISPSTATE_OFF;
 }
 
 FrontDisplay::~FrontDisplay()
@@ -89,14 +97,67 @@ void FrontDisplay::SetValue(LONGLONG _llval, int _ival, float _fval, bool _bval)
 	bval = _bval;
 }
 
-void FrontDisplay::SetState(BYTE type, BYTE state/* =FDISP_STATE_COUNT */)
+void FrontDisplay::SetState(BYTE type, BYTE state/* =FDISPSTATE_ON */)
 {
 	switch (type)
 	{
 	case FDISP_PANEL:
-		panelcountup = state;
+		panelstate = state;
+		break;
+	case FDISP_SPELLNAME_0:
+		spellnamestate[0] = state;
+		if (state == FDISPSTATE_OFF)
+		{
+			spellnameclass[0] = 0;
+		}
+		break;
+	case FDISP_SPELLNAME_1:
+		spellnamestate[1] = state;
+		if (state == FDISPSTATE_OFF)
+		{
+			spellnameclass[1] = 0;
+		}
+		break;
+	case FDISP_MUSICNAME:
+		musicstate = state;
 		break;
 	}
+}
+
+void FrontDisplay::SignUpSpell()
+{
+	for (int j=0; j<M_PL_MATCHMAXPLAYER; j++)
+	{
+		for (int i=0; i<3; i++)
+		{
+			gameinfodisplay.fsSpell[j][i].SignUp(BResource::res.playerdata[Player::p[j].nowID].spellname[i], info.smallfont);
+		}
+	}
+}
+
+void FrontDisplay::OnShootCharge(BYTE playerindex, BYTE nowshootingcharge)
+{
+	BYTE spellclass;
+	BYTE spelllevel;
+	Player::p[playerindex].GetSpellClassAndLevel(&spellclass, &spelllevel, nowshootingcharge);
+	if (spellclass)
+	{
+		if (spellclass > 3)
+		{
+			spellclass = 3;
+		}
+		if (spellnameclass[playerindex] < 3)
+		{
+			spellnameclass[playerindex] = spellclass;
+			SetState(FDISP_SPELLNAME_0+playerindex, FDISPSTATE_ON);
+		}
+	}
+}
+
+void FrontDisplay::OnChangeMusic(int musicID)
+{
+	SetState(FDISP_MUSICNAME, FDISPSTATE_ON);
+	gameinfodisplay.fsMusic.SignUp(BResource::res.musdata[musicID].musicname, info.tinyfont);
 }
 
 void FrontDisplay::action()
@@ -116,15 +177,32 @@ void FrontDisplay::action()
 	{
 		gameinfodisplay.lilycountdown--;
 	}
-	if (panelcountup)
+	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
 	{
-		int tcountup = panelcountup;
-		tcountup += 0x08;
-		if (tcountup > 0xff)
+		if (spellnamestate[i])
 		{
-			tcountup = 0xff;
+			if (spellnamestate[i] < 180)
+			{
+				spellnamestate[i]++;
+			}
+
+			if (spellnameclass[i] < 3 && spellnamestate[i] >= 180 ||
+				spellnameclass[i] >= 3 && Enemy::bossindex[1-i] == 0xff && spellnamestate[i] >= 60)
+			{
+				SetState(FDISP_SPELLNAME_0+i, FDISPSTATE_OFF);
+			}
 		}
-		panelcountup = tcountup;
+	}
+	if (musicstate)
+	{
+		if (musicstate < 180)
+		{
+			musicstate++;
+		}
+		else
+		{
+			SetState(FDISP_MUSICNAME, FDISPSTATE_OFF);
+		}
 	}
 	panel.winindiheadangle += 400;
 }
@@ -240,117 +318,99 @@ void FrontDisplay::RenderHeadInfo(BYTE playerindex)
 
 void FrontDisplay::RenderPanel()
 {
-	if (panelcountup)
+	if (panelstate)
 	{
-		/*
-		if (panelcountup < 0xff)
+		float spellpointx[M_PL_MATCHMAXPLAYER];
+		spellpointx[0] = M_GAMESQUARE_RIGHT_0-panel.spellpoint->GetWidth();
+		spellpointx[1] = M_GAMESQUARE_LEFT_1;
+		float winindix[M_PL_MATCHMAXPLAYER][2];
+		float winindiw = panel.winindi->GetWidth();
+		float winindih = panel.winindi->GetHeight();
+		for (int i=0; i<2; i++)
 		{
-			DWORD tcol = (panelcountup<<16)|(panelcountup<<8)|panelcountup|0xff000000;
-			for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
-			{
-				panel.leftedge[i]->SetColor(tcol);
-				panel.rightedge[i]->SetColor(tcol);
-				panel.topedge[i]->SetColor(tcol);
-				panel.bottomedge[i]->SetColor(tcol);
-			}
+			winindix[0][i] = M_GAMESQUARE_LEFT_0 + winindiw * (i+1);
+			winindix[1][i] = M_GAMESQUARE_RIGHT_1 - winindiw * (i+1);
 		}
 
-		if (panelcountup == 0xff)
-		*/
-		if (true)
+		for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
 		{
-			float spellpointx[M_PL_MATCHMAXPLAYER];
-			spellpointx[0] = M_GAMESQUARE_RIGHT_0-panel.spellpoint->GetWidth();
-			spellpointx[1] = M_GAMESQUARE_LEFT_1;
-			float winindix[M_PL_MATCHMAXPLAYER][2];
-			float winindiw = panel.winindi->GetWidth();
-			float winindih = panel.winindi->GetHeight();
-			for (int i=0; i<2; i++)
+			panel.spellpoint->Render(spellpointx[i], M_GAMESQUARE_TOP);
+			spriteData * _spd = SpriteItemManager::CastSprite(panel.combobarindex);
+			float fcombogage = ((float)Player::p[i].nComboGage) / PLAYER_COMBOGAGEMAX;
+			panel.combobar->SetTextureRect(_spd->tex_x, _spd->tex_y, _spd->tex_w*fcombogage, _spd->tex_h);
+			panel.combobar->SetHotSpot(0, 0);
+			panel.combobar->Render(spellpointx[i]+2, M_GAMESQUARE_TOP+30);
+
+			bool usered = true;
+			if (Player::p[i].nComboGage < PLAYER_COMBOALERT && Player::p[i].nComboGage > PLAYER_COMBORESET)
 			{
-				winindix[0][i] = M_GAMESQUARE_LEFT_0 + winindiw * (i+1);
-				winindix[1][i] = M_GAMESQUARE_RIGHT_1 - winindiw * (i+1);
+				if (gametime % 8 < 4)
+				{
+					usered = false;
+				}
+			}
+			int nComboHit = Player::p[i].nComboHit;
+			char buffer[M_STRITOAMAX];
+			sprintf(buffer, "%d%c", nComboHit, '0'+(usered?21:20));
+			if (usered)
+			{
+				for (int j=0; j<strlen(buffer)-1; j++)
+				{
+					buffer[j] += 10;
+				}
+			}
+			info.spellpointdigitfont->printf(spellpointx[i]+38, M_GAMESQUARE_TOP+16, HGETEXT_RIGHT, "%s", buffer);
+			int nSpellPoint = Player::p[i].nSpellPoint;
+			info.spellpointdigitfont->printf(spellpointx[i]+38, M_GAMESQUARE_TOP+16, HGETEXT_LEFT, "%06d", nSpellPoint);
+
+			if (Player::p[i].winflag)
+			{
+				panel.winindi->RenderEx(winindix[i][0], M_GAMESQUARE_TOP+winindih, ARC(panel.winindiheadangle));
+				if (i == Player::IsMatchEnd())
+				{
+					panel.winindi->RenderEx(winindix[i][1], M_GAMESQUARE_TOP+winindih, ARC(panel.winindiheadangle));
+				}
 			}
 
-			for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
+			_spd = SpriteItemManager::CastSprite(panel.slotindex);
+			float fslot = Player::p[i].fChargeMax / PLAYER_CHARGEMAX;
+			panel.slot->SetTextureRect(_spd->tex_x, _spd->tex_y, _spd->tex_w*fslot, _spd->tex_h);
+			panel.slot->SetHotSpot(0, _spd->tex_h);
+			panel.slot->SetColor(0xff808080);
+			panel.slot->Render(M_GAMESQUARE_LEFT_(i)+16, M_GAMESQUARE_BOTTOM);
+			fslot = Player::p[i].fCharge / PLAYER_CHARGEMAX;
+			panel.slot->SetTextureRect(_spd->tex_x, _spd->tex_y, _spd->tex_w*fslot, _spd->tex_h);
+			panel.slot->SetHotSpot(0, _spd->tex_h);
+			panel.slot->SetColor(0xffffffff);
+			BYTE nCharge;
+			Player::p[i].GetNCharge(&nCharge);
+			if (nCharge > 0)
 			{
-				panel.spellpoint->Render(spellpointx[i], M_GAMESQUARE_TOP);
-				spriteData * _spd = SpriteItemManager::CastSprite(panel.combobarindex);
-				float fcombogage = ((float)Player::p[i].nComboGage) / PLAYER_COMBOGAGEMAX;
-				panel.combobar->SetTextureRect(_spd->tex_x, _spd->tex_y, _spd->tex_w*fcombogage, _spd->tex_h);
-				panel.combobar->SetHotSpot(0, 0);
-				panel.combobar->Render(spellpointx[i]+2, M_GAMESQUARE_TOP+30);
-
-				bool usered = true;
-				if (Player::p[i].nComboGage < PLAYER_COMBOALERT && Player::p[i].nComboGage > PLAYER_COMBORESET)
+				panel.slot->SetColor(0xffffff80);
+			}
+			panel.slot->Render(M_GAMESQUARE_LEFT_(i)+16, M_GAMESQUARE_BOTTOM);
+			panel.slotback->Render(M_GAMESQUARE_LEFT_(i), M_GAMESQUARE_BOTTOM);
+			float tempx;
+			for (int j=0; j<PLAYER_DEFAULTINITLIFE/2; j++)
+			{
+				tempx = panel.lifeindi[FDISP_LIFEINDI_FULL]->GetWidth() * (j-(PLAYER_DEFAULTINITLIFE/2)/2) + M_GAMESQUARE_CENTER_X_(i);
+				if (Player::p[i].nLife > j * 2 + 1)
 				{
-					if (gametime % 8 < 4)
-					{
-						usered = false;
-					}
+					panel.lifeindi[FDISP_LIFEINDI_FULL]->Render(tempx, M_GAMESQUARE_TOP);
 				}
-				int nComboHit = Player::p[i].nComboHit;
-				char buffer[M_STRITOAMAX];
-				sprintf(buffer, "%d%c", nComboHit, '0'+(usered?21:20));
-				if (usered)
+				else if (Player::p[i].nLife > j * 2)
 				{
-					for (int j=0; j<strlen(buffer)-1; j++)
-					{
-						buffer[j] += 10;
-					}
+					panel.lifeindi[FDISP_LIFEINDI_HALF]->Render(tempx, M_GAMESQUARE_TOP);
 				}
-				info.spellpointdigitfont->printf(spellpointx[i]+38, M_GAMESQUARE_TOP+16, HGETEXT_RIGHT, "%s", buffer);
-				int nSpellPoint = Player::p[i].nSpellPoint;
-				info.spellpointdigitfont->printf(spellpointx[i]+38, M_GAMESQUARE_TOP+16, HGETEXT_LEFT, "%06d", nSpellPoint);
-
-				if (Player::p[i].winflag)
+				else
 				{
-					panel.winindi->RenderEx(winindix[i][0], M_GAMESQUARE_TOP+winindih, ARC(panel.winindiheadangle));
-					if (i == Player::IsMatchEnd())
-					{
-						panel.winindi->RenderEx(winindix[i][1], M_GAMESQUARE_TOP+winindih, ARC(panel.winindiheadangle));
-					}
+					panel.lifeindi[FDISP_LIFEINDI_EMPTY]->Render(tempx, M_GAMESQUARE_TOP);
 				}
-
-				_spd = SpriteItemManager::CastSprite(panel.slotindex);
-				float fslot = Player::p[i].fChargeMax / PLAYER_CHARGEMAX;
-				panel.slot->SetTextureRect(_spd->tex_x, _spd->tex_y, _spd->tex_w*fslot, _spd->tex_h);
-				panel.slot->SetHotSpot(0, _spd->tex_h);
-				panel.slot->SetColor(0xff808080);
-				panel.slot->Render(M_GAMESQUARE_LEFT_(i)+16, M_GAMESQUARE_BOTTOM);
-				fslot = Player::p[i].fCharge / PLAYER_CHARGEMAX;
-				panel.slot->SetTextureRect(_spd->tex_x, _spd->tex_y, _spd->tex_w*fslot, _spd->tex_h);
-				panel.slot->SetHotSpot(0, _spd->tex_h);
-				panel.slot->SetColor(0xffffffff);
-				BYTE nCharge;
-				Player::p[i].GetNCharge(&nCharge);
-				if (nCharge > 0)
-				{
-					panel.slot->SetColor(0xffffff80);
-				}
-				panel.slot->Render(M_GAMESQUARE_LEFT_(i)+16, M_GAMESQUARE_BOTTOM);
-				panel.slotback->Render(M_GAMESQUARE_LEFT_(i), M_GAMESQUARE_BOTTOM);
-				float tempx;
-				for (int j=0; j<PLAYER_DEFAULTINITLIFE/2; j++)
-				{
-					tempx = panel.lifeindi[FDISP_LIFEINDI_FULL]->GetWidth() * (j-(PLAYER_DEFAULTINITLIFE/2)/2) + M_GAMESQUARE_CENTER_X_(i);
-					if (Player::p[i].nLife > j * 2 + 1)
-					{
-						panel.lifeindi[FDISP_LIFEINDI_FULL]->Render(tempx, M_GAMESQUARE_TOP);
-					}
-					else if (Player::p[i].nLife > j * 2)
-					{
-						panel.lifeindi[FDISP_LIFEINDI_HALF]->Render(tempx, M_GAMESQUARE_TOP);
-					}
-					else
-					{
-						panel.lifeindi[FDISP_LIFEINDI_EMPTY]->Render(tempx, M_GAMESQUARE_TOP);
-					}
-				}
-				if (info.spellpointdigitfont)
-				{
-					info.spellpointdigitfont->printf(M_GAMESQUARE_LEFT_(i)+2, M_GAMESQUARE_BOTTOM-11, HGETEXT_LEFT, "%02d", Player::p[i].cardlevel);
-					info.spellpointdigitfont->printf(M_GAMESQUARE_RIGHT_(i)-2, M_GAMESQUARE_BOTTOM-11, HGETEXT_RIGHT, "%02d", Player::p[i].bosslevel);
-				}
+			}
+			if (info.spellpointdigitfont)
+			{
+				info.spellpointdigitfont->printf(M_GAMESQUARE_LEFT_(i)+2, M_GAMESQUARE_BOTTOM-11, HGETEXT_LEFT, "%02d", Player::p[i].cardlevel);
+				info.spellpointdigitfont->printf(M_GAMESQUARE_RIGHT_(i)-2, M_GAMESQUARE_BOTTOM-11, HGETEXT_RIGHT, "%02d", Player::p[i].bosslevel);
 			}
 		}
 		for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
@@ -371,6 +431,19 @@ void FrontDisplay::RenderPanel()
 				hge->Gfx_RenderLine(M_GAMESQUARE_RIGHT_(i), M_GAMESQUARE_BOTTOM, M_GAMESQUARE_LEFT_(i), M_GAMESQUARE_BOTTOM, col);
 				hge->Gfx_RenderLine(M_GAMESQUARE_LEFT_(i), M_GAMESQUARE_BOTTOM, M_GAMESQUARE_LEFT_(i), M_GAMESQUARE_TOP, col);
 			}
+		}
+		if (musicstate)
+		{
+			float x = M_CLIENT_CENTER_X;
+			float y = M_CLIENT_BOTTOM - 32;
+			BYTE alpha = 0xff;
+			if (musicstate > 120)
+			{
+				alpha = INTER(0xff, 0, (musicstate-120)/60.0f);
+			}
+			DWORD col = (alpha<<24)|0xffff00;
+			gameinfodisplay.fsMusic.SetColor(col, col, col, col);
+			gameinfodisplay.fsMusic.Render(x, y);
 		}
 	}
 	if(info.asciifont)
@@ -412,23 +485,34 @@ void FrontDisplay::RenderPanel()
 	}
 }
 
-void FrontDisplay::RenderBossInfo()
+void FrontDisplay::RenderSpellName(BYTE playerindex)
 {
-/*
-		BYTE flag = BossInfo::flag;
-		if (flag)
+	if (spellnamestate[1-playerindex])
+	{
+		float aimx = M_GAMESQUARE_LEFT_(playerindex) + 120;
+		float x;
+		if (spellnamestate[1-playerindex] < 45)
 		{
-			bossinfo.exist = false;
-			infobody.effBossStore.Render();
-			if(flag < BOSSINFO_COLLAPSE)
-			{
-	//			hge->Gfx_RenderQuad(&infobody.iqBossBlood.quad);
-			}
-			else if(flag & BOSSINFO_COLLAPSE)
-			{
-			}
-		}*/
-	
+			x = INTER(-160, aimx, spellnamestate[1-playerindex]/45.0f);
+		}
+		else
+		{
+			x = aimx;
+		}
+		BYTE alpha = 0xff;
+		BYTE spellclass = spellnameclass[1-playerindex];
+		if (spellclass < 3 && spellnamestate[1-playerindex] > 148)
+		{
+			alpha = INTER(0xff, 0, (spellnamestate[1-playerindex]-148)/32.0f);
+		}
+		float y = M_GAMESQUARE_TOP + 60;
+		gameinfodisplay.spellline->SetColor((alpha<<24)|0xffffff);
+		gameinfodisplay.spellline->Render(x, y);
+		DWORD ucol = (alpha<<24)|0xFF0000;
+		DWORD dcol = (alpha<<24)|0xFFFFFF;
+		gameinfodisplay.fsSpell[1-playerindex][spellclass-1].SetColor(ucol, ucol, dcol, dcol);
+		gameinfodisplay.fsSpell[1-playerindex][spellclass-1].Render(x, y);
+	}
 }
 
 void FrontDisplay::RenderEnemyX()
@@ -463,6 +547,10 @@ void FrontDisplay::RenderEnemyX()
 bool FrontDisplay::Init()
 {
 	Release();
+
+	info.normalfont = hge->Font_Load(BResource::res.resdata.widefontname, 20);
+	info.smallfont = hge->Font_Load(BResource::res.resdata.widefontname, 16);
+	info.tinyfont = hge->Font_Load(BResource::res.resdata.widefontname, 10);
 
 	int idx = 0;
 
@@ -563,6 +651,14 @@ bool FrontDisplay::Init()
 	gameinfodisplay.lastlife = SpriteItemManager::CreateSpriteByName(SI_GAMEINFO_LASTLIFE);
 	gameinfodisplay.lily = SpriteItemManager::CreateSpriteByName(SI_GAMEINFO_LILY);
 	gameinfodisplay.spellline = SpriteItemManager::CreateSpriteByName(SI_GAMEINFO_SPELLLINE);
+	for (int j=0; j<M_PL_MATCHMAXPLAYER; j++)
+	{
+		for (int i=0; i<3; i++)
+		{
+			gameinfodisplay.fsSpell[j][i].SignUp("", info.smallfont);
+		}
+	}
+	gameinfodisplay.fsMusic.SignUp("", info.normalfont);
 
 	//ascii
 
@@ -602,10 +698,7 @@ bool FrontDisplay::Init()
 		info.asciifont->ChangeSprite(i, ascii.ascii[i-FDISP_ASCII_BEGIN]);
 	}
 
-	info.normalfont = hge->Font_Load(BResource::res.resdata.widefontname, 20);
-	info.smallfont = hge->Font_Load(BResource::res.resdata.widefontname, 16);
-
-	SetState(FDISP_PANEL, 0);
+	SetState(FDISP_PANEL, FDISPSTATE_OFF);
 
 	return true;
 }
@@ -659,6 +752,11 @@ void FrontDisplay::Release()
 		hge->Font_Free(info.smallfont);
 		info.smallfont = NULL;
 	}
+	if (info.tinyfont)
+	{
+		hge->Font_Free(info.tinyfont);
+		info.tinyfont = NULL;
+	}
 	SpriteItemManager::FreeSprite(&info.cutin);
 	SpriteItemManager::FreeSprite(&info.plchat_1);
 	SpriteItemManager::FreeSprite(&info.plchat_2);
@@ -703,4 +801,13 @@ void FrontDisplay::Release()
 	{
 		SpriteItemManager::FreeSprite(&ascii.ascii[i]);
 	}
+
+	for (int j=0; j<M_PL_MATCHMAXPLAYER; j++)
+	{
+		for (int i=0; i<3; i++)
+		{
+			gameinfodisplay.fsSpell[j][i].SignOff();
+		}
+	}
+	gameinfodisplay.fsMusic.SignOff();
 }

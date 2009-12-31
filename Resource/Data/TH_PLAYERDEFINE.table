@@ -1,4 +1,4 @@
-73	h5nc	4A																					
-Comment	Type	Collision_r	FastSpeed	SlowSpeed	ChargeSpeed	ShotDelay	RechargeDelay	ShootChargeTime	ExPointParaB	ExPointParaA	SIID	Face	SpellCutIn	SpellName	DrainZone	StandFrame	LeftPreFrame	LeftFrame	RightPreFrame	RightFrame	SceneName	Name	EName
--	0	0.5	4	2	4	12	50	1	35	-1.25	SI_Player_Reimu_0	SI_Face_01	SI_PlayerSpellCutIn_01	_	SI_PlayerDrainZone_01	8	4	4	4	4	世界の果て	博麗·霊夢	Hakurei Reimu
--	1	1	5	3	3.3	8	45	32	30	-1	SI_Player_Marisa_0	SI_Face_02	SI_PlayerSpellCutIn_02	_	SI_PlayerDrainZone_02	8	4	4	4	4	世界の果て	霧雨·魔理沙	Kirisame Marisa
+73	h5nc	4A																								
+Comment	Type	Collision_r	FastSpeed	SlowSpeed	ChargeSpeed	ShotDelay	RechargeDelay	ShootChargeTime	ExPointParaB	ExPointParaA	SIID	Face	SpellCutIn	SpellName_1	SpellName_2	SpellName_3	MusicID	DrainZone	StandFrame	LeftPreFrame	LeftFrame	RightPreFrame	RightFrame	SceneName	Name	EName
+-	0	0.5	4	2	4	12	50	1	35	-1.25	SI_Player_Reimu_0	SI_Face_01	SI_PlayerSpellCutIn_01	霊符「陰陽印」	霊符「夢想封印」	霊符「博麗幻影」	7	SI_PlayerDrainZone_01	8	4	4	4	4	世界の果て	博麗·霊夢	Hakurei Reimu
+-	1	1	5	3	3.3	8	45	32	30	-1	SI_Player_Marisa_0	SI_Face_02	SI_PlayerSpellCutIn_02	魔符「スターダスト」	魔符「スターダストレヴァリエ」	魔符「イリュージョンスター」	8	SI_PlayerDrainZone_02	8	4	4	4	4	世界の果て	霧雨·魔理沙	Kirisame Marisa

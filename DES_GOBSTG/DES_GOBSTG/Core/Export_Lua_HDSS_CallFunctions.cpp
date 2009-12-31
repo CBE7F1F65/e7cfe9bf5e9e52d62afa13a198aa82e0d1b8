@@ -272,6 +272,60 @@ int _HDSSCallGet::Call_SAVEREPLAY(LuaState * ls)
 	return 0;
 }
 
+int _HDSSCallGet::Call_MUSICCHANGE(LuaState * ls)
+{
+	_ENTERCALL_HDSS_LUA;
+	if (true)
+	{
+		int _ID = -1;
+		bool _bForce = false;
+
+		_JNEXT_HDSS_LUAPARA;
+		if (bhavenext)
+		{
+			_ID = _IOBJ_HDSS_LUA;
+			_JNEXT_HDSS_LUAPARA;
+			if (bhavenext)
+			{
+				_bForce = _BOBJ_HDSS_LUA;
+			}
+		}
+
+		Process::mp.musicChange(_ID, _bForce);
+	}
+	return 0;
+}
+
+int _HDSSCallGet::Call_MUSICSLIDE(LuaState * ls)
+{
+	_ENTERCALL_HDSS_LUA;
+	if (true)
+	{
+		float _slidetime = _FNEXT_HDSS_LUAPARA;
+		int _tovol = 0;
+		int _pan = -101;
+		float _pitch = -1;
+
+		_JNEXT_HDSS_LUAPARA;
+		if (bhavenext)
+		{
+			_tovol = _IOBJ_HDSS_LUA;
+			_JNEXT_HDSS_LUAPARA;
+			if (bhavenext)
+			{
+				_pan = _IOBJ_HDSS_LUA;
+				_JNEXT_HDSS_LUAPARA;
+				if (bhavenext)
+				{
+					_pitch = _FOBJ_HDSS_LUA;
+				}
+			}
+		}
+		Process::mp.musicSlide(_slidetime, _tovol, _pan, _pitch);
+	}
+	return 0;
+}
+
 int _HDSSCallGet::Call_SE(LuaState * ls)
 {
 	_ENTERCALL_HDSS_LUA;
@@ -812,6 +866,29 @@ int _HDSSCallGet::Call_SETPINITLIFE(LuaState * ls)
 		BYTE _playerindex = _INEXT_HDSS_LUAPARA;
 		BYTE _initlife = _INEXT_HDSS_LUAPARA;
 		Player::p[_playerindex].SetInitLife(_initlife);
+	}
+	return 0;
+}
+
+int _HDSSCallGet::Call_ADDPNCHARGE(LuaState * ls)
+{
+	_ENTERCALL_HDSS_LUA;
+	if (true)
+	{
+		BYTE _playerindex = _INEXT_HDSS_LUAPARA;
+		float _addcharge = 0;
+		float _addchargemax = 0;
+		_JNEXT_HDSS_LUAPARA;
+		if (bhavenext)
+		{
+			_addcharge = _FOBJ_HDSS_LUA;
+			_JNEXT_HDSS_LUAPARA;
+			if (bhavenext)
+			{
+				_addchargemax = _FOBJ_HDSS_LUA;
+			}
+		}
+		Player::p[_playerindex].AddCharge(_addcharge, _addchargemax);
 	}
 	return 0;
 }

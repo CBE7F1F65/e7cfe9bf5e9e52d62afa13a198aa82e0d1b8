@@ -13,7 +13,11 @@ void Process::clearPrep(bool bclearkey)
 		BGLayer::ubg[i][UFGID_FGPAUSE].valueSetByName(SI_WHITE, M_CLIENT_CENTER_X, M_CLIENT_CENTER_Y, M_CLIENT_WIDTH, M_CLIENT_HEIGHT, 0);
 	}
 	
-	FrontDisplay::fdisp.SetState(FDISP_PANEL, 1);
+	FrontDisplay::fdisp.SetState(FDISP_PANEL, FDISPSTATE_ON);
+	for (int i=0; i<M_PL_ONESETPLAYER; i++)
+	{
+		FrontDisplay::fdisp.SetState(FDISP_SPELLNAME_0+i, FDISPSTATE_OFF);
+	}
 
 	if(!bclearkey)
 		return;
@@ -78,6 +82,8 @@ void Process::startPrep(bool callinit)
 		Player::p[i].valueSet(i);
 	}
 	Player::ClearRound();
+	FrontDisplay::fdisp.SignUpSpell();
+	musicChange(BResource::res.playerdata[scene].musicID);
 
 	if(!replaymode)
 	{

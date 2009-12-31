@@ -50,7 +50,7 @@ public:
 	void	frameEnd();
 
 	void	playSE(const char * sample_name,int pan = 0);
-	void	musicChange(BYTE ID, bool force = false);
+	void	musicChange(int ID=-1, bool force = false);
 	void	musicSlide(float slidetime, int tovol = 0, int pan = -101, float pitch = -1);
 
 	void	SnapShot();

@@ -1062,6 +1062,15 @@ void Enemy::Fadeout()
 
 void Enemy::action()
 {
+	if (ac == ENAC_DELAY_OOOOOTOO)
+	{
+		para_time--;
+		if (para_time <= 0)
+		{
+			setAction(ENAC_NONE);
+		}
+		return;
+	}
 	timer++;
 
 	if (timer < 60)

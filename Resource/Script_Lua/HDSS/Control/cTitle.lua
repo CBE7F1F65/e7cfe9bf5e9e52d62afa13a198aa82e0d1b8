@@ -1,4 +1,5 @@
 function CETitle_Init()
+	hdssMUSICCHANGE(LConst_musicid_title);
 end
 
 function CETitle_SetBG()

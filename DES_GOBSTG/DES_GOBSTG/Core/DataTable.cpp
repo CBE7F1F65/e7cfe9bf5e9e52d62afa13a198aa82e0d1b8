@@ -210,7 +210,7 @@ bool _DataTable::SpellDefineFile()
 bool _DataTable::MusicDefineFile()
 {
 	ZeroMemory(BResource::res.musdata, RSIZE_MUSIC);
-	_READSTRINGBUFFERLINE(11);
+	_READSTRINGBUFFERLINE(7);
 	while (!feof(file))
 	{
 		_INITTINT;
@@ -219,16 +219,12 @@ bool _DataTable::MusicDefineFile()
 		musicData * item = &(BResource::res.musdata[tindex]);
 		_CHECKEOF_DATATABLE;
 
-		fscanf(file, "%[^\t]%s%d%d%d\t%[^\t]\t%[^\t]\t%[^\t]\t%[^\r\n]", 
+		fscanf(file, "\t%[^\t]%s%d%d%d", 
 			item->musicname, 
 			item->musicfilename, 
 			&(item->startpos), 
 			&(item->introlength), 
-			&(item->alllength), 
-			item->explain_1, 
-			item->explain_2, 
-			item->explain_3, 
-			item->explain_4);
+			&(item->alllength));
 
 		_INITTINT;
 	}
@@ -335,7 +331,7 @@ bool _DataTable::EnemyDefineFile()
 bool _DataTable::PlayerDefineFile()
 {
 	ZeroMemory(BResource::res.playerdata, RSIZE_PLAYER);
-	_READSTRINGBUFFERLINE(24);
+	_READSTRINGBUFFERLINE(27);
 	while (!feof(file))
 	{
 		_INITTINT;
@@ -344,7 +340,7 @@ bool _DataTable::PlayerDefineFile()
 		playerData * item = &(BResource::res.playerdata[tindex]);
 		_CHECKEOF_DATATABLE;
 
-		fscanf(file, "%f%f%f%f%d%d%d%f%f%s%s%s\t%[^\t]%s%d%d%d%d%d\t%[^\t]\t%[^\t]\t%[^\r\n]", 
+		fscanf(file, "%f%f%f%f%d%d%d%f%f%s%s%s\t%[^\t]\t%[^\t]\t%[^\t]%d%s%d%d%d%d%d\t%[^\t]\t%[^\t]\t%[^\r\n]", 
 			&(item->collision_r), 
 			&(item->fastspeed), 
 			&(item->slowspeed), 
@@ -357,7 +353,10 @@ bool _DataTable::PlayerDefineFile()
 			strbuffer[0], 
 			strbuffer[1], 
 			strbuffer[2], 
-			item->spellname, 
+			item->spellname[0], 
+			item->spellname[1], 
+			item->spellname[2], 
+			_SAVETINT, 
 			strbuffer[3], 
 			_SAVETINT, 
 			_SAVETINT, 
@@ -372,6 +371,7 @@ bool _DataTable::PlayerDefineFile()
 		item->shotdelay = _LOADTINT;
 		item->rechargedelay = _LOADTINT;
 		item->shootchargetime = _LOADTINT;
+		item->musicID = _LOADTINT;
 		item->siid = SpriteItemManager::GetIndexByName(strbuffer[0]);
 		item->faceSIID = SpriteItemManager::GetIndexByName(strbuffer[1]);
 		item->spellcutinSIID = SpriteItemManager::GetIndexByName(strbuffer[2]);
