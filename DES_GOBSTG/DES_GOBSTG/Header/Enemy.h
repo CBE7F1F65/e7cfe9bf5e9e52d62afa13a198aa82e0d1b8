@@ -111,6 +111,8 @@ public:
 
 	static void BuildENAZ(BYTE playerindex, BYTE flag, float x, float y, float rPrep, float rParal=0, int angle=9000);
 
+	static void BossFadeout(BYTE playerindex);
+
 	void Clear();
 	bool isInRange(float x, float y, float r);
 	void Fadeout();

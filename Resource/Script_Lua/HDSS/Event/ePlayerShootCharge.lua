@@ -23,6 +23,7 @@ function ePlayerShootCharge_0_3(playerindex, level, oplayerID, px, py)
 	local y = 0;
 	hdssEB(CC_ShootChargeEnemyEID_0_3, playerindex, x, y, 9000, 0, oplayerID, 1400, 0, LGlobal_GetRandomItem());
 	hdssENSAIM(playerindex, level);
+	hdssBGSETUP(playerindex, LConst_bgset_spellid, oplayerID+LConst_SceneSpellOffset);
 	return true;
 end
 
@@ -60,5 +61,6 @@ function ePlayerShootCharge_1_3(playerindex, level, oplayerID, px, py)
 	local y = 0;
 	hdssEB(CC_ShootChargeEnemyEID_1_3, playerindex, x, y, 9000, 0, oplayerID, 1400, LGlobal_GetRandomItem());
 	hdssENSAIM(playerindex, level);
+	hdssBGSETUP(playerindex, LConst_bgset_spellid, oplayerID+LConst_SceneSpellOffset);
 	return true;
 end

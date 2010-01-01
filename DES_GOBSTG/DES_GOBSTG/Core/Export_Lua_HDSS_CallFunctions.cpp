@@ -1141,7 +1141,7 @@ int _HDSSCallGet::Call_BGVALEX(LuaState * ls)
 			_col = _COBJ_HDSS_LUA;
 		}
 
-		BGLayer::ubg[_playerindex][_index].valueSet(_siid, 0, 0, 0, 0, _col);
+		BGLayer::ubg[_playerindex][_index].valueSet(_siid, 0, 0, -1, -1, _col);
 
 		if (argscount > 2)
 		{

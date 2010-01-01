@@ -1533,7 +1533,7 @@ BYTE Player::AddCharge(float addcharge, float addchargemax)
 	BYTE ncharge;
 	BYTE nchargemax;
 	GetNCharge(&ncharge, &nchargemax);
-	fChargeMax += addchargemax;
+	fChargeMax += addchargemax * BResource::res.playerdata[nowID].addchargerate;
 	if (fChargeMax > PLAYER_CHARGEMAX)
 	{
 		fChargeMax = PLAYER_CHARGEMAX;

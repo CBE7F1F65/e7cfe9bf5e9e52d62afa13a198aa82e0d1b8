@@ -1333,6 +1333,10 @@ Comment	Index	SI_Name	Tex	Tex_x	Tex_y	Tex_w	Tex_h
 -	3602	SI_Scene_01_3	561	0	256	288	256
 -	3603	SI_Scene_01_4	561	496	0	16	512
 #		Spell(3800~3999)					
+-	3800	SI_Spell_01_1	660	0	0	-1	-1
+-	3801	SI_Spell_01_2	661	0	0	-1	-1
+-	3802	SI_Spell_02_1	662	0	0	-1	-1
+-	3803	SI_Spell_02_2	663	0	0	-1	-1
 #		Boss(4000~4999)					
 -	4000	SI_Boss_Reimu_0	160	0	0	64	80
 -	4001	SI_Boss_Reimu_1	160	64	0	64	80

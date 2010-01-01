@@ -186,8 +186,10 @@ void FrontDisplay::action()
 				spellnamestate[i]++;
 			}
 
-			if (spellnameclass[i] < 3 && spellnamestate[i] >= 180 ||
-				spellnameclass[i] >= 3 && Enemy::bossindex[1-i] == 0xff && spellnamestate[i] >= 60)
+			if (spellnameclass[i] < 3 && spellnamestate[i] >= 180/*
+			 ||
+							spellnameclass[i] >= 3 && Enemy::bossindex[1-i] == 0xff && spellnamestate[i] >= 60*/
+			)
 			{
 				SetState(FDISP_SPELLNAME_0+i, FDISPSTATE_OFF);
 			}
@@ -511,7 +513,7 @@ void FrontDisplay::RenderSpellName(BYTE playerindex)
 		DWORD ucol = (alpha<<24)|0xFF0000;
 		DWORD dcol = (alpha<<24)|0xFFFFFF;
 		gameinfodisplay.fsSpell[1-playerindex][spellclass-1].SetColor(ucol, ucol, dcol, dcol);
-		gameinfodisplay.fsSpell[1-playerindex][spellclass-1].Render(x, y);
+		gameinfodisplay.fsSpell[1-playerindex][spellclass-1].Render(x, y, FONTSYS_DEFAULT_SHADOW, 0.85f);
 	}
 }
 

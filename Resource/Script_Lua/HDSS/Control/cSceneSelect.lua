@@ -28,7 +28,7 @@ function CESceneSelect_SetSelect(selsyssceneid, pushkeyid)
 		},
 		tableSelectOffset,
 		{
-			"規定の場所", LConst_selsys_ucol, LConst_selsys_dcol
+			"規定の場所", LConst_selsys_ucol, LConst_selsys_dcol, LConst_selsys_shadow, 0, 0, 0.75
 		}
 	)
 	hdss.Call(
@@ -38,7 +38,7 @@ function CESceneSelect_SetSelect(selsyssceneid, pushkeyid)
 		},
 		tableSelectOffset,
 		{
-			"どっか", LConst_selsys_ucol, LConst_selsys_dcol
+			"どっか", LConst_selsys_ucol, LConst_selsys_dcol, LConst_selsys_shadow, 0, 0, 0.75
 		}
 	)
 
@@ -56,7 +56,7 @@ function CESceneSelect_SetSelect(selsyssceneid, pushkeyid)
 			},
 			tableSelectOffset,
 			{
-				scenename, ucol, dcol
+				scenename, ucol, dcol, LConst_selsys_shadow, 0, 0, 0.65, 0.75
 			}
 		)
 	end

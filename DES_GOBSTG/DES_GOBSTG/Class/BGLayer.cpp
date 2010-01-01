@@ -216,6 +216,9 @@ void BGLayer::rectSet(float _x, float _y, float z, float w, float h, int rotx, i
 		h *= height;
 	}
 
+	width = w;
+	height = h;
+
 	if (rotx)
 	{
 		float _hy = hy;
@@ -438,7 +441,7 @@ void BGLayer::action()
 		}
 	}
 
-	if(!move)
+	if (!move)
 	{
 		//roll the layer
 		if (angle != 9000)
@@ -460,7 +463,7 @@ void BGLayer::action()
 			}
 		}
 	}
-	else if(!rotate)
+	else if (!rotate)
 	{
 		//move the layer
 		float xt = speed * costa;
@@ -475,20 +478,20 @@ void BGLayer::action()
 	}
 	else
 	{
-		float x = ((sprite->quad.v[0].x + sprite->quad.v[2].x) / 2);
-		float y = ((sprite->quad.v[0].y + sprite->quad.v[2].y) / 2);
+		float _x = ((sprite->quad.v[0].x + sprite->quad.v[2].x) / 2);
+		float _y = ((sprite->quad.v[0].y + sprite->quad.v[2].y) / 2);
 
-		sprite->quad.v[0].x  = (-width/2)*costa - (-height/2)*sinta + x;
-		sprite->quad.v[0].y  = (-width/2)*sinta + (-height/2)*costa + y;
+		sprite->quad.v[0].x  = (-width/2)*costa - (-height/2)*sinta + _x;
+		sprite->quad.v[0].y  = (-width/2)*sinta + (-height/2)*costa + _y;
 
-		sprite->quad.v[1].x  = (width/2)*costa - (-height/2)*sinta + x;
-		sprite->quad.v[1].y  = (width/2)*sinta + (-height/2)*costa + y;	
+		sprite->quad.v[1].x  = (width/2)*costa - (-height/2)*sinta + _x;
+		sprite->quad.v[1].y  = (width/2)*sinta + (-height/2)*costa + _y;	
 
-		sprite->quad.v[2].x  = (width/2)*costa - (height/2)*sinta + x;
-		sprite->quad.v[2].y  = (width/2)*sinta + (height/2)*costa + y;	
+		sprite->quad.v[2].x  = (width/2)*costa - (height/2)*sinta + _x;
+		sprite->quad.v[2].y  = (width/2)*sinta + (height/2)*costa + _y;	
 
-		sprite->quad.v[3].x  = (-width/2)*costa - (height/2)*sinta + x;
-		sprite->quad.v[3].y  = (-width/2)*sinta + (height/2)*costa + y;	
+		sprite->quad.v[3].x  = (-width/2)*costa - (height/2)*sinta + _x;
+		sprite->quad.v[3].y  = (-width/2)*sinta + (height/2)*costa + _y;	
 
 		if(angle > 0)
 			angle += (int)(speed*100);

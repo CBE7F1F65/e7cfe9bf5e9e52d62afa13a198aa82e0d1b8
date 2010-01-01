@@ -126,6 +126,16 @@ void Enemy::ClearAll()
 	}
 }
 
+void Enemy::BossFadeout(BYTE playerindex)
+{
+	if (bossindex[playerindex] != 0xff)
+	{
+		bossindex[playerindex] = 0xff;
+		FrontDisplay::fdisp.SetState(FDISP_SPELLNAME_0+(1-playerindex), FDISPSTATE_OFF);
+		Scripter::scr.Execute(SCR_EVENT, SCR_EVENT_BOSSFADEOUT, playerindex);
+	}
+}
+
 void Enemy::Action(DWORD stopflag)
 {
 	PlayerBullet::ClearLock();
@@ -170,7 +180,7 @@ void Enemy::Action(DWORD stopflag)
 					{
 						if (pen->type < PLAYERTYPEMAX)
 						{
-							bossindex[j] = 0xff;
+							BossFadeout(j);
 						}
 					}
 				}

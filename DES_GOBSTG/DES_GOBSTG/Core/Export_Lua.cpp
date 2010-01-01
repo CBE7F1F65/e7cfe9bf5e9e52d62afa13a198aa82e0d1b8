@@ -154,6 +154,10 @@ int Export_Lua::LoadLuaFile(LuaState * ls, const char * filename, bool bDoFile /
 		filename = hge->Resource_EnumFiles(filenamebuffer);
 		do 
 		{
+			if (!filename)
+			{
+				break;
+			}
 			sprintf(fullfilename, "%s%s", filepath, filename);
 			iret = _LoadLuaFile(ls, fullfilename, bDoFile, filecount, outputfile);
 			if (iret != 0)

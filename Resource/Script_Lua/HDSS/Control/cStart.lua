@@ -31,7 +31,6 @@ function ControlExecute_cStart(timer)
 		
 		--
 		hdssSETPBINFI(1, 0);
-		hdssSETPBINFI(0, 0);
 		
 	elseif timer == 32 then
 		for i=0, 1 do

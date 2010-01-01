@@ -23,12 +23,36 @@ LTable_SceneIDFunction	=
 	{20,	Scene_s20},
 	{21,	Scene_s21},
 	{22,	Scene_s22},
+
+	{100,	Spell_s00},
+	{101,	Spell_s01},
+	{102,	Spell_s02},
+	{103,	Spell_s03},
+	{104,	Spell_s04},
+	{105,	Spell_s05},
+	{106,	Spell_s06},
+	{107,	Spell_s07},
+	{108,	Spell_s08},
+	{109,	Spell_s09},
+	{110,	Spell_s10},
+	{111,	Spell_s11},
+	{112,	Spell_s12},
+	{113,	Spell_s13},
+	{114,	Spell_s14},
+	{115,	Spell_s15},
+	{116,	Spell_s16},
+	{117,	Spell_s17},
+	{118,	Spell_s18},
+	{119,	Spell_s19},
+	{120,	Spell_s20},
+	{121,	Spell_s21},
+	{122,	Spell_s22},
 }
 
 function SceneExecute(name, timer)
 	
 	local playerindex = 0;
-	if name >= PLAYERTYPEMAX then
+	if name >= PLAYERTYPEMAX and name < LConst_SceneSpellOffset or name-LConst_SceneSpellOffset >= PLAYERTYPEMAX then
 		name = name - PLAYERTYPEMAX;
 		playerindex = 1;
 	end

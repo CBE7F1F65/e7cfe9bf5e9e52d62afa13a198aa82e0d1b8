@@ -168,6 +168,7 @@ struct playerData
 	float fastspeed;
 	float slowspeed;
 	float chargespeed;
+	float addchargerate;
 	float exsendparab;
 	float exsendparaa;
 	int siid;

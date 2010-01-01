@@ -97,6 +97,10 @@ function _EventExecute_PlayerSendItemBullet(playerindex)
 	game.SendItemBullet(playerindex, 16+rank);
 end
 
+function _EventExecute_BossFadeout(playerindex)
+	hdssBGSETUP(playerindex, LConst_bgset_spellid, BGLAYERSET_NONE);
+end
+
 function EventExecute(name, con)
 
 	if name == EVENT_EFFSPCHASE then
@@ -107,6 +111,8 @@ function EventExecute(name, con)
 		return _EventExecute_PlayerInStop(con);
 	elseif name == EVENT_PLAYERSHOOTCHARGE then
 		return _EventExecute_PlayerShootCharge(con);
+	elseif name == EVENT_BOSSFADEOUT then
+		return _EventExecute_BossFadeout(con);
 	elseif name == EVENT_PLAYERSENDEX then
 		return _EventExecute_PlayerSendEx(con);
 	elseif name == EVENT_ACTIVEGHOSTOVER then
