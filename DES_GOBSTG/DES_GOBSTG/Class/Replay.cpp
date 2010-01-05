@@ -27,7 +27,7 @@ Replay::~Replay()
 
 void Replay::Release(bool deletefiles/* =true */)
 {
-	for (list<_ReplayNameListItem>::iterator it=_rpyfilenamelist.begin(); it!=_rpyfilenamelist.end(); it++)
+	for (list<_ReplayNameListItem>::iterator it=_rpyfilenamelist.begin(); it!=_rpyfilenamelist.end();)
 	{
 		if (deletefiles)
 		{

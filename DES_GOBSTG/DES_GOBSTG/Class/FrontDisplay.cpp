@@ -495,7 +495,7 @@ void FrontDisplay::RenderSpellName(BYTE playerindex)
 		float x;
 		if (spellnamestate[1-playerindex] < 45)
 		{
-			x = INTER(-160, aimx, spellnamestate[1-playerindex]/45.0f);
+			x = INTER(M_GAMESQUARE_LEFT_(playerindex)-160, aimx, spellnamestate[1-playerindex]/45.0f);
 		}
 		else
 		{

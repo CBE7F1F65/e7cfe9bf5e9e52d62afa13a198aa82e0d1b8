@@ -1,60 +1,123 @@
-function ePlayerSendEx_0(esindex, oplayerindex, playerID, opx, opy, px, py, oplayerID)
-	local aimx = helper_GetCenterX(oplayerindex) + RANDTF(-136, 136);
+function _ePlayerSendEx_Restirict(aimx, aimy, cenx)
+	if aimx < cenx - TotalW/4 then
+		aimx = cenx - TotalW/4;
+	elseif aimx > cenx + TotalW/4 then
+		aimx = cenx + TotalW/4;
+	end
+	if aimy < 0 then
+		aimy = 0;
+	elseif aimy > TotalH then
+		aimy = TotalH;
+	end
+	return aimx, aimy;
+end
+
+function ePlayerSendEx_00(esindex, oplayerindex, playerID, opx, opy, px, py, oplayerID)
+	local cenx = helper_GetCenterX(oplayerindex);
+	local aimx = cenx + RANDTF(-136, 136);
 	local aimy = RANDTF(16, 144);
 	local chasetimer = RANDT(45, 60);
+	aimx, aimy = _ePlayerSendEx_Restirict(aimx, aimy, cenx);
 	game.PlayerSendEx(oplayerindex, esindex, aimx, aimy, chasetimer);
 	return true;
 end
 
-function ePlayerSendEx_1(esindex, oplayerindex, playerID, opx, opy, px, py, oplayerID)
-	local aimx = helper_GetCenterX(oplayerindex) + RANDTF(-136, 136);
+function ePlayerSendEx_01(esindex, oplayerindex, playerID, opx, opy, px, py, oplayerID)
+	local cenx = helper_GetCenterX(oplayerindex);
+	local aimx = cenx + RANDTF(-136, 136);
 	local aimy = CenterH + 16;
 	local chasetimer = RANDT(45, 60);
+	aimx, aimy = _ePlayerSendEx_Restirict(aimx, aimy, cenx);
 	game.PlayerSendEx(oplayerindex, esindex, aimx, aimy, chasetimer);
 	return true;
 end
 
---
-
-function ePlayerSendExChase_0(playerindex, x, y, playerID, appendfloat)
-	
-	local rank, cardlevel, bosslevel = hdss.Get(HDSS_RANK, 1-playerindex);
-	local angle;
-	angle = RANDT(-5500, -2500);
-	if RANDT(0, 1) == 1 then
-		angle = -18000 - angle;
-	end
-	local speed = 1.4;
-	local type = CC_BulletEx_Reimu;
-	local startacctime = 24;
-	local stopacctime = cardlevel * 6 + 32;
-	local acc = 6;
-	local afterstopadd = (stopacctime - startacctime) * acc
-	hdssA(playerindex, 
-		{
-			TIMERLESS, stopacctime, YSETACCADD, startacctime, acc,
-			TIMERGREAT, stopacctime, YSETADD, afterstopadd,
-			EVERY, BOUNCELR, 0 ,16,
-		}
-	);
-	hdssB(playerindex, x, y, angle, speed, type, 0);
-	hdssA(playerindex);
+function ePlayerSendEx_02(esindex, oplayerindex, playerID, opx, opy, px, py, oplayerID)
+	local cenx = helper_GetCenterX(oplayerindex);
+	local aimx = opx + (RANDT(0, 1)*2-1) * RANDTF(80, 120);
+	local aimy = RANDTF(16, 144);
+	local chasetimer = RANDT(45, 60);
+	aimx, aimy = _ePlayerSendEx_Restirict(aimx, aimy, cenx);
+	game.PlayerSendEx(oplayerindex, esindex, aimx, aimy, chasetimer);
 	return true;
 end
 
-function ePlayerSendExChase_1(playerindex, x, y, playerID, appendfloat, angleoffset)
-	
-	if angleoffset == nil then
-		angleoffset = 0;
-	end
-	local rank, cardlevel, bosslevel = hdss.Get(HDSS_RANK, 1-playerindex);
-	local speed = 18;
-	hdss.Call(
-		HDSS_BEB,
-		{
-			playerindex, x, y, -9000+angleoffset, speed, CC_Bullet_ShuttleBeam, 5, 720, BEAMFLAG_DELAY
-		}
-	)
-	hdssEFFSETUP(playerindex, LConst_effid_sendex_01, x, y, 64, angleoffset, 0.01);
+function ePlayerSendEx_03(esindex, oplayerindex, playerID, opx, opy, px, py, oplayerID)
+	return true;
+end
+
+function ePlayerSendEx_04(esindex, oplayerindex, playerID, opx, opy, px, py, oplayerID)
+	return true;
+end
+
+function ePlayerSendEx_05(esindex, oplayerindex, playerID, opx, opy, px, py, oplayerID)
+	return true;
+end
+
+function ePlayerSendEx_06(esindex, oplayerindex, playerID, opx, opy, px, py, oplayerID)
+	return true;
+end
+
+function ePlayerSendEx_07(esindex, oplayerindex, playerID, opx, opy, px, py, oplayerID)
+	return true;
+end
+
+function ePlayerSendEx_08(esindex, oplayerindex, playerID, opx, opy, px, py, oplayerID)
+	return true;
+end
+
+function ePlayerSendEx_09(esindex, oplayerindex, playerID, opx, opy, px, py, oplayerID)
+	return true;
+end
+
+function ePlayerSendEx_10(esindex, oplayerindex, playerID, opx, opy, px, py, oplayerID)
+	return true;
+end
+
+function ePlayerSendEx_11(esindex, oplayerindex, playerID, opx, opy, px, py, oplayerID)
+	return true;
+end
+
+function ePlayerSendEx_12(esindex, oplayerindex, playerID, opx, opy, px, py, oplayerID)
+	return true;
+end
+
+function ePlayerSendEx_13(esindex, oplayerindex, playerID, opx, opy, px, py, oplayerID)
+	return true;
+end
+
+function ePlayerSendEx_14(esindex, oplayerindex, playerID, opx, opy, px, py, oplayerID)
+	return true;
+end
+
+function ePlayerSendEx_15(esindex, oplayerindex, playerID, opx, opy, px, py, oplayerID)
+	return true;
+end
+
+function ePlayerSendEx_16(esindex, oplayerindex, playerID, opx, opy, px, py, oplayerID)
+	return true;
+end
+
+function ePlayerSendEx_17(esindex, oplayerindex, playerID, opx, opy, px, py, oplayerID)
+	return true;
+end
+
+function ePlayerSendEx_18(esindex, oplayerindex, playerID, opx, opy, px, py, oplayerID)
+	return true;
+end
+
+function ePlayerSendEx_19(esindex, oplayerindex, playerID, opx, opy, px, py, oplayerID)
+	return true;
+end
+
+function ePlayerSendEx_20(esindex, oplayerindex, playerID, opx, opy, px, py, oplayerID)
+	return true;
+end
+
+function ePlayerSendEx_21(esindex, oplayerindex, playerID, opx, opy, px, py, oplayerID)
+	return true;
+end
+
+function ePlayerSendEx_22(esindex, oplayerindex, playerID, opx, opy, px, py, oplayerID)
 	return true;
 end

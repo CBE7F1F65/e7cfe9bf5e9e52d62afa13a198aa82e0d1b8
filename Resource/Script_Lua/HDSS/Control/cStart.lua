@@ -23,7 +23,7 @@ function ControlExecute_cStart(timer)
 			
 			hdssSD(LConst_Desc_EnemyTimeCounter+i, 0);
 			hdssSD(LConst_Desc_EnemyRandom+i, enemyrandrom);
-			LGlobal_GetNextEnemyRandom(i);
+			helper_GetNextEnemyRandom(i);
 			
 			hdssBGSETUP(i, LConst_bgset_sceneid, scene, true);
 						
@@ -31,6 +31,7 @@ function ControlExecute_cStart(timer)
 		
 		--
 		hdssSETPBINFI(1, 0);
+		hdssSETPBINFI(0, 0);
 		
 	elseif timer == 32 then
 		for i=0, 1 do
@@ -44,7 +45,7 @@ function ControlExecute_cStart(timer)
 	if timer <= 8 then
 		local scale = hdssINTER(1.5, 1, timer/8);
 		for i=0, 1 do
-			hdssBGVALUE(i, LConst_gamefg_infoid, SI_GameInfo_Ready, LGlobal_GetCenterX(i), CenterY, 128*scale, 48*scale);
+			hdssBGVALUE(i, LConst_gamefg_infoid, SI_GameInfo_Ready, helper_GetCenterX(i), CenterY, 128*scale, 48*scale);
 		end
 	elseif timer == 32 then
 		for i=0, 1 do
@@ -53,7 +54,7 @@ function ControlExecute_cStart(timer)
 	elseif timer > 48 and timer <= 56 then
 		local scale = hdssINTER(1.5, 1, (timer-48)/8);
 		for i=0, 1 do
-			hdssBGVALUE(i, LConst_gamefg_infoid, SI_GameInfo_GameStart, LGlobal_GetCenterX(i), CenterY, 208*scale, 48*scale);
+			hdssBGVALUE(i, LConst_gamefg_infoid, SI_GameInfo_GameStart, helper_GetCenterX(i), CenterY, 208*scale, 48*scale);
 		end
 	elseif timer == 80 then
 		for i=0, 1 do
@@ -81,7 +82,7 @@ function ControlExecute_cStart(timer)
 				local nowpattern = math.floor(nowline / 2);
 				local nowdirection = math.mod(nowline, 2);
 				if nowlinenum > 0 then
-					local type, x, y, startangle, addangle, addtimebegin, addtimeend, life = LGlobal_GetEnemyBasicData(nowpattern, nowlinenum, nowdirection, i);
+					local type, x, y, startangle, addangle, addtimebegin, addtimeend, life = helper_GetEnemyBasicData(nowpattern, nowlinenum, nowdirection, i);
 					hdssEB(type, i, x, y, startangle, 2.0, type, life);
 					if addangle then
 						hdssEA(i, ENAC_TURNANGLE_OOOOATOE,
@@ -98,7 +99,7 @@ function ControlExecute_cStart(timer)
 					if bdrain and bhaveenemy then
 						hdssSD(LConst_Desc_EnemyNowLineNum+i, 0);
 					else
-						LGlobal_GetNextEnemyRandom(i);
+						helper_GetNextEnemyRandom(i);
 					end
 				else
 					hdssSD(LConst_Desc_EnemyNowLineNum+i, nowlinenum);

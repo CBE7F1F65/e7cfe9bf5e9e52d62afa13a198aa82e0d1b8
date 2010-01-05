@@ -52,8 +52,8 @@ function ControlExecute_cClear(timer)
 			if i == winner then
 				siadd = 0;
 			end
-			hdssBGVALUE(i, LConst_gamefg_infoid, SI_GameInfo_Winner+siadd, LGlobal_GetCenterX(i), CenterY-100);
-			hdssFRONTSPRITE(LConst_game_FrontSprite_WinLoseID_0+i, SI_GameInfo_GameSet, LGlobal_GetCenterX(i), TotalCenterY-160);
+			hdssBGVALUE(i, LConst_gamefg_infoid, SI_GameInfo_Winner+siadd, helper_GetCenterX(i), CenterY-100);
+			hdssFRONTSPRITE(LConst_game_FrontSprite_WinLoseID_0+i, SI_GameInfo_GameSet, helper_GetCenterX(i), TotalCenterY-160);
 			hdssFADEOUTFRONTSPRITE(LConst_game_FrontSprite_WinLoseID_0+i, 64);
 		end
 	end

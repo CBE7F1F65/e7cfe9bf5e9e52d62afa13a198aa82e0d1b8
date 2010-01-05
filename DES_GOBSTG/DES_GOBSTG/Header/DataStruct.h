@@ -171,6 +171,7 @@ struct playerData
 	float addchargerate;
 	float exsendparab;
 	float exsendparaa;
+	float exsendmax;
 	int siid;
 	int faceSIID;
 	int spellcutinSIID;

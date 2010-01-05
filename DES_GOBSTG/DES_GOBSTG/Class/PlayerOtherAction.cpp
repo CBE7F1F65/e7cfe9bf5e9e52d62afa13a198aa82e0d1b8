@@ -309,6 +309,7 @@ void Player::UpdatePlayerData()
 	rechargedelay = pdata->rechargedelay;
 	fExSendParaB = pdata->exsendparab;
 	fExSendParaA = pdata->exsendparaa;
+	fExSendMax = pdata->exsendmax;
 	if (sprite)
 	{
 		SpriteItemManager::ChangeSprite(pdata->siid, sprite);

@@ -527,6 +527,15 @@ function hdssB(playerindex, x, y, angle, speed, type, color, fadeintime, avoid)
 	)
 end
 
+function hdssBC(playerindex, num, baseangle, baser, x, y, speed, type, color)
+	return hdss.Call(
+		HDSS_BC,
+		{
+			playerindex, num, baseangle, baser, x, y, speed, type, color
+		}
+	)
+end
+
 function hdssEB(eID, playerindex, x, y, angle, speed, type, life, take)
 	if take == nil or take == 0 then
 		return hdss.Call(

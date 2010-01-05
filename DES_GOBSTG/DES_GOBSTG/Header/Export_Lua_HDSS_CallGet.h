@@ -96,8 +96,15 @@ public:
 	static int Get_ENI(LuaState * ls);
 	static int Get_ENNUM(LuaState * ls);
 
+	static int Get_SEED(LuaState * ls);
+	static int Get_SINA(LuaState * ls);
+	static int Get_COSA(LuaState * ls);
+	static int Get_TANA(LuaState * ls);
+	static int Get_ASINA2(LuaState * ls);
+	static int Get_ACOSA2(LuaState * ls);
 	static int Get_ATAN2(LuaState * ls);
 	static int Get_SIGN(LuaState * ls);
+	static int Get_ROLL(LuaState * ls);
 
 	static int Get_CHECKKEY(LuaState * ls);
 

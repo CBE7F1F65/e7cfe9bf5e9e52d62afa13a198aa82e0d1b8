@@ -286,6 +286,79 @@ int _HDSSCallGet::Get_ENNUM(LuaState * ls)
 	return 0;
 }
 
+int _HDSSCallGet::Get_SEED(LuaState * ls)
+{
+	_ENTERGET_HDSS_LUA;
+	if (true)
+	{
+		_PI_HDSS_LUA(Process::mp.seed);
+		return 1;
+	}
+	return 0;
+}
+
+int _HDSSCallGet::Get_SINA(LuaState * ls)
+{
+	_ENTERGET_HDSS_LUA;
+	if (argscount > 1)
+	{
+		int _angle = _INEXT_HDSS_LUAFUNC;
+		_PF_HDSS_LUA(sint(_angle));
+		return 1;
+	}
+	return 0;
+}
+
+int _HDSSCallGet::Get_COSA(LuaState * ls)
+{
+	_ENTERGET_HDSS_LUA;
+	if (argscount > 1)
+	{
+		int _angle = _INEXT_HDSS_LUAFUNC;
+		_PF_HDSS_LUA(cost(_angle));
+		return 1;
+	}
+	return 0;
+}
+
+int _HDSSCallGet::Get_TANA(LuaState * ls)
+{
+	_ENTERGET_HDSS_LUA;
+	if (argscount > 1)
+	{
+		int _angle = _INEXT_HDSS_LUAFUNC;
+		_PF_HDSS_LUA(tant(_angle));
+		return 1;
+	}
+	return 0;
+}
+
+int _HDSSCallGet::Get_ASINA2(LuaState * ls)
+{
+	_ENTERGET_HDSS_LUA;
+	if (argscount > 2)
+	{
+		float _x = _FNEXT_HDSS_LUAFUNC;
+		float _y = _FNEXT_HDSS_LUAFUNC;
+		_PI_HDSS_LUA(asin2t(_x, _y));
+		return 1;
+	}
+	return 0;
+}
+
+int _HDSSCallGet::Get_ACOSA2(LuaState * ls)
+{
+	_ENTERGET_HDSS_LUA;
+	if (argscount > 2)
+	{
+		float _x = _FNEXT_HDSS_LUAFUNC;
+		float _y = _FNEXT_HDSS_LUAFUNC;
+		_PI_HDSS_LUA(acos2t(_x, _y));
+		return 1;
+	}
+	return 0;
+}
+
 int _HDSSCallGet::Get_ATAN2(LuaState * ls)
 {
 	_ENTERGET_HDSS_LUA;
@@ -304,12 +377,26 @@ int _HDSSCallGet::Get_SIGN(LuaState * ls)
 	_ENTERGET_HDSS_LUA;
 	if (argscount > 1)
 	{
-		int _X = _INEXT_HDSS_LUAFUNC;
-		_PI_HDSS_LUA(SIGN(_X));
+		int _x = _INEXT_HDSS_LUAFUNC;
+		_PI_HDSS_LUA(SIGN(_x));
 		return 1;
 	}
 	return 0;
 }
+
+int _HDSSCallGet::Get_ROLL(LuaState * ls)
+{
+	_ENTERGET_HDSS_LUA;
+	if (argscount > 2)
+	{
+		int _x = _INEXT_HDSS_LUAFUNC;
+		int _t = _INEXT_HDSS_LUAFUNC;
+		_PI_HDSS_LUA(ROLL(_x, _t));
+		return 1;
+	}
+	return 0;
+}
+
 
 int _HDSSCallGet::Get_PX(LuaState * ls)
 {

@@ -145,11 +145,15 @@ void Export_Lua_HGEHelp::_LuaHelper_hgeFont_DeleteFont(hgeFont * _font)
 	if (_font)
 	{
 		delete _font;
-		for (list<hgeFont *>::iterator it=fontList.begin(); it!=fontList.end(); it++)
+		for (list<hgeFont *>::iterator it=fontList.begin(); it!=fontList.end();)
 		{
 			if ((*it) == _font)
 			{
 				it = fontList.erase(it);
+			}
+			else
+			{
+				++it;
 			}
 		}
 		_font = NULL;
@@ -612,11 +616,15 @@ void Export_Lua_HGEHelp::_LuaHelper_hgeES_DeleteES(hgeEffectSystem * _es)
 	if (_es)
 	{
 		delete _es;
-		for (list<hgeEffectSystem *>::iterator it=esList.begin(); it!=esList.end(); it++)
+		for (list<hgeEffectSystem *>::iterator it=esList.begin(); it!=esList.end();)
 		{
 			if ((*it) == _es)
 			{
 				it = esList.erase(it);
+			}
+			else
+			{
+				++it;
 			}
 		}
 		_es = NULL;
@@ -860,11 +868,15 @@ void Export_Lua_HGEHelp::_LuaHelper_hgeSprite_DeleteSprite(hgeSprite * _sprite)
 	if (_sprite)
 	{
 		delete _sprite;
-		for (list<hgeSprite *>::iterator it=spriteList.begin(); it!=spriteList.end(); it++)
+		for (list<hgeSprite *>::iterator it=spriteList.begin(); it!=spriteList.end();)
 		{
 			if ((*it) == _sprite)
 			{
 				it = spriteList.erase(it);
+			}
+			else
+			{
+				++it;
 			}
 		}
 		_sprite = NULL;

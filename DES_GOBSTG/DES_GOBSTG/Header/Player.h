@@ -203,6 +203,7 @@ public:
 
 	float fExSendParaB;
 	float fExSendParaA;
+	float fExSendMax;
 
 	int nBounceAngle;
 

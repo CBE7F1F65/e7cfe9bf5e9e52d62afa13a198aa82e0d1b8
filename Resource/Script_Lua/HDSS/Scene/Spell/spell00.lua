@@ -1,6 +1,6 @@
 function Spell_s00(playerindex, timer)
 	
-	local cenx = LGlobal_GetCenterX(playerindex);
+	local cenx = helper_GetCenterX(playerindex);
 	
 	if timer == POSTAT then
 		

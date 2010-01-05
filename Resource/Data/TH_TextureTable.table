@@ -85,9 +85,11 @@ Comment	Index	Texture
 #		PlayerSpellCutIn(260~309)
 -	260	Graphic/Sprite/Player/SpellCutIn/pl_01_cutin.png
 -	261	Graphic/Sprite/Player/SpellCutIn/pl_02_cutin.png
+-	282	Graphic/Sprite/Player/SpellCutIn/pl_23_cutin.png
 #		PlayerDrainZone(310~359)
 -	310	Graphic/Sprite/Player/DrainZone/pl_01_drain.png
 -	311	Graphic/Sprite/Player/DrainZone/pl_02_drain.png
+-	332	Graphic/Sprite/Player/DrainZone/pl_23_drain.png
 #		Other(360~459)
 -	360	Graphic/th09/title00.png
 -	361	Graphic/th09/select00.png

@@ -43,7 +43,7 @@ function _EventExecute_PlayerShootCharge(playerindex)
 	
 	local col = {global.ARGB(0x80, 0x808080), global.ARGB(0x80, 0xff0000)};
 	for i=0, 1 do
-		hdssBGVALUE(i, LConst_gamefg_spellflashid, SI_White, LGlobal_GetCenterX(i), TotalH/2, TotalW/2, TotalH, col[i+1]);
+		hdssBGVALUE(i, LConst_gamefg_spellflashid, SI_White, helper_GetCenterX(i), TotalH/2, TotalW/2, TotalH, col[i+1]);
 	end
 	
 	for i, it in pairs(LTable_ePlayerShootChargeFunction) do
@@ -84,9 +84,9 @@ end
 
 function _EventExecute_PlayerSendLily(rank)
 	hdssSE(SE_BOSS_WARNING);
-	local randomitem = LGlobal_GetRandomItem();
+	local randomitem = helper_GetRandomItem();
 	for i=0, 1 do
-		hdssEB(CC_EnemyEID_Lily, i, LGlobal_GetCenterX(i), 0, 9000, 0, LConst_EnemyTypeLiLy, 830, randomitem);
+		hdssEB(CC_EnemyEID_Lily, i, helper_GetCenterX(i), 0, 9000, 0, LConst_EnemyTypeLiLy, 830, randomitem);
 		hdssENSAIM(i, rank);
 	end
 	return true;

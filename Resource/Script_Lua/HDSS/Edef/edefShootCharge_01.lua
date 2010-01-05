@@ -1,4 +1,4 @@
-function Edef_ShootChargeEnemyEID_1_1(playerindex, level, x, y, timer, px, py)
+function Edef_ShootChargeEnemyEID_01_1(playerindex, level, x, y, timer, px, py)
 
 	local row = (math.floor((level+1)/4) + 2) * 2;
 	local timemod = math.floor(CenterH / row / hdss.Get(HDSS_ENSPEED, playerindex));
@@ -8,7 +8,7 @@ function Edef_ShootChargeEnemyEID_1_1(playerindex, level, x, y, timer, px, py)
 	if math.mod(timer, timemod) == 1 then
 		local num = 8;
 		local baseangle;
-		if x < LGlobal_GetCenterX(playerindex) then
+		if x < helper_GetCenterX(playerindex) then
 			baseangle = 4500;
 		else
 			baseangle = 13500;
@@ -28,7 +28,7 @@ function Edef_ShootChargeEnemyEID_1_1(playerindex, level, x, y, timer, px, py)
 	return true;
 end
 
-function Edef_ShootChargeEnemyEID_1_2(playerindex, level, x, y, timer, px, py)
+function Edef_ShootChargeEnemyEID_01_2(playerindex, level, x, y, timer, px, py)
 	local row = math.floor((level+1)/4) + 2;
 	local timemod = math.floor(CenterH / row / hdss.Get(HDSS_ENSPEED, playerindex));
 	if timer == 1 then
@@ -38,7 +38,7 @@ function Edef_ShootChargeEnemyEID_1_2(playerindex, level, x, y, timer, px, py)
 		local num = 8;
 		local baseangle;
 		local color;
-		if x < LGlobal_GetCenterX(playerindex) then
+		if x < helper_GetCenterX(playerindex) then
 			baseangle = 4500;
 			color = 10;
 		else
@@ -56,9 +56,9 @@ function Edef_ShootChargeEnemyEID_1_2(playerindex, level, x, y, timer, px, py)
 	return true;
 end
 
-function Edef_ShootChargeEnemyEID_1_3(playerindex, level, x, y, timer, px, py)
+function Edef_ShootChargeEnemyEID_01_3(playerindex, level, x, y, timer, px, py)
 	if timer == 1 then
-		local cx = LGlobal_GetCenterBossX(playerindex);
+		local cx = helper_GetCenterBossX(playerindex);
 		local cy = CenterBossY;
 		hdssEA_OVERPLAYER(playerindex, cx, cy, 90, 60, 60);
 	elseif timer == 810 then
@@ -67,33 +67,33 @@ function Edef_ShootChargeEnemyEID_1_3(playerindex, level, x, y, timer, px, py)
 		local pattern = RANDT(0, 4);
 		if pattern == 0 then
 			
-			hdssEB(CC_ShootChargeEnemyEID_1_3_A, playerindex, x, y, 9000, 0, LConst_EnemyTypeNull, RANDT(1, 36000));
+			hdssEB(CC_ShootChargeEnemyEID_01_3_A, playerindex, x, y, 9000, 0, LConst_EnemyTypeNull, RANDT(1, 36000));
 			hdssENSAIM(playerindex, level);	
 				
 		elseif pattern == 1 then
 			local angle = RANDT(-3000, 3000);
-			hdssEB(CC_ShootChargeEnemyEID_1_3_B, playerindex, x, y, angle, hdss.Get(HDSS_SIGN, angle), LConst_EnemyTypeNull, 10);
+			hdssEB(CC_ShootChargeEnemyEID_01_3_B, playerindex, x, y, angle, hdss.Get(HDSS_SIGN, angle), LConst_EnemyTypeNull, 10);
 			hdssENSAIM(playerindex, level);	
 			
 		elseif pattern == 2 then
 			
-			hdssEB(CC_ShootChargeEnemyEID_1_3_C, playerindex, x, y, 9000, 0, LConst_EnemyTypeNull, 10);
+			hdssEB(CC_ShootChargeEnemyEID_01_3_C, playerindex, x, y, 9000, 0, LConst_EnemyTypeNull, 10);
 			hdssENSAIM(playerindex, level);	
 		
 		elseif pattern == 3 then
 			
-			hdssEB(CC_ShootChargeEnemyEID_1_3_D, playerindex, x, y, 9000, 0, LConst_EnemyTypeNull, 10);
+			hdssEB(CC_ShootChargeEnemyEID_01_3_D, playerindex, x, y, 9000, 0, LConst_EnemyTypeNull, 10);
 			hdssENSAIM(playerindex, level);	
 			
 		else
-			hdssEB(CC_ShootChargeEnemyEID_1_3_E, playerindex, x, y, 9000, 0, LConst_EnemyTypeNull, 10);
+			hdssEB(CC_ShootChargeEnemyEID_01_3_E, playerindex, x, y, 9000, 0, LConst_EnemyTypeNull, 10);
 			hdssENSAIM(playerindex, level);	
 		end
 	end
 	return true;
 end
 
-function Edef_ShootChargeEnemyEID_1_3_A(playerindex, level, x, y, timer, px, py)
+function Edef_ShootChargeEnemyEID_01_3_A(playerindex, level, x, y, timer, px, py)
 
 	if timer == 1 then
 		hdssEA_FADEOUT(playerindex, 40);
@@ -115,18 +115,13 @@ function Edef_ShootChargeEnemyEID_1_3_A(playerindex, level, x, y, timer, px, py)
 			type = CC_Bullet_Star;
 		end
 		for i=0, looptime-1 do
-			hdss.Call(
-				HDSS_BC,
-				{
-					playerindex, 3, baseangle + i * 1000, 0, x, y, speed, type, color
-				}
-			)
+			hdssBC(playerindex, 3, baseangle + i * 1000, 0, x, y, speed, type, color);
 		end
 	end
-	
+	return true;
 end
 
-function Edef_ShootChargeEnemyEID_1_3_B(playerindex, level, x, y, timer, px, py)
+function Edef_ShootChargeEnemyEID_01_3_B(playerindex, level, x, y, timer, px, py)
 
 	if timer == 1 then
 		local set;
@@ -160,11 +155,12 @@ function Edef_ShootChargeEnemyEID_1_3_B(playerindex, level, x, y, timer, px, py)
 		)
 		hdssA(playerindex);
 	end
+	return true;
 	
 end
 
 
-function Edef_ShootChargeEnemyEID_1_3_C(playerindex, level, x, y, timer, px, py)
+function Edef_ShootChargeEnemyEID_01_3_C(playerindex, level, x, y, timer, px, py)
 
 	if timer == 1 then
 		hdssEA_FADEOUT(playerindex, 30+level);
@@ -184,9 +180,10 @@ function Edef_ShootChargeEnemyEID_1_3_C(playerindex, level, x, y, timer, px, py)
 		hdssB(playerindex, x, y, angle, speed, CC_Bullet_Star, 14);
 	end
 	hdssA(playerindex);
+	return true;
 end
 
-function Edef_ShootChargeEnemyEID_1_3_D(playerindex, level, x, y, timer, px, py)
+function Edef_ShootChargeEnemyEID_01_3_D(playerindex, level, x, y, timer, px, py)
 
 	if timer == 1 then
 		local num;
@@ -201,17 +198,18 @@ function Edef_ShootChargeEnemyEID_1_3_D(playerindex, level, x, y, timer, px, py)
 		end
 		hdssEA_FADEOUT(playerindex, num * 8);
 	elseif math.mod(timer, 8) == 6 then
-		local cx = LGlobal_GetCenterX(playerindex);
+		local cx = helper_GetCenterX(playerindex);
 		local x = RANDT(cx-CenterW/2+8, cx+CenterW/2-8);
 		local y = CenterH + 16;
 		local playerID = 0xff;
 		local angleoffset = RANDT(-400, 400);
-		ePlayerSendExChase_1(playerindex, x, y, playerID, 0, angleoffset);
+		ePlayerSendExChase_01(playerindex, x, y, playerID, 0, angleoffset);
 	end
+	return true;
 end
 
 
-function Edef_ShootChargeEnemyEID_1_3_E(playerindex, level, x, y, timer, px, py)
+function Edef_ShootChargeEnemyEID_01_3_E(playerindex, level, x, y, timer, px, py)
 
 	if timer == 1 then
 		local num = math.floor(level/5) + 3;
@@ -221,6 +219,7 @@ function Edef_ShootChargeEnemyEID_1_3_E(playerindex, level, x, y, timer, px, py)
 		local x = px + xoffset;
 		local y = CenterH + 16;
 		local playerID = 0xff;
-		ePlayerSendExChase_1(playerindex, x, y, playerID, 0);
+		ePlayerSendExChase_01(playerindex, x, y, playerID, 0);
 	end
+	return true;
 end

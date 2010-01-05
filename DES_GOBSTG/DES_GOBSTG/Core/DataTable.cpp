@@ -331,7 +331,7 @@ bool _DataTable::EnemyDefineFile()
 bool _DataTable::PlayerDefineFile()
 {
 	ZeroMemory(BResource::res.playerdata, RSIZE_PLAYER);
-	_READSTRINGBUFFERLINE(28);
+	_READSTRINGBUFFERLINE(29);
 	while (!feof(file))
 	{
 		_INITTINT;
@@ -340,7 +340,7 @@ bool _DataTable::PlayerDefineFile()
 		playerData * item = &(BResource::res.playerdata[tindex]);
 		_CHECKEOF_DATATABLE;
 
-		fscanf(file, "%f%f%f%f%f%d%d%d%f%f%s%s%s\t%[^\t]\t%[^\t]\t%[^\t]%d%s%d%d%d%d%d\t%[^\t]\t%[^\t]\t%[^\r\n]", 
+		fscanf(file, "%f%f%f%f%f%d%d%d%f%f%f%s%s%s\t%[^\t]\t%[^\t]\t%[^\t]%d%s%d%d%d%d%d\t%[^\t]\t%[^\t]\t%[^\r\n]", 
 			&(item->collision_r), 
 			&(item->fastspeed), 
 			&(item->slowspeed), 
@@ -349,8 +349,9 @@ bool _DataTable::PlayerDefineFile()
 			_SAVETINT, 
 			_SAVETINT, 
 			_SAVETINT, 
-			&(item->exsendparab),
-			&(item->exsendparaa),
+			&(item->exsendparab), 
+			&(item->exsendparaa), 
+			&(item->exsendmax), 
 			strbuffer[0], 
 			strbuffer[1], 
 			strbuffer[2], 

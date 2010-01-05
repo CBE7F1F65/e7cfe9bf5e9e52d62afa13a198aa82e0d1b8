@@ -1,4 +1,4 @@
-function Edef_ShootChargeEnemyEID_0_1(playerindex, level, x, y, timer, px, py)
+function Edef_ShootChargeEnemyEID_00_1(playerindex, level, x, y, timer, px, py)
 	if timer == 1 then
 		hdssEA_FADEOUT(playerindex, 100);
 	end
@@ -11,19 +11,9 @@ function Edef_ShootChargeEnemyEID_0_1(playerindex, level, x, y, timer, px, py)
 		local baseangle = RANDT(1, 36000);
 		local addangle = 18000 / num;
 		local speed = level * 0.2 + 0.4;
-		hdss.Call(
-			HDSS_BC,
-			{
-				playerindex, num, baseangle, 0, x, y, speed, CC_Bullet_SmallBall, 1
-			}
-		)
+		hdssBC(playerindex, num, baseangle, 0, x, y, speed, CC_Bullet_SmallBall, 1);
 		baseangle = baseangle + addangle;
-		hdss.Call(
-			HDSS_BC,
-			{
-				playerindex, num, baseangle, 0, x, y, speed, CC_Bullet_Shuttle, 1
-			}
-		)
+		hdssBC(playerindex, num, baseangle, 0, x, y, speed, CC_Bullet_Shuttle, 1);
 		
 		baseangle = RANDT(1, 36000);
 		hdssA(playerindex,
@@ -34,25 +24,15 @@ function Edef_ShootChargeEnemyEID_0_1(playerindex, level, x, y, timer, px, py)
 				TIMERLESS, 180, REMAIN,
 			}
 		)
-		hdss.Call(
-			HDSS_BC,
-			{
-				playerindex, num, baseangle, 0, x, y, speed, CC_Bullet_SmallBall, 15
-			}
-		)
+		hdssBC(playerindex, num, baseangle, 0, x, y, speed, CC_Bullet_SmallBall, 15);
 		baseangle = baseangle + addangle;
-		hdss.Call(
-			HDSS_BC,
-			{
-				playerindex, num, baseangle, 0, x, y, speed, CC_Bullet_Shuttle, 15
-			}
-		)
+		hdssBC(playerindex, num, baseangle, 0, x, y, speed, CC_Bullet_Shuttle, 15);
 		hdssA(playerindex);
 	end
 	return true;
 end
 
-function Edef_ShootChargeEnemyEID_0_2(playerindex, level, x, y, timer, px, py)
+function Edef_ShootChargeEnemyEID_00_2(playerindex, level, x, y, timer, px, py)
 	if timer == 1 then
 		hdssEA_FADEOUT(playerindex, 100);
 	end
@@ -64,12 +44,7 @@ function Edef_ShootChargeEnemyEID_0_2(playerindex, level, x, y, timer, px, py)
 		local num = level * 2 + 48;
 		local baseangle = RANDT(1, 36000);
 		local speed = level * 0.08 + 1.4;
-		hdss.Call(
-			HDSS_BC,
-			{
-				playerindex, num, baseangle, 0, x, y, speed, CC_Bullet_Amulet, 1
-			}
-		)
+		hdssBC(playerindex, num, baseangle, 0, x, y, speed, CC_Bullet_Amulet, 1);
 		
 		hdssA(playerindex,
 			{
@@ -82,20 +57,15 @@ function Edef_ShootChargeEnemyEID_0_2(playerindex, level, x, y, timer, px, py)
 				TIMERLESS, 240, REMAIN,
 			}
 		)
-		hdss.Call(
-			HDSS_BC,
-			{
-				playerindex, num, baseangle, 0, x, y, speed, CC_Bullet_Amulet, 15
-			}
-		)
+		hdssBC(playerindex, num, baseangle, 0, x, y, speed, CC_Bullet_Amulet, 15);
 		hdssA(playerindex);
 	end
 	return true;
 end
 
-function Edef_ShootChargeEnemyEID_0_3(playerindex, level, x, y, timer, px, py)
+function Edef_ShootChargeEnemyEID_00_3(playerindex, level, x, y, timer, px, py)
 	if timer == 1 then
-		local cx = LGlobal_GetCenterBossX(playerindex);
+		local cx = helper_GetCenterBossX(playerindex);
 		local cy = CenterBossY;
 		hdssEA_OVERPLAYER(playerindex, cx, cy, 90, 60, 60);
 	elseif timer == 810 then
@@ -108,16 +78,11 @@ function Edef_ShootChargeEnemyEID_0_3(playerindex, level, x, y, timer, px, py)
 			local num = 40 + level * 4;
 			for i=0, 4 do
 				local speed = level * 0.1 + i * 0.5 + 0.4;
-				hdss.Call(
-					HDSS_BC,
-					{
-						playerindex, num, baseangle, 0, x, y, speed, CC_Bullet_Amulet, 1
-					}
-				)
+				hdssBC(playerindex, num, baseangle, 0, x, y, speed, CC_Bullet_Amulet, 1);
 			end
 				
 		elseif pattern == 1 then
-			hdssEB(CC_ShootChargeEnemyEID_0_3_B, playerindex, x, y, 9000, 0, LConst_EnemyTypeNull, 10);
+			hdssEB(CC_ShootChargeEnemyEID_00_3_B, playerindex, x, y, 9000, 0, LConst_EnemyTypeNull, 10);
 			hdssENSAIM(playerindex, level);	
 		elseif pattern == 2 then
 			
@@ -133,12 +98,7 @@ function Edef_ShootChargeEnemyEID_0_3(playerindex, level, x, y, timer, px, py)
 				}
 			)
 			for i=0, 1 do
-				hdss.Call(
-					HDSS_BC,
-					{
-						playerindex, num, baseangle, 0, x, y, speed + i * 0.4, CC_Bullet_Amulet, 15
-					}
-				)
+				hdssBC(playerindex, num, baseangle, 0, x, y, speed + i * 0.4, CC_Bullet_Amulet, 15);
 			end
 			hdssA(playerindex);
 		
@@ -153,24 +113,23 @@ function Edef_ShootChargeEnemyEID_0_3(playerindex, level, x, y, timer, px, py)
 						TIMERLESS, 90, ANGLESETADD, hdss.Get(HDSS_SIGN, i) * 100
 					}
 				)
-				hdss.Call(
-					HDSS_BC,
-					{
-						playerindex, num, baseangle, 0, x, y, speed, CC_Bullet_SmallBall, i * 14 + 1
-					}
-				)
+				hdssBC(playerindex, num, baseangle, 0, x, y, speed, CC_Bullet_SmallBall, i * 14 + 1);
 			end
 			hdssA(playerindex);
 			
 		else
-			hdssEB(CC_ShootChargeEnemyEID_0_3_E, playerindex, x, y, 9000, 0, LConst_EnemyTypeNull, 10);
+			hdssEB(CC_ShootChargeEnemyEID_00_3_E, playerindex, x, y, 9000, 0, LConst_EnemyTypeNull, 10);
 			hdssENSAIM(playerindex, level);	
 		end
 	end
 	return true;
 end
 
-function Edef_ShootChargeEnemyEID_0_3_B(playerindex, level, x, y, timer, px, py)
+function Edef_ShootChargeEnemyEID_00_3_A(playerindex, level, x, y, timer, px, py)
+	return true;
+end
+
+function Edef_ShootChargeEnemyEID_00_3_B(playerindex, level, x, y, timer, px, py)
 	if timer == 1 then
 		hdssEA_FADEOUT(playerindex, 8+math.floor(level/2));
 	else
@@ -186,11 +145,19 @@ function Edef_ShootChargeEnemyEID_0_3_B(playerindex, level, x, y, timer, px, py)
 	return true;
 end
 
-function Edef_ShootChargeEnemyEID_0_3_E(playerindex, level, x, y, timer, px, py)
+function Edef_ShootChargeEnemyEID_00_3_C(playerindex, level, x, y, timer, px, py)
+	return true;
+end
+
+function Edef_ShootChargeEnemyEID_00_3_D(playerindex, level, x, y, timer, px, py)
+	return true;
+end
+
+function Edef_ShootChargeEnemyEID_00_3_E(playerindex, level, x, y, timer, px, py)
 	if timer == 1 then
 		hdssEA_FADEOUT(playerindex, 48 + level * 4);
 	elseif math.mod(timer, 12) == 0 then
-		ePlayerSendExChase_0(playerindex, x, y);
+		ePlayerSendExChase_00(playerindex, x, y);
 	end
 	return true;
 end

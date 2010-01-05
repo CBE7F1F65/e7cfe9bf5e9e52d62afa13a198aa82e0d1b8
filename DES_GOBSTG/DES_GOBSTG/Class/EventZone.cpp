@@ -27,7 +27,7 @@ void EventZone::Clear()
 
 void EventZone::Render()
 {
-	if (sprite)
+	if (sprite && timer > 0)
 	{
 		sprite->RenderEx(x, y, ARC(timer*turnangle), r*2/width);
 	}
@@ -46,6 +46,7 @@ void EventZone::Build(DWORD _type, BYTE _playerindex, float _x, float _y, int _m
 	EventZone _ezone;
 	ezone[_playerindex].push_back(_ezone);
 	EventZone * _pezone = &(*(ezone[_playerindex].rbegin()));
+	_pezone->playerindex = _playerindex;
 	_pezone->type = _type;
 	_pezone->x = _x;
 	_pezone->y = _y;
@@ -70,11 +71,15 @@ void EventZone::Action(DWORD stopflag)
 		bool binstop = FRAME_STOPFLAGCHECK_PLAYERINDEX_(stopflag, i, FRAME_STOPFLAG_EVENTZONE);
 		if (!binstop)
 		{
-			for (list<EventZone>::iterator it=ezone[i].begin(); it!=ezone[i].end(); it++)
+			for (list<EventZone>::iterator it=ezone[i].begin(); it!=ezone[i].end();)
 			{
 				if (it->action())
 				{
 					it = ezone[i].erase(it);
+				}
+				else
+				{
+					++it;
 				}
 			}
 		}

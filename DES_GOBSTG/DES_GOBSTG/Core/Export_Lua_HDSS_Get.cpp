@@ -135,26 +135,25 @@ int Export_Lua_HDSS::LuaFn_HDSS_Get(LuaState * ls)
 		case SCR_RANDR:
 			break;
 		case SCR_SEED:
-			break;
+			return _HDSSCallGet::Get_SEED(ls);
 		case SCR_SINA:
-			break;
+			return _HDSSCallGet::Get_SINA(ls);
 		case SCR_COSA:
-			break;
+			return _HDSSCallGet::Get_COSA(ls);
 		case SCR_TANA:
-			break;
+			return _HDSSCallGet::Get_TANA(ls);
 		case SCR_ASIN2:
-			break;
+			return _HDSSCallGet::Get_ASINA2(ls);
 		case SCR_ACOS2:
-			break;
+			return _HDSSCallGet::Get_ACOSA2(ls);
 		case SCR_ATAN2:
 			return _HDSSCallGet::Get_ATAN2(ls);
 		case SCR_SQRT:
 			break;
 		case SCR_SIGN:
 			return _HDSSCallGet::Get_SIGN(ls);
-			break;
 		case SCR_ROLL:
-			break;
+			return _HDSSCallGet::Get_ROLL(ls);
 		}
 		break;
 		/************************************************************************/

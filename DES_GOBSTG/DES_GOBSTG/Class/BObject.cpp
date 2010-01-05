@@ -123,10 +123,10 @@ bool BObject::checkCollisionRect(float aimx, float aimy, float rectPrep, float r
 	if((fabsf(x-aimx)>longside+rOri)||(fabsf(y-aimy)>longside+rOri))
 		return false;
 
-	newx = (float)fabsf((rotSin*(aimx-x)-rotCos*(aimy-y)));
-	newy = (float)fabsf((rotCos*(aimx-x)+rotSin*(aimy-y)));
+	newx = (float)((rotSin*(aimx-x)-rotCos*(aimy-y)));
+	newy = (float)((rotCos*(aimx-x)+rotSin*(aimy-y)));
 
-	if (newx <= rectPrep+rOri && newy <= rectParal+rOri)
+	if (fabsf(newx) <= rectPrep+rOri && fabsf(newy) <= rectParal+rOri)
 	{
 		return true;
 	}
@@ -144,9 +144,9 @@ bool BObject::checkCollisionRightAngled(float aimx, float aimy, float rightPrep,
 	float ryoffset = 0;
 	if (rOri)
 	{
-		ryoffset = sqrtf(rightPrep*rightPrep + rightParal*rightParal);
+		ryoffset = sqrtf(rightPrep*rightPrep + rightParal*rightParal) * rOri;
 	}
-	if (-rightParal*newx + ryoffset >= rightPrep*newy)
+	if (-rightParal*newx + ryoffset <= rightPrep*newy)
 	{
 		return true;
 	}
@@ -160,8 +160,8 @@ bool BObject::checkCollisionEllipse(float aimx, float aimy, float rPrep, float r
 	if((fabsf(x-aimx)>longr+rOri)||(fabsf(y-aimy)>longr+rOri))
 		return false;
 
-	newx = (float)fabsf((rotSin*(aimx-x)-rotCos*(aimy-y)));
-	newy = (float)fabsf((rotCos*(aimx-x)+rotSin*(aimy-y)));
+	newx = (float)((rotSin*(aimx-x)-rotCos*(aimy-y)));
+	newy = (float)((rotCos*(aimx-x)+rotSin*(aimy-y)));
 
 	if(newx*newx*(rParal+rOri)*(rParal+rOri)+newy*newy*(rPrep+rOri)*(rPrep+rOri) <= (rPrep+rOri)*(rPrep+rOri)*(rParal+rOri)*(rParal+rOri))
 		return true;

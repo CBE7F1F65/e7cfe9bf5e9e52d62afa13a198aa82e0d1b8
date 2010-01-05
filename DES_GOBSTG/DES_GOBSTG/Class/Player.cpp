@@ -1425,9 +1425,14 @@ void Player::SendEx(BYTE playerindex, float x, float y)
 void Player::AddExPoint(int expoint, float x, float y)
 {
 	nExPoint += expoint;
-	if (nExPoint >= fExSendParaB + fExSendParaA * rank)
+	float fexsend = fExSendParaB + fExSendParaA * rank;
+	if (fexsend < fExSendMax)
 	{
-		AddExPoint(-(fExSendParaB + fExSendParaA * rank), x, y);
+		fexsend = fExSendMax;
+	}
+	if (nExPoint >= fexsend)
+	{
+		AddExPoint(-fexsend, x, y);
 		SendEx(1-playerindex, x, y);
 	}
 }
