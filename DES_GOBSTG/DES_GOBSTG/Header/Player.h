@@ -105,13 +105,13 @@ public:
 
 	void AddComboHit(int combo, bool ori);
 	void AddSpellPoint(int spellpoint);
-	void AddExPoint(int expoint, float x, float y);
+	void AddExPoint(float expoint, float x, float y);
 	void AddGhostPoint(int ghostpoint, float x, float y);
 	void AddBulletPoint(int bulletpoint, float x, float y);
 	static void AddLilyCount(int lilycount, bool bytime=false);
 	void AddCardBossLevel(int cardlevel, int bosslevel);
 
-	void DoEnemyCollapse(float x, float y);
+	void DoEnemyCollapse(float x, float y, BYTE type);
 	void DoItemGet(WORD itemtype, float x, float y);
 	void DoGraze(float x, float y);
 	void DoPlayerBulletHit(int hitonfactor = PL_HITONFACTORDEFAULT);
@@ -192,7 +192,7 @@ public:
 	bool	bDrain;
 	bool	bInfi;
 
-	int nExPoint;
+	float fExPoint;
 	int nGhostPoint;
 	int nBulletPoint;
 	int	nSpellPoint;

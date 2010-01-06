@@ -114,6 +114,7 @@
 
 #define	SPEEDSET		0x7100
 #define	SPEEDSETADD		0x7200
+#define	SPEEDSETMUL		0x7300
 
 #define BULAE_OTHER		0x8000
 
@@ -127,9 +128,13 @@
 
 #define BULA_SPECIALSTART	0x00
 
-#define	AND				-0x1
-#define	OR				-0x2
-#define	NOT				-0x3
+#define	AND				-0x01
+#define	OR				-0x02
+#define	NOT				-0x03
+#define CONDITIONBYVAL		-0x04
+#define CONDITIONBYINDEX	-0x05
+#define EXECUTEBYVAL		-0x06
+#define EXECUTEBYINDEX		-0x07
 
 
 #endif

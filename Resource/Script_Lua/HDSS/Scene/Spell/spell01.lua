@@ -14,11 +14,11 @@ function Spell_s01(playerindex, timer)
 		
 	elseif timer == 1 then
 		local col = global.ARGB(0, 0xffffff);
-		hdssBGVALUE(playerindex, LConst_gamebg_spellid_1, SI_Spell_02_1, cenx, CenterY, 448, TotalH, col);
+		hdssBGVALUE(playerindex, LConst_gamebg_spellid_1, SI_Spell_01_1, cenx, CenterY, 448, TotalH, col);
 		hdss.Call(
 			HDSS_BGVALEX,
 			{
-				playerindex, LConst_gamebg_spellid_2, SI_Spell_02_2, col
+				playerindex, LConst_gamebg_spellid_2, SI_Spell_01_2, col
 			},
 			{
 				cenx-224, 0, 0, 448, TotalH

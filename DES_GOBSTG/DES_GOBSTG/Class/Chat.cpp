@@ -82,7 +82,7 @@ void Chat::Render()
 		textbox->RenderEx(x[CHATTER_TEXTBOX], y[CHATTER_TEXTBOX], ARC(9000), 1.5f, 1.0f);
 	}
 	fschat.SetColor(0xFFFFFFFF, 0xFFFFFFFF, col, col);
-	fschat.Render(M_CLIENT_CENTER_X-160, M_CLIENT_CENTER_Y+152, FONTSYS_DEFAULT_SHADOW, 1, 0, HGETEXT_LEFT|HGETEXT_MIDDLE);
+	fschat.Render(M_CLIENT_CENTER_X-160, M_CLIENT_CENTER_Y+148, FONTSYS_DEFAULT_SHADOW, 1, 0, HGETEXT_LEFT|HGETEXT_TOP);
 }
 
 bool Chat::chat(BYTE ID, BYTE chatsprite, const char * _text)

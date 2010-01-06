@@ -1,8 +1,8 @@
 LTable_PlayerWinLoseChat	=	
 {				
-	{0,	0,	"winner",	"loser"},
-	{1,	0,	"winner",	"loser"},
-	{2,	0,	"winner",	"loser"},
+	{0,	0,	"約束通り、お賽銭もらったわよ。",	"これはシャレになれないわね。"},
+	{1,	0,	"もう終わり？大したことじゃなかったぜ。",	"も、もう一回勝負しろ！"},
+	{2,	0,	"私はいつも本気です。",	"負けてしまいました。"},
 	{3,	0,	"winner",	"loser"},
 	{4,	0,	"winner",	"loser"},
 	{5,	0,	"winner",	"loser"},

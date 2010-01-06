@@ -86,6 +86,11 @@ function ePlayerShootCharge_02_2(playerindex, level, oplayerID, px, py)
 end
 
 function ePlayerShootCharge_02_3(playerindex, level, oplayerID, px, py)
+	local x = TotalCenterX;
+	local y = 0;
+	hdssEB(CC_ShootChargeEnemyEID_02_3, playerindex, x, y, 9000, 0, oplayerID, 1400, helper_GetRandomItem());
+	hdssENSAIM(playerindex, level);
+	hdssBGSETUP(playerindex, LConst_bgset_spellid, oplayerID+LConst_SceneSpellOffset);
 	return true;
 end
 

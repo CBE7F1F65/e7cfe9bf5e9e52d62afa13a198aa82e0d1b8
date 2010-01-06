@@ -82,7 +82,7 @@ public:
 	void scaleSet(float hscale, float vscale);
 	void colorSet(DWORD col0, DWORD col1, DWORD col2, DWORD col3);
 	void moveSet(float speed, float zSpeed=0, int angle=9000, bool move=false, bool rotate=false);
-	void parallelogram(float paral);
+	void parallelogram(float paral, bool flipx, bool flipy);
 	void vertexSet(float x0, float y0, float z0, float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3);
 	void SetFlag(BYTE flag, int maxtime=-1);
 	void SetBlend(int blend);

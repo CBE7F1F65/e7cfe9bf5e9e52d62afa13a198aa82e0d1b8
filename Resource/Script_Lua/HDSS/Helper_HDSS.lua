@@ -631,3 +631,12 @@ function hdssCHATOFF()
 		}
 	)
 end
+
+function hdssHSVTORGB(h, s, v, a)
+	return hdss.Call(
+		HDSS_HSVTORGB,
+		{
+			h, s, v, a
+		}
+	)
+end

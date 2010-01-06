@@ -1344,15 +1344,19 @@ Comment	Index	SI_Name	Tex	Tex_x	Tex_y	Tex_w	Tex_h
 -	3401	SI_PlayerDrainZone_02	311	0	0	-1	-1
 -	3422	SI_PlayerDrainZone_23	332	0	0	-1	-1
 #		Scene(3600~3799)					
--	3600	SI_Scene_01_1	560	0	0	-1	-1
--	3601	SI_Scene_01_2	561	256	0	228	228
--	3602	SI_Scene_01_3	561	0	256	288	256
--	3603	SI_Scene_01_4	561	496	0	16	512
+-	3600	SI_Scene_00_1	560	0	0	-1	-1
+-	3601	SI_Scene_00_2	561	256	0	228	228
+-	3602	SI_Scene_00_3	561	0	256	288	256
+-	3603	SI_Scene_00_4	561	496	0	16	512
+-	3604	SI_Scene_22_1	605	0	0	256	512
+-	3605	SI_Scene_22_2	606	0	0	256	512
 #		Spell(3800~3999)					
--	3800	SI_Spell_01_1	660	0	0	-1	-1
--	3801	SI_Spell_01_2	661	0	0	-1	-1
--	3802	SI_Spell_02_1	662	0	0	-1	-1
--	3803	SI_Spell_02_2	663	0	0	-1	-1
+-	3800	SI_Spell_00_1	660	0	0	-1	-1
+-	3801	SI_Spell_00_2	661	0	0	-1	-1
+-	3802	SI_Spell_01_1	662	0	0	-1	-1
+-	3803	SI_Spell_01_2	663	0	0	512	512
+-	3804	SI_Spell_22_1	693	0	0	-1	-1
+-	3805	SI_Spell_22_2	694	0	0	512	512
 #		Boss(4000~4999)					
 -	4000	SI_Boss_Reimu_0	160	0	0	64	80
 -	4001	SI_Boss_Reimu_1	160	64	0	64	80
@@ -1378,3 +1382,14 @@ Comment	Index	SI_Name	Tex	Tex_x	Tex_y	Tex_w	Tex_h
 -	4021	SI_Boss_Marisa_9	161	64	160	64	80
 -	4022	SI_Boss_Marisa_10	161	128	160	64	80
 -	4023	SI_Boss_Marisa_11	161	192	160	64	80
+-	4024	SI_Boss_Sanae_0	182	0	0	64	64
+-	4025	SI_Boss_Sanae_1	182	64	0	64	64
+-	4026	SI_Boss_Sanae_2	182	128	0	64	64
+-	4027	SI_Boss_Sanae_3	182	192	0	64	64
+-	4028	SI_Boss_Sanae_4	182	0	64	64	64
+-	4029	SI_Boss_Sanae_5	182	64	64	64	64
+-	4030	SI_Boss_Sanae_6	182	128	64	64	64
+-	4031	SI_Boss_Sanae_7	182	192	64	64	64
+-	4032	SI_Boss_Sanae_8	182	0	128	64	80
+-	4033	SI_Boss_Sanae_9	182	64	128	64	80
+-	4034	SI_Boss_Sanae_10	182	128	128	64	80

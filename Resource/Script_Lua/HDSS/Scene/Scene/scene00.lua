@@ -19,7 +19,7 @@ function Scene_s00(playerindex, timer)
 		hdss.Call(
 			HDSS_BGVALEX,
 			{
-				playerindex, 0, SI_Scene_01_1
+				playerindex, 0, SI_Scene_00_1
 			},
 			{
 				cenx-3200, 1920, -1440, 6400, 6400, -13500, 0, 0
@@ -51,13 +51,16 @@ function Scene_s00(playerindex, timer)
 			hdss.Call(
 				HDSS_BGVALEX,
 				{
-					playerindex, bgindex, SI_Scene_01_4, global.ARGB(0xff, 0xA0A0A0)
+					playerindex, bgindex, SI_Scene_00_4, global.ARGB(0xff, 0xA0A0A0)
 				},
 				{
-					cenx - loopturn * 12 + (i*2-1) * edgeoffset, -640+posoffset, -480+posoffset, 16*scale, 512*scale, 0, 0, 0, paral
+					cenx - loopturn * 12 + (i*2-1) * edgeoffset, -640+posoffset, -480+posoffset, 16*scale, 512*scale, 0, 0, 0
 				},
 				{
 					5.12, 5.12, 9000, true
+				},
+				{
+					paral
 				}
 			)
 			hdssBGFLAG(playerindex, bgindex, BG_LIGHTUPNORMAL, 128);
@@ -65,13 +68,16 @@ function Scene_s00(playerindex, timer)
 			hdss.Call(
 				HDSS_BGVALEX,
 				{
-					playerindex, bgindex-8, RANDT(0, 1)+SI_Scene_01_2, global.ARGB(0xff, 0xA0A0A0)
+					playerindex, bgindex-8, RANDT(0, 1)+SI_Scene_00_2, global.ARGB(0xff, 0xA0A0A0)
 				},
 				{
-					cenx - loopturn * 12 + (i*2-1) * edgeoffset, RANDT(-360, -200)+posoffset, -480+posoffset, 256*scale, 256*scale, 0, 0, i*18000, paral
+					cenx - loopturn * 12 + (i*2-1) * edgeoffset, RANDT(-360, -200)+posoffset, -480+posoffset, 256*scale, 256*scale, 0, 0, i*18000
 				},
 				{
 					5.12, 5.12, 9000, true
+				},
+				{
+					paral
 				}
 			)
 			hdssBGFLAG(playerindex, bgindex-8, BG_LIGHTUPNORMAL, 128);

@@ -310,7 +310,7 @@ bool SpriteItemManager::CreateSprite(int index, hgeSprite ** sprite)
 
 bool SpriteItemManager::ChangeSprite(int index, hgeSprite * sprite)
 {
-	if (!sprite)
+	if (!sprite || index < 0)
 	{
 		return false;
 	}

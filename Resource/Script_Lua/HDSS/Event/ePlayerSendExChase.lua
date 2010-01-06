@@ -45,6 +45,7 @@ function ePlayerSendExChase_02(playerindex, x, y, playerID, appendfloat, angleof
 	local rank, cardlevel, bosslevel = hdss.Get(HDSS_RANK, 1-playerindex);
 	local speed = rank * 0.1 + 1.2;
 	local angle = hdssAMAP(playerindex, x, y);
+	hdssB(playerindex, x, y, angle, speed, CC_Bullet_BigStar, 5, 9);
 	hdssA(playerindex,
 		{
 			TIMEREQUAL, 9, ANGLESET, angle

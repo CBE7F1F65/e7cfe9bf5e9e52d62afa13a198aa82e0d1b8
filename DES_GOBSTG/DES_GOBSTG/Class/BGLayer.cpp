@@ -114,6 +114,7 @@ void BGLayer::valueSet(int siID, float cenx, float ceny, float w, float h, DWORD
 	{
 		sprite->SetTexture(_tex);
 		sprite->SetTextureRect(tx, ty, tw, th);
+		sprite->SetFlip(false, false);
 	}
 	else
 	{
@@ -252,7 +253,7 @@ void BGLayer::rectSet(float _x, float _y, float z, float w, float h, int rotx, i
 	
 }
 
-void BGLayer::parallelogram(float paral)
+void BGLayer::parallelogram(float paral, bool flipx, bool flipy)
 {
 	if (!exist)
 	{
@@ -266,6 +267,8 @@ void BGLayer::parallelogram(float paral)
 	*/
 	sprite->quad.v[2].x += paral;
 	sprite->quad.v[3].x += paral;
+
+	sprite->SetFlip(flipx, flipy);
 }
 
 void BGLayer::vertexSet(float x0, float y0, float z0, float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3)

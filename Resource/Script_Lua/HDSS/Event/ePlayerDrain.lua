@@ -39,7 +39,7 @@ function ePlayerDrain_01(playerindex, x, y, draintimer, type)
 	local ceny = y-TotalH/2+16;
 	game.SetDrainSpriteInfo(playerindex, x, ceny, 0, hscale, vscale);
 	
-	local rl = 448;
+	local rl = TotalH/2;
 	local rs = 146 / 7 * vscale;
 	
 	hdssENAZBUILD(playerindex, ENAZTYPE_ELLIPSE+ENAZOP_AND, x, ceny, rs, rl);
@@ -61,7 +61,7 @@ function ePlayerDrain_02(playerindex, x, y, draintimer, type)
 	elseif draintimer < 30 then
 		draintimer = 30;
 	end
-	local hscale = (draintimer / 60);
+	local hscale = (draintimer / 100) + 0.4;
 	game.SetDrainSpriteInfo(playerindex, x, y, 0, hscale);
 	
 	--rinter=57.2311

@@ -156,6 +156,10 @@ struct enemyData
 	bool standshake;
 	float blastr;
 	float blastpower;
+	float expoint;
+	int ghostpoint;
+	int bulletpoint;
+	int spellpoint;
 };
 
 struct playerData 

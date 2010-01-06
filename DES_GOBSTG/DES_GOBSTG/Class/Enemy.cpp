@@ -433,6 +433,7 @@ void Enemy::matchAction()
 		y = para_y;
 		angle = para_angle;
 		speed = para_speed;
+		ac = ENAC_NONE;
 		break;
 	case ENAC_CHASEPLAYER_OOSFATOO:
 		//作用时间，摩擦力，退出角度，退出速度
@@ -989,22 +990,23 @@ bool Enemy::DoActivate()
 	{
 		bool haveor = false;
 		bool orcheck = false;
+		float rori = (BResource::res.enemydata[type].collision_w + BResource::res.enemydata[type].collision_h) / 4;
 		for (list<EnemyActivationZone>::iterator it=enaz[playerindex].begin(); it!=enaz[playerindex].end(); it++)
 		{
 			bool checkret = true;
 			switch ((it->flag) & ENAZTYPEMASK)
 			{
 			case ENAZTYPE_CIRCLE:
-				checkret = BObject::CheckCollisionBigCircle(x, y, it->x, it->y, it->rPrep);
+				checkret = BObject::CheckCollisionBigCircle(x, y, it->x, it->y, it->rPrep+rori);
 				break;
 			case ENAZTYPE_ELLIPSE:
-				checkret = BObject::CheckCollisionEllipse(x, y, it->x, it->y, it->rPrep, it->rParal, it->angle);
+				checkret = BObject::CheckCollisionEllipse(x, y, it->x, it->y, it->rPrep, it->rParal, it->angle, rori);
 				break;
 			case ENAZTYPE_RECT:
-				checkret = BObject::CheckCollisionRect(x, y, it->x, it->y, it->rPrep, it->rParal, it->angle);
+				checkret = BObject::CheckCollisionRect(x, y, it->x, it->y, it->rPrep, it->rParal, it->angle, rori);
 				break;
 			case ENAZTYPE_RIGHTANGLED:
-				checkret = BObject::CheckCollisionRightAngled(x, y, it->x, it->y, it->rPrep, it->rParal, it->angle);
+				checkret = BObject::CheckCollisionRightAngled(x, y, it->x, it->y, it->rPrep, it->rParal, it->angle, rori);
 				break;
 			}
 			switch ((it->flag) & ENAZOPMASK)
@@ -1205,7 +1207,7 @@ void Enemy::action()
 			if (blastmaxtime && blastr > 0)
 			{
 				EventZone::Build(EVENTZONE_TYPE_SENDBULLET|EVENTZONE_TYPE_ENEMYDAMAGE, playerindex, x, y, blastmaxtime, blastr, blastpower, EVENTZONE_EVENT_NULL);
-				Player::p[playerindex].DoEnemyCollapse(x, y);
+				Player::p[playerindex].DoEnemyCollapse(x, y, type);
 				int tscore = Player::p[playerindex].nSpellPoint;
 				ScoreDisplay _item;
 				if (tscore < PLAYER_NSPELLPOINTMAX)

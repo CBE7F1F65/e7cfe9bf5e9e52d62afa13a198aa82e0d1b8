@@ -138,15 +138,16 @@ void Player::ClearSet(BYTE _round)
 	shootingchargeflag	=	0;
 	nowshootingcharge	=	0;
 
+	fExPoint = 0;
+	nGhostPoint = 0;
+	nBulletPoint = 0;
+	nSpellPoint	= 0;
+
 	nLifeCost	=	0;
 	fCharge = 0;
 	if (_round == 0)
 	{
 		fChargeMax = PLAYER_CHARGEONE;
-		nExPoint = 0;
-		nGhostPoint = 0;
-		nBulletPoint = 0;
-		nSpellPoint		=	0;
 		winflag = 0;
 	}
 
@@ -1042,7 +1043,7 @@ bool Player::Graze()
 	return true;
 }
 
-void Player::DoEnemyCollapse(float x, float y)
+void Player::DoEnemyCollapse(float x, float y, BYTE type)
 {
 	float addcharge = nComboHitOri / 128.0f + 1.0f;
 	if (addcharge > 2.0f)
@@ -1052,35 +1053,75 @@ void Player::DoEnemyCollapse(float x, float y)
 	AddComboHit(1, true);
 	AddCharge(0, addcharge);
 
-	AddExPoint(1, x, y);
-	int addexpoint;
-	addexpoint = nComboHitOri + 3;
-	if (addexpoint > 28)
+	enemyData * edata = &(BResource::res.enemydata[type]);
+	AddExPoint(edata->expoint, x, y);
+
+	int addghostpoint;
+	if (edata->ghostpoint < 0)
 	{
-		addexpoint = 28;
-	}
-	AddGhostPoint(addexpoint, x, y);
-	int addbulletpoint;
-	addbulletpoint = nComboHitOri * 3 + 27;
-	if (addbulletpoint > 60)
-	{
-		addbulletpoint = 60;
-	}
-	float _x = x + randtf(-4.0f, 4.0f);
-	float _y = y + randtf(-4.0f, 4.0f);
-	AddBulletPoint(addbulletpoint, _x, _y);
-	int addspellpoint;
-	if (nComboHitOri == 1)
-	{
-		addspellpoint = 20;
+		addghostpoint = nComboHitOri + 3;
+		if (addghostpoint > 28)
+		{
+			addghostpoint = 28;
+		}
 	}
 	else
 	{
-		addspellpoint = nComboHitOri * 30 - 20;
-		if (addspellpoint > 3000)
+		addghostpoint = edata->ghostpoint;
+	}
+	AddGhostPoint(addghostpoint, x, y);
+
+	int addbulletpoint;
+	float _x = x + randtf(-4.0f, 4.0f);
+	float _y = y + randtf(-4.0f, 4.0f);
+	if (edata->bulletpoint < 0)
+	{
+		addbulletpoint = nComboHitOri * 3 + 27;
+		if (addbulletpoint > 60)
 		{
-			addspellpoint = 3000;
+			addbulletpoint = 60;
 		}
+	}
+	else
+	{
+		addbulletpoint = edata->bulletpoint;
+	}
+	AddBulletPoint(addbulletpoint, _x, _y);
+
+	int addspellpoint;
+	if (edata->spellpoint == -1)
+	{
+		if (nComboHitOri == 1)
+		{
+			addspellpoint = 20;
+		}
+		else
+		{
+			addspellpoint = nComboHitOri * 30 - 20;
+			if (addspellpoint > 3000)
+			{
+				addspellpoint = 3000;
+			}
+		}
+	}
+	else if (edata->spellpoint == -2)
+	{
+		if (nComboHitOri == 1)
+		{
+			addspellpoint = 2000;
+		}
+		else
+		{
+			addspellpoint = (nComboHitOri + 4) * 200;
+			if (addspellpoint > 11000)
+			{
+				addspellpoint = 11000;
+			}
+		}
+	}
+	else
+	{
+		addspellpoint = edata->spellpoint;
 	}
 	AddSpellPoint(addspellpoint);
 }
@@ -1422,15 +1463,15 @@ void Player::SendEx(BYTE playerindex, float x, float y)
 	}
 }
 
-void Player::AddExPoint(int expoint, float x, float y)
+void Player::AddExPoint(float expoint, float x, float y)
 {
-	nExPoint += expoint;
+	fExPoint += expoint;
 	float fexsend = fExSendParaB + fExSendParaA * rank;
 	if (fexsend < fExSendMax)
 	{
 		fexsend = fExSendMax;
 	}
-	if (nExPoint >= fexsend)
+	if (fExPoint >= fexsend)
 	{
 		AddExPoint(-fexsend, x, y);
 		SendEx(1-playerindex, x, y);

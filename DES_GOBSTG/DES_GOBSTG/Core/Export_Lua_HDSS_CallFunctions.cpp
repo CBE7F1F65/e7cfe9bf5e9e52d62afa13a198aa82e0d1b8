@@ -1155,7 +1155,6 @@ int _HDSSCallGet::Call_BGVALEX(LuaState * ls)
 			int _rotx = 0;
 			int _roty = 0;
 			int _rotz = 0;
-			float _paral = 0;
 
 			_JNEXT_HDSS_LUAPARA;
 			if (bhavenext)
@@ -1178,10 +1177,6 @@ int _HDSSCallGet::Call_BGVALEX(LuaState * ls)
 							{
 								_rotz = _IOBJ_HDSS_LUA;
 								_JNEXT_HDSS_LUAPARA;
-								if (bhavenext)
-								{
-									_paral = _FOBJ_HDSS_LUA;
-								}
 							}
 						}
 					}
@@ -1189,7 +1184,6 @@ int _HDSSCallGet::Call_BGVALEX(LuaState * ls)
 			}
 
 			BGLayer::ubg[_playerindex][_index].rectSet(_x, _y, _z, _w, _h, _rotx, _roty, _rotz);
-			BGLayer::ubg[_playerindex][_index].parallelogram(_paral);
 
 			if (argscount > 3)
 			{
@@ -1223,6 +1217,32 @@ int _HDSSCallGet::Call_BGVALEX(LuaState * ls)
 					}
 				}
 				BGLayer::ubg[_playerindex][_index].moveSet(_speed, _zSpeed, _angle, _move, _rotate);
+
+				if (argscount > 4)
+				{
+					_GETPARAS_HDSS_LUAPARA(5);
+					float _paral = 0;
+					bool _flipx = false;
+					bool _flipy = false;
+
+					_JNEXT_HDSS_LUAPARA;
+					if (bhavenext)
+					{
+						_paral = _FOBJ_HDSS_LUA;
+						_JNEXT_HDSS_LUAPARA;
+						if (bhavenext)
+						{
+							_flipx = _BOBJ_HDSS_LUA;
+							_JNEXT_HDSS_LUAPARA;
+							if (bhavenext)
+							{
+								_flipy = _BOBJ_HDSS_LUA;
+							}
+						}
+					}
+
+					BGLayer::ubg[_playerindex][_index].parallelogram(_paral, _flipx, _flipy);
+				}
 			}
 		}
 	}

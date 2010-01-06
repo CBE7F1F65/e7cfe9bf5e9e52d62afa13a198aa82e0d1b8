@@ -9,9 +9,9 @@ Comment	Index	UserID	ChargeBullet	SIID	TimeMod	Flag	Power	HitOnFactor	Arrange	An
 -	6	1	0	SI_PlayerBullet_01_0_0	4	1700	10	45	0	0	18	1	10	0	0	60
 -	7	1	0	SI_PlayerBullet_01_0_0	4	1700	10	45	0	0	18	1	-10	0	0	60
 -	8	1	1	SI_PlayerBullet_01_1_0	1	41	1	45	1	0	1	8	0	16	0	60
--	9	2	0	SI_PlayerBullet_22_0_0	4	1700	10	50	0	0	18	1	10	0	0	60
--	10	2	0	SI_PlayerBullet_22_0_0	4	1700	10	50	0	0	18	1	-10	0	0	60
--	11	2	1	SI_PlayerBullet_22_1_0	8	1700	10	50	1	0	12	1	0	0	0.1	60
+-	9	2	0	SI_PlayerBullet_22_0_0	4	1710	10	50	0	0	18	1	10	0	0	60
+-	10	2	0	SI_PlayerBullet_22_0_0	4	1710	10	50	0	0	18	1	-10	0	0	60
+-	11	2	1	SI_PlayerBullet_22_1_0	8	1600	10	50	1	0	12	1	0	0	0.1	60
 -	12	2	1	SI_PlayerBullet_22_2_0	8	1D00	10	50	2	-1600	12	1	0	0	0.1	60
 -	13	2	1	SI_PlayerBullet_22_2_0	8	1D00	10	50	3	1600	12	1	0	0	0.1	60
 -	14	22	0	SI_PlayerBullet_16	6	700	10	65	0	0	18	1.8	10	0	0	60

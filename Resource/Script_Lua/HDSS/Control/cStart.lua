@@ -13,10 +13,13 @@ function ControlExecute_cStart(timer)
 						i, LConst_gamefg_fadeIid+j, SI_White, col
 					},
 					{
-						(i+j-1)*TotalW/2, 0, 0, TotalW/2, TotalH, 0, 0, 0, TotalW/2
+						(i+j-1)*TotalW/2, 0, 0, TotalW/2, TotalH, 0, 0, 0
 					},
 					{
 						10, 0, (1-j)*18000, true
+					},
+					{
+						TotalW/2
 					}
 				)
 			end
@@ -31,16 +34,13 @@ function ControlExecute_cStart(timer)
 		
 		--
 		hdssSETPBINFI(1, 0);
-		hdssSETPBINFI(0, 0);
+--		hdssSETPBINFI(0, 0);
 		
 	elseif timer == 32 then
 		for i=0, 1 do
 			hdssBGOFF(i, LConst_gamefg_fadeIid);
 		end
 	end
-		
-		hdssADDPNCHARGE(0, 0, 400);
-		hdssADDPNCHARGE(1, 0, 400);
 		
 	if timer <= 8 then
 		local scale = hdssINTER(1.5, 1, timer/8);
