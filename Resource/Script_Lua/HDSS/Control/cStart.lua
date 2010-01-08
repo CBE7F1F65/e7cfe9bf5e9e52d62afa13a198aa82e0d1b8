@@ -5,6 +5,7 @@ function ControlExecute_cStart(timer)
 		local col = global.ARGB(0xff, 0);
 		local baseangle = hdss.Get(HDSS_ATAN2, TotalH, TotalW);
 		local enemyrandrom = RANDT();
+		hdssSD(LConst_Desc_LilyItem, helper_GetRandomItem());
 		for i=0, 1 do
 			for j=0, 1 do
 				hdss.Call(
@@ -41,6 +42,14 @@ function ControlExecute_cStart(timer)
 			hdssBGOFF(i, LConst_gamefg_fadeIid);
 		end
 	end
+		
+		--
+		if math.mod(timer, 8) == 0 then
+			hdssSETKEY(1, KSI_FIRE, true);
+		else
+			hdssSETKEY(1, KSI_DRAIN, true);
+		end
+		--
 		
 	if timer <= 8 then
 		local scale = hdssINTER(1.5, 1, timer/8);

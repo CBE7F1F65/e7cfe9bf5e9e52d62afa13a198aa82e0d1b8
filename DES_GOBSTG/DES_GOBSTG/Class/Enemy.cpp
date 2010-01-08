@@ -901,11 +901,7 @@ void Enemy::DoShot()
 	{
 		return;
 	}
-	float costpower = PlayerBullet::CheckShoot(playerindex, x, y ,tw, th);
-	if (costpower)
-	{
-		CostLife(costpower);
-	}
+
 	for (list<EventZone>::iterator it=EventZone::ezone[playerindex].begin(); it!=EventZone::ezone[playerindex].end(); it++)
 	{
 		if (it->timer < 0)
@@ -918,7 +914,7 @@ void Enemy::DoShot()
 			{
 				CostLife(it->power);
 				// TODO:
-				Player::p[playerindex].DoPlayerBulletHit();
+//				Player::p[playerindex].DoPlayerBulletHit();
 
 				if (life < 0 && (it->type & EVENTZONE_TYPE_NOSEND))
 				{
@@ -928,6 +924,23 @@ void Enemy::DoShot()
 		}
 	}
 
+	if (life >= 0)
+	{
+		float costpower = PlayerBullet::CheckShoot(playerindex, x, y ,tw, th);
+		if (costpower)
+		{
+			CostLife(costpower);
+		}
+		if (life < 0)
+		{
+			if (type == 37)
+			{
+				Player::p[playerindex].DoPlayerBulletHit(0);
+			}
+			Player::p[playerindex].DoPlayerBulletHit(-1);
+		}
+
+	}
 
 	if(!damage && life < maxlife / 5 && timer%8<4)
 	{
@@ -1206,7 +1219,7 @@ void Enemy::action()
 			GetBlastInfo(&blastmaxtime, &blastr, &blastpower);
 			if (blastmaxtime && blastr > 0)
 			{
-				EventZone::Build(EVENTZONE_TYPE_SENDBULLET|EVENTZONE_TYPE_ENEMYDAMAGE, playerindex, x, y, blastmaxtime, blastr, blastpower, EVENTZONE_EVENT_NULL);
+				EventZone::Build(EVENTZONE_TYPE_SENDBULLET, playerindex, x, y, blastmaxtime, blastr);
 				Player::p[playerindex].DoEnemyCollapse(x, y, type);
 				int tscore = Player::p[playerindex].nSpellPoint;
 				ScoreDisplay _item;
@@ -1241,6 +1254,17 @@ void Enemy::action()
 				}
 			}
 
+		}
+		else if (timer == 16)
+		{
+			BYTE blastmaxtime;
+			float blastr;
+			float blastpower;
+			GetBlastInfo(&blastmaxtime, &blastr, &blastpower);
+			if (blastmaxtime && blastr > 0)
+			{
+				EventZone::Build(EVENTZONE_TYPE_ENEMYDAMAGE, playerindex, x, y, blastmaxtime, blastr, blastpower);
+			}
 		}
 		else if(timer == 32)
 		{

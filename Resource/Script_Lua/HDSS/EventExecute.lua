@@ -85,6 +85,11 @@ end
 function _EventExecute_PlayerSendLily(rank)
 	hdssSE(SE_BOSS_WARNING);
 	local randomitem = helper_GetRandomItem();
+	local lastitem = hdss.Get(HDSS_D, LConst_Desc_LilyItem);
+	if randomitem == lastitem then
+		randomitem = helper_GetRandomItemNext(randomitem);
+	end
+	hdssSD(LConst_Desc_LilyItem, randomitem);
 	for i=0, 1 do
 		hdssEB(CC_EnemyEID_Lily, i, helper_GetCenterX(i), 0, 9000, 0, LConst_EnemyTypeLiLy, 830, randomitem);
 		hdssENSAIM(i, rank);

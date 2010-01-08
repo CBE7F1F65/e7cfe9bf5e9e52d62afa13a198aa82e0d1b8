@@ -63,6 +63,8 @@ protected:
 		};
 		int		joyKey[2][5];
 	};
+	bool keycombineslowdrain[M_PL_MATCHMAXPLAYER];
+	bool joycombineslowdrain[M_PL_MATCHMAXPLAYER];
 	int screenmode;
 	int renderskip;
 

@@ -115,6 +115,7 @@ public:
 	void DoItemGet(WORD itemtype, float x, float y);
 	void DoGraze(float x, float y);
 	void DoPlayerBulletHit(int hitonfactor = PL_HITONFACTORDEFAULT);
+	void DoSendBullet(float x, float y);
 	void DoShot();
 
 	void Render();

@@ -70,7 +70,7 @@ public:
 	~GameInput();
 	static bool InitInput(HGE * hge);
 	static bool ReleaseInput();
-	static bool UpdateInput();
+	static bool UpdateInput(bool startstate=false);
 	WORD updateActiveInput(bool copylast=false);
 	static void SyncControlInput();
 	static void SyncForActiveInput();
@@ -112,6 +112,8 @@ public:
 		}		keyJS;
 		int		joyKey[GAMEINPUTJOYMAX];
 	};
+	bool keycombineslowdrain;
+	bool joycombineslowdrain;
 
 	WORD activeInput;
 	WORD lastActiveInput;

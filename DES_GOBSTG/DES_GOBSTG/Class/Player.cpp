@@ -1005,7 +1005,10 @@ bool Player::Charge()
 		shootCharge(nChargeLevel);
 		chargetimer = 0;
 		fCharge = 0;
-		rechargedelaytimer = rechargedelay;
+		if (nChargeLevel > 0)
+		{
+			rechargedelaytimer = rechargedelay;
+		}
 		return true;
 	}
 	bCharge = true;
@@ -1136,6 +1139,23 @@ void Player::DoGraze(float x, float y)
 
 void Player::DoPlayerBulletHit(int hitonfactor)
 {
+	if (hitonfactor < 0)
+	{
+		AddComboHit(-1, true);
+	}
+}
+
+void Player::DoSendBullet(float x, float y)
+{
+	AddComboHit(1, false);
+	AddGhostPoint(2, x, y);
+	AddBulletPoint(3, x, y);
+	int addspellpoint = nComboHitOri * 9;
+	if (addspellpoint > 1000)
+	{
+		addspellpoint = 1000;
+	}
+	AddSpellPoint(addspellpoint);
 }
 
 void Player::DoShot()
@@ -1494,7 +1514,7 @@ void Player::AddGhostPoint(int ghostpoint, float x, float y)
 
 void Player::AddBulletPoint(int bulletpoint, float x, float y)
 {
-	nBulletPoint += bulletpoint;
+	nBulletPoint += bulletpoint * 4 / 3;
 	if (nBulletPoint >= 120-rank*4)
 	{
 		AddBulletPoint(-(120-rank*4), x, y);
@@ -1513,6 +1533,12 @@ void Player::AddSpellPoint(int spellpoint)
 	{
 		nSpellPoint = 0;
 		return;
+	}
+	spellpoint = spellpoint * rank / 10 + spellpoint;
+	int spellpointone = spellpoint % 10;
+	if (spellpointone)
+	{
+		spellpoint += 10-spellpointone;
 	}
 	if (nSpellPoint < _PL_SPELLBONUS_BOSS_1 && nSpellPoint + spellpoint >= _PL_SPELLBONUS_BOSS_1 ||
 		nSpellPoint < _PL_SPELLBONUS_BOSS_2 && nSpellPoint + spellpoint >= _PL_SPELLBONUS_BOSS_2)
@@ -1579,7 +1605,12 @@ BYTE Player::AddCharge(float addcharge, float addchargemax)
 	BYTE ncharge;
 	BYTE nchargemax;
 	GetNCharge(&ncharge, &nchargemax);
-	fChargeMax += addchargemax * BResource::res.playerdata[nowID].addchargerate;
+	float addchargemaxval = addchargemax;
+	if (addchargemax > 0)
+	{
+		addchargemaxval = addchargemax * BResource::res.playerdata[nowID].addchargerate;
+	}
+	fChargeMax += addchargemaxval;
 	if (fChargeMax > PLAYER_CHARGEMAX)
 	{
 		fChargeMax = PLAYER_CHARGEMAX;

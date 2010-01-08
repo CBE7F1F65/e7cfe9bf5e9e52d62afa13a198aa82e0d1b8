@@ -110,7 +110,21 @@ function helper_GetCenterBossX(playerindex)
 	return CenterBossX_0;
 end
 
-function helper_GetRandomItem()
-	local ret = math.pow(4, RANDT(0, 3));
+function helper_GetRandomItem(itemid)
+	if itemid == nil then
+		itemid = RANDT(0, 3);
+	end
+	local ret = math.pow(16, itemid);
 	return ret;
+end
+
+function helper_GetRandomItemNext(randomitem)
+	local itemid = 0;
+	for i=0, 2 do
+		if math.pow(16, i) == randomitem then
+			itemid = i+1;
+			break;
+		end
+	end
+	return helper_GetRandomItem(itemid);
 end
