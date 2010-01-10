@@ -1,13 +1,11 @@
 73	h5nc	53
 Comment	Index	Texture
--	0	Graphic/Other/word.png
--	1	Graphic/Other/white.png
+-	0	Graphic/Other/white.png
 -	2	Graphic/Sprite/Bullet/bullet.png
 -	3	Graphic/Sprite/Ghost/ghost.png
--	4	Graphic/th09/enemy.png
--	5	Graphic/Other/panel.png
--	6	Graphic/th09/front.png
--	7	Graphic/th09/selectitem.png
+-	4	Graphic/Sprite/Enemy/enemy.png
+-	6	Graphic/Other/front.png
+-	7	Graphic/Other/selectitem.png
 #		Player(10~59)
 -	10	Graphic/Sprite/Player/Player/pl_01.png
 -	11	Graphic/Sprite/Player/Player/pl_02.png
@@ -91,9 +89,9 @@ Comment	Index	Texture
 -	311	Graphic/Sprite/Player/DrainZone/pl_02_drain.png
 -	332	Graphic/Sprite/Player/DrainZone/pl_23_drain.png
 #		Other(360~459)
--	360	Graphic/th09/title00.png
--	361	Graphic/th09/select00.png
--	362	Graphic/th09/replay00.png
+-	360	Graphic/Scene/title.png
+-	361	Graphic/Scene/select.png
+-	362	Graphic/Scene/replay.png
 -	363	Graphic/UI/musiclist.png
 #		Effect(460~569)
 #		Scene(560~659)

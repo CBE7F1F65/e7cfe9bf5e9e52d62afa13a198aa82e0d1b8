@@ -235,9 +235,12 @@ int Export_Lua::PackLuaFiles(LuaState * ls)
 	hgeMemoryFile memfile;
 	DWORD size;
 	memfile.data = hge->Resource_Load(DEFAULT_BINLUAFILE, &size);
-	memfile.filename = DEFAULT_BINLUAFILE;
-	memfile.size = size;
-	hge->Resource_CreatePack(DEFAULT_BINSCRIPTFILE, M_SCRIPT_PASSWORD, &memfile, NULL);
+	if (memfile.data)
+	{
+		memfile.filename = DEFAULT_BINLUAFILE;
+		memfile.size = size;
+		hge->Resource_CreatePack(DEFAULT_BINSCRIPTFILE, M_SCRIPT_PASSWORD, &memfile, NULL);
+	}
 	hge->Resource_Free(memfile.data);
 
 	return iret;
@@ -262,6 +265,10 @@ int Export_Lua::LoadPackedLuaFiles(LuaState * ls)
 	hge->Resource_AttachPack(DEFAULT_BINSCRIPTFILE, M_SCRIPT_PASSWORD);
 	DWORD size = 0;
 	BYTE * content = hge->Resource_Load(DEFAULT_BINLUAFILE, &size);
+	if (!content)
+	{
+		return -1;
+	}
 	iret = DoLuaFileInMemroy(ls, (const char *)content, size, DEFAULT_BINLUAFILE);
 	if (iret != 0)
 	{

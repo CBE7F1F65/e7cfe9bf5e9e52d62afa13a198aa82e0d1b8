@@ -200,14 +200,18 @@ void Process::musicChange(int ID, bool force)
 			musicSlide(0, bgmvol);
 			hge->Channel_Stop(channel);
 		}
-		channel = hge->Stream_Play(stream, true, bgmvol);
-		hge->Channel_SetPitch(channel, 1.0f);
-		hge->Channel_SetLoop(channel, &channelsyncinfo);
-		hge->Channel_SetStartPos(channel, &channelsyncinfo);
 		if (IsInGame())
 		{
 			FrontDisplay::fdisp.OnChangeMusic(musicID);
 		}
+		if (!stream)
+		{
+			return;
+		}
+		channel = hge->Stream_Play(stream, true, bgmvol);
+		hge->Channel_SetPitch(channel, 1.0f);
+		hge->Channel_SetLoop(channel, &channelsyncinfo);
+		hge->Channel_SetStartPos(channel, &channelsyncinfo);
 	}
 }
 

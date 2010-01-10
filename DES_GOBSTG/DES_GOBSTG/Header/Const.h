@@ -196,8 +196,8 @@
 #define ENEMYTYPEMAX		0x50
 #define EFFECTSYSTYPEMAX	0x100
 #define TEXMAX				0x300
-#define TEX_WORD		0
-#define TEX_WHITE		1
+#define TEX_WHITE		0
+#define TEX_WORD		1
 #define TEX_BULLET		2//7
 #define TEX_GHOST		3//8
 #define PACKAGEMAX			0x20

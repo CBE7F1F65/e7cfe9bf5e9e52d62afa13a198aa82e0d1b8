@@ -339,8 +339,8 @@ void FrontDisplay::RenderPanel()
 			panel.spellpoint->Render(spellpointx[i], M_GAMESQUARE_TOP);
 			spriteData * _spd = SpriteItemManager::CastSprite(panel.combobarindex);
 			float fcombogage = ((float)Player::p[i].nComboGage) / PLAYER_COMBOGAGEMAX;
-			panel.combobar->SetTextureRect(_spd->tex_x, _spd->tex_y, _spd->tex_w*fcombogage, _spd->tex_h);
-			panel.combobar->SetHotSpot(0, 0);
+			SpriteItemManager::SetSpriteTextureRect(panel.combobar, _spd->tex_x, _spd->tex_y, _spd->tex_w*fcombogage, _spd->tex_h);
+			SpriteItemManager::SetSpriteHotSpot(panel.combobar, 0, 0);
 			panel.combobar->Render(spellpointx[i]+2, M_GAMESQUARE_TOP+30);
 
 			bool usered = true;
@@ -376,13 +376,13 @@ void FrontDisplay::RenderPanel()
 
 			_spd = SpriteItemManager::CastSprite(panel.slotindex);
 			float fslot = Player::p[i].fChargeMax / PLAYER_CHARGEMAX;
-			panel.slot->SetTextureRect(_spd->tex_x, _spd->tex_y, _spd->tex_w*fslot, _spd->tex_h);
-			panel.slot->SetHotSpot(0, _spd->tex_h);
+			SpriteItemManager::SetSpriteTextureRect(panel.slot, _spd->tex_x, _spd->tex_y, _spd->tex_w*fslot, _spd->tex_h);
+			SpriteItemManager::SetSpriteHotSpot(panel.slot, 0, _spd->tex_h);
 			panel.slot->SetColor(0xff808080);
 			panel.slot->Render(M_GAMESQUARE_LEFT_(i)+16, M_GAMESQUARE_BOTTOM);
 			fslot = Player::p[i].fCharge / PLAYER_CHARGEMAX;
-			panel.slot->SetTextureRect(_spd->tex_x, _spd->tex_y, _spd->tex_w*fslot, _spd->tex_h);
-			panel.slot->SetHotSpot(0, _spd->tex_h);
+			SpriteItemManager::SetSpriteTextureRect(panel.slot, _spd->tex_x, _spd->tex_y, _spd->tex_w*fslot, _spd->tex_h);
+			SpriteItemManager::SetSpriteHotSpot(panel.slot, 0, _spd->tex_h);
 			panel.slot->SetColor(0xffffffff);
 			BYTE nCharge;
 			Player::p[i].GetNCharge(&nCharge);
@@ -557,6 +557,7 @@ bool FrontDisplay::Init()
 	int idx = 0;
 
 	//For SI
+	SpriteItemManager::nullIndex = SpriteItemManager::GetIndexByName(SI_NULL);
 	SpriteItemManager::yesIndex = SpriteItemManager::GetIndexByName(SI_CONFIRM_YES);
 	SpriteItemManager::noIndex = SpriteItemManager::GetIndexByName(SI_CONFIRM_NO);
 	SpriteItemManager::cancelIndex = SpriteItemManager::GetIndexByName(SI_CONFIRM_CANCEL);
@@ -573,20 +574,23 @@ bool FrontDisplay::Init()
 	panel.bottomedge[1] = SpriteItemManager::CreateSpriteByName(SI_FRONTPANEL_BOTTOM_1);
 
 	panel.spellpoint = SpriteItemManager::CreateSpriteByName(SI_FRONTPANEL_SPELLPOINT);
-	panel.spellpoint->SetHotSpot(0, 0);
+//	panel.spellpoint->SetHotSpot(0, 0);
+	SpriteItemManager::SetSpriteHotSpot(panel.spellpoint, 0, 0);
 	panel.combobarindex = SpriteItemManager::GetIndexByName(SI_FRONTPANEL_COMBOBAR);
 	panel.combobar = SpriteItemManager::CreateSprite(panel.combobarindex);
 	panel.winindi = SpriteItemManager::CreateSpriteByName(SI_FRONTPANEL_WININDI);
 	panel.slotindex = SpriteItemManager::GetIndexByName(SI_FRONTPANEL_SLOT);
 	panel.slot = SpriteItemManager::CreateSprite(panel.slotindex);
 	panel.slotback = SpriteItemManager::CreateSpriteByName(SI_FRONTPANEL_SLOTBACK);
-	panel.slotback->SetHotSpot(0, panel.slotback->GetHeight());
+//	panel.slotback->SetHotSpot(0, panel.slotback->GetHeight());
+	SpriteItemManager::SetSpriteHotSpot(panel.slotback, 0, panel.slotback->GetHeight());
 	panel.lifeindi[FDISP_LIFEINDI_EMPTY] = SpriteItemManager::CreateSpriteByName(SI_FRONTPANEL_LIFEINDI_EMPTY);
 	panel.lifeindi[FDISP_LIFEINDI_HALF] = SpriteItemManager::CreateSpriteByName(SI_FRONTPANEL_LIFEINDI_HALF);
 	panel.lifeindi[FDISP_LIFEINDI_FULL] = SpriteItemManager::CreateSpriteByName(SI_FRONTPANEL_LIFEINDI_FULL);
 	for (int i=0; i<FDISP_LIFEINDIMAX; i++)
 	{
-		panel.lifeindi[i]->SetHotSpot(panel.lifeindi[i]->GetWidth()/2, 0);
+//		panel.lifeindi[i]->SetHotSpot(panel.lifeindi[i]->GetWidth()/2, 0);
+		SpriteItemManager::SetSpriteHotSpot(panel.lifeindi[i], panel.lifeindi[i]->GetWidth()/2, 0);
 	}
 
 	/************************************************************************/
@@ -604,7 +608,8 @@ bool FrontDisplay::Init()
 	info.timecircle = SpriteItemManager::CreateSpriteByName(SI_BOSS_TIMECIRCLE);
 	int enemyxsiid = SpriteItemManager::GetIndexByName(SI_ENEMY_X);
 	info.enemyx = SpriteItemManager::CreateSprite(enemyxsiid);
-	info.enemyx->SetHotSpot(SpriteItemManager::GetTexW(enemyxsiid)/2, SpriteItemManager::GetTexH(enemyxsiid));
+//	info.enemyx->SetHotSpot(SpriteItemManager::GetTexW(enemyxsiid)/2, SpriteItemManager::GetTexH(enemyxsiid));
+	SpriteItemManager::SetSpriteHotSpot(info.enemyx, SpriteItemManager::GetTexW(enemyxsiid)/2, SpriteItemManager::GetTexH(enemyxsiid));
 
 	info.lifebar = SpriteItemManager::CreateSpriteByName(SI_WHITE);
 	info.textbox = SpriteItemManager::CreateSpriteByName(SI_FRONT_TEXT);

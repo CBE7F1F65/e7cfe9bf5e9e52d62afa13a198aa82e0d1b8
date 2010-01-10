@@ -47,8 +47,8 @@ void Chat::Clear()
 void Chat::Init()
 {
 	Release();
-	left = SpriteItemManager::CreateSpriteByName(SI_NULL);
-	right = SpriteItemManager::CreateSpriteByName(SI_NULL);
+	leftsprite = SpriteItemManager::CreateNullSprite();
+	rightsprite = SpriteItemManager::CreateNullSprite();
 	textbox = SpriteItemManager::CreateSpriteByName(SI_FRONT_TEXT);
 }
 
@@ -79,7 +79,7 @@ void Chat::Render()
 	}
 	if (textbox)
 	{
-		textbox->RenderEx(x[CHATTER_TEXTBOX], y[CHATTER_TEXTBOX], ARC(9000), 1.5f, 1.0f);
+		textbox->RenderEx(x[CHATTER_TEXTBOX], y[CHATTER_TEXTBOX], ARC(9000), 80.0f/(textbox->GetWidth()), 352.0f/(textbox->GetHeight()));
 	}
 	fschat.SetColor(0xFFFFFFFF, 0xFFFFFFFF, col, col);
 	fschat.Render(M_CLIENT_CENTER_X-160, M_CLIENT_CENTER_Y+148, FONTSYS_DEFAULT_SHADOW, 1, 0, HGETEXT_LEFT|HGETEXT_TOP);
@@ -123,19 +123,21 @@ bool Chat::chat(BYTE ID, BYTE chatsprite, const char * _text)
 	{
 		if(chatsprite & CHATSPRITE_LEFT)
 		{
-			left->SetColor(0xffffffff);
-			right->SetColor(0x80ffffff);
+			leftsprite->SetColor(0xffffffff);
+			rightsprite->SetColor(0x80ffffff);
 			textbox->SetColor(0xff3333ff);
-			SpriteItemManager::ptFace(ID, left);
-			left->SetFlip(chatsprite & CHATSPRITE_LEFTFLIP, false);
+			SpriteItemManager::ptFace(ID, leftsprite);
+//			leftsprite->SetFlip(chatsprite & CHATSPRITE_LEFTFLIP, false);
+			SpriteItemManager::SetSpriteFlip(leftsprite, chatsprite & CHATSPRITE_LEFTFLIP);
 		}
 		else
 		{
-			left->SetColor(0x80ffffff);
-			right->SetColor(0xffffffff);
+			leftsprite->SetColor(0x80ffffff);
+			rightsprite->SetColor(0xffffffff);
 			textbox->SetColor(0xffff3333);
-			SpriteItemManager::ptFace(ID, right);
-			right->SetFlip(chatsprite & CHATSPRITE_RIGHTFLIP, false);
+			SpriteItemManager::ptFace(ID, rightsprite);
+//			rightsprite->SetFlip(chatsprite & CHATSPRITE_RIGHTFLIP, false);
+			SpriteItemManager::SetSpriteFlip(rightsprite, chatsprite & CHATSPRITE_RIGHTFLIP);
 		}
 		int line = 0;
 		int tlength = strlen(_text);
@@ -205,21 +207,23 @@ bool Chat::chatOn(BYTE leftID, BYTE rightID, BYTE chatsprite)
 		chatting = true;
 		if (leftID != 0xff)
 		{
-			SpriteItemManager::ptFace(leftID, left);
-			left->SetFlip(chatsprite & CHATSPRITE_LEFTFLIP, false);
+			SpriteItemManager::ptFace(leftID, leftsprite);
+//			leftsprite->SetFlip(chatsprite & CHATSPRITE_LEFTFLIP, false);
+			SpriteItemManager::SetSpriteFlip(leftsprite, chatsprite & CHATSPRITE_LEFTFLIP);
 		}
 		else
 		{
-			SpriteItemManager::ptFace(-1, left);
+			SpriteItemManager::ptFace(-1, leftsprite);
 		}
 		if (rightID != 0xff)
 		{
-			SpriteItemManager::ptFace(rightID, right);
-			right->SetFlip(chatsprite & CHATSPRITE_RIGHTFLIP, false);
+			SpriteItemManager::ptFace(rightID, rightsprite);
+//			rightsprite->SetFlip(chatsprite & CHATSPRITE_RIGHTFLIP, false);
+			SpriteItemManager::SetSpriteFlip(rightsprite, chatsprite & CHATSPRITE_RIGHTFLIP);
 		}
 		else
 		{
-			SpriteItemManager::ptFace(-1, right);
+			SpriteItemManager::ptFace(-1, rightsprite);
 		}
 		if (chatsprite & CHATSPRITE_LEFT)
 		{
@@ -241,11 +245,11 @@ bool Chat::chatOn(BYTE leftID, BYTE rightID, BYTE chatsprite)
 
 		if(chatsprite & CHATSPRITE_LEFT)
 		{
-			right->SetColor(0x80ffffff);
+			rightsprite->SetColor(0x80ffffff);
 		}
 		else
 		{
-			left->SetColor(0x80ffffff);
+			leftsprite->SetColor(0x80ffffff);
 		}
 		x[CHATTER_TEXTBOX] = M_CLIENT_CENTER_X;
 		y[CHATTER_TEXTBOX] = M_CLIENT_BOTTOM+72-timer*4;
@@ -263,8 +267,8 @@ bool Chat::chatOn(BYTE leftID, BYTE rightID, BYTE chatsprite)
 			x[CHATTER_RIGHTNAME] = M_GAMESQUARE_CENTER_X_(1);
 			y[CHATTER_RIGHTNAME] = M_CLIENT_CENTER_Y+108;
 		}
-		match(CHATTER_LEFTNAME, left);
-		match(CHATTER_RIGHTNAME, right);
+		match(CHATTER_LEFTNAME, leftsprite);
+		match(CHATTER_RIGHTNAME, rightsprite);
 		*/
 		timer = 0;
 		chati = 1;

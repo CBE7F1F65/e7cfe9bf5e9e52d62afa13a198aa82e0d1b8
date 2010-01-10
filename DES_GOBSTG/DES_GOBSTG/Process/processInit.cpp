@@ -224,6 +224,20 @@ int Process::processInit()
 		return PQUIT;
 	}
 
+	tex[TEX_WHITE] = hge->Texture_Load(BResource::res.resdata.texfilename[TEX_WHITE]);
+#ifdef __DEBUG
+	if(tex[TEX_WHITE] == NULL)
+	{
+		HGELOG("%s\nFailed in loading Texture File %s.(To be assigned to Index %d).", HGELOG_ERRSTR, BResource::res.resdata.texfilename[TEX_WHITE], TEX_WHITE);
+		errorcode = PROC_ERROR_TEXTURE;
+		return PQUIT;
+	}
+	else
+	{
+		HGELOG("Succeeded in loading Texture File %s.(Assigned to Index %d).", BResource::res.resdata.texfilename[TEX_WHITE], TEX_WHITE);
+	}
+#endif
+
 	char tnbuffer[M_STRMAX];
 	for(int i=1;i<TEXMAX;i++)
 	{
@@ -243,7 +257,8 @@ int Process::processInit()
 		{
 			HGELOG("%s\nFailed in loading Texture File %s.(To be assigned to Index %d).", HGELOG_ERRSTR, tnbuffer, i);
 			errorcode = PROC_ERROR_TEXTURE;
-			return PQUIT;
+			tex[i] = tex[TEX_WHITE];
+//			return PQUIT;
 		}
 		else
 		{
@@ -251,20 +266,6 @@ int Process::processInit()
 		}
 #endif
 	}
-
-	tex[TEX_WORD] = hge->Texture_Load(BResource::res.resdata.texfilename[TEX_WORD]);
-#ifdef __DEBUG
-	if(tex[TEX_WORD] == NULL)
-	{
-		HGELOG("%s\nFailed in loading Texture File %s.(To be assigned to Index %d).", HGELOG_ERRSTR, BResource::res.resdata.texfilename[TEX_WORD], TEX_WORD);
-		errorcode = PROC_ERROR_TEXTURE;
-		return PQUIT;
-	}
-	else
-	{
-		HGELOG("Succeeded in loading Texture File %s.(Assigned to Index %d).", BResource::res.resdata.texfilename[TEX_WORD], TEX_WORD);
-	}
-#endif
 
 	SpriteItemManager::Init(tex);
 

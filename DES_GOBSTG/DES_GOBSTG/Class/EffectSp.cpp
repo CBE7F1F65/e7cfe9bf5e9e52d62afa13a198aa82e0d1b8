@@ -39,7 +39,7 @@ void EffectSp::Init()
 		}
 	}
 	senditemexsiid = SpriteItemManager::GetIndexByName(SI_SENDITEM_EX);
-	sprite = SpriteItemManager::CreateSpriteByName(SI_NULL);
+	sprite = SpriteItemManager::CreateNullSprite();
 }
 
 void EffectSp::Release()

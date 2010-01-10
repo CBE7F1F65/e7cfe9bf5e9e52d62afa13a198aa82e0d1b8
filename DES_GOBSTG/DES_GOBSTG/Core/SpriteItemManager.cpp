@@ -3,6 +3,7 @@
 #include "BResource.h"
 
 HTEXTURE * SpriteItemManager::tex;
+int SpriteItemManager::nullIndex = 0;
 int SpriteItemManager::yesIndex = 0;
 int SpriteItemManager::noIndex = 0;
 int SpriteItemManager::cancelIndex = 0;
@@ -150,7 +151,7 @@ bool SpriteItemManager::SetSprite(int index, hgeSprite * sprite, HTEXTURE * tex)
 	}
 	if (index < 0)
 	{
-		sprite->SetTextureRect(0, 0, 0, 0);
+		SetSpriteTextureRect(sprite, 0, 0, 0, 0);
 		return true;
 	}
 	spriteData * _sd = CastSprite(index);
@@ -158,8 +159,7 @@ bool SpriteItemManager::SetSprite(int index, hgeSprite * sprite, HTEXTURE * tex)
 	{
 		return false;
 	}
-	sprite->SetTexture(tex[_sd->tex]);
-	sprite->SetTextureRect(_sd->tex_x, _sd->tex_y, 
+	SetSpriteData(sprite, tex[_sd->tex], _sd->tex_x, _sd->tex_y, 
 		_sd->tex_w < 0 ? hge->Texture_GetWidth(tex[_sd->tex])-_sd->tex_x : _sd->tex_w, 
 		_sd->tex_h < 0 ? hge->Texture_GetHeight(tex[_sd->tex])-_sd->tex_y : _sd->tex_h);
 	return true;
@@ -276,6 +276,17 @@ void SpriteItemManager::SetFrontSpriteFadeoutTime(int ID, int fadeouttime)
 	frontsprite[ID].fadeoutmaxtime = fadeouttime;
 }
 
+hgeSprite * SpriteItemManager::CreateNullSprite()
+{
+	hgeSprite * sprite;
+	if (!tex)
+	{
+		return NULL;
+	}
+	sprite = CreateSprite(nullIndex);
+	return sprite;
+}
+
 hgeSprite * SpriteItemManager::CreateSprite(int index)
 {
 	hgeSprite * sprite;
@@ -283,15 +294,66 @@ hgeSprite * SpriteItemManager::CreateSprite(int index)
 	{
 		return NULL;
 	}
+//	sprite = CreateNullSprite();
+	sprite = new hgeSprite();
 	if (index < 0)
 	{
-		return CreateSpriteByName(SI_NULL);
+		return sprite;
 	}
-	else
-	{
-		sprite = new hgeSprite(tex[BResource::res.spritedata[index].tex], BResource::res.spritedata[index].tex_x, BResource::res.spritedata[index].tex_y, BResource::res.spritedata[index].tex_w, BResource::res.spritedata[index].tex_h);
-	}
+	SetSpriteData(sprite, tex[BResource::res.spritedata[index].tex], BResource::res.spritedata[index].tex_x, BResource::res.spritedata[index].tex_y, BResource::res.spritedata[index].tex_w, BResource::res.spritedata[index].tex_h);
 	return sprite;
+}
+
+bool SpriteItemManager::SetSpriteData(hgeSprite * sprite, HTEXTURE _tex, float texx, float texy, float texw, float texh, bool flipx/* =false */, bool flipy/* =false */)
+{
+	if (!sprite)
+	{
+		return false;
+	}
+	if (!_tex)
+	{
+		_tex = tex[TEX_WHITE];
+	}
+	sprite->SetTexture(_tex);
+	if (!SetSpriteTextureRect(sprite, texx, texy, texw, texh))
+	{
+		return false;
+	}
+	if (!SetSpriteFlip(sprite, flipx, flipy))
+	{
+		return false;
+	}
+	return true;
+}
+
+bool SpriteItemManager::SetSpriteTextureRect(hgeSprite * sprite, float texx, float texy, float texw, float texh)
+{
+	if (!sprite)
+	{
+		return false;
+	}
+	sprite->SetTextureRect(texx, texy, texw, texh);
+	return true;
+}
+
+bool SpriteItemManager::SetSpriteHotSpot(hgeSprite * sprite, float hotx, float hoty)
+{
+	if (!sprite)
+	{
+		return false;
+	}
+	sprite->SetHotSpot(hotx, hoty);
+	return true;
+}
+
+bool SpriteItemManager::SetSpriteFlip(hgeSprite * sprite, bool flipx/* =false */, bool flipy/* =false */)
+{
+	if (!sprite)
+	{
+		return false;
+	}
+	sprite->SetFlip(flipx, flipy);
+	return true;
 }
 
 bool SpriteItemManager::CreateSprite(int index, hgeSprite ** sprite)
@@ -314,8 +376,7 @@ bool SpriteItemManager::ChangeSprite(int index, hgeSprite * sprite)
 	{
 		return false;
 	}
-	sprite->SetTexture(tex[BResource::res.spritedata[index].tex]);
-	sprite->SetTextureRect(BResource::res.spritedata[index].tex_x, BResource::res.spritedata[index].tex_y, BResource::res.spritedata[index].tex_w, BResource::res.spritedata[index].tex_h);
+	SetSpriteData(sprite, tex[BResource::res.spritedata[index].tex], BResource::res.spritedata[index].tex_x, BResource::res.spritedata[index].tex_y, BResource::res.spritedata[index].tex_w, BResource::res.spritedata[index].tex_h);
 	return true;
 }
 
@@ -360,7 +421,7 @@ bool SpriteItemManager::ptFace(int index, hgeSprite * sprite)
 	}
 	if (index < 0)
 	{
-		sprite->SetTextureRect(0, 0, 0, 0);
+		SpriteItemManager::SetSpriteTextureRect(sprite, 0, 0, 0, 0);
 		return true;
 	}
 	ChangeSprite(BResource::res.playerdata[index].faceSIID, sprite);

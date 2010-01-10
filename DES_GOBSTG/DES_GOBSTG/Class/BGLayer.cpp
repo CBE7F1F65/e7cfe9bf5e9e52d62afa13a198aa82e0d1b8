@@ -20,11 +20,7 @@ BGLayer::BGLayer()
 
 BGLayer::~BGLayer()
 {
-	if (sprite)
-	{
-		delete sprite;
-		sprite = NULL;
-	}
+	SpriteItemManager::FreeSprite(&sprite);
 }
 
 void BGLayer::Init(HTEXTURE * _tex)
@@ -110,19 +106,17 @@ void BGLayer::valueSet(int siID, float cenx, float ceny, float w, float h, DWORD
 	_y -= h / 2;
 	width	=	w;
 	height	=	h;
-	if (sprite)
+	if (!sprite)
 	{
-		sprite->SetTexture(_tex);
-		sprite->SetTextureRect(tx, ty, tw, th);
-		sprite->SetFlip(false, false);
-	}
-	else
-	{
-		sprite = new hgeSprite(_tex, tx, ty, tw, th);
+		sprite = SpriteItemManager::CreateNullSprite();
+		if (!sprite)
+		{
+			return;
+		}
 	}
 
+	SpriteItemManager::SetSpriteData(sprite, _tex, tx, ty, tw, th);
 	sprite->SetBlendMode(BLEND_DEFAULT);
-
 	rectSet(_x, _y, 0, w, h, 0, 0, 0);
 	sprite->SetColor(col);
 	for (int i=0; i<4; i++)
@@ -137,7 +131,7 @@ void BGLayer::texRectSet(float texx, float texy, float texw, float texh)
 	{
 		return;
 	}
-	sprite->SetTextureRect(texx, texy, texw, texh);
+	SpriteItemManager::SetSpriteTextureRect(sprite, texx, texy, texw, texh);
 	tw = texw;
 	th = texh;
 }
@@ -268,7 +262,8 @@ void BGLayer::parallelogram(float paral, bool flipx, bool flipy)
 	sprite->quad.v[2].x += paral;
 	sprite->quad.v[3].x += paral;
 
-	sprite->SetFlip(flipx, flipy);
+	SpriteItemManager::SetSpriteFlip(sprite, flipx, flipy);
+//	sprite->SetFlip(flipx, flipy);
 }
 
 void BGLayer::vertexSet(float x0, float y0, float z0, float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3)

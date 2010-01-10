@@ -39,8 +39,8 @@ public:
 	char text[M_STRMAX];
 	union{
 		struct{
-			hgeSprite * left;
-			hgeSprite * right;
+			hgeSprite * leftsprite;
+			hgeSprite * rightsprite;
 			hgeSprite * textbox;
 		};
 		hgeSprite * chatter[CHATTERMAX];

@@ -59,13 +59,14 @@ void Bullet::Init(HTEXTURE _tex)
 			sprite[index]->SetBlendMode(tbd->blendtype);
 			if (BResource::res.bulletdata[i].collisiontype != BULLET_COLLISION_ELLIPSE && tbd->collisionSub)
 			{
-				sprite[index]->SetHotSpot(SpriteItemManager::GetTexW(tbd->siid+j)/2.0f, SpriteItemManager::GetTexH(tbd->siid+j)/2.0f+tbd->collisionSub);
+				SpriteItemManager::SetSpriteHotSpot(sprite[index], SpriteItemManager::GetTexW(tbd->siid+j)/2.0f, SpriteItemManager::GetTexH(tbd->siid+j)/2.0f+tbd->collisionSub);
 			}
 		}
 		for (; j<BULLETCOLORMAX; j++)
 		{
 			index = i*BULLETCOLORMAX+j;
-			sprite[index] = new hgeSprite(tex, 0, 0, 0, 0);
+			sprite[index] = SpriteItemManager::CreateNullSprite();
+			SpriteItemManager::SetSpriteData(sprite[index], tex, 0, 0, 0, 0);
 		}
 	}
 
@@ -129,9 +130,7 @@ void Bullet::Release()
 	}
 	for(int i=0;i<BULLETTYPECOLORMAX;i++)
 	{
-		if(sprite[i])
-			delete sprite[i];
-		sprite[i] = NULL;
+		SpriteItemManager::FreeSprite(&sprite[i]);
 	}
 }
 

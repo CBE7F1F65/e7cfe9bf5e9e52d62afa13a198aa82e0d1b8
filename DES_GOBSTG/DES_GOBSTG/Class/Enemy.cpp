@@ -576,7 +576,7 @@ void Enemy::updateFrame(BYTE frameenum, int usetimer /* = -1*/)
 			float thsx;
 			float thsy;
 			sprite->GetHotSpot(&thsx, &thsy);
-			sprite->SetHotSpot(thsx, sint(timer*512)*4.8f+thsy-2.4f);
+			SpriteItemManager::SetSpriteHotSpot(sprite, thsx, sint(timer*512)*4.8f+thsy-2.4f);
 		}
 		break;
 	case ENEMY_FRAME_RIGHTPRE:
@@ -847,7 +847,8 @@ void Enemy::setIndexFrame(BYTE index)
 {
 	enemyData * pdata = &(BResource::res.enemydata[type]);
 	SpriteItemManager::ChangeSprite(pdata->siid+index, sprite);
-	sprite->SetFlip(flipx, false);
+//	sprite->SetFlip(flipx, false);
+	SpriteItemManager::SetSpriteFlip(sprite, flipx);
 }
 
 void Enemy::GetCollisionRect(float * w, float * h)

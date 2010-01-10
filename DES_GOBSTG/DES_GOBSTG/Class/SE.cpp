@@ -29,11 +29,13 @@ bool SE::Initial()
 #ifdef __DEBUG
 			HGELOG("%s\nFailed in loading SE File %s.(To be assigned to Index %d).", HGELOG_ERRSTR, buffer, i);
 #endif
-			return false;
+//			return false;
 		}
 #ifdef __DEBUG
 		else
+		{
 			HGELOG("Succeeded in loading SE File %s.(Assigned to Index %d).", buffer, i);
+		}
 #endif
 		se[i].chn = NULL;
 		se[i].counter = 0;
@@ -67,7 +69,7 @@ void SE::play()
 
 			if(hge->Channel_IsPlaying(se[i].chn))
 				hge->Channel_SetPos(se[i].chn, 0);
-			else
+			else if (se[i].eff)
 			{
 				se[i].chn = hge->Effect_PlayEx(se[i].eff, vol/3, pan);
 			}

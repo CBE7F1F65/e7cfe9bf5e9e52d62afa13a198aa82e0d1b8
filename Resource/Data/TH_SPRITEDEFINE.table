@@ -1,8 +1,8 @@
 73	h5nc	4B	4096				
 Comment	Index	SI_Name	Tex	Tex_x	Tex_y	Tex_w	Tex_h
 #		MainUI(0~29)					
--	0	SI_Null	1	0	0	0	0
--	1	SI_White	1	0	0	1	1
+-	0	SI_Null	0	0	0	0	0
+-	1	SI_White	0	0	0	1	1
 -	2	SI_Title_Start	6	0	432	128	32
 -	3	SI_Title_Replay	6	128	432	72	32
 -	4	SI_Title_Quit	6	200	432	52	32
@@ -35,9 +35,8 @@ Comment	Index	SI_Name	Tex	Tex_x	Tex_y	Tex_w	Tex_h
 -	44	SI_Pause_SaveReplay	7	0	352	256	32
 -	45	SI_Pause_Pause	7	0	256	120	32
 #		UIResult(50~59)					
--	50	SI_Result_Save	0	512	256	256	32
--	51	SI_Result_OverWrite	0	512	288	256	32
--	52	SI_Result_CannotSave	0	512	320	256	32
+-	50	SI_Result_Save	7	256	192	256	32
+-	51	SI_Result_OverWrite	7	0	224	256	32
 #		ASCII(80~179)					
 -	80	SI_ASCIIBig_Null	6	1	320	12	14
 -	81	SI_ASCIIBig_!	6	15	320	12	14
@@ -263,7 +262,6 @@ Comment	Index	SI_Name	Tex	Tex_x	Tex_y	Tex_w	Tex_h
 -	325	SI_FrontPanel_Right_1	6	480	0	16	448
 -	326	SI_FrontPanel_Top_1	6	0	16	320	16
 -	327	SI_FrontPanel_Bottom_1	6	0	48	320	16
--	328	SI_FrontPanel_HiScore	5	256	0	80	18
 -	329	SI_FrontPanel_SpellPoint	6	320	0	80	30
 -	330	SI_FrontPanel_ComboBar	6	320	60	74	5
 -	331	SI_FrontPanel_WinIndi	6	416	16	16	16
@@ -272,7 +270,7 @@ Comment	Index	SI_Name	Tex	Tex_x	Tex_y	Tex_w	Tex_h
 -	334	SI_FrontPanel_LifeIndi_Full	6	400	0	16	16
 -	335	SI_FrontPanel_LifeIndi_Half	6	416	0	16	16
 -	336	SI_FrontPanel_LifeIndi_Empty	6	432	0	16	16
--	337	SI_Front_Text	5	464	160	48	352
+-	337	SI_Front_Text	6	368	240	72	264
 #		Face(400~499)					
 -	400	SI_Face_01	110	0	0	-1	-1
 -	401	SI_Face_02	111	0	0	-1	-1

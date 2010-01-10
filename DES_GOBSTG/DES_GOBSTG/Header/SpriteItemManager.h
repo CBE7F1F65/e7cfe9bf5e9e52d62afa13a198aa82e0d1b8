@@ -37,6 +37,12 @@ public:
 	static void FreeSprite(hgeSprite ** sprite);
 	static spriteData * CastSprite(int index);
 
+	static hgeSprite * CreateNullSprite();
+	static bool SetSpriteData(hgeSprite * sprite, HTEXTURE tex, float texx, float texy, float texw, float texh, bool flipx=false, bool flipy=false);
+	static bool SetSpriteTextureRect(hgeSprite * sprite, float texx, float texy, float texw, float texh);
+	static bool SetSpriteFlip(hgeSprite * sprite, bool flipx=false, bool flipy=false);
+	static bool SetSpriteHotSpot(hgeSprite * sprite, float hotx, float hoty);
+
 	static bool HaveFrontSprite(int ID);
 	static void ClearFrontSpriteVale(int ID);
 	static hgeSprite * ChangeFrontSprite(int ID, int index);
@@ -65,6 +71,7 @@ public:
 	static int noIndex;
 	static int cancelIndex;
 	static int confirmIndex;
+	static int nullIndex;
 
 	static FrontSprite frontsprite[FRONTSPRITEMAX];
 };

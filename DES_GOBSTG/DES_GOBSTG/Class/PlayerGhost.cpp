@@ -313,10 +313,11 @@ void PlayerGhost::action()
 				tex_y = hge->Texture_GetHeight(ttex)-tex_h;
 			}
 		}
-		sprite->SetTextureRect(tex_x, tex_y, tex_w, tex_h);
-		bool bxflip, byflip;
-		Player::p[playerindex].sprite->GetFlip(&bxflip, &byflip);
-		sprite->SetFlip(bxflip, byflip);
+		SpriteItemManager::SetSpriteTextureRect(sprite, tex_x, tex_y, tex_w, tex_h);
+		bool flipx, flipy;
+		Player::p[playerindex].sprite->GetFlip(&flipx, &flipy);
+//		sprite->SetFlip(flipx, flipy);
+		SpriteItemManager::SetSpriteFlip(sprite, flipx, flipy);
 	}
 	lastchasing = chasing;
 	sprite->SetBlendMode(_pgd->blend);
@@ -331,5 +332,6 @@ void PlayerGhost::action()
 	{
 		hoty += yshake;
 	}
-	sprite->SetHotSpot(hotx, hoty);
+//	sprite->SetHotSpot(hotx, hoty);
+	SpriteItemManager::SetSpriteHotSpot(sprite, hotx, hoty);
 }

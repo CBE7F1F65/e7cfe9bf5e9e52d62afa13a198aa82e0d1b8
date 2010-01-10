@@ -189,7 +189,8 @@ void Player::setIndexFrame(BYTE index)
 {
 	playerData * pdata = &(BResource::res.playerdata[nowID]);
 	SpriteItemManager::ChangeSprite(BResource::res.playerdata[nowID].siid+index, sprite);
-	sprite->SetFlip(flipx, false);
+//	sprite->SetFlip(flipx, false);
+	SpriteItemManager::SetSpriteFlip(sprite, flipx);
 }
 
 

@@ -54,16 +54,10 @@ void SelectSystem::Clear()
 {
 	for(list<Selector>::iterator it=sel.begin();it!=sel.end();it++)
 	{
-		if(it->sprite)
-			delete it->sprite;
-		it->sprite = NULL;
+		SpriteItemManager::FreeSprite(&(it->sprite));
 		it->fsinfo.SignOff();
 	}
-	if (spselectframe)
-	{
-		delete spselectframe;
-		spselectframe = NULL;
-	}
+	SpriteItemManager::FreeSprite(&spselectframe);
 	sel.clear();
 	nselect = 0;
 	nPageNum = 0;
@@ -142,11 +136,7 @@ void SelectSystem::SetAction(BYTE typeflag, float xadj, float yadj)
 
 void SelectSystem::SetSelectFrame(int siID, float x, float y)
 {
-	if (spselectframe)
-	{
-		delete spselectframe;
-		spselectframe = NULL;
-	}
+	SpriteItemManager::FreeSprite(&spselectframe);
 	spselectframe = SpriteItemManager::CreateSprite(siID);
 	selectframex = x;
 	selectframey = y;

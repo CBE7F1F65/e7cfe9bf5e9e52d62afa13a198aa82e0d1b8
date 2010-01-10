@@ -2,6 +2,7 @@
 #include "Main.h"
 #include "Scripter.h"
 #include "Data.h"
+#include "SpriteItemManager.h"
 
 list<Fontsys *> Fontsys::fontsys;
 HD3DFONT Fontsys::font = NULL;
@@ -26,11 +27,7 @@ void Fontsys::ReleaseTargetAndSprite()
 		hge->Target_Free(tar);
 		tar = NULL;
 	}
-	if (sprite)
-	{
-		delete sprite;
-		sprite = NULL;
-	}
+	SpriteItemManager::FreeSprite(&sprite);
 }
 
 list<Fontsys *>::iterator Fontsys::SignOff()
@@ -233,7 +230,8 @@ void Fontsys::SignUp(const char * _text, HD3DFONT _font)
 
 	if (tex)
 	{
-		sprite = new hgeSprite(tex, 0, 0, w, h);
+		sprite = SpriteItemManager::CreateNullSprite();
+		SpriteItemManager::SetSpriteData(sprite, tex, 0, 0, w, h);
 		sprite->SetBlendMode(BLEND_DEFAULT);
 	}
 
@@ -323,7 +321,8 @@ void Fontsys::Render(float x, float y, float shadow, float hscale, float vscale,
 		break;
 	}
 	sprite->SetColor(col[0], col[1], col[2], col[3]);
-	sprite->SetHotSpot(hotx, hoty);
+	SpriteItemManager::SetSpriteHotSpot(sprite, hotx, hoty);
+//	sprite->SetHotSpot(hotx, hoty);
 	sprite->RenderEx(x, y, 0, hscale, vscale);
 	/*
 	float w = quad.v[1].x - quad.v[0].x;
