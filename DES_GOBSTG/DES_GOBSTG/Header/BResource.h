@@ -34,6 +34,7 @@ public:
 	bool LoadPackage();
 
 	void ReleaseCustomConst();
+	void MallocCustomConst();
 	void ReleaseSpriteData();
 	void InitSpriteData();
 

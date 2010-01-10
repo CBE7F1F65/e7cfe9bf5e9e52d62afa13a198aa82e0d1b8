@@ -34,7 +34,7 @@ function ControlExecute_cStart(timer)
 		end
 		
 		--
-		hdssSETPBINFI(1, 0);
+--		hdssSETPBINFI(1, 0);
 --		hdssSETPBINFI(0, 0);
 		
 	elseif timer == 32 then
@@ -44,11 +44,11 @@ function ControlExecute_cStart(timer)
 	end
 		
 		--
-		if math.mod(timer, 8) == 0 then
-			hdssSETKEY(1, KSI_FIRE, true);
-		else
-			hdssSETKEY(1, KSI_DRAIN, true);
-		end
+--		if math.mod(timer, 8) == 0 then
+--			hdssSETKEY(1, KSI_FIRE, true);
+--		else
+--			hdssSETKEY(1, KSI_DRAIN, true);
+--		end
 		--
 		
 	if timer <= 8 then

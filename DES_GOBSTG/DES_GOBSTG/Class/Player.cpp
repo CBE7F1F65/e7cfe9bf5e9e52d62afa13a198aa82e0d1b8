@@ -789,6 +789,11 @@ bool Player::CostLife()
 			SE::push(SE_PLAYER_ALERT, x);
 			nLife = 1;
 		}
+		nLifeCost -= 1440;
+		if (nLifeCost < 0)
+		{
+			nLifeCost = 0;
+		}
 		SetInfi(PLAYERINFI_COSTLIFE, 120);
 		if (nLife == 1)
 		{
@@ -1406,7 +1411,7 @@ BYTE Player::shootCharge(BYTE nChargeLevel, bool nodelete)
 	case 1:
 		SetInfi(PLAYERINFI_SHOOTCHARGE, _PL_SHOOTCHARGEINFI_1);
 		setShootingCharge(_PL_SHOOTINGCHARGE_1);
-		AddCardBossLevel(1, 0);
+//		AddCardBossLevel(1, 0);
 		break;
 	case 2:
 		SetInfi(PLAYERINFI_SHOOTCHARGE, _PL_SHOOTCHARGEINFI_2);

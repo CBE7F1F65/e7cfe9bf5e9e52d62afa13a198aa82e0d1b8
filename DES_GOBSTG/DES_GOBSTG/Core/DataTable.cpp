@@ -151,8 +151,8 @@ bool _DataTable::SETableDefine()
 
 bool _DataTable::CustomConstFile()
 {
-	BResource::res.ReleaseCustomConst();
-	BResource::res.customconstdata = (customconstData *)malloc(RSIZE_CUSTOMCONST);
+//	BResource::res.ReleaseCustomConst();
+	BResource::res.MallocCustomConst();
 	ZeroMemory(BResource::res.customconstdata, RSIZE_CUSTOMCONST);
 	_READSTRINGBUFFERLINE(4);
 	while (!feof(file))

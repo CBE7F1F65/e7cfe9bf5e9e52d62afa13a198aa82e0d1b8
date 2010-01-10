@@ -187,7 +187,11 @@ int Process::processInit()
 			return PQUIT;
 		}
 	}
-	if(!BResource::res.Gain(Scripter::strdesc, binmode?BResource::res.customconstdata:NULL))
+	if (binmode)
+	{
+		BResource::res.MallocCustomConst();
+	}
+	if(!BResource::res.Gain(Scripter::strdesc, /*binmode?*/BResource::res.customconstdata/*:NULL*/))
 	{
 #ifdef __DEBUG
 		HGELOG("Error in Gaining Resource Data.");

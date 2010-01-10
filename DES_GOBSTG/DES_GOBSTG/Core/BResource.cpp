@@ -34,6 +34,12 @@ void BResource::ReleaseSpriteData()
 	}
 }
 
+void BResource::MallocCustomConst()
+{
+	ReleaseCustomConst();
+	customconstdata = (customconstData *)malloc(RSIZE_CUSTOMCONST);
+}
+
 void BResource::ReleaseCustomConst()
 {
 	if (customconstdata)
