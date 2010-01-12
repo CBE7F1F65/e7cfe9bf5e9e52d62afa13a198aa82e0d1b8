@@ -54,7 +54,7 @@ void Process::startPrep(bool callinit)
 	SetCurrentDirectory(hge->Resource_MakePath(""));
 
 	BYTE part = 0;
-	if(replaymode)
+	if (replaymode)
 	{
 		Replay::rpy.Load(rpyfilename, true);
 		seed = Replay::rpy.partinfo[part].seed;
@@ -68,6 +68,24 @@ void Process::startPrep(bool callinit)
 	else
 	{
 		seed = timeGetTime();
+		if (matchmode == M_MATCHMODE_P2C)
+		{
+			GameAI::ai[1].SetAble(true);
+		}
+		else
+		{
+			GameAI::ai[1].SetAble(false);
+		}
+		if (matchmode == M_MATCHMODE_C2P)
+		{
+			GameAI::ai[0].SetAble(true);
+			GameInput::SwapInput(true);
+		}
+		else
+		{
+			GameAI::ai[0].SetAble(false);
+			GameInput::SwapInput(false);
+		}
 	}
 	srandt(seed);
 	hge->Random_Seed(seed);

@@ -7,6 +7,8 @@
 #include "BResource.h"
 #include "SpriteItemManager.h"
 
+#include "GameAI.h"
+
 #define _PLAYER_ANIMATIONSPEED	8
 
 #define _PLAYER_WINFLAG_1	0x01

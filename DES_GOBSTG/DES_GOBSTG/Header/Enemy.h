@@ -114,7 +114,8 @@ public:
 	static void BossFadeout(BYTE playerindex);
 
 	void Clear();
-	bool isInRange(float x, float y, float r);
+	bool isInRect(float x, float y, float r, float w, float h, int nextstep=0);
+	bool isInShootingRect(float x, float y, float r);
 	void Fadeout();
 
 	void valueSet(BYTE playerindex, WORD eID, float x, float y, int angle, float speed, BYTE type, float life, int infitimer);
@@ -187,6 +188,11 @@ public:
 
 	float	accel;
 	float	acceladd;
+
+	float	xplus;
+	float	yplus;
+	float	lastspeed;
+	int		lastangle;
 
 	BYTE	playerindex;
 

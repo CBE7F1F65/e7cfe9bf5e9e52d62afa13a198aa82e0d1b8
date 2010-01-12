@@ -420,6 +420,9 @@
 					RelativePath=".\Class\FrontDisplay.cpp">
 				</File>
 				<File
+					RelativePath=".\Class\GameAI.cpp">
+				</File>
+				<File
 					RelativePath=".\Class\Ghost.cpp">
 				</File>
 				<File
@@ -679,6 +682,9 @@
 				</File>
 				<File
 					RelativePath=".\Header\FrontDisplayName.h">
+				</File>
+				<File
+					RelativePath=".\Header\GameAI.h">
 				</File>
 				<File
 					RelativePath=".\Header\Ghost.h">

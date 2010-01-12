@@ -8,6 +8,7 @@
 #include "Target.h"
 #include "Export.h"
 #include "ProcessDefine.h"
+#include "GameAI.h"
 
 #define	BEAMMAX				0x50
 
@@ -60,6 +61,7 @@ void Beam::Action(DWORD stopflag)
 					if ((*be[j]).exist)
 					{
 						(*be[j]).action(j);
+						GameAI::ai[j].CheckBeamCollision(&(*be[j]));
 					}
 					else
 					{
@@ -271,9 +273,12 @@ void Beam::action(BYTE playerindex)
 			timer = 0;
 		}
 
-		if(isInRect(Player::p[playerindex].r, Player::p[playerindex].x, Player::p[playerindex].y))
+		if (!Player::p[playerindex].bInfi)
 		{
-			Player::p[playerindex].DoShot();
+			if (isInRect(Player::p[playerindex].x, Player::p[playerindex].y, Player::p[playerindex].r))
+			{
+				Player::p[playerindex].DoShot();
+			}
 		}
 
 		if (!(flag & BEAMFLAG_NOGRAZE))
@@ -287,7 +292,7 @@ void Beam::action(BYTE playerindex)
 			else
 			{
 				grazetimer++;
-				if(isInRect(PLAYER_GRAZE_R, Player::p[playerindex].x, Player::p[playerindex].y))
+				if(isInRect(Player::p[playerindex].x, Player::p[playerindex].y, PLAYER_GRAZE_R))
 				{
 					float itemx;
 					float itemy;
@@ -331,13 +336,23 @@ void Beam::action(BYTE playerindex)
 	able = exist && !fadeout;
 }
 
-bool Beam::isInRect(float r, float aimx, float aimy)
+bool Beam::isInRect(float aimx, float aimy, float r, int nextstep)
 {
 	if(vscale < BEAM_INVALIDSCALE)
 		return false;
+
+	float _x = x;
+	float _y = y;
 	float nowlength = hscale * 5;
-	float cx = x;
-	float cy = y;
+	if (nextstep)
+	{
+		_x += xplus * nextstep;
+		_y += yplus * nextstep;
+		nowlength += 4;
+	}
+
+	float cx = _x;
+	float cy = _y;
 
 //	nowlength *= 0.3125f;
 
@@ -353,6 +368,6 @@ bool Beam::isInRect(float r, float aimx, float aimy)
 		rotCos = cost(angle);
 		rotSin = sint(angle);
 	}
-	return checkCollisionEllipse(aimx, aimy, 5.0f*vscale, nowlength, rotCos, rotSin, r);
+	return CheckCollisionEllipse(_x, _y, aimx, aimy, 5.0f*vscale, nowlength, rotCos, rotSin, r);
 
 }

@@ -56,7 +56,7 @@ public:
 	{
 		return checkCollisionRightAngled(aimx, aimy, rightPrep, rightParal, cost(angle), sint(angle), rOri);
 	};
-	bool checkCollisionSquare(float aimx, float aimy, float length, float height = 0);
+	bool checkCollisionSquare(float aimx, float aimy, float length, float height = 0, float rOri=0);
 
 	static bool CheckCollisionCircle(float x, float y, float aimx, float aimy, float r)
 	{
@@ -100,11 +100,11 @@ public:
 	{
 		return CheckCollisionRightAngled(x, y, aimx, aimy, rightPrep, rightParal, cost(angle), sint(angle), rOri);
 	};
-	static bool CheckCollisionSquare(float x, float y, float aimx, float aimy, float length, float height = 0)
+	static bool CheckCollisionSquare(float x, float y, float aimx, float aimy, float length, float height = 0, float rOri=0)
 	{
 		bobj.x = x;
 		bobj.y = y;
-		return bobj.checkCollisionSquare(aimx, aimy, length, height);
+		return bobj.checkCollisionSquare(aimx, aimy, length, height, rOri);
 	};
 
 	void updateMove();

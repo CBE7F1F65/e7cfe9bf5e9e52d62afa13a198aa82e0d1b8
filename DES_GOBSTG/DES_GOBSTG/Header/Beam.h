@@ -25,7 +25,7 @@ public:
 	static void RenderAll(BYTE playerindex);
 
 	void valueSet(WORD ID, float x, float y,int angle, float speed, BYTE type, BYTE color, float length, BYTE flag = BEAMFLAG_NONE, int fadeouttime = 0, BYTE tarID = 0xff);
-	bool isInRect(float r, float aimx, float aimy);
+	bool isInRect(float aimx, float aimy, float r, int nextstep=0);
 
 	void SetVector(const BObject &ori, const BObject &aim);
 	void SetVector(float orix, float oriy, float aimx, float aimy);

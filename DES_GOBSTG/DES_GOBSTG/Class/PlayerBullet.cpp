@@ -62,6 +62,7 @@ void PlayerBullet::Init(HTEXTURE * _tex)
 	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
 	{
 		pb[i].init(PLAYERBULLETMAX);
+		locked[i] = PBLOCK_LOST;
 	}
 
 	for (int i=0; i<PLAYERSHOOTTYPEMAX; i++)
@@ -94,6 +95,7 @@ void PlayerBullet::ClearItem()
 	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
 	{
 		pb[i].clear_item();
+		locked[i] = PBLOCK_LOST;
 	}
 }
 

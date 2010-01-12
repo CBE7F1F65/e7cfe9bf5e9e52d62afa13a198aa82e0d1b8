@@ -33,5 +33,6 @@
 #include "Target.h"
 #include "EventZone.h"
 #include "GameInput.h"
+#include "GameAI.h"
 
 #endif

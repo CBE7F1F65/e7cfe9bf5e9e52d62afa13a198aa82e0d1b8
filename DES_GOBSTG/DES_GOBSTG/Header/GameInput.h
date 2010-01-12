@@ -74,6 +74,7 @@ public:
 	WORD updateActiveInput(bool copylast=false);
 	static void SyncControlInput();
 	static void SyncForActiveInput();
+	static void SwapInput(bool setswap);
 	bool getKey(int ksi, int type=DIKEY_PRESSED);
 	void setKey(int ksi, bool set=true);
 	static bool GetKey(BYTE playerindex, int ksi, int type=DIKEY_PRESSED);
@@ -122,6 +123,7 @@ public:
 
 	static HGE * hge;
 	static GameInput gameinput[M_PL_MATCHMAXPLAYER];
+	static bool swapinput;
 };
 
 #endif

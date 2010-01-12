@@ -169,13 +169,13 @@ bool BObject::checkCollisionEllipse(float aimx, float aimy, float rPrep, float r
 	return false;
 }
 
-bool BObject::checkCollisionSquare(float aimx, float aimy, float length, float height)
+bool BObject::checkCollisionSquare(float aimx, float aimy, float length, float height, float rOri)
 {
 	if (!height)
 	{
 		height = length;
 	}
-	if (fabsf(x - aimx) <= length && fabsf(y - aimy) <= height)
+	if (fabsf(x - aimx) <= length+rOri && fabsf(y - aimy) <= height+rOri)
 	{
 		return true;
 	}

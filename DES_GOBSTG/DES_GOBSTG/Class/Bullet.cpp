@@ -13,6 +13,8 @@
 #include "SpriteItemManager.h"
 #include "ProcessDefine.h"
 
+#include "GameAI.h"
+
 RenderDepth Bullet::renderDepth[M_PL_MATCHMAXPLAYER][BULLETTYPEMAX];
 
 int Bullet::_actionList[M_PL_MATCHMAXPLAYER][BULLETACTIONMAX];
@@ -172,6 +174,7 @@ void Bullet::Action(DWORD stopflag)
 						(*bu[j]).actionInStop();
 					}
 					bu[j].toIndex(_index);
+					GameAI::ai[j].CheckBulletCollision(&(*bu[j]));
 				}
 				else
 				{
@@ -190,8 +193,10 @@ void Bullet::RenderAll(BYTE playerindex)
 		{
 			if (Bullet::renderDepth[playerindex][i].haveType)
 			{
-				for (bu[playerindex].toIndex(Bullet::renderDepth[playerindex][i].startIndex); bu[playerindex].getIndex() != Bullet::renderDepth[playerindex][i].endIndex; bu[playerindex].toNext())
+				bool bentered = false;
+				for (bu[playerindex].toIndex(Bullet::renderDepth[playerindex][i].startIndex); !bentered || bu[playerindex].getIndex() != Bullet::renderDepth[playerindex][i].endIndex; bu[playerindex].toNext())
 				{
+					bentered = true;
 					if (bu[playerindex].isValid() && (*bu[playerindex]).getRenderDepth() == i)
 					{
 						(*bu[playerindex]).Render();
@@ -281,7 +286,7 @@ bool Bullet::valueSet(BYTE _playerindex, WORD _ID, float _x, float _y, int _angl
 	type		=	_type;
 	if(avoid)
 	{
-		if(isInRect(avoid, Player::p[playerindex].x, Player::p[playerindex].y))
+		if(isInRect(Player::p[playerindex].x, Player::p[playerindex].y, avoid))
 			return false;
 	}
 	angle	=	_angle;
@@ -345,7 +350,7 @@ void Bullet::DoIze()
 			}
 			if ((it->type) & EVENTZONE_TYPEMASK_BULLET)
 			{
-				if (checkCollisionBigCircle(it->x, it->y, it->r))
+				if (isInRect(it->x, it->y, it->r))
 				{
 					if (it->type & EVENTZONE_TYPE_BULLETFADEOUT)
 					{
@@ -384,7 +389,7 @@ void Bullet::DoGraze()
 {
 	if(!grazed && BResource::res.bulletdata[type].collisiontype != BULLET_COLLISION_NONE)
 	{
-		if((Player::p[playerindex].x - x) * (Player::p[playerindex].x - x) + (Player::p[playerindex].y - y) * (Player::p[playerindex].y - y) < PLAYER_GRAZE_R * PLAYER_GRAZE_R)
+		if (isInRect(Player::p[playerindex].x, Player::p[playerindex].y, PLAYER_GRAZE_R))
 		{
 			Player::p[playerindex].DoGraze(x, y);
 			grazed = true;
@@ -392,9 +397,9 @@ void Bullet::DoGraze()
 	}
 }
 
-void Bullet::DoCollision()
+bool Bullet::DoCollision()
 {
-	if(isInRect(Player::p[playerindex].r, Player::p[playerindex].x, Player::p[playerindex].y))
+	if(isInRect(Player::p[playerindex].x, Player::p[playerindex].y, Player::p[playerindex].r))
 	{
 		if (cancelable)
 		{
@@ -403,7 +408,9 @@ void Bullet::DoCollision()
 			timer = 0;
 		}
 		Player::p[playerindex].DoShot();
+		return true;
 	}
+	return false;
 }
 
 void Bullet::DoUpdateRenderDepth()
@@ -620,7 +627,9 @@ void Bullet::action()
 					}
 				}
 
-				DoCollision();
+				if (!DoCollision())
+				{
+				}
 				DoGraze();
 			}
 		}
@@ -681,16 +690,28 @@ void Bullet::action()
 	DoUpdateRenderDepth();
 }
 
-bool Bullet::isInRect(float r, float aimx, float aimy)
+bool Bullet::isInRect(float aimx, float aimy, float r, int nextstep)
 {
 	bulletData * tbd = &(BResource::res.bulletdata[type]);
+	float _x = x;
+	float _y = y;
+	float collisionfactor = 1.0f;
+	if (nextstep)
+	{
+		_x += xplus * nextstep;
+		_y += yplus * nextstep;
+		if (actionList[0] != SECTIONEND && ChangeAction(true))
+		{
+			collisionfactor = 2.0f;
+		}
+	}
 	switch (tbd->collisiontype)
 	{
 	case BULLET_COLLISION_NONE:
 		return false;
 		break;
 	case BULLET_COLLISION_CIRCLE: 
-		return checkCollisionCircle(aimx, aimy, tbd->collisionMain + r);
+		return CheckCollisionCircle(_x, _y, aimx, aimy, tbd->collisionMain * collisionfactor + r);
 		break;
 	case BULLET_COLLISION_ELLIPSE: 
 		float rotCos;
@@ -705,16 +726,16 @@ bool Bullet::isInRect(float r, float aimx, float aimy)
 			rotCos = cost(angle);
 			rotSin = sint(angle);
 		}
-		return checkCollisionEllipse(aimx, aimy, tbd->collisionSub, tbd->collisionMain, rotCos, rotSin, r);
+		return CheckCollisionEllipse(_x, _y, aimx, aimy, tbd->collisionSub * collisionfactor, tbd->collisionMain * collisionfactor, rotCos, rotSin, r);
 		break;
 	case BULLET_COLLISION_SQURE: 
-		return checkCollisionSquare(aimx, aimy, tbd->collisionMain);
+		return CheckCollisionSquare(_x, _y, aimx, aimy, tbd->collisionMain * collisionfactor, r);
 		break;
 	}
 	return false;
 }
 
-void Bullet::ChangeAction()
+bool Bullet::ChangeAction(int nextstep)
 {
 	bool doit = false;
 	/*
@@ -726,6 +747,7 @@ void Bullet::ChangeAction()
 #define _SAVECON_(X, V)	(conbyval ? actionList[i+(X)]=(V) : Scripter::scr.SetIntValue(i+(X), V))
 #define _SAVEEXE_(X, V)	(exebyval ? actionList[i+(X)]=(V) : Scripter::scr.SetIntValue(i+(X), V))
 	*/
+	int usingtimer = timer + nextstep;
 #define _CONACL_(X)	(actionList[i+(X)])
 #define _EXEACL_(X)	(actionList[i+(X)])
 #define _ACL_(X)	(actionList[i+(X)])
@@ -801,7 +823,7 @@ void Bullet::ChangeAction()
 					doit = true;
 					break;
 				case EVERYMOD:
-					if(timer % _CONACL_(1) == 0)
+					if(usingtimer % _CONACL_(1) == 0)
 						doit = true;
 					++i;
 					break;
@@ -811,22 +833,22 @@ void Bullet::ChangeAction()
 				switch (actionList[i])
 				{
 				case TIMERGREAT:
-					if(timer >= _CONACL_(1))
+					if(usingtimer >= _CONACL_(1))
 						doit = true;
 					++i;
 					break;
 				case TIMEREQUAL:
-					if(timer == _CONACL_(1))
+					if(usingtimer == _CONACL_(1))
 						doit = true;
 					++i;
 					break;
 				case TIMERLESS:
-					if(timer <= _CONACL_(1))
+					if(usingtimer <= _CONACL_(1))
 						doit = true;
 					++i;
 					break;
 				case TIMERRANGE:
-					if(timer >= _CONACL_(1) && timer <= _CONACL_(2))
+					if(usingtimer >= _CONACL_(1) && usingtimer <= _CONACL_(2))
 						doit = true;
 					i+=2;
 					break;
@@ -997,7 +1019,7 @@ void Bullet::ChangeAction()
 				break;
 			}
 		}
-		else
+		else if (!nextstep)
 		{
 			switch (_ACL_(0) & BULAE_FILTER)
 			{
@@ -1165,14 +1187,14 @@ void Bullet::ChangeAction()
 					doit = false;
 					break;
 				case XSETACCADD:
-					if(doit && timer > (DWORD)_EXEACL_(1))
-						x += (int)(timer - _EXEACL_(1)) * _EXEACL_(2)/BULLETACT_FLOATSCALE;
+					if(doit && usingtimer > (DWORD)_EXEACL_(1))
+						x += (int)(usingtimer - _EXEACL_(1)) * _EXEACL_(2)/BULLETACT_FLOATSCALE;
 					i+=2;
 					doit = false;
 					break;
 				case YSETACCADD:
-					if(doit && timer > (DWORD)_EXEACL_(1))
-						y += (int)(timer - _EXEACL_(1)) * _EXEACL_(2)/BULLETACT_FLOATSCALE;
+					if(doit && usingtimer > (DWORD)_EXEACL_(1))
+						y += (int)(usingtimer - _EXEACL_(1)) * _EXEACL_(2)/BULLETACT_FLOATSCALE;
 					i+=2;
 					doit = false;
 					break;
@@ -1326,5 +1348,13 @@ void Bullet::ChangeAction()
 				break;
 			}
 		}
-	}		
+		if (nextstep)
+		{
+			if (doit)
+			{
+				return true;
+			}
+		}
+	}
+	return false;
 }

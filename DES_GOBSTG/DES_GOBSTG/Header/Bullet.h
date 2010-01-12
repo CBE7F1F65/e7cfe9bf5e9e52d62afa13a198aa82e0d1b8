@@ -61,7 +61,7 @@ public:
 	void actionInStop();
 
 	void DoIze();
-	void DoCollision();
+	bool DoCollision();
 	void DoGraze();
 	void DoUpdateRenderDepth();
 
@@ -69,7 +69,7 @@ public:
 
 	BYTE getRenderDepth();
 
-	bool isInRect(float r,float aimx,float aimy);
+	bool isInRect(float aimx, float aimy, float r, int nextstep=0);
 
 	bool valueSet(BYTE playerindex, WORD ID, float x, float y, int angle, float speed, BYTE type, BYTE color, int fadeinTime, float avoid = 0, BYTE tarID = 0xff);
 
@@ -86,7 +86,7 @@ public:
 	bool passedEvent(BYTE eventID);
 	void passEvent(BYTE eventID);
 
-	void ChangeAction();
+	bool ChangeAction(int nextstep=0);
 
 public:
 	int		actionList[BULLETACTIONMAX];

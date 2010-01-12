@@ -8,9 +8,35 @@ end
 
 function helper_GetNextEnemyRandom(playerindex)
 	local enemyrandom = hdss.Get(HDSS_D, LConst_Desc_EnemyRandom+playerindex);
+	local lastline = math.mod(enemyrandom, 16);
 	local nowline;
-	nowline, enemyrandom = RANDT(0, 1599, enemyrandom);
-	nowline = math.floor(nowline/100);
+	nowline, enemyrandom = RANDT(0, 15, enemyrandom);
+	if nowline == lastline then
+		nowline = nowline + 5;
+		if nowline > 15 then
+			nowline  = nowline - 16;
+		end
+	else
+		local addval = 0;
+		for i, item in pairs(helper_EnemyRandomRepulsion) do
+			for j, jitem in pairs(item[1]) do
+				if nowline == jitem then
+					for k, kitem in pairs(item[1]) do
+						if lastline == kitem then
+							addval = item[2];
+							break;
+						end
+					end
+					break;
+				end
+			end
+		end
+		nowline = nowline + addval;
+		if nowline > 15 then
+			nowline = nowline - 16;
+		end
+	end
+--	nowline = math.floor(nowline/100);
 	hdssSD(LConst_Desc_EnemyNowLine+playerindex, nowline);
 	if nowline >= 4 and nowline < 8 then
 		hdssSD(LConst_Desc_EnemyNowLineNum+playerindex, 10);
@@ -19,6 +45,15 @@ function helper_GetNextEnemyRandom(playerindex)
 	end
 	hdssSD(LConst_Desc_EnemyRandom+playerindex, enemyrandom);
 end
+
+helper_EnemyRandomRepulsion	=	
+{
+	{{4,	5,	6,	7},		5},
+	{{0,	2,	4,	6},		5},
+	{{1,	3,	5,	7},		5},
+	{{2,	10,	12,	14},	5},
+	{{3,	11,	13,	15},	5},
+}
 
 helper_EnemyBasicData	=	
 {

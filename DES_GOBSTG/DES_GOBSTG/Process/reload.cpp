@@ -37,6 +37,7 @@ bool Process::reload()
 		rendertar[i] = hge->Target_Create(M_CLIENT_WIDTH, M_CLIENT_HEIGHT, false);
 	}
 
+	GameAI::Init();
 	Bullet::Init(tex[TEX_BULLET]);
 	Enemy::Init(tex);
 	Item::Init();

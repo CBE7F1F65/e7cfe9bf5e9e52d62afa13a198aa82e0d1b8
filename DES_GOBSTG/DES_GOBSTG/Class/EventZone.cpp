@@ -1,6 +1,7 @@
 #include "EventZone.h"
 #include "ProcessDefine.h"
 #include "SpriteItemManager.h"
+#include "BObject.h"
 
 list<EventZone> EventZone::ezone[M_PL_MATCHMAXPLAYER];
 
@@ -100,4 +101,10 @@ bool EventZone::action()
 		return true;
 	}
 	return false;
+}
+
+bool EventZone::isInRect(float aimx, float aimy, float aimr, int nextstep/* =0 */)
+{
+	float _r = r + rspeed * nextstep;
+	return BObject::CheckCollisionBigCircle(x, y, aimx, aimy, _r);
 }

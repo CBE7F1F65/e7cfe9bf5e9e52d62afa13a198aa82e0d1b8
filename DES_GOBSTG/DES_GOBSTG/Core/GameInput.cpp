@@ -3,6 +3,7 @@
 
 GameInput GameInput::gameinput[M_PL_MATCHMAXPLAYER];
 HGE * GameInput::hge = NULL;
+bool GameInput::swapinput = false;
 
 GameInput::GameInput()
 {
@@ -290,6 +291,11 @@ void GameInput::SyncForActiveInput()
 			gameinput[1].input |= testi;
 		}
 	}
+}
+
+void GameInput::SwapInput(bool setswap)
+{
+	swapinput = setswap;
 }
 
 WORD GameInput::updateActiveInput(bool copylast/* =false */)

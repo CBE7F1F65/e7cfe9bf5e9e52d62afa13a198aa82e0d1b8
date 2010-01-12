@@ -39,6 +39,7 @@ public:
 
 	bool action();
 	void Render();
+	bool isInRect(float aimx, float aimy, float r, int nextstep=0);
 
 public:
 	BYTE playerindex;

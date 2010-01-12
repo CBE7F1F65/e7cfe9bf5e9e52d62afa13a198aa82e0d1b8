@@ -19,6 +19,8 @@
 #include "Scripter.h"
 #include "GameInput.h"
 
+#include "GameAI.h"
+
 #define _GAMERANK_MIN	8
 #define _GAMERANK_MAX	22
 #define _GAMERANK_ADDINTERVAL	9000
@@ -381,6 +383,10 @@ void Player::action()
 	lastx[0] = x;
 	lasty[0] = y;
 
+	//AI
+	//	GameAI::ai[playerindex].UpdateBasicInfo(x, y, speed, slowspeed, BResource::res.playerdata[nowID].collision_r);
+	GameAI::ai[playerindex].SetMove();
+	//
 	//
 	if(flag & PLAYER_MERGE)
 	{
@@ -508,6 +514,31 @@ void Player::action()
 		}
 	}
 
+	for (list<EventZone>::iterator it=EventZone::ezone[playerindex].begin(); it!=EventZone::ezone[playerindex].end(); it++)
+	{
+		if (it->timer < 0)
+		{
+			continue;
+		}
+		if ((it->type) & EVENTZONE_TYPEMASK_PLAYER)
+		{
+			if (it->isInRect(x, y, r))
+			{
+				if (it->type & EVENTZONE_TYPE_PLAYERDAMAGE)
+				{
+					DoShot();
+				}
+				if (it->type & EVENTZONE_TYPE_PLAYEREVENT)
+				{
+				}
+				if (it->type & EVENTZONE_TYPE_PLAYERSPEED)
+				{
+					speedfactor = it->power;
+				}
+			}
+		}
+	}
+
 	//input
 	if(!(flag & PLAYER_SHOT || flag & PLAYER_COLLAPSE))
 	{
@@ -546,7 +577,6 @@ void Player::action()
 			nowspeed = speed;
 		}
 		nowspeed *= speedfactor;
-		speedfactor = 1.0f;
 
 		if(GameInput::GetKey(playerindex, KSI_FIRE))
 		{
@@ -664,6 +694,19 @@ void Player::action()
 		else if(y < PL_MOVABLE_TOP)
 			y = PL_MOVABLE_TOP;
 	}
+	//AI
+	GameAI::ai[playerindex].UpdateBasicInfo(x, y, speed*speedfactor, slowspeed*speedfactor, r);
+	float aiaimx = _PL_MERGETOPOS_X_(playerindex);
+	float aiaimy = _PL_MERGETOPOS_Y;
+	if (PlayerBullet::locked[playerindex] != PBLOCK_LOST && Enemy::en[playerindex][PlayerBullet::locked[playerindex]].y < _PL_MERGETOPOS_Y)
+	{
+		aiaimx = Enemy::en[playerindex][PlayerBullet::locked[playerindex]].x;
+		aiaimy = Enemy::en[playerindex][PlayerBullet::locked[playerindex]].y + 120;
+	}
+	GameAI::ai[playerindex].SetAim(aiaimx, aiaimy);
+	//
+	//
+	speedfactor = 1.0f;
 
 	if (bInfi && timer % 8 < 4)
 	{

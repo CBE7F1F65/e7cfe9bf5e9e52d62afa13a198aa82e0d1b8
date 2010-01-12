@@ -11,6 +11,7 @@
 #include "EffectIDDefine.h"
 #include "EventZone.h"
 #include "SpriteItemManager.h"
+#include "GameAI.h"
 
 #define _DAMAGEZONEMAX	0x10
 
@@ -183,6 +184,10 @@ void Enemy::Action(DWORD stopflag)
 							BossFadeout(j);
 						}
 					}
+					float tw;
+					float th;
+					pen->GetCollisionRect(&tw, &th);
+					GameAI::ai[j].CheckEnemyCollision(pen, tw, th);
 				}
 				else
 				{
@@ -371,6 +376,11 @@ void Enemy::valueSet(BYTE _playerindex, WORD _eID, float _x, float _y, int _angl
 
 	actionflag = ENEMYACTION_NONE;
 	storetimer = 0;
+
+	xplus = speed * cost(angle);
+	yplus = speed * sint(angle);
+	lastspeed = speed;
+	lastangle = angle;
 
 	setLevelAim();
 	ChangeType(_type);
@@ -867,17 +877,43 @@ void Enemy::CostLife(float power)
 	damage = true;
 }
 
-bool Enemy::isInRange(float _x, float _y, float _r)
+bool Enemy::isInRect(float aimx, float aimy, float r, float w, float h, int nextstep/* =0 */)
+{
+	float _x = x;
+	float _y = y;
+	float _r = r;
+	if (nextstep)
+	{
+		_x += xplus * nextstep;
+		_y += yplus * nextstep;
+		_r += accel;
+		if (ac != ENAC_NONE && ac != ENAC_FADEOUT_OOOOOTOO)
+		{
+			_r += speed;
+		}
+		if (sendsetID)
+		{
+			h += 4;
+		}
+	}
+	return CheckCollisionSquare(_x, _y, aimx, aimy, w, h, _r);
+}
+
+bool Enemy::isInShootingRect(float aimx, float aimy, float _r)
 {
 	float _tw;
 	float _th;
 	GetCollisionRect(&_tw, &_th);
+
+	float _x = x;
+	float _y = y;
+
 	_tw /= 2;
 	_th /= 2;
-	if (checkCollisionBigCircle(_x - _tw, _y + _th, _r) ||
-		checkCollisionBigCircle(_x + _tw, _y + _th, _r) ||
-		checkCollisionBigCircle(_x - _tw, _y - _th, _r) ||
-		checkCollisionBigCircle(_x + _tw, _y - _th, _r))
+	if (CheckCollisionBigCircle(_x, _y, aimx - _tw, aimy + _th, _r) ||
+		CheckCollisionBigCircle(_x, _y, aimx + _tw, aimy + _th, _r) ||
+		CheckCollisionBigCircle(_x, _y, aimx - _tw, aimy - _th, _r) ||
+		CheckCollisionBigCircle(_x, _y, aimx + _tw, aimy - _th, _r))
 	{
 		return true;
 	}
@@ -911,7 +947,7 @@ void Enemy::DoShot()
 		}
 		if (it->type & EVENTZONE_TYPE_ENEMYDAMAGE)
 		{
-			if (isInRange(it->x, it->y, it->r))
+			if (isInShootingRect(it->x, it->y, it->r))
 			{
 				CostLife(it->power);
 				// TODO:
@@ -1136,8 +1172,16 @@ void Enemy::action()
 			en[playerindex].toIndex(_index);
 		}
 		matchAction();
-		updateMove();
+//		updateMove();
+		x += xplus;
+		y += yplus;
 		updateAction();
+
+		if (speed != lastspeed || angle != lastangle)
+		{
+			xplus = speed * cost(angle);
+			yplus = speed * sint(angle);
+		}
 
 		lastx = x;
 
@@ -1148,9 +1192,12 @@ void Enemy::action()
 
 		if (!Player::p[playerindex].bInfi)
 		{
-			if ((tw || th) && checkCollisionSquare(Player::p[playerindex].x, Player::p[playerindex].y, tw, th))
+			if ((tw || th))
 			{
-				Player::p[playerindex].DoShot();
+				if (isInRect(Player::p[playerindex].x, Player::p[playerindex].y, Player::p[playerindex].r, tw, th))
+				{
+					Player::p[playerindex].DoShot();
+				}
 			}
 		}
 		/*
