@@ -252,12 +252,12 @@ void GameInput::SyncControlInput()
 {
 	if (hge)
 	{
-		if (hge->Input_GetDIKey(KS_PAUSE_(0)) || hge->Input_GetDIKey(KS_PAUSE_(1)))
+		if (hge->Input_GetDIKey(KS_PAUSE_(0)) || hge->Input_GetDIKey(KS_PAUSE_(1)) || hge->Input_GetDIJoy(JS_PAUSE_(0), DIKEY_PRESSED, 0) || hge->Input_GetDIJoy(JS_PAUSE_(1), DIKEY_PRESSED, 1))
 		{
 			hge->Input_SetDIKey(KS_PAUSE_(0));
 			hge->Input_SetDIKey(KS_PAUSE_(1));
 		}
-		if (hge->Input_GetDIKey(KS_SKIP_(0)) || hge->Input_GetDIKey(KS_SKIP_(1)))
+		if (hge->Input_GetDIKey(KS_SKIP_(0)) || hge->Input_GetDIKey(KS_SKIP_(1)) || hge->Input_GetDIJoy(JS_DEBUG_SPEEDUP_(0), DIKEY_PRESSED, 0) || hge->Input_GetDIJoy(JS_DEBUG_SPEEDUP_(1), DIKEY_PRESSED, 1))
 		{
 			hge->Input_SetDIKey(KS_SKIP_(0));
 			hge->Input_SetDIKey(KS_SKIP_(1));
@@ -328,6 +328,10 @@ bool GameInput::GetKey(BYTE playerindex, int ksi, int type/* =DIKEY_PRESSED */)
 	{
 		playerindex = 0;
 	}
+	if (swapinput)
+	{
+		playerindex = 1-playerindex;
+	}
 	return gameinput[playerindex].getKey(ksi, type);
 }
 
@@ -336,6 +340,10 @@ void GameInput::SetKey(BYTE playerindex, int ksi, bool set/* =true */)
 	if (playerindex != 1)
 	{
 		playerindex = 0;
+	}
+	if (swapinput)
+	{
+		playerindex = 1-playerindex;
 	}
 	gameinput[playerindex].setKey(ksi, set);
 }
@@ -398,11 +406,16 @@ void GameInput::SetNowInput(WORD nowinput)
 	WORD seti = 0;
 	for (int j=0; j<M_PL_MATCHMAXPLAYER; j++)
 	{
+		int usingindex = j;
+		if (swapinput)
+		{
+			usingindex = 1-j;
+		}
 		for (int i=0; i<GAMEACTIVEINPUTMAX; i++)
 		{
-			seti = ((1<<i)<<(j*8));
+			seti = ((1<<i)<<(usingindex*8));
 			gameinput[j].input &= ~seti;
-			gameinput[j].input |= (nowinput & seti)>>(j*8);
+			gameinput[j].input |= (nowinput & seti)>>(usingindex*8);
 		}
 	}
 }

@@ -21,9 +21,9 @@ bool RenderFunc()
 bool FrameFunc()
 {
 	Process::mp.SyncInput();
-	if (hge->Input_GetDIKey(GameInput::KS_ESCAPE))
+	if (GameInput::GetKey(0, KSI_ESCAPE))
 		return true;
-	if(hge->Input_GetDIKey(GameInput::KS_CAPTURE, DIKEY_DOWN))
+	if(GameInput::GetKey(0, KSI_CAPTURE, DIKEY_DOWN))
 	{
 		Process::mp.SnapShot();
 	}

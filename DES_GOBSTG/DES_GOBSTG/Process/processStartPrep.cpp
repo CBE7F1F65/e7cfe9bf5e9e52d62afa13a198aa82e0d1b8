@@ -64,28 +64,11 @@ void Process::startPrep(bool callinit)
 			Player::p[i].SetInitLife(Replay::rpy.rpyinfo.initlife[i]);
 		}
 		SetScene(Replay::rpy.rpyinfo.scene);
+		SetMatchMode(Replay::rpy.rpyinfo.matchmode);
 	}
 	else
 	{
 		seed = timeGetTime();
-		if (matchmode == M_MATCHMODE_P2C)
-		{
-			GameAI::ai[1].SetAble(true);
-		}
-		else
-		{
-			GameAI::ai[1].SetAble(false);
-		}
-		if (matchmode == M_MATCHMODE_C2P)
-		{
-			GameAI::ai[0].SetAble(true);
-			GameInput::SwapInput(true);
-		}
-		else
-		{
-			GameAI::ai[0].SetAble(false);
-			GameInput::SwapInput(false);
-		}
 	}
 	srandt(seed);
 	hge->Random_Seed(seed);
@@ -93,6 +76,23 @@ void Process::startPrep(bool callinit)
 	Replay::rpy.InitReplayIndex(replaymode, part);
 
 	clearPrep();
+	if (matchmode == M_MATCHMODE_P2C)
+	{
+		GameAI::ai[1].SetAble(true);
+	}
+	else
+	{
+		GameAI::ai[1].SetAble(false);
+	}
+	if (matchmode == M_MATCHMODE_C2P)
+	{
+		GameAI::ai[0].SetAble(true);
+	}
+	else
+	{
+		GameAI::ai[0].SetAble(false);
+	}
+	SetInputSwap();
 
 	//set
 	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)

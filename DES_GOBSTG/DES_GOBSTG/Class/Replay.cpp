@@ -116,6 +116,7 @@ void Replay::Fill()
 	}
 
 	rpyinfo.lost = Player::lostStack / Process::mp.framecounter;
+	rpyinfo.matchmode = Process::mp.matchmode;
 	rpyinfo.offset = replayIndex;
 }
 

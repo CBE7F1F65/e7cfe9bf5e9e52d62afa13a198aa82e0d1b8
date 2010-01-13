@@ -62,6 +62,7 @@ public:
 	void	SetState(int state, int time = 0);
 	void	SetScene(BYTE scene);
 	void	SetReturnValue(int retval);
+	void	SetInputSwap();
 
 	int		AccessIP();
 	bool	SetLatency(int latency);

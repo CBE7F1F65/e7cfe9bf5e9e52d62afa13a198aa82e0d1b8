@@ -6,6 +6,18 @@ void Process::SyncInput()
 	GameInput::SyncControlInput();
 }
 
+void Process::SetInputSwap()
+{
+	if (matchmode == M_MATCHMODE_C2P)
+	{
+		GameInput::SwapInput(true);
+	}
+	else
+	{
+		GameInput::SwapInput(false);
+	}
+}
+
 int Process::getInput()
 {
 	GameInput::UpdateInput(state==STATE_START);

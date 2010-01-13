@@ -121,6 +121,8 @@ void Process::ClearAll()
 	}
 	replayFPS = 0;
 
+	GameInput::SwapInput(false);
+
 	pauseinit = false;
 	frameskip = M_DEFAULT_FRAMESKIP;
 }

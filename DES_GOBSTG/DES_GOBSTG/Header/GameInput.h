@@ -75,8 +75,10 @@ public:
 	static void SyncControlInput();
 	static void SyncForActiveInput();
 	static void SwapInput(bool setswap);
+private:
 	bool getKey(int ksi, int type=DIKEY_PRESSED);
 	void setKey(int ksi, bool set=true);
+public:
 	static bool GetKey(BYTE playerindex, int ksi, int type=DIKEY_PRESSED);
 	static void SetKey(BYTE playerindex, int ksi, bool set=true);
 

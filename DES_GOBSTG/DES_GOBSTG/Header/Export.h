@@ -49,7 +49,7 @@ struct replayInfo
 
 	float lost;
 
-	BYTE modeflag;
+	BYTE matchmode;
 	BYTE scene;
 
 	BYTE usingchara[M_PL_MATCHMAXPLAYER][M_PL_ONESETPLAYER];

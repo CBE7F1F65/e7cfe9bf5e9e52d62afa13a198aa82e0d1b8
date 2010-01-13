@@ -1261,6 +1261,30 @@ void Enemy::action()
 				giveItem(playerindex);
 			}
 
+			Player::p[playerindex].DoEnemyCollapse(x, y, type);
+			int tscore = Player::p[playerindex].nSpellPoint;
+			ScoreDisplay _item;
+			if (tscore < PLAYER_NSPELLPOINTMAX)
+			{
+				itoa(tscore, _item.cScore, 10);
+			}
+			else
+			{
+				strcpy(_item.cScore, "b");
+			}
+			_item.timer = 0;
+			_item.x = x;
+			_item.y = y;
+			if(tscore >= 300000)
+			{
+				_item.yellow = true;
+			}
+			else
+			{
+				_item.yellow = false;
+			}
+			scoredisplay[playerindex].push_back(_item);
+
 			BYTE blastmaxtime;
 			float blastr;
 			float blastpower;
@@ -1268,29 +1292,7 @@ void Enemy::action()
 			if (blastmaxtime && blastr > 0)
 			{
 				EventZone::Build(EVENTZONE_TYPE_SENDBULLET, playerindex, x, y, blastmaxtime, blastr);
-				Player::p[playerindex].DoEnemyCollapse(x, y, type);
-				int tscore = Player::p[playerindex].nSpellPoint;
-				ScoreDisplay _item;
-				if (tscore < PLAYER_NSPELLPOINTMAX)
-				{
-					itoa(tscore, _item.cScore, 10);
-				}
-				else
-				{
-					strcpy(_item.cScore, "b");
-				}
-				_item.timer = 0;
-				_item.x = x;
-				_item.y = y;
-				if(tscore >= 300000)
-				{
-					_item.yellow = true;
-				}
-				else
-				{
-					_item.yellow = false;
-				}
-				scoredisplay[playerindex].push_back(_item);
+//				EventZone::Build(EVENTZONE_TYPE_ENEMYDAMAGE, playerindex, x, y, blastmaxtime, 0, blastpower, EVENTZONE_EVENT_NULL, blastr/blastmaxtime);
 			}
 
 			if (sendsetID)
@@ -1303,7 +1305,8 @@ void Enemy::action()
 			}
 
 		}
-		else if (timer == 16)
+		
+		else if (timer == 8)
 		{
 			BYTE blastmaxtime;
 			float blastr;
@@ -1314,6 +1317,7 @@ void Enemy::action()
 				EventZone::Build(EVENTZONE_TYPE_ENEMYDAMAGE, playerindex, x, y, blastmaxtime, blastr, blastpower);
 			}
 		}
+		
 		else if(timer == 32)
 		{
 			eff.Stop();

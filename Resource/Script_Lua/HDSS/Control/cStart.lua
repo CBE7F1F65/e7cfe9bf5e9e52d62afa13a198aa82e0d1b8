@@ -123,19 +123,7 @@ function ControlExecute_cStart(timer)
 		hdssSE(SE_SYSTEM_PAUSE);
 		hdssSETSTATE(STATE_PAUSE, -1);
 	end
-	
-	if hdss.Get(HDSS_CHECKKEY, 0, KSI_DRAIN) then
---		hge.System_SetState(HGE_FRAMESKIP, 16);
-	end
-	local angle = RANDT(1, 36000)--hdssAMAP(0, 160, 0);
-	local type = RANDT(1, 10);
-	local color = RANDT(1, 12);
-	if math.mod(timer, 2) == 0 then
-		for i=0, 1 do
---			hdssBC(i, 5, angle, 0, helper_GetCenterX(i), 180, RANDTF(1.5, 3.5), type, color);
-		end
-	end
-	
+		
 	return true;
 
 end

@@ -42,6 +42,7 @@ void Process::frameEnd()
 			{
 				Player::ClearRound(Player::round+1);
 				clearPrep();
+				SetInputSwap();
 				return;
 			}
 		}

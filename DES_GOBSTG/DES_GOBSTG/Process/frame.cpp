@@ -27,13 +27,7 @@ int Process::frame()
 		return PTURN;
 	}
 #endif
-	if(
-		hge->Input_GetDIKey(GameInput::KS_SKIP)
-#ifdef __DEBUG
-		|| hge->Input_GetKeyState(HGEK_CTRL)
-		|| hge->Input_GetDIJoy(GameInput::JS_DEBUG_SPEEDUP)
-#endif
-		)
+	if (GameInput::GetKey(0, KSI_SKIP))
 	{
 		if (!replaymode)
 		{

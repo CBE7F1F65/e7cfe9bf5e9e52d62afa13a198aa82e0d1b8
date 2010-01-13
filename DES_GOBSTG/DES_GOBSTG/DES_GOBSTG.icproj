@@ -284,6 +284,8 @@
 		<File 
 			RelativePath=".\Class\FrontDisplay.cpp"/>
 		<File 
+			RelativePath=".\Class\GameAI.cpp"/>
+		<File 
 			RelativePath=".\Class\Ghost.cpp"/>
 		<File 
 			RelativePath=".\Class\InfoQuad.cpp"/>
@@ -309,8 +311,6 @@
 			RelativePath=".\Class\SelectSystem.cpp"/>
 		<File 
 			RelativePath=".\Class\Target.cpp"/>
-		<File 
-			RelativePath=".\Class\GameAI.cpp"/>
 		<File 
 			RelativePath=".\Process\frame.cpp"/>
 		<File 
@@ -446,6 +446,8 @@
 		<File 
 			RelativePath=".\Header\FrontDisplayName.h"/>
 		<File 
+			RelativePath=".\Header\GameAI.h"/>
+		<File 
 			RelativePath=".\Header\Ghost.h"/>
 		<File 
 			RelativePath=".\Header\InfoQuad.h"/>
@@ -469,8 +471,6 @@
 			RelativePath=".\Header\SelectSystem.h"/>
 		<File 
 			RelativePath=".\Header\Target.h"/>
-		<File 
-			RelativePath=".\Header\GameAI.h"/>
 	</Files>
 </VisualStudioProject>
 
