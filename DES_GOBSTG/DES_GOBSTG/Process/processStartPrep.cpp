@@ -79,6 +79,9 @@ void Process::startPrep(bool callinit)
 	if (matchmode == M_MATCHMODE_P2C)
 	{
 		GameAI::ai[1].SetAble(true);
+#ifdef __DEBUG
+		GameAI::ai[0].SetAble(true);
+#endif
 	}
 	else
 	{
@@ -88,10 +91,12 @@ void Process::startPrep(bool callinit)
 	{
 		GameAI::ai[0].SetAble(true);
 	}
+#ifndef __DEBUG
 	else
 	{
 		GameAI::ai[0].SetAble(false);
 	}
+#endif
 	SetInputSwap();
 
 	//set

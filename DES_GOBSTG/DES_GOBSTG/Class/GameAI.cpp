@@ -143,6 +143,14 @@ bool GameAI::CheckBulletCollision(Bullet * item)
 	{
 		return false;
 	}
+	if (item->fadeout)
+	{
+		return false;
+	}
+	if (!item->isInRect(x, y, r+speed, 1))
+	{
+		return false;
+	}
 	bool bret = false;
 	for (int i=0; i<GAMEAI_ABLEPOSITIONNUM; i++)
 	{
@@ -164,6 +172,10 @@ bool GameAI::CheckBeamCollision(Beam * item)
 	{
 		return false;
 	}
+	if (item->fadeout)
+	{
+		return false;
+	}
 	bool bret = false;
 	for (int i=0; i<GAMEAI_ABLEPOSITIONNUM; i++)
 	{
@@ -182,6 +194,10 @@ bool GameAI::CheckBeamCollision(Beam * item)
 bool GameAI::CheckEnemyCollision(Enemy * item, float w, float h)
 {
 	if (IsPlayerSafe())
+	{
+		return false;
+	}
+	if (item->fadeout)
 	{
 		return false;
 	}
@@ -256,7 +272,7 @@ bool GameAI::SetMove()
 		toy = -1.0f;
 	}
 
-	float neutral = 0.1f;
+	float neutral = 0.05f;
 
 	float randxprop = randtf(-1.0f-neutral, 1.0f+neutral);
 	float randyprop = randtf(-1.0f-neutral, 1.0f+neutral);
@@ -276,7 +292,7 @@ bool GameAI::SetMove()
 			risknum++;
 		}
 	}
-	if (risknum > GAMEAI_ABLEPOSITIONNUM/4 && nChargeMax && nCharge < 2 || Player::p[playerindex].timer % 8 != 0 || nChargeMax == 4 && nCharge < 2)
+	if (risknum > GAMEAI_ABLEPOSITIONNUM/4 && nChargeMax && !nCharge || Player::p[playerindex].timer % 8 != 0 || nChargeMax == 4 && nCharge < 2)
 	{
 		GameInput::SetKey(playerindex, KSI_FIRE, true);
 		GameInput::SetKey(playerindex, KSI_DRAIN, true);
@@ -365,7 +381,7 @@ bool GameAI::SetMove()
 			break;
 		}
 	}
-	if (bdone == false || Player::p[playerindex].flag & PLAYER_SHOT)
+	if ((bdone == false || Player::p[playerindex].flag & PLAYER_SHOT) && !Player::p[playerindex].bInfi)
 	{
 		if (!nCharge)
 		{
@@ -454,14 +470,14 @@ void GameAI::AnalyzeCheckOrderFinal(float tox, float toy, int xtend, int ytend)
 
 	float neutralprop = (fabsf(xtend) + fabsf(ytend)) / 2.0f;
 	int neutralpos = 0;
-	if (neutralprop <= 1.0f)
+	if (neutralprop <= 2.0f)
 	{
 	}
-	else if (neutralprop <= 1.5f)
+	else if (neutralprop <= 3.0f)
 	{
 		neutralpos = 3;
 	}
-	else if (neutralpos <= 2.0f)
+	else if (neutralpos <= 4.0f)
 	{
 		neutralpos = 8;
 	}

@@ -698,7 +698,7 @@ void Player::action()
 	GameAI::ai[playerindex].UpdateBasicInfo(x, y, speed*speedfactor, slowspeed*speedfactor, r);
 	float aiaimx = _PL_MERGETOPOS_X_(playerindex);
 	float aiaimy = _PL_MERGETOPOS_Y;
-	if (PlayerBullet::locked[playerindex] != PBLOCK_LOST && Enemy::en[playerindex][PlayerBullet::locked[playerindex]].y < _PL_MERGETOPOS_Y)
+	if (PlayerBullet::locked[playerindex] != PBLOCK_LOST)
 	{
 		aiaimx = Enemy::en[playerindex][PlayerBullet::locked[playerindex]].x;
 		aiaimy = Enemy::en[playerindex][PlayerBullet::locked[playerindex]].y + 120;
