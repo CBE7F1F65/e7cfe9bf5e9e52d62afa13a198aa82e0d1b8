@@ -50,11 +50,12 @@ public:
 	~GameAI();
 
 	static void Init();
+	static void ClearAll();
 
 	void SetAble(bool able);
 
 	bool UpdateBasicInfo(float x, float y, float speed, float slowspeed, float r);
-	bool SetAim(float aimx, float aimy);
+	bool SetAim(float aimx, float aimy, bool tobelow=false);
 	bool UpdateMoveAbleInfo();
 	bool IsPlayerSafe();
 	bool CheckBulletCollision(Bullet * bulletitem);
@@ -79,6 +80,9 @@ public:
 
 	float aimx;
 	float aimy;
+	bool aimtobelow;
+
+	bool inrisk;
 
 	bool able;
 

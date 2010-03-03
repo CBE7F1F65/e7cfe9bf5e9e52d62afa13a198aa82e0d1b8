@@ -21,6 +21,15 @@ void GameAI::Init()
 	}
 }
 
+void GameAI::ClearAll()
+{
+	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
+	{
+		ai[i].aimtobelow = false;
+		ai[i].inrisk = false;
+	}
+}
+
 void GameAI::SetAble(bool _able)
 {
 	able = _able;
@@ -105,7 +114,7 @@ bool GameAI::UpdateMoveAbleInfo()
 	return true;
 }
 
-bool GameAI::SetAim(float _aimx, float _aimy)
+bool GameAI::SetAim(float _aimx, float _aimy, bool tobelow)
 {
 	if (!able)
 	{
@@ -121,6 +130,7 @@ bool GameAI::SetAim(float _aimx, float _aimy)
 		aimy = PL_MOVABLE_BOTTOM;
 	else if(aimy < PL_MOVABLE_TOP)
 		aimy = PL_MOVABLE_TOP;
+	aimtobelow = tobelow;
 	return true;
 }
 
@@ -156,7 +166,7 @@ bool GameAI::CheckBulletCollision(Bullet * item)
 	{
 		if (moveablepos[i].risk < GAMEAI_RISK_FULL)
 		{
-			if (item->isInRect(moveablepos[i].x, moveablepos[i].y, r, 1))
+			if (item->isInRect(moveablepos[i].x, moveablepos[i].y, r, 1) || item->isInRect(moveablepos[i].x, moveablepos[i].y, r))
 			{
 				moveablepos[i].risk = GAMEAI_RISK_FULL;
 				bret = true;
@@ -252,6 +262,23 @@ bool GameAI::SetMove()
 
 	float overr = 80.0f;
 
+	//below
+	if (aimtobelow)
+	{
+		if (aimy < y)
+		{
+			if (aimy < M_CLIENT_CENTER_Y)
+			{
+				aimy = M_CLIENT_CENTER_Y;
+			}
+			else
+			{
+				aimy = y;
+			}
+		}
+	}
+	//
+
 	tox = (aimx - x) / speed / overr;
 	toy = (aimy - y) / speed / overr;
 
@@ -292,7 +319,15 @@ bool GameAI::SetMove()
 			risknum++;
 		}
 	}
-	if (risknum > GAMEAI_ABLEPOSITIONNUM/4 && nChargeMax && !nCharge || Player::p[playerindex].timer % 8 != 0 || nChargeMax == 4 && nCharge < 2)
+	if (risknum > GAMEAI_ABLEPOSITIONNUM/2)
+	{
+		inrisk = true;
+	}
+	else if (nCharge)
+	{
+		inrisk = false;
+	}
+	if (inrisk && nChargeMax && !nCharge || Player::p[playerindex].timer % 8 != 0 || nChargeMax == 4 && nCharge < 2)
 	{
 		GameInput::SetKey(playerindex, KSI_FIRE, true);
 		GameInput::SetKey(playerindex, KSI_DRAIN, true);

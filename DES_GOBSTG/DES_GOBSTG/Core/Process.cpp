@@ -109,6 +109,7 @@ void Process::ClearAll()
 	BossInfo::Clear();
 	EffectSp::ClearItem();
 	EventZone::Clear();
+	GameAI::ClearAll();
 	SpriteItemManager::FreeFrontSprite();
 	for (int i=0; i<FRAME_STOPINFOMAX; i++)
 	{

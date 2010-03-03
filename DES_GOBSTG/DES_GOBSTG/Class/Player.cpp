@@ -698,12 +698,14 @@ void Player::action()
 	GameAI::ai[playerindex].UpdateBasicInfo(x, y, speed*speedfactor, slowspeed*speedfactor, r);
 	float aiaimx = _PL_MERGETOPOS_X_(playerindex);
 	float aiaimy = _PL_MERGETOPOS_Y;
+	bool tobelow = false;
 	if (PlayerBullet::locked[playerindex] != PBLOCK_LOST)
 	{
 		aiaimx = Enemy::en[playerindex][PlayerBullet::locked[playerindex]].x;
 		aiaimy = Enemy::en[playerindex][PlayerBullet::locked[playerindex]].y + 120;
+		tobelow = true;
 	}
-	GameAI::ai[playerindex].SetAim(aiaimx, aiaimy);
+	GameAI::ai[playerindex].SetAim(aiaimx, aiaimy, tobelow);
 	//
 	//
 	speedfactor = 1.0f;
