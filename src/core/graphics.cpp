@@ -721,6 +721,7 @@ bool HGE_Impl::_GfxInit()
 	d3dppW.BackBufferFormat = Mode.Format;
 	d3dppW.BackBufferCount  = 1;
 	d3dppW.MultiSampleType  = D3DMULTISAMPLE_NONE;
+	d3dppW.PresentationInterval = D3DPRESENT_INTERVAL_IMMEDIATE;
 	d3dppW.hDeviceWindow    = hwnd;
 	d3dppW.Windowed         = TRUE;
 

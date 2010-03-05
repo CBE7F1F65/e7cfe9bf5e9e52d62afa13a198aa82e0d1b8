@@ -1,13 +1,13 @@
-#include "Player.h"
-#include "PlayerBullet.h"
-#include "SE.h"
-#include "Enemy.h"
-#include "Chat.h"
-#include "Process.h"
-#include "BResource.h"
-#include "SpriteItemManager.h"
+#include "../header/Player.h"
+#include "../header/PlayerBullet.h"
+#include "../header/SE.h"
+#include "../header/Enemy.h"
+#include "../header/Chat.h"
+#include "../header/Process.h"
+#include "../header/BResource.h"
+#include "../header/SpriteItemManager.h"
 
-#include "GameAI.h"
+#include "../header/GameAI.h"
 
 #define _PLAYER_ANIMATIONSPEED	8
 

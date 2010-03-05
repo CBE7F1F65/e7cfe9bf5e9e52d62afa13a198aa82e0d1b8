@@ -3,6 +3,7 @@
 	ProjectType="Visual C++"
 	Version="7.10"
 	Name="ResourcePack"
+	OwnerKey="{EAF909A5-FA59-4C3D-9431-0FCC20D5BCF9}"
 	ProjectGUID="{CC6B7C65-9F18-4357-9789-720008D179D0}"
 	Keyword="MFCProj">
 	<Platforms>
@@ -16,17 +17,18 @@
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
 			UseOfMFC="1"
+			ATLMinimizesCRunTimeLibraryUsage="FALSE"
 			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				OptimizeForWindowsApplication="TRUE"
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG;__DEBUG"
-				StringPooling="TRUE"
+				StringPooling="FALSE"
 				MinimalRebuild="FALSE"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
-				EnableFunctionLevelLinking="TRUE"
+				EnableFunctionLevelLinking="FALSE"
 				TreatWChar_tAsBuiltInType="FALSE"
 				UsePrecompiledHeader="0"
 				WarningLevel="1"
@@ -75,11 +77,12 @@
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
 			UseOfMFC="1"
+			ATLMinimizesCRunTimeLibraryUsage="FALSE"
 			CharacterSet="2"
 			WholeProgramOptimization="TRUE">
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="2"
+				Optimization="3"
 				GlobalOptimizations="TRUE"
 				EnableIntrinsicFunctions="TRUE"
 				ImproveFloatingPointConsistency="TRUE"
@@ -92,12 +95,13 @@
 				StringPooling="TRUE"
 				MinimalRebuild="FALSE"
 				RuntimeLibrary="0"
+				BufferSecurityCheck="FALSE"
 				EnableFunctionLevelLinking="TRUE"
 				EnableEnhancedInstructionSet="0"
 				TreatWChar_tAsBuiltInType="FALSE"
 				UsePrecompiledHeader="0"
 				WarningLevel="1"
-				Detect64BitPortabilityProblems="FALSE"
+				Detect64BitPortabilityProblems="TRUE"
 				DebugInformationFormat="0"/>
 			<Tool
 				Name="VCCustomBuildTool"/>
@@ -149,11 +153,11 @@
 			WholeProgramOptimization="TRUE">
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="1"
+				Optimization="3"
 				GlobalOptimizations="TRUE"
 				EnableIntrinsicFunctions="TRUE"
 				ImproveFloatingPointConsistency="TRUE"
-				FavorSizeOrSpeed="2"
+				FavorSizeOrSpeed="1"
 				OmitFramePointers="TRUE"
 				EnableFiberSafeOptimizations="TRUE"
 				WholeProgramOptimization="TRUE"
@@ -180,6 +184,7 @@
 				DelayLoadDLLs="hge.dll"
 				GenerateDebugInformation="FALSE"
 				SubSystem="2"
+				LargeAddressAware="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
 				TargetMachine="0"/>

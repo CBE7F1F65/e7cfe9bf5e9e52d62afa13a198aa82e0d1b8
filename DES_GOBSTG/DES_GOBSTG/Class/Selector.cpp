@@ -1,9 +1,9 @@
-#include "Selector.h"
-#include "SE.h"
-#include "Main.h"
-#include "Process.h"
-#include "SpriteItemManager.h"
-#include "BObject.h"
+#include "../header/Selector.h"
+#include "../header/SE.h"
+#include "../header/Main.h"
+#include "../header/Process.h"
+#include "../header/SpriteItemManager.h"
+#include "../header/BObject.h"
 
 Selector::Selector()
 {

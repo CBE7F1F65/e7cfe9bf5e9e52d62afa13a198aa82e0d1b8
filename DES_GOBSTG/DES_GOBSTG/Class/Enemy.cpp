@@ -1,17 +1,17 @@
-#include "Enemy.h"
-#include "Player.h"
-#include "SE.h"
-#include "Item.h"
-#include "Scripter.h"
-#include "Chat.h"
-#include "BossInfo.h"
-#include "Process.h"
-#include "BResource.h"
-#include "FrontDisplay.h"
-#include "EffectIDDefine.h"
-#include "EventZone.h"
-#include "SpriteItemManager.h"
-#include "GameAI.h"
+#include "../header/Enemy.h"
+#include "../header/Player.h"
+#include "../header/SE.h"
+#include "../header/Item.h"
+#include "../header/Scripter.h"
+#include "../header/Chat.h"
+#include "../header/BossInfo.h"
+#include "../header/Process.h"
+#include "../header/BResource.h"
+#include "../header/FrontDisplay.h"
+#include "../header/EffectIDDefine.h"
+#include "../header/EventZone.h"
+#include "../header/SpriteItemManager.h"
+#include "../header/GameAI.h"
 
 #define _DAMAGEZONEMAX	0x10
 
@@ -142,9 +142,9 @@ void Enemy::Action(DWORD stopflag)
 	PlayerBullet::ClearLock();
 	for (int j=0; j<M_PL_MATCHMAXPLAYER; j++)
 	{
-		for (int i=0; i<ENEMY_NMAXSETMAX; i++)
+		for (int k=0; k<ENEMY_NMAXSETMAX; k++)
 		{
-			nEnemyNow[j][i] = 0;
+			nEnemyNow[j][k] = 0;
 		}
 //		bossindex[j] = 0xff;
 		DWORD i = 0;

@@ -1,5 +1,5 @@
-#include "GameInput.h"
-#include "ConstResource.h"
+#include "../Header/GameInput.h"
+#include "../Header/ConstResource.h"
 
 GameInput GameInput::gameinput[M_PL_MATCHMAXPLAYER];
 HGE * GameInput::hge = NULL;

@@ -111,11 +111,13 @@ void hgeSprite::Render(float x, float y)
 	/************************************************************************/
 	/* This condition is added by h5nc (h5nc@yahoo.com.cn)                  */
 	/************************************************************************/
+	
 	if (hge->System_GetState(HGE_2DMODE))
 	{
 		RenderEx(x, y, 0);
 		return;
 	}
+	
 	float tempx1, tempy1, tempx2, tempy2;
 
 	tempx1 = x-hotX;

@@ -1,5 +1,5 @@
-#include "SE.h"
-#include "BResource.h"
+#include "../header/SE.h"
+#include "../header/BResource.h"
 #include "../../../src/core/BASS/bass.h"
 
 //pan coefficient

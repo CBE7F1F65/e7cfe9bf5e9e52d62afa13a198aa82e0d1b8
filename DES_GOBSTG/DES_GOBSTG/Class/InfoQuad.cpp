@@ -1,4 +1,4 @@
-#include "InfoQuad.h"
+#include "../header/InfoQuad.h"
 
 HTEXTURE InfoQuad::tex;
 

@@ -1,8 +1,8 @@
-#include "Fontsys.h"
-#include "Main.h"
-#include "Scripter.h"
-#include "Data.h"
-#include "SpriteItemManager.h"
+#include "../header/Fontsys.h"
+#include "../header/Main.h"
+#include "../header/Scripter.h"
+#include "../header/Data.h"
+#include "../header/SpriteItemManager.h"
 
 list<Fontsys *> Fontsys::fontsys;
 HD3DFONT Fontsys::font = NULL;
@@ -30,27 +30,38 @@ void Fontsys::ReleaseTargetAndSprite()
 	SpriteItemManager::FreeSprite(&sprite);
 }
 
-list<Fontsys *>::iterator Fontsys::SignOff()
+bool Fontsys::SignOff(bool erase)
 {
 	ReleaseTargetAndSprite();
 	strcpy(text, "");
+	if (!erase)
+	{
+		return true;
+	}
 	for (list<Fontsys *>::iterator it=fontsys.begin(); it!= fontsys.end(); it++)
 	{
 		if (*it == this)
 		{
 			it = fontsys.erase(it);
-			return it;
+			return true;
 		}
 	}
 //	ZeroMemory(&quad, sizeof(hgeQuad));
-	return fontsys.end();
+	return false;
 }
 
 void Fontsys::Release()
 {
-	for (list<Fontsys *>::iterator it=fontsys.begin(); it!=fontsys.end(); it++)
+	for (list<Fontsys *>::iterator it=fontsys.begin(); it!=fontsys.end();)
 	{
-		it = (*it)->SignOff();
+		if ((*it)->SignOff(false))
+		{
+			it = fontsys.erase(it);
+		}
+		else
+		{
+			it++;
+		}
 	}
 	fontsys.clear();
 }

@@ -1,9 +1,9 @@
-#include "Process.h"
-#include "Player.h"
-#include "Data.h"
-#include "DataConnector.h"
-#include "Replay.h"
-#include "GameInput.h"
+#include "../Header/Process.h"
+#include "../Header/Player.h"
+#include "../Header/Data.h"
+#include "../Header/DataConnector.h"
+#include "../Header/Replay.h"
+#include "../Header/GameInput.h"
 
 void Process::frameStart()
 {

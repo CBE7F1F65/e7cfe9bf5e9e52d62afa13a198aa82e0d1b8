@@ -1,5 +1,5 @@
-#include "Export.h"
-#include "ConstResource.h"
+#include "../Header/Export.h"
+#include "../Header/ConstResource.h"
 
 char Export::resourcefilename[M_PATHMAX];
 char Export::resbinname[M_PATHMAX];

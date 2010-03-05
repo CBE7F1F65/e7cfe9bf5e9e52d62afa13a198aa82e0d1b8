@@ -1,8 +1,8 @@
 #ifndef __NOTUSELUA
 
-#include "../Header/Export_Lua.h"
-#include "../Header/LuaConstDefine.h"
-#include "../Header/BResource.h"
+#include "../Header/../Header/Export_Lua.h"
+#include "../Header/../Header/LuaConstDefine.h"
+#include "../Header/../Header/BResource.h"
 
 bool Export_Lua::_LuaRegistConst(LuaObject * obj)
 {

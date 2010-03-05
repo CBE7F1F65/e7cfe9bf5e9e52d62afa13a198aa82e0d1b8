@@ -33,7 +33,7 @@ public:
 	static void Release();
 
 	void SignUp(const char * text = NULL, HD3DFONT font=NULL);
-	list<Fontsys *>::iterator SignOff();
+	bool SignOff(bool erase = true);
 	void ReleaseTargetAndSprite();
 	void SetColor(DWORD col, int i);
 	void SetColor(DWORD col0, DWORD col1, DWORD col2, DWORD col3);

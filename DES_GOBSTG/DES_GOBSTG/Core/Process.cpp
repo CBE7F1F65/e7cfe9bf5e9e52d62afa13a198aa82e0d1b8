@@ -1,5 +1,5 @@
-#include "processPrep.h"
-#include "GameInput.h"
+#include "../Header/processPrep.h"
+#include "../Header/GameInput.h"
 
 Process Process::mp;
 

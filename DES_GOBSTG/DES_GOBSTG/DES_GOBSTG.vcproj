@@ -3,6 +3,7 @@
 	ProjectType="Visual C++"
 	Version="7.10"
 	Name="DES_GOBSTG"
+	OwnerKey="{EAF909A5-FA59-4C3D-9431-0FCC20D5BCF9}"
 	ProjectGUID="{7329E15F-F0AE-44EE-BC64-27B9038C76D7}"
 	RootNamespace="DES_GOBSTG"
 	Keyword="Win32Proj">
@@ -25,16 +26,16 @@
 				OptimizeForProcessor="0"
 				OptimizeForWindowsApplication="TRUE"
 				PreprocessorDefinitions="WIN32;_DEBUG;__DEBUG"
-				StringPooling="TRUE"
+				StringPooling="FALSE"
 				MinimalRebuild="FALSE"
 				ExceptionHandling="TRUE"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
-				EnableFunctionLevelLinking="TRUE"
+				EnableFunctionLevelLinking="FALSE"
 				EnableEnhancedInstructionSet="0"
 				UsePrecompiledHeader="0"
 				WarningLevel="1"
-				Detect64BitPortabilityProblems="FALSE"
+				Detect64BitPortabilityProblems="TRUE"
 				DebugInformationFormat="4"/>
 			<Tool
 				Name="VCCustomBuildTool"/>
@@ -76,12 +77,13 @@
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
+			ATLMinimizesCRunTimeLibraryUsage="FALSE"
 			CharacterSet="2"
 			ManagedExtensions="FALSE"
 			WholeProgramOptimization="TRUE">
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="2"
+				Optimization="3"
 				GlobalOptimizations="TRUE"
 				InlineFunctionExpansion="0"
 				EnableIntrinsicFunctions="TRUE"
@@ -102,6 +104,7 @@
 				TreatWChar_tAsBuiltInType="FALSE"
 				UsePrecompiledHeader="0"
 				WarningLevel="1"
+				Detect64BitPortabilityProblems="TRUE"
 				DebugInformationFormat="0"
 				CompileAs="0"/>
 			<Tool
@@ -111,6 +114,7 @@
 				AdditionalOptions=""
 				OutputFile="$(OutDir)/$(ProjectName).exe"
 				LinkIncremental="0"
+				IgnoreDefaultLibraryNames=""
 				DelayLoadDLLs="hge.dll"
 				GenerateDebugInformation="FALSE"
 				GenerateMapFile="FALSE"
@@ -156,7 +160,7 @@
 			WholeProgramOptimization="TRUE">
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="2"
+				Optimization="3"
 				GlobalOptimizations="TRUE"
 				InlineFunctionExpansion="0"
 				EnableIntrinsicFunctions="TRUE"
@@ -195,7 +199,7 @@
 				HeapCommitSize="0"
 				StackReserveSize="0"
 				StackCommitSize="0"
-				LargeAddressAware="0"
+				LargeAddressAware="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
 				TargetMachine="0"/>

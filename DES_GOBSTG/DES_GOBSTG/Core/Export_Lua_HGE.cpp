@@ -1,8 +1,8 @@
 #ifndef __NOTUSELUA
 
-#include "../Header/Export_Lua_HGE.h"
-#include "../Header/LuaConstDefine.h"
-#include "../Header/Export.h"
+#include "../Header/../Header/Export_Lua_HGE.h"
+#include "../Header/../Header/LuaConstDefine.h"
+#include "../Header/../Header/Export.h"
 
 hgeChannelSyncInfo Export_Lua_HGE::channelsyncinfo;
 

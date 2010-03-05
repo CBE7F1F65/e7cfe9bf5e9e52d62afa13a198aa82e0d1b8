@@ -1,11 +1,11 @@
-#include "EffectSp.h"
-#include "Player.h"
-#include "Enemy.h"
-#include "SpriteItemManager.h"
-#include "FrontDisplayName.h"
-#include "Bullet.h"
-#include "Scripter.h"
-#include "ProcessDefine.h"
+#include "../header/EffectSp.h"
+#include "../header/Player.h"
+#include "../header/Enemy.h"
+#include "../header/SpriteItemManager.h"
+#include "../header/FrontDisplayName.h"
+#include "../header/Bullet.h"
+#include "../header/Scripter.h"
+#include "../header/ProcessDefine.h"
 
 #define EFFSPMAX	(BULLETMAX)
 

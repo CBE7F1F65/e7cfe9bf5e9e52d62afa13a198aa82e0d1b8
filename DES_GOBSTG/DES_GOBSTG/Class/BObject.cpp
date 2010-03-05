@@ -1,4 +1,4 @@
-#include "BObject.h"
+#include "../header/BObject.h"
 
 BObject BObject::bobj;
 float BObject::newx=0;

@@ -1,10 +1,10 @@
 #ifndef __NOTUSELUA
 
-#include "Export_Lua.h"
-#include "Export_Lua_HGEHelp.h"
-#include "Const.h"
-#include "LuaConstDefine.h"
-#include "ConstResource.h"
+#include "../Header/Export_Lua.h"
+#include "../Header/Export_Lua_HGEHelp.h"
+#include "../Header/Const.h"
+#include "../Header/LuaConstDefine.h"
+#include "../Header/ConstResource.h"
 
 LuaStateOwner Export_Lua::state;
 HGE * Export_Lua::hge = NULL;

@@ -1,10 +1,10 @@
-#include "PlayerGhost.h"
-#include "Player.h"
-#include "Main.h"
-#include "Process.h"
-#include "SpriteItemManager.h"
-#include "BResource.h"
-#include "GameInput.h"
+#include "../header/PlayerGhost.h"
+#include "../header/Player.h"
+#include "../header/Main.h"
+#include "../header/Process.h"
+#include "../header/SpriteItemManager.h"
+#include "../header/BResource.h"
+#include "../header/GameInput.h"
 
 #define _PLAYERGHOST_ADJUSTTIME	0x10
 #define _PLAYERGHOST_LASTINDEX	0

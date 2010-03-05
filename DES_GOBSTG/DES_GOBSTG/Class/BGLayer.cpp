@@ -1,9 +1,9 @@
-#include "BGLayer.h"
-#include "Main.h"
-#include "SpriteItemManager.h"
-#include "Scripter.h"
-#include "Export.h"
-#include "ProcessDefine.h"
+#include "../header/BGLayer.h"
+#include "../header/Main.h"
+#include "../header/SpriteItemManager.h"
+#include "../header/Scripter.h"
+#include "../header/Export.h"
+#include "../header/ProcessDefine.h"
 
 BGLayerSet BGLayer::bglayerset[M_PL_MATCHMAXPLAYER][BGLAYERSETMAX];
 BGLayer BGLayer::ubg[M_PL_MATCHMAXPLAYER][UBGLAYERMAX];

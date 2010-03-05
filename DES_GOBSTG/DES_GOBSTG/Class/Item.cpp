@@ -1,12 +1,12 @@
-#include "Item.h"
-#include "Player.h"
-#include "Bullet.h"
-#include "SE.h"
-#include "SpriteItemManager.h"
-#include "FrontDisplayName.h"
-#include "FrontDisplay.h"
-#include "Export.h"
-#include "ProcessDefine.h"
+#include "../header/Item.h"
+#include "../header/Player.h"
+#include "../header/Bullet.h"
+#include "../header/SE.h"
+#include "../header/SpriteItemManager.h"
+#include "../header/FrontDisplayName.h"
+#include "../header/FrontDisplay.h"
+#include "../header/Export.h"
+#include "../header/ProcessDefine.h"
 
 hgeSprite * Item::sprite[ITEMSPRITEMAX];
 

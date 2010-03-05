@@ -1,5 +1,5 @@
-#include "Process.h"
-#include "GameInput.h"
+#include "../Header/Process.h"
+#include "../Header/GameInput.h"
 
 void Process::SyncInput()
 {

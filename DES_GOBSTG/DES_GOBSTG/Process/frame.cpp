@@ -1,9 +1,9 @@
-#include "Process.h"
-#include "Scripter.h"
-#include "Chat.h"
-#include "DataConnector.h"
-#include "BossInfo.h"
-#include "GameInput.h"
+#include "../Header/Process.h"
+#include "../Header/Scripter.h"
+#include "../Header/Chat.h"
+#include "../Header/DataConnector.h"
+#include "../Header/BossInfo.h"
+#include "../Header/GameInput.h"
 
 int Process::frame()
 {

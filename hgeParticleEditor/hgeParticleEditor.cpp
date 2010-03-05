@@ -1,9 +1,9 @@
-#include "hge.h"
-#include "Export.h"
-#include "BResource.h"
-#include "Data.h"
-#include "vld.h"
-#include "hgeEffectSystem.h"
+#include "../include/hge.h"
+#include "../DES_GOBSTG/DES_GOBSTG/Header/Export.h"
+#include "../DES_GOBSTG/DES_GOBSTG/Header/BResource.h"
+#include "../DES_GOBSTG/DES_GOBSTG/Header/Data.h"
+#include <vld.h>
+#include "../include/hgeEffectSystem.h"
 #include "EditorRes.h"
 #include "EditorUI.h"
 

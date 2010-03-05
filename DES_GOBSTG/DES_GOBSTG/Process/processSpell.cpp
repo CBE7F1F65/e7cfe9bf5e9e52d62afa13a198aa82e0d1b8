@@ -1,7 +1,7 @@
-#include "Process.h"
-#include "Scripter.h"
-#include "SelectSystem.h"
-#include "SE.h"
+#include "../Header/Process.h"
+#include "../Header/Scripter.h"
+#include "../Header/SelectSystem.h"
+#include "../Header/SE.h"
 
 int Process::processSpell()
 {

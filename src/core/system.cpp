@@ -361,8 +361,8 @@ bool CALL HGE_Impl::System_Start()
    
 			if (Timer_GetCurrentSystemTime() - lastTime >= TimeInterval)
 		    {
-				if (GetThreadPriority(GetCurrentThread()) > THREAD_PRIORITY_NORMAL)
-					SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_NORMAL);
+//				if (GetThreadPriority(GetCurrentThread()) > THREAD_PRIORITY_NORMAL)
+//					SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_NORMAL);
 		    }
 		    else
 		    {

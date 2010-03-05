@@ -1,12 +1,12 @@
 #ifndef __NOTUSELUA
 
-#include "../Header/Export_Lua.h"
-#include "../Header/LuaConstDefine.h"
+#include "../Header/../Header/Export_Lua.h"
+#include "../Header/../Header/LuaConstDefine.h"
 
-#include "../Header/Export_Lua_HGE.h"
-#include "../Header/Export_Lua_HGEHelp.h"
-#include "../Header/Export_Lua_HDSS.h"
-#include "../Header/Export_Lua_Game.h"
+#include "../Header/../Header/Export_Lua_HGE.h"
+#include "../Header/../Header/Export_Lua_HGEHelp.h"
+#include "../Header/../Header/Export_Lua_HDSS.h"
+#include "../Header/../Header/Export_Lua_Game.h"
 
 bool Export_Lua::_LuaRegistFunction(LuaObject * obj)
 {
@@ -234,11 +234,11 @@ void Export_Lua::_LuaHelper_GetCalculateValue(LuaObject * obj, char calchar, boo
 		_dword = _LuaHelper_GetDWORD(obj);
 		if (buseq)
 		{
-			CULONGLONG(val) = _int;
+			CULONGLONG(val) = _dword;
 		}
 		else
 		{
-			CLONGLONG(val) = _int;
+			CLONGLONG(val) = _dword;
 		}
 		break;
 	case LUACALCULATESTR_LONGLONG:

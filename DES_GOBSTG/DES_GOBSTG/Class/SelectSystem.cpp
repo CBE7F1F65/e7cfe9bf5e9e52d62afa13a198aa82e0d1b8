@@ -1,11 +1,11 @@
-#include "SelectSystem.h"
-#include "Main.h"
-#include "Process.h"
-#include "SpriteItemManager.h"
-#include "PushKey.h"
-#include "SE.h"
-#include "PushKey.h"
-#include "GameInput.h"
+#include "../header/SelectSystem.h"
+#include "../header/Main.h"
+#include "../header/Process.h"
+#include "../header/SpriteItemManager.h"
+#include "../header/PushKey.h"
+#include "../header/SE.h"
+#include "../header/PushKey.h"
+#include "../header/GameInput.h"
 
 SelectSystem SelectSystem::selsys[SELSYSTEMMAX];
 

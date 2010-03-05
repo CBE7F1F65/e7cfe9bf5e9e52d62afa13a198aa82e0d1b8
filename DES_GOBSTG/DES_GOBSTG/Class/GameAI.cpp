@@ -1,6 +1,6 @@
-#include "GameAI.h"
-#include "GameInput.h"
-#include "Player.h"
+#include "../header/GameAI.h"
+#include "../header/GameInput.h"
+#include "../header/Player.h"
 
 GameAI GameAI::ai[M_PL_MATCHMAXPLAYER];
 

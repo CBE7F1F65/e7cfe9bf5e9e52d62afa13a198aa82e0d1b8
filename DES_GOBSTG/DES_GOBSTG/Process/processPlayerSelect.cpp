@@ -1,5 +1,5 @@
-#include "Process.h"
-#include "Scripter.h"
+#include "../Header/Process.h"
+#include "../Header/Scripter.h"
 
 int Process::processPlayerSelect()
 {

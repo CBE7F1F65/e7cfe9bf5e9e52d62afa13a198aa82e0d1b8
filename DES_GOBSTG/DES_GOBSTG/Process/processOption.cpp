@@ -1,11 +1,11 @@
-#include "Process.h"
-#include "Scripter.h"
-#include "SelectSystem.h"
-#include "SpriteItemManager.h"
-#include "FrontDisplayName.h"
-#include "SE.h"
-#include "PushKey.h"
-#include "ConstResource.h"
+#include "../Header/Process.h"
+#include "../Header/Scripter.h"
+#include "../Header/SelectSystem.h"
+#include "../Header/SpriteItemManager.h"
+#include "../Header/FrontDisplayName.h"
+#include "../Header/SE.h"
+#include "../Header/PushKey.h"
+#include "../Header/ConstResource.h"
 
 int Process::processOption()
 {

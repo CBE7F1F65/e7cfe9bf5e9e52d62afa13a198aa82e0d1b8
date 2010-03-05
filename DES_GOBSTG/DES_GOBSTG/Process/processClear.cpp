@@ -1,11 +1,11 @@
-#include "Process.h"
-#include "Player.h"
-#include "DataConnector.h"
-#include "BGLayer.h"
-#include "Replay.h"
-#include "FrontDisplay.h"
-#include "Data.h"
-#include "Scripter.h"
+#include "../Header/Process.h"
+#include "../Header/Player.h"
+#include "../Header/DataConnector.h"
+#include "../Header/BGLayer.h"
+#include "../Header/Replay.h"
+#include "../Header/FrontDisplay.h"
+#include "../Header/Data.h"
+#include "../Header/Scripter.h"
 
 #define _PCLEAR_FDISP_TIME			240
 #define _PCLEAR_FDIPS_CANCELTIME	60

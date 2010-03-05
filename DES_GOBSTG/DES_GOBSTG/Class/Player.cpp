@@ -1,25 +1,25 @@
-#include "Player.h"
+#include "../header/Player.h"
 
-#include "Process.h"
-#include "BGLayer.h"
-#include "SE.h"
+#include "../header/Process.h"
+#include "../header/BGLayer.h"
+#include "../header/SE.h"
 
-#include "PlayerBullet.h"
-#include "Item.h"
-#include "Enemy.h"
-#include "Bullet.h"
-#include "Chat.h"
-#include "BossInfo.h"
-#include "EffectIDDefine.h"
-#include "SpriteItemManager.h"
-#include "FrontDisplayName.h"
-#include "FrontDisplay.h"
-#include "EventZone.h"
-#include "BResource.h"
-#include "Scripter.h"
-#include "GameInput.h"
+#include "../header/PlayerBullet.h"
+#include "../header/Item.h"
+#include "../header/Enemy.h"
+#include "../header/Bullet.h"
+#include "../header/Chat.h"
+#include "../header/BossInfo.h"
+#include "../header/EffectIDDefine.h"
+#include "../header/SpriteItemManager.h"
+#include "../header/FrontDisplayName.h"
+#include "../header/FrontDisplay.h"
+#include "../header/EventZone.h"
+#include "../header/BResource.h"
+#include "../header/Scripter.h"
+#include "../header/GameInput.h"
 
-#include "GameAI.h"
+#include "../header/GameAI.h"
 
 #define _GAMERANK_MIN	8
 #define _GAMERANK_MAX	22
@@ -387,7 +387,7 @@ void Player::action()
 	//	GameAI::ai[playerindex].UpdateBasicInfo(x, y, speed, slowspeed, BResource::res.playerdata[nowID].collision_r);
 	GameAI::ai[playerindex].SetMove();
 	//
-	//
+	
 	if(flag & PLAYER_MERGE)
 	{
 		if(Merge())

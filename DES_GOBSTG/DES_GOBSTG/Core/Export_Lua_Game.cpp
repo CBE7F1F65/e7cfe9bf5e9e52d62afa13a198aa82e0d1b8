@@ -1,8 +1,8 @@
 #ifndef __NOTUSELUA
 #ifndef __NOTINTHISGAME
 
-#include "Export_Lua_Game.h"
-#include "processPrep.h"
+#include "../Header/Export_Lua_Game.h"
+#include "../Header/processPrep.h"
 
 bool Export_Lua_Game::_LuaRegistConst(LuaObject * obj)
 {

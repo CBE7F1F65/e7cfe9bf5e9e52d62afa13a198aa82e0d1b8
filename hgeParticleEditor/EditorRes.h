@@ -1,9 +1,9 @@
 #ifndef _EDITORRES_H
 #define _EDITORRES_H
 
-#include "MainDependency.h"
-#include "Const.h"
-#include "hgeEffectSystem.h"
+#include "../DES_GOBSTG/DES_GOBSTG/header/MainDependency.h"
+#include "../DES_GOBSTG/DES_GOBSTG/header/Const.h"
+#include "../include/hgeEffectSystem.h"
 
 #define M_ACTIVECLIENT_LEFT		0.0f
 #define M_ACTIVECLIENT_RIGHT	448.0f

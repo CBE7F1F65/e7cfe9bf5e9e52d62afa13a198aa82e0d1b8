@@ -1,7 +1,6 @@
 // CustomDlg.cpp : 实现文件
 //
 
-#include "vld.h"
 #include "stdafx.h"
 #include "Custom.h"
 #include "CustomDlg.h"

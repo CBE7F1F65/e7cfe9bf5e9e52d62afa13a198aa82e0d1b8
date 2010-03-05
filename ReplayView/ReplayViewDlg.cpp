@@ -2,7 +2,6 @@
 //
 
 #include "stdafx.h"
-#include "vld.h"
 #include "ReplayView.h"
 #include "ReplayViewDlg.h"
 #include ".\replayviewdlg.h"

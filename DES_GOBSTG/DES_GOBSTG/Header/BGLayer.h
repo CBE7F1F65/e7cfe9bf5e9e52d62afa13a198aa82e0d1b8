@@ -47,9 +47,6 @@
 #define FG_PAUSEOUT		0xf1
 #define FGMT_PAUSE		0x18
 
-#define UBGID_BGMASK		UBGLAYERMAX - 2
-#define UFGID_FGPAUSE		UBGLAYERMAX - 1
-
 struct BGLayerSet
 {
 	DWORD timer;

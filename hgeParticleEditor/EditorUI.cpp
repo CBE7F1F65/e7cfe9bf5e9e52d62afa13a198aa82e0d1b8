@@ -1,7 +1,7 @@
 #include "EditorUI.h"
 #include "EditorRes.h"
-#include "Data.h"
-#include "Export.h"
+#include "../DES_GOBSTG/DES_GOBSTG/Header/Data.h"
+#include "../DES_GOBSTG/DES_GOBSTG/Header/Export.h"
 
 EditorUI ui;
 

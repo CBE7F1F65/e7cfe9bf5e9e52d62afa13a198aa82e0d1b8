@@ -1,8 +1,8 @@
 
-#include "DataPrinter.h"
-#include "Data.h"
-#include "BResource.h"
-#include "ConstResource.h"
+#include "../Header/DataPrinter.h"
+#include "../Header/Data.h"
+#include "../Header/BResource.h"
+#include "../Header/ConstResource.h"
 
 replayFrame DataPrinter::rpyframe[M_SAVEINPUTMAX];
 partInfo DataPrinter::partinfo[RPYPARTMAX];

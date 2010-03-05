@@ -1,8 +1,8 @@
-#include "Scripter.h"
-#include "BResource.h"
-#include "Data.h"
-#include "Main.h"
-#include "Export_Lua_HDSS.h"
+#include "../Header/Scripter.h"
+#include "../Header/BResource.h"
+#include "../Header/Data.h"
+#include "../Header/Main.h"
+#include "../Header/Export_Lua_HDSS.h"
 
 Scripter Scripter::scr;
 

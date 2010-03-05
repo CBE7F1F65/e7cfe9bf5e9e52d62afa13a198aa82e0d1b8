@@ -1,8 +1,8 @@
 #ifndef __NOTUSELUA
 
-#include "../Header/Export_Lua_HGEHelp.h"
-#include "../Header/LuaConstDefine.h"
-#include "../Header/Export.h"
+#include "../Header/../Header/Export_Lua_HGEHelp.h"
+#include "../Header/../Header/LuaConstDefine.h"
+#include "../Header/../Header/Export.h"
 
 list<hgeFont *> Export_Lua_HGEHelp::fontList;
 list<hgeSprite *> Export_Lua_HGEHelp::spriteList;

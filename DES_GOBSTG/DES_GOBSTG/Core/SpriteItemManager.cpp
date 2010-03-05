@@ -1,6 +1,6 @@
-#include "SpriteItemManager.h"
-#include "FrontDisplayName.h"
-#include "BResource.h"
+#include "../Header/SpriteItemManager.h"
+#include "../Header/FrontDisplayName.h"
+#include "../Header/BResource.h"
 
 HTEXTURE * SpriteItemManager::tex;
 int SpriteItemManager::nullIndex = 0;

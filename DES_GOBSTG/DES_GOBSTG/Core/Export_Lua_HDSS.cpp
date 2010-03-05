@@ -1,10 +1,10 @@
 #ifndef __NOTUSELUA
 #ifndef __NOTUSEHDSS
 
-#include "../Header/Export_Lua_HDSS.h"
-#include "../Header/LuaConstDefine.h"
-#include "../Header/keytable.h"
-#include "../Header/BResource.h"
+#include "../Header/../Header/Export_Lua_HDSS.h"
+#include "../Header/../Header/LuaConstDefine.h"
+#include "../Header/../Header/keytable.h"
+#include "../Header/../Header/BResource.h"
 
 LuaFunction<bool> * Export_Lua_HDSS::controlExecute;
 LuaFunction<bool> * Export_Lua_HDSS::stageExecute;

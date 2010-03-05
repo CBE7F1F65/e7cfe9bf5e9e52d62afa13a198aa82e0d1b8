@@ -1,10 +1,10 @@
-#include "vld.h"
+#include <vld.h>
 
-#include "Process.h"
-#include "Fontsys.h"
+#include "../Header/Process.h"
+#include "../Header/Fontsys.h"
 
-#include "Main.h"
-#include "GameInput.h"
+#include "../Header/Main.h"
+#include "../Header/GameInput.h"
 
 HGE *hge = NULL;
 

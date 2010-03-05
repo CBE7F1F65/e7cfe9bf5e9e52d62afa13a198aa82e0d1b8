@@ -1,9 +1,9 @@
-#include "Effectsys.h"
-#include "Main.h"
-#include "Export.h"
-#include "Player.h"
-#include "Target.h"
-#include "ProcessDefine.h"
+#include "../header/Effectsys.h"
+#include "../header/Main.h"
+#include "../header/Export.h"
+#include "../header/Player.h"
+#include "../header/Target.h"
+#include "../header/ProcessDefine.h"
 
 VectorList<Effectsys> Effectsys::effsys[M_PL_MATCHMAXPLAYER];
 hgeEffectSystem Effectsys::efftype[EFFECTSYSTYPEMAX];

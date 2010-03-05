@@ -3,6 +3,7 @@
 	ProjectType="Visual C++"
 	Version="7.10"
 	Name="ResourceUnpack"
+	OwnerKey="{EAF909A5-FA59-4C3D-9431-0FCC20D5BCF9}"
 	ProjectGUID="{407FE0E9-7DE2-4051-B96B-122069263389}"
 	Keyword="MFCProj">
 	<Platforms>
@@ -16,6 +17,7 @@
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
 			UseOfMFC="1"
+			ATLMinimizesCRunTimeLibraryUsage="FALSE"
 			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
@@ -25,7 +27,7 @@
 				MinimalRebuild="TRUE"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
-				TreatWChar_tAsBuiltInType="TRUE"
+				TreatWChar_tAsBuiltInType="FALSE"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="TRUE"
@@ -35,7 +37,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="nafxcwd.lib"
-				LinkIncremental="2"
+				LinkIncremental="0"
 				DelayLoadDLLs="hge_d.dll"
 				GenerateDebugInformation="TRUE"
 				SubSystem="2"
@@ -72,13 +74,14 @@
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
 			UseOfMFC="1"
+			ATLMinimizesCRunTimeLibraryUsage="FALSE"
 			CharacterSet="2"
 			WholeProgramOptimization="TRUE">
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="2"
+				Optimization="3"
 				GlobalOptimizations="TRUE"
-				InlineFunctionExpansion="2"
+				InlineFunctionExpansion="0"
 				EnableIntrinsicFunctions="TRUE"
 				ImproveFloatingPointConsistency="TRUE"
 				FavorSizeOrSpeed="1"
@@ -90,16 +93,19 @@
 				StringPooling="TRUE"
 				MinimalRebuild="FALSE"
 				RuntimeLibrary="0"
-				TreatWChar_tAsBuiltInType="TRUE"
+				BufferSecurityCheck="FALSE"
+				EnableFunctionLevelLinking="TRUE"
+				EnableEnhancedInstructionSet="0"
+				TreatWChar_tAsBuiltInType="FALSE"
 				UsePrecompiledHeader="0"
 				WarningLevel="1"
-				Detect64BitPortabilityProblems="FALSE"
+				Detect64BitPortabilityProblems="TRUE"
 				DebugInformationFormat="0"/>
 			<Tool
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				LinkIncremental="1"
+				LinkIncremental="0"
 				DelayLoadDLLs="hge.dll"
 				GenerateDebugInformation="FALSE"
 				SubSystem="2"
@@ -142,9 +148,9 @@
 			WholeProgramOptimization="TRUE">
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="2"
+				Optimization="3"
 				GlobalOptimizations="TRUE"
-				InlineFunctionExpansion="2"
+				InlineFunctionExpansion="0"
 				EnableIntrinsicFunctions="TRUE"
 				ImproveFloatingPointConsistency="TRUE"
 				FavorSizeOrSpeed="1"
@@ -156,7 +162,8 @@
 				StringPooling="TRUE"
 				MinimalRebuild="FALSE"
 				RuntimeLibrary="0"
-				TreatWChar_tAsBuiltInType="TRUE"
+				EnableFunctionLevelLinking="TRUE"
+				TreatWChar_tAsBuiltInType="FALSE"
 				UsePrecompiledHeader="0"
 				WarningLevel="1"
 				Detect64BitPortabilityProblems="FALSE"
@@ -165,10 +172,11 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				LinkIncremental="1"
+				LinkIncremental="0"
 				DelayLoadDLLs="hge.dll"
 				GenerateDebugInformation="FALSE"
 				SubSystem="2"
+				LargeAddressAware="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
 				TargetMachine="1"/>

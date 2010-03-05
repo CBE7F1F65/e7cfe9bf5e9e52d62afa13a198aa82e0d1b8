@@ -1,10 +1,10 @@
 #ifndef __NOTUSELUA
 #ifndef __NOTUSEHDSS
 
-#include "Export_Lua_HDSS_CallGet.h"
-#include "processPrep.h"
+#include "../Header/Export_Lua_HDSS_CallGet.h"
+#include "../Header/processPrep.h"
 
-#include "../Header/Export_Lua_HDSS_CallGetDefine.h"
+#include "../Header/../Header/Export_Lua_HDSS_CallGetDefine.h"
 
 int _HDSSCallGet::Get_D(LuaState * ls)
 {

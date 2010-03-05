@@ -1,7 +1,7 @@
-#include "Data.h"
-#include "BResource.h"
-#include "DataTable.h"
-#include "SpriteItemManager.h"
+#include "../Header/Data.h"
+#include "../Header/BResource.h"
+#include "../Header/DataTable.h"
+#include "../Header/SpriteItemManager.h"
 
 _DataTable _DataTable::datatable;
 
@@ -15,6 +15,21 @@ _DataTable _DataTable::datatable;
 #define _INITTINT	ti = -1
 #define _LOADTINT	(tint[++ti])
 #define _SAVETINT	(&_LOADTINT)
+
+#ifndef __INTEL_COMPILER
+#define _DOSWAPTINT	int tbegin = 0;	\
+					int tend = ti;	\
+					while (tbegin < tend)	\
+					{	\
+						int tswapint = tint[tbegin];	\
+						tint[tbegin] = tint[tend];	\
+						tint[tend] = tswapint;	\
+						++tbegin;	\
+						--tend;	\
+					}
+#else
+#define _DOSWAPTINT
+#endif
 
 _DataTable::_DataTable()
 {
@@ -167,6 +182,7 @@ bool _DataTable::CustomConstFile()
 			item->name, 
 			&(item->value));
 
+		_DOSWAPTINT;
 		_INITTINT;
 	}
 	return true;
@@ -196,6 +212,7 @@ bool _DataTable::SpellDefineFile()
 			_SAVETINT, 
 			_SAVETINT);
 
+		_DOSWAPTINT;
 		_INITTINT;
 		item->timelimit = _LOADTINT;
 		item->remain = _LOADTINT;
@@ -226,6 +243,7 @@ bool _DataTable::MusicDefineFile()
 			&(item->introlength), 
 			&(item->alllength));
 
+		_DOSWAPTINT;
 		_INITTINT;
 	}
 	return true;
@@ -257,6 +275,7 @@ bool _DataTable::BulletDefineFile()
 			_SAVETINT, 
 			_SAVETINT);
 
+		_DOSWAPTINT;
 		_INITTINT;
 		item->siid = SpriteItemManager::GetIndexByName(strbuffer[0]);
 		item->nRoll = _LOADTINT;
@@ -313,6 +332,7 @@ bool _DataTable::EnemyDefineFile()
 			item->name,
 			item->ename);
 
+		_DOSWAPTINT;
 		_INITTINT;
 		item->faceIndex  = _LOADTINT;
 		item->siid = SpriteItemManager::GetIndexByName(strbuffer[0]);
@@ -373,6 +393,7 @@ bool _DataTable::PlayerDefineFile()
 			item->name,
 			item->ename);
 
+		_DOSWAPTINT;
 		_INITTINT;
 		item->shotdelay = _LOADTINT;
 		item->rechargedelay = _LOADTINT;
@@ -413,6 +434,7 @@ bool _DataTable::SpriteDefineFile()
 			&(item->tex_w), 
 			&(item->tex_h));
 
+		_DOSWAPTINT;
 		_INITTINT;
 	}
 	return true;
@@ -447,6 +469,7 @@ bool _DataTable::PlayerShootDefineFile()
 			&(item->accelspeed), 
 			_SAVETINT);
 
+		_DOSWAPTINT;
 		_INITTINT;
 		item->userID = _LOADTINT;
 		item->bchargeshoot = (bool)_LOADTINT;
@@ -482,6 +505,7 @@ bool _DataTable::PlayerGhostDefineFile()
 			&(item->startangle),
 			_SAVETINT);
 
+		_DOSWAPTINT;
 		_INITTINT;
 		item->siid = SpriteItemManager::GetIndexByName(strbuffer[0]);
 		item->flag = _LOADTINT;

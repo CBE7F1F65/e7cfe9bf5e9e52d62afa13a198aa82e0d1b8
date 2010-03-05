@@ -166,8 +166,6 @@ hgeFont::hgeFont(const char *szFont, bool bMipmap)
 /************************************************************************/
 hgeFont::hgeFont(const hgeFont &fnt)
 {
-	int i;
-
 	hge=hgeCreate(HGE_VERSION);
 
 	hTexture=fnt.hTexture;
@@ -183,7 +181,7 @@ hgeFont::hgeFont(const hgeFont &fnt)
 	fZ=fnt.fZ;
 	nBlend=fnt.nBlend;
 
-	for(i=0; i<256; i++)
+	for(int i=0; i<256; i++)
 	{
 		if(fnt.letters[i]) letters[i]=new hgeSprite(*fnt.letters[i]);
 		else letters[i]=0;
@@ -197,8 +195,6 @@ hgeFont::hgeFont(const hgeFont &fnt)
 /************************************************************************/
 hgeFont& hgeFont::operator= (const hgeFont &fnt)
 {
-	int i;
-	
 	if(this!=&fnt)
 	{
 		hTexture=fnt.hTexture;
@@ -214,7 +210,7 @@ hgeFont& hgeFont::operator= (const hgeFont &fnt)
 		fZ=fnt.fZ;
 		nBlend=fnt.nBlend;
 
-		for(i=0; i<256; i++)
+		for(int i=0; i<256; i++)
 		{
 			if(letters[i]) delete letters[i];
 			if(fnt.letters[i]) letters[i]=new hgeSprite(*fnt.letters[i]);
