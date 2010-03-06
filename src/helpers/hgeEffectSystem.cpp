@@ -1,4 +1,4 @@
-#include "hgeEffectSystem.h"
+#include "../../include/hgeEffectSystem.h"
 #include <stdio.h>
 
 HGE * hgeEffectSystem::hge = NULL;

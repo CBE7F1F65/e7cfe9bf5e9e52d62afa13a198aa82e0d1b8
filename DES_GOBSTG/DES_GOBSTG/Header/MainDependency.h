@@ -19,6 +19,7 @@ using namespace std;
 
 #pragma warning(disable:4244)
 #pragma warning(disable:4800)
+#pragma warning(disable:1786)
 
 #pragma comment(lib, "winmm.lib")
 

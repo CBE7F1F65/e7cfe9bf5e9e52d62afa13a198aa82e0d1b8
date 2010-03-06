@@ -8,24 +8,42 @@
 	VCNestedProjectFileName="ResourcePack.vcproj">
 	<Configurations>
 		<Configuration
+			Name="Debug|Win32">
+			<Tool
+				Name="CppCmplrTool"
+				OptimizeForWindowsApplication="true"/>
+		</Configuration>
+		<Configuration
 			Name="Release|Win32">
 			<Tool
 				Name="GeneralTool"
-				InterproceduralOptimization="TRUE"/>
+				InterproceduralOptimization="true"/>
 			<Tool
 				Name="CppCmplrTool"
-				Parallelization="TRUE"
-				UseIntelOptimizedHeaders="TRUE"/>
+				GlobalOptimizations="true"
+				OptimizeForWindowsApplication="true"
+				ImproveFloatingPointConsistency="1"
+				Parallelization="true"
+				UseIntelOptimizedHeaders="true"/>
 		</Configuration>
 		<Configuration
 			Name="FinalRelease|Win32">
 			<Tool
 				Name="GeneralTool"
-				InterproceduralOptimization="TRUE"/>
+				InterproceduralOptimization="true"/>
 			<Tool
 				Name="CppCmplrTool"
-				Parallelization="TRUE"
-				UseIntelOptimizedHeaders="TRUE"/>
+				GlobalOptimizations="true"
+				OptimizeForWindowsApplication="true"
+				ImproveFloatingPointConsistency="1"
+				Parallelization="true"
+				UseIntelOptimizedHeaders="true"/>
+		</Configuration>
+		<Configuration
+			Name="DebugNotUseLua|Win32">
+			<Tool
+				Name="CppCmplrTool"
+				OptimizeForWindowsApplication="true"/>
 		</Configuration>
 	</Configurations>
 	<Files/>
