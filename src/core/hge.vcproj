@@ -64,6 +64,7 @@
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="true"
 				DebugInformationFormat="4"
+				DisableSpecificWarnings="1786"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -81,7 +82,7 @@
 				AdditionalOptions=""
 				AdditionalDependencies="winmm.lib d3d9.lib d3dx9.lib"
 				OutputFile="..\..\lib\vc\hge_d.dll"
-				LinkIncremental="0"
+				LinkIncremental="1"
 				SuppressStartupBanner="true"
 				ModuleDefinitionFile=".\hge.def"
 				GenerateDebugInformation="true"
@@ -169,6 +170,7 @@
 				WarningLevel="1"
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="true"
+				DisableSpecificWarnings="1786"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -187,7 +189,7 @@
 				AdditionalDependencies="winmm.lib d3d9.lib d3dx9.lib"
 				OutputFile="..\..\lib\vc\hge.dll"
 				Version=""
-				LinkIncremental="0"
+				LinkIncremental="1"
 				SuppressStartupBanner="true"
 				ModuleDefinitionFile=".\hge.def"
 				ProgramDatabaseFile=".\Release/hge.pdb"
@@ -195,102 +197,6 @@
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
 				ImportLibrary=".\Release/hge.lib"
-				TargetMachine="0"
-			/>
-			<Tool
-				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
-			/>
-			<Tool
-				Name="VCXDCMakeTool"
-			/>
-			<Tool
-				Name="VCBscMakeTool"
-			/>
-			<Tool
-				Name="VCFxCopTool"
-			/>
-			<Tool
-				Name="VCAppVerifierTool"
-			/>
-			<Tool
-				Name="VCPostBuildEventTool"
-				CommandLine="call &quot;..\..\DES_GOBSTG_GROUP\PostBuildEvent.bat&quot; ..\..\Resource\Debug\ ..\..\..\LuaEngine\Resource\Debug\ ..\..\Resource\ ..\..\..\LuaEngine\Resource\"
-			/>
-		</Configuration>
-		<Configuration
-			Name="DebugNotUseLua|Win32"
-			OutputDirectory="..\..\lib\vc\"
-			IntermediateDirectory=".\Debug"
-			ConfigurationType="2"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
-			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="false"
-			CharacterSet="2"
-			>
-			<Tool
-				Name="VCPreBuildEventTool"
-			/>
-			<Tool
-				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"
-			/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
-				PreprocessorDefinitions="_DEBUG"
-				MkTypLibCompatible="true"
-				SuppressStartupBanner="true"
-				TargetEnvironment="1"
-				TypeLibraryName=".\Debug/hge.tlb"
-				HeaderFileName=""
-			/>
-			<Tool
-				Name="VCCLCompilerTool"
-				AdditionalOptions="/QIfist "
-				Optimization="0"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;HGEDLL"
-				StringPooling="true"
-				BasicRuntimeChecks="3"
-				RuntimeLibrary="1"
-				EnableFunctionLevelLinking="true"
-				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile=".\Debug/hge.pch"
-				AssemblerListingLocation=".\Debug/"
-				ObjectFile=".\Debug/"
-				ProgramDataBaseFileName=".\Debug/"
-				WarningLevel="1"
-				SuppressStartupBanner="true"
-				DebugInformationFormat="4"
-			/>
-			<Tool
-				Name="VCManagedResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_DEBUG"
-				Culture="1049"
-			/>
-			<Tool
-				Name="VCPreLinkEventTool"
-			/>
-			<Tool
-				Name="VCLinkerTool"
-				AdditionalOptions=""
-				AdditionalDependencies="winmm.lib d3d9.lib d3dx9.lib"
-				OutputFile="..\..\lib\vc\hge_d.dll"
-				LinkIncremental="0"
-				SuppressStartupBanner="true"
-				ModuleDefinitionFile=".\hge.def"
-				GenerateDebugInformation="true"
-				ProgramDatabaseFile=".\Debug/hge.pdb"
-				ImportLibrary="..\..\lib\vc\hge_d.lib"
 				TargetMachine="0"
 			/>
 			<Tool
@@ -346,16 +252,6 @@
 						PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_MBCS;_USRDLL;HGEDLL;$(NoInherit)"
 					/>
 				</FileConfiguration>
-				<FileConfiguration
-					Name="DebugNotUseLua|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_MBCS;_USRDLL;HGEDLL;$(NoInherit)"
-						BasicRuntimeChecks="3"
-					/>
-				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="graphics.cpp"
@@ -377,16 +273,6 @@
 						Name="VCCLCompilerTool"
 						Optimization="2"
 						PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_MBCS;_USRDLL;HGEDLL;$(NoInherit)"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="DebugNotUseLua|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_MBCS;_USRDLL;HGEDLL;$(NoInherit)"
-						BasicRuntimeChecks="3"
 					/>
 				</FileConfiguration>
 			</File>
@@ -416,16 +302,6 @@
 						PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_MBCS;_USRDLL;HGEDLL;$(NoInherit)"
 					/>
 				</FileConfiguration>
-				<FileConfiguration
-					Name="DebugNotUseLua|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_MBCS;_USRDLL;HGEDLL;$(NoInherit)"
-						BasicRuntimeChecks="3"
-					/>
-				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="input.cpp"
@@ -447,16 +323,6 @@
 						Name="VCCLCompilerTool"
 						Optimization="2"
 						PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_MBCS;_USRDLL;HGEDLL;$(NoInherit)"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="DebugNotUseLua|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_MBCS;_USRDLL;HGEDLL;$(NoInherit)"
-						BasicRuntimeChecks="3"
 					/>
 				</FileConfiguration>
 			</File>
@@ -482,16 +348,6 @@
 						PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_MBCS;_USRDLL;HGEDLL;$(NoInherit)"
 					/>
 				</FileConfiguration>
-				<FileConfiguration
-					Name="DebugNotUseLua|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_MBCS;_USRDLL;HGEDLL;$(NoInherit)"
-						BasicRuntimeChecks="3"
-					/>
-				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="resource.cpp"
@@ -513,16 +369,6 @@
 						Name="VCCLCompilerTool"
 						Optimization="2"
 						PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_MBCS;_USRDLL;HGEDLL;$(NoInherit)"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="DebugNotUseLua|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_MBCS;_USRDLL;HGEDLL;$(NoInherit)"
-						BasicRuntimeChecks="3"
 					/>
 				</FileConfiguration>
 			</File>
@@ -552,16 +398,6 @@
 						PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_MBCS;_USRDLL;HGEDLL;$(NoInherit)"
 					/>
 				</FileConfiguration>
-				<FileConfiguration
-					Name="DebugNotUseLua|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_MBCS;_USRDLL;HGEDLL;$(NoInherit)"
-						BasicRuntimeChecks="3"
-					/>
-				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="timer.cpp"
@@ -583,16 +419,6 @@
 						Name="VCCLCompilerTool"
 						Optimization="2"
 						PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_MBCS;_USRDLL;HGEDLL;$(NoInherit)"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="DebugNotUseLua|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_MBCS;_USRDLL;HGEDLL;$(NoInherit)"
-						BasicRuntimeChecks="3"
 					/>
 				</FileConfiguration>
 			</File>

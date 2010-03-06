@@ -39,12 +39,6 @@
 				Parallelization="true"
 				UseIntelOptimizedHeaders="true"/>
 		</Configuration>
-		<Configuration
-			Name="DebugNotUseLua|Win32">
-			<Tool
-				Name="CppCmplrTool"
-				OptimizeForWindowsApplication="true"/>
-		</Configuration>
 	</Configurations>
 	<Files/>
 </VisualStudioProject>

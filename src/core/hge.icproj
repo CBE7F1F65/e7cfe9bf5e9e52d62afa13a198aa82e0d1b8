@@ -11,11 +11,11 @@
 			Name="Release|Win32">
 			<Tool
 				Name="GeneralTool"
-				InterproceduralOptimization="TRUE"/>
+				InterproceduralOptimization="true"/>
 			<Tool
 				Name="CppCmplrTool"
-				Parallelization="TRUE"
-				UseIntelOptimizedHeaders="TRUE"/>
+				Parallelization="true"
+				UseIntelOptimizedHeaders="true"/>
 		</Configuration>
 	</Configurations>
 	<Files/>
