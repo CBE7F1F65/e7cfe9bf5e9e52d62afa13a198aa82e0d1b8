@@ -32,6 +32,7 @@ function Edef_ShootChargeEnemyEID_02_1(playerindex, level, x, y, timer, px, py)
 		hdssB(1-playerindex, bx, by, angle+18000, 0, CC_Bullet_SmallBall, 4, -1);
 		hdssB(1-playerindex, bx, by, angle+18000, 0.5, CC_Bullet_Knife, 1, -1);
 		hdssA(1-playerindex);
+		hdssSE(CC_SE_Bullet_2, bx);
 		
 	end
 	return true;
@@ -72,6 +73,7 @@ function Edef_ShootChargeEnemyEID_02_2(playerindex, level, x, y, timer, px, py)
 			hdssB(1-playerindex, bx, by, angle+nowindex*737+i*9000, 0.5, CC_Bullet_Knife, 1, -1);
 		end
 		hdssA(1-playerindex);
+		hdssSE(CC_SE_Bullet_2, bx);
 		
 	end
 	return true;
