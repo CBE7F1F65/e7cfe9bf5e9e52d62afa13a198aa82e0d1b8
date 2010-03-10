@@ -1,4 +1,4 @@
-function ePlayerInStop(playerindex, bSpell, spellPlayerID, oplayerID, stoptimer, stopmaxtime, spellClass, spellLevel)
+function ePlayerInSpellStop(playerindex, bSpell, spellPlayerID, oplayerID, stoptimer, stopmaxtime, spellClass, spellLevel)
 
 	local x;
 	if playerindex == 0 then
@@ -67,4 +67,7 @@ function ePlayerInStop(playerindex, bSpell, spellPlayerID, oplayerID, stoptimer,
 			hdssFADEOUTFRONTSPRITE(LConst_game_FrontSprite_LevelDigit_1ID, 32);
 		end
 	end
+end
+
+function ePlayerInStop(playerindex, playerID)
 end

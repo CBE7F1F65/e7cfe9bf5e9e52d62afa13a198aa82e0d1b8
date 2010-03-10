@@ -83,10 +83,31 @@ Comment	Index	Texture
 #		PlayerSpellCutIn(260~309)
 -	260	Graphic/Sprite/Player/SpellCutIn/pl_01_cutin.png
 -	261	Graphic/Sprite/Player/SpellCutIn/pl_02_cutin.png
+-	262	Graphic/Sprite/Player/SpellCutIn/pl_03_cutin.png
+-	263	Graphic/Sprite/Player/SpellCutIn/pl_04_cutin.png
+-	264	Graphic/Sprite/Player/SpellCutIn/pl_05_cutin.png
+-	265	Graphic/Sprite/Player/SpellCutIn/pl_06_cutin.png
+-	266	Graphic/Sprite/Player/SpellCutIn/pl_07_cutin.png
+-	267	Graphic/Sprite/Player/SpellCutIn/pl_08_cutin.png
+-	268	Graphic/Sprite/Player/SpellCutIn/pl_09_cutin.png
+-	269	Graphic/Sprite/Player/SpellCutIn/pl_10_cutin.png
+-	270	Graphic/Sprite/Player/SpellCutIn/pl_11_cutin.png
+-	271	Graphic/Sprite/Player/SpellCutIn/pl_12_cutin.png
+-	272	Graphic/Sprite/Player/SpellCutIn/pl_13_cutin.png
+-	273	Graphic/Sprite/Player/SpellCutIn/pl_14_cutin.png
+-	274	Graphic/Sprite/Player/SpellCutIn/pl_15_cutin.png
+-	275	Graphic/Sprite/Player/SpellCutIn/pl_16_cutin.png
+-	276	Graphic/Sprite/Player/SpellCutIn/pl_17_cutin.png
+-	277	Graphic/Sprite/Player/SpellCutIn/pl_18_cutin.png
+-	278	Graphic/Sprite/Player/SpellCutIn/pl_19_cutin.png
+-	279	Graphic/Sprite/Player/SpellCutIn/pl_20_cutin.png
+-	280	Graphic/Sprite/Player/SpellCutIn/pl_21_cutin.png
+-	281	Graphic/Sprite/Player/SpellCutIn/pl_22_cutin.png
 -	282	Graphic/Sprite/Player/SpellCutIn/pl_23_cutin.png
 #		PlayerDrainZone(310~359)
 -	310	Graphic/Sprite/Player/DrainZone/pl_01_drain.png
 -	311	Graphic/Sprite/Player/DrainZone/pl_02_drain.png
+-	312	Graphic/Sprite/Player/DrainZone/pl_03_drain.png
 -	332	Graphic/Sprite/Player/DrainZone/pl_23_drain.png
 #		Other(360~459)
 -	360	Graphic/Scene/title.png

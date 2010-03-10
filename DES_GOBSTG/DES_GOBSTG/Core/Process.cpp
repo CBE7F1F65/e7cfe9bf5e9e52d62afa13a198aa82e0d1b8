@@ -122,7 +122,8 @@ void Process::ClearAll()
 	}
 	replayFPS = 0;
 
-	GameInput::SwapInput(false);
+//	matchmode = 0;
+	SetInputSwap();
 
 	pauseinit = false;
 	frameskip = M_DEFAULT_FRAMESKIP;
@@ -638,7 +639,7 @@ bool Process::IsInGame()
 	return false;
 }
 
-void Process::SetStop(DWORD _stopflag, int _stoptimer)
+void Process::SetStop(DWORD _stopflag, int _stoptime)
 {
 	int useindex = 0;
 	int minstoptimer = 0;
@@ -655,5 +656,5 @@ void Process::SetStop(DWORD _stopflag, int _stoptimer)
 		}
 	}
 	stopflag[useindex] = _stopflag;
-	stoptimer[useindex] = _stoptimer;
+	stoptimer[useindex] = _stoptime;
 }

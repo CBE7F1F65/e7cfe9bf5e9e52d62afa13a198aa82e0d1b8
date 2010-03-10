@@ -25,7 +25,7 @@ public:
 	static void RenderAll(BYTE playerindex);
 	static int Build(WORD ID, BYTE playerindex, float x, float y, float z=0, int lifetime=-1, BYTE tarID=0xff, int angle=9000, float speed=0.0f, float zSpeed=0.0f);
 
-	void Clear();
+	void Clear(bool erase=false);
 	void valueSet(WORD ID, BYTE playerindex, float x, float y, float z=0, int lifetime=-1, BYTE tarID=0xff, int angle=9000, float speed=0.0f, float zSpeed=0.0f);
 	void valueSet(WORD ID, BYTE playerindex, BObject & owner);
 	void chaseSet(int chasetimer, BYTE tarAim);
@@ -35,7 +35,7 @@ public:
 	void MoveTo(float x, float y, float z = 0, bool bForce = false);
 	void Fire();
 	void Stop(bool bKill = false);
-	void action();
+	void action(bool byself=false);
 
 	void Render();
 

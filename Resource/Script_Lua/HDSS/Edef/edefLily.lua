@@ -13,7 +13,7 @@ function Edef_Lily(playerindex, rank, x, y, timer, px, py)
 		local timermode = 11-math.floor((rank+1) / 3);
 		if math.mod(timer, timermode) == 1 then
 			local oneset =  math.mod(timer-actiontime, 12);
-			local angle = (timer-actiontime) * 231 - 9000 - oneset * 28 + hdss.Get(HDSS_SEED) + rank * 2310;
+			local angle = (timer-actiontime) * 231 - 9000 - oneset * 28 + hdss.Get(HDSS_SEED) + (22-rank) * 2310;
 			local speed = rank * 0.06 + 1.6 - oneset * 0.05;
 			local angleadd = 43+rank;
 			for i=0, 2 do

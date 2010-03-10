@@ -83,6 +83,7 @@ public:
 
 	void action();
 	void actionInStop();
+	void actionInSpellStop();
 
 	void RenderEffect();
 
@@ -231,7 +232,7 @@ public:
 	WORD	fasttimer;
 	WORD	playerchangetimer;
 	WORD	costlifetimer;
-	WORD	stoptimer;
+	WORD	spellstoptimer;
 
 	BYTE	shootingchargeflag;
 	BYTE	nowshootingcharge;
@@ -269,7 +270,7 @@ public:
 	static bool able;
 
 	static DWORD alltime;
-	static BYTE	raisestopplayerindex;
+	static BYTE	raisespellstopplayerindex;
 	static BYTE round;
 
 	static Player p[M_PL_MATCHMAXPLAYER];

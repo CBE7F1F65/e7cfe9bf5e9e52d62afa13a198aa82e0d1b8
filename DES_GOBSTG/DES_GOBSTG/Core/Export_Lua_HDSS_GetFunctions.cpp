@@ -230,6 +230,24 @@ int _HDSSCallGet::Get_ENAIMY(LuaState * ls)
 	return 0;
 }
 
+int _HDSSCallGet::Get_ENAIMANGLE(LuaState * ls)
+{
+	_ENTERGET_HDSS_LUA;
+	if (argscount > 1)
+	{
+		BYTE _playerindex = _INEXT_HDSS_LUAFUNC;
+		BYTE _enindex = Enemy::en[_playerindex].getIndex();
+		_JNEXT_HDSS_LUAFUNC;
+		if (bhavenext)
+		{
+			_enindex = _IOBJ_HDSS_LUA;
+		}
+		_PF_HDSS_LUA(Enemy::en[_playerindex][_enindex].aimangle);
+		return 1;
+	}
+	return 0;
+}
+
 int _HDSSCallGet::Get_ENLIFE(LuaState * ls)
 {
 	_ENTERGET_HDSS_LUA;
@@ -257,6 +275,24 @@ int _HDSSCallGet::Get_ENI(LuaState * ls)
 		_PI_HDSS_LUA(Enemy::en[_playerindex].getIndex());
 		_PI_HDSS_LUA(Enemy::bossindex[_playerindex]);
 		return 2;
+	}
+	return 0;
+}
+
+int _HDSSCallGet::Get_ENANGLE(LuaState * ls)
+{
+	_ENTERGET_HDSS_LUA;
+	if (argscount > 1)
+	{
+		BYTE _playerindex = _INEXT_HDSS_LUAFUNC;
+		BYTE _enindex = Enemy::en[_playerindex].getIndex();
+		_JNEXT_HDSS_LUAFUNC;
+		if (bhavenext)
+		{
+			_enindex = _IOBJ_HDSS_LUA;
+		}
+		_PF_HDSS_LUA(Enemy::en[_playerindex][_enindex].angle);
+		return 1;
 	}
 	return 0;
 }
@@ -392,6 +428,26 @@ int _HDSSCallGet::Get_ROLL(LuaState * ls)
 		int _x = _INEXT_HDSS_LUAFUNC;
 		int _t = _INEXT_HDSS_LUAFUNC;
 		_PI_HDSS_LUA(ROLL(_x, _t));
+		return 1;
+	}
+	return 0;
+}
+
+int _HDSSCallGet::Get_REGANGLE(LuaState * ls)
+{
+	_ENTERGET_HDSS_LUA;
+	if (argscount > 1)
+	{
+		int _angle = _INEXT_HDSS_LUAFUNC;
+		while(_angle > 18000)
+		{
+			_angle -= 36000;
+		}
+		while(_angle < -18000)
+		{
+			_angle += 36000;
+		}
+		_PI_HDSS_LUA(_angle);
 		return 1;
 	}
 	return 0;

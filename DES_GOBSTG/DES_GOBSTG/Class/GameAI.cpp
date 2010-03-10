@@ -18,6 +18,9 @@ void GameAI::Init()
 	{
 		ai[i].playerindex = i;
 		ai[i].SetAble(false);
+		ai[i].aidraintime = 0;
+		ai[i].drainmaxpushtime = 0;
+		ai[i].drainpushtimer = 0;
 	}
 }
 
@@ -27,6 +30,9 @@ void GameAI::ClearAll()
 	{
 		ai[i].aimtobelow = false;
 		ai[i].inrisk = false;
+		ai[i].aidraintime = 0;
+		ai[i].drainmaxpushtime = 0;
+		ai[i].drainpushtimer = 0;
 	}
 }
 
@@ -35,7 +41,7 @@ void GameAI::SetAble(bool _able)
 	able = _able;
 }
 
-bool GameAI::UpdateBasicInfo(float _x, float _y, float _speed, float _slowspeed, float _r)
+bool GameAI::UpdateBasicInfo(float _x, float _y, float _speed, float _slowspeed, float _r, int _aidraintime)
 {
 	if (!able)
 	{
@@ -46,6 +52,7 @@ bool GameAI::UpdateBasicInfo(float _x, float _y, float _speed, float _slowspeed,
 	speed = _speed;
 	slowspeed = _slowspeed;
 	r = _r;
+	aidraintime = _aidraintime;
 	return UpdateMoveAbleInfo();
 }
 
@@ -330,12 +337,25 @@ bool GameAI::SetMove()
 	if (inrisk && nChargeMax && !nCharge || Player::p[playerindex].timer % 8 != 0 || nChargeMax == 4 && nCharge < 2)
 	{
 		GameInput::SetKey(playerindex, KSI_FIRE, true);
-		GameInput::SetKey(playerindex, KSI_DRAIN, true);
+//		GameInput::SetKey(playerindex, KSI_DRAIN, true);
 	}
 	if (Player::p[playerindex].nSpellPoint > 500000)
 	{
 		GameInput::SetKey(playerindex, KSI_FIRE, true);
 	}
+
+
+	drainpushtimer++;
+	if (drainpushtimer >= drainmaxpushtime)
+	{
+		drainmaxpushtime = randt(aidraintime/2, aidraintime);
+		drainpushtimer = -randt(0, aidraintime/2);
+	}
+	else if(drainpushtimer >= 0)
+	{
+		GameInput::SetKey(playerindex, KSI_DRAIN, true);
+	}
+
 	for (int i=0; i<GAMEAI_ABLEPOSITIONNUM; i++)
 	{
 		int tindex = checkorderlist[i];

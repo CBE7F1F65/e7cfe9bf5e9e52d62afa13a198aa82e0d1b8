@@ -65,10 +65,11 @@ function Edef_ShootChargeEnemyEID_01_3(playerindex, level, x, y, timer, px, py)
 		hdssEA_FADEOUT(playerindex, 810);
 	elseif math.mod(timer, 90) == 60 then
 		local pattern = RANDT(0, 4);
+		hdssSD(LConst_Desc_BossPattern+playerindex, pattern);
 		if pattern == 0 then
 			
-			hdssEB(CC_ShootChargeEnemyEID_01_3_A, playerindex, x, y, 9000, 0, LConst_EnemyTypeNull, RANDT(1, 36000));
-			hdssENSAIM(playerindex, level);	
+			hdssEB(CC_ShootChargeEnemyEID_01_3_A, playerindex, x, y, 9000, 0, LConst_EnemyTypeNull, 10);
+			hdssENSAIM(playerindex, level, 0, 0, RANDT(1, 36000));	
 				
 		elseif pattern == 1 then
 			local angle = RANDT(-3000, 3000);
@@ -98,7 +99,7 @@ function Edef_ShootChargeEnemyEID_01_3_A(playerindex, level, x, y, timer, px, py
 	if timer == 1 then
 		hdssEA_FADEOUT(playerindex, 40);
 	elseif math.mod(timer, 2) == 0 then
-		local baseangle = (19 * (-38 * level + 418) + 180) * timer + hdss.Get(HDSS_ENLIFE, playerindex);
+		local baseangle = (19 * (-38 * level + 418) + 180) * timer + hdss.Get(HDSS_ENAIMANGLE, playerindex);
 		local looptime = math.floor(level/6) + 2;
 		local speed = level * 0.1 + 1.4;
 		local type;

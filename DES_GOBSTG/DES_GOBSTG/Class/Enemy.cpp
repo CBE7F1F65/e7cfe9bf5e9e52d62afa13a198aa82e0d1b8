@@ -334,11 +334,12 @@ void Enemy::setTake(int _take)
 	take = _take;
 }
 
-void Enemy::setLevelAim(int _level, float aimx, float aimy)
+void Enemy::setLevelAim(int _level, float aimx, float aimy, int _aimangle)
 {
 	level = _level;
 	aim.x = aimx;
 	aim.y = aimy;
+	aimangle = _aimangle;
 }
 
 void Enemy::valueSet(BYTE _playerindex, WORD _eID, float _x, float _y, int _angle, float _speed, BYTE _type, float _life, int _infitimer)

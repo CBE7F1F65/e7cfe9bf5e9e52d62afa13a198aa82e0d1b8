@@ -28,29 +28,23 @@ function ControlExecute_cStart(timer)
 			hdssSD(LConst_Desc_EnemyTimeCounter+i, 0);
 			hdssSD(LConst_Desc_EnemyRandom+i, enemyrandrom);
 			helper_GetNextEnemyRandom(i);
+			hdssSD(LConst_Desc_DrainAngle+i, -9000);
+			hdssSD(LConst_Desc_BossPattern+i, -1);
 			
 			hdssBGSETUP(i, LConst_bgset_sceneid, scene, true);
 						
 		end
 		
 		--
---		hdssSETPBINFI(1, 0);
---		hdssSETPBINFI(0, 0);
+		--hdssSETPBINFI(0, 0);
+		--hdssSETPBINFI(1, 0);
 		
 	elseif timer == 32 then
 		for i=0, 1 do
 			hdssBGOFF(i, LConst_gamefg_fadeIid);
 		end
 	end
-		
-		--
---		if math.mod(timer, 8) == 0 then
---			hdssSETKEY(1, KSI_FIRE, true);
---		else
---			hdssSETKEY(1, KSI_DRAIN, true);
---		end
-		--
-		
+				
 	if timer <= 8 then
 		local scale = hdssINTER(1.5, 1, timer/8);
 		for i=0, 1 do
@@ -123,6 +117,9 @@ function ControlExecute_cStart(timer)
 		hdssSE(SE_SYSTEM_PAUSE);
 		hdssSETSTATE(STATE_PAUSE, -1);
 	end
+		
+--		hdssADDPNCHARGE(0, 0, 400);
+--		hdssADDPNCHARGE(1, 0, 400);
 		
 	return true;
 

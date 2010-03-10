@@ -145,6 +145,15 @@ function hdssSETKEY(playerindex, ksi, set)
 	)
 end
 
+function hdssDISABLEALLKEY(playerindex)
+	return hdss.Call(
+		HDSS_DISABLEALLKEY,
+		{
+			playerindex
+		}
+	)
+end
+
 function hdssSETPUSHEVENT(index, playerindex, key1, key2, key3, key4, pushfirst, pushrollto)
 	return hdss.Call(
 		HDSS_SETPUSHEVENT,
@@ -159,6 +168,15 @@ function hdssUPDATEPUSHEVENT(index)
 		HDSS_UPDATEPUSHEVENT,
 		{
 			index
+		}
+	)
+end
+
+function hdssSTOPACTION(stopflag, stoptimer)
+	return hdss.Call(
+		HDSS_STOPACTION,
+		{
+			stopflag, stoptimer
 		}
 	)
 end
@@ -473,11 +491,11 @@ function hdssEA_DELAY(playerindex, time)
 	)
 end
 
-function hdssENSAIM(playerindex, level, aimx, aimy)
+function hdssENSAIM(playerindex, level, aimx, aimy, aimangle)
 	return hdss.Call(
 		HDSS_ENSAIM,
 		{
-			playerindex, level, aimx, aimy
+			playerindex, level, aimx, aimy, aimangle
 		}
 	)
 end

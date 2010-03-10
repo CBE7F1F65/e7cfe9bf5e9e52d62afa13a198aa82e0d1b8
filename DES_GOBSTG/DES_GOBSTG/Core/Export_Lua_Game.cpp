@@ -38,6 +38,7 @@ bool Export_Lua_Game::_LuaRegistFunction(LuaObject * obj)
 	_gameobj.Register("GetPlayerShootChargeInfo", LuaFn_Game_GetPlayerShootChargeInfo);
 	_gameobj.Register("GetEdefInfo", LuaFn_Game_GetEdefInfo);
 	_gameobj.Register("SendItemBullet", LuaFn_Game_SendItemBullet);
+	_gameobj.Register("GetPlayerMoveInfo", LuaFn_Game_GetPlayerMoveInfo);
 
 	return true;
 }
@@ -346,7 +347,9 @@ int Export_Lua_Game::LuaFn_Game_GetPlayerSendExInfo(LuaState * ls)
 	ls->PushNumber(Player::p[1-_playerindex].x);
 	ls->PushNumber(Player::p[1-_playerindex].y);
 	ls->PushInteger(Player::p[_playerindex].nowID);
-	return 7;
+	ls->PushNumber(_peffsp->x);
+	ls->PushNumber(_peffsp->y);
+	return 9;
 }
 
 int Export_Lua_Game::LuaFn_Game_PlayerSendEx(LuaState * ls)
@@ -398,12 +401,12 @@ int Export_Lua_Game::LuaFn_Game_GetPlayerStopInfo(LuaState * ls)
 
 	BYTE _playerindex = args[1].GetInteger();
 
-	if (Player::raisestopplayerindex >= M_PL_MATCHMAXPLAYER)
+	if (Player::raisespellstopplayerindex >= M_PL_MATCHMAXPLAYER)
 	{
 		return 0;
 	}
 
-	if (Player::raisestopplayerindex == _playerindex)
+	if (Player::raisespellstopplayerindex == _playerindex)
 	{
 		ls->PushBoolean(true);
 	}
@@ -414,7 +417,7 @@ int Export_Lua_Game::LuaFn_Game_GetPlayerStopInfo(LuaState * ls)
 	}
 	ls->PushInteger(Player::p[_playerindex].nowID);
 	ls->PushInteger(Player::p[1-_playerindex].nowID);
-	ls->PushInteger(Player::p[_playerindex].stoptimer);
+	ls->PushInteger(Player::p[_playerindex].spellstoptimer);
 	ls->PushInteger(PL_SHOOTINGCHARGE_STOPTIME);
 	BYTE _spellclass = 0;
 	BYTE _spelllevel = 0;
@@ -519,6 +522,35 @@ int Export_Lua_Game::LuaFn_Game_SendItemBullet(LuaState * ls)
 		Item::SendBullet(1-_playerindex, (*Item::mi[_playerindex]).x, (*Item::mi[_playerindex]).y, EFFSPSET_SYSTEM_SENDITEMBULLET);
 	}
 	return 0;
+}
+
+int Export_Lua_Game::LuaFn_Game_GetPlayerMoveInfo(LuaState * ls)
+{
+	LuaStack args(ls);
+	int argscount = args.Count();
+	BYTE _playerindex = args[1].GetInteger();
+	int _lastindex = 0;
+	if (argscount > 1)
+	{
+		_lastindex = args[2].GetInteger();
+	}
+	float _lastx = Player::p[_playerindex].lastx[_lastindex];
+	float _lasty = Player::p[_playerindex].lasty[_lastindex];
+	float _lastmx = Player::p[_playerindex].lastmx[_lastindex];
+	float _lastmy = Player::p[_playerindex].lastmy[_lastindex];
+	int _moveangle = BObject::AMainAngle(_lastmx, _lastmy, Player::p[_playerindex].x, Player::p[_playerindex].y);
+	bool _moved = true;
+	if (_lastmx == Player::p[_playerindex].x && _lastmy == Player::p[_playerindex].y)
+	{
+		_moved = false;
+	}
+	ls->PushNumber(_lastx);
+	ls->PushNumber(_lasty);
+	ls->PushNumber(_lastmx);
+	ls->PushNumber(_lastmy);
+	ls->PushInteger(_moveangle);
+	ls->PushBoolean(_moved);
+	return 6;
 }
 
 #endif

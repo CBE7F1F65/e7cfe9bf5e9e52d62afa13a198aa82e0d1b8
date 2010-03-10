@@ -41,7 +41,91 @@ function ePlayerSendExChase_01(playerindex, x, y, playerID, appendfloat, angleof
 	return true;
 end
 
-function ePlayerSendExChase_02(playerindex, x, y, playerID, appendfloat, angleoffset)
+function ePlayerSendExChase_02(playerindex, x, y, playerID, appendfloat)
+	local rank, cardlevel, bosslevel = hdss.Get(HDSS_RANK, 1-playerindex);
+	local angle = hdssAMAP(playerindex, x, y);
+	hdssEB(CC_SendExChaseEnemyEID_02, 1-playerindex, x, y, 9000, 0, LConst_EnemyTypeNull, 10);
+	hdssENSAIM(1-playerindex, rank, 0, 0, angle);
+	return true;
+end
+
+function ePlayerSendExChase_03(playerindex, x, y, playerID, appendfloat)
+	return true;
+end
+
+function ePlayerSendExChase_04(playerindex, x, y, playerID, appendfloat)
+	return true;
+end
+
+function ePlayerSendExChase_05(playerindex, x, y, playerID, appendfloat)
+	return true;
+end
+
+function ePlayerSendExChase_06(playerindex, x, y, playerID, appendfloat)
+	return true;
+end
+
+function ePlayerSendExChase_07(playerindex, x, y, playerID, appendfloat)
+	return true;
+end
+
+function ePlayerSendExChase_08(playerindex, x, y, playerID, appendfloat)
+	return true;
+end
+
+function ePlayerSendExChase_09(playerindex, x, y, playerID, appendfloat)
+	return true;
+end
+
+function ePlayerSendExChase_10(playerindex, x, y, playerID, appendfloat)
+	return true;
+end
+
+function ePlayerSendExChase_11(playerindex, x, y, playerID, appendfloat)
+	return true;
+end
+
+function ePlayerSendExChase_12(playerindex, x, y, playerID, appendfloat)
+	return true;
+end
+
+function ePlayerSendExChase_13(playerindex, x, y, playerID, appendfloat)
+	return true;
+end
+
+function ePlayerSendExChase_14(playerindex, x, y, playerID, appendfloat)
+	return true;
+end
+
+function ePlayerSendExChase_15(playerindex, x, y, playerID, appendfloat)
+	return true;
+end
+
+function ePlayerSendExChase_16(playerindex, x, y, playerID, appendfloat)
+	return true;
+end
+
+function ePlayerSendExChase_17(playerindex, x, y, playerID, appendfloat)
+	return true;
+end
+
+function ePlayerSendExChase_18(playerindex, x, y, playerID, appendfloat)
+	return true;
+end
+
+function ePlayerSendExChase_19(playerindex, x, y, playerID, appendfloat)
+	return true;
+end
+
+function ePlayerSendExChase_20(playerindex, x, y, playerID, appendfloat)
+	return true;
+end
+
+function ePlayerSendExChase_21(playerindex, x, y, playerID, appendfloat)
+	return true;
+end
+
+function ePlayerSendExChase_22(playerindex, x, y, playerID, appendfloat)
 	local rank, cardlevel, bosslevel = hdss.Get(HDSS_RANK, 1-playerindex);
 	local speed = rank * 0.1 + 1.2;
 	local angle = hdssAMAP(playerindex, x, y);
@@ -53,85 +137,5 @@ function ePlayerSendExChase_02(playerindex, x, y, playerID, appendfloat, angleof
 	)
 	hdssBC(playerindex, 5, 9000, 6, x, y, speed, CC_Bullet_Star, 10);
 	hdssA(playerindex);
-	return true;
-end
-
-function ePlayerSendExChase_03(playerindex, x, y, playerID, appendfloat, angleoffset)
-	return true;
-end
-
-function ePlayerSendExChase_04(playerindex, x, y, playerID, appendfloat, angleoffset)
-	return true;
-end
-
-function ePlayerSendExChase_05(playerindex, x, y, playerID, appendfloat, angleoffset)
-	return true;
-end
-
-function ePlayerSendExChase_06(playerindex, x, y, playerID, appendfloat, angleoffset)
-	return true;
-end
-
-function ePlayerSendExChase_07(playerindex, x, y, playerID, appendfloat, angleoffset)
-	return true;
-end
-
-function ePlayerSendExChase_08(playerindex, x, y, playerID, appendfloat, angleoffset)
-	return true;
-end
-
-function ePlayerSendExChase_09(playerindex, x, y, playerID, appendfloat, angleoffset)
-	return true;
-end
-
-function ePlayerSendExChase_10(playerindex, x, y, playerID, appendfloat, angleoffset)
-	return true;
-end
-
-function ePlayerSendExChase_11(playerindex, x, y, playerID, appendfloat, angleoffset)
-	return true;
-end
-
-function ePlayerSendExChase_12(playerindex, x, y, playerID, appendfloat, angleoffset)
-	return true;
-end
-
-function ePlayerSendExChase_13(playerindex, x, y, playerID, appendfloat, angleoffset)
-	return true;
-end
-
-function ePlayerSendExChase_14(playerindex, x, y, playerID, appendfloat, angleoffset)
-	return true;
-end
-
-function ePlayerSendExChase_15(playerindex, x, y, playerID, appendfloat, angleoffset)
-	return true;
-end
-
-function ePlayerSendExChase_16(playerindex, x, y, playerID, appendfloat, angleoffset)
-	return true;
-end
-
-function ePlayerSendExChase_17(playerindex, x, y, playerID, appendfloat, angleoffset)
-	return true;
-end
-
-function ePlayerSendExChase_18(playerindex, x, y, playerID, appendfloat, angleoffset)
-	return true;
-end
-
-function ePlayerSendExChase_19(playerindex, x, y, playerID, appendfloat, angleoffset)
-	return true;
-end
-
-function ePlayerSendExChase_20(playerindex, x, y, playerID, appendfloat, angleoffset)
-	return true;
-end
-
-function ePlayerSendExChase_21(playerindex, x, y, playerID, appendfloat, angleoffset)
-	return true;
-end
-
-function ePlayerSendExChase_22(playerindex, x, y, playerID, appendfloat, angleoffset)
 	return true;
 end

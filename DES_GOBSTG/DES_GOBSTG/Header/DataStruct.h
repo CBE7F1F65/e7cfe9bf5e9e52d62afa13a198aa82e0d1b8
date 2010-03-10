@@ -180,6 +180,7 @@ struct playerData
 	int faceSIID;
 	int spellcutinSIID;
 	int drainzoneSIID;
+	int aidraintime;
 	BYTE musicID;
 	BYTE shotdelay;
 	BYTE rechargedelay;

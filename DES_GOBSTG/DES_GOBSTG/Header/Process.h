@@ -70,7 +70,7 @@ public:
 	BYTE	GetMatchMode();
 	bool	IsInGame();
 
-	void	SetStop(DWORD stopflag, int stoptimer);
+	void	SetStop(DWORD stopflag, int stoptime);
 
 	void	ClearAll();
 

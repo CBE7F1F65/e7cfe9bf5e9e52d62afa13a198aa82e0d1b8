@@ -54,7 +54,7 @@ public:
 
 	void SetAble(bool able);
 
-	bool UpdateBasicInfo(float x, float y, float speed, float slowspeed, float r);
+	bool UpdateBasicInfo(float x, float y, float speed, float slowspeed, float r, int aidraintime);
 	bool SetAim(float aimx, float aimy, bool tobelow=false);
 	bool UpdateMoveAbleInfo();
 	bool IsPlayerSafe();
@@ -77,6 +77,10 @@ public:
 	float r;
 	GameAIPosition moveablepos[GAMEAI_ABLEPOSITIONNUM];
 	GameAIPosition lastmoveablepos[GAMEAI_ABLEPOSITIONNUM];
+
+	int drainpushtimer;
+	int drainmaxpushtime;
+	int aidraintime;
 
 	float aimx;
 	float aimy;

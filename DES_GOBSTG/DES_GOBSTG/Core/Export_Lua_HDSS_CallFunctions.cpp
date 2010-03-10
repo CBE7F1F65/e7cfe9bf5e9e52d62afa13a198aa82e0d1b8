@@ -175,6 +175,25 @@ int _HDSSCallGet::Call_SETKEY(LuaState * ls)
 	return 0;
 }
 
+int _HDSSCallGet::Call_DISABLEALLKEY(LuaState * ls)
+{
+	_ENTERCALL_HDSS_LUA;
+
+	if (true)
+	{
+		BYTE _playerindex = _INEXT_HDSS_LUAPARA;
+		GameInput::SetKey(_playerindex, KSI_UP, false);
+		GameInput::SetKey(_playerindex, KSI_DOWN, false);
+		GameInput::SetKey(_playerindex, KSI_LEFT, false);
+		GameInput::SetKey(_playerindex, KSI_RIGHT, false);
+		GameInput::SetKey(_playerindex, KSI_FIRE, false);
+		GameInput::SetKey(_playerindex, KSI_QUICK, false);
+		GameInput::SetKey(_playerindex, KSI_SLOW, false);
+		GameInput::SetKey(_playerindex, KSI_DRAIN, false);
+	}
+	return 0;
+}
+
 int _HDSSCallGet::Call_SETPUSHEVENT(LuaState * ls)
 {
 	_ENTERCALL_HDSS_LUA;
@@ -236,6 +255,19 @@ int _HDSSCallGet::Call_UPDATEPUSHEVENT(LuaState * ls)
 		bool bret = PushKey::UpdatePushEvent(_index);
 		ls->PushBoolean(bret);
 		return 1;
+	}
+	return 0;
+}
+
+int _HDSSCallGet::Call_STOPACTION(LuaState * ls)
+{
+	_ENTERCALL_HDSS_LUA;
+
+	if (true)
+	{
+		int _stopflag = _INEXT_HDSS_LUAPARA;
+		int _stoptime = _INEXT_HDSS_LUAPARA;
+		Process::mp.SetStop(_stopflag, _stoptime);
 	}
 	return 0;
 }
@@ -654,6 +686,7 @@ int _HDSSCallGet::Call_ENSAIM(LuaState * ls)
 		int _level = 0;
 		float _aimx = 0;
 		float _aimy = 0;
+		int _aimangle = 0;
 		_JNEXT_HDSS_LUAPARA;
 		if (bhavenext)
 		{
@@ -666,10 +699,15 @@ int _HDSSCallGet::Call_ENSAIM(LuaState * ls)
 				if (bhavenext)
 				{
 					_aimy = _FOBJ_HDSS_LUA;
+					_JNEXT_HDSS_LUAPARA;
+					if (bhavenext)
+					{
+						_aimangle = _IOBJ_HDSS_LUA;
+					}
 				}
 			}
 		}
-		(*Enemy::en[_playerindex]).setLevelAim(_level, _aimx, _aimy);
+		(*Enemy::en[_playerindex]).setLevelAim(_level, _aimx, _aimy, _aimangle);
 	}
 	return 0;
 }

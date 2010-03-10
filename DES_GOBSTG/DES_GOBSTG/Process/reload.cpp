@@ -21,6 +21,7 @@ bool Process::reload()
 	pauseinit = false;
 	replaymode = false;
 	replayFPS = 0;
+	matchmode = 0;
 	scene = 0;
 	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
 	{
@@ -55,6 +56,8 @@ bool Process::reload()
 	Replay::ReleaseEnumReplay();
 
 	Replay::Release();
+
+	GameInput::SwapInput(false);
 
 #ifdef __DEBUG
 	HGELOG("\nCleared up.\n");

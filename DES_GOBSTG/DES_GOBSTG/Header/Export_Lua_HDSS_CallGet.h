@@ -22,8 +22,10 @@ public:
 	static int Call_SETCHARA(LuaState * ls);
 	static int Call_STARTPREP(LuaState * ls);
 	static int Call_SETKEY(LuaState * ls);
+	static int Call_DISABLEALLKEY(LuaState * ls);
 	static int Call_SETPUSHEVENT(LuaState * ls);
 	static int Call_UPDATEPUSHEVENT(LuaState * ls);
+	static int Call_STOPACTION(LuaState * ls);
 	static int Call_SAVEREPLAY(LuaState * ls);
 
 	static int Call_MUSICCHANGE(LuaState * ls);
@@ -92,8 +94,10 @@ public:
 	static int Get_ENLEVEL(LuaState * ls);
 	static int Get_ENAIMX(LuaState * ls);
 	static int Get_ENAIMY(LuaState * ls);
+	static int Get_ENAIMANGLE(LuaState * ls);
 	static int Get_ENLIFE(LuaState * ls);
 	static int Get_ENI(LuaState * ls);
+	static int Get_ENANGLE(LuaState * ls);
 	static int Get_ENNUM(LuaState * ls);
 
 	static int Get_SEED(LuaState * ls);
@@ -105,6 +109,7 @@ public:
 	static int Get_ATAN2(LuaState * ls);
 	static int Get_SIGN(LuaState * ls);
 	static int Get_ROLL(LuaState * ls);
+	static int Get_REGANGLE(LuaState * ls);
 
 	static int Get_CHECKKEY(LuaState * ls);
 

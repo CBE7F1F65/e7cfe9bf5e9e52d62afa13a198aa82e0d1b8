@@ -8,6 +8,11 @@ bool Export_Lua::_LuaRegistConst(LuaObject * obj)
 {
 	// System
 	obj->SetInteger("NULL",	NULL);
+#ifdef _DEBUG
+	obj->SetBoolean("_DEBUG", true);
+#else
+	obj->SetBoolean("_DEBUG", false);
+#endif // _DEBUG
 
 	// D3D
 	obj->SetInteger("D3DTS_WORLD", D3DTS_WORLD);

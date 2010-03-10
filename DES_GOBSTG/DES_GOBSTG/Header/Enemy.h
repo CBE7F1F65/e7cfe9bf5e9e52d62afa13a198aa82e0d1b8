@@ -123,7 +123,7 @@ public:
 	void setTar(BYTE tarID=0xff);
 	void setTake(int take=0);
 	void setAction(WORD ac=ENAC_NONE, float para_x=0, float para_y=0, float para_speed=0, float para_friction=0, int para_angle=0, int para_time=0, int para_counter=0, int para_endtime=0);
-	void setLevelAim(int level=0, float aimx=0, float aimy=0);
+	void setLevelAim(int level=0, float aimx=0, float aimy=0, int aimangle=0);
 
 	void initFrameIndex();
 	void setFrame(BYTE frameenum);
@@ -180,6 +180,7 @@ public:
 	};
 //	float	para[ENEMY_PARAMAX];
 	Target	aim;
+	int		aimangle;
 	int	level;
 	float	lastx;
 	float	life;

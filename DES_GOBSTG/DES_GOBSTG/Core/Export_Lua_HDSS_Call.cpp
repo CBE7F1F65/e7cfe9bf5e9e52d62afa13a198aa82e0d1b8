@@ -55,10 +55,14 @@ int Export_Lua_HDSS::LuaFn_HDSS_Call(LuaState * ls)
 				return _HDSSCallGet::Call_STARTPREP(ls);
 			case SCR_SETKEY:
 				return _HDSSCallGet::Call_SETKEY(ls);
+			case SCR_DISABLEALLKEY:
+				return _HDSSCallGet::Call_DISABLEALLKEY(ls);
 			case SCR_SETPUSHEVENT:
 				return _HDSSCallGet::Call_SETPUSHEVENT(ls);
 			case SCR_UPDATEPUSHEVENT:
 				return _HDSSCallGet::Call_UPDATEPUSHEVENT(ls);
+			case SCR_STOPACTION:
+				return _HDSSCallGet::Call_STOPACTION(ls);
 			case SCR_SAVEREPLAY:
 				return _HDSSCallGet::Call_SAVEREPLAY(ls);
 			}

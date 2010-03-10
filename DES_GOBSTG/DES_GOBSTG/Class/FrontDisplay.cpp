@@ -452,15 +452,15 @@ void FrontDisplay::RenderPanel()
 	{
 #ifdef __DEBUG
 		info.asciifont->printf(
-			520,
-			390,
+			400,
+			465,
 			0,
-			"%d\n%f\n%f\n%f",
-			hge->System_GetState(HGE_FRAMECOUNTER),
+			"%f %f",
 			hge->Timer_GetWorstFPS(35)/M_DEFAULT_RENDERSKIP,
-			hge->Timer_GetFPS()/M_DEFAULT_RENDERSKIP,
-			hge->Timer_GetTime()
+			hge->Timer_GetFPS()/M_DEFAULT_RENDERSKIP
 			);
+		info.asciifont->printf(8, 465, 0, "%d %d", gametime, hge->System_GetState(HGE_FRAMECOUNTER));
+		info.asciifont->printf(540, 1, 0, "%f",	hge->Timer_GetTime());
 #endif
 		if (((Process::mp.IsInGame() && Player::CheckAble()) || Process::mp.state == STATE_OVER) && info.asciifont)
 		{
@@ -480,9 +480,6 @@ void FrontDisplay::RenderPanel()
 			}
 			info.asciifont->Render(M_CLIENT_CENTER_X, M_CLIENT_BOTTOM-14, HGETEXT_CENTER, strfpsbuffer);
 			info.asciifont->printf(M_CLIENT_CENTER_X, M_CLIENT_TOP, HGETEXT_CENTER, "%02d:%02d", usingtime/3600, (usingtime/60)%60);
-#ifdef __DEBUG
-			info.asciifont->printf(8, 465, 0, "%d", gametime);
-#endif // __DEBUG
 		}
 	}
 }

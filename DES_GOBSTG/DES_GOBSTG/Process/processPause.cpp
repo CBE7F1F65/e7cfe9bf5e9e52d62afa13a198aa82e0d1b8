@@ -57,6 +57,7 @@ int Process::processPause()
 					FrontDisplay::fdisp.SetState(FDISP_SPELLNAME_0+i, FDISPSTATE_OFF);
 				}
 				FrontDisplay::fdisp.SetState(FDISP_MUSICNAME, FDISPSTATE_OFF);
+				GameInput::SwapInput(false);
 				return PTURN;
 			}
 			else

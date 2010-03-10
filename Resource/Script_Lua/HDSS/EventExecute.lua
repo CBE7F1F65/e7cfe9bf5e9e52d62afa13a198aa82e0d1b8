@@ -27,12 +27,17 @@ function _EventExecute_EffspChase(playerindex)
 	end
 end
 
-function _EventExecute_PlayerInStop(playerindex)
+function _EventExecute_PlayerInSpellStop(playerindex)
 	local bSpell, spellPlayerID, oplayerID, stoptimer, stopmaxtime, spellClass, spellLevel = game.GetPlayerStopInfo(playerindex);
 	if bSpell ~= nil then
-		return ePlayerInStop(playerindex, bSpell, spellPlayerID, oplayerID, stoptimer, stopmaxtime, spellClass, spellLevel);
+		return ePlayerInSpellStop(playerindex, bSpell, spellPlayerID, oplayerID, stoptimer, stopmaxtime, spellClass, spellLevel);
 	end
 	return false;
+end
+
+function _EventExecute_PlayerInStop(playerindex)
+	local playerID = hdss.Get(HDSS_CHARA, playerindex);
+	return ePlayerInStop(playerindex, playerID);
 end
 
 function _EventExecute_PlayerShootCharge(playerindex)
@@ -65,10 +70,10 @@ function _EventExecute_PlayerShootCharge(playerindex)
 end
 
 function _EventExecute_PlayerSendEx(playerindex)
-	local esindex, playerID, opx, opy, px, py, oplayerID = game.GetPlayerSendExInfo(playerindex);
+	local esindex, playerID, opx, opy, px, py, oplayerID, x, y = game.GetPlayerSendExInfo(playerindex);
 	for i, it in pairs(LTable_ePlayerSendExFunction) do
 		if it[1] == playerID then
-			return it[2](esindex, playerindex, playerID, opx, opy, px, py, oplayerID);
+			return it[2](esindex, playerindex, playerID, opx, opy, px, py, oplayerID, x, y);
 		end
 	end
 end
@@ -112,8 +117,8 @@ function EventExecute(name, con)
 		return _EventExecute_EffspChase(con);
 	elseif name == EVENT_PLAYERDRAIN or name == EVENT_PLAYERDRAINCHECK then
 		return _EventExecute_PlayerDrain(name, con);
-	elseif name == EVENT_PLAYERINSTOP then
-		return _EventExecute_PlayerInStop(con);
+	elseif name == EVENT_PLAYERINSPELLSTOP then
+		return _EventExecute_PlayerInSpellStop(con);
 	elseif name == EVENT_PLAYERSHOOTCHARGE then
 		return _EventExecute_PlayerShootCharge(con);
 	elseif name == EVENT_BOSSFADEOUT then
@@ -126,6 +131,8 @@ function EventExecute(name, con)
 		return _EventExecute_PlayerSendLily(con);
 	elseif name == EVENT_PLAYERSENDITEMBULLET then
 		return _EventExecute_PlayerSendItemBullet(con);
+	elseif name == EVENT_PLAYERINSTOP then
+		return _EventExecute_PlayerInStop(con);
 	end
 	return true;
 

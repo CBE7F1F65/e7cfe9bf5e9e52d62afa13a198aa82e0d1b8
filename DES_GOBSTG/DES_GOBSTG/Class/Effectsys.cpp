@@ -19,10 +19,14 @@ Effectsys::~Effectsys()
 	eff.FreeList();
 }
 
-void Effectsys::Clear()
+void Effectsys::Clear(bool erase)
 {
 	exist = false;
 	eff.Stop(true);
+	if (erase)
+	{
+		effsys[playerindex].pop();
+	}
 }
 
 void Effectsys::ClearAll()
@@ -50,7 +54,7 @@ void Effectsys::Action(DWORD stopflag)
 			{
 				if ((*effsys[j]).exist)
 				{
-					(*effsys[j]).action();
+					(*effsys[j]).action(true);
 				}
 			}
 		}
@@ -198,7 +202,7 @@ void Effectsys::MoveTo(float _x, float _y, float _z, bool bForce)
 	eff.MoveTo(x, y, z, bForce);
 }
 
-void Effectsys::action()
+void Effectsys::action(bool byself)
 {
 	timer++;
 
@@ -210,8 +214,8 @@ void Effectsys::action()
 		}
 		else if (timer == lifetime + EFFSYS_AUTOFADEOUT_TIME)
 		{
-			Stop(true);
-			exist = false;
+			Clear(byself);
+			return;
 		}
 	}
 

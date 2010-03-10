@@ -223,6 +223,10 @@ BYTE Bullet::getRenderDepth()
 
 void Bullet::matchFadeInColorType()
 {
+	if (fadeinTime < 0)
+	{
+		return;
+	}
 	if( BResource::res.bulletdata[type].fadecolor < BULLETCOLORMAX)
 	{
 		color = BResource::res.bulletdata[type].fadecolor;
@@ -326,6 +330,7 @@ bool Bullet::valueSet(BYTE _playerindex, WORD _ID, float _x, float _y, int _angl
 	headangle		=	0;
 	alpha			=	0xff;
 	cancelable		=	true;
+	bouncetime		=	0;
 
 	xplus = speed * cost(angle);
 	yplus = speed * sint(angle);
@@ -558,7 +563,7 @@ void Bullet::action()
 				hscale /= fadeinTime;
 			}
 		}
-		else if(timer < (DWORD)fadeinTime)
+		else if(fadeinTime > 0 && timer < (DWORD)fadeinTime)
 		{
 			if(oldtype != type)
 			{
@@ -570,15 +575,22 @@ void Bullet::action()
 				hscale += 1.0f / fadeinTime;
 			}
 		}
-		else if(timer == fadeinTime)
+		else if(timer == fadeinTime || fadeinTime < 0)
 		{
-			if(oldtype != type)
+			if (fadeinTime >= 0)
 			{
-				hscale -= 0.0625f;
+				if(oldtype != type)
+				{
+					hscale -= 0.0625f;
+				}
+				else
+				{
+					hscale += 1.0f / fadeinTime;
+				}
 			}
 			else
 			{
-				hscale += 1.0f / fadeinTime;
+				fadeinTime = 1;
 			}
 			type = oldtype;
 			color = oldcolor;
@@ -640,7 +652,7 @@ void Bullet::action()
 			Target::SetValue(tarID, x, y);
 		}
 
-		if(!remain)
+		if(!remain && timer > fadeinTime)
 		{
 			if(x > M_DELETECLIENT_RIGHT_(playerindex) || x < M_DELETECLIENT_LEFT_(playerindex) || y > M_DELETECLIENT_BOTTOM || y < M_DELETECLIENT_TOP)
 				exist = false;
@@ -768,7 +780,10 @@ bool Bullet::ChangeAction(int nextstep)
 							break;
 						}
 					}
-				doit = false;
+				}
+				else
+				{
+					doit = false;
 				}
 				break;
 			case OR:
@@ -1016,9 +1031,42 @@ bool Bullet::ChangeAction(int nextstep)
 					break;
 				}
 				break;
+			case BULAC_BOUNCE:
+				switch (_ACL_(0))
+				{
+				case BOUNCEGREAT:
+					if (bouncetime >= _CONACL_(1))
+					{
+						doit = true;
+					}
+					++i;
+					break;
+				case BOUNCEEQUAL:
+					if (bouncetime == _CONACL_(1))
+					{
+						doit = true;
+					}
+					++i;
+					break;
+				case BOUNCELESS:
+					if (bouncetime < _CONACL_(1))
+					{
+						doit = true;
+					}
+					++i;
+					break;
+				case BOUNCERANGE:
+					if (bouncetime >= _CONACL_(1) && bouncetime <= _CONACL_(2))
+					{
+						doit = true;
+					}
+					i+=2;
+					break;
+				}
+				break;
 			}
 		}
-		else if (!nextstep)
+		else// if (!nextstep)
 		{
 			switch (_ACL_(0) & BULAE_FILTER)
 			{
@@ -1292,17 +1340,19 @@ bool Bullet::ChangeAction(int nextstep)
 				case BOUNCE:
 					if (doit)
 					{
-						if (_EXEACL_(2))
+						if (bouncetime < _EXEACL_(2))
 						{
 							if (x < M_GAMESQUARE_LEFT_(playerindex) + _EXEACL_(1) || x > M_GAMESQUARE_RIGHT_(playerindex) - _EXEACL_(1))
 							{
-								_SAVEEXE_(2, _EXEACL_(2)-1);
+//								_SAVEEXE_(2, _EXEACL_(2)-1);
+								bouncetime++;
 								SE::push(SE_BULLET_CHANGE_2, x);
 								angle = 18000 - angle;
 							}
 							if (y < M_GAMESQUARE_TOP + _EXEACL_(1) || y > M_GAMESQUARE_BOTTOM - _EXEACL_(1))
 							{
-								_SAVEEXE_(2, _EXEACL_(2)-1);
+//								_SAVEEXE_(2, _EXEACL_(2)-1);
+								bouncetime++;
 								SE::push(SE_BULLET_CHANGE_2, x);
 								angle = -angle;
 							}
@@ -1314,11 +1364,12 @@ bool Bullet::ChangeAction(int nextstep)
 				case BOUNCELR:
 					if (doit)
 					{
-						if (_EXEACL_(2))
+						if (bouncetime < _EXEACL_(2))
 						{
 							if (x < M_GAMESQUARE_LEFT_(playerindex) + _EXEACL_(1) || x > M_GAMESQUARE_RIGHT_(playerindex) - _EXEACL_(1))
 							{
-								_SAVEEXE_(2, _EXEACL_(2)-1);
+//								_SAVEEXE_(2, _EXEACL_(2)-1);
+								bouncetime++;
 								SE::push(SE_BULLET_CHANGE_2, x);
 								angle = 18000 - angle;
 							}
@@ -1330,11 +1381,12 @@ bool Bullet::ChangeAction(int nextstep)
 				case BOUNCETB:
 					if (doit)
 					{
-						if (_EXEACL_(2))
+						if (bouncetime < _EXEACL_(2))
 						{
 							if (y < M_GAMESQUARE_TOP + _EXEACL_(1) || y > M_GAMESQUARE_BOTTOM - _EXEACL_(1))
 							{
-								_SAVEEXE_(2, _EXEACL_(2)-1);
+//								_SAVEEXE_(2, _EXEACL_(2)-1);
+								bouncetime++;
 								SE::push(SE_BULLET_CHANGE_2, x);
 								angle = -angle;
 							}

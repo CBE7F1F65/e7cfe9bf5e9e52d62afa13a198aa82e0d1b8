@@ -33,6 +33,7 @@ public:
 	static int LuaFn_Game_GetPlayerShootChargeInfo(LuaState * ls);
 	static int LuaFn_Game_GetEdefInfo(LuaState * ls);
 	static int LuaFn_Game_SendItemBullet(LuaState * ls);
+	static int LuaFn_Game_GetPlayerMoveInfo(LuaState * ls);
 };
 
 #endif

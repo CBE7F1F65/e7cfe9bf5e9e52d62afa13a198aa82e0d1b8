@@ -57,7 +57,7 @@ int Player::lilycount = 0;
 
 DWORD Player::alltime = 0;
 
-BYTE Player::raisestopplayerindex = 0;
+BYTE Player::raisespellstopplayerindex = 0;
 
 BYTE Player::round = 0;
 
@@ -164,7 +164,7 @@ void Player::ClearSet(BYTE _round)
 	shootpushtimer = 0;
 	shootnotpushtimer = 0;
 
-	stoptimer = 0;
+	spellstoptimer = 0;
 
 	speedfactor		=	1.0f;
 
@@ -248,7 +248,7 @@ void Player::ClearSet(BYTE _round)
 
 void Player::ClearRound(BYTE round/* =0 */)
 {
-	raisestopplayerindex = 0xff;
+	raisespellstopplayerindex = 0xff;
 	if (round)
 	{
 		rank += _GAMERANK_STAGEOVERADD;
@@ -326,12 +326,17 @@ bool Player::Action(DWORD stopflag)
 			p[i].AddCardBossLevel(0, 1);
 		}
 		bool binstop = FRAME_STOPFLAGCHECK_PLAYERINDEX_(stopflag, i, FRAME_STOPFLAG_PLAYER);
-		GameInput::gameinput[i].updateActiveInput(binstop);
+		bool binspellstop = FRAME_STOPFLAGCHECK_PLAYERINDEX_(stopflag, i, FRAME_STOPFLAG_PLAYERSPELL);
+		GameInput::gameinput[i].updateActiveInput(binspellstop);
 		if (p[i].exist)
 		{
-			if (!binstop)
+			if (!binstop && !binspellstop)
 			{
 				p[i].action();
+			}
+			else if (binspellstop)
+			{
+				p[i].actionInSpellStop();
 			}
 			else
 			{
@@ -639,9 +644,9 @@ void Player::action()
 				{
 					draintimer = 0;
 					SetDrainSpriteInfo(x, y, 0, 0);
-					flag |= PLAYER_DRAIN;
 				}
 			}
+			flag |= PLAYER_DRAIN;
 		}
 		else
 		{
@@ -695,7 +700,7 @@ void Player::action()
 			y = PL_MOVABLE_TOP;
 	}
 	//AI
-	GameAI::ai[playerindex].UpdateBasicInfo(x, y, speed*speedfactor, slowspeed*speedfactor, r);
+	GameAI::ai[playerindex].UpdateBasicInfo(x, y, speed*speedfactor, slowspeed*speedfactor, r, BResource::res.playerdata[nowID].aidraintime);
 	float aiaimx = _PL_MERGETOPOS_X_(playerindex);
 	float aiaimy = _PL_MERGETOPOS_Y;
 	bool tobelow = false;
@@ -739,10 +744,15 @@ void Player::action()
 	}
 }
 
+void Player::actionInSpellStop()
+{
+	spellstoptimer++;
+	Scripter::scr.Execute(SCR_EVENT, SCR_EVENT_PLAYERINSPELLSTOP, playerindex);
+}
+
 void Player::actionInStop()
 {
-	stoptimer++;
-	Scripter::scr.Execute(SCR_EVENT, SCR_EVENT_PLAYERINSTOP, playerindex);
+//	Scripter::scr.Execute(SCR_EVENT, SCR_EVENT_PLAYERINSTOP, playerindex);
 }
 
 bool Player::Merge()
@@ -1507,9 +1517,9 @@ BYTE Player::shootCharge(BYTE nChargeLevel, bool nodelete)
 	}
 	if (nChargeLevel > 1)
 	{
-		raisestopplayerindex = playerindex;
-		stoptimer = 0;
-		Process::mp.SetStop(FRAME_STOPFLAG_ALLSET|FRAME_STOPFLAG_PLAYERINDEX_0|FRAME_STOPFLAG_PLAYERINDEX_1, PL_SHOOTINGCHARGE_STOPTIME);
+		raisespellstopplayerindex = playerindex;
+		spellstoptimer = 0;
+		Process::mp.SetStop(FRAME_STOPFLAG_SPELLSET|FRAME_STOPFLAG_PLAYERINDEX_0|FRAME_STOPFLAG_PLAYERINDEX_1, PL_SHOOTINGCHARGE_STOPTIME);
 		if (chargezoner)
 		{
 			EventZone::Build(EVENTZONE_TYPE_BULLETFADEOUT|EVENTZONE_TYPE_ENEMYDAMAGE|EVENTZONE_TYPE_NOSEND, playerindex, x, y, chargezonemaxtime, 0, 10, EVENTZONE_EVENT_NULL, chargezoner/chargezonemaxtime, -2, SpriteItemManager::GetIndexByName(SI_PLAYER_CHARGEZONE), 400);

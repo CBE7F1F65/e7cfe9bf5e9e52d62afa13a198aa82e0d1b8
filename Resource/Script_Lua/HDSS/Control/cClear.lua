@@ -2,7 +2,7 @@ LTable_PlayerWinLoseChat	=
 {				
 	{0,	0,	"約束通り、お賽銭もらったわよ。",	"これはシャレになれないわね。"},
 	{1,	0,	"もう終わり？大したことじゃなかったぜ。",	"も、もう一回勝負しろ！"},
-	{2,	0,	"私はいつも本気です。",	"負けてしまいました。"},
+	{2,	0,	"winner",	"loser"},
 	{3,	0,	"winner",	"loser"},
 	{4,	0,	"winner",	"loser"},
 	{5,	0,	"winner",	"loser"},
@@ -22,7 +22,7 @@ LTable_PlayerWinLoseChat	=
 	{19,	0,	"winner",	"loser"},
 	{20,	0,	"winner",	"loser"},
 	{21,	0,	"winner",	"loser"},
-	{22,	0,	"winner",	"loser"},
+	{22,	0,	"私はいつも本気です。",	"負けてしまいました。"},
 }
 
 function CEClear_CloseUsed()
@@ -39,7 +39,7 @@ function ControlExecute_cClear(timer)
 	local chati = hdss.Get(HDSS_CHATI);
 	local winner = 0;
 	local csbegin = CS_L;
-	local csafter = CS_L;
+	local csafter = CS_R;
 	if hdss.Get(HDSS_PLIFE, 1) > 0 then
 		winner = 1;
 		csbegin = CS_R;

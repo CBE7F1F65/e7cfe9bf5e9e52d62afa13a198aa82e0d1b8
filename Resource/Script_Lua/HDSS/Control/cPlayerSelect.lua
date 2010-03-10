@@ -79,7 +79,7 @@ end
 
 function CEPlayerSelect_SetSelect(bleft, x)
 	local selsysplayerid, selsysotherplayerid, uibgid, initid, pushkeyid = _CEPlayerSelect_GetValues(bleft);
-	
+		
 	hdssBGOFF(0, uibgid);
 	_CEPlayerSelect_SetInitLife(bleft, x);
 	

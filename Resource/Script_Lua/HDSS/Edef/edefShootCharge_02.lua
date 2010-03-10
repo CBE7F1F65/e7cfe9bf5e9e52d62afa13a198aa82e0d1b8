@@ -1,143 +1,170 @@
 function Edef_ShootChargeEnemyEID_02_1(playerindex, level, x, y, timer, px, py)
 	if timer == 1 then
-		hdssEA_FADEOUT(playerindex, 80);
-	end
-	if math.mod(timer, 12) == 0 then
-		local turn = timer/12;
-		local num = level * 1.5;
-		local angle = level * 1340 + turn * 120;
-		local r = 64 - turn * 8;
-		local speed = turn * 0.08 + level * 0.1 + 1.2;
-		hdssA(playerindex,
+		
+		hdssEA_FADEOUT(playerindex, 41);
+		local stopflag = STOPFLAG_ALLSET;
+		if playerindex == 0 then
+			stopflag = stopflag + STOPFLAG_PLAYERINDEX_1;
+		else
+			stopflag = stopflag + STOPFLAG_PLAYERINDEX_0;
+		end
+		local oplayerID = hdss.Get(HDSS_CHARA, 1-playerindex);
+		if oplayerID == CC_PlayerID_Sakuya then
+			stopflag = stopflag - STOPFLAG_PLAYER;
+		end
+		hdssSTOPACTION(stopflag, 41);
+		
+	elseif math.mod(timer, 4) == 0 then
+		
+		local px = hdss.Get(HDSS_PX, 1-playerindex);
+		local py = hdss.Get(HDSS_PY, 1-playerindex);
+		local r = 60;
+		local nowindex = timer / 4;
+		local baseangle = hdssAMAP(1-playerindex, helper_GetCenterX(1-playerindex), CenterY, 18000);
+		local angle = (nowindex-4.5) * 1200 + baseangle;
+		local bx = r * hdss.Get(HDSS_COSA, angle) + px;
+		local by = r * hdss.Get(HDSS_SINA, angle) + py;
+		hdssA(1-playerindex,
 			{
-				TIMEREQUAL, 9, ANGLESETADD, 18000 + turn * 400
+				TIMERLESS, 30+level, SPEEDSETADD, 5
 			}
 		)
-		hdssBC(playerindex, num, angle, r, x, y, speed, CC_Bullet_Shuttle, turn+7);
-		hdssBC(playerindex, num, angle+18000/num, r, x, y, speed, CC_Bullet_SmallBall, turn+7);
-		hdssA(playerindex);
+		hdssB(1-playerindex, bx, by, angle+18000, 0, CC_Bullet_SmallBall, 4, -1);
+		hdssB(1-playerindex, bx, by, angle+18000, 0.5, CC_Bullet_Knife, 1, -1);
+		hdssA(1-playerindex);
+		
 	end
 	return true;
 end
 
 function Edef_ShootChargeEnemyEID_02_2(playerindex, level, x, y, timer, px, py)
 	if timer == 1 then
-		hdssEA_FADEOUT(playerindex, 60);
-	end
-	local timemod = 64;
-	if level > 12 then
-		timemod = 32;
-	end
-	if math.mod(timer, timemod) == 1 then
-		local turn = math.floor(timer/timemod);
-		local length = 80 + turn * 20;
-		local num = level * 2;
-		if level <= 12 then
-			num = num * 1.5;
-		end
-		local space = length/(num-2);
-		local tr = length / 1.618;
 		
-		hdssA(playerindex,
+		hdssEA_FADEOUT(playerindex, 41);
+		local stopflag = STOPFLAG_ALLSET;
+		if playerindex == 0 then
+			stopflag = stopflag + STOPFLAG_PLAYERINDEX_1;
+		else
+			stopflag = stopflag + STOPFLAG_PLAYERINDEX_0;
+		end
+		local oplayerID = hdss.Get(HDSS_CHARA, 1-playerindex);
+		if oplayerID == CC_PlayerID_Sakuya then
+			stopflag = stopflag - STOPFLAG_PLAYER;
+		end
+		hdssSTOPACTION(stopflag, 41);
+		
+	elseif math.mod(timer, 4) == 0 then
+		
+		local px = hdss.Get(HDSS_PX, 1-playerindex);
+		local py = hdss.Get(HDSS_PY, 1-playerindex);
+		local r = 60;
+		local nowindex = timer / 4 - 4.5;
+		local baseangle = hdssAMAP(1-playerindex, helper_GetCenterX(1-playerindex), CenterY, 18000);
+		local angle = nowindex * 1200 + baseangle;
+		local bx = r * hdss.Get(HDSS_COSA, angle) + px;
+		local by = r * hdss.Get(HDSS_SINA, angle) + py;
+		hdssA(1-playerindex,
 			{
-				TIMERRANGE, 32, 64, SPEEDSETADD, level/5+2
+				TIMERLESS, 30+level, SPEEDSETADD, 5
 			}
 		)
-		for i=0, 4 do
-			local baseangle = i*7200 + turn * 18000;
-			local tx = tr * hdss.Get(HDSS_COSA, baseangle+19800) + x;
-			local ty = tr * hdss.Get(HDSS_SINA, baseangle+19800) + y;
-			local angle = baseangle + 9000;
-			hdss.Call(
-				HDSS_BL,
-				{
-					playerindex, num, baseangle, space, 0, tx, ty, angle, -27000/num + turn * 18000, 0, 0, CC_Bullet_Shuttle, turn*4+2
-				}
-			)
+		for i=0, 3 do
+			hdssB(1-playerindex, bx, by, angle+nowindex*737+i*9000, 0.5, CC_Bullet_Knife, 1, -1);
 		end
-		hdssA(playerindex);
+		hdssA(1-playerindex);
+		
 	end
 	return true;
 end
 
 function Edef_ShootChargeEnemyEID_02_3(playerindex, level, x, y, timer, px, py)
+	
 	if timer == 1 then
 		local cx = helper_GetCenterBossX(playerindex);
 		local cy = CenterBossY;
-		hdssEA_OVERPLAYER(playerindex, cx, cy, 90, 60, 60);
+		hdssEA_OVERPLAYER(playerindex, cx, cy, 120, 60, 60);
 	elseif timer == 810 then
 		hdssEA_FADEOUT(playerindex, 810);
-	elseif math.mod(timer, 90) == 60 then
+	elseif math.mod(timer, 120) == 60 then
 		local pattern = RANDT(0, 4);
+		hdssSD(LConst_Desc_BossPattern+playerindex, pattern);
 		if pattern == 0 then
+			
 			hdssEB(CC_ShootChargeEnemyEID_02_3_A, playerindex, x, y, 9000, 0, LConst_EnemyTypeNull, 10);
-			hdssENSAIM(playerindex, level);
-		elseif pattern == 1 then
-			hdssEB(CC_ShootChargeEnemyEID_02_3_B, playerindex, x, y, 9000, 0, LConst_EnemyTypeNull, 10);
-			hdssENSAIM(playerindex, level);
-		elseif pattern == 2 then
-			local cenx = helper_GetCenterX(playerindex);
-			if px < cenx then
-				x = cenx + TotalW/8;
-			else
-				x = cenx - TotalW/8;
-			end
-			x = x + RANDTF(-16, 16);
-			hdssEB(CC_ShootChargeEnemyEID_02_3_C, playerindex, x, 0, 9000, 0, LConst_EnemyTypeNull, 10);
-			hdssENSAIM(playerindex, level);
-		elseif pattern == 3 then
-			local baseangle = hdssAMAP(playerindex, x, y);
-			for i=0, 2 do
-				local angle = (i-1)*2500+baseangle;
-				local speed = level * 0.2 + 1.2;
-				local num = level*2/3;
-				hdssB(playerindex, x, y, angle, speed, CC_Bullet_BigBall, 3, 9);
-				hdssA(playerindex,
-					{
-						TIMEREQUAL, 9, ANGLESET, angle
-					}
-				)
-				hdssBC(playerindex, num, angle, 16, x, y, speed, CC_Bullet_SmallBall, 6);
-				hdssA(playerindex);
-			end
-		else
-			hdssEB(CC_ShootChargeEnemyEID_02_3_E, playerindex, x, y, 9000, 0, LConst_EnemyTypeNull, 10);
 			hdssENSAIM(playerindex, level);	
+				
+		elseif pattern == 1 then
+			
+			hdssEB(CC_ShootChargeEnemyEID_02_3_B, playerindex, x, y, 9000, 0, LConst_EnemyTypeNull, 10);
+			hdssENSAIM(playerindex, level, 0, 0, hdssAMAP(playerindex, x, y));	
+			
+		elseif pattern == 2 or pattern == 4 then
+			
+			local aimx = (pattern-3) * CenterW * 2 / 5 + helper_GetCenterX(playerindex);
+			hdssEA(playerindex, ENAC_CHASEAIM_XYSOAOCO,
+				{
+					aimx, 128, 1.0
+				},
+				{
+					-9000, 0, 15
+				}
+			);	
+		
+		elseif pattern == 3 then
+			
+			local angle = hdssAMAP(playerindex, x, y);
+			hdssEB(CC_ShootChargeEnemyEID_02_3_D, playerindex, x, y, angle, 2.2, LConst_EnemyTypeNull, 10);
+			hdssENSAIM(playerindex, level);	
+				
 		end
 	end
+	
+	local savedpattern = hdss.Get(HDSS_D, LConst_Desc_BossPattern+playerindex);
+	if savedpattern == 2 or savedpattern == 4 then
+		if math.mod(timer, 120) == 75 then
+			local aimx = helper_GetCenterX(playerindex)*2 - x;
+			hdssEA(playerindex, ENAC_CHASEAIM_XYSOAOCO,
+				{
+					aimx, 96, 1.0
+				},
+				{
+					-9000, 0, 45
+				}
+			);
+		elseif math.mod(timer, 120) > 75 then
+			if math.mod(timer, 4) == 0 then
+				local turn = math.floor(level / 4) + 2;
+				local nowindex = (math.mod(timer, 120)-75) / 4;
+				local speed = level * 0.1 + 1.4;
+				local leftrightindi = savedpattern - 3;
+				for i=0, turn-1 do
+					hdssB(playerindex, x, y, 9000+nowindex*200*leftrightindi-i*(6000/turn)*leftrightindi, speed, CC_Bullet_Knife, 3);
+				end
+			end
+		elseif math.mod(timer, 120) == 1 then
+			local cx = helper_GetCenterBossX(playerindex);
+			local cy = CenterBossY;
+			hdssEA_OVERPLAYER(playerindex, cx, cy, 120, 60, 60);
+		end
+	end
+	
 	return true;
 end
 
 function Edef_ShootChargeEnemyEID_02_3_A(playerindex, level, x, y, timer, px, py)
 	if timer == 1 then
-		hdssEA_FADEOUT(playerindex, 18);
-	else
-		local turn = 0;
-		if timer > 10 then
-			turn = 1;
-		end
-		local num = level + 10;
-		local baseangle = hdss.Get(HDSS_SIGN, level) * timer * 120 + level * 1700 + hdss.Get(HDSS_SEED);
-		local baser = timer * 20 + 32;
+		hdssEA_FADEOUT(playerindex, 40+level*2);
+	elseif math.mod(timer, 4) == 0 then
+		local speed = level * 0.1 + 1.2;
+		local xoffset = RANDTF(-24, 24);
+		local yoffset = RANDTF(-24, 24);
 		hdssA(playerindex,
 			{
-				TIMEREQUAL, 64, FADEOUT
+				COLOREQUAL, 2, AND, YLESS, 400, THEN, BOUNCE, 0, 1,
+				COLOREQUAL, 2, AND, BOUNCEEQUAL, 1, THEN, COLORSET, 3
 			}
 		)
-		hdss.Call(
-			HDSS_BC,
-			{
-				playerindex, num, baseangle, baser, x, y, 0, CC_Bullet_Shuttle, turn * 2 + 2, 16, 16
-			}
-		)
-		if level > 12 then
-			hdss.Call(
-				HDSS_BC,
-				{
-					playerindex, num, 18000-baseangle, baser, x, y, 0, CC_Bullet_Shuttle, turn + 5, 16, 16
-				}
-			)
-		end
+		hdssBC(playerindex, 7, RANDT(1, 36000), 0, x+xoffset, y+yoffset, speed, CC_Bullet_Knife, 2);
 		hdssA(playerindex);
 	end
 	return true;
@@ -145,85 +172,43 @@ end
 
 function Edef_ShootChargeEnemyEID_02_3_B(playerindex, level, x, y, timer, px, py)
 	if timer == 1 then
-		hdssEA_FADEOUT(playerindex, 10);
+		hdssEA_FADEOUT(playerindex, 64);
 	elseif math.mod(timer, 4) == 0 then
-		local turn = timer / 4;
-		local length = 80 + turn * 20;
-		local num = level * 2;
-		local space = length/(num-2);
-		local tr = length / 1.618;
-		hdssA(playerindex,
-			{
-				TIMEREQUAL, 30, SPEEDSETMUL, 10000,
-				TIMERRANGE, 32, 64, SPEEDSETADD, level/5+2
-			}
-		)
-		for i=0, 4 do
-			local baseangle = i*7200 + turn * 18000;
-			local tx = tr * hdss.Get(HDSS_COSA, baseangle+19800) + x;
-			local ty = tr * hdss.Get(HDSS_SINA, baseangle+19800) + y;
-			local angle = baseangle + 9000;
-			hdss.Call(
-				HDSS_BL,
-				{
-					playerindex, num, baseangle, space, 0, tx, ty, angle, -6000/num + i * 600, 0, 0.001, CC_Bullet_Shuttle, turn*4+2
-				}
-			)
+		local speed = level * 0.2 + 1.2;
+		local angle = hdss.Get(HDSS_ENAIMANGLE, playerindex);
+		local nowindex = timer / 4;
+		local angleoffset = 600;
+		for i=0, 1 do
+			hdssB(playerindex, x, y, angle+(i*2-1)*(16-nowindex)*angleoffset, speed, CC_Bullet_Knife, 6);
 		end
-		hdssA(playerindex);
 	end
 	return true;
 end
 
 
 function Edef_ShootChargeEnemyEID_02_3_C(playerindex, level, x, y, timer, px, py)
-	if timer == 1 then
-		local movespeed = 12-level * 0.5
-		hdssEA(
-			playerindex, ENAC_DIRECTSET_XYSOAOOO,
-			{
-				x, y, movespeed
-			},
-			{
-				9000
-			}
-		)
-	end
-	local angle = timer * 900 + level * 1300 + hdss.Get(HDSS_SEED);
-	local type = CC_Bullet_Shuttle;
-	if math.mod(timer, 2) == 0 then
-		type = CC_Bullet_SmallBall;
-	end
-	local addval = level * 0.3 + 1.6;
-	hdssA(playerindex,
-		{
-			TIMERRANGE, 128, 160, SPEEDSETADD, addval
-		}
-	)
-	hdssB(playerindex, x, y, angle, 0.1, type, 1);
-	hdssA(playerindex);
 	return true;
 end
 
 function Edef_ShootChargeEnemyEID_02_3_D(playerindex, level, x, y, timer, px, py)
+	if timer == 1 then
+		hdssEA_FADEOUT(playerindex, 100+level*4);
+		local angle = hdss.Get(HDSS_ENANGLE, playerindex);
+		local speed = hdss.Get(HDSS_ENSPEED, playerindex);
+		hdssB(playerindex, x, y, angle, speed, CC_Bullet_Knife, 4);
+	end
+	if math.mod(timer, 2) == 0 then
+		hdssA(playerindex,
+			{
+				TIMERRANGE, 30, 60, SPEEDSETADD, level/3
+			}
+		)
+		hdssB(playerindex, x, y, RANDT(1, 36000), 0.5, CC_Bullet_SmallBall, 6);
+	end
 	return true;
 end
 
 
 function Edef_ShootChargeEnemyEID_02_3_E(playerindex, level, x, y, timer, px, py)
-	local totalturn = level;
-	if timer == 1 then
-		hdssEA_FADEOUT(playerindex, totalturn*2+1);
-	elseif math.mod(timer, 2) == 0 then
-		local turn = timer / 2;
-		local angle = 36000/totalturn*turn + level * 1340 + hdss.Get(HDSS_SEED);
-		local speed = level * 0.2 + 1.2;
-		hdss.Call(
-			HDSS_BEB,
-			{
-				playerindex, x, y, angle, speed, CC_Bullet_ShuttleBeam, 6, 96+turn*4
-			}
-		)
-	end
 	return true;
 end

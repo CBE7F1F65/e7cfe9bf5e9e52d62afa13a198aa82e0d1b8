@@ -103,7 +103,7 @@ int Export_Lua_HDSS::LuaFn_HDSS_Get(LuaState * ls)
 		case SCR_ENI:
 			return _HDSSCallGet::Get_ENI(ls);
 		case SCR_ENANGLE:
-			break;
+			return _HDSSCallGet::Get_ENANGLE(ls);
 		case SCR_ENSPEED:
 			return _HDSSCallGet::Get_ENSPEED(ls);
 		case SCR_ENAMAP:
@@ -112,12 +112,12 @@ int Export_Lua_HDSS::LuaFn_HDSS_Get(LuaState * ls)
 			break;
 		case SCR_ENLEVEL:
 			return _HDSSCallGet::Get_ENLEVEL(ls);
-			break;
 		case SCR_ENAIMX:
 			return _HDSSCallGet::Get_ENAIMX(ls);
-			break;
 		case SCR_ENAIMY:
 			return _HDSSCallGet::Get_ENAIMY(ls);
+		case SCR_ENAIMANGLE:
+			return _HDSSCallGet::Get_ENAIMANGLE(ls);
 		case SCR_ENLIFE:
 			return _HDSSCallGet::Get_ENLIFE(ls);
 		case SCR_ENNUM:
@@ -154,6 +154,8 @@ int Export_Lua_HDSS::LuaFn_HDSS_Get(LuaState * ls)
 			return _HDSSCallGet::Get_SIGN(ls);
 		case SCR_ROLL:
 			return _HDSSCallGet::Get_ROLL(ls);
+		case SCR_REGANGLE:
+			return _HDSSCallGet::Get_REGANGLE(ls);
 		}
 		break;
 		/************************************************************************/

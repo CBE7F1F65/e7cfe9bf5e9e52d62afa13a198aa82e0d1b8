@@ -61,6 +61,8 @@ LConst_Desc_EnemyRandom	=	FREEBEGIN + 2
 LConst_Desc_EnemyNowLine	=	FREEBEGIN + 4
 LConst_Desc_EnemyNowLineNum	=	FREEBEGIN + 6
 LConst_Desc_LilyItem	=	FREEBEGIN + 10
+LConst_Desc_DrainAngle	=	FREEBEGIN + 12
+LConst_Desc_BossPattern	=	FREEBEGIN + 14
 
 LConst_gamefg_fadeIid	=	BGLAYERMAX 
 LConst_gamefg_fadeIIid	=	BGLAYERMAX + 1
