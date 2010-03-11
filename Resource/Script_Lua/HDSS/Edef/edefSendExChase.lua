@@ -9,17 +9,21 @@ end
 function Edef_SendExChase_02(playerindex, rank, x, y, timer, px, py)
 	
 	if timer == 1 then
-		hdssEA_FADEOUT(playerindex, 60);
-	elseif math.mod(timer, 12) == 0 then
+		hdssEA_FADEOUT(playerindex, 50);
+	elseif math.mod(timer, 10) == 0 then
 		local angle = hdss.Get(HDSS_ENAIMANGLE, playerindex);
-		local speed = 1.5 + rank * 0.05;
-		hdssB(playerindex, x, y, angle, speed, CC_Bullet_FakeKnife, 3);
+		local speed = 1.8 + rank * 0.05;
+		local xposcon = XGREAT;
+		if helper_GetCenterX(playerindex) < TotalCenterX then
+			xposcon = XLESS;
+		end
+		hdssB(playerindex, x, y, angle, speed, CC_BulletEx_SakuyaFake, 3);
 		hdssA(1-playerindex, 
 			{
-				TIMERLESS, 240, REMAIN
+				xposcon, TotalCenterX, REMAIN
 			}
 		);
-		hdssB(1-playerindex, x, y, angle, speed, CC_Bullet_Knife, 3);
+		hdssB(1-playerindex, x, y, angle, speed, CC_BulletEx_Sakuya, 3);
 		hdssA(1-playerindex);
 	end
 	

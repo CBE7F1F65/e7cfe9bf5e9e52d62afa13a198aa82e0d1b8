@@ -59,6 +59,7 @@ public:
 	static int Call_INTER(LuaState * ls);
 
 	static int Call_COLLISION_CIRCLE(LuaState * ls);
+	static int Call_EZONEBUILD(LuaState * ls);
 
 	static int Call_EFFSETUP(LuaState * ls);
 
@@ -117,6 +118,7 @@ public:
 	static int Get_PY(LuaState * ls);
 	static int Get_PLIFE(LuaState * ls);
 	static int Get_PBDRAIN(LuaState * ls);
+	static int Get_PBINFI(LuaState * ls);
 
 	static int Get_SELCOMPLETE(LuaState * ls);
 	static int Get_SEL(LuaState * ls);

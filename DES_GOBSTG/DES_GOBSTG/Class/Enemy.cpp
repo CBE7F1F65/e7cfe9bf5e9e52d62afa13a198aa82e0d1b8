@@ -171,7 +171,7 @@ void Enemy::Action(DWORD stopflag)
 					en[j].toIndex(_index);
 					if (pen->able)
 					{
-						PlayerBullet::CheckAndSetLock((BObject *)pen, j, en[j].getIndex());
+						PlayerBullet::CheckAndSetLock((BObject *)pen, j, en[j].getIndex(), pen->checkActive());
 						if (pen->type < PLAYERTYPEMAX)
 						{
 							bossindex[j] = en[j].getIndex();
@@ -1037,7 +1037,7 @@ bool Enemy::DoActivate()
 	{
 		return false;
 	}
-	if (sendsetID && !activetimer && Player::p[playerindex].bDrain)
+	if (!checkActive() && Player::p[playerindex].bDrain)
 	{
 		bool haveor = false;
 		bool orcheck = false;
@@ -1093,6 +1093,15 @@ bool Enemy::DoActivate()
 			}
 		}
 		Scripter::scr.Execute(SCR_EVENT, SCR_EVENT_PLAYERDRAINCHECK, playerindex);
+		return true;
+	}
+	return false;
+}
+
+bool Enemy::checkActive()
+{
+	if (!sendsetID || activetimer)
+	{
 		return true;
 	}
 	return false;

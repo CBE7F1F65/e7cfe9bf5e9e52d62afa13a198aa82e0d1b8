@@ -80,6 +80,7 @@ LConst_bgset_spellid	= 1
 LConst_SceneSpellOffset	=	100
 
 LConst_effid_shootcharge	=	34
+LConst_effid_youmuslash	=	85
 
 LConst_effid_sendex_01	=	83
 

@@ -3,6 +3,7 @@
 
 #include "BObject.h"
 #include "BulletListActionConst.h"
+#include "Effectsys.h"
 
 #define BULLETMAX			0x1000
 #define BULLETCOLORMAX		0x10
@@ -87,6 +88,7 @@ public:
 	void passEvent(BYTE eventID);
 
 	bool ChangeAction(int nextstep=0);
+	void changeType(BYTE totype);
 
 public:
 	int		actionList[BULLETACTIONMAX];
@@ -117,6 +119,8 @@ public:
 	BYTE	sendsetID;
 
 	BYTE	bouncetime;
+
+	Effectsys	eff;
 
 	static int _actionList[M_PL_MATCHMAXPLAYER][BULLETACTIONMAX];
 

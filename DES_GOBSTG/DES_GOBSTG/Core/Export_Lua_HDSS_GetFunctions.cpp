@@ -525,6 +525,20 @@ int _HDSSCallGet::Get_PBDRAIN(LuaState * ls)
 	return 0;
 }
 
+int _HDSSCallGet::Get_PBINFI(LuaState * ls)
+{
+	_ENTERGET_HDSS_LUA;
+	if (argscount > 1)
+	{
+		BYTE _playerindex = _INEXT_HDSS_LUAFUNC;
+		_PB_HDSS_LUA(Player::p[_playerindex].bInfi);
+		_PI_HDSS_LUA(Player::p[_playerindex].infireasonflag);
+		_PI_HDSS_LUA(Player::p[_playerindex].infitimer);
+		return 3;
+	}
+	return 0;
+}
+
 int _HDSSCallGet::Get_SEL(LuaState * ls)
 {
 	_ENTERGET_HDSS_LUA;

@@ -307,13 +307,13 @@ Comment	Index	SI_Name	Tex	Tex_x	Tex_y	Tex_w	Tex_h
 -	552	SI_PlayerGhost_01_1	11	176	144	16	16
 -	553	SI_PlayerGhost_01_2	11	160	144	16	16
 -	554	SI_PlayerGhost_02_1	12	128	144	32	32
--	557	SI_PlayerGhost_04_1	28	128	192	48	48
--	558	SI_PlayerGhost_04_2	28	32	192	32	16
--	559	SI_PlayerGhost_05	29	64	144	16	16
--	560	SI_PlayerGhost_06	30	192	144	32	32
--	561	SI_PlayerGhost_07	31	0	0	0	0
--	562	SI_PlayerGhost_22_1	32	80	144	16	16
--	563	SI_PlayerGhost_22_2	32	64	144	16	16
+-	555	SI_PlayerGhost_05	29	64	144	16	16
+-	556	SI_PlayerGhost_06	30	192	144	32	32
+-	557	SI_PlayerGhost_07	31	0	0	0	0
+-	558	SI_PlayerGhost_18_1	28	128	192	48	48
+-	559	SI_PlayerGhost_18_2	28	32	192	32	16
+-	560	SI_PlayerGhost_22_1	32	80	144	16	16
+-	561	SI_PlayerGhost_22_2	32	64	144	16	16
 #		SystemScene(650~749)					
 -	650	SI_TitleScene	360	0	0	-1	-1
 -	651	SI_SelectScene	361	0	0	-1	-1
@@ -448,10 +448,10 @@ Comment	Index	SI_Name	Tex	Tex_x	Tex_y	Tex_w	Tex_h
 -	1027	SI_PlayerBullet_02_1_1	12	16	144	32	16
 -	1028	SI_PlayerBullet_02_1_2	12	32	144	32	16
 -	1029	SI_PlayerBullet_02_1_3	12	48	144	32	16
--	1030	SI_PlayerBullet_24	28	64	240	48	16
--	1031	SI_PlayerBullet_25	28	64	240	48	16
--	1032	SI_PlayerBullet_26	28	64	240	48	16
--	1033	SI_PlayerBullet_27	28	64	240	48	16
+-	1030	SI_PlayerBullet_03_0_0	13	0	144	16	16
+-	1031	SI_PlayerBullet_03_0_1	13	16	144	16	16
+-	1032	SI_PlayerBullet_03_0_2	13	32	144	16	16
+-	1033	SI_PlayerBullet_03_0_3	13	48	144	16	16
 -	1034	SI_PlayerBullet_28	28	64	240	48	16
 -	1035	SI_PlayerBullet_29	28	64	240	48	16
 -	1036	SI_PlayerBullet_30	28	64	240	48	16
@@ -824,6 +824,30 @@ Comment	Index	SI_Name	Tex	Tex_x	Tex_y	Tex_w	Tex_h
 -	1732	SI_Bullet_Score_5	2	456	482	40	12
 #		BulletEx(1800~1999)					
 -	1800	SI_BulletEx_Reimu_0	50	128	0	64	64
+-	1801	SI_BulletEx_Sakuya_0	12	0	192	32	32
+-	1802	SI_BulletEx_Sakuya_1	12	32	192	32	32
+-	1803	SI_BulletEx_Sakuya_2	12	64	192	32	32
+-	1804	SI_BulletEx_Sakuya_3	12	96	192	32	32
+-	1805	SI_BulletEx_Sakuya_4	12	128	192	32	32
+-	1806	SI_BulletEx_Sakuya_5	12	160	192	32	32
+-	1807	SI_BulletEx_Sakuya_6	12	192	192	32	32
+-	1808	SI_BulletEx_Sakuya_7	12	224	192	32	32
+-	1809	SI_BulletEx_SakuyaFake_0	12	0	224	32	32
+-	1810	SI_BulletEx_SakuyaFake_1	12	32	224	32	32
+-	1811	SI_BulletEx_SakuyaFake_2	12	64	224	32	32
+-	1812	SI_BulletEx_SakuyaFake_3	12	96	224	32	32
+-	1813	SI_BulletEx_SakuyaFake_4	12	128	224	32	32
+-	1814	SI_BulletEx_SakuyaFake_5	12	160	224	32	32
+-	1815	SI_BulletEx_SakuyaFake_6	12	192	224	32	32
+-	1816	SI_BulletEx_SakuyaFake_7	12	224	224	32	32
+-	1817	SI_BulletEx_Youmu_0	53	0	48	48	48
+-	1818	SI_BulletEx_Youmu_1	53	48	48	48	48
+-	1819	SI_BulletEx_Youmu_2	53	96	48	48	48
+-	1820	SI_BulletEx_Youmu_3	53	144	48	48	48
+-	1821	SI_BulletEx_Youmu_4	53	0	96	48	48
+-	1822	SI_BulletEx_Youmu_5	53	48	96	48	48
+-	1823	SI_BulletEx_Youmu_6	53	96	96	48	48
+-	1824	SI_BulletEx_Youmu_7	53	144	96	48	48
 #		Player(2000~2999)					
 -	2000	SI_Player_Reimu_0	10	0	0	32	48
 -	2001	SI_Player_Reimu_1	10	32	0	32	48
@@ -1433,7 +1457,7 @@ Comment	Index	SI_Name	Tex	Tex_x	Tex_y	Tex_w	Tex_h
 -	3400	SI_PlayerDrainZone_01	310	0	0	-1	-1
 -	3401	SI_PlayerDrainZone_02	311	0	0	-1	-1
 -	3402	SI_PlayerDrainZone_03	312	0	0	-1	-1
--	3403	SI_PlayerDrainZone_04	310	0	0	-1	-1
+-	3403	SI_PlayerDrainZone_04	313	0	0	-1	-1
 -	3404	SI_PlayerDrainZone_05	310	0	0	-1	-1
 -	3405	SI_PlayerDrainZone_06	310	0	0	-1	-1
 -	3406	SI_PlayerDrainZone_07	310	0	0	-1	-1

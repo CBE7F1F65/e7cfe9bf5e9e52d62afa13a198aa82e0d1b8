@@ -52,7 +52,7 @@ public:
 	void TurnBullet(float mul=1.0f);
 
 	static void ClearLock();
-	static bool CheckAndSetLock(BObject * pbobj, BYTE playerindex, int lockedid);
+	static bool CheckAndSetLock(BObject * pbobj, BYTE playerindex, int lockedid, bool active);
 	static bool GetLockAim(BObject ** ppbobj, BYTE playerindex);
 	static void Release();
 
@@ -83,6 +83,7 @@ public:
 	static DWORD bcol0, bcol1, bcol2, bcol3;
 	static HTEXTURE * tex;
 	static int locked[M_PL_MATCHMAXPLAYER];
+	static int activelocked[M_PL_MATCHMAXPLAYER];
 	static WORD beams;
 	static VectorList<PlayerBullet>pb[M_PL_MATCHMAXPLAYER];
 };

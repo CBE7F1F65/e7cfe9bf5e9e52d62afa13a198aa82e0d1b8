@@ -473,6 +473,15 @@ function hdssEA_FADEOUT(playerindex, time)
 	)
 end
 
+function hdssEA_REPOSITION(playerindex, counter)
+	return hdss.Call(
+		HDSS_EA,
+		{
+			playerindex, ENAC_REPOSITION_OOOOOOCO, 0, 0, 0, 0, 0, 0, counter
+		}
+	)
+end
+
 function hdssEA_OVERPLAYER(playerindex, x, y, time, counter, endtime)
 	return hdss.Call(
 		HDSS_EA,

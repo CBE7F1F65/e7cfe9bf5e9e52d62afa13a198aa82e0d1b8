@@ -56,11 +56,14 @@ function ePlayerDrain_02(playerindex, x, y, draintimer, type)
 		return true;
 	end
 	
-	if draintimer > 30 then
+	local hscale = 1.25;
+	local vscale = 1.25;
+	if draintimer < 30 then
+		hscale = (draintimer / 30) * 1.25;
+	else
 		draintimer = 30;
 	end
-	local hscale = (draintimer / 30) * 1.25;
-	local vscale = 1.25;
+	
 	
 --	local lastx, lasty, lastmx, lastmy, moveangle, moved = game.GetPlayerMoveInfo(playerindex, 1);
 
@@ -167,6 +170,24 @@ end
 
 
 function ePlayerDrain_03(playerindex, x, y, draintimer, type)
+	
+	if type ~= nil then
+		game.SetGhostActiveInfo(playerindex, 160, type+1, type+1, -9000, 0.625, 2);
+		hdssSE(SE_GHOST_ACTIVATE, x, y);
+		return true;
+	end
+	
+	local hscale;
+	if draintimer < 184 then
+		hscale = draintimer / 184 + 0.125;
+	else
+		hscale = 1.125;
+	end
+	game.SetDrainSpriteInfo(playerindex, x, y, 0, hscale);
+	
+	local r = hscale * 128;
+	
+	hdssENAZBUILD(playerindex, ENAZTYPE_CIRCLE+ENAZOP_AND, x, y, r);
 	return true;
 end
 

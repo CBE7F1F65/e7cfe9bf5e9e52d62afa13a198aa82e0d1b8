@@ -266,7 +266,7 @@ int Export_Lua_HDSS::LuaFn_HDSS_Get(LuaState * ls)
 		case SCR_PBSLOW:
 			break;
 		case SCR_PBINFI:
-			break;
+			return _HDSSCallGet::Get_PBINFI(ls);
 		case SCR_PSPEED:
 			break;
 		case SCR_PSLOWSPEED:

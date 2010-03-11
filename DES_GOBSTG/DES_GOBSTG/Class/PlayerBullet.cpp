@@ -13,6 +13,7 @@
 VectorList<PlayerBullet> PlayerBullet::pb[M_PL_MATCHMAXPLAYER];
 
 int PlayerBullet::locked[M_PL_MATCHMAXPLAYER];
+int PlayerBullet::activelocked[M_PL_MATCHMAXPLAYER];
 
 hgeSprite * PlayerBullet::sprite[PLAYERSHOOTTYPEMAX][PLAYERBULLETTYPE];
 HTEXTURE * PlayerBullet::tex;
@@ -63,6 +64,7 @@ void PlayerBullet::Init(HTEXTURE * _tex)
 	{
 		pb[i].init(PLAYERBULLETMAX);
 		locked[i] = PBLOCK_LOST;
+		activelocked[i] = PBLOCK_LOST;
 	}
 
 	for (int i=0; i<PLAYERSHOOTTYPEMAX; i++)
@@ -96,6 +98,7 @@ void PlayerBullet::ClearItem()
 	{
 		pb[i].clear_item();
 		locked[i] = PBLOCK_LOST;
+		activelocked[i] = PBLOCK_LOST;
 	}
 }
 
@@ -280,19 +283,27 @@ void PlayerBullet::ClearLock()
 	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
 	{
 		locked[i] = PBLOCK_LOST;
+		activelocked[i] = PBLOCK_LOST;
 	}
 }
 
-bool PlayerBullet::CheckAndSetLock(BObject * pbobj, BYTE playerindex, int lockedid)
+bool PlayerBullet::CheckAndSetLock(BObject * pbobj, BYTE playerindex, int lockedid, bool active)
 {
-	if (locked[playerindex] != PBLOCK_LOST)
+	if (locked[playerindex] != PBLOCK_LOST && activelocked[playerindex] != PBLOCK_LOST)
 	{
 		return false;
 	}
 	if (pbobj->x >= M_GAMESQUARE_LEFT_(playerindex) && pbobj->y <= M_GAMESQUARE_RIGHT_(playerindex) &&
 		pbobj->y >= M_GAMESQUARE_TOP && pbobj->y <= M_GAMESQUARE_BOTTOM)
 	{
-		locked[playerindex] = lockedid;
+		if (locked[playerindex] == PBLOCK_LOST)
+		{
+			locked[playerindex] = lockedid;
+		}
+		if (activelocked[playerindex] == PBLOCK_LOST && active && pbobj->y <= M_GAMESQUARE_BOTTOM-64)
+		{
+			activelocked[playerindex] = lockedid;
+		}
 		return true;
 	}
 	return false;

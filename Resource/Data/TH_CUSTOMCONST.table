@@ -31,11 +31,13 @@ Comment	CustomConst	Name	Value
 -	76	CC_Bullet_FadedRedFireBall	26
 -	77	CC_Bullet_BlueFireBall	27
 -	78	CC_Bullet_FadedBlueFireBall	28
--	79	CC_Bullet_FakeKnife	30
--	80	CC_BulletEx_Reimu	32
--	81	CC_Bullet_ShootItem	60
--	82	CC_Bullet_FadeItem	61
--	83	CC_Bullet_Score	62
+-	79	CC_BulletEx_Reimu	32
+-	80	CC_BulletEx_Sakuya	33
+-	81	CC_BulletEx_SakuyaFake	34
+-	82	CC_BulletEx_Youmu	35
+-	83	CC_Bullet_ShootItem	60
+-	84	CC_Bullet_FadeItem	61
+-	85	CC_Bullet_Score	62
 #		PlayerID(150~199)	
 -	150	CC_PlayerID_Reimu	0
 -	151	CC_PlayerID_Marisa	1
@@ -63,6 +65,7 @@ Comment	CustomConst	Name	Value
 #		SE(200~249)	
 -	200	CC_SE_Bullet_1	90
 -	201	CC_SE_Bullet_2	91
+-	202	CC_SE_Slash	63
 #		SpecialEnemyEID(250~459)	
 -	250	CC_EnemyEID_Lily	256
 -	251	CC_SendExChaseEnemyEID_00	257

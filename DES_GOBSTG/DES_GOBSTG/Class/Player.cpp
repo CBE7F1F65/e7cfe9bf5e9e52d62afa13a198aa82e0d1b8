@@ -704,11 +704,16 @@ void Player::action()
 	float aiaimx = _PL_MERGETOPOS_X_(playerindex);
 	float aiaimy = _PL_MERGETOPOS_Y;
 	bool tobelow = false;
-	if (PlayerBullet::locked[playerindex] != PBLOCK_LOST)
+	if (PlayerBullet::activelocked[playerindex] != PBLOCK_LOST)
+	{
+		aiaimx = Enemy::en[playerindex][PlayerBullet::activelocked[playerindex]].x;
+		aiaimy = Enemy::en[playerindex][PlayerBullet::activelocked[playerindex]].y + 120;
+		tobelow = true;
+	}
+	else if (PlayerBullet::locked[playerindex] != PBLOCK_LOST)
 	{
 		aiaimx = Enemy::en[playerindex][PlayerBullet::locked[playerindex]].x;
-		aiaimy = Enemy::en[playerindex][PlayerBullet::locked[playerindex]].y + 120;
-		tobelow = true;
+		aiaimy = Enemy::en[playerindex][PlayerBullet::locked[playerindex]].y;
 	}
 	GameAI::ai[playerindex].SetAim(aiaimx, aiaimy, tobelow);
 	//
@@ -1419,6 +1424,7 @@ void Player::setShootingCharge(BYTE _shootingchargeflag)
 		if (shootingchargeflag & _PL_SHOOTINGCHARGE_1)
 		{
 			shootchargetimer = BResource::res.playerdata[nowID].shootchargetime;
+			Scripter::scr.Execute(SCR_EVENT, SCR_EVENT_PLAYERSHOOTCHARGEONE, playerindex);
 		}
 		if (_shootingchargeflag & ~_PL_SHOOTINGCHARGE_1)
 		{

@@ -36,8 +36,6 @@ function ControlExecute_cStart(timer)
 		end
 		
 		--
-		--hdssSETPBINFI(0, 0);
-		--hdssSETPBINFI(1, 0);
 		
 	elseif timer == 32 then
 		for i=0, 1 do
@@ -118,8 +116,30 @@ function ControlExecute_cStart(timer)
 		hdssSETSTATE(STATE_PAUSE, -1);
 	end
 		
---		hdssADDPNCHARGE(0, 0, 400);
---		hdssADDPNCHARGE(1, 0, 400);
+	if _DEBUG then
+		if hge.Input_GetDIKey(DIK_NUMPAD0, DIKEY_DOWN) then
+			local binfi = hdss.Get(HDSS_PBINFI, 0);
+			if binfi then
+				hdssSETPBINFI(0, 0, 0);
+			else
+				hdssSETPBINFI(0, 0);
+			end
+		end
+		if hge.Input_GetDIKey(DIK_NUMPAD1, DIKEY_DOWN) then
+			local binfi = hdss.Get(HDSS_PBINFI, 1);
+			if binfi then
+				hdssSETPBINFI(1, 0, 0);
+			else
+				hdssSETPBINFI(1, 0);
+			end
+		end
+		if hge.Input_GetDIKey(DIK_NUMPAD2, DIKEY_DOWN) then
+			hdssADDPNCHARGE(0, 0, 400);
+		end
+		if hge.Input_GetDIKey(DIK_NUMPAD3, DIKEY_DOWN) then
+			hdssADDPNCHARGE(1, 0, 400);
+		end
+	end
 		
 	return true;
 

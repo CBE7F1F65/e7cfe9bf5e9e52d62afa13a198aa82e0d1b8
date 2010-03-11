@@ -31,6 +31,7 @@ Bullet::Bullet()
 
 Bullet::~Bullet()
 {
+	eff.Clear();
 }
 
 void Bullet::Init(HTEXTURE _tex)
@@ -213,6 +214,7 @@ void Bullet::Render()
 	{
 		sprite[i]->SetColor(alpha<<24 | diffuse);
 		sprite[i]->RenderEx(x, y, ARC(angle+headangle+BULLET_ANGLEOFFSET), hscale);
+		eff.Render();
 	}
 }
 
@@ -230,11 +232,13 @@ void Bullet::matchFadeInColorType()
 	if( BResource::res.bulletdata[type].fadecolor < BULLETCOLORMAX)
 	{
 		color = BResource::res.bulletdata[type].fadecolor;
-		type = BULLET_FADEINTYPE;
+		changeType(BULLET_FADEINTYPE);
+//		type = BULLET_FADEINTYPE;
 	}
 	else if (BResource::res.bulletdata[type].fadecolor == BULLET_FADECOLOR_16)
 	{
-		type = BULLET_FADEINTYPE;
+		changeType(BULLET_FADEINTYPE);
+//		type = BULLET_FADEINTYPE;
 		if (color == 0)
 		{
 		}
@@ -249,7 +253,8 @@ void Bullet::matchFadeInColorType()
 	}
 	else if (BResource::res.bulletdata[type].fadecolor == BULLET_FADECOLOR_8)
 	{
-		type = BULLET_FADEINTYPE;
+		changeType(BULLET_FADEINTYPE);
+//		type = BULLET_FADEINTYPE;
 	}
 }
 void Bullet::matchFadeOutColorType()
@@ -257,11 +262,13 @@ void Bullet::matchFadeOutColorType()
 	if (BResource::res.bulletdata[type].fadecolor < BULLETCOLORMAX)
 	{
 		color = BResource::res.bulletdata[type].fadecolor;
-		type = BULLET_FADEOUTTYPE;
+		changeType(BULLET_FADEOUTTYPE);
+//		type = BULLET_FADEOUTTYPE;
 	}
 	else if (BResource::res.bulletdata[type].fadecolor == BULLET_FADECOLOR_16)
 	{
-		type = BULLET_FADEOUTTYPE;
+		changeType(BULLET_FADEOUTTYPE);
+//		type = BULLET_FADEOUTTYPE;
 		if (color == 0)
 		{
 		}
@@ -286,7 +293,8 @@ bool Bullet::valueSet(BYTE _playerindex, WORD _ID, float _x, float _y, int _angl
 	ID			=	_ID;
 	x			=	_x;
 	y			=	_y;
-	type		=	_type;
+	changeType(_type);
+//	type		=	_type;
 	if(avoid)
 	{
 		if(isInRect(Player::p[playerindex].x, Player::p[playerindex].y, avoid))
@@ -528,6 +536,20 @@ void Bullet::AddSendInfo(BYTE _sendsetID, BYTE _sendtime)
 	sendsetID = _sendsetID;
 }
 
+void Bullet::changeType(BYTE totype)
+{
+	if (type != totype)
+	{
+		eff.Stop();
+		type = totype;
+		BYTE effID = BResource::res.bulletdata[type].effID;
+		if (effID)
+		{
+			eff.valueSet(effID, playerindex, *this);
+		}
+	}
+}
+
 void Bullet::action()
 {
 	index = ID;
@@ -592,9 +614,12 @@ void Bullet::action()
 			{
 				fadeinTime = 1;
 			}
-			type = oldtype;
+			changeType(oldtype);
+//			type = oldtype;
 			color = oldcolor;
 			alpha = 0xff;
+			eff.MoveTo(x, y, true);
+			eff.Fire();
 			SE::push(BResource::res.bulletdata[type].seID, x);
 		}
 		else
@@ -631,7 +656,8 @@ void Bullet::action()
 					else
 					{
 						hscale -= 0.0625f;
-						type = oldtype;
+						changeType(oldtype);
+//						type = oldtype;
 						color = oldcolor;
 						typechangetimer = 0;
 						alpha = 0xff;
@@ -651,6 +677,11 @@ void Bullet::action()
 		{
 			Target::SetValue(tarID, x, y);
 		}
+
+		//
+		eff.MoveTo(x, y);
+		eff.action();
+		//
 
 		if(!remain && timer > fadeinTime)
 		{

@@ -1,13 +1,16 @@
-function _ePlayerSendEx_Restirict(aimx, aimy, cenx)
-	if aimx < cenx - TotalW/4 then
-		aimx = cenx - TotalW/4;
-	elseif aimx > cenx + TotalW/4 then
-		aimx = cenx + TotalW/4;
+function _ePlayerSendEx_Restirict(aimx, aimy, cenx, edge)
+	if edge == nil then
+		edge = 0;
 	end
-	if aimy < 0 then
-		aimy = 0;
-	elseif aimy > TotalH then
-		aimy = TotalH;
+	if aimx < cenx - TotalW/4 + edge then
+		aimx = cenx - TotalW/4 + edge;
+	elseif aimx > cenx + TotalW/4 - edge then
+		aimx = cenx + TotalW/4 - edge;
+	end
+	if aimy < edge then
+		aimy = edge;
+	elseif aimy > TotalH-edge then
+		aimy = TotalH-edge;
 	end
 	return aimx, aimy;
 end
@@ -39,6 +42,12 @@ function ePlayerSendEx_02(esindex, oplayerindex, playerID, opx, opy, px, py, opl
 end
 
 function ePlayerSendEx_03(esindex, oplayerindex, playerID, opx, opy, px, py, oplayerID, x, y)
+	local cenx = helper_GetCenterX(oplayerindex);
+	local aimx = opx + RANDTF(-128, 128);
+	local aimy = opy + RANDTF(-128, 128);
+	local chasetimer = RANDT(120, 180);
+	aimx, aimy = _ePlayerSendEx_Restirict(aimx, aimy, cenx, 32);
+	game.PlayerSendEx(oplayerindex, esindex, aimx, aimy, chasetimer);
 	return true;
 end
 

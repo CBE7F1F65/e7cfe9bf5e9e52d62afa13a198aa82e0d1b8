@@ -50,6 +50,13 @@ function ePlayerSendExChase_02(playerindex, x, y, playerID, appendfloat)
 end
 
 function ePlayerSendExChase_03(playerindex, x, y, playerID, appendfloat)
+	hdssA(playerindex,
+		{
+			TIMEREQUAL, 300, FADEOUT
+		}
+	)
+	hdssB(playerindex, x, y, 9000, 0, CC_BulletEx_Youmu, 0);
+	hdssA(playerindex);
 	return true;
 end
 

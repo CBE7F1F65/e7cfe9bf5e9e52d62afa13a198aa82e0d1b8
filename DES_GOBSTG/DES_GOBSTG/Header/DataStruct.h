@@ -123,6 +123,7 @@ struct bulletData
 	BYTE nRoll;
 	BYTE nColor;
 	BYTE seID;
+	BYTE effID;
 	BYTE blendtype;
 	BYTE collisiontype;
 	BYTE fadecolor;

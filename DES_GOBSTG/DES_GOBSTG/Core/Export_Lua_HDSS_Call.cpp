@@ -152,6 +152,8 @@ int Export_Lua_HDSS::LuaFn_HDSS_Call(LuaState * ls)
 		case SCRKW_CLASS_SPECIAL:
 			switch (nowval)
 			{
+			case SCR_EZONEBUILD:
+				return _HDSSCallGet::Call_EZONEBUILD(ls);
 			case SCR_COLLISION_CIRCLE:
 				return _HDSSCallGet::Call_COLLISION_CIRCLE(ls);
 			}

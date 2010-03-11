@@ -144,7 +144,6 @@ LTable_ePlayerSendExChaseFunction	=
 	{20,	ePlayerSendExChase_20},
 	{21,	ePlayerSendExChase_21},
 	{22,	ePlayerSendExChase_22},
-	{23,	ePlayerSendExChase_23},
 }
 
 LTable_ePlayerShootChargeFunction	=
@@ -218,4 +217,31 @@ LTable_ePlayerShootChargeFunction	=
 	{22,	1,	ePlayerShootCharge_22_1},
 	{22,	2,	ePlayerShootCharge_22_2},
 	{22,	3,	ePlayerShootCharge_22_3},
+}
+
+LTable_ePlayerShootChargeOneFunction	=	
+{
+	{0,	ePlayerShootChargeOne_00},
+	{1,	ePlayerShootChargeOne_01},
+	{2,	ePlayerShootChargeOne_02},
+	{3,	ePlayerShootChargeOne_03},
+	{4,	ePlayerShootChargeOne_04},
+	{5,	ePlayerShootChargeOne_05},
+	{6,	ePlayerShootChargeOne_06},
+	{7,	ePlayerShootChargeOne_07},
+	{8,	ePlayerShootChargeOne_08},
+	{9,	ePlayerShootChargeOne_09},
+	{10,	ePlayerShootChargeOne_10},
+	{11,	ePlayerShootChargeOne_11},
+	{12,	ePlayerShootChargeOne_12},
+	{13,	ePlayerShootChargeOne_13},
+	{14,	ePlayerShootChargeOne_14},
+	{15,	ePlayerShootChargeOne_15},
+	{16,	ePlayerShootChargeOne_16},
+	{17,	ePlayerShootChargeOne_17},
+	{18,	ePlayerShootChargeOne_18},
+	{19,	ePlayerShootChargeOne_19},
+	{20,	ePlayerShootChargeOne_20},
+	{21,	ePlayerShootChargeOne_21},
+	{22,	ePlayerShootChargeOne_22},
 }

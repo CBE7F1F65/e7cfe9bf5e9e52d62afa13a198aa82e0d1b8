@@ -45,7 +45,7 @@ function _EventExecute_PlayerShootCharge(playerindex)
 	if charge > 3 then
 		charge = 3;
 	end
-	
+		
 	local col = {global.ARGB(0x80, 0x808080), global.ARGB(0x80, 0xff0000)};
 	for i=0, 1 do
 		hdssBGVALUE(i, LConst_gamefg_spellflashid, SI_White, helper_GetCenterX(i), TotalH/2, TotalW/2, TotalH, col[i+1]);
@@ -67,6 +67,17 @@ function _EventExecute_PlayerShootCharge(playerindex)
 		end
 	end
 	return true;
+end
+
+function _EventExecute_PlayerShootChargeOne(playerindex)
+	local oplayerID = hdss.Get(HDSS_CHARA, playerindex);
+	local opx = hdss.Get(HDSS_PX, playerindex);
+	local opy = hdss.Get(HDSS_PY, playerindex);
+	for i, it in pairs(LTable_ePlayerShootChargeOneFunction) do
+		if it[1] == oplayerID then
+			return it[2](playerindex, oplayerID, opx, opy);
+		end
+	end
 end
 
 function _EventExecute_PlayerSendEx(playerindex)
@@ -121,6 +132,8 @@ function EventExecute(name, con)
 		return _EventExecute_PlayerInSpellStop(con);
 	elseif name == EVENT_PLAYERSHOOTCHARGE then
 		return _EventExecute_PlayerShootCharge(con);
+	elseif name == EVENT_PLAYERSHOOTCHARGEONE then
+		return _EventExecute_PlayerShootChargeOne(con);
 	elseif name == EVENT_BOSSFADEOUT then
 		return _EventExecute_BossFadeout(con);
 	elseif name == EVENT_PLAYERSENDEX then

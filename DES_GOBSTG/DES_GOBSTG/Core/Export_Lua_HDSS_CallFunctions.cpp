@@ -831,6 +831,71 @@ int _HDSSCallGet::Call_COLLISION_CIRCLE(LuaState * ls)
 	return 0;
 }
 
+int _HDSSCallGet::Call_EZONEBUILD(LuaState * ls)
+{
+	_ENTERCALL_HDSS_LUA;
+	if (true)
+	{
+		DWORD _type = _INEXT_HDSS_LUAPARA;
+		BYTE _playerindex = _INEXT_HDSS_LUAPARA;
+		float _x = _FNEXT_HDSS_LUAPARA;
+		float _y = _FNEXT_HDSS_LUAPARA;
+
+		int _maxtime = 1;
+		float _r = EVENTZONE_OVERZONE;
+		float _power = 0;
+		DWORD _eventID = EVENTZONE_EVENT_NULL;
+		float _rspeed = 0;
+		int _inittimer = 0;
+		int _siid = -1;
+		int _turnangle = 0;
+
+		_JNEXT_HDSS_LUAPARA;
+		if (bhavenext)
+		{
+			_maxtime = _IOBJ_HDSS_LUA;
+			_JNEXT_HDSS_LUAPARA;
+			if (bhavenext)
+			{
+				_r = _FOBJ_HDSS_LUA;
+				_JNEXT_HDSS_LUAPARA;
+				if (bhavenext)
+				{
+					_power = _FOBJ_HDSS_LUA;
+					_JNEXT_HDSS_LUAPARA;
+					if (bhavenext)
+					{
+						_eventID = _IOBJ_HDSS_LUA;
+						_JNEXT_HDSS_LUAPARA;
+						if (bhavenext)
+						{
+							_rspeed = _FOBJ_HDSS_LUA;
+							_JNEXT_HDSS_LUAPARA;
+							if (bhavenext)
+							{
+								_inittimer = _IOBJ_HDSS_LUA;
+								_JNEXT_HDSS_LUAPARA;
+								if (bhavenext)
+								{
+									_siid = _IOBJ_HDSS_LUA;
+									_JNEXT_HDSS_LUAPARA;
+									if (bhavenext)
+									{
+										_turnangle = _IOBJ_HDSS_LUA;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+		EventZone::Build(_type, _playerindex, _x, _y, _maxtime, _r, _power, _eventID, _rspeed, _inittimer, _siid, _turnangle);
+	}
+	return 0;
+}
+
 int _HDSSCallGet::Call_EFFSETUP(LuaState * ls)
 {
 	_ENTERCALL_HDSS_LUA;

@@ -134,6 +134,7 @@ public:
 
 	void DoShot();
 	bool DoActivate();
+	bool checkActive();
 
 	void action();
 	void actionInStop();

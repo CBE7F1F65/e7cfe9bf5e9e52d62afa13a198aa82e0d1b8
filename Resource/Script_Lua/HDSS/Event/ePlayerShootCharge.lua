@@ -95,14 +95,41 @@ function ePlayerShootCharge_02_3(playerindex, level, oplayerID, px, py)
 end
 
 function ePlayerShootCharge_03_1(playerindex, level, oplayerID, px, py)
+	local x = helper_GetCenterX(playerindex);
+	if x > px then
+		x = x + CenterW / 2;
+	else
+		x = x - CenterW / 2;
+	end
+	local y = 0;
+	hdssEFFSETUP(playerindex, LConst_effid_shootcharge, x, y, LConst_ShootCharge_EnemyDelay);
+	hdssEB(CC_ShootChargeEnemyEID_03_1, playerindex, x, y, 9000, 0, LConst_EnemyTypeNull, 10);
+	hdssEA_DELAY(playerindex, LConst_ShootCharge_EnemyDelay);
+	hdssENSAIM(playerindex, level);
 	return true;
 end
 
 function ePlayerShootCharge_03_2(playerindex, level, oplayerID, px, py)
+	local x = helper_GetCenterX(playerindex);
+	if x > px then
+		x = x + CenterW / 2;
+	else
+		x = x - CenterW / 2;
+	end
+	local y = 0;
+	hdssEFFSETUP(playerindex, LConst_effid_shootcharge, x, y, LConst_ShootCharge_EnemyDelay);
+	hdssEB(CC_ShootChargeEnemyEID_03_2, playerindex, x, y, 9000, 0, LConst_EnemyTypeNull, 10);
+	hdssEA_DELAY(playerindex, LConst_ShootCharge_EnemyDelay);
+	hdssENSAIM(playerindex, level);
 	return true;
 end
 
 function ePlayerShootCharge_03_3(playerindex, level, oplayerID, px, py)
+	local x = TotalCenterX;
+	local y = 0;
+	hdssEB(CC_ShootChargeEnemyEID_03_3, playerindex, x, y, 9000, 0, oplayerID, 1400, helper_GetRandomItem());
+	hdssENSAIM(playerindex, level);
+	hdssBGSETUP(playerindex, LConst_bgset_spellid, oplayerID+LConst_SceneSpellOffset);
 	return true;
 end
 
@@ -348,5 +375,137 @@ function ePlayerShootCharge_22_3(playerindex, level, oplayerID, px, py)
 	hdssEB(CC_ShootChargeEnemyEID_22_3, playerindex, x, y, 9000, 0, oplayerID, 1400, helper_GetRandomItem());
 	hdssENSAIM(playerindex, level);
 	hdssBGSETUP(playerindex, LConst_bgset_spellid, oplayerID+LConst_SceneSpellOffset);
+	return true;
+end
+
+--
+
+function ePlayerShootChargeOne_00(playerindex, oplayerID, opx, opy)
+	return true;
+end
+
+function ePlayerShootChargeOne_01(playerindex, oplayerID, opx, opy)
+	return true;
+end
+
+function ePlayerShootChargeOne_02(playerindex, oplayerID, opx, opy)
+	return true;
+end
+
+function ePlayerShootChargeOne_03(playerindex, oplayerID, opx, opy)
+	hdssSE(CC_SE_Slash, opx);
+	hdssEFFSETUP(playerindex, LConst_effid_youmuslash, opx, opy-25, 32);
+	hdss.Call(HDSS_EZONEBUILD,
+		{
+			EZONETYPE_BULLETFADEOUT+EZONETYPE_ENEMYDAMAGE, playerindex, opx, opy-33,
+			18, 16, 15
+		}
+	)
+	hdss.Call(HDSS_EZONEBUILD,
+		{
+			EZONETYPE_BULLETFADEOUT+EZONETYPE_ENEMYDAMAGE, playerindex, opx+16, opy-33,
+			18, 12, 7
+		}
+	)
+	hdss.Call(HDSS_EZONEBUILD,
+		{
+			EZONETYPE_BULLETFADEOUT+EZONETYPE_ENEMYDAMAGE, playerindex, opx-16, opy-33,
+			18, 12, 7
+		}
+	)
+	hdss.Call(HDSS_EZONEBUILD,
+		{
+			EZONETYPE_BULLETFADEOUT+EZONETYPE_ENEMYDAMAGE, playerindex, opx+28, opy-33,
+			18, 12, 7
+		}
+	)
+	hdss.Call(HDSS_EZONEBUILD,
+		{
+			EZONETYPE_BULLETFADEOUT+EZONETYPE_ENEMYDAMAGE, playerindex, opx-28, opy-33,
+			18, 12, 7
+		}
+	)
+	hdss.Call(HDSS_EZONEBUILD,
+		{
+			EZONETYPE_PLAYERSPEED, playerindex, opx, opy,
+			18, EVENTZONE_OVERZONE, 0.2
+		}
+	)
+	return true;
+end
+
+function ePlayerShootChargeOne_04(playerindex, oplayerID, opx, opy)
+	return true;
+end
+
+function ePlayerShootChargeOne_05(playerindex, oplayerID, opx, opy)
+	return true;
+end
+
+function ePlayerShootChargeOne_06(playerindex, oplayerID, opx, opy)
+	return true;
+end
+
+function ePlayerShootChargeOne_07(playerindex, oplayerID, opx, opy)
+	return true;
+end
+
+function ePlayerShootChargeOne_08(playerindex, oplayerID, opx, opy)
+	return true;
+end
+
+function ePlayerShootChargeOne_09(playerindex, oplayerID, opx, opy)
+	return true;
+end
+
+function ePlayerShootChargeOne_10(playerindex, oplayerID, opx, opy)
+	return true;
+end
+
+function ePlayerShootChargeOne_11(playerindex, oplayerID, opx, opy)
+	return true;
+end
+
+function ePlayerShootChargeOne_12(playerindex, oplayerID, opx, opy)
+	return true;
+end
+
+function ePlayerShootChargeOne_13(playerindex, oplayerID, opx, opy)
+	return true;
+end
+
+function ePlayerShootChargeOne_14(playerindex, oplayerID, opx, opy)
+	return true;
+end
+
+function ePlayerShootChargeOne_15(playerindex, oplayerID, opx, opy)
+	return true;
+end
+
+function ePlayerShootChargeOne_16(playerindex, oplayerID, opx, opy)
+	return true;
+end
+
+function ePlayerShootChargeOne_17(playerindex, oplayerID, opx, opy)
+	return true;
+end
+
+function ePlayerShootChargeOne_18(playerindex, oplayerID, opx, opy)
+	return true;
+end
+
+function ePlayerShootChargeOne_19(playerindex, oplayerID, opx, opy)
+	return true;
+end
+
+function ePlayerShootChargeOne_20(playerindex, oplayerID, opx, opy)
+	return true;
+end
+
+function ePlayerShootChargeOne_21(playerindex, oplayerID, opx, opy)
+	return true;
+end
+
+function ePlayerShootChargeOne_22(playerindex, oplayerID, opx, opy)
 	return true;
 end

@@ -16,6 +16,9 @@ Comment	Index	SIID	XAdj	YAdj	Speed	Flag	ShootAngle	MoveR	StartAngle	Blend
 -	16	SI_PlayerGhost_02_1	0	-25	1	14	0	0	0	2
 -	20	SI_PlayerGhost_02_1	0	-25	1	14	0	0	0	2
 #		N								
+-	24	SI_Null	0	0	0	0	0	0	0	2
+-	28	SI_Null	0	0	0	0	0	0	0	2
+#		N								
 -	352	SI_PlayerGhost_22_1	0	-25	1	14	0	0	0	2
 -	353	SI_PlayerGhost_22_2	-30	-15	1	14	0	0	0	2
 -	354	SI_PlayerGhost_22_2	30	-15	1	14	0	0	0	2
@@ -32,14 +35,14 @@ Comment	Index	SIID	XAdj	YAdj	Speed	Flag	ShootAngle	MoveR	StartAngle	Blend
 -	122	SI_PlayerGhost_03	30	0	1	16	0	0	0	2
 -	123	SI_PlayerGhost_03	-30	0	1	36	0	0	0	2
 #		N								
--	24	SI_PlayerGhost_04_1	-15	-20	1	10	500	0	0	0
--	25	SI_PlayerGhost_04_2	-15	-20	1	6	0	0	0	0
--	26	SI_PlayerGhost_04_1	15	-20	1	30	-500	0	0	0
--	27	SI_PlayerGhost_04_2	15	-20	1	6	0	0	0	0
--	28	SI_PlayerGhost_04_1	0	0	1	210	0	0	0	0
--	29	SI_PlayerGhost_04_2	0	0	1	206	500	0	0	0
--	30	SI_PlayerGhost_04_1	0	0	1	230	0	0	0	0
--	31	SI_PlayerGhost_04_2	0	0	1	206	-500	0	0	0
+-	144	SI_PlayerGhost_18_1	-15	-20	1	10	500	0	0	0
+-	145	SI_PlayerGhost_18_2	-15	-20	1	6	0	0	0	0
+-	146	SI_PlayerGhost_18_1	15	-20	1	30	-500	0	0	0
+-	147	SI_PlayerGhost_18_2	15	-20	1	6	0	0	0	0
+-	148	SI_PlayerGhost_18_1	0	0	1	210	0	0	0	0
+-	149	SI_PlayerGhost_18_2	0	0	1	206	500	0	0	0
+-	150	SI_PlayerGhost_18_1	0	0	1	230	0	0	0	0
+-	151	SI_PlayerGhost_18_2	0	0	1	206	-500	0	0	0
 #		N								
 -	32	SI_PlayerGhost_05	0	0	4	0	0	35	0	0
 -	33	SI_PlayerGhost_05	0	0	4	20	0	35	18000	0

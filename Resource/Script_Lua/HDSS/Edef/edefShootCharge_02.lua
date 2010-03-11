@@ -105,10 +105,10 @@ function Edef_ShootChargeEnemyEID_02_3(playerindex, level, x, y, timer, px, py)
 			local aimx = (pattern-3) * CenterW * 2 / 5 + helper_GetCenterX(playerindex);
 			hdssEA(playerindex, ENAC_CHASEAIM_XYSOAOCO,
 				{
-					aimx, 128, 1.0
+					aimx, 128, 0.0
 				},
 				{
-					-9000, 0, 15
+					9000, 0, 15
 				}
 			);	
 		
