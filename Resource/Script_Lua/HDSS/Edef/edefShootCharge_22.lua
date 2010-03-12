@@ -110,6 +110,9 @@ function Edef_ShootChargeEnemyEID_22_3(playerindex, level, x, y, timer, px, py)
 end
 
 function Edef_ShootChargeEnemyEID_22_3_A(playerindex, level, x, y, timer, px, py)
+	if _ePlayerShootCharge_CheckBoss(playerindex) then
+		return true;
+	end
 	if timer == 1 then
 		hdssEA_FADEOUT(playerindex, 18);
 	else
@@ -145,6 +148,9 @@ function Edef_ShootChargeEnemyEID_22_3_A(playerindex, level, x, y, timer, px, py
 end
 
 function Edef_ShootChargeEnemyEID_22_3_B(playerindex, level, x, y, timer, px, py)
+	if _ePlayerShootCharge_CheckBoss(playerindex) then
+		return true;
+	end
 	if timer == 1 then
 		hdssEA_FADEOUT(playerindex, 10);
 	elseif math.mod(timer, 4) == 0 then
@@ -178,6 +184,9 @@ end
 
 
 function Edef_ShootChargeEnemyEID_22_3_C(playerindex, level, x, y, timer, px, py)
+	if _ePlayerShootCharge_CheckBoss(playerindex) then
+		return true;
+	end
 	if timer == 1 then
 		local movespeed = 12-level * 0.5
 		hdssEA(
@@ -212,6 +221,9 @@ end
 
 
 function Edef_ShootChargeEnemyEID_22_3_E(playerindex, level, x, y, timer, px, py)
+	if _ePlayerShootCharge_CheckBoss(playerindex) then
+		return true;
+	end
 	local totalturn = level;
 	if timer == 1 then
 		hdssEA_FADEOUT(playerindex, totalturn*2+1);

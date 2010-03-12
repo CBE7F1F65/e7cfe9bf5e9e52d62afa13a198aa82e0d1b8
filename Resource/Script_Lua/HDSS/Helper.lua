@@ -95,9 +95,6 @@ function helper_GetEnemyBasicData(nowpattern, nowlinenum, nowdirection, playerin
 	nowpattern = nowpattern + 1;
 	local basicdatatable = helper_EnemyBasicData[nowpattern][1];
 	local type = helper_EnemyBasicData[nowpattern][2][nowlinenum];
-	if type == nil then
-		MB(nowpattern, nowlinenum)
-	end
 	local x = basicdatatable[1];
 	local y = basicdatatable[2];
 	local startangle = basicdatatable[3];

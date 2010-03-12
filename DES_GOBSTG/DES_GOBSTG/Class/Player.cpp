@@ -623,14 +623,11 @@ void Player::action()
 				{
 					flag &= ~PLAYER_SHOOT;
 					bCharge = true;
-					if (shootpushtimer == _PLAYER_SHOOTPUSHOVER)
+					if (shootpushtimer >= _PLAYER_SHOOTPUSHOVER && !(flag & PLAYER_CHARGE))
 					{
-						if (!(flag & PLAYER_CHARGE))
-						{
-							chargetimer = 0;
-							flag |= PLAYER_CHARGE;
-							shootpushtimer = 0xff;
-						}
+						chargetimer = 0;
+						flag |= PLAYER_CHARGE;
+						shootpushtimer = 0xff;
 					}
 				}
 			}

@@ -1,7 +1,5 @@
 function Scene_s22(playerindex, timer)
-	
-	local cenx = helper_GetCenterX(playerindex);
-	
+		
 	if timer == POSTAT then
 		
 		for i=0, 2 do
@@ -16,6 +14,7 @@ function Scene_s22(playerindex, timer)
 		
 	elseif timer == 1 then
 		
+		local cenx = helper_GetCenterX(playerindex);
 		local colb = global.ARGB(0xff, 0xffffff);
 		local colt = global.ARGB(0x80, 0xffffff);
 		hdss.Call(
@@ -27,7 +26,7 @@ function Scene_s22(playerindex, timer)
 				cenx-1200, 1920, -1440, 2400, 4800, -16500, 0, 0
 			},
 			{
-				-0.002, 0, 9000
+				-0.002
 			}
 		)
 		hdssBGCOLOR(playerindex, 2, colb, colb, colt, colt);
@@ -42,7 +41,7 @@ function Scene_s22(playerindex, timer)
 					cenx-1200+(i*2-1)*600, 1920, -1440, 2400, 4800, -16500, 0, 0
 				},
 				{
-					-0.002, 0, 9000
+					-0.002
 				},
 				{
 					0, i==0

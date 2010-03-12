@@ -1,7 +1,5 @@
 function Spell_s00(playerindex, timer)
-	
-	local cenx = helper_GetCenterX(playerindex);
-	
+		
 	if timer == POSTAT then
 		
 		hdssBGOFF(playerindex, LConst_gamebg_spellid_1, LConst_gamebg_spellid_2);
@@ -13,6 +11,7 @@ function Spell_s00(playerindex, timer)
 		end
 		
 	elseif timer == 1 then
+		local cenx = helper_GetCenterX(playerindex);
 		local col = global.ARGB(0, 0xffffff);
 		hdssBGVALUE(playerindex, LConst_gamebg_spellid_1, SI_Spell_00_1, cenx, CenterY, 448, TotalH, col);
 		hdss.Call(

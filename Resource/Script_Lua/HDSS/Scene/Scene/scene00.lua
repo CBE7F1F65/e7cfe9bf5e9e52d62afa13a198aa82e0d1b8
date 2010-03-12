@@ -25,7 +25,7 @@ function Scene_s00(playerindex, timer)
 				cenx-3200, 1920, -1440, 6400, 6400, -13500, 0, 0
 			},
 			{
-				-0.008, 0, 9000
+				-0.008
 			}
 		)
 		hdssBGCOLOR(playerindex, 0, col, col, 0, 0);

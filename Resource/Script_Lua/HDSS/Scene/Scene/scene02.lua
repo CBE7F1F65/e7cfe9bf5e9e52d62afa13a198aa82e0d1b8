@@ -1,7 +1,5 @@
 function Scene_s02(playerindex, timer)
-	
-	local cenx = helper_GetCenterX(playerindex);
-	
+		
 	if timer == POSTAT then
 		
 		for i=0, 2 do
@@ -16,6 +14,7 @@ function Scene_s02(playerindex, timer)
 		
 	elseif timer == 1 then
 		
+		local cenx = helper_GetCenterX(playerindex);
 		for i=0, 2 do
 			hdss.Call(
 				HDSS_BGVALEX,
@@ -26,7 +25,7 @@ function Scene_s02(playerindex, timer)
 					cenx-3200, 2400, -2000, 6400, 6400, -16500, 0, 0
 				},
 				{
-					-0.008+i*0.001, 0, 9000
+					-0.008+i*0.001
 				}
 			)
 		end

@@ -1,7 +1,5 @@
 function Spell_s02(playerindex, timer)
-	
-	local cenx = helper_GetCenterX(playerindex);
-	
+		
 	if timer == POSTAT then
 		
 		hdssBGOFF(playerindex, LConst_gamebg_spellid_1);
@@ -11,6 +9,8 @@ function Spell_s02(playerindex, timer)
 		hdssBGFLAG(playerindex, LConst_gamebg_spellid_1, BG_FADEOUT, BGMT_FADE/2);
 		
 	elseif timer == 1 then
+		local cenx = helper_GetCenterX(playerindex);
+		local col = global.ARGB(0, 0xffffff);
 		hdss.Call(
 			HDSS_BGVALEX,
 			{

@@ -173,7 +173,7 @@ bool GameAI::CheckBulletCollision(Bullet * item)
 	{
 		if (moveablepos[i].risk < GAMEAI_RISK_FULL)
 		{
-			if (item->isInRect(moveablepos[i].x, moveablepos[i].y, r, 1) || item->isInRect(moveablepos[i].x, moveablepos[i].y, r))
+			if (item->isInRect(moveablepos[i].x, moveablepos[i].y, r, 1)/* || item->isInRect(moveablepos[i].x, moveablepos[i].y, r)*/)
 			{
 				moveablepos[i].risk = GAMEAI_RISK_FULL;
 				bret = true;
@@ -334,7 +334,11 @@ bool GameAI::SetMove()
 	{
 		inrisk = false;
 	}
-	if (inrisk && nChargeMax && !nCharge || Player::p[playerindex].timer % 8 != 0 || nChargeMax == 4 && nCharge < 2)
+	if (Player::p[playerindex].timer % 8 != 0 && Player::p[playerindex].nComboGage < PLAYER_COMBOGAGEMAX * 2 / 3)
+	{
+		GameInput::SetKey(playerindex, KSI_FIRE, true);
+	}
+	if (inrisk && nChargeMax && !nCharge || nChargeMax == 4 && nCharge < 2)
 	{
 		GameInput::SetKey(playerindex, KSI_FIRE, true);
 //		GameInput::SetKey(playerindex, KSI_DRAIN, true);
@@ -349,7 +353,7 @@ bool GameAI::SetMove()
 	if (drainpushtimer >= drainmaxpushtime)
 	{
 		drainmaxpushtime = randt(aidraintime/2, aidraintime);
-		drainpushtimer = -randt(0, aidraintime/2);
+		drainpushtimer = -randt(aidraintime/2, aidraintime);
 	}
 	else if(drainpushtimer >= 0)
 	{
@@ -436,9 +440,10 @@ bool GameAI::SetMove()
 			break;
 		}
 	}
-	if ((bdone == false || Player::p[playerindex].flag & PLAYER_SHOT) && !Player::p[playerindex].bInfi)
+	bool bshot = Player::p[playerindex].flag & PLAYER_SHOT;
+	if ((bdone == false || bshot) && !Player::p[playerindex].bInfi)
 	{
-		if (!nCharge)
+		if (bshot && !nCharge && nChargeMax > 1)
 		{
 			GameInput::SetKey(playerindex, KSI_QUICK, true);
 		}

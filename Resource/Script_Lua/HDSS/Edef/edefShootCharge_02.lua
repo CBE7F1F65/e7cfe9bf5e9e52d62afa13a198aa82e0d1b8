@@ -13,17 +13,21 @@ function Edef_ShootChargeEnemyEID_02_1(playerindex, level, x, y, timer, px, py)
 			stopflag = stopflag - STOPFLAG_PLAYER;
 		end
 		hdssSTOPACTION(stopflag, 41);
+		local aimx = hdss.Get(HDSS_PX, 1-playerindex);
+		local aimy = hdss.Get(HDSS_PY, 1-playerindex);
+		local aimangle = hdssAMAP(1-playerindex, helper_GetCenterX(1-playerindex), CenterY, 18000);
+		hdssENSAIM(playerindex, level, aimx, aimy, aimangle);
 		
 	elseif math.mod(timer, 4) == 0 then
 		
-		local px = hdss.Get(HDSS_PX, 1-playerindex);
-		local py = hdss.Get(HDSS_PY, 1-playerindex);
+		local aimx = hdss.Get(HDSS_ENAIMX, playerindex);
+		local aimy = hdss.Get(HDSS_ENAIMY, playerindex);
 		local r = 60;
 		local nowindex = timer / 4;
-		local baseangle = hdssAMAP(1-playerindex, helper_GetCenterX(1-playerindex), CenterY, 18000);
-		local angle = (nowindex-4.5) * 1200 + baseangle;
-		local bx = r * hdss.Get(HDSS_COSA, angle) + px;
-		local by = r * hdss.Get(HDSS_SINA, angle) + py;
+		local aimangle = hdss.Get(HDSS_ENAIMANGLE, playerindex);
+		local angle = (nowindex-4.5) * 1200 + aimangle;
+		local bx = r * hdss.Get(HDSS_COSA, angle) + aimx;
+		local by = r * hdss.Get(HDSS_SINA, angle) + aimy;
 		hdssA(1-playerindex,
 			{
 				TIMERLESS, 30+level, SPEEDSETADD, 5
@@ -53,17 +57,21 @@ function Edef_ShootChargeEnemyEID_02_2(playerindex, level, x, y, timer, px, py)
 			stopflag = stopflag - STOPFLAG_PLAYER;
 		end
 		hdssSTOPACTION(stopflag, 41);
+		local aimx = hdss.Get(HDSS_PX, 1-playerindex);
+		local aimy = hdss.Get(HDSS_PY, 1-playerindex);
+		local aimangle = hdssAMAP(1-playerindex, helper_GetCenterX(1-playerindex), CenterY, 18000);
+		hdssENSAIM(playerindex, level, aimx, aimy, aimangle);
 		
 	elseif math.mod(timer, 4) == 0 then
 		
-		local px = hdss.Get(HDSS_PX, 1-playerindex);
-		local py = hdss.Get(HDSS_PY, 1-playerindex);
+		local aimx = hdss.Get(HDSS_ENAIMX, playerindex);
+		local aimy = hdss.Get(HDSS_ENAIMY, playerindex);
 		local r = 60;
 		local nowindex = timer / 4 - 4.5;
-		local baseangle = hdssAMAP(1-playerindex, helper_GetCenterX(1-playerindex), CenterY, 18000);
-		local angle = nowindex * 1200 + baseangle;
-		local bx = r * hdss.Get(HDSS_COSA, angle) + px;
-		local by = r * hdss.Get(HDSS_SINA, angle) + py;
+		local aimangle = hdss.Get(HDSS_ENAIMANGLE, playerindex);
+		local angle = nowindex * 1200 + aimangle;
+		local bx = r * hdss.Get(HDSS_COSA, angle) + aimx;
+		local by = r * hdss.Get(HDSS_SINA, angle) + aimy;
 		hdssA(1-playerindex,
 			{
 				TIMERLESS, 30+level, SPEEDSETADD, 5
@@ -154,6 +162,9 @@ function Edef_ShootChargeEnemyEID_02_3(playerindex, level, x, y, timer, px, py)
 end
 
 function Edef_ShootChargeEnemyEID_02_3_A(playerindex, level, x, y, timer, px, py)
+	if _ePlayerShootCharge_CheckBoss(playerindex) then
+		return true;
+	end
 	if timer == 1 then
 		hdssEA_FADEOUT(playerindex, 40+level*2);
 	elseif math.mod(timer, 4) == 0 then
@@ -173,6 +184,9 @@ function Edef_ShootChargeEnemyEID_02_3_A(playerindex, level, x, y, timer, px, py
 end
 
 function Edef_ShootChargeEnemyEID_02_3_B(playerindex, level, x, y, timer, px, py)
+	if _ePlayerShootCharge_CheckBoss(playerindex) then
+		return true;
+	end
 	if timer == 1 then
 		hdssEA_FADEOUT(playerindex, 64);
 	elseif math.mod(timer, 4) == 0 then
@@ -193,6 +207,9 @@ function Edef_ShootChargeEnemyEID_02_3_C(playerindex, level, x, y, timer, px, py
 end
 
 function Edef_ShootChargeEnemyEID_02_3_D(playerindex, level, x, y, timer, px, py)
+	if _ePlayerShootCharge_CheckBoss(playerindex) then
+		return true;
+	end
 	if timer == 1 then
 		hdssEA_FADEOUT(playerindex, 100+level*4);
 		local angle = hdss.Get(HDSS_ENANGLE, playerindex);
