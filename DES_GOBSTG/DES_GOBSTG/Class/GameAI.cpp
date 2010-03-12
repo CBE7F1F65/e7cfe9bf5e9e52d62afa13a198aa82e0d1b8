@@ -33,6 +33,7 @@ void GameAI::ClearAll()
 		ai[i].aidraintime = 0;
 		ai[i].drainmaxpushtime = 0;
 		ai[i].drainpushtimer = 0;
+		ai[i].ClearRisk();
 	}
 }
 

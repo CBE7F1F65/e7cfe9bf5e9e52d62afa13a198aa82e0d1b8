@@ -1212,10 +1212,10 @@ void Player::DoSendBullet(float x, float y)
 	AddComboHit(1, false);
 	AddGhostPoint(2, x, y);
 	AddBulletPoint(3, x, y);
-	int addspellpoint = nComboHitOri * 9;
-	if (addspellpoint > 1000)
+	int addspellpoint = nComboHitOri * 13;
+	if (addspellpoint > 1500)
 	{
-		addspellpoint = 1000;
+		addspellpoint = 1500;
 	}
 	AddSpellPoint(addspellpoint);
 }
