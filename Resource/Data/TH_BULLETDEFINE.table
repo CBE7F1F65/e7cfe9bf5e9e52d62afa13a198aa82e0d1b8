@@ -31,10 +31,11 @@ Comment	Type	SIID	nRoll	nColor	CollisionType	Collision_Main	Collision_Sub	FadeCo
 -	27	SI_Bullet_BlueFireBall_0	4	4	1	5	0	1	0	0	90	0	0	9
 -	28	SI_Bullet_FadedBlueFireBall_0	4	4	1	5	0	3	0	0	90	0	0	9
 #		ExBullet(32~59)												
--	32	SI_BulletEx_Reimu_0	0	1	1	18	0	255	0	240	90	0	2	20
+-	32	SI_BulletEx_Reimu_0	0	1	1	18	0	255	0	240	90	0	2	1
 -	33	SI_BulletEx_Sakuya_0	0	8	2	6	5	160	0	0	90	0	2	6
 -	34	SI_BulletEx_SakuyaFake_0	0	8	0	0	0	160	0	0	90	0	2	6
 -	35	SI_BulletEx_Youmu_0	8	1	1	14	0	255	0	0	90	84	2	8
+-	36	SI_BulletEx_Aya_0	0	1	1	12	0	255	0	0	90	0	2	3
 #		SpecialBullet(60~63)												
 -	60	SI_Null	0	16	0	0	0	0	0	0	90	0	2	0
 -	61	SI_Bullet_ShootItem_0	0	8	0	0	0	255	0	0	90	0	0	0

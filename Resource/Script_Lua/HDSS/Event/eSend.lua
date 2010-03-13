@@ -20,6 +20,14 @@ function _eSendBigBulletAngle()
 	return RANDT(8250, 9750);
 end
 
+function _eSendBulletSpecialSpeed(speed)
+	local chara = hdss.Get(HDSS_CHARA, playerindex);
+	if chara == CC_PlayerID_Aya then
+		speed = speed * 0.93;
+	end
+	return speed;
+end
+
 function eSendRedBullet(playerindex, x, y, sendtime, speed, setID, bSmall)
 	local rank = hdss.Get(HDSS_RANK);
 	local angle;
@@ -33,6 +41,11 @@ function eSendRedBullet(playerindex, x, y, sendtime, speed, setID, bSmall)
 	elseif not bSmall then
 		speed = speed + 0.3;
 	end
+	
+	if bSmall then
+		speed = _eSendBulletSpecialSpeed(speed)
+	end
+	
 	speed = _eSendBulletSpeedRestrict(speed, rank);
 	local type = CC_Bullet_MiddleBall;
 	if bSmall then
@@ -58,6 +71,11 @@ function eSendBlueBullet(playerindex, x, y, sendtime, speed, setID, bSmall)
 	elseif not bSmall then
 		speed = speed + 0.3;
 	end
+	
+	if bSmall then
+		speed = _eSendBulletSpecialSpeed(speed)
+	end
+	
 	speed = _eSendBulletSpeedRestrict(speed, rank);
 	local type = CC_Bullet_MiddleBall;
 	if bSmall then
@@ -74,7 +92,6 @@ function eSendExBullet(playerindex, x, y, setID)
 	local rank = hdss.Get(HDSS_RANK);
 	local angle = 9000 + RANDT(-7500, 7500);
 	local speed = 1.7 + rank * 0.1;
-	--aya
 	speed = speed + 0.3;
 	speed = _eSendBulletSpeedRestrict(speed, rank);
 	hdssB(playerindex, x, y, angle, speed, CC_Bullet_MiddleBall, 5);

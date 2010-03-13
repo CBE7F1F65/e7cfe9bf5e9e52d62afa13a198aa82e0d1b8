@@ -45,7 +45,7 @@ function ePlayerShootCharge_01_1(playerindex, level, oplayerID, px, py)
 		x = x + CenterW/2;
 	end
 	local y = 0;
-	hdssEFFSETUP(playerindex, LConst_effid_shootcharge, x, y, LConst_ShootCharge_EnemyDelay);
+	hdssEFFSETUP(playerindex, LConst_effid_shootcharge, x, y+16, LConst_ShootCharge_EnemyDelay);
 	hdssEB(CC_ShootChargeEnemyEID_01_1, playerindex, x, y, 9000, 6.0, LConst_EnemyTypeNull, 10);
 	hdssEA_DELAY(playerindex, LConst_ShootCharge_EnemyDelay);
 	hdssENSAIM(playerindex, level);
@@ -57,7 +57,7 @@ function ePlayerShootCharge_01_2(playerindex, level, oplayerID, px, py)
 	local y = 0;
 	for i=0, 1 do
 		local x = leftx + i * CenterW;
-		hdssEFFSETUP(playerindex, LConst_effid_shootcharge, x, y, LConst_ShootCharge_EnemyDelay);
+		hdssEFFSETUP(playerindex, LConst_effid_shootcharge, x, y+16, LConst_ShootCharge_EnemyDelay);
 		hdssEB(CC_ShootChargeEnemyEID_01_2, playerindex, x, y, 9000, 6.0, LConst_EnemyTypeNull, 10);
 		hdssEA_DELAY(playerindex, LConst_ShootCharge_EnemyDelay);
 		hdssENSAIM(playerindex, level);
@@ -111,7 +111,7 @@ function ePlayerShootCharge_03_1(playerindex, level, oplayerID, px, py)
 		x = x - CenterW / 2;
 	end
 	local y = 0;
-	hdssEFFSETUP(playerindex, LConst_effid_shootcharge, x, y, LConst_ShootCharge_EnemyDelay);
+	hdssEFFSETUP(playerindex, LConst_effid_shootcharge, x, y+16, LConst_ShootCharge_EnemyDelay);
 	hdssEB(CC_ShootChargeEnemyEID_03_1, playerindex, x, y, 9000, 0, LConst_EnemyTypeNull, 10);
 	hdssEA_DELAY(playerindex, LConst_ShootCharge_EnemyDelay);
 	hdssENSAIM(playerindex, level);
@@ -126,7 +126,7 @@ function ePlayerShootCharge_03_2(playerindex, level, oplayerID, px, py)
 		x = x - CenterW / 2;
 	end
 	local y = 0;
-	hdssEFFSETUP(playerindex, LConst_effid_shootcharge, x, y, LConst_ShootCharge_EnemyDelay);
+	hdssEFFSETUP(playerindex, LConst_effid_shootcharge, x, y+16, LConst_ShootCharge_EnemyDelay);
 	hdssEB(CC_ShootChargeEnemyEID_03_2, playerindex, x, y, 9000, 0, LConst_EnemyTypeNull, 10);
 	hdssEA_DELAY(playerindex, LConst_ShootCharge_EnemyDelay);
 	hdssENSAIM(playerindex, level);
@@ -143,14 +143,33 @@ function ePlayerShootCharge_03_3(playerindex, level, oplayerID, px, py)
 end
 
 function ePlayerShootCharge_04_1(playerindex, level, oplayerID, px, py)
+	local x = helper_GetCenterX(playerindex);
+	local y = 0;
+	hdssEFFSETUP(playerindex, LConst_effid_shootcharge, x, y+16, LConst_ShootCharge_EnemyDelay);
+	hdssEB(CC_ShootChargeEnemyEID_04_1, playerindex, x, y, 9000, 0, LConst_EnemyTypeNull, 10);
+	hdssEA_DELAY(playerindex, LConst_ShootCharge_EnemyDelay);
+	hdssENSAIM(playerindex, level);
 	return true;
 end
 
 function ePlayerShootCharge_04_2(playerindex, level, oplayerID, px, py)
+	local x = helper_GetCenterX(playerindex);
+	local leftrightindi = RANDT(0, 1) * 2 - 1;
+	x = x + leftrightindi * CenterW / 2;
+	local y = 0;
+	hdssEFFSETUP(playerindex, LConst_effid_shootcharge, x, y+16, LConst_ShootCharge_EnemyDelay);
+	hdssEB(CC_ShootChargeEnemyEID_04_2, playerindex, x, y, (leftrightindi+1) * 9000, CenterW/(5*(level/1.4+6)), LConst_EnemyTypeNull, 10);
+	hdssEA_DELAY(playerindex, LConst_ShootCharge_EnemyDelay);
+	hdssENSAIM(playerindex, level);
 	return true;
 end
 
 function ePlayerShootCharge_04_3(playerindex, level, oplayerID, px, py)
+	local x = TotalCenterX;
+	local y = 0;
+	hdssEB(CC_ShootChargeEnemyEID_04_3, playerindex, x, y, 9000, 0, oplayerID, 1400, helper_GetRandomItem());
+	hdssENSAIM(playerindex, level);
+	hdssBGSETUP(playerindex, LConst_bgset_spellid, oplayerID+LConst_SceneSpellOffset, true);
 	return true;
 end
 

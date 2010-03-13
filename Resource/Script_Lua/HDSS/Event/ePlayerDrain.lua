@@ -192,6 +192,43 @@ function ePlayerDrain_03(playerindex, x, y, draintimer, type)
 end
 
 function ePlayerDrain_04(playerindex, x, y, draintimer, type)
+	
+	if type ~= nil then
+		game.SetGhostActiveInfo(playerindex, 160, type+1, type+1, -9000, 0.625, 2);
+		hdssSE(SE_GHOST_ACTIVATE, x, y);
+		return true;
+	end
+	
+	local hscale = 1;
+	local vscale = 1;
+	if draintimer < 50 then
+		hscale = (draintimer / 50);
+	else
+		draintimer = 50;
+	end
+		
+	local cenx = x;
+	local ceny = y + 15;
+	game.SetDrainSpriteInfo(playerindex, cenx, ceny, 0, hscale, vscale);
+	
+	local r = 128;
+	local xadjc = 64;
+	local xadjcc = 64;
+	local yadjc = 64 * draintimer / 50;
+	local yadjcc = -yadjc;
+	
+	local rl = 80;
+	local rs = yadjc;
+			
+	local newxadjc = yadjc;
+	local newyadjc = -xadjc;
+	local newxadjcc = yadjcc;
+	local newyadjcc = -xadjcc;
+			
+	hdssENAZBUILD(playerindex, ENAZTYPE_RIGHTANGLED+ENAZOP_OR, cenx+newxadjcc, ceny+newyadjcc, rl, rs, -18000);
+	hdssENAZBUILD(playerindex, ENAZTYPE_RIGHTANGLED+ENAZOP_OR, cenx+newxadjc, ceny+newyadjc, rs, rl, 9000);
+	hdssENAZBUILD(playerindex, ENAZTYPE_CIRCLE+ENAZOP_AND, cenx, ceny, r);
+	
 	return true;
 end
 

@@ -61,6 +61,24 @@ function ePlayerSendExChase_03(playerindex, x, y, playerID, appendfloat)
 end
 
 function ePlayerSendExChase_04(playerindex, x, y, playerID, appendfloat)
+	local angle = hdssAMAP(playerindex, x, y);
+	local cosval = hdss.Get(HDSS_COSA, angle);
+	local sinval = hdss.Get(HDSS_SINA, angle);
+	local frontoffset = 8;
+	local bx = x;
+	local by = y;
+	hdssA(playerindex,
+		{
+			TIMERLESS, 90, SPEEDSETADD, 12,
+			BOUNCEEQUAL, 0, BOUNCELR, 16, 1
+		}
+	)
+	for i=0, 4 do
+		hdssB(playerindex, bx, by, angle, 0, CC_BulletEx_Aya, 0);
+		bx = bx + frontoffset * cosval;
+		by = by + frontoffset * sinval;
+	end
+	hdssA(playerindex);
 	return true;
 end
 

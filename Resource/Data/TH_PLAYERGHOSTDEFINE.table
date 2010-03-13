@@ -1,6 +1,6 @@
 73	h5nc	4D								
 Comment	Index	SIID	XAdj	YAdj	Speed	Flag	ShootAngle	MoveR	StartAngle	Blend
-#		N								
+#		Reimu								
 -	0	SI_PlayerGhost_00_1	-12	-15	1	10	0	0	0	2
 -	1	SI_PlayerGhost_00_1	12	-15	1	30	0	0	0	2
 -	2	SI_PlayerGhost_00_1	-30	-10	1	10	0	0	0	2
@@ -9,64 +9,24 @@ Comment	Index	SIID	XAdj	YAdj	Speed	Flag	ShootAngle	MoveR	StartAngle	Blend
 -	5	SI_PlayerGhost_00_2	-10	15	1	30	0	0	0	2
 -	6	SI_PlayerGhost_00_2	30	10	1	10	0	0	0	2
 -	7	SI_PlayerGhost_00_2	-30	10	1	30	0	0	0	2
-#		N								
+#		Marisa								
 -	8	SI_PlayerGhost_01_1	0	-25	1	14	0	0	0	2
 -	12	SI_PlayerGhost_01_2	0	15	1	14	0	0	0	2
-#		N								
+#		Sakuya								
 -	16	SI_PlayerGhost_02_1	0	-25	1	14	0	0	0	2
 -	20	SI_PlayerGhost_02_1	0	-25	1	14	0	0	0	2
-#		N								
+#		Youmu								
 -	24	SI_Null	0	0	0	0	0	0	0	2
 -	28	SI_Null	0	0	0	0	0	0	0	2
-#		N								
+#		Aya								
+-	32	SI_PlayerGhost_04_1	-15	-10	0	4	0	0	0	2
+-	33	SI_PlayerGhost_04_1	15	-10	0	4	0	0	0	2
+-	36	SI_PlayerGhost_04_1	-5	15	0	4	0	0	0	2
+-	37	SI_PlayerGhost_04_1	5	15	0	4	0	0	0	2
+#		Sanae								
 -	352	SI_PlayerGhost_22_1	0	-25	1	14	0	0	0	2
 -	353	SI_PlayerGhost_22_2	-30	-15	1	14	0	0	0	2
 -	354	SI_PlayerGhost_22_2	30	-15	1	14	0	0	0	2
 -	355	SI_PlayerGhost_22_1	0	15	1	14	0	0	0	2
 -	356	SI_PlayerGhost_22_2	30	-15	1	14	0	0	0	2
 -	357	SI_PlayerGhost_22_2	-30	-15	1	14	0	0	0	2
-#		N								
--	116	SI_PlayerGhost_03	-20	10	1	16	0	0	0	2
--	117	SI_PlayerGhost_03	20	10	1	36	0	0	0	2
--	118	SI_PlayerGhost_03	-30	0	1	16	0	0	0	2
--	119	SI_PlayerGhost_03	30	0	1	36	0	0	0	2
--	120	SI_PlayerGhost_03	20	10	1	16	0	0	0	2
--	121	SI_PlayerGhost_03	-20	10	1	36	0	0	0	2
--	122	SI_PlayerGhost_03	30	0	1	16	0	0	0	2
--	123	SI_PlayerGhost_03	-30	0	1	36	0	0	0	2
-#		N								
--	144	SI_PlayerGhost_18_1	-15	-20	1	10	500	0	0	0
--	145	SI_PlayerGhost_18_2	-15	-20	1	6	0	0	0	0
--	146	SI_PlayerGhost_18_1	15	-20	1	30	-500	0	0	0
--	147	SI_PlayerGhost_18_2	15	-20	1	6	0	0	0	0
--	148	SI_PlayerGhost_18_1	0	0	1	210	0	0	0	0
--	149	SI_PlayerGhost_18_2	0	0	1	206	500	0	0	0
--	150	SI_PlayerGhost_18_1	0	0	1	230	0	0	0	0
--	151	SI_PlayerGhost_18_2	0	0	1	206	-500	0	0	0
-#		N								
--	32	SI_PlayerGhost_05	0	0	4	0	0	35	0	0
--	33	SI_PlayerGhost_05	0	0	4	20	0	35	18000	0
--	34	SI_PlayerGhost_05	0	0	4	0	0	25	9000	0
--	35	SI_PlayerGhost_05	0	0	4	20	0	25	27000	0
--	36	SI_PlayerGhost_05	0	0	4	0	0	25	0	0
--	37	SI_PlayerGhost_05	0	0	4	20	0	25	18000	0
--	38	SI_PlayerGhost_05	0	0	4	0	0	35	9000	0
--	39	SI_PlayerGhost_05	0	0	4	20	0	35	27000	0
-#		N								
--	40	SI_PlayerGhost_06	186.5	448	1	802	0	0	0	2
--	41	SI_PlayerGhost_06	261.5	448	1	802	0	0	0	2
--	42	SI_PlayerGhost_06	111.5	448	1	802	0	0	0	2
--	43	SI_PlayerGhost_06	336.5	448	1	802	0	0	0	2
--	44	SI_PlayerGhost_06	8	-25	1	2	0	0	0	2
--	45	SI_PlayerGhost_06	-8	-25	1	2	0	0	0	2
--	46	SI_PlayerGhost_06	24	-25	1	2	0	0	0	2
--	47	SI_PlayerGhost_06	-24	-25	1	2	0	0	0	2
-#		N								
--	48	SI_PlayerGhost_07	0	-40	1	403	0	0	0	2
--	49	SI_PlayerGhost_07	0	-40	1	403	0	0	0	2
--	50	-1	-15	0	1	0	-600	0	0	2
--	51	-1	15	0	1	0	600	0	0	2
--	52	SI_PlayerGhost_07	0	-40	1	403	0	0	0	2
--	53	SI_PlayerGhost_07	0	-40	1	403	0	0	0	2
--	54	-1	-15	0	1	0	600	0	0	2
--	55	-1	15	0	1	0	-600	0	0	2
