@@ -102,6 +102,13 @@ function ePlayerSendExChase_05(playerindex, x, y, playerID, appendfloat)
 end
 
 function ePlayerSendExChase_06(playerindex, x, y, playerID, appendfloat)
+	hdssEFFSETUP(playerindex, LConst_effid_sendex_06, x, y, 300);
+	hdss.Call(HDSS_EZONEBUILD,
+		{
+			EZONETYPE_PLAYERSPEED, playerindex, x, y,
+			300, 72, 0.4
+		}
+	)
 	return true;
 end
 

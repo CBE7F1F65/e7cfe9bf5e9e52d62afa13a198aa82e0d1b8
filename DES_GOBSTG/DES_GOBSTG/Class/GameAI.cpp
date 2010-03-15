@@ -239,12 +239,13 @@ bool GameAI::CheckEventZoneCollision(EventZone * item)
 	if (IsPlayerSafe())
 	{
 		return false;
-	}/*
-	
-		if (item->type != EVENTZONE_TYPE_PLAYERDAMAGE)
-		{
-			return false;
-		}*/
+	}
+	int addrisk = GAMEAI_RISK_FULL;
+
+	if (item->type != EVENTZONE_TYPE_PLAYERDAMAGE)
+	{
+		addrisk = GAMEAI_RISK_MEDIUM;
+	}
 	
 	bool bret = false;
 	for (int i=0; i<GAMEAI_ABLEPOSITIONNUM; i++)
@@ -253,7 +254,7 @@ bool GameAI::CheckEventZoneCollision(EventZone * item)
 		{
 			if (item->isInRect(moveablepos[i].x, moveablepos[i].y, r*4, 0))
 			{
-				moveablepos[i].risk = GAMEAI_RISK_FULL;
+				moveablepos[i].risk += addrisk;
 				bret = true;
 			}
 		}

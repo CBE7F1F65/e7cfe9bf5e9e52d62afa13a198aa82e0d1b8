@@ -561,6 +561,10 @@ void PlayerBullet::action()
 				}
 			}
 		}
+		if (deletetime && timer >= 16 && timer > deletetime-16)
+		{
+			alpha = (deletetime-timer)*0x0C;
+		}
 		if (deletetime && timer >= deletetime || x < _PB_DELETE_LEFT_(playerindex) || x > _PB_DELETE_RIGHT_(playerindex) || y < _PB_DELETE_TOP || y > _PB_DELETE_BOTTOM)
 		{
 			exist = false;

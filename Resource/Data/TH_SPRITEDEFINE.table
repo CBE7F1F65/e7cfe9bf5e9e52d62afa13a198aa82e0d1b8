@@ -451,15 +451,19 @@ Comment	Index	SI_Name	Tex	Tex_x	Tex_y	Tex_w	Tex_h
 -	1033	SI_PlayerBullet_05_0_0	15	128	0	32	32
 -	1034	SI_PlayerBullet_05_1_0	15	160	0	32	32
 -	1035	SI_PlayerBullet_05_1_1	15	192	0	32	32
--	1036	SI_PlayerBullet_22_0_0	32	0	144	16	16
--	1037	SI_PlayerBullet_22_0_1	32	16	144	16	16
--	1038	SI_PlayerBullet_22_0_2	32	32	144	16	16
--	1039	SI_PlayerBullet_22_0_3	32	48	144	16	16
--	1040	SI_PlayerBullet_22_1_0	32	0	160	64	16
--	1041	SI_PlayerBullet_22_1_1	32	64	160	64	16
--	1042	SI_PlayerBullet_22_1_2	32	128	160	64	16
--	1043	SI_PlayerBullet_22_1_3	32	192	160	64	16
--	1044	SI_PlayerBullet_22_2_0	32	0	176	32	32
+-	1036	SI_PlayerBullet_06_0_0	16	0	144	32	16
+-	1037	SI_PlayerBullet_06_0_1	16	32	144	32	16
+-	1038	SI_PlayerBullet_06_0_2	16	64	144	32	16
+-	1039	SI_PlayerBullet_06_0_3	16	96	144	32	16
+-	1040	SI_PlayerBullet_22_0_0	32	0	144	16	16
+-	1041	SI_PlayerBullet_22_0_1	32	16	144	16	16
+-	1042	SI_PlayerBullet_22_0_2	32	32	144	16	16
+-	1043	SI_PlayerBullet_22_0_3	32	48	144	16	16
+-	1044	SI_PlayerBullet_22_1_0	32	0	160	64	16
+-	1045	SI_PlayerBullet_22_1_1	32	64	160	64	16
+-	1046	SI_PlayerBullet_22_1_2	32	128	160	64	16
+-	1047	SI_PlayerBullet_22_1_3	32	192	160	64	16
+-	1048	SI_PlayerBullet_22_2_0	32	0	176	32	32
 #		Bullet(1400~1799)					
 -	1400	SI_Bullet_ShuttleBeam_0	2	0	0	16	16
 -	1401	SI_Bullet_ShuttleBeam_1	2	16	0	16	16
@@ -1429,7 +1433,7 @@ Comment	Index	SI_Name	Tex	Tex_x	Tex_y	Tex_w	Tex_h
 -	3403	SI_PlayerDrainZone_04	313	0	0	-1	-1
 -	3404	SI_PlayerDrainZone_05	312	0	0	-1	-1
 -	3405	SI_PlayerDrainZone_06	315	0	0	-1	-1
--	3406	SI_PlayerDrainZone_07	310	0	0	-1	-1
+-	3406	SI_PlayerDrainZone_07	316	0	0	-1	-1
 -	3407	SI_PlayerDrainZone_08	310	0	0	-1	-1
 -	3408	SI_PlayerDrainZone_09	310	0	0	-1	-1
 -	3409	SI_PlayerDrainZone_10	310	0	0	-1	-1
@@ -1445,7 +1449,7 @@ Comment	Index	SI_Name	Tex	Tex_x	Tex_y	Tex_w	Tex_h
 -	3419	SI_PlayerDrainZone_20	310	0	0	-1	-1
 -	3420	SI_PlayerDrainZone_21	310	0	0	-1	-1
 -	3421	SI_PlayerDrainZone_22	310	0	0	-1	-1
--	3422	SI_PlayerDrainZone_23	332	0	0	-1	-1
+-	3422	SI_PlayerDrainZone_23	316	0	0	-1	-1
 #		Scene(3600~3799)					
 -	3600	SI_Scene_00_1	560	0	0	-1	-1
 -	3601	SI_Scene_00_2	561	256	0	228	228
