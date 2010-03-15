@@ -665,7 +665,7 @@ void Player::action()
 		}
 		if(GameInput::GetKey(playerindex, KSI_RIGHT))
 		{
-			if (!GameInput::GetKey(playerindex, KSI_RIGHT))
+			if (!GameInput::GetKey(playerindex, KSI_LEFT))
 			{
 				updateFrame(PLAYER_FRAME_RIGHTPRE);
 			}

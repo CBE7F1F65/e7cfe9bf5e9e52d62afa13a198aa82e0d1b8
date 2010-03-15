@@ -83,6 +83,21 @@ function ePlayerSendExChase_04(playerindex, x, y, playerID, appendfloat)
 end
 
 function ePlayerSendExChase_05(playerindex, x, y, playerID, appendfloat)
+	local angle = RANDT(1, 36000);
+	for i=0, 1 do
+		hdssA(playerindex,
+			{
+				TIMERLESS, 90, ANGLESETADD, (i*2-1)*100,
+				TIMERLESS, 90, SPEEDSETADD, 4
+			}
+		)
+		hdss.Call(HDSS_BC,
+			{
+				playerindex, 12, angle, 0, x, y, 1.6, CC_Bullet_Butterfly, 2+i, i*16+8
+			}
+		)
+	end
+	hdssA(playerindex);
 	return true;
 end
 

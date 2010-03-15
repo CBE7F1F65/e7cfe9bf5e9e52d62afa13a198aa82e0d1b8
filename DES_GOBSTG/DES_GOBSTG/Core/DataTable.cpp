@@ -446,7 +446,7 @@ bool _DataTable::SpriteDefineFile()
 bool _DataTable::PlayerShootDefineFile()
 {
 	ZeroMemory(BResource::res.playershootdata, RSIZE_PLAYERSHOOT);
-	_READSTRINGBUFFERLINE(17);
+	_READSTRINGBUFFERLINE(18);
 	while (!feof(file))
 	{
 		_INITTINT;
@@ -455,21 +455,22 @@ bool _DataTable::PlayerShootDefineFile()
 		_CHECKEOF_DATATABLE;
 		playershootData * item = &(BResource::res.playershootdata[tindex]);
 
-		fscanf(file, "%d%d%s%d%x%f%d%d%d%f%f%f%f%f%d", 
+		fscanf(file, "%d%d%s%d%x%f%d%d%d%d%f%f%f%f%f%d", 
 			_SAVETINT, 
 			_SAVETINT, 
 			strbuffer[0],
 			_SAVETINT, 
 			_SAVETINT, 
 			&(item->power), 
-			&(item->hitonfactor),
+			&(item->deletetime),
 			_SAVETINT, 
 			&(item->angle), 
+			&(item->addangle), 
 			&(item->speed), 
+			&(item->accelspeed),
 			&(item->scale),
 			&(item->xbias), 
-			&(item->ybias), 
-			&(item->accelspeed), 
+			&(item->ybias),  
 			_SAVETINT);
 
 		_DOSWAPTINT;

@@ -165,7 +165,7 @@ bool GameAI::CheckBulletCollision(Bullet * item)
 	{
 		return false;
 	}
-	if (!item->isInRect(x, y, r+speed, 1))
+	if (!item->isInRect(x, y, r+speed))
 	{
 		return false;
 	}
@@ -174,7 +174,7 @@ bool GameAI::CheckBulletCollision(Bullet * item)
 	{
 		if (moveablepos[i].risk < GAMEAI_RISK_FULL)
 		{
-			if (item->isInRect(moveablepos[i].x, moveablepos[i].y, r, 1)/* || item->isInRect(moveablepos[i].x, moveablepos[i].y, r)*/)
+			if (item->isInRect(moveablepos[i].x, moveablepos[i].y, r)/* || item->isInRect(moveablepos[i].x, moveablepos[i].y, r)*/)
 			{
 				moveablepos[i].risk = GAMEAI_RISK_FULL;
 				bret = true;
@@ -199,7 +199,7 @@ bool GameAI::CheckBeamCollision(Beam * item)
 	{
 		if (moveablepos[i].risk < GAMEAI_RISK_FULL)
 		{
-			if (item->isInRect(moveablepos[i].x, moveablepos[i].y, r*4, 1) || item->isInRect(moveablepos[i].x, moveablepos[i].y, r*4, 0))
+			if (item->isInRect(moveablepos[i].x, moveablepos[i].y, r)/* || item->isInRect(moveablepos[i].x, moveablepos[i].y, r*4, 0)*/)
 			{
 				moveablepos[i].risk = GAMEAI_RISK_FULL;
 				bret = true;
@@ -224,7 +224,7 @@ bool GameAI::CheckEnemyCollision(Enemy * item, float w, float h)
 	{
 		if (moveablepos[i].risk < GAMEAI_RISK_FULL)
 		{
-			if (item->isInRect(moveablepos[i].x, moveablepos[i].y, r*4, w, h, 1) || item->isInRect(moveablepos[i].x, moveablepos[i].y, r*4, w, h, 0))
+			if (item->isInRect(moveablepos[i].x, moveablepos[i].y, r*2, w, h)/* || item->isInRect(moveablepos[i].x, moveablepos[i].y, r*4, w, h, 0)*/)
 			{
 				moveablepos[i].risk = GAMEAI_RISK_FULL;
 				bret = true;
@@ -239,17 +239,19 @@ bool GameAI::CheckEventZoneCollision(EventZone * item)
 	if (IsPlayerSafe())
 	{
 		return false;
-	}
-	if (item->type != EVENTZONE_TYPE_PLAYERDAMAGE)
-	{
-		return false;
-	}
+	}/*
+	
+		if (item->type != EVENTZONE_TYPE_PLAYERDAMAGE)
+		{
+			return false;
+		}*/
+	
 	bool bret = false;
 	for (int i=0; i<GAMEAI_ABLEPOSITIONNUM; i++)
 	{
 		if (moveablepos[i].risk < GAMEAI_RISK_FULL)
 		{
-			if (item->isInRect(moveablepos[i].x, moveablepos[i].y, r*4, 1))
+			if (item->isInRect(moveablepos[i].x, moveablepos[i].y, r*4, 0))
 			{
 				moveablepos[i].risk = GAMEAI_RISK_FULL;
 				bret = true;
@@ -444,7 +446,7 @@ bool GameAI::SetMove()
 	bool bshot = Player::p[playerindex].flag & PLAYER_SHOT;
 	if ((bdone == false || bshot) && !Player::p[playerindex].bInfi)
 	{
-		if (bshot && !nCharge && nChargeMax > 1)
+		if (/*bshot && */!nCharge && nChargeMax > 1)
 		{
 			GameInput::SetKey(playerindex, KSI_QUICK, true);
 		}

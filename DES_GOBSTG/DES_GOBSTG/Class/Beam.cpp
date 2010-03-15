@@ -221,7 +221,18 @@ void Beam::action(BYTE playerindex)
 			timer = 0;
 		}
 		if(timer == 1)
+		{
 			SE::push(SE_BEAM_1, x);
+		}
+
+		if (!Player::p[playerindex].bInfi)
+		{
+			if (isInRect(Player::p[playerindex].x, Player::p[playerindex].y, Player::p[playerindex].r))
+			{
+				Player::p[playerindex].DoShot();
+			}
+		}
+
 		if(!(flag & BEAMFLAG_HORIZON))
 		{
 			if(hscale * 16.0f < length)
@@ -271,14 +282,6 @@ void Beam::action(BYTE playerindex)
 		{
 			fadeout = true;
 			timer = 0;
-		}
-
-		if (!Player::p[playerindex].bInfi)
-		{
-			if (isInRect(Player::p[playerindex].x, Player::p[playerindex].y, Player::p[playerindex].r))
-			{
-				Player::p[playerindex].DoShot();
-			}
 		}
 
 		if (!(flag & BEAMFLAG_NOGRAZE))

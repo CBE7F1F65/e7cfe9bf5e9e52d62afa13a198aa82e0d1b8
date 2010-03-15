@@ -624,11 +624,18 @@ void Bullet::action()
 		}
 		else
 		{
+
+			if (able)
+			{
+				DoCollision();
+				DoGraze();
+			}
 			x += xplus;
 			y += yplus;
 
 			if (able)
 			{
+
 				ChangeAction();
 
 				if (BResource::res.bulletdata[type].nRoll && !(timer % BULLET_ANIMATIONSPEED))
@@ -663,11 +670,6 @@ void Bullet::action()
 						alpha = 0xff;
 					}
 				}
-
-				if (!DoCollision())
-				{
-				}
-				DoGraze();
 			}
 		}
 

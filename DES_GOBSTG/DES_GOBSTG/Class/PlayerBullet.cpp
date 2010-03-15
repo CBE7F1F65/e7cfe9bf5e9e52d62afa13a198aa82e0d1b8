@@ -42,7 +42,7 @@ WORD PlayerBullet::beams;
 
 #define _PB_HEADARCPLUS			10
 
-#define PLAYERBULLETMAX		0x40
+#define PLAYERBULLETMAX		0x100
 
 #define _PBTEX_PLAYERBEGIN		10
 
@@ -179,16 +179,17 @@ int PlayerBullet::Build(BYTE playerindex, int shootdataID)
 	PlayerBullet _pb;
 	playershootData * item = &(BResource::res.playershootdata[shootdataID]);
 	pb[playerindex].push_back(_pb)->valueSet(playerindex, shootdataID, item->arrange, item->xbias, item->ybias, 
-		item->scale, item->angle, item->speed, item->accelspeed, 
-		item->power, item->hitonfactor, item->flag, item->seID);
+		item->scale, item->angle, item->addangle, item->speed, item->accelspeed, 
+		item->power, item->deletetime, item->flag, item->seID, item->deletetime);
 	return pb[playerindex].getEndIndex();
 }
 
-void PlayerBullet::valueSet(BYTE _playerindex, WORD _ID, BYTE _arrange, float _xbias, float _ybias, float _scale, int _angle, float _speed, float _accelspeed, float _power, int _hitonfactor, WORD _flag, BYTE seID)
+void PlayerBullet::valueSet(BYTE _playerindex, WORD _ID, BYTE _arrange, float _xbias, float _ybias, float _scale, int _angle, int _addangle, float _speed, float _accelspeed, float _power, int _hitonfactor, WORD _flag, BYTE seID, int _deletetime)
 {
 	playerindex = _playerindex;
 	ID		=	_ID;
 	angle	=	_angle;
+	addangle =	_addangle;
 	speed	=	_speed;
 	accelspeed = _accelspeed;
 	oldspeed =	speed;
@@ -199,6 +200,7 @@ void PlayerBullet::valueSet(BYTE _playerindex, WORD _ID, BYTE _arrange, float _x
 	xbias	=	_xbias;
 	ybias	=	_ybias;
 	scale	=	_scale;
+	deletetime = _deletetime;
 
 	timer	=	0;
 	exist	=	true;
@@ -526,6 +528,7 @@ void PlayerBullet::action()
 					Lock();
 				}
 				speed += accelspeed;
+				angle += addangle;
 				xplus = speed * cost(angle);
 				yplus = speed * sint(angle);
 			}
@@ -558,8 +561,10 @@ void PlayerBullet::action()
 				}
 			}
 		}
-		if(x < _PB_DELETE_LEFT_(playerindex) || x > _PB_DELETE_RIGHT_(playerindex) || y < _PB_DELETE_TOP || y > _PB_DELETE_BOTTOM)
+		if (deletetime && timer >= deletetime || x < _PB_DELETE_LEFT_(playerindex) || x > _PB_DELETE_RIGHT_(playerindex) || y < _PB_DELETE_TOP || y > _PB_DELETE_BOTTOM)
+		{
 			exist = false;
+		}
 	}
 	else
 	{

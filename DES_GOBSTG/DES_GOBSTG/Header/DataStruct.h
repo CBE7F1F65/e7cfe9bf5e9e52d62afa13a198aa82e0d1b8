@@ -206,7 +206,8 @@ struct spriteData
 struct playershootData 
 {
 	int angle;
-	int hitonfactor;
+	int addangle;
+	int deletetime;
 	int siid;
 	bool bchargeshoot;
 	float xbias;

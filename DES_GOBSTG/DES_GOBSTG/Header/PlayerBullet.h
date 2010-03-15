@@ -38,7 +38,7 @@ public:
 	static void RenderAll(BYTE playerindex);
 	static float CheckShoot(BYTE playerindex, float aimx, float aimy, float aimw, float aimh=0.0f);
 
-	void valueSet(BYTE playerindex, WORD ID, BYTE arrange, float xbias, float ybias, float scale, int angle, float speed, float accelspeed, float power, int hitonfactor, WORD flag, BYTE seID);
+	void valueSet(BYTE playerindex, WORD ID, BYTE arrange, float xbias, float ybias, float scale, int angle, int addangle, float speed, float accelspeed, float power, int hitonfactor, WORD flag, BYTE seID, int deletetime);
 
 	void action();
 	void Render();
@@ -73,6 +73,9 @@ public:
 	int		locktimer;
 	int		hitonfactor;
 	int		animation;
+
+	int		addangle;
+	int		deletetime;
 
 	WORD	flag;
 

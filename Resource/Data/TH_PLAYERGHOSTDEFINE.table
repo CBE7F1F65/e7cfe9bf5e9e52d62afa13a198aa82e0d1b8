@@ -19,10 +19,13 @@ Comment	Index	SIID	XAdj	YAdj	Speed	Flag	ShootAngle	MoveR	StartAngle	Blend
 -	24	SI_Null	0	0	0	0	0	0	0	2
 -	28	SI_Null	0	0	0	0	0	0	0	2
 #		Aya								
--	32	SI_PlayerGhost_04_1	-15	-10	0	4	0	0	0	2
--	33	SI_PlayerGhost_04_1	15	-10	0	4	0	0	0	2
--	36	SI_PlayerGhost_04_1	-5	15	0	4	0	0	0	2
--	37	SI_PlayerGhost_04_1	5	15	0	4	0	0	0	2
+-	32	SI_PlayerGhost_04_1	-15	-10	0	44	8	0	0	2
+-	33	SI_PlayerGhost_04_1	15	-10	0	44	-8	0	0	2
+-	36	SI_PlayerGhost_04_1	-5	15	0	44	8	0	0	2
+-	37	SI_PlayerGhost_04_1	5	15	0	44	-8	0	0	2
+#		Yuyuko								
+-	40	SI_PlayerGhost_05_1	0	0	3.5	114	0	0	0	2
+-	44	SI_PlayerGhost_05_1	0	0	0	214	0	0	0	2
 #		Sanae								
 -	352	SI_PlayerGhost_22_1	0	-25	1	14	0	0	0	2
 -	353	SI_PlayerGhost_22_2	-30	-15	1	14	0	0	0	2

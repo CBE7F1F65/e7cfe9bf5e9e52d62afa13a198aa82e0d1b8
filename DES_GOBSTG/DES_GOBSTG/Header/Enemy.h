@@ -135,6 +135,7 @@ public:
 	void DoShot();
 	bool DoActivate();
 	bool checkActive();
+	static bool CheckENAZ(BYTE playerindex, float x, float y, float rori=0);
 
 	void action();
 	void actionInStop();

@@ -88,6 +88,11 @@ Comment	Index	Texture
 -	181	Graphic/Sprite/Boss/boss_22.png
 -	182	Graphic/Sprite/Boss/boss_23.png
 #		BossEx(210~259)
+-	213	Graphic/Sprite/Boss/boss_04_ex.png
+-	215	Graphic/Sprite/Boss/boss_06_ex.png
+-	216	Graphic/Sprite/Boss/boss_07_ex.png
+-	224	Graphic/Sprite/Boss/boss_15_ex.png
+-	232	Graphic/Sprite/Boss/boss_23_ex.png
 #		PlayerSpellCutIn(260~309)
 -	260	Graphic/Sprite/Player/SpellCutIn/pl_01_cutin.png
 -	261	Graphic/Sprite/Player/SpellCutIn/pl_02_cutin.png
@@ -117,6 +122,7 @@ Comment	Index	Texture
 -	311	Graphic/Sprite/Player/DrainZone/pl_02_drain.png
 -	312	Graphic/Sprite/Player/DrainZone/pl_03_drain.png
 -	313	Graphic/Sprite/Player/DrainZone/pl_04_drain.png
+-	315	Graphic/Sprite/Player/DrainZone/pl_06_drain.png
 -	332	Graphic/Sprite/Player/DrainZone/pl_23_drain.png
 #		Other(360~459)
 -	360	Graphic/Scene/title.png

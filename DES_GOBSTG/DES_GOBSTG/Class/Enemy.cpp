@@ -171,7 +171,7 @@ void Enemy::Action(DWORD stopflag)
 					en[j].toIndex(_index);
 					if (pen->able)
 					{
-						PlayerBullet::CheckAndSetLock((BObject *)pen, j, en[j].getIndex(), pen->checkActive());
+						PlayerBullet::CheckAndSetLock((BObject *)pen, j, en[j].getIndex(), pen->checkActive() && pen->maxlife < 800);
 						if (pen->type < PLAYERTYPEMAX)
 						{
 							bossindex[j] = en[j].getIndex();
@@ -1039,63 +1039,71 @@ bool Enemy::DoActivate()
 	}
 	if (!checkActive() && Player::p[playerindex].bDrain)
 	{
-		bool haveor = false;
-		bool orcheck = false;
 		float rori = (BResource::res.enemydata[type].collision_w + BResource::res.enemydata[type].collision_h) / 4;
-		for (list<EnemyActivationZone>::iterator it=enaz[playerindex].begin(); it!=enaz[playerindex].end(); it++)
+		if (CheckENAZ(playerindex, x, y, rori))
 		{
-			bool checkret = true;
-			switch ((it->flag) & ENAZTYPEMASK)
-			{
-			case ENAZTYPE_CIRCLE:
-				checkret = BObject::CheckCollisionBigCircle(x, y, it->x, it->y, it->rPrep+rori);
-				break;
-			case ENAZTYPE_ELLIPSE:
-				checkret = BObject::CheckCollisionEllipse(x, y, it->x, it->y, it->rPrep, it->rParal, it->angle, rori);
-				break;
-			case ENAZTYPE_RECT:
-				checkret = BObject::CheckCollisionRect(x, y, it->x, it->y, it->rPrep, it->rParal, it->angle, rori);
-				break;
-			case ENAZTYPE_RIGHTANGLED:
-				checkret = BObject::CheckCollisionRightAngled(x, y, it->x, it->y, it->rPrep, it->rParal, it->angle, rori);
-				break;
-			}
-			switch ((it->flag) & ENAZOPMASK)
-			{
-			case ENAZOP_AND:
-				if (!checkret || haveor && !orcheck)
-				{
-					return false;
-				}
-				haveor = false;
-				break;
-			case ENAZOP_OR:
-				if (!orcheck && checkret)
-				{
-					orcheck = true;
-				}
-				haveor = true;
-				break;
-			case ENAZOP_NOTAND:
-				if (checkret || haveor && !orcheck)
-				{
-					return false;
-				}
-				haveor = false;
-				break;
-			case ENAZOP_NOTOR:
-				if (!orcheck && !checkret)
-				{
-					orcheck = true;
-				}
-				haveor = true;
-				break;
-			}
+			Scripter::scr.Execute(SCR_EVENT, SCR_EVENT_PLAYERDRAINCHECK, playerindex);
+			return true;
 		}
-		Scripter::scr.Execute(SCR_EVENT, SCR_EVENT_PLAYERDRAINCHECK, playerindex);
-		return true;
 	}
 	return false;
+}
+
+bool Enemy::CheckENAZ(BYTE playerindex, float x, float y, float rori)
+{
+	bool haveor = false;
+	bool orcheck = false;
+	for (list<EnemyActivationZone>::iterator it=enaz[playerindex].begin(); it!=enaz[playerindex].end(); it++)
+	{
+		bool checkret = true;
+		switch ((it->flag) & ENAZTYPEMASK)
+		{
+		case ENAZTYPE_CIRCLE:
+			checkret = BObject::CheckCollisionBigCircle(x, y, it->x, it->y, it->rPrep+rori);
+			break;
+		case ENAZTYPE_ELLIPSE:
+			checkret = BObject::CheckCollisionEllipse(x, y, it->x, it->y, it->rPrep, it->rParal, it->angle, rori);
+			break;
+		case ENAZTYPE_RECT:
+			checkret = BObject::CheckCollisionRect(x, y, it->x, it->y, it->rPrep, it->rParal, it->angle, rori);
+			break;
+		case ENAZTYPE_RIGHTANGLED:
+			checkret = BObject::CheckCollisionRightAngled(x, y, it->x, it->y, it->rPrep, it->rParal, it->angle, rori);
+			break;
+		}
+		switch ((it->flag) & ENAZOPMASK)
+		{
+		case ENAZOP_AND:
+			if (!checkret || haveor && !orcheck)
+			{
+				return false;
+			}
+			haveor = false;
+			break;
+		case ENAZOP_OR:
+			if (!orcheck && checkret)
+			{
+				orcheck = true;
+			}
+			haveor = true;
+			break;
+		case ENAZOP_NOTAND:
+			if (checkret || haveor && !orcheck)
+			{
+				return false;
+			}
+			haveor = false;
+			break;
+		case ENAZOP_NOTOR:
+			if (!orcheck && !checkret)
+			{
+				orcheck = true;
+			}
+			haveor = true;
+			break;
+		}
+	}
+	return true;
 }
 
 bool Enemy::checkActive()
@@ -1181,6 +1189,18 @@ void Enemy::action()
 			Scripter::scr.Execute(SCR_EDEF, ID|(playerindex<<16), timer);
 			en[playerindex].toIndex(_index);
 		}
+
+		if (!Player::p[playerindex].bInfi)
+		{
+			if ((tw || th))
+			{
+				if (isInRect(Player::p[playerindex].x, Player::p[playerindex].y, Player::p[playerindex].r, tw, th))
+				{
+					Player::p[playerindex].DoShot();
+				}
+			}
+		}
+
 		matchAction();
 //		updateMove();
 		x += xplus;
@@ -1200,16 +1220,6 @@ void Enemy::action()
 			Target::SetValue(tarID, x, y);
 		}
 
-		if (!Player::p[playerindex].bInfi)
-		{
-			if ((tw || th))
-			{
-				if (isInRect(Player::p[playerindex].x, Player::p[playerindex].y, Player::p[playerindex].r, tw, th))
-				{
-					Player::p[playerindex].DoShot();
-				}
-			}
-		}
 		/*
 		if(BossInfo::flag)
 		{

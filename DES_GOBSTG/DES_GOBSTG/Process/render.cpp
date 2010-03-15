@@ -21,6 +21,20 @@ void Process::_Render(BYTE renderflag/* =M_RENDER_NULL */)
 		Enemy::RenderScore(playerindex);
 		FrontDisplay::fdisp.RenderSpellName(playerindex);
 		FrontDisplay::fdisp.RenderHeadInfo(playerindex);
+		//
+		/*
+		for (int i=M_GAMESQUARE_LEFT_(playerindex); i<M_GAMESQUARE_RIGHT_(playerindex); i++)
+		{
+			for (int j=M_GAMESQUARE_TOP; j<M_GAMESQUARE_BOTTOM; j++)
+			{
+				if (Enemy::CheckENAZ(playerindex, i, j, 1))
+				{
+					hge->Gfx_RenderLine(i, j, i+1, j);
+				}
+			}
+		}
+		*/
+		//
 	}
 	BGLayer::RenderFG(playerindex);
 }
