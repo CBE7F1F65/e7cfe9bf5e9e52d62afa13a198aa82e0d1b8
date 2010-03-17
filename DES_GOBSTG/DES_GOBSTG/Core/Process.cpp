@@ -43,6 +43,14 @@ void Process::Release()
 
 		hge->	Ini_SetInt(RESCONFIGS_CUSTOM, RESCONFIGN_SCREENMODE, screenmode);
 		hge->	Ini_SetString(RESCONFIGS_CUSTOM, RESCONFIGN_USERNAME, username);
+
+		hge->	Ini_SetInt(RESCONFIGS_CUSTOM, RESCONFIGN_LASTMATCHCHARA_1_1, lastmatchchara[0][0]);
+		hge->	Ini_SetInt(RESCONFIGS_CUSTOM, RESCONFIGN_LASTMATCHCHARA_1_2, lastmatchchara[0][1]);
+		hge->	Ini_SetInt(RESCONFIGS_CUSTOM, RESCONFIGN_LASTMATCHCHARA_1_3, lastmatchchara[0][2]);
+		hge->	Ini_SetInt(RESCONFIGS_CUSTOM, RESCONFIGN_LASTMATCHCHARA_2_1, lastmatchchara[1][0]);
+		hge->	Ini_SetInt(RESCONFIGS_CUSTOM, RESCONFIGN_LASTMATCHCHARA_2_2, lastmatchchara[1][1]);
+		hge->	Ini_SetInt(RESCONFIGS_CUSTOM, RESCONFIGN_LASTMATCHCHARA_2_3, lastmatchchara[1][2]);
+
 		if(playing)
 			DataConnector::addPlayTime();
 
@@ -150,10 +158,11 @@ void Process::SetShake(BYTE playerindex, BYTE round, bool force/* =false */)
 	}
 }
 
-void Process::WorldShake(DWORD stopflag)
+void Process::WorldShake()
 {
 	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
 	{
+		DWORD stopflag = mp.GetStopFlag();
 		bool binstop = FRAME_STOPFLAGCHECK_PLAYERINDEX_(stopflag, i, FRAME_STOPFLAG_WORLDSHAKE);
 		if (!binstop)
 		{
@@ -657,4 +666,32 @@ void Process::SetStop(DWORD _stopflag, int _stoptime)
 	}
 	stopflag[useindex] = _stopflag;
 	stoptimer[useindex] = _stoptime;
+}
+
+DWORD Process::GetStopFlag(int index)
+{
+	if (index >= 0 && index < FRAME_STOPINFOMAX)
+	{
+		if (stoptimer[index])
+		{
+			return stopflag[index];
+		}
+		return 0;
+	}
+	DWORD _stopflag = 0;
+	for (int i=0; i<FRAME_STOPINFOMAX; i++)
+	{
+		if (stoptimer[i])
+		{
+			_stopflag |= stopflag[i];
+		}
+	}
+	return _stopflag;	
+}
+
+void Process::SetLastMatchChara(BYTE playerindex, WORD ID, WORD ID_sub_1, WORD ID_sub_2)
+{
+	lastmatchchara[playerindex][0] = ID;
+	lastmatchchara[playerindex][1] = ID_sub_1;
+	lastmatchchara[playerindex][2] = ID_sub_2;
 }

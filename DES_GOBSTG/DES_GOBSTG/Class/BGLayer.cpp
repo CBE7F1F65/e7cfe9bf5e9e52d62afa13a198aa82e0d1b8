@@ -4,6 +4,7 @@
 #include "../header/Scripter.h"
 #include "../header/Export.h"
 #include "../header/ProcessDefine.h"
+#include "../header/Process.h"
 
 BGLayerSet BGLayer::bglayerset[M_PL_MATCHMAXPLAYER][BGLAYERSETMAX];
 BGLayer BGLayer::ubg[M_PL_MATCHMAXPLAYER][UBGLAYERMAX];
@@ -319,10 +320,11 @@ void BGLayer::SetFlag(BYTE _flag, int maxtime)
 	changetimer = 0;
 }
 
-void BGLayer::Action(DWORD stopflag, bool active)
+void BGLayer::Action(bool active)
 {
 	for (int j=0; j<M_PL_MATCHMAXPLAYER; j++)
 	{
+		DWORD stopflag = Process::mp.GetStopFlag();
 		bool binstop = FRAME_STOPFLAGCHECK_PLAYERINDEX_(stopflag, j, FRAME_STOPFLAG_LAYER);
 		if (!binstop)
 		{
@@ -447,18 +449,24 @@ void BGLayer::action()
 			float xt = speed * costa;
 			float yt = speed * sinta;
 
+//			texRectSet(sprite->quad.v[0].tx - xt, sprite->quad.v[0].ty - yt, sprite->quad.v[1].tx-sprite->quad.v[0].tx, sprite->quad.v[3].ty-sprite->quad.v[0].ty);
+			
 			for (int i=0; i<4; i++)
 			{
 				sprite->quad.v[i].tx -= xt;
 				sprite->quad.v[i].ty -= yt;
 			}
+			
 		}
 		else if (speed != 0)
 		{
+			
 			for (int i=0; i<4; i++)
 			{
 				sprite->quad.v[i].ty -= speed;
 			}
+			
+//			texRectSet(sprite->quad.v[0].tx, sprite->quad.v[0].ty - speed, sprite->quad.v[1].tx-sprite->quad.v[0].tx, sprite->quad.v[3].ty-sprite->quad.v[0].ty);
 		}
 	}
 	else if (!rotate)

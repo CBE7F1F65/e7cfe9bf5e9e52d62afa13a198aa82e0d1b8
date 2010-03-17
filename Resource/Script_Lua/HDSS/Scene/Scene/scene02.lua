@@ -29,8 +29,8 @@ function Scene_s02(playerindex, timer)
 				}
 			)
 		end
-		local col = global.ARGB(0xff, 0xffffff);
-		hdssBGCOLOR(playerindex, 2, col/2, col/2, col/2, col/2);
+		local col = global.ARGB(0x80, 0xffffff);
+		hdssBGCOLOR(playerindex, 2, col, col, col, col);
 		
 	end
 		

@@ -13,6 +13,7 @@
 #include "../header/SpriteItemManager.h"
 #include "../header/ProcessDefine.h"
 #include "../header/GameAI.h"
+#include "../header/Process.h"
 
 RenderDepth Bullet::renderDepth[M_PL_MATCHMAXPLAYER][BULLETTYPEMAX];
 
@@ -146,7 +147,7 @@ void Bullet::ClearItem()
 	index = 0;
 }
 
-void Bullet::Action(DWORD stopflag)
+void Bullet::Action()
 {
 	for (int j=0; j<M_PL_MATCHMAXPLAYER; j++)
 	{
@@ -155,6 +156,7 @@ void Bullet::Action(DWORD stopflag)
 			ZeroMemory(Bullet::renderDepth[j], sizeof(RenderDepth) * BULLETTYPEMAX);
 			DWORD i = 0;
 			DWORD size = bu[j].getSize();
+			DWORD stopflag = Process::mp.GetStopFlag();
 			bool binstop = FRAME_STOPFLAGCHECK_PLAYERINDEX_(stopflag, j, FRAME_STOPFLAG_BULLET);
 			for (bu[j].toBegin(); i<size; bu[j].toNext(), i++)
 			{
@@ -380,6 +382,21 @@ void Bullet::DoIze()
 								fadeout = true;
 								timer = 0;
 							}
+						}
+					}
+					if (it->type & EVENTZONE_TYPE_BULLETPERFECTFREEZE)
+					{
+						if (timer >= fadeinTime && BResource::res.bulletdata[type].whitecolor != 0xff)
+						{
+							BYTE tocolor = BResource::res.bulletdata[type].whitecolor;
+							if (tocolor < BResource::res.bulletdata[type].nColor)
+							{
+								oldcolor = tocolor;
+							}
+							timer = 0;
+							speed = 0;
+							fadeinTime = -1;
+							memcpy(actionList, EventZone::bulletActionList[playerindex], BULLETACTIONMAX*sizeof(int));
 						}
 					}
 					if (it->type & EVENTZONE_TYPE_BULLETEVENT)
@@ -1109,9 +1126,12 @@ bool Bullet::ChangeAction(int nextstep)
 				case TYPESET:
 					if(doit)
 					{
-						oldtype = _EXEACL_(1);
-						typechangetimer = 1;
-						SE::push(SE_BULLET_CHANGE_2, x);
+						if (oldtype != _EXEACL_(1))
+						{
+							oldtype = _EXEACL_(1);
+							typechangetimer = 1;
+							SE::push(SE_BULLET_CHANGE_2, x);
+						}
 					}
 					++i;
 					doit = false;
@@ -1205,6 +1225,26 @@ bool Bullet::ChangeAction(int nextstep)
 					{
 						angle = aMainAngle(Target::tar[(int)_EXEACL_(1)].x, Target::tar[(int)_EXEACL_(1)].y, _EXEACL_(2));
 						SE::push(SE_BULLET_CHANGE_1, x);
+					}
+					i+=2;
+					doit = false;
+					break;
+				case ANGLESETRAND:
+					if (doit)
+					{
+						angle = randt(_EXEACL_(1), _EXEACL_(2));
+						SE::push(SE_BULLET_CHANGE_1, x);
+					}
+					i+=2;
+					doit = false;
+					break;
+				case ANGLESETADDRAND:
+					if (doit)
+					{
+						int addangle = randt(_EXEACL_(1), _EXEACL_(2));
+						angle += addangle;
+						if(addangle > BULLETACT_ANGLECHANGESE || addangle < -BULLETACT_ANGLECHANGESE)
+							SE::push(SE_BULLET_CHANGE_1, x);
 					}
 					i+=2;
 					doit = false;

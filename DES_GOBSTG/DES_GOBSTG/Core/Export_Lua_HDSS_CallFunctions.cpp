@@ -112,6 +112,7 @@ int _HDSSCallGet::Call_SETCHARA(LuaState * ls)
 		WORD _id = _INEXT_HDSS_LUAPARA;
 		WORD _id_sub_1 = 0xffff;
 		WORD _id_sub_2 = 0xffff;
+		bool _bsavelastmatch = true;
 		_JNEXT_HDSS_LUAPARA;
 		if (bhavenext)
 		{
@@ -120,9 +121,18 @@ int _HDSSCallGet::Call_SETCHARA(LuaState * ls)
 			if (bhavenext)
 			{
 				_id_sub_2 = _IOBJ_HDSS_LUA;
+				_JNEXT_HDSS_LUAPARA;
+				if (bhavenext)
+				{
+					_bsavelastmatch = _BOBJ_HDSS_LUA;
+				}
 			}
 		}
 		Player::p[_playerindex].SetChara(_id, _id_sub_1, _id_sub_2);
+		if (_bsavelastmatch)
+		{
+			Process::mp.SetLastMatchChara(_playerindex, _id, _id_sub_1, _id_sub_2);
+		}
 	}
 	return 0;
 }

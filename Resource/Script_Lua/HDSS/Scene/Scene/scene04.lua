@@ -46,5 +46,5 @@ function Scene_s04(playerindex, timer)
 		hdssBGVALUE(playerindex, 0, SI_White, cenx, CenterY, CenterW, CenterH, col);
 		
 	end
-		
+	return true;
 end

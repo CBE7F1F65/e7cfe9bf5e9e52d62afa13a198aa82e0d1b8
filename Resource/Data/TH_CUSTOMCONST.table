@@ -36,9 +36,10 @@ Comment	CustomConst	Name	Value
 -	81	CC_BulletEx_SakuyaFake	34
 -	82	CC_BulletEx_Youmu	35
 -	83	CC_BulletEx_Aya	36
--	84	CC_Bullet_ShootItem	60
--	85	CC_Bullet_FadeItem	61
--	86	CC_Bullet_Score	62
+-	84	CC_BulletEx_Cirno	37
+-	85	CC_Bullet_ShootItem	60
+-	86	CC_Bullet_FadeItem	61
+-	87	CC_Bullet_Score	62
 #		PlayerID(150~199)	
 -	150	CC_PlayerID_Reimu	0
 -	151	CC_PlayerID_Marisa	1

@@ -63,6 +63,7 @@ public:
 	bool CheckEnemyCollision(Enemy * enemyitem, float w, float h);
 	bool CheckEventZoneCollision(EventZone * ezoneitem);
 	bool SetMove();
+	void SetKeyByIndex(int index);
 	void ClearRisk();
 
 	void AnalyzeCheckOrder(float tox, float toy, float neutral, float randxprop, float randyprop);

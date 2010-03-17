@@ -32,7 +32,7 @@ function Scene_s00(playerindex, timer)
 		
 		
 		local coltop = global.ARGB(0xff, 0xb4e5f9);
-		hdssBGVALUE(playerindex, 1, SI_White, cenx, CenterY-20, CenterW, CenterH-40, col);
+		hdssBGVALUE(playerindex, 1, SI_White, cenx, CenterY-20, CenterW, CenterH-40);
 		hdssBGCOLOR(playerindex, 1, coltop, coltop, 0, 0, BLEND_ALPHAADD);
 	
 	elseif math.mod(timer, 32) == 0 then

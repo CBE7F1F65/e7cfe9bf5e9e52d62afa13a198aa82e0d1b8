@@ -2,7 +2,9 @@
 #include "../header/ProcessDefine.h"
 #include "../header/SpriteItemManager.h"
 #include "../header/BObject.h"
+#include "../header/Process.h"
 
+int EventZone::bulletActionList[M_PL_MATCHMAXPLAYER][BULLETACTIONMAX];
 list<EventZone> EventZone::ezone[M_PL_MATCHMAXPLAYER];
 
 EventZone::EventZone()
@@ -23,6 +25,7 @@ void EventZone::Clear()
 	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
 	{
 		ezone[i].clear();
+		ZeroMemory(bulletActionList[i], BULLETACTIONMAX*sizeof(int));
 	}
 }
 
@@ -65,10 +68,11 @@ void EventZone::Build(DWORD _type, BYTE _playerindex, float _x, float _y, int _m
 	_pezone->turnangle = _turnangle;
 }
 
-void EventZone::Action(DWORD stopflag)
+void EventZone::Action()
 {
 	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
 	{
+		DWORD stopflag = Process::mp.GetStopFlag();
 		bool binstop = FRAME_STOPFLAGCHECK_PLAYERINDEX_(stopflag, i, FRAME_STOPFLAG_EVENTZONE);
 		if (!binstop)
 		{

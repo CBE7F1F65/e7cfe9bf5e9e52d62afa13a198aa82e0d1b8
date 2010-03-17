@@ -113,6 +113,13 @@ function ePlayerSendExChase_06(playerindex, x, y, playerID, appendfloat)
 end
 
 function ePlayerSendExChase_07(playerindex, x, y, playerID, appendfloat)
+	hdssA(playerindex,
+		{
+			TIMERLESS, 60, SPEEDSETADD, 5
+		}
+	)
+	hdssB(playerindex, x, y, 9000, 1.0, CC_BulletEx_Cirno, RANDT(0, 1));
+	hdssA(playerindex);
 	return true;
 end
 

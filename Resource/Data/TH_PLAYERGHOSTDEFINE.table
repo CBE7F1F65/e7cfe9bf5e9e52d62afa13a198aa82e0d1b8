@@ -29,6 +29,9 @@ Comment	Index	SIID	XAdj	YAdj	Speed	Flag	ShootAngle	MoveR	StartAngle	Blend
 #		Medicine								
 -	48	SI_Null	0	0	0	0	0	0	0	2
 -	52	SI_Null	0	0	0	0	0	0	0	2
+#		Cirno								
+-	56	SI_Null	0	0	0	0	0	0	0	2
+-	60	SI_Null	0	0	0	0	0	0	0	2
 #		Sanae								
 -	352	SI_PlayerGhost_22_1	0	-25	1	14	0	0	0	2
 -	353	SI_PlayerGhost_22_2	-30	-15	1	14	0	0	0	2

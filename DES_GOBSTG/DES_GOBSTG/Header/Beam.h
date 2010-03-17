@@ -21,7 +21,7 @@ public:
 	static void Init();
 	static int Build(BYTE playerindex, float x, float y, int angle, float speed, BYTE type, BYTE color, float length, BYTE flag = BEAMFLAG_NONE, int fadeouttime = 0, BYTE tarID = 0xff);
 	static void ClearItem();
-	static void Action(DWORD stopflag);
+	static void Action();
 	static void RenderAll(BYTE playerindex);
 
 	void valueSet(WORD ID, float x, float y,int angle, float speed, BYTE type, BYTE color, float length, BYTE flag = BEAMFLAG_NONE, int fadeouttime = 0, BYTE tarID = 0xff);

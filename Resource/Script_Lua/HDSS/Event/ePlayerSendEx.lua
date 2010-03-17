@@ -82,6 +82,12 @@ function ePlayerSendEx_06(esindex, oplayerindex, playerID, opx, opy, px, py, opl
 end
 
 function ePlayerSendEx_07(esindex, oplayerindex, playerID, opx, opy, px, py, oplayerID, x, y)
+	local cenx = helper_GetCenterX(oplayerindex);
+	local aimx = opx + RANDTF(-32, 32);
+	local aimy = 32;
+	local chasetimer = RANDT(45, 60);
+	aimx, aimy = _ePlayerSendEx_Restirict(aimx, aimy, cenx);
+	game.PlayerSendEx(oplayerindex, esindex, aimx, aimy, chasetimer);
 	return true;
 end
 

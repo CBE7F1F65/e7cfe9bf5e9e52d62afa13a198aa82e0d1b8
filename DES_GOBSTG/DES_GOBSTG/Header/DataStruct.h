@@ -122,6 +122,7 @@ struct bulletData
 	float collisionSub;
 	BYTE nRoll;
 	BYTE nColor;
+	BYTE whitecolor;
 	BYTE seID;
 	BYTE effID;
 	BYTE blendtype;
@@ -182,6 +183,7 @@ struct playerData
 	int spellcutinSIID;
 	int drainzoneSIID;
 	int aidraintime;
+	WORD infinmaxset;
 	BYTE musicID;
 	BYTE shotdelay;
 	BYTE rechargedelay;

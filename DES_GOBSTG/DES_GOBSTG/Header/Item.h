@@ -26,7 +26,7 @@ public:
 
 	static void Init();
 	static void ClearItem();
-	static void Action(DWORD stopflag);
+	static void Action();
 	static void RenderAll(BYTE playerindex);
 
 	static void SendBullet(BYTE playerindex, float x, float y, BYTE setID);

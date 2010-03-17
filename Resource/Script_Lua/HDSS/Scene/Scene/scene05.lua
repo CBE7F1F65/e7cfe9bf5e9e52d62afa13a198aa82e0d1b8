@@ -44,4 +44,5 @@ function Scene_s05(playerindex, timer)
 		)
 				
 	end
+	return true;
 end

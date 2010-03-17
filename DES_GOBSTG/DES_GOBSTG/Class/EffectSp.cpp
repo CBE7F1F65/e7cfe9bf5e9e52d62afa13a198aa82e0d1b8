@@ -6,6 +6,7 @@
 #include "../header/Bullet.h"
 #include "../header/Scripter.h"
 #include "../header/ProcessDefine.h"
+#include "../header/Process.h"
 
 #define EFFSPMAX	(BULLETMAX)
 
@@ -70,10 +71,11 @@ void EffectSp::Render()
 	}
 }
 
-void EffectSp::Action(DWORD stopflag)
+void EffectSp::Action()
 {
 	for (int j=0; j<M_PL_MATCHMAXPLAYER; j++)
 	{
+		DWORD stopflag = Process::mp.GetStopFlag();
 		bool binstop = FRAME_STOPFLAGCHECK_PLAYERINDEX_(stopflag, j, FRAME_STOPFLAG_EFFECTSP);
 		if (!binstop)
 		{

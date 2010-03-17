@@ -145,6 +145,8 @@ void Player::ClearSet(BYTE _round)
 	nBulletPoint = 0;
 	nSpellPoint	= 0;
 
+	nSendBulletBonus = 0;
+
 	nLifeCost	=	0;
 	fCharge = 0;
 	if (_round == 0)
@@ -311,7 +313,7 @@ void Player::valueSet(BYTE _playerindex, BYTE round)
 	SetAble(true);
 }
 
-bool Player::Action(DWORD stopflag)
+bool Player::Action()
 {
 	alltime++;
 	AddLostStack();
@@ -325,6 +327,7 @@ bool Player::Action(DWORD stopflag)
 		{
 			p[i].AddCardBossLevel(0, 1);
 		}
+		DWORD stopflag = Process::mp.GetStopFlag();
 		bool binstop = FRAME_STOPFLAGCHECK_PLAYERINDEX_(stopflag, i, FRAME_STOPFLAG_PLAYER);
 		bool binspellstop = FRAME_STOPFLAGCHECK_PLAYERINDEX_(stopflag, i, FRAME_STOPFLAG_PLAYERSPELL);
 		GameInput::gameinput[i].updateActiveInput(binspellstop);
@@ -387,6 +390,8 @@ void Player::action()
 	}
 	lastx[0] = x;
 	lasty[0] = y;
+
+	nSendBulletBonus = 0;
 
 	//AI
 	//	GameAI::ai[playerindex].UpdateBasicInfo(x, y, speed, slowspeed, BResource::res.playerdata[nowID].collision_r);
@@ -1212,12 +1217,18 @@ void Player::DoSendBullet(float x, float y)
 	AddComboHit(1, false);
 	AddGhostPoint(2, x, y);
 	AddBulletPoint(3, x, y);
-	int addspellpoint = nComboHitOri * 13;
-	if (addspellpoint > 1500)
+	int addspellpoint = nComboHitOri * 9;
+	if (addspellpoint > 1000)
 	{
-		addspellpoint = 1500;
+		addspellpoint = 1000;
 	}
 	AddSpellPoint(addspellpoint);
+	nSendBulletBonus++;
+	if (nSendBulletBonus >= 3)
+	{
+		nSendBulletBonus = 0;
+		DoSendBullet(x, y);
+	}
 }
 
 void Player::DoShot()

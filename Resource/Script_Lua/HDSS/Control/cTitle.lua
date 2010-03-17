@@ -95,6 +95,33 @@ function ControlExecute_cTitle(timer)
 	
 	CETitle_DispatchSelect(LConst_selsys_titleid);
 	
+	if _DEBUG then
+		if hge.Input_GetDIKey(DIK_NUMPAD4, DIKEY_DOWN) then
+			_DEBUG_LGlobal_Jump = MatchMode_P2C;
+		end
+		if hge.Input_GetDIKey(DIK_NUMPAD5, DIKEY_DOWN) then
+			_DEBUG_LGlobal_Jump = MatchMode_C2P;
+		end
+		if hge.Input_GetDIKey(DIK_NUMPAD6, DIKEY_DOWN) then
+			_DEBUG_LGlobal_Jump = MatchMode_P2P;
+		end
+--		if hge.Input_GetDIKey(DIK_NUMPAD7, DIKEY_DOWN) then
+--			_DEBUG_LGlobal_Jump = MatchMode_N2N;
+--		end
+		if _DEBUG_LGlobal_Jump ~= -1 then
+			game.SetMatchMode(_DEBUG_LGlobal_Jump);
+			for i=0, 1 do
+				local nowID, lastID, lastID_Sub_1, lastID_Sub_2, lastMatchID, lastMatchID_Sub_1, lastMatchID_Sub_2 = hdss.Get(HDSS_CHARA, i);
+				hdssSETCHARA(i, lastMatchID, lastMatchID_Sub_1, lastMatchID_Sub_2);
+				hdssSETPINITLIFE(i, 10);
+			end
+			hdssSETSCENE(hdss.Get(HDSS_CHARA, RANDT(0, 1)));
+			hdssSTARTPREP();
+			_DEBUG_LGlobal_Jump = -1;
+			CETitle_ExitState(STATE_START);
+		end
+	end
+	
 	return true;
 
 end

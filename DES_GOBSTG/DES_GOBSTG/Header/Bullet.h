@@ -54,7 +54,7 @@ public:
 	static void Init(HTEXTURE tex);
 	static void Release();
 	static void ClearItem();
-	static void Action(DWORD stopflag);
+	static void Action();
 	static void RenderAll(BYTE playerindex);
 	void Render();
 

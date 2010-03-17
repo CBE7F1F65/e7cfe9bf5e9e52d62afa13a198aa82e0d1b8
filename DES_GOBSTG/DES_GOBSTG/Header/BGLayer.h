@@ -63,7 +63,7 @@ public:
 
 	static void Init(HTEXTURE * tex);
 	static void KillOtherLayer(BYTE playerindex);
-	static void Action(DWORD stopflag, bool active);
+	static void Action(bool active);
 	static void ActionSpecial();
 	static void RenderBG(BYTE playerindex);
 	static void RenderFG(BYTE playerindex);

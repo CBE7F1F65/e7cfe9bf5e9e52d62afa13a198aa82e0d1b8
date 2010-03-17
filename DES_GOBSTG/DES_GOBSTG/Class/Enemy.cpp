@@ -137,7 +137,7 @@ void Enemy::BossFadeout(BYTE playerindex)
 	}
 }
 
-void Enemy::Action(DWORD stopflag)
+void Enemy::Action()
 {
 	PlayerBullet::ClearLock();
 	for (int j=0; j<M_PL_MATCHMAXPLAYER; j++)
@@ -149,6 +149,7 @@ void Enemy::Action(DWORD stopflag)
 //		bossindex[j] = 0xff;
 		DWORD i = 0;
 		DWORD size = en[j].getSize();
+		DWORD stopflag = Process::mp.GetStopFlag();
 		bool binstop = FRAME_STOPFLAGCHECK_PLAYERINDEX_(stopflag, j, FRAME_STOPFLAG_ENEMY);
 		for (en[j].toBegin(); i<size; en[j].toNext(), i++)
 		{
@@ -880,6 +881,24 @@ void Enemy::CostLife(float power)
 
 bool Enemy::isInRect(float aimx, float aimy, float r, float w, float h, int nextstep/* =0 */)
 {
+	WORD infinmaxset = BResource::res.playerdata[Player::p[playerindex].nowID].infinmaxset;
+	if (infinmaxset)
+	{
+		BYTE nmaxset = BResource::res.enemydata[type].nmaxset;
+		for (int i=0; i<4; i++)
+		{
+			infinmaxset>>(i*4);
+			if (!infinmaxset)
+			{
+				break;
+			}
+			if ((infinmaxset&0x000f) == nmaxset)
+			{
+				return false;
+			}
+		}
+	}
+
 	float _x = x;
 	float _y = y;
 	float _r = r;

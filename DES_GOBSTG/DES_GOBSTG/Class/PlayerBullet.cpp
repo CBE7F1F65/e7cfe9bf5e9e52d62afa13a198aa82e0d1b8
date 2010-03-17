@@ -9,6 +9,7 @@
 #include "../header/Export.h"
 #include "../header/EventZone.h"
 #include "../header/ProcessDefine.h"
+#include "../header/Process.h"
 
 VectorList<PlayerBullet> PlayerBullet::pb[M_PL_MATCHMAXPLAYER];
 
@@ -102,10 +103,11 @@ void PlayerBullet::ClearItem()
 	}
 }
 
-void PlayerBullet::Action(DWORD stopflag)
+void PlayerBullet::Action()
 {
 	for (int j=0; j<M_PL_MATCHMAXPLAYER; j++)
 	{
+		DWORD stopflag = Process::mp.GetStopFlag();
 		bool binstop = FRAME_STOPFLAGCHECK_PLAYERINDEX_(stopflag, j, FRAME_STOPFLAG_PLAYERBULLET);
 		if (!binstop)
 		{

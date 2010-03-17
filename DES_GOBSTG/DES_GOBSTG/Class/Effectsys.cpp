@@ -4,6 +4,7 @@
 #include "../header/Player.h"
 #include "../header/Target.h"
 #include "../header/ProcessDefine.h"
+#include "../header/Process.h"
 
 VectorList<Effectsys> Effectsys::effsys[M_PL_MATCHMAXPLAYER];
 hgeEffectSystem Effectsys::efftype[EFFECTSYSTYPEMAX];
@@ -41,10 +42,11 @@ void Effectsys::ClearAll()
 	}
 }
 
-void Effectsys::Action(DWORD stopflag)
+void Effectsys::Action()
 {
 	for (int j=0; j<M_PL_MATCHMAXPLAYER; j++)
 	{
+		DWORD stopflag = Process::mp.GetStopFlag();
 		bool binstop = FRAME_STOPFLAGCHECK_PLAYERINDEX_(stopflag, j, FRAME_STOPFLAG_EFFECTSYS);
 		if (!binstop)
 		{

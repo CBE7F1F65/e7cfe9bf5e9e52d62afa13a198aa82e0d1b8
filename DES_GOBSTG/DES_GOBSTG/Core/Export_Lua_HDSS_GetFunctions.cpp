@@ -66,7 +66,10 @@ int _HDSSCallGet::Get_CHARA(LuaState * ls)
 		_PI_HDSS_LUA(Player::p[_playerindex].ID);
 		_PI_HDSS_LUA(Player::p[_playerindex].ID_sub_1);
 		_PI_HDSS_LUA(Player::p[_playerindex].ID_sub_2);
-		return 4;
+		_PI_HDSS_LUA(Process::mp.lastmatchchara[_playerindex][0]);
+		_PI_HDSS_LUA(Process::mp.lastmatchchara[_playerindex][1]);
+		_PI_HDSS_LUA(Process::mp.lastmatchchara[_playerindex][2]);
+		return 7;
 	}
 	return 0;
 }

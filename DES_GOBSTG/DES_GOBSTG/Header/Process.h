@@ -56,13 +56,14 @@ public:
 	void	SnapShot();
 
 	void	SetShake(BYTE playerindex, BYTE round, bool force=false);
-	void	WorldShake(DWORD stopflag);
+	void	WorldShake();
 
 	void	SyncInput();
 	void	SetState(int state, int time = 0);
 	void	SetScene(BYTE scene);
 	void	SetReturnValue(int retval);
 	void	SetInputSwap();
+	void	SetLastMatchChara(BYTE playerindex, WORD ID, WORD ID_sub_1=0xffff, WORD ID_sub_2=0xffff);
 
 	int		AccessIP();
 	bool	SetLatency(int latency);
@@ -71,6 +72,7 @@ public:
 	bool	IsInGame();
 
 	void	SetStop(DWORD stopflag, int stoptime);
+	DWORD	GetStopFlag(int index=-1);
 
 	void	ClearAll();
 
@@ -113,6 +115,7 @@ public:
 	int		screenmode;
 	int		bgmvol;
 	int		sevol;
+	int		lastmatchchara[M_PL_MATCHMAXPLAYER][M_PL_ONESETPLAYER];
 
 	//replay
 	char	rpyfilename[M_PATHMAX];

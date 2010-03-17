@@ -21,13 +21,22 @@ function CEPlayerSelect_SetBG()
 end
 
 function _CEPlayerSelect_GetValues(bleft)
-	local nowID, lastID;
-	if bleft then
-		nowID, lastID = hdss.Get(HDSS_CHARA, 0);
-		return LConst_selsys_player1id, LConst_selsys_player2id, LConst_uibg_player1id, lastID, PUSHID_UIUSE_0
+	local initID;
+	local playerindex = _CEPlayerSelect_GetPIndex(bleft);
+	local nowID, lastID, lastID_Sub_1, lastID_Sub_2, lastMatchID, lastMatchID_Sub_1, lastMatchID_Sub_2 = hdss.Get(HDSS_CHARA, playerindex);
+	if lastID >= PLAYERTYPEMAX then
+		if lastMatchID >= PLAYERTYPEMAX then
+			initID = playerindex;
+		else
+			initID = lastMatchID;
+		end
 	else
-		nowID, lastID = hdss.Get(HDSS_CHARA, 1);
-		return LConst_selsys_player2id, LConst_selsys_player1id, LConst_uibg_player2id, lastID, PUSHID_UIUSE_1
+		initID = lastID;
+	end
+	if bleft then
+		return LConst_selsys_player1id, LConst_selsys_player2id, LConst_uibg_player1id, initID, PUSHID_UIUSE_0
+	else
+		return LConst_selsys_player2id, LConst_selsys_player1id, LConst_uibg_player2id, initID, PUSHID_UIUSE_1
 	end
 end
 

@@ -1,5 +1,7 @@
 LGlobal_MessageBoxCount	=	{}
 
+_DEBUG_LGlobal_Jump	=	-1;
+
 function LGlobal_CallMessageBoxOnce(content, title, indi)
 	if indi == nil then
 		indi = 1;

@@ -252,7 +252,7 @@ bool _DataTable::MusicDefineFile()
 bool _DataTable::BulletDefineFile()
 {
 	ZeroMemory(BResource::res.bulletdata, RSIZE_BULLET);
-	_READSTRINGBUFFERLINE(15);
+	_READSTRINGBUFFERLINE(16);
 	while (!feof(file))
 	{
 		_INITTINT;
@@ -261,13 +261,14 @@ bool _DataTable::BulletDefineFile()
 		bulletData * item = &(BResource::res.bulletdata[tindex]);
 		_CHECKEOF_DATATABLE;
 
-		fscanf(file, "%s%d%d%d%f%f%d%d%d%d%d%d%d", 
+		fscanf(file, "%s%d%d%d%f%f%d%d%d%d%d%d%d%d", 
 			strbuffer[0],
 			_SAVETINT, 
 			_SAVETINT, 
 			_SAVETINT, 
 			&(item->collisionMain), 
 			&(item->collisionSub), 
+			_SAVETINT, 
 			_SAVETINT, 
 			_SAVETINT, 
 			&(item->nTurnAngle), 
@@ -283,6 +284,7 @@ bool _DataTable::BulletDefineFile()
 		item->nColor = _LOADTINT;
 		item->collisiontype = _LOADTINT;
 		item->fadecolor = _LOADTINT;
+		item->whitecolor = _LOADTINT;
 		item->autosendsetID = _LOADTINT;
 		item->seID = _LOADTINT;
 		item->effID = _LOADTINT;
@@ -357,7 +359,7 @@ bool _DataTable::EnemyDefineFile()
 bool _DataTable::PlayerDefineFile()
 {
 	ZeroMemory(BResource::res.playerdata, RSIZE_PLAYER);
-	_READSTRINGBUFFERLINE(30);
+	_READSTRINGBUFFERLINE(31);
 	while (!feof(file))
 	{
 		_INITTINT;
@@ -366,7 +368,7 @@ bool _DataTable::PlayerDefineFile()
 		playerData * item = &(BResource::res.playerdata[tindex]);
 		_CHECKEOF_DATATABLE;
 
-		fscanf(file, "%f%f%f%f%f%d%d%d%f%f%f%s%s%s\t%[^\t]\t%[^\t]\t%[^\t]%d%s%d%d%d%d%d%d\t%[^\t]\t%[^\t]\t%[^\r\n]", 
+		fscanf(file, "%f%f%f%f%f%d%d%d%f%f%f%x%s%s%s\t%[^\t]\t%[^\t]\t%[^\t]%d%s%d%d%d%d%d%d\t%[^\t]\t%[^\t]\t%[^\r\n]", 
 			&(item->collision_r), 
 			&(item->fastspeed), 
 			&(item->slowspeed), 
@@ -378,6 +380,7 @@ bool _DataTable::PlayerDefineFile()
 			&(item->exsendparab), 
 			&(item->exsendparaa), 
 			&(item->exsendmax), 
+			_SAVETINT, 
 			strbuffer[0], 
 			strbuffer[1], 
 			strbuffer[2], 
@@ -401,10 +404,11 @@ bool _DataTable::PlayerDefineFile()
 		item->shotdelay = _LOADTINT;
 		item->rechargedelay = _LOADTINT;
 		item->shootchargetime = _LOADTINT;
-		item->musicID = _LOADTINT;
+		item->infinmaxset = _LOADTINT;
 		item->siid = SpriteItemManager::GetIndexByName(strbuffer[0]);
 		item->faceSIID = SpriteItemManager::GetIndexByName(strbuffer[1]);
 		item->spellcutinSIID = SpriteItemManager::GetIndexByName(strbuffer[2]);
+		item->musicID = _LOADTINT;
 		item->drainzoneSIID = SpriteItemManager::GetIndexByName(strbuffer[3]);
 		item->standFrame = _LOADTINT;
 		item->leftPreFrame = _LOADTINT;

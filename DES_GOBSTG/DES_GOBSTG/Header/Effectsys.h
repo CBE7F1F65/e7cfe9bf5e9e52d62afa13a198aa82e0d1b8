@@ -21,7 +21,7 @@ public:
 
 	static bool Init(HTEXTURE * tex, const char * foldername, char name[][M_PATHMAX]);
 	static void ClearAll();
-	static void Action(DWORD stopflag);
+	static void Action();
 	static void RenderAll(BYTE playerindex);
 	static int Build(WORD ID, BYTE playerindex, float x, float y, float z=0, int lifetime=-1, BYTE tarID=0xff, int angle=9000, float speed=0.0f, float zSpeed=0.0f);
 

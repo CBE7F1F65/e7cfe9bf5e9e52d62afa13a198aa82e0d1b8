@@ -20,8 +20,8 @@ void Player::Init()
 	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
 	{
 		p[i].exist = false;
-		p[i].ID = i;
-		p[i].nowID = i;
+		p[i].ID = 0xffff;
+		p[i].nowID = 0xffff;
 		p[i].ID_sub_1 = 0xffff;
 		p[i].ID_sub_2 = 0xffff;
 	}

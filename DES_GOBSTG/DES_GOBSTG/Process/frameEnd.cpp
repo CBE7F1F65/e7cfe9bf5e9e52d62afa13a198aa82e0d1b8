@@ -2,20 +2,11 @@
 
 void Process::frameEnd()
 {
-	DWORD _stopflag = 0;
-	for (int i=0; i<FRAME_STOPINFOMAX; i++)
-	{
-		if (stoptimer[i])
-		{
-			_stopflag |= stopflag[i];
-		}
-	}
-
 	if(active)
 	{
 		framecounter++;
 
-		WorldShake(_stopflag);
+		WorldShake();
 /*
 
 		if (state == STATE_CLEAR)
@@ -29,7 +20,7 @@ void Process::frameEnd()
 			}
 		}*/
 
-		if (!Player::Action(_stopflag))
+		if (!Player::Action())
 		{
 //			SetState(STATE_CLEAR, -1);
 //			return;
@@ -46,13 +37,13 @@ void Process::frameEnd()
 				return;
 			}
 		}
-		Enemy::Action(_stopflag);
-		Bullet::Action(_stopflag);
-		EffectSp::Action(_stopflag);
-		Beam::Action(_stopflag);
-		PlayerBullet::Action(_stopflag);
-		Item::Action(_stopflag);
-		EventZone::Action(_stopflag);
+		Enemy::Action();
+		Bullet::Action();
+		EffectSp::Action();
+		Beam::Action();
+		PlayerBullet::Action();
+		Item::Action();
+		EventZone::Action();
 
 		/*
 		if(BossInfo::flag)
@@ -66,8 +57,8 @@ void Process::frameEnd()
 	}
 	if(active || !Player::CheckAble() && state != STATE_CONTINUE)
 	{
-		BGLayer::Action(_stopflag, active);
-		Effectsys::Action(_stopflag);
+		BGLayer::Action(active);
+		Effectsys::Action();
 	}
 	BGLayer::ActionSpecial();
 	SelectSystem::Action();

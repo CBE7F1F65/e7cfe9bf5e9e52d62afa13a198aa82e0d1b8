@@ -7,6 +7,7 @@
 #include "../header/FrontDisplay.h"
 #include "../header/Export.h"
 #include "../header/ProcessDefine.h"
+#include "../header/Process.h"
 
 hgeSprite * Item::sprite[ITEMSPRITEMAX];
 
@@ -41,10 +42,11 @@ void Item::ClearItem()
 //	infofont.clear_item();
 }
 
-void Item::Action(DWORD stopflag)
+void Item::Action()
 {
 	for (int j=0; j<M_PL_MATCHMAXPLAYER; j++)
 	{
+		DWORD stopflag = Process::mp.GetStopFlag();
 		bool binstop = FRAME_STOPFLAGCHECK_PLAYERINDEX_(stopflag, j, FRAME_STOPFLAG_ITEM);
 		if (!binstop)
 		{

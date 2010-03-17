@@ -69,6 +69,10 @@ void Process::startPrep(bool callinit)
 	else
 	{
 		seed = timeGetTime();
+		for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
+		{
+			SetLastMatchChara(i, Player::p[i].ID, Player::p[i].ID_sub_1, Player::p[i].ID_sub_2);
+		}
 	}
 	srandt(seed);
 	hge->Random_Seed(seed);

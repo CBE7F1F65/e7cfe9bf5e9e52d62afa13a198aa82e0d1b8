@@ -247,7 +247,7 @@ Comment	Index	SI_Name	Tex	Tex_x	Tex_y	Tex_w	Tex_h
 -	303	SI_Enemy_Collapse_Y	7	256	272	64	64
 -	304	SI_Enemy_Collapse_G	7	320	272	64	64
 -	305	SI_Boss_TimeCircle	7	384	336	128	128
-	306	SI_Player_ChargeZone	7	384	336	128	128
+-	306	SI_Player_ChargeZone	7	384	336	128	128
 -	307	SI_Item_Guard	7	256	464	16	16
 -	308	SI_Item_Bullet	7	272	464	16	16
 -	309	SI_Item_Ex	7	288	464	16	16
@@ -455,15 +455,23 @@ Comment	Index	SI_Name	Tex	Tex_x	Tex_y	Tex_w	Tex_h
 -	1037	SI_PlayerBullet_06_0_1	16	32	144	32	16
 -	1038	SI_PlayerBullet_06_0_2	16	64	144	32	16
 -	1039	SI_PlayerBullet_06_0_3	16	96	144	32	16
--	1040	SI_PlayerBullet_22_0_0	32	0	144	16	16
--	1041	SI_PlayerBullet_22_0_1	32	16	144	16	16
--	1042	SI_PlayerBullet_22_0_2	32	32	144	16	16
--	1043	SI_PlayerBullet_22_0_3	32	48	144	16	16
--	1044	SI_PlayerBullet_22_1_0	32	0	160	64	16
--	1045	SI_PlayerBullet_22_1_1	32	64	160	64	16
--	1046	SI_PlayerBullet_22_1_2	32	128	160	64	16
--	1047	SI_PlayerBullet_22_1_3	32	192	160	64	16
--	1048	SI_PlayerBullet_22_2_0	32	0	176	32	32
+-	1040	SI_PlayerBullet_07_0_0	17	0	144	16	16
+-	1041	SI_PlayerBullet_07_0_1	17	16	144	16	16
+-	1042	SI_PlayerBullet_07_0_2	17	32	144	16	16
+-	1043	SI_PlayerBullet_07_0_3	17	48	144	16	16
+-	1044	SI_PlayerBullet_07_1_0	17	0	160	64	16
+-	1045	SI_PlayerBullet_07_1_1	17	64	160	64	16
+-	1046	SI_PlayerBullet_07_1_2	17	128	160	64	16
+-	1047	SI_PlayerBullet_07_1_3	17	192	160	64	16
+-	1048	SI_PlayerBullet_22_0_0	32	0	144	16	16
+-	1049	SI_PlayerBullet_22_0_1	32	16	144	16	16
+-	1050	SI_PlayerBullet_22_0_2	32	32	144	16	16
+-	1051	SI_PlayerBullet_22_0_3	32	48	144	16	16
+-	1052	SI_PlayerBullet_22_1_0	32	0	160	64	16
+-	1053	SI_PlayerBullet_22_1_1	32	64	160	64	16
+-	1054	SI_PlayerBullet_22_1_2	32	128	160	64	16
+-	1055	SI_PlayerBullet_22_1_3	32	192	160	64	16
+-	1056	SI_PlayerBullet_22_2_0	32	0	176	32	32
 #		Bullet(1400~1799)					
 -	1400	SI_Bullet_ShuttleBeam_0	2	0	0	16	16
 -	1401	SI_Bullet_ShuttleBeam_1	2	16	0	16	16
@@ -825,6 +833,8 @@ Comment	Index	SI_Name	Tex	Tex_x	Tex_y	Tex_w	Tex_h
 -	1823	SI_BulletEx_Youmu_6	53	96	96	48	48
 -	1824	SI_BulletEx_Youmu_7	53	144	96	48	48
 -	1825	SI_BulletEx_Aya_0	54	0	0	32	64
+-	1826	SI_BulletEx_Cirno_0	17	128	192	16	64
+-	1827	SI_BulletEx_Cirno_1	17	144	192	16	64
 #		Player(2000~2999)					
 -	2000	SI_Player_Reimu_0	10	0	0	32	48
 -	2001	SI_Player_Reimu_1	10	32	0	32	48
@@ -1486,8 +1496,11 @@ Comment	Index	SI_Name	Tex	Tex_x	Tex_y	Tex_w	Tex_h
 -	3632	SI_Scene_05_2	574	0	0	256	512
 -	3633	SI_Scene_05_3	575	0	0	-1	-1
 -	3634	SI_Scene_05_4	576	0	0	-1	-1
--	3635	SI_Scene_22_1	605	0	0	256	512
--	3636	SI_Scene_22_2	606	0	0	256	512
+-	3635	SI_Scene_06_1	577	0	0	512	512
+-	3636	SI_Scene_06_2	578	0	0	-1	-1
+-	3637	SI_Scene_07_1	579	0	0	-1	-1
+-	3638	SI_Scene_22_1	605	0	0	256	512
+-	3639	SI_Scene_22_2	606	0	0	256	512
 #		Spell(3800~3999)					
 -	3800	SI_Spell_00_1	660	0	0	-1	-1
 -	3801	SI_Spell_00_2	661	0	0	-1	-1
@@ -1502,8 +1515,11 @@ Comment	Index	SI_Name	Tex	Tex_x	Tex_y	Tex_w	Tex_h
 -	3810	SI_Spell_05_1	669	0	0	-1	-1
 -	3811	SI_Spell_05_2	670	0	0	-1	-1
 -	3812	SI_Spell_05_3	215	0	0	-1	-1
--	3813	SI_Spell_22_1	693	0	0	-1	-1
--	3814	SI_Spell_22_2	694	0	0	512	512
+-	3813	SI_Spell_06_1	671	0	0	-1	-1
+-	3814	SI_Spell_06_2	672	0	0	-1	-1
+-	3815	SI_Spell_07_1	673	0	0	-1	-1
+-	3816	SI_Spell_22_1	693	0	0	-1	-1
+-	3817	SI_Spell_22_2	694	0	0	512	512
 #		Boss(4000~4999)					
 -	4000	SI_Boss_Reimu_0	160	0	0	64	80
 -	4001	SI_Boss_Reimu_1	160	64	0	64	80
@@ -1580,7 +1596,7 @@ Comment	Index	SI_Name	Tex	Tex_x	Tex_y	Tex_w	Tex_h
 -	4072	SI_Boss_Medicine_5	166	64	64	64	64
 -	4073	SI_Boss_Medicine_6	166	128	64	64	64
 -	4074	SI_Boss_Medicine_7	166	192	64	64	64
-	4075	SI_Boss_Cirno_0	167	0	0	64	64
+-	4075	SI_Boss_Cirno_0	167	0	0	64	64
 -	4076	SI_Boss_Cirno_1	167	64	0	64	64
 -	4077	SI_Boss_Cirno_2	167	128	0	64	64
 -	4078	SI_Boss_Cirno_3	167	192	0	64	64

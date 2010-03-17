@@ -8,6 +8,7 @@
 #include "../header/Target.h"
 #include "../header/Export.h"
 #include "../header/ProcessDefine.h"
+#include "../header/Process.h"
 #include "../header/GameAI.h"
 
 #define	BEAMMAX				0x50
@@ -41,10 +42,11 @@ void Beam::ClearItem()
 	}
 }
 
-void Beam::Action(DWORD stopflag)
+void Beam::Action()
 {
 	for (int j=0; j<M_PL_MATCHMAXPLAYER; j++)
 	{
+		DWORD stopflag = Process::mp.GetStopFlag();
 		bool binstop = FRAME_STOPFLAGCHECK_PLAYERINDEX_(stopflag, j, FRAME_STOPFLAG_BEAM);
 		if (!binstop)
 		{

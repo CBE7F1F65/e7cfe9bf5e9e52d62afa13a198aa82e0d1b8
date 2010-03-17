@@ -34,7 +34,7 @@ public:
 	static void BuildShoot(BYTE playerindex, BYTE playerID, int usetimer, bool bchargeshoot=false);
 	static int Build(BYTE playerindex, int shootdataID);
 	static void ClearItem();
-	static void Action(DWORD stopflag);
+	static void Action();
 	static void RenderAll(BYTE playerindex);
 	static float CheckShoot(BYTE playerindex, float aimx, float aimy, float aimw, float aimh=0.0f);
 

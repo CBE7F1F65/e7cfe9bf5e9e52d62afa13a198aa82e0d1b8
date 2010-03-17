@@ -148,7 +148,7 @@ public:
 	static void SendEx(BYTE playerindex, float x, float y);
 
 	static void Init();
-	static bool Action(DWORD stopflag);
+	static bool Action();
 	static void RenderAll(BYTE playerindex);
 	static int IsMatchEnd();
 
@@ -206,6 +206,8 @@ public:
 	float fExSendParaB;
 	float fExSendParaA;
 	float fExSendMax;
+
+	int nSendBulletBonus;
 
 	int nBounceAngle;
 
