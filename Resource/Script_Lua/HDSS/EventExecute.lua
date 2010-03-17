@@ -58,7 +58,7 @@ function _EventExecute_PlayerShootCharge(playerindex)
 					local enindex, bossindex = hdss.Get(HDSS_ENI, playerindex);
 					if bossindex ~= 0xff then
 						hdssENTOI(playerindex, bossindex);
-						hdssEA_FADEOUT(playerindex, 0);
+						hdssEA_FADEOUT(playerindex, -1);
 						hdssENTOI(playerindex, enindex);
 					end
 				end

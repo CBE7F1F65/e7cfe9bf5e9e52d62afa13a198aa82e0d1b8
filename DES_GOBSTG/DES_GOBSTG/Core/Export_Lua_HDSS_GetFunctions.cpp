@@ -542,6 +542,20 @@ int _HDSSCallGet::Get_PBINFI(LuaState * ls)
 	return 0;
 }
 
+int _HDSSCallGet::Get_BGSINDEX(LuaState * ls)
+{
+	_ENTERGET_HDSS_LUA;
+	if (argscount > 2)
+	{
+		BYTE _playerindex = _INEXT_HDSS_LUAFUNC;
+		int _set = _INEXT_HDSS_LUAFUNC;
+		_PI_HDSS_LUA(BGLayer::bglayerset[_playerindex][_set].sID);
+		_PI_HDSS_LUA(BGLayer::bglayerset[_playerindex][_set].timer);
+		return 2;
+	}
+	return 0;
+}
+
 int _HDSSCallGet::Get_SEL(LuaState * ls)
 {
 	_ENTERGET_HDSS_LUA;

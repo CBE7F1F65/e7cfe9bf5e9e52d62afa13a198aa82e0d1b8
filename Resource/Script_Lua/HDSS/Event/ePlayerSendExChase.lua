@@ -124,6 +124,21 @@ function ePlayerSendExChase_07(playerindex, x, y, playerID, appendfloat)
 end
 
 function ePlayerSendExChase_08(playerindex, x, y, playerID, appendfloat)
+	local angle = RANDT(1, 36000);
+	hdssA(playerindex,
+		{
+			TIMERLESS, 60, SPEEDSETADD, 4
+		}
+	)
+	for i=0, 1 do
+		local speed = 0.8 + i * 0.1;
+		local type = CC_Bullet_LegatoQuaver;
+		if i == 1 then
+			type = CC_Bullet_Quaver;
+		end
+		hdssBC(playerindex, 8, angle+i*2250, 0, x, y, speed, type, 0);
+	end
+	hdssA(playerindex);
 	return true;
 end
 

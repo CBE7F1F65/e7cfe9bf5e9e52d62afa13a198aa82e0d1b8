@@ -22,9 +22,9 @@ Comment	Type	SIID	nRoll	nColor	CollisionType	Collision_Main	Collision_Sub	FadeCo
 -	18	SI_Bullet_BendedKnife_0	0	8	2	6	5	160	7	0	0	90	0	2	7
 -	19	SI_Bullet_Butterfly_0	0	8	1	5	0	160	7	0	0	90	0	2	10
 -	20	SI_Bullet_Knife_0	0	8	2	6	5	160	7	0	0	90	0	2	6
--	21	SI_Bullet_QuarterNote_0	0	3	1	7	0	255	128	0	240	90	0	2	4
+-	21	SI_Bullet_Quaver_0	0	3	1	7	0	255	128	0	240	90	0	2	4
 -	22	SI_Bullet_Stupa_0	0	1	2	7	5	255	128	0	0	90	0	2	8
--	23	SI_Bullet_EighthNote_0	0	4	1	7	0	255	128	0	240	90	0	2	4
+-	23	SI_Bullet_LegatoQuaver_0	0	4	1	7	0	255	128	0	240	90	0	2	4
 -	24	SI_Bullet_BigShuttle_0	0	8	2	7	5	160	7	0	0	90	0	2	5
 -	25	SI_Bullet_RedFireBall_0	4	4	1	5	0	1	128	0	0	90	0	0	9
 -	26	SI_Bullet_FadedRedFireBall_0	4	4	1	5	0	3	128	0	0	90	0	0	9

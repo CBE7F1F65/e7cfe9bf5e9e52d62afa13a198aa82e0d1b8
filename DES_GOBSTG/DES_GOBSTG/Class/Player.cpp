@@ -1224,7 +1224,7 @@ void Player::DoSendBullet(float x, float y)
 	}
 	AddSpellPoint(addspellpoint);
 	nSendBulletBonus++;
-	if (nSendBulletBonus >= 3)
+	if (nSendBulletBonus > 4)
 	{
 		nSendBulletBonus = 0;
 		DoSendBullet(x, y);

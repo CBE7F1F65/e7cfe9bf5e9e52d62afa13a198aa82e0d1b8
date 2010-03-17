@@ -552,6 +552,10 @@ void Enemy::setAction(WORD _ac, float _para_x, float _para_y, float _para_speed,
 	para_time = _para_time;
 	para_counter = _para_counter;
 	para_endtime = _para_endtime;
+	if (ac == ENAC_FADEOUT_OOOOOTOO && para_time < 0)
+	{
+		Fadeout();
+	}
 }
 
 void Enemy::updateFrame(BYTE frameenum, int usetimer /* = -1*/)

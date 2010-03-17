@@ -1,10 +1,17 @@
 function _ePlayerShootCharge_CheckBoss(playerindex)
 	local eni, bosseni = hdss.Get(HDSS_ENI, playerindex);
 	if bosseni == 0xff then
-		hdssEA_FADEOUT(playerindex, 0);
+		hdssEA_FADEOUT(playerindex, -1);
 		return true;
 	end
 	return false;
+end
+
+function _ePlayerShootCharge_3_SetBGS(playerindex, oplayerID)
+	local bgsi = hdss.Get(HDSS_BGSI, playerindex, LConst_bgset_spellid);
+	if bgsi ~= oplayerID+LConst_SceneSpellOffset then
+		hdssBGSETUP(playerindex, LConst_bgset_spellid, oplayerID+LConst_SceneSpellOffset, true);
+	end
 end
 
 function ePlayerShootCharge_00_1(playerindex, level, oplayerID, px, py)
@@ -32,7 +39,6 @@ function ePlayerShootCharge_00_3(playerindex, level, oplayerID, px, py)
 	local y = 0;
 	hdssEB(CC_ShootChargeEnemyEID_00_3, playerindex, x, y, 9000, 0, oplayerID, 1400, 0, helper_GetRandomItem());
 	hdssENSAIM(playerindex, level);
-	hdssBGSETUP(playerindex, LConst_bgset_spellid, oplayerID+LConst_SceneSpellOffset, true);
 	return true;
 end
 
@@ -70,7 +76,6 @@ function ePlayerShootCharge_01_3(playerindex, level, oplayerID, px, py)
 	local y = 0;
 	hdssEB(CC_ShootChargeEnemyEID_01_3, playerindex, x, y, 9000, 0, oplayerID, 1400, helper_GetRandomItem());
 	hdssENSAIM(playerindex, level);
-	hdssBGSETUP(playerindex, LConst_bgset_spellid, oplayerID+LConst_SceneSpellOffset, true);
 	return true;
 end
 
@@ -99,7 +104,6 @@ function ePlayerShootCharge_02_3(playerindex, level, oplayerID, px, py)
 	local y = 0;
 	hdssEB(CC_ShootChargeEnemyEID_02_3, playerindex, x, y, 9000, 0, oplayerID, 1400, helper_GetRandomItem());
 	hdssENSAIM(playerindex, level);
-	hdssBGSETUP(playerindex, LConst_bgset_spellid, oplayerID+LConst_SceneSpellOffset, true);
 	return true;
 end
 
@@ -138,7 +142,6 @@ function ePlayerShootCharge_03_3(playerindex, level, oplayerID, px, py)
 	local y = 0;
 	hdssEB(CC_ShootChargeEnemyEID_03_3, playerindex, x, y, 9000, 0, oplayerID, 1400, helper_GetRandomItem());
 	hdssENSAIM(playerindex, level);
-	hdssBGSETUP(playerindex, LConst_bgset_spellid, oplayerID+LConst_SceneSpellOffset, true);
 	return true;
 end
 
@@ -169,7 +172,6 @@ function ePlayerShootCharge_04_3(playerindex, level, oplayerID, px, py)
 	local y = 0;
 	hdssEB(CC_ShootChargeEnemyEID_04_3, playerindex, x, y, 9000, 0, oplayerID, 1400, helper_GetRandomItem());
 	hdssENSAIM(playerindex, level);
-	hdssBGSETUP(playerindex, LConst_bgset_spellid, oplayerID+LConst_SceneSpellOffset, true);
 	return true;
 end
 
@@ -200,7 +202,6 @@ function ePlayerShootCharge_05_3(playerindex, level, oplayerID, px, py)
 	local y = 0;
 	hdssEB(CC_ShootChargeEnemyEID_05_3, playerindex, x, y, 9000, 0, oplayerID, 1400, helper_GetRandomItem());
 	hdssENSAIM(playerindex, level);
-	hdssBGSETUP(playerindex, LConst_bgset_spellid, oplayerID+LConst_SceneSpellOffset, true);
 	return true;
 end
 
@@ -229,7 +230,6 @@ function ePlayerShootCharge_06_3(playerindex, level, oplayerID, px, py)
 	local y = 0;
 	hdssEB(CC_ShootChargeEnemyEID_06_3, playerindex, x, y, 9000, 0, oplayerID, 1400, helper_GetRandomItem());
 	hdssENSAIM(playerindex, level);
-	hdssBGSETUP(playerindex, LConst_bgset_spellid, oplayerID+LConst_SceneSpellOffset, true);
 	return true;
 end
 
@@ -258,19 +258,36 @@ function ePlayerShootCharge_07_3(playerindex, level, oplayerID, px, py)
 	local y = 0;
 	hdssEB(CC_ShootChargeEnemyEID_07_3, playerindex, x, y, 9000, 0, oplayerID, 1400, helper_GetRandomItem());
 	hdssENSAIM(playerindex, level);
-	hdssBGSETUP(playerindex, LConst_bgset_spellid, oplayerID+LConst_SceneSpellOffset, true);
 	return true;
 end
 
 function ePlayerShootCharge_08_1(playerindex, level, oplayerID, px, py)
+	local x = helper_GetCenterX(playerindex);
+	local y = 16;
+	hdssEFFSETUP(playerindex, LConst_effid_shootcharge, x, y, LConst_ShootCharge_EnemyDelay);
+	hdssEB(CC_ShootChargeEnemyEID_08_1, playerindex, x, y, 9000, 0, LConst_EnemyTypeNull, 10);
+	hdssEA_DELAY(playerindex, LConst_ShootCharge_EnemyDelay);
+	local aimangle = (RANDT(0, 1)*2-1)*3000;
+	hdssENSAIM(playerindex, level, 0, 0, aimangle);
 	return true;
 end
 
 function ePlayerShootCharge_08_2(playerindex, level, oplayerID, px, py)
+	local x = helper_GetCenterX(playerindex);
+	local y = 16;
+	hdssEFFSETUP(playerindex, LConst_effid_shootcharge, x, y, LConst_ShootCharge_EnemyDelay);
+	hdssEB(CC_ShootChargeEnemyEID_08_2, playerindex, x, y, 9000, 0, LConst_EnemyTypeNull, 10);
+	hdssEA_DELAY(playerindex, LConst_ShootCharge_EnemyDelay);
+	local aimangle = (RANDT(0, 1)*2-1)*3000;
+	hdssENSAIM(playerindex, level, 0, 0, aimangle);
 	return true;
 end
 
 function ePlayerShootCharge_08_3(playerindex, level, oplayerID, px, py)
+	local x = TotalCenterX;
+	local y = 0;
+	hdssEB(CC_ShootChargeEnemyEID_08_3, playerindex, x, y, 9000, 0, oplayerID, 1400, helper_GetRandomItem());
+	hdssENSAIM(playerindex, level);
 	return true;
 end
 

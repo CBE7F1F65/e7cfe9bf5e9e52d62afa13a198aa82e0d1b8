@@ -120,6 +120,8 @@ public:
 	static int Get_PBDRAIN(LuaState * ls);
 	static int Get_PBINFI(LuaState * ls);
 
+	static int Get_BGSINDEX(LuaState * ls);
+
 	static int Get_SELCOMPLETE(LuaState * ls);
 	static int Get_SEL(LuaState * ls);
 	static int Get_SELFIRSTID(LuaState * ls);

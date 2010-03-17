@@ -57,6 +57,7 @@ function Edef_ShootChargeEnemyEID_01_2(playerindex, level, x, y, timer, px, py)
 end
 
 function Edef_ShootChargeEnemyEID_01_3(playerindex, level, x, y, timer, px, py)
+	_ePlayerShootCharge_3_SetBGS(playerindex, 1);
 	if timer == 1 then
 		local cx = helper_GetCenterBossX(playerindex);
 		local cy = CenterBossY;

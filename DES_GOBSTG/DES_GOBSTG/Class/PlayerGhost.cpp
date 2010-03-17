@@ -35,6 +35,7 @@ void PlayerGhost::valueSet(BYTE _playerindex, WORD _ID, bool move)
 	scale	=	1.0f;
 	yshake	=	0.0f;
 	lastchasing	=	false;
+	active = true;
 
 	playerghostData * _pgd = &(BResource::res.playerghostdata[ID]);
 
@@ -74,7 +75,7 @@ void PlayerGhost::valueSet(BYTE _playerindex, WORD _ID, bool move)
 
 void PlayerGhost::Render()
 {
-	if (sprite)
+	if (active && sprite)
 	{
 		sprite->SetColor((alpha<<24)|diffuse);
 		sprite->RenderEx(x, y, ARC(headangle), scale);
@@ -165,6 +166,21 @@ void PlayerGhost::action()
 {
 	timer++;
 
+	bool shootingchargeone = Player::p[playerindex].shootchargetimer;
+
+	if (flag & PGFLAG_ACTIVEWHENCHARGE)
+	{
+		if (!shootingchargeone)
+		{
+			active = false;
+			return;
+		}
+		else
+		{
+			active = true;
+		}
+	}
+
 	float aimx = x;
 	float aimy = y;
 
@@ -233,6 +249,13 @@ void PlayerGhost::action()
 		aimx += _pgd->xadj;
 		aimy += _pgd->yadj;
 	}
+
+	if (flag & PGFLAG_STAYWHENCHARGE && shootingchargeone)
+	{
+		aimx = x;
+		aimy = y;
+	}
+
 	if(flag & PGFLAG_ANTISHOOTER)
 	{
 		if (flag & PGFLAG_STAY)
@@ -301,6 +324,7 @@ void PlayerGhost::action()
 	SpriteItemManager::SetSprite(_pgd->siid, sprite, Process::mp.tex);
 	if (flag & PGFLAG_SYNCPLAYER)
 	{
+		/*
 		float tex_x, tex_y, tex_w, tex_h;
 		Player::p[playerindex].sprite->GetTextureRect(&tex_x, &tex_y, &tex_w, &tex_h);
 		if (flag & PGFLAG_CHASE)
@@ -314,10 +338,15 @@ void PlayerGhost::action()
 			}
 		}
 		SpriteItemManager::SetSpriteTextureRect(sprite, tex_x, tex_y, tex_w, tex_h);
+		*/
+		SpriteItemManager::ChangeSprite(_pgd->siid+Player::p[playerindex].nowframeindex, sprite);
+		SpriteItemManager::SetSpriteFlip(sprite, Player::p[playerindex].flipx);
+		/*
 		bool flipx, flipy;
 		Player::p[playerindex].sprite->GetFlip(&flipx, &flipy);
 //		sprite->SetFlip(flipx, flipy);
 		SpriteItemManager::SetSpriteFlip(sprite, flipx, flipy);
+		*/
 	}
 	lastchasing = chasing;
 	sprite->SetBlendMode(_pgd->blend);

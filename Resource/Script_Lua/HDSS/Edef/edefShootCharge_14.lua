@@ -7,6 +7,7 @@ function Edef_ShootChargeEnemyEID_14_2(playerindex, level, x, y, timer, px, py)
 end
 
 function Edef_ShootChargeEnemyEID_14_3(playerindex, level, x, y, timer, px, py)
+	_ePlayerShootCharge_3_SetBGS(playerindex, 14);
 	return true;
 end
 

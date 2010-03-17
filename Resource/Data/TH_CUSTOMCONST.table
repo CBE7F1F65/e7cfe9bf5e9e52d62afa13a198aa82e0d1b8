@@ -23,9 +23,9 @@ Comment	CustomConst	Name	Value
 -	68	CC_Bullet_BendedKnife	18
 -	69	CC_Bullet_Butterfly	19
 -	70	CC_Bullet_Knife	20
--	71	CC_Bullet_QuarterNote	21
+-	71	CC_Bullet_Quaver	21
 -	72	CC_Bullet_Stupa	22
--	73	CC_Bullet_EighthNote	23
+-	73	CC_Bullet_LegatoQuaver	23
 -	74	CC_Bullet_BigShuttle	24
 -	75	CC_Bullet_RedFireBall	25
 -	76	CC_Bullet_FadedRedFireBall	26

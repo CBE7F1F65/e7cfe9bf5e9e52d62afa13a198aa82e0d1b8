@@ -88,6 +88,7 @@ int Player::IsMatchEnd()
 
 void Player::initFrameIndex()
 {
+	nowframeindex = 0;
 	WORD _ID;
 	for (int i=0; i<M_PL_ONESETPLAYER; i++)
 	{
@@ -190,6 +191,7 @@ void Player::setFrame(BYTE frameenum)
 void Player::setIndexFrame(BYTE index)
 {
 	playerData * pdata = &(BResource::res.playerdata[nowID]);
+	nowframeindex = index;
 	SpriteItemManager::ChangeSprite(BResource::res.playerdata[nowID].siid+index, sprite);
 //	sprite->SetFlip(flipx, false);
 	SpriteItemManager::SetSpriteFlip(sprite, flipx);

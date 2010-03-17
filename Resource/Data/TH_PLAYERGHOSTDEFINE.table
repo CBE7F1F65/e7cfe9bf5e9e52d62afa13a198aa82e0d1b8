@@ -1,41 +1,44 @@
 73	h5nc	4D								
 Comment	Index	SIID	XAdj	YAdj	Speed	Flag	ShootAngle	MoveR	StartAngle	Blend
 #		Reimu								
--	0	SI_PlayerGhost_00_1	-12	-15	1	10	0	0	0	2
--	1	SI_PlayerGhost_00_1	12	-15	1	30	0	0	0	2
--	2	SI_PlayerGhost_00_1	-30	-10	1	10	0	0	0	2
--	3	SI_PlayerGhost_00_1	30	-10	1	30	0	0	0	2
--	4	SI_PlayerGhost_00_2	10	15	1	10	0	0	0	2
--	5	SI_PlayerGhost_00_2	-10	15	1	30	0	0	0	2
--	6	SI_PlayerGhost_00_2	30	10	1	10	0	0	0	2
--	7	SI_PlayerGhost_00_2	-30	10	1	30	0	0	0	2
+-	0	SI_PlayerGhost_00_01	-12	-15	1	10	0	0	0	2
+-	1	SI_PlayerGhost_00_01	12	-15	1	30	0	0	0	2
+-	2	SI_PlayerGhost_00_01	-30	-10	1	10	0	0	0	2
+-	3	SI_PlayerGhost_00_01	30	-10	1	30	0	0	0	2
+-	4	SI_PlayerGhost_00_02	10	15	1	10	0	0	0	2
+-	5	SI_PlayerGhost_00_02	-10	15	1	30	0	0	0	2
+-	6	SI_PlayerGhost_00_02	30	10	1	10	0	0	0	2
+-	7	SI_PlayerGhost_00_02	-30	10	1	30	0	0	0	2
 #		Marisa								
--	8	SI_PlayerGhost_01_1	0	-25	1	14	0	0	0	2
--	12	SI_PlayerGhost_01_2	0	15	1	14	0	0	0	2
+-	8	SI_PlayerGhost_01_01	0	-25	1	14	0	0	0	2
+-	12	SI_PlayerGhost_01_02	0	15	1	14	0	0	0	2
 #		Sakuya								
--	16	SI_PlayerGhost_02_1	0	-25	1	14	0	0	0	2
--	20	SI_PlayerGhost_02_1	0	-25	1	14	0	0	0	2
+-	16	SI_PlayerGhost_02_01	0	-25	1	14	0	0	0	2
+-	20	SI_PlayerGhost_02_01	0	-25	1	14	0	0	0	2
 #		Youmu								
 -	24	SI_Null	0	0	0	0	0	0	0	2
 -	28	SI_Null	0	0	0	0	0	0	0	2
 #		Aya								
--	32	SI_PlayerGhost_04_1	-15	-10	0	44	8	0	0	2
--	33	SI_PlayerGhost_04_1	15	-10	0	44	-8	0	0	2
--	36	SI_PlayerGhost_04_1	-5	15	0	44	8	0	0	2
--	37	SI_PlayerGhost_04_1	5	15	0	44	-8	0	0	2
+-	32	SI_PlayerGhost_04_01	-15	-10	0	44	8	0	0	2
+-	33	SI_PlayerGhost_04_01	15	-10	0	44	-8	0	0	2
+-	36	SI_PlayerGhost_04_01	-5	15	0	44	8	0	0	2
+-	37	SI_PlayerGhost_04_01	5	15	0	44	-8	0	0	2
 #		Yuyuko								
--	40	SI_PlayerGhost_05_1	0	0	3.5	114	0	0	0	2
--	44	SI_PlayerGhost_05_1	0	0	0	214	0	0	0	2
+-	40	SI_PlayerGhost_05_01	0	0	3.5	114	0	0	0	2
+-	44	SI_PlayerGhost_05_01	0	0	0	214	0	0	0	2
 #		Medicine								
 -	48	SI_Null	0	0	0	0	0	0	0	2
 -	52	SI_Null	0	0	0	0	0	0	0	2
 #		Cirno								
 -	56	SI_Null	0	0	0	0	0	0	0	2
 -	60	SI_Null	0	0	0	0	0	0	0	2
+#		Lyrica								
+-	64	SI_PlayerGhost_08_01	0	0	3.5	2101	0	0	0	2
+-	68	SI_PlayerGhost_08_01	0	0	2.5	2101	0	0	0	2
 #		Sanae								
--	352	SI_PlayerGhost_22_1	0	-25	1	14	0	0	0	2
--	353	SI_PlayerGhost_22_2	-30	-15	1	14	0	0	0	2
--	354	SI_PlayerGhost_22_2	30	-15	1	14	0	0	0	2
--	355	SI_PlayerGhost_22_1	0	15	1	14	0	0	0	2
--	356	SI_PlayerGhost_22_2	30	-15	1	14	0	0	0	2
--	357	SI_PlayerGhost_22_2	-30	-15	1	14	0	0	0	2
+-	352	SI_PlayerGhost_22_01	0	-25	1	14	0	0	0	2
+-	353	SI_PlayerGhost_22_02	-30	-15	1	14	0	0	0	2
+-	354	SI_PlayerGhost_22_02	30	-15	1	14	0	0	0	2
+-	355	SI_PlayerGhost_22_01	0	15	1	14	0	0	0	2
+-	356	SI_PlayerGhost_22_02	30	-15	1	14	0	0	0	2
+-	357	SI_PlayerGhost_22_02	-30	-15	1	14	0	0	0	2

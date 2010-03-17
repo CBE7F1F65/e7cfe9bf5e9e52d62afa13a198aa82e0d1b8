@@ -215,6 +215,7 @@ public:
 	hgeSprite * spdrain;
 	BYTE	frameindex[M_PL_ONESETPLAYER][PLAYER_FRAME_STATEMAX];
 	BYTE	faceindex[M_PL_ONESETPLAYER];
+	BYTE	nowframeindex;
 
 	float	drainx;
 	float	drainy;

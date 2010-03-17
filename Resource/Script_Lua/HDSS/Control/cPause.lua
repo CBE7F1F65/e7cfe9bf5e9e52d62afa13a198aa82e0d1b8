@@ -86,7 +86,7 @@ function CEPause_DispatchSelect(selsyspauseid, tostate)
 		return select;
 	end
 	
-	if hdss.Get(HDSS_CHECKKEY, 0, KSI_QUICK, DIKEY_DOWN) or hdss.Get(HDSS_CHECKKEY, 0, KSI_PAUSE, DIKEY_DOWN) then
+	if hdss.Get(HDSS_CHECKKEY, 0, KSI_QUICK, DIKEY_UP) or hdss.Get(HDSS_CHECKKEY, 0, KSI_PAUSE, DIKEY_DOWN) then
 		hdssSE(SE_SYSTEM_CANCEL);
 		CEPause_ExitState(tostate);
 	end
