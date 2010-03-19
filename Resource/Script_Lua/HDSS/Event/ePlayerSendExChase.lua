@@ -143,6 +143,12 @@ function ePlayerSendExChase_08(playerindex, x, y, playerID, appendfloat)
 end
 
 function ePlayerSendExChase_09(playerindex, x, y, playerID, appendfloat)
+	local angle = RANDT(-3000, 3000);
+	local cenx = helper_GetCenterX(playerindex);
+	if x > cenx then
+		angle = angle + 18000;
+	end
+	hdssEB(CC_SendExChaseEnemyEID_09, playerindex, x, y, angle, 1.6, LConst_EnemyExType_Mystia, 0);
 	return true;
 end
 

@@ -142,6 +142,13 @@ struct enemyData
 	int collapseEffid;
 	float collision_w;
 	float collision_h;
+	float blastr;
+	float blastpower;
+	float expoint;
+	int ghostpoint;
+	int bulletpoint;
+	int spellpoint;
+	WORD flag;
 	BYTE faceIndex;
 	BYTE standFrame;
 	BYTE rightPreFrame;
@@ -155,13 +162,6 @@ struct enemyData
 	BYTE nmaxset;
 	BYTE nmax;
 	BYTE blastmaxtime;
-	bool standshake;
-	float blastr;
-	float blastpower;
-	float expoint;
-	int ghostpoint;
-	int bulletpoint;
-	int spellpoint;
 };
 
 struct playerData 
@@ -235,6 +235,7 @@ struct playerghostData
 	float yadj;
 	float speed;
 	WORD flag;
+	BYTE rolltime;
 	BYTE blend;
 };
 

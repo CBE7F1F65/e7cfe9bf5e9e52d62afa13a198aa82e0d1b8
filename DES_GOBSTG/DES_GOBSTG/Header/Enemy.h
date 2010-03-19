@@ -6,7 +6,7 @@
 #include "Effectsys.h"
 #include "Target.h"
 
-#define ENEMYMAX			0x40
+#define ENEMYMAX			0x60
 
 #define ENEMY_MAINBOSSINDEX	0
 
@@ -75,6 +75,11 @@
 #define ENAZOP_NOTOR	0x80
 
 #define ENEMY_NMAXSETMAX	0x10
+
+#define ENEMYFLAG_PBSHOTABLE	0x0001
+#define ENEMYFLAG_BLASTSHOTABLE	0x0002
+#define ENEMYFLAG_EZONESHOTABLE	0x0004
+#define ENEMYFLAG_STANDSHAKE	0x1000
 
 struct EnemyActivationZone 
 {
@@ -205,6 +210,8 @@ public:
 	int		infitimer;
 	float	maxlife;
 	bool	bturnhead;
+
+	WORD	flag;
 
 	WORD	ac;
 	BYTE	type;

@@ -172,7 +172,7 @@ void Enemy::Action()
 					en[j].toIndex(_index);
 					if (pen->able)
 					{
-						PlayerBullet::CheckAndSetLock((BObject *)pen, j, en[j].getIndex(), pen->checkActive() && pen->maxlife < 800);
+						PlayerBullet::CheckAndSetLock((BObject *)pen, j, en[j].getIndex(), pen->checkActive() && pen->maxlife < 800 && (pen->flag & ENEMYFLAG_PBSHOTABLE));
 						if (pen->type < PLAYERTYPEMAX)
 						{
 							bossindex[j] = en[j].getIndex();
@@ -404,6 +404,8 @@ void Enemy::ChangeType(BYTE _type)
 		headangle	=	0;
 	}
 
+	flag = _enemydata->flag;
+
 	accel		=	0;
 
 	for (int i=0; i<ENEMY_PARAMAX; i++)
@@ -587,7 +589,7 @@ void Enemy::updateFrame(BYTE frameenum, int usetimer /* = -1*/)
 		{
 			setIndexFrame(getFrameIndex(ENEMY_FRAME_STAND) + frameoffset);
 		}
-		if (pdata->standshake)
+		if (flag & ENEMYFLAG_STANDSHAKE)
 		{
 			float thsx;
 			float thsy;
@@ -969,8 +971,22 @@ void Enemy::DoShot()
 		{
 			continue;
 		}
-		if (it->type & EVENTZONE_TYPE_ENEMYDAMAGE)
+		if ((it->type & EVENTZONE_TYPE_ENEMYDAMAGE))
 		{
+			if (it->type & EVENTZONE_TYPE_ENEMYBLAST)
+			{
+				if (!(flag & ENEMYFLAG_BLASTSHOTABLE))
+				{
+					continue;
+				}
+			}
+			else
+			{
+				if (!(flag & ENEMYFLAG_EZONESHOTABLE))
+				{
+					continue;
+				}
+			}
 			if (isInShootingRect(it->x, it->y, it->r))
 			{
 				CostLife(it->power);
@@ -985,7 +1001,7 @@ void Enemy::DoShot()
 		}
 	}
 
-	if (life >= 0)
+	if (life >= 0 && (flag & ENEMYFLAG_PBSHOTABLE))
 	{
 		float costpower = PlayerBullet::CheckShoot(playerindex, x, y ,tw, th);
 		if (costpower)
@@ -1357,7 +1373,7 @@ void Enemy::action()
 			GetBlastInfo(&blastmaxtime, &blastr, &blastpower);
 			if (blastmaxtime && blastr > 0)
 			{
-				EventZone::Build(EVENTZONE_TYPE_ENEMYDAMAGE, playerindex, x, y, blastmaxtime, blastr, blastpower);
+				EventZone::Build(EVENTZONE_TYPE_ENEMYDAMAGE+EVENTZONE_TYPE_ENEMYBLAST, playerindex, x, y, blastmaxtime, blastr, blastpower);
 			}
 		}
 		

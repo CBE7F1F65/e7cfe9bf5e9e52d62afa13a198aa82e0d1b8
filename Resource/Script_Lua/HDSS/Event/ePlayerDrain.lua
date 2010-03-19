@@ -396,6 +396,28 @@ function ePlayerDrain_08(playerindex, x, y, draintimer, type)
 end
 
 function ePlayerDrain_09(playerindex, x, y, draintimer, type)
+	
+	if type ~= nil then
+		game.SetGhostActiveInfo(playerindex, 160, type+1, type+1, -9000, 0.625, 2);
+		hdssSE(SE_GHOST_ACTIVATE, x, y);
+		return true;
+	end
+	
+	local hscale;
+	local yoffset;
+	if draintimer < 9 then
+		hscale = draintimer * 0.125 + 0.625;
+		yoffset = -(draintimer * 6 + 30);
+	else
+		hscale = 1.75;
+		yoffset = -84;
+	end
+	game.SetDrainSpriteInfo(playerindex, x, y+yoffset, 0, hscale);
+	
+	local r = hscale * 32;
+	
+	hdssENAZBUILD(playerindex, ENAZTYPE_CIRCLE+ENAZOP_AND, x, y+yoffset, r);
+	
 	return true;
 end
 

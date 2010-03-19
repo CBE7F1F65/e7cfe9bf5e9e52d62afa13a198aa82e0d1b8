@@ -333,8 +333,9 @@ Comment	Index	SI_Name	Tex	Tex_x	Tex_y	Tex_w	Tex_h
 -	578	SI_PlayerGhost_08_22	58	160	96	32	48
 -	579	SI_PlayerGhost_08_23	58	192	96	32	48
 -	580	SI_PlayerGhost_08_24	58	224	96	32	48
--	581	SI_PlayerGhost_22_01	32	80	144	16	16
--	582	SI_PlayerGhost_22_02	32	64	144	16	16
+-	581	SI_PlayerGhost_09_01	19	0	192	32	32
+-	582	SI_PlayerGhost_22_01	32	80	144	16	16
+-	583	SI_PlayerGhost_22_02	32	64	144	16	16
 #		SystemScene(650~749)					
 -	650	SI_TitleScene	360	0	0	-1	-1
 -	651	SI_SelectScene	361	0	0	-1	-1
@@ -400,6 +401,10 @@ Comment	Index	SI_Name	Tex	Tex_x	Tex_y	Tex_w	Tex_h
 -	807	SI_EnemySprite_Lily_9	4	256	448	64	64
 -	808	SI_EnemySprite_Lily_10	4	320	448	64	64
 -	809	SI_EnemySprite_Lily_11	4	384	448	64	64
+-	810	SI_EnemyExSprite_Mystia_0	19	0	160	48	32
+-	811	SI_EnemyExSprite_Mystia_1	19	48	160	48	32
+-	812	SI_EnemyExSprite_Mystia_2	19	96	160	48	32
+-	813	SI_EnemyExSprite_Mystia_3	19	144	160	48	32
 #		Ghost(850~949)					
 -	850	SI_GhostSprite_Green_0	4	352	192	32	32
 -	851	SI_GhostSprite_Green_1	4	384	192	32	32
@@ -491,15 +496,23 @@ Comment	Index	SI_Name	Tex	Tex_x	Tex_y	Tex_w	Tex_h
 -	1049	SI_PlayerBullet_08_0_1	18	32	144	32	16
 -	1050	SI_PlayerBullet_08_0_2	18	64	144	32	16
 -	1051	SI_PlayerBullet_08_0_3	18	96	144	32	16
--	1052	SI_PlayerBullet_22_0_0	32	0	144	16	16
--	1053	SI_PlayerBullet_22_0_1	32	16	144	16	16
--	1054	SI_PlayerBullet_22_0_2	32	32	144	16	16
--	1055	SI_PlayerBullet_22_0_3	32	48	144	16	16
--	1056	SI_PlayerBullet_22_1_0	32	0	160	64	16
--	1057	SI_PlayerBullet_22_1_1	32	64	160	64	16
--	1058	SI_PlayerBullet_22_1_2	32	128	160	64	16
--	1059	SI_PlayerBullet_22_1_3	32	192	160	64	16
--	1060	SI_PlayerBullet_22_2_0	32	0	176	32	32
+-	1052	SI_PlayerBullet_09_0_0	19	0	144	16	16
+-	1053	SI_PlayerBullet_09_0_1	19	16	144	16	16
+-	1054	SI_PlayerBullet_09_0_2	19	32	144	16	16
+-	1055	SI_PlayerBullet_09_0_3	19	48	144	16	16
+-	1056	SI_PlayerBullet_09_1_0	19	0	160	48	32
+-	1057	SI_PlayerBullet_09_1_1	19	48	160	48	32
+-	1058	SI_PlayerBullet_09_1_2	19	96	160	48	32
+-	1059	SI_PlayerBullet_09_1_3	19	144	160	48	32
+-	1060	SI_PlayerBullet_22_0_0	32	0	144	16	16
+-	1061	SI_PlayerBullet_22_0_1	32	16	144	16	16
+-	1062	SI_PlayerBullet_22_0_2	32	32	144	16	16
+-	1063	SI_PlayerBullet_22_0_3	32	48	144	16	16
+-	1064	SI_PlayerBullet_22_1_0	32	0	160	64	16
+-	1065	SI_PlayerBullet_22_1_1	32	64	160	64	16
+-	1066	SI_PlayerBullet_22_1_2	32	128	160	64	16
+-	1067	SI_PlayerBullet_22_1_3	32	192	160	64	16
+-	1068	SI_PlayerBullet_22_2_0	32	0	176	32	32
 #		Bullet(1400~1799)					
 -	1400	SI_Bullet_ShuttleBeam_0	2	0	0	16	16
 -	1401	SI_Bullet_ShuttleBeam_1	2	16	0	16	16
@@ -1530,8 +1543,12 @@ Comment	Index	SI_Name	Tex	Tex_x	Tex_y	Tex_w	Tex_h
 -	3638	SI_Scene_08_1	580	128	0	384	512
 -	3639	SI_Scene_08_2	580	0	0	128	256
 -	3640	SI_Scene_08_3	581	0	0	-1	-1
--	3641	SI_Scene_22_1	605	0	0	256	512
--	3642	SI_Scene_22_2	606	0	0	256	512
+-	3641	SI_Scene_09_1	582	0	0	-1	-1
+-	3642	SI_Scene_09_2	584	0	0	-1	-1
+-	3643	SI_Scene_09_3	583	0	0	128	128
+-	3644	SI_Scene_09_4	583	128	0	128	128
+-	3645	SI_Scene_22_1	605	0	0	256	512
+-	3646	SI_Scene_22_2	606	0	0	256	512
 #		Spell(3800~3999)					
 -	3800	SI_Spell_00_1	660	0	0	-1	-1
 -	3801	SI_Spell_00_2	661	0	0	-1	-1
@@ -1551,8 +1568,10 @@ Comment	Index	SI_Name	Tex	Tex_x	Tex_y	Tex_w	Tex_h
 -	3815	SI_Spell_07_1	673	0	0	-1	-1
 -	3816	SI_Spell_08_1	674	0	0	-1	-1
 -	3817	SI_Spell_08_2	675	0	0	-1	-1
--	3818	SI_Spell_22_1	693	0	0	-1	-1
--	3819	SI_Spell_22_2	694	0	0	512	512
+-	3818	SI_Spell_09_1	676	0	0	512	512
+-	3819	SI_Spell_09_2	677	0	0	512	512
+-	3820	SI_Spell_22_1	693	0	0	-1	-1
+-	3821	SI_Spell_22_2	694	0	0	512	512
 #		Boss(4000~4999)					
 -	4000	SI_Boss_Reimu_0	160	0	0	64	80
 -	4001	SI_Boss_Reimu_1	160	64	0	64	80

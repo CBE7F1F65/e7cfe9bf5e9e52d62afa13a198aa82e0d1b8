@@ -107,6 +107,9 @@ function Edef_ShootChargeEnemyEID_03_3(playerindex, level, x, y, timer, px, py)
 end
 
 function Edef_ShootChargeEnemyEID_03_3_A(playerindex, level, x, y, timer, px, py)
+	if _ePlayerShootCharge_CheckBoss(playerindex) then
+		return true;
+	end
 	local timemod = 8;
 	if level > 9 then
 		timemod = 6;
@@ -138,6 +141,9 @@ function Edef_ShootChargeEnemyEID_03_3_A(playerindex, level, x, y, timer, px, py
 end
 
 function Edef_ShootChargeEnemyEID_03_3_B(playerindex, level, x, y, timer, px, py)
+	if _ePlayerShootCharge_CheckBoss(playerindex) then
+		return true;
+	end
 	local timemod = 8;
 	if level > 9 then
 		timemod = 6;
@@ -154,6 +160,9 @@ end
 
 
 function Edef_ShootChargeEnemyEID_03_3_C(playerindex, level, x, y, timer, px, py)
+	if _ePlayerShootCharge_CheckBoss(playerindex) then
+		return true;
+	end
 	if timer == 1 then
 		hdssEA_FADEOUT(playerindex, 40+level*2);
 	elseif math.mod(timer, 8) == 0 then

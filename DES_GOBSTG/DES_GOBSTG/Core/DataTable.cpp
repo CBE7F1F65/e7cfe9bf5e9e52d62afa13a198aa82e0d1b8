@@ -306,13 +306,13 @@ bool _DataTable::EnemyDefineFile()
 		enemyData * item = &(BResource::res.enemydata[tindex]);
 		_CHECKEOF_DATATABLE;
 
-		fscanf(file, "%d%s%f%f%d%d%d%d%d%d%d%d%d%d%d%d%d%d%d%f%d%d%d%d%f%f\t%[^\t]\t%[^\r\n]", 
+		fscanf(file, "%d%s%f%f%x%d%d%d%d%d%d%d%d%d%d%d%d%d%d%f%d%d%d%d%f%f\t%[^\t]\t%[^\r\n]", 
 			_SAVETINT, 
 			strbuffer[0],
 			&(item->collision_w), 
 			&(item->collision_h), 
 			_SAVETINT, 
-			&(item->standshake), 
+			_SAVETINT, 
 			_SAVETINT, 
 			_SAVETINT, 
 			_SAVETINT, 
@@ -340,6 +340,7 @@ bool _DataTable::EnemyDefineFile()
 		_INITTINT;
 		item->faceIndex  = _LOADTINT;
 		item->siid = SpriteItemManager::GetIndexByName(strbuffer[0]);
+		item->flag = _LOADTINT;
 		item->standFrame  = _LOADTINT;
 		item->rightPreFrame  = _LOADTINT;
 		item->rightFrame = _LOADTINT;
@@ -493,7 +494,7 @@ bool _DataTable::PlayerShootDefineFile()
 bool _DataTable::PlayerGhostDefineFile()
 {
 	ZeroMemory(BResource::res.playerghostdata, RSIZE_PLAYERGHOST);
-	_READSTRINGBUFFERLINE(11);
+	_READSTRINGBUFFERLINE(12);
 	while (!feof(file))
 	{
 		_INITTINT;
@@ -502,11 +503,12 @@ bool _DataTable::PlayerGhostDefineFile()
 		_CHECKEOF_DATATABLE;
 		playerghostData * item = &(BResource::res.playerghostdata[tindex]);
 
-		fscanf(file, "%s%f%f%f%x%d%f%d%d", 
+		fscanf(file, "%s%f%f%f%x%d%d%f%d%d", 
 			strbuffer[0],  
 			&(item->xadj), 
 			&(item->yadj), 
 			&(item->speed), 
+			_SAVETINT, 
 			_SAVETINT, 
 			&(item->shootangle), 
 			&(item->mover), 
@@ -517,6 +519,7 @@ bool _DataTable::PlayerGhostDefineFile()
 		_INITTINT;
 		item->siid = SpriteItemManager::GetIndexByName(strbuffer[0]);
 		item->flag = _LOADTINT;
+		item->rolltime = _LOADTINT;
 		item->blend = _LOADTINT;
 	}
 	return true;

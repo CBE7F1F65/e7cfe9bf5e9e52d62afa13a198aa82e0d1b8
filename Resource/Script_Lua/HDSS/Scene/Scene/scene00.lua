@@ -4,13 +4,13 @@ function Scene_s00(playerindex, timer)
 	
 	if timer == POSTAT then
 		
-		for i=0, 9 do
+		for i=0, 18 do
 			hdssBGOFF(playerindex, i);
 		end
 		
 	elseif timer == QUITAT then
 		
-		for i=0, 9 do
+		for i=0, 18 do
 			hdssBGFLAG(playerindex, i, BG_FADEOUT, BGMT_FADE/2);
 		end
 		

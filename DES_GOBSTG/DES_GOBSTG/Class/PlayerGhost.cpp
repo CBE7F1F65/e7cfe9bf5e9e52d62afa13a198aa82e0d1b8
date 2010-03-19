@@ -270,7 +270,7 @@ void PlayerGhost::action()
 
 	if (flag & PGFLAG_ROLL)
 	{
-		int troll = (ROLL(timer, 72)-36)*_pgd->shootangle;
+		int troll = (ROLL(timer, (_pgd->rolltime)*2)-_pgd->rolltime)*_pgd->shootangle;
 		if (flag & PGFLAG_NEGATIVE)
 		{
 			shootangle = troll;
