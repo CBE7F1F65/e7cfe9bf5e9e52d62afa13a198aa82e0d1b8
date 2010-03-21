@@ -70,7 +70,7 @@ function Edef_ShootChargeEnemyEID_00_3(playerindex, level, x, y, timer, px, py)
 		local cy = CenterBossY;
 		hdssEA_OVERPLAYER(playerindex, cx, cy, 90, 60, 60);
 	elseif timer == 810 then
-		hdssEA_FADEOUT(playerindex, 810);
+		hdssEA_FADEOUT(playerindex, -1);
 	elseif math.mod(timer, 90) == 60 then
 		local pattern = RANDT(0, 4);
 		hdssSD(LConst_Desc_BossPattern+playerindex, pattern);

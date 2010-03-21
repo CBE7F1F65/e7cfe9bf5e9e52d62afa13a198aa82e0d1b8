@@ -302,6 +302,7 @@ int Export_Lua_Game::LuaFn_Game_SetPlayerDrainSpriteInfo(LuaState * ls)
 	int _headangle = 0;
 	float _hscale = 1.0f;
 	float _vscale = 0.0f;
+	int _copyspriteangle = 0;
 	if (argscount > 3)
 	{
 		_headangle = args[4].GetInteger();
@@ -311,10 +312,14 @@ int Export_Lua_Game::LuaFn_Game_SetPlayerDrainSpriteInfo(LuaState * ls)
 			if (argscount > 5)
 			{
 				_vscale = args[6].GetFloat();
+				if (argscount > 6)
+				{
+					_copyspriteangle = args[7].GetInteger();
+				}
 			}
 		}
 	}
-	Player::p[_playerindex].SetDrainSpriteInfo(_x, _y, _headangle, _hscale, _vscale);
+	Player::p[_playerindex].SetDrainSpriteInfo(_x, _y, _headangle, _hscale, _vscale, _copyspriteangle);
 	return 0;
 }
 

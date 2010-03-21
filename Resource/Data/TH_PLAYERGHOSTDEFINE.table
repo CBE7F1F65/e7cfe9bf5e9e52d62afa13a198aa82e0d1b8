@@ -1,20 +1,20 @@
 73	h5nc	4D									
 Comment	Index	SIID	XAdj	YAdj	Speed	Flag	RollTimer	ShootAngle	MoveR	StartAngle	Blend
 #		Reimu									
--	0	SI_PlayerGhost_00_01	-12	-15	1	10	0	0	0	0	2
--	1	SI_PlayerGhost_00_01	12	-15	1	30	0	0	0	0	2
--	2	SI_PlayerGhost_00_01	-30	-10	1	10	0	0	0	0	2
--	3	SI_PlayerGhost_00_01	30	-10	1	30	0	0	0	0	2
--	4	SI_PlayerGhost_00_02	10	15	1	10	0	0	0	0	2
--	5	SI_PlayerGhost_00_02	-10	15	1	30	0	0	0	0	2
--	6	SI_PlayerGhost_00_02	30	10	1	10	0	0	0	0	2
--	7	SI_PlayerGhost_00_02	-30	10	1	30	0	0	0	0	2
+-	0	SI_PlayerGhost_00_01	-12	-15	0	10	0	0	0	0	2
+-	1	SI_PlayerGhost_00_01	12	-15	0	30	0	0	0	0	2
+-	2	SI_PlayerGhost_00_01	-30	-10	0	10	0	0	0	0	2
+-	3	SI_PlayerGhost_00_01	30	-10	0	30	0	0	0	0	2
+-	4	SI_PlayerGhost_00_02	10	15	0	10	0	0	0	0	2
+-	5	SI_PlayerGhost_00_02	-10	15	0	30	0	0	0	0	2
+-	6	SI_PlayerGhost_00_02	30	10	0	10	0	0	0	0	2
+-	7	SI_PlayerGhost_00_02	-30	10	0	30	0	0	0	0	2
 #		Marisa									
--	8	SI_PlayerGhost_01_01	0	-25	1	14	0	0	0	0	2
--	12	SI_PlayerGhost_01_02	0	15	1	14	0	0	0	0	2
+-	8	SI_PlayerGhost_01_01	0	-25	0	14	0	0	0	0	2
+-	12	SI_PlayerGhost_01_02	0	15	0	14	0	0	0	0	2
 #		Sakuya									
--	16	SI_PlayerGhost_02_01	0	-25	1	14	0	0	0	0	2
--	20	SI_PlayerGhost_02_01	0	-25	1	14	0	0	0	0	2
+-	16	SI_PlayerGhost_02_01	0	-25	0	14	0	0	0	0	2
+-	20	SI_PlayerGhost_02_01	0	-25	0	14	0	0	0	0	2
 #		Youmu									
 -	24	SI_Null	0	0	0	0	0	0	0	0	2
 -	28	SI_Null	0	0	0	0	0	0	0	0	2
@@ -33,17 +33,31 @@ Comment	Index	SIID	XAdj	YAdj	Speed	Flag	RollTimer	ShootAngle	MoveR	StartAngle	Bl
 -	56	SI_Null	0	0	0	0	0	0	0	0	2
 -	60	SI_Null	0	0	0	0	0	0	0	0	2
 #		Lyrica									
--	64	SI_PlayerGhost_08_01	0	0	3.5	2101	0	0	0	0	2
--	68	SI_PlayerGhost_08_01	0	0	2.5	2101	0	0	0	0	2
+-	64	SI_PlayerGhost_08_01	0	-25	0	2001	0	0	0	0	2
+-	68	SI_PlayerGhost_08_01	0	15	0	2001	0	0	0	0	2
 #		Mystia									
--	72	SI_PlayerGhost_09_1	-15	0	1	54	7	-128	0	0	2
--	73	SI_PlayerGhost_09_1	15	0	1	54	7	128	0	0	2
--	76	SI_PlayerGhost_09_1	-5	15	1	54	7	-128	0	0	2
--	77	SI_PlayerGhost_09_1	5	15	1	54	7	128	0	0	2
+-	72	SI_PlayerGhost_09_01	-15	0	0	54	7	-128	0	0	2
+-	73	SI_PlayerGhost_09_01	15	0	0	54	7	128	0	0	2
+-	76	SI_PlayerGhost_09_01	-5	15	0	54	7	-128	0	0	2
+-	77	SI_PlayerGhost_09_01	5	15	0	54	7	128	0	0	2
+#		Marlin									
+-	80	SI_PlayerGhost_10_01	-32	0	0	2	0	2000	0	0	2
+-	81	SI_PlayerGhost_10_01	32	0	0	2	0	-2000	0	0	2
+-	82	SI_PlayerGhost_10_02	0	-32	0	2	0	0	0	0	2
+-	83	SI_PlayerGhost_10_02	0	32	0	2	0	0	0	0	2
+-	84	SI_PlayerGhost_10_01	32	0	0	2	0	-2000	0	0	2
+-	85	SI_PlayerGhost_10_01	-32	0	0	2	0	2000	0	0	2
+-	86	SI_PlayerGhost_10_02	0	-32	0	2	0	0	0	0	2
+-	87	SI_PlayerGhost_10_02	0	32	0	2	0	0	0	0	2
+#		Lunasa									
+-	88	SI_Empty	0	0	0	40	40	64	0	0	2
+-	89	SI_Empty	0	0	0	40	40	-64	0	0	2
+-	92	SI_Empty	0	0	0	40	40	64	0	0	2
+-	93	SI_Empty	0	0	0	40	40	-64	0	0	2
 #		Sanae									
--	352	SI_PlayerGhost_22_01	0	-25	1	14	0	0	0	0	2
--	353	SI_PlayerGhost_22_02	-30	-15	1	14	0	0	0	0	2
--	354	SI_PlayerGhost_22_02	30	-15	1	14	0	0	0	0	2
--	355	SI_PlayerGhost_22_01	0	15	1	14	0	0	0	0	2
--	356	SI_PlayerGhost_22_02	30	-15	1	14	0	0	0	0	2
--	357	SI_PlayerGhost_22_02	-30	-15	1	14	0	0	0	0	2
+-	352	SI_PlayerGhost_22_01	0	-25	0	14	0	0	0	0	2
+-	353	SI_PlayerGhost_22_02	-30	-15	0	14	0	0	0	0	2
+-	354	SI_PlayerGhost_22_02	30	-15	0	14	0	0	0	0	2
+-	355	SI_PlayerGhost_22_01	0	15	0	14	0	0	0	0	2
+-	356	SI_PlayerGhost_22_02	30	-15	0	14	0	0	0	0	2
+-	357	SI_PlayerGhost_22_02	-30	-15	0	14	0	0	0	0	2

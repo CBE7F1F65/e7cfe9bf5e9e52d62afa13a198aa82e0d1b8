@@ -187,6 +187,7 @@ void Player::ClearSet(BYTE _round)
 	draintimer = 0;
 	drainhscale = 1;
 	drainvscale = 0;
+	draincopyspriteangle = 0;
 
 	if (effGraze.exist)
 	{
@@ -1344,6 +1345,10 @@ void Player::Render()
 	if (spdrain && bDrain)
 	{
 		spdrain->RenderEx(drainx, drainy, ARC(drainheadangle), drainhscale, drainvscale);
+		if (draincopyspriteangle)
+		{
+			spdrain->RenderEx(drainx, drainy, ARC(drainheadangle+draincopyspriteangle), drainhscale, drainvscale);
+		}
 	}
 	if (sprite)
 	{

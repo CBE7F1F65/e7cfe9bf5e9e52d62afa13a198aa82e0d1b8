@@ -53,9 +53,9 @@ function Edef_ShootChargeEnemyEID_09_3(playerindex, level, x, y, timer, px, py)
 		local cy = CenterBossY;
 		hdssEA_OVERPLAYER(playerindex, cx, cy, 120, 60, 60);
 	elseif timer == 810 then
-		hdssEA_FADEOUT(playerindex, 810);
+		hdssEA_FADEOUT(playerindex, -1);
 	elseif math.mod(timer, 120) == 60 then
-		local pattern = 2--RANDT(0, 2);
+		local pattern = RANDT(0, 2);
 		hdssSD(LConst_Desc_BossPattern+playerindex, pattern);
 		if pattern == 0 then
 			local angle = hdssAMAP(playerindex, x, y);

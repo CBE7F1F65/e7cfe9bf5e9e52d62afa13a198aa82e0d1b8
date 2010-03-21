@@ -46,7 +46,10 @@ LConst_EnemyTypeLiLy	=	LConst_EnemyTypeStart + 4
 
 LConst_EnemyTypeNull	=	44
 
-LConst_EnemyExType_Mystia	=	61
+LConst_EnemyExType_Lyrica	=	61
+LConst_EnemyExType_Mystia	=	62
+LConst_EnemyExType_Marlin	=	63
+LConst_EnemyExType_Lunasa	=	64
 
 LConst_GhostTypeStart	=	37
 LConst_GhostTypeGreen	=	LConst_GhostTypeStart

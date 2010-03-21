@@ -372,11 +372,12 @@ void Player::SetChara(WORD id, WORD id_sub_1/* =0xffff */, WORD id_sub_2/* =0xff
 	ID_sub_2 = id_sub_2;
 }
 
-void Player::SetDrainSpriteInfo(float _x, float _y, int _headangle/* =0 */, float _hscale/* =1.0f */, float _vscale/* =0.0f */)
+void Player::SetDrainSpriteInfo(float _x, float _y, int _headangle/* =0 */, float _hscale/* =1.0f */, float _vscale/* =0.0f */, int _copyspriteangle/* =0 */)
 {
 	drainx = _x;
 	drainy = _y;
 	drainheadangle = _headangle;
 	drainhscale = _hscale;
 	drainvscale = _vscale;
+	draincopyspriteangle = _copyspriteangle;
 }

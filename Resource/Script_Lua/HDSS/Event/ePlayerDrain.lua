@@ -390,7 +390,7 @@ function ePlayerDrain_08(playerindex, x, y, draintimer, type)
 	local ceny = CenterY;
 	game.SetDrainSpriteInfo(playerindex, x, ceny, 0, hscale, vscale);
 		
-	hdssENAZBUILD(playerindex, ENAZTYPE_RECT+ENAZOP_AND, x, ceny, hscale/2, CenterH/2);
+	hdssENAZBUILD(playerindex, ENAZTYPE_RECT+ENAZOP_AND, x, ceny, hscale/2, vscale/2);
 	
 	return true;
 end
@@ -422,10 +422,50 @@ function ePlayerDrain_09(playerindex, x, y, draintimer, type)
 end
 
 function ePlayerDrain_10(playerindex, x, y, draintimer, type)
+	
+	if type ~= nil then
+		game.SetGhostActiveInfo(playerindex, 160, type+1, type+1, -9000, 0.625, 2);
+		hdssSE(SE_GHOST_ACTIVATE, x, y);
+		return true;
+	end
+	
+	local vscale;
+	local yoffset;
+	if draintimer < 48 then
+		vscale = draintimer;
+	else
+		vscale = 48;
+	end
+	local hscale = CenterW;
+	local cenx = helper_GetCenterX(playerindex);
+	game.SetDrainSpriteInfo(playerindex, cenx, y, 0, hscale, vscale);
+		
+	hdssENAZBUILD(playerindex, ENAZTYPE_RECT+ENAZOP_AND, cenx, y, hscale/2, vscale/2);
+	
 	return true;
 end
 
 function ePlayerDrain_11(playerindex, x, y, draintimer, type)
+	if type ~= nil then
+		game.SetGhostActiveInfo(playerindex, 160, type+1, type+1, -9000, 0.625, 2);
+		hdssSE(SE_GHOST_ACTIVATE, x, y);
+		return true;
+	end
+	
+	local hscale;
+	local yoffset;
+	if draintimer < 16 then
+		hscale = draintimer;
+	else
+		hscale = 16;
+	end
+	game.SetDrainSpriteInfo(playerindex, x, y, 0, CenterH*2, hscale, 9000);
+	local cenx = helper_GetCenterX(playerindex);
+		
+	hdssENAZBUILD(playerindex, ENAZTYPE_RECT+ENAZOP_OR, x, CenterY, hscale/2, CenterH/2);
+	hdssENAZBUILD(playerindex, ENAZTYPE_RECT+ENAZOP_OR, cenx, y, CenterW/2, hscale/2);
+	hdssENAZBUILD(playerindex, ENAZTYPE_CIRCLE+ENAZOP_AND, cenx, CenterY, CenterH);
+	
 	return true;
 end
 

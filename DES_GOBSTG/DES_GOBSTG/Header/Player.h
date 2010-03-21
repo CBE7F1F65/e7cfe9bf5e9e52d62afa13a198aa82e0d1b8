@@ -140,7 +140,7 @@ public:
 	void GetSpellClassAndLevel(BYTE * spellclass, BYTE * spelllevel, int _shootingchargeflag=-1);
 	BYTE AddCharge(float addcharg=0, float addchargemaxe=0);
 
-	void SetDrainSpriteInfo(float x, float y, int headangle=0, float hscale=1.0f, float vscale=0.0f);
+	void SetDrainSpriteInfo(float x, float y, int headangle=0, float hscale=1.0f, float vscale=0.0f, int copyspriteangle=0);
 
 	static void AddLostStack();
 	static void SetAble(bool setable);
@@ -222,6 +222,7 @@ public:
 	int		drainheadangle;
 	float	drainhscale;
 	float	drainvscale;
+	int		draincopyspriteangle;
 
 	WORD	flag;
 

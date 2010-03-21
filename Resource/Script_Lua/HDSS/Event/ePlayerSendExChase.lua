@@ -153,10 +153,12 @@ function ePlayerSendExChase_09(playerindex, x, y, playerID, appendfloat)
 end
 
 function ePlayerSendExChase_10(playerindex, x, y, playerID, appendfloat)
+	hdssEB(CC_SendExChaseEnemyEID_10, playerindex, x, y, 9000, 0, LConst_EnemyExType_Marlin, 0);
 	return true;
 end
 
 function ePlayerSendExChase_11(playerindex, x, y, playerID, appendfloat)
+	hdssEB(CC_SendExChaseEnemyEID_11, playerindex, x, y, 9000, 0, LConst_EnemyExType_Lunasa, 0);
 	return true;
 end
 

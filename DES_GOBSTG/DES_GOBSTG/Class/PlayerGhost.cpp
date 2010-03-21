@@ -49,7 +49,7 @@ void PlayerGhost::valueSet(BYTE _playerindex, WORD _ID, bool move)
 		return;
 	}
 	
-	speed	=	_pgd->speed;
+	speed	=	0;
 	flag	=	_pgd->flag;
 	angle	=	_pgd->startangle;
 	if (!(flag & PGFLAG_REMAINSHOOTANGLE))
@@ -225,7 +225,7 @@ void PlayerGhost::action()
 		aimy = _pgd->yadj;
 	}
 
-	if (!(flag & PGFLAG_POSTMASK))
+	if (!(flag & PGFLAG_SELFMOVEMASK))
 	{
 		aimx = Player::p[playerindex].lastx[_PLAYERGHOST_LASTINDEX];
 		aimy = Player::p[playerindex].lasty[_PLAYERGHOST_LASTINDEX];
@@ -250,11 +250,6 @@ void PlayerGhost::action()
 		aimy += _pgd->yadj;
 	}
 
-	if (flag & PGFLAG_STAYWHENCHARGE && shootingchargeone)
-	{
-		aimx = x;
-		aimy = y;
-	}
 
 	if(flag & PGFLAG_ANTISHOOTER)
 	{
@@ -286,10 +281,15 @@ void PlayerGhost::action()
 		chasetime = _PLAYERGHOST_ADJUSTTIME - timer;
 	}
 
+	bool stay = (flag & PGFLAG_STAYWHENCHARGE) && shootingchargeone;
+
 	if (aimx != x || aimy != y)
 	{
-		chaseAim(aimx, aimy, chasetime);
-		updateMove();
+		if (!stay)
+		{
+			chaseAim(aimx, aimy, chasetime);
+			updateMove();
+		}
 	}
 	if (flag & PGFLAG_STANDSHAKE)
 	{
@@ -324,29 +324,13 @@ void PlayerGhost::action()
 	SpriteItemManager::SetSprite(_pgd->siid, sprite, Process::mp.tex);
 	if (flag & PGFLAG_SYNCPLAYER)
 	{
-		/*
-		float tex_x, tex_y, tex_w, tex_h;
-		Player::p[playerindex].sprite->GetTextureRect(&tex_x, &tex_y, &tex_w, &tex_h);
-		if (flag & PGFLAG_CHASE)
+		int siidoffset = Player::p[playerindex].nowframeindex;
+		if (stay)
 		{
-			if (chasing)
-			{
-				headangle = -timer * 3000;
-				HTEXTURE ttex = sprite->GetTexture();
-				tex_x = hge->Texture_GetWidth(ttex)-tex_w;
-				tex_y = hge->Texture_GetHeight(ttex)-tex_h;
-			}
+			siidoffset = 0;
 		}
-		SpriteItemManager::SetSpriteTextureRect(sprite, tex_x, tex_y, tex_w, tex_h);
-		*/
-		SpriteItemManager::ChangeSprite(_pgd->siid+Player::p[playerindex].nowframeindex, sprite);
+		SpriteItemManager::ChangeSprite(_pgd->siid+siidoffset, sprite);
 		SpriteItemManager::SetSpriteFlip(sprite, Player::p[playerindex].flipx);
-		/*
-		bool flipx, flipy;
-		Player::p[playerindex].sprite->GetFlip(&flipx, &flipy);
-//		sprite->SetFlip(flipx, flipy);
-		SpriteItemManager::SetSpriteFlip(sprite, flipx, flipy);
-		*/
 	}
 	lastchasing = chasing;
 	sprite->SetBlendMode(_pgd->blend);

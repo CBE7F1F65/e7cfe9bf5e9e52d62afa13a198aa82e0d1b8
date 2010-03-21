@@ -43,7 +43,7 @@ function Edef_ShootChargeEnemyEID_05_3(playerindex, level, x, y, timer, px, py)
 		local pattern = 0;
 		hdssSD(LConst_Desc_BossPattern+playerindex, pattern);
 	elseif timer == 810 then
-		hdssEA_FADEOUT(playerindex, 810);
+		hdssEA_FADEOUT(playerindex, -1);
 	elseif timer > 60 and math.mod(timer, 120) < 60 then
 		if math.mod(timer, 15) == 0 then
 			local aimangle;

@@ -78,10 +78,30 @@ function Edef_SendExChase_09(playerindex, rank, x, y, timer, px, py)
 end
 
 function Edef_SendExChase_10(playerindex, rank, x, y, timer, px, py)
+	if timer == 1 then
+		hdssEA_FADEOUT(playerindex, 56);
+	elseif math.mod(timer, 4) == 0 then
+		hdssA(playerindex,
+			{
+				TIMERLESS, 60, SPEEDSETADD, 3,
+				TIMERLESS, 60, ANGLESETADD, RANDT(-80, 80)
+			}
+		)
+		hdssB(playerindex, x, y+16, 9000, 1.0, CC_Bullet_Quaver, 1);
+		hdssA(playerindex);
+	end
 	return true;
 end
 
 function Edef_SendExChase_11(playerindex, rank, x, y, timer, px, py)
+	if timer == 1 then
+		hdssEA_FADEOUT(playerindex, 52);
+	elseif timer > 16 then
+		if math.mod(timer, 4) == 0 then
+			local angle = hdssAMAP(playerindex, x, y);
+			hdssB(playerindex, x, y, angle, 1.0, CC_Bullet_Quaver, 2);
+		end
+	end
 	return true;
 end
 
