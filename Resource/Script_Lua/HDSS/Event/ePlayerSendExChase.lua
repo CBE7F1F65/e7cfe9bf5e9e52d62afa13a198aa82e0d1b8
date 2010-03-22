@@ -163,10 +163,29 @@ function ePlayerSendExChase_11(playerindex, x, y, playerID, appendfloat)
 end
 
 function ePlayerSendExChase_12(playerindex, x, y, playerID, appendfloat)
+	local leftrightindi = -1;
+	if x < helper_GetCenterX(playerindex) then
+		leftrightindi = 1;
+	end
+	local addangle = leftrightindi*80;
+	hdssA(playerindex,
+		{
+			EVERY, ANGLESETADD, addangle,
+			EVERY, BOUNCELR, 0, 16
+		}
+	)
+	hdssB(playerindex, x, y, 9000, 3.0, CC_BulletEx_Tei, 0);
+	hdssA(playerindex);
 	return true;
 end
 
 function ePlayerSendExChase_13(playerindex, x, y, playerID, appendfloat)
+	local speed = RANDTF(1.0, 4.0);
+	local type = CC_BulletEx_Yuka_Middle;
+	if RANDT(0, 1) == 1 then
+		type = CC_BulletEx_Yuka_Small;
+	end
+	hdssB(playerindex, x, y, 9000, speed, type, 0);
 	return true;
 end
 

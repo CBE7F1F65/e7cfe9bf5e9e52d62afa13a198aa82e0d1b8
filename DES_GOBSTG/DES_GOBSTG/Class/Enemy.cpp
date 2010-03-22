@@ -539,6 +539,10 @@ void Enemy::matchAction()
 		{
 			para_counter = chaseAim(para_x, para_y, para_counter);
 		}
+		else
+		{
+			speed = 0;
+		}
 		break;
 	}
 }

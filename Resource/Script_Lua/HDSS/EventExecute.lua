@@ -7,6 +7,15 @@ function _EventExecute_PlayerDrain(etype, playerindex)
 	end
 end
 
+function _EventExecute_PlayerShot(playerindex)
+	local playerID, nLife, shottimer, shotdelay, nchargemax = game.GetPlayerShotInfo(playerindex);
+	for i, it in pairs(LTable_ePlayerShotFunction) do
+		if it[1] == playerID then
+			return it[2](playerindex, playerID, nLife, shottimer, shotdelay, nchargemax);
+		end
+	end
+end
+
 function _EventExecute_EffspChase(playerindex)
 	local setID, x, y, appendint, appendfloat = game.GetSendItemInfo(playerindex);
 	
@@ -128,6 +137,8 @@ function EventExecute(name, con)
 		return _EventExecute_EffspChase(con);
 	elseif name == EVENT_PLAYERDRAIN or name == EVENT_PLAYERDRAINCHECK then
 		return _EventExecute_PlayerDrain(name, con);
+	elseif name == EVENT_PLAYERSHOT then
+		return _EventExecute_PlayerShot(con);
 	elseif name == EVENT_PLAYERINSPELLSTOP then
 		return _EventExecute_PlayerInSpellStop(con);
 	elseif name == EVENT_PLAYERSHOOTCHARGE then

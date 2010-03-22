@@ -500,16 +500,6 @@ void PlayerBullet::action()
 			y += - M_GAMESQUARE_HEIGHT / 2 + ybias;
 			xplus = 0;
 			yplus = 0;
-			/*
-			float extramove = 0;
-			if (!(arrange && (Player::p[playerindex].pg[arrange-1].flag & PGFLAG_STAY) || (Player::p[playerindex].pg[arrange-1].flag & PGFLAG_ABSSTAY)))
-			{
-				extramove = (Player::p[playerindex].y-Player::p[playerindex].lasty[_PBBEAM_LASTINDEX]) / 2.5f;
-			}
-			float _tx, _ty, _tw, _th;
-			sprite[ID]->GetTextureRect(&_tx, &_ty, &_tw, &_th);
-			sprite[ID]->SetTextureRect(_tx - (2.0f + extramove) / accelspeed, _ty, _tw, _th);
-			*/
 			if (timer == 8)
 			{
 				timer = PB_FADEOUTTIME - 16;
@@ -539,28 +529,32 @@ void PlayerBullet::action()
 				locktimer = 0;
 			}
 
-			x += xplus;
-			y += yplus;
+			if (flag & PBFLAG_RELATIVE)
+			{
+				float basex;
+				float basey;
+				if (arrange)
+				{
+					basex = Player::p[playerindex].pg[arrange-1].x;
+					basey = Player::p[playerindex].pg[arrange-1].y;
+				}
+				else
+				{
+					basex = Player::p[playerindex].x;
+					basex = Player::p[playerindex].y;
+				}
+				x = basex + xplus*timer;
+				y = basey + yplus*timer;
+			}
+			else
+			{
+				x += xplus;
+				y += yplus;
+			}
 
 			if (flag & PBFLAG_TURN)
 			{
 				TurnBullet(speed/4.0f);
-			}
-			if (flag & PBFLAG_HEADUPWARD)
-			{
-				int nowangle = headangle + angle;
-				while (nowangle < 0)
-				{
-					nowangle += 36000;
-				}
-				while (nowangle >= 36000)
-				{
-					nowangle -= 36000;
-				}
-				if (nowangle < 18000)
-				{
-					headangle += 18000;
-				}
 			}
 		}
 		if (deletetime && timer >= 16 && timer > deletetime-16)

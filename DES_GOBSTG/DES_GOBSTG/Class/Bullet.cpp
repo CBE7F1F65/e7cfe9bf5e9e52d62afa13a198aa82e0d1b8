@@ -763,7 +763,7 @@ bool Bullet::isInRect(float aimx, float aimy, float r, int nextstep)
 		_y += yplus * nextstep;
 		if (actionList[0] != SECTIONEND && ChangeAction(true))
 		{
-			collisionfactor = 2.0f;
+			collisionfactor = 1.1f;
 		}
 	}
 	switch (tbd->collisiontype)

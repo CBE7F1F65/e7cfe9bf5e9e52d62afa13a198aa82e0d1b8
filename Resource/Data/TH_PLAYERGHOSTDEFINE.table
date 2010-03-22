@@ -1,5 +1,5 @@
 73	h5nc	4D									
-Comment	Index	SIID	XAdj	YAdj	Speed	Flag	RollTimer	ShootAngle	MoveR	StartAngle	Blend
+Comment	Index	SIID	XAdj	YAdj	Speed	Flag	RollTime	ShootAngle	MoveR	StartAngle	Blend
 #		Reimu									
 -	0	SI_PlayerGhost_00_01	-12	-15	0	10	0	0	0	0	2
 -	1	SI_PlayerGhost_00_01	12	-15	0	30	0	0	0	0	2
@@ -54,6 +54,14 @@ Comment	Index	SIID	XAdj	YAdj	Speed	Flag	RollTimer	ShootAngle	MoveR	StartAngle	Bl
 -	89	SI_Empty	0	0	0	40	40	-64	0	0	2
 -	92	SI_Empty	0	0	0	40	40	64	0	0	2
 -	93	SI_Empty	0	0	0	40	40	-64	0	0	2
+#		Tei									
+-	96	SI_Empty	0	0	0	40	60	256	0	0	2
+-	97	SI_Empty	0	0	0	40	60	-256	0	0	2
+-	100	SI_Empty	0	0	0	40	60	256	0	0	2
+-	101	SI_Empty	0	0	0	40	60	-256	0	0	2
+#		Yuka									
+-	104	SI_Null	0	0	0	0	0	0	0	0	2
+-	108	SI_Null	0	0	0	0	0	0	0	0	2
 #		Sanae									
 -	352	SI_PlayerGhost_22_01	0	-25	0	14	0	0	0	0	2
 -	353	SI_PlayerGhost_22_02	-30	-15	0	14	0	0	0	0	2

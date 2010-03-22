@@ -57,6 +57,64 @@ bool GameAI::UpdateBasicInfo(float _x, float _y, float _speed, float _slowspeed,
 	return UpdateMoveAbleInfo();
 }
 
+void GameAI::UpdateMoveAbleInfoOne(GameAIPosition * ppos, float basex, float basey)
+{
+	ppos[GAMEAI_ABLEPOSITION_N].x = basex;
+	ppos[GAMEAI_ABLEPOSITION_N].y = basey;
+
+	float nowspeed = speed;
+	ppos[GAMEAI_ABLEPOSITION_U].x = basex;
+	ppos[GAMEAI_ABLEPOSITION_U].y = basey - nowspeed;
+	ppos[GAMEAI_ABLEPOSITION_D].x = basex;
+	ppos[GAMEAI_ABLEPOSITION_D].y = basey + nowspeed;
+	ppos[GAMEAI_ABLEPOSITION_L].x = basex - nowspeed;
+	ppos[GAMEAI_ABLEPOSITION_L].y = basey;
+	ppos[GAMEAI_ABLEPOSITION_R].x = basex + nowspeed;
+	ppos[GAMEAI_ABLEPOSITION_R].y = basey;
+
+	nowspeed *= M_SQUARE_2;
+	ppos[GAMEAI_ABLEPOSITION_LU].x = basex - nowspeed;
+	ppos[GAMEAI_ABLEPOSITION_LU].y = basey - nowspeed;
+	ppos[GAMEAI_ABLEPOSITION_RU].x = basex + nowspeed;
+	ppos[GAMEAI_ABLEPOSITION_RU].y = basey - nowspeed;
+	ppos[GAMEAI_ABLEPOSITION_LD].x = basex - nowspeed;
+	ppos[GAMEAI_ABLEPOSITION_LD].y = basey + nowspeed;
+	ppos[GAMEAI_ABLEPOSITION_RD].x = basex + nowspeed;
+	ppos[GAMEAI_ABLEPOSITION_RD].y = basey + nowspeed;
+
+	nowspeed = slowspeed;
+	ppos[GAMEAI_ABLEPOSITION_US].x = basex;
+	ppos[GAMEAI_ABLEPOSITION_US].y = basey - nowspeed;
+	ppos[GAMEAI_ABLEPOSITION_DS].x = basex;
+	ppos[GAMEAI_ABLEPOSITION_DS].y = basey + nowspeed;
+	ppos[GAMEAI_ABLEPOSITION_LS].x = basex - nowspeed;
+	ppos[GAMEAI_ABLEPOSITION_LS].y = basey;
+	ppos[GAMEAI_ABLEPOSITION_RS].x = basex + nowspeed;
+	ppos[GAMEAI_ABLEPOSITION_RS].y = basey;
+
+	nowspeed *= M_SQUARE_2;
+	ppos[GAMEAI_ABLEPOSITION_LUS].x = basex - nowspeed;
+	ppos[GAMEAI_ABLEPOSITION_LUS].y = basey - nowspeed;
+	ppos[GAMEAI_ABLEPOSITION_RUS].x = basex + nowspeed;
+	ppos[GAMEAI_ABLEPOSITION_RUS].y = basey - nowspeed;
+	ppos[GAMEAI_ABLEPOSITION_LDS].x = basex - nowspeed;
+	ppos[GAMEAI_ABLEPOSITION_LDS].y = basey + nowspeed;
+	ppos[GAMEAI_ABLEPOSITION_RDS].x = basex + nowspeed;
+	ppos[GAMEAI_ABLEPOSITION_RDS].y = basey + nowspeed;
+
+	for (int i=0; i<GAMEAI_ABLEPOSITIONNUM; i++)
+	{
+		if(ppos[i].x > PL_MOVABLE_RIGHT_(playerindex))
+			ppos[i].x = PL_MOVABLE_RIGHT_(playerindex);
+		else if(ppos[i].x < PL_MOVABLE_LEFT_(playerindex))
+			ppos[i].x = PL_MOVABLE_LEFT_(playerindex);
+		if(ppos[i].y > PL_MOVABLE_BOTTOM)
+			ppos[i].y = PL_MOVABLE_BOTTOM;
+		else if(ppos[i].y < PL_MOVABLE_TOP)
+			ppos[i].y = PL_MOVABLE_TOP;
+	}
+}
+
 bool GameAI::UpdateMoveAbleInfo()
 {
 	if (!able)
@@ -64,59 +122,11 @@ bool GameAI::UpdateMoveAbleInfo()
 		return false;
 	}
 	memcpy(lastmoveablepos, moveablepos, sizeof(GameAIPosition)*GAMEAI_ABLEPOSITIONNUM);
-	moveablepos[GAMEAI_ABLEPOSITION_N].x = x;
-	moveablepos[GAMEAI_ABLEPOSITION_N].y = y;
 
-	float nowspeed = speed;
-	moveablepos[GAMEAI_ABLEPOSITION_U].x = x;
-	moveablepos[GAMEAI_ABLEPOSITION_U].y = y - nowspeed;
-	moveablepos[GAMEAI_ABLEPOSITION_D].x = x;
-	moveablepos[GAMEAI_ABLEPOSITION_D].y = y + nowspeed;
-	moveablepos[GAMEAI_ABLEPOSITION_L].x = x - nowspeed;
-	moveablepos[GAMEAI_ABLEPOSITION_L].y = y;
-	moveablepos[GAMEAI_ABLEPOSITION_R].x = x + nowspeed;
-	moveablepos[GAMEAI_ABLEPOSITION_R].y = y;
-
-	nowspeed *= M_SQUARE_2;
-	moveablepos[GAMEAI_ABLEPOSITION_LU].x = x - nowspeed;
-	moveablepos[GAMEAI_ABLEPOSITION_LU].y = y - nowspeed;
-	moveablepos[GAMEAI_ABLEPOSITION_RU].x = x + nowspeed;
-	moveablepos[GAMEAI_ABLEPOSITION_RU].y = y - nowspeed;
-	moveablepos[GAMEAI_ABLEPOSITION_LD].x = x - nowspeed;
-	moveablepos[GAMEAI_ABLEPOSITION_LD].y = y + nowspeed;
-	moveablepos[GAMEAI_ABLEPOSITION_RD].x = x + nowspeed;
-	moveablepos[GAMEAI_ABLEPOSITION_RD].y = y + nowspeed;
-
-	nowspeed = slowspeed;
-	moveablepos[GAMEAI_ABLEPOSITION_US].x = x;
-	moveablepos[GAMEAI_ABLEPOSITION_US].y = y - nowspeed;
-	moveablepos[GAMEAI_ABLEPOSITION_DS].x = x;
-	moveablepos[GAMEAI_ABLEPOSITION_DS].y = y + nowspeed;
-	moveablepos[GAMEAI_ABLEPOSITION_LS].x = x - nowspeed;
-	moveablepos[GAMEAI_ABLEPOSITION_LS].y = y;
-	moveablepos[GAMEAI_ABLEPOSITION_RS].x = x + nowspeed;
-	moveablepos[GAMEAI_ABLEPOSITION_RS].y = y;
-
-	nowspeed *= M_SQUARE_2;
-	moveablepos[GAMEAI_ABLEPOSITION_LUS].x = x - nowspeed;
-	moveablepos[GAMEAI_ABLEPOSITION_LUS].y = y - nowspeed;
-	moveablepos[GAMEAI_ABLEPOSITION_RUS].x = x + nowspeed;
-	moveablepos[GAMEAI_ABLEPOSITION_RUS].y = y - nowspeed;
-	moveablepos[GAMEAI_ABLEPOSITION_LDS].x = x - nowspeed;
-	moveablepos[GAMEAI_ABLEPOSITION_LDS].y = y + nowspeed;
-	moveablepos[GAMEAI_ABLEPOSITION_RDS].x = x + nowspeed;
-	moveablepos[GAMEAI_ABLEPOSITION_RDS].y = y + nowspeed;
-
+	UpdateMoveAbleInfoOne(moveablepos, x, y);
 	for (int i=0; i<GAMEAI_ABLEPOSITIONNUM; i++)
 	{
-		if(moveablepos[i].x > PL_MOVABLE_RIGHT_(playerindex))
-			moveablepos[i].x = PL_MOVABLE_RIGHT_(playerindex);
-		else if(moveablepos[i].x < PL_MOVABLE_LEFT_(playerindex))
-			moveablepos[i].x = PL_MOVABLE_LEFT_(playerindex);
-		if(moveablepos[i].y > PL_MOVABLE_BOTTOM)
-			moveablepos[i].y = PL_MOVABLE_BOTTOM;
-		else if(moveablepos[i].y < PL_MOVABLE_TOP)
-			moveablepos[i].y = PL_MOVABLE_TOP;
+		UpdateMoveAbleInfoOne(nextmoveablepos[i], moveablepos[i].x, moveablepos[i].y);
 	}
 
 	return true;
@@ -165,19 +175,46 @@ bool GameAI::CheckBulletCollision(Bullet * item)
 	{
 		return false;
 	}
-	if (!item->isInRect(x, y, r+speed))
+	if (!item->isInRect(x, y, speed*2+item->speed*2))
 	{
 		return false;
 	}
 	bool bret = false;
 	for (int i=0; i<GAMEAI_ABLEPOSITIONNUM; i++)
 	{
-		if (moveablepos[i].risk < GAMEAI_RISK_FULL)
+		if (moveablepos[i].risk < GAMEAI_RISK_DEATH)
 		{
-			if (item->isInRect(moveablepos[i].x, moveablepos[i].y, r)/* || item->isInRect(moveablepos[i].x, moveablepos[i].y, r)*/)
+			if (item->isInRect(moveablepos[i].x, moveablepos[i].y, r))
 			{
-				moveablepos[i].risk = GAMEAI_RISK_FULL;
+				moveablepos[i].risk = GAMEAI_RISK_DEATH;
 				bret = true;
+			}
+			else
+			{
+				int deathcount = 0;
+				for (int j=0; j<GAMEAI_ABLEPOSITIONNUM; j++)
+				{
+					if (nextmoveablepos[i][j].risk < GAMEAI_RISK_DEATH)
+					{
+						if (item->isInRect(nextmoveablepos[i][j].x, nextmoveablepos[i][j].y, r, 1))
+						{
+							nextmoveablepos[i][j].risk = GAMEAI_RISK_DEATH;
+							deathcount++;
+						}
+					}
+					else
+					{
+						deathcount++;
+					}
+				}
+				if (deathcount >= GAMEAI_ABLEPOSITIONNUM)
+				{
+					moveablepos[i].risk = GAMEAI_RISK_DEATH;
+				}
+				else
+				{
+					moveablepos[i].risk += deathcount * GAMEAI_RISK_FULL;
+				}
 			}
 		}
 	}
@@ -197,11 +234,11 @@ bool GameAI::CheckBeamCollision(Beam * item)
 	bool bret = false;
 	for (int i=0; i<GAMEAI_ABLEPOSITIONNUM; i++)
 	{
-		if (moveablepos[i].risk < GAMEAI_RISK_FULL)
+		if (moveablepos[i].risk < GAMEAI_RISK_DEATH)
 		{
-			if (item->isInRect(moveablepos[i].x, moveablepos[i].y, r)/* || item->isInRect(moveablepos[i].x, moveablepos[i].y, r*4, 0)*/)
+			if (item->isInRect(moveablepos[i].x, moveablepos[i].y, r))
 			{
-				moveablepos[i].risk = GAMEAI_RISK_FULL;
+				moveablepos[i].risk = GAMEAI_RISK_DEATH;
 				bret = true;
 			}
 		}
@@ -222,12 +259,39 @@ bool GameAI::CheckEnemyCollision(Enemy * item, float w, float h)
 	bool bret = false;
 	for (int i=0; i<GAMEAI_ABLEPOSITIONNUM; i++)
 	{
-		if (moveablepos[i].risk < GAMEAI_RISK_FULL)
+		if (moveablepos[i].risk < GAMEAI_RISK_DEATH)
 		{
-			if (item->isInRect(moveablepos[i].x, moveablepos[i].y, r*2, w, h)/* || item->isInRect(moveablepos[i].x, moveablepos[i].y, r*4, w, h, 0)*/)
+			if (item->isInRect(moveablepos[i].x, moveablepos[i].y, r, w, h))
 			{
-				moveablepos[i].risk = GAMEAI_RISK_FULL;
+				moveablepos[i].risk = GAMEAI_RISK_DEATH;
 				bret = true;
+			}
+			else
+			{
+				int deathcount = 0;
+				for (int j=0; j<GAMEAI_ABLEPOSITIONNUM; j++)
+				{
+					if (nextmoveablepos[i][j].risk < GAMEAI_RISK_DEATH)
+					{
+						if (item->isInRect(nextmoveablepos[i][j].x, nextmoveablepos[i][j].y, r, w, h, 1))
+						{
+							nextmoveablepos[i][j].risk = GAMEAI_RISK_DEATH;
+							deathcount++;
+						}
+					}
+					else
+					{
+						deathcount++;
+					}
+				}
+				if (deathcount >= GAMEAI_ABLEPOSITIONNUM)
+				{
+					moveablepos[i].risk = GAMEAI_RISK_DEATH;
+				}
+				else
+				{
+					moveablepos[i].risk += deathcount * GAMEAI_RISK_FULL;
+				}
 			}
 		}
 	}
@@ -240,7 +304,7 @@ bool GameAI::CheckEventZoneCollision(EventZone * item)
 	{
 		return false;
 	}
-	int addrisk = GAMEAI_RISK_FULL;
+	int addrisk = GAMEAI_RISK_DEATH;
 
 	if (item->type != EVENTZONE_TYPE_PLAYERDAMAGE)
 	{
@@ -250,7 +314,7 @@ bool GameAI::CheckEventZoneCollision(EventZone * item)
 	bool bret = false;
 	for (int i=0; i<GAMEAI_ABLEPOSITIONNUM; i++)
 	{
-		if (moveablepos[i].risk < GAMEAI_RISK_FULL)
+		if (moveablepos[i].risk < GAMEAI_RISK_DEATH)
 		{
 			if (item->isInRect(moveablepos[i].x, moveablepos[i].y, r*4, 0))
 			{
@@ -438,11 +502,72 @@ bool GameAI::SetMove()
 	{
 		GameInput::SetKey(playerindex, KSI_DRAIN, true);
 	}
+	/*
+
+	int risklist[GAMEAI_ABLEPOSITIONNUM];
+	ZeroMemory(risklist, sizeof(int)*GAMEAI_ABLEPOSITIONNUM);
+	for (int i=0; i<GAMEAI_ABLEPOSITIONNUM; i++)
+	{
+		int j=0;
+		bool equaltoafter = true;
+		for (; j<i; j++)
+		{
+			if (moveablepos[j].risk < moveablepos[i].risk && (moveablepos[j+1].risk >= moveablepos[i].risk))
+			{
+				if (moveablepos[j+1].risk != moveablepos[i].risk)
+				{
+					equaltoafter = false;
+				}
+				break;
+			}
+		}
+		for (int k=i-1; k>=j; k--)
+		{
+			risklist[k+1] = risklist[k] + equaltoafter?0:1;
+		}
+		if (j > 0)
+		{
+			if (!equaltoafter)
+			{
+				risklist[j] = risklist[j-1] + 1;
+			}
+		}
+		else
+		{
+			risklist[j] = 0;
+		}
+	}
+
+	for (int i=0; i<GAMEAI_ABLEPOSITIONNUM; i++)
+	{
+		risklist[i] += checkorderlist[i];
+	}
+
+	int finallist[GAMEAI_ABLEPOSITIONNUM];
+	ZeroMemory(finallist, sizeof(int)*GAMEAI_ABLEPOSITIONNUM);
+
+	for (int i=0; i<GAMEAI_ABLEPOSITIONNUM; i++)
+	{
+		int j=0;
+		for (; j<i; j++)
+		{
+			if (risklist[j] < risklist[i] && (risklist[j+1] >= risklist[i]))
+			{
+				break;
+			}
+		}
+		for (int k=i-1; k>=j; k--)
+		{
+			finallist[k+1] = finallist[k];
+		}
+		finallist[j] = i;
+	}
+	*/
 
 	for (int i=0; i<GAMEAI_ABLEPOSITIONNUM; i++)
 	{
 		int tindex = checkorderlist[i];
-		if (moveablepos[tindex].risk < GAMEAI_RISK_FULL)
+		if (moveablepos[tindex].risk < GAMEAI_RISK_DEATH)
 		{
 			bdone = true;
 			SetKeyByIndex(tindex);
@@ -471,6 +596,10 @@ void GameAI::ClearRisk()
 	for (int i=0; i<GAMEAI_ABLEPOSITIONNUM; i++)
 	{
 		moveablepos[i].risk = 0;
+		for (int j=0; j<GAMEAI_ABLEPOSITIONNUM; j++)
+		{
+			nextmoveablepos[i][j].risk = 0;
+		}
 	}
 }
 

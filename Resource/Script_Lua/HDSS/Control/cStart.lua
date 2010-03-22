@@ -30,6 +30,7 @@ function ControlExecute_cStart(timer)
 			helper_GetNextEnemyRandom(i);
 			hdssSD(LConst_Desc_DrainAngle+i, -9000);
 			hdssSD(LConst_Desc_BossPattern+i, -1);
+			hdssSD(LConst_Desc_TeiShotTime+i, 0);
 			
 			hdssBGSETUP(i, LConst_bgset_sceneid, scene, true);
 						

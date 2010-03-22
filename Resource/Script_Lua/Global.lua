@@ -67,6 +67,33 @@ LTable_ePlayerDrainFunction =
 	{22,	ePlayerDrain_22},
 }
 
+LTable_ePlayerShotFunction = 
+{
+	{0,	ePlayerShot_00},
+	{1,	ePlayerShot_01},
+	{2,	ePlayerShot_02},
+	{3,	ePlayerShot_03},
+	{4,	ePlayerShot_04},
+	{5,	ePlayerShot_05},
+	{6,	ePlayerShot_06},
+	{7,	ePlayerShot_07},
+	{8,	ePlayerShot_08},
+	{9,	ePlayerShot_09},
+	{10,	ePlayerShot_10},
+	{11,	ePlayerShot_11},
+	{12,	ePlayerShot_12},
+	{13,	ePlayerShot_13},
+	{14,	ePlayerShot_14},
+	{15,	ePlayerShot_15},
+	{16,	ePlayerShot_16},
+	{17,	ePlayerShot_17},
+	{18,	ePlayerShot_18},
+	{19,	ePlayerShot_19},
+	{20,	ePlayerShot_20},
+	{21,	ePlayerShot_21},
+	{22,	ePlayerShot_22},
+}
+
 LTable_ePlayerSendExFunction = 
 {
 	{0,	ePlayerSendEx_00},

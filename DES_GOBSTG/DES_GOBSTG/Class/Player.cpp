@@ -825,6 +825,7 @@ bool Player::Shot()
 	}
 
 	esShot.hscale = (shotdelay - shottimer) * 4.0f / shotdelay;
+	Scripter::scr.Execute(SCR_EVENT, SCR_EVENT_PLAYERSHOT, playerindex);
 	return false;
 }
 

@@ -188,6 +188,8 @@ void PlayerGhost::action()
 	bool chasing = false;
 	bool shooting = Player::p[playerindex].flag & PLAYER_SHOOT;
 
+	DWORD ownertimer = Player::p[playerindex].timer;
+
 	playerghostData * _pgd = &(BResource::res.playerghostdata[ID]);
 
 	if (flag & PGFLAG_TRACE)
@@ -233,7 +235,7 @@ void PlayerGhost::action()
 
 	if (_pgd->mover)
 	{
-		int tangle = _pgd->speed * 100 * timer + _pgd->startangle;
+		int tangle = _pgd->speed * 100 * ownertimer + _pgd->startangle;
 		if (flag & PGFLAG_NEGATIVE)
 		{
 			tangle = 36000 - tangle;
@@ -265,7 +267,7 @@ void PlayerGhost::action()
 
 	if (flag & PGFLAG_ROLL)
 	{
-		int troll = (ROLL(timer, (_pgd->rolltime)*2)-_pgd->rolltime)*_pgd->shootangle;
+		int troll = (ROLL(ownertimer, (_pgd->rolltime)*2)-_pgd->rolltime)*_pgd->shootangle;
 		if (flag & PGFLAG_NEGATIVE)
 		{
 			shootangle = troll;
@@ -293,7 +295,7 @@ void PlayerGhost::action()
 	}
 	if (flag & PGFLAG_STANDSHAKE)
 	{
-		yshake = sint(timer*512)*4.8f-2.4f;
+		yshake = sint(ownertimer*512)*4.8f-2.4f;
 	}
 	else
 	{
@@ -301,7 +303,7 @@ void PlayerGhost::action()
 	}
 	if (flag & PGFLAG_SCALESHAKE)
 	{
-		scale = ROLL(timer, 10)/20.0f+0.8f;
+		scale = ROLL(ownertimer, 10)/20.0f+0.8f;
 	}
 
 	if (flag & PGFLAG_TURN)
@@ -314,7 +316,7 @@ void PlayerGhost::action()
 		{
 			headangle = 1;
 		}
-		headangle *= timer * 1000;
+		headangle *= ownertimer * 1000;
 	}
 	else
 	{

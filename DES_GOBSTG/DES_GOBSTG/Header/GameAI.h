@@ -31,6 +31,8 @@
 
 #define GAMEAI_ABLEPOSITIONNUM	17
 
+#define GAMEAI_RISK_DEATH	INT_MAX
+
 #define GAMEAI_RISK_FULL	1000
 #define GAMEAI_RISK_QUITE	750
 #define GAMEAI_RISK_MEDIUM	500
@@ -57,6 +59,7 @@ public:
 	bool UpdateBasicInfo(float x, float y, float speed, float slowspeed, float r, int aidraintime);
 	bool SetAim(float aimx, float aimy, bool tobelow=false);
 	bool UpdateMoveAbleInfo();
+	void UpdateMoveAbleInfoOne(GameAIPosition * ppos, float basex, float basey);
 	bool IsPlayerSafe();
 	bool CheckBulletCollision(Bullet * bulletitem);
 	bool CheckBeamCollision(Beam * beamitem);
@@ -78,6 +81,7 @@ public:
 	float r;
 	GameAIPosition moveablepos[GAMEAI_ABLEPOSITIONNUM];
 	GameAIPosition lastmoveablepos[GAMEAI_ABLEPOSITIONNUM];
+	GameAIPosition nextmoveablepos[GAMEAI_ABLEPOSITIONNUM][GAMEAI_ABLEPOSITIONNUM];
 
 	int drainpushtimer;
 	int drainmaxpushtime;

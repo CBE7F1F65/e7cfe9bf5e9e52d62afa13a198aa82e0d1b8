@@ -29,6 +29,7 @@ bool Export_Lua_Game::_LuaRegistFunction(LuaObject * obj)
 	_gameobj.Register("AddSendGhostInfo", LuaFn_Game_AddSendGhostInfo);
 	_gameobj.Register("GetPlayerDrainInfo", LuaFn_Game_GetPlayerDrainInfo);
 	_gameobj.Register("SetDrainSpriteInfo", LuaFn_Game_SetPlayerDrainSpriteInfo);
+	_gameobj.Register("GetPlayerShotInfo", LuaFn_Game_GetPlayerShotInfo);
 	_gameobj.Register("SetGhostActiveInfo", LuaFn_Game_SetGhostActiveInfo);
 	_gameobj.Register("GetPlayerSendExInfo", LuaFn_Game_GetPlayerSendExInfo);
 	_gameobj.Register("PlayerSendEx", LuaFn_Game_PlayerSendEx);
@@ -288,6 +289,22 @@ int Export_Lua_Game::LuaFn_Game_GetPlayerDrainInfo(LuaState * ls)
 		return 5;
 	}
 	return 4;
+}
+
+int Export_Lua_Game::LuaFn_Game_GetPlayerShotInfo(LuaState * ls)
+{
+	LuaStack args(ls);
+
+	BYTE _playerindex = args[1].GetInteger();
+	ls->PushInteger(Player::p[_playerindex].nowID);
+	ls->PushInteger(Player::p[_playerindex].nLife);
+	ls->PushInteger(Player::p[_playerindex].shottimer);
+	ls->PushInteger(Player::p[_playerindex].shotdelay);
+	BYTE _ncharge, _nchargemax;
+	Player::p[_playerindex].GetNCharge(&_ncharge, &_nchargemax);
+	ls->PushInteger(_nchargemax);
+
+	return 5;
 }
 
 int Export_Lua_Game::LuaFn_Game_SetPlayerDrainSpriteInfo(LuaState * ls)

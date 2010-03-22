@@ -470,10 +470,61 @@ function ePlayerDrain_11(playerindex, x, y, draintimer, type)
 end
 
 function ePlayerDrain_12(playerindex, x, y, draintimer, type)
+	if type ~= nil then
+		game.SetGhostActiveInfo(playerindex, 160, type+1, type+1, -9000, 0.625, 2);
+		hdssSE(SE_GHOST_ACTIVATE, x, y);
+		return true;
+	end
+	
+	local hscale;
+	local vscale;
+	local r;
+	if draintimer < 40 then
+		hscale = draintimer * 0.029375 + 0.075;
+		vscale = draintimer * 0.014 + 0.04;
+	else
+		hscale = 1.25
+		vscale = 0.6;
+	end
+	game.SetDrainSpriteInfo(playerindex, x, y, 0, hscale, vscale);
+	
+	r = vscale*37+hscale*hscale*128*64/vscale/74;
+	yoffset = r - vscale * 74;
+	hdssENAZBUILD(playerindex, ENAZTYPE_CIRCLE+ENAZOP_AND, x, y-yoffset, r);
+	hdssENAZBUILD(playerindex, ENAZTYPE_CIRCLE+ENAZOP_AND, x, y+yoffset, r);
 	return true;
 end
 
 function ePlayerDrain_13(playerindex, x, y, draintimer, type)
+	if type ~= nil then
+		game.SetGhostActiveInfo(playerindex, 160, type+1, type+1, -9000, 0.625, 2);
+		hdssSE(SE_GHOST_ACTIVATE, x, y);
+		return true;
+	end
+	
+	local hscale;
+	if draintimer < 4 then
+		hscale = draintimer * 0.0625 + 0.75;
+	else
+		hscale = 1;
+	end
+	local angle = draintimer * 300;
+	game.SetDrainSpriteInfo(playerindex, x, y, angle, hscale);
+	
+	local r = hscale * 48;
+	local rs = hscale * 24;
+	local rl = hscale * 96;
+	
+	hdssENAZBUILD(playerindex, ENAZTYPE_CIRCLE+ENAZOP_OR, x, y, r);
+	for i=0, 5 do
+		local cosval = hdss.Get(HDSS_COSA, angle+i*6000);
+		local sinval = hdss.Get(HDSS_SINA, angle+i*6000);
+		local xoffset = (r+rs)*cosval;
+		local yoffset = (r+rs)*sinval;
+		hdssENAZBUILD(playerindex, ENAZTYPE_CIRCLE+ENAZOP_OR, x+xoffset, y+yoffset, rs);
+	end
+	hdssENAZBUILD(playerindex, ENAZTYPE_CIRCLE+ENAZOP_AND, x, y, rl);
+	
 	return true;
 end
 
