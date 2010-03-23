@@ -214,6 +214,7 @@ struct playershootData
 	bool bchargeshoot;
 	float xbias;
 	float ybias;
+	float collisionr;
 	float scale;
 	float speed;
 	float accelspeed;

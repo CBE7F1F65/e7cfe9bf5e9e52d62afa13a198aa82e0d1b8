@@ -121,6 +121,7 @@ void PlayerBullet::Action()
 					{
 						continue;
 					}
+					DWORD _index = pb[j].getIndex();
 					if ((*pb[j]).exist)
 					{
 						(*pb[j]).action();
@@ -129,6 +130,7 @@ void PlayerBullet::Action()
 					{
 						pb[j].pop();
 					}
+					pb[j].toIndex(_index);
 				}
 			}
 		}
@@ -172,7 +174,7 @@ void PlayerBullet::BuildShoot(BYTE playerindex, BYTE playerID, int usetimer, boo
 	}
 }
 
-int PlayerBullet::Build(BYTE playerindex, int shootdataID)
+int PlayerBullet::Build(BYTE playerindex, int shootdataID, bool explode/* =false */, float xoffset/* =0 */, float yoffset/* =0 */)
 {
 	if (pb[playerindex].getSize() == PLAYERBULLETMAX)
 	{
@@ -180,7 +182,11 @@ int PlayerBullet::Build(BYTE playerindex, int shootdataID)
 	}
 	PlayerBullet _pb;
 	playershootData * item = &(BResource::res.playershootdata[shootdataID]);
-	pb[playerindex].push_back(_pb)->valueSet(playerindex, shootdataID, item->arrange, item->xbias, item->ybias, 
+	if (!(item->timeMod) && !explode)
+	{
+		return -1;
+	}
+	pb[playerindex].push_back(_pb)->valueSet(playerindex, shootdataID, item->arrange, item->xbias+xoffset, item->ybias+yoffset, 
 		item->scale, item->angle, item->addangle, item->speed, item->accelspeed, 
 		item->power, item->deletetime, item->flag, item->seID, item->deletetime);
 	return pb[playerindex].getEndIndex();
@@ -236,8 +242,16 @@ void PlayerBullet::valueSet(BYTE _playerindex, WORD _ID, BYTE _arrange, float _x
 		angle += 27000;
 	}
 
-	xplus	=	speed * cost(angle);
-	yplus	=	speed * sint(angle);
+	if (!(flag & PBFLAG_ZONELIKE))
+	{
+		xplus	=	speed * cost(angle);
+		yplus	=	speed * sint(angle);
+	}
+	else
+	{
+		xplus = 0;
+		yplus = 0;
+	}
 
 	if (flag & PBFLAG_BEAM)
 	{
@@ -251,8 +265,16 @@ void PlayerBullet::valueSet(BYTE _playerindex, WORD _ID, BYTE _arrange, float _x
 	}
 	else
 	{
-		hscale *= scale;
-		vscale *= scale;
+		if (flag & PBFLAG_ZONELIKE)
+		{
+			hscale = 0;
+			vscale = 0;
+		}
+		else
+		{
+			hscale *= scale;
+			vscale *= scale;
+		}
 	}
 	locktimer = 0;
 
@@ -277,6 +299,13 @@ void PlayerBullet::Render()
 {
 	if (sprite[ID][animation])
 	{
+		/*
+		if (flag & PBFLAG_BEAM)
+		{
+			spriteData * spdata = SpriteItemManager::CastSprite(BResource::res.playershootdata[ID].siid);
+			sprite[ID][animation]->SetTextureRect(spdata->tex_x+timer*speed, spdata->tex_y, spdata->tex_w, spdata->tex_h);
+		}
+		*/
 		sprite[ID][animation]->SetColor((alpha<<24)|diffuse);
 		sprite[ID][animation]->RenderEx(x, y, ARC(angle+headangle), hscale, vscale);
 	}
@@ -410,9 +439,13 @@ void PlayerBullet::Lock()
 
 void PlayerBullet::hitOn()
 {
+	Player::p[playerindex].DoPlayerBulletHit(hitonfactor);
+	if (flag & PBFLAG_ZONELIKE)
+	{
+		return;
+	}
 	fadeout = true;
 	able = false;
-	Player::p[playerindex].DoPlayerBulletHit(hitonfactor);
 	timer = 0;
 }
 
@@ -429,11 +462,15 @@ bool PlayerBullet::isInRange(float aimx, float aimy, float w, float h)
 		}
 		h = M_GAMESQUARE_HEIGHT / 2;
 	}
-	if (checkCollisionSquare(aimx, aimy, w, h))
+	float rOri = BResource::res.playershootdata[ID].collisionr * hscale;
+	if (checkCollisionSquare(aimx, aimy, w, h, rOri))
 	{
 		if (hiton)
 		{
-			xplus = aimx - x;
+			if (!(flag & PBFLAG_ZONELIKE) && (flag & PBFLAG_OUTTURN))
+			{
+				xplus = aimx - x;
+			}
 			hitOn();
 		}
 		else if ((flag & PBFLAG_BEAM)/* && !(timer % 24)*/)
@@ -509,6 +546,7 @@ void PlayerBullet::action()
 
 		else
 		{
+			speed += accelspeed;
 			if ((flag & PBFLAG_DELAY) || (flag & PBFLAG_CHASE) || (flag & PBFLAG_TURNWHILEDELAY) || accelspeed)
 			{
 				if (flag & PBFLAG_DELAY)
@@ -519,7 +557,6 @@ void PlayerBullet::action()
 				{
 					Lock();
 				}
-				speed += accelspeed;
 				angle += addangle;
 				xplus = speed * cost(angle);
 				yplus = speed * sint(angle);
@@ -527,6 +564,35 @@ void PlayerBullet::action()
 			else
 			{
 				locktimer = 0;
+				if (accelspeed && !(flag & PBFLAG_ZONELIKE))
+				{
+					xplus = speed * cost(angle);
+					yplus = speed * sint(angle);
+				}
+			}
+
+			if (flag & PBFLAG_ZONELIKE)
+			{
+				if (flag & PBFLAG_ANIMATION)
+				{
+					if (timer % (PB_FADEOUTTIME / 3 + 1) == 1)
+					{
+						animation++;
+						if (animation >= PLAYERBULLETTYPE)
+						{
+							animation = 0;
+						}
+					}
+				}
+				if (hscale < scale)
+				{
+					hscale += speed;
+				}
+				if (hscale > scale)
+				{
+					hscale = scale;
+				}
+				vscale = hscale;
 			}
 
 			if (flag & PBFLAG_RELATIVE)
@@ -556,6 +622,10 @@ void PlayerBullet::action()
 			{
 				TurnBullet(speed/4.0f);
 			}
+		}
+		if (xplus>1)
+		{
+			xplus=0;
 		}
 		if (deletetime && timer >= 16 && timer > deletetime-16)
 		{
@@ -603,10 +673,11 @@ void PlayerBullet::action()
 		{
 			if (timer == 1)
 			{
-				SE::push(SE_PLAYER_EXPLODE, x);
+				Build(playerindex, ID+1, true, x-Player::p[playerindex].x, y-Player::p[playerindex].y);
+//				SE::push(SE_PLAYER_EXPLODE, x);
 			}
 
-			EventZone::Build(EVENTZONE_TYPE_ENEMYDAMAGE, playerindex, x, y, 32/BResource::res.playershootdata[ID].timeMod, SpriteItemManager::GetTexW(BResource::res.playershootdata[ID].siid), power);
+//			EventZone::Build(EVENTZONE_TYPE_ENEMYDAMAGE, playerindex, x, y, 32/BResource::res.playershootdata[ID].timeMod, SpriteItemManager::GetTexW(BResource::res.playershootdata[ID].siid), power);
 		}
 		if (flag & PBFLAG_SCALEUP)
 		{

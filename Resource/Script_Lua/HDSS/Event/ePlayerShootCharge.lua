@@ -449,22 +449,70 @@ function ePlayerShootCharge_13_3(playerindex, level, oplayerID, px, py)
 end
 
 function ePlayerShootCharge_14_1(playerindex, level, oplayerID, px, py)
+	local x = helper_GetCenterX(playerindex) * 2 - px;
+	local y = 144;
+	hdssEFFSETUP(playerindex, LConst_effid_shootcharge, x, y, LConst_ShootCharge_EnemyDelay);
+	hdssEB(CC_ShootChargeEnemyEID_14_1, playerindex, x, y, 9000, 0, LConst_EnemyTypeNull, 10);
+	hdssEA_DELAY(playerindex, LConst_ShootCharge_EnemyDelay);
+	local aimangle = RANDT(1, 36000);
+	hdssENSAIM(playerindex, level, 0, 0, aimangle);
 	return true;
 end
 
 function ePlayerShootCharge_14_2(playerindex, level, oplayerID, px, py)
+	local x = helper_GetCenterX(playerindex) * 2 - px;
+	local y = 144;
+	hdssEFFSETUP(playerindex, LConst_effid_shootcharge, x, y, LConst_ShootCharge_EnemyDelay);
+	hdssEB(CC_ShootChargeEnemyEID_14_2, playerindex, x, y, 9000, 0, LConst_EnemyTypeNull, 10);
+	hdssEA_DELAY(playerindex, LConst_ShootCharge_EnemyDelay);
+	local aimangle = RANDT(1, 36000);
+	hdssENSAIM(playerindex, level, 0, 0, aimangle);
 	return true;
 end
 
 function ePlayerShootCharge_14_3(playerindex, level, oplayerID, px, py)
+	local x = TotalCenterX;
+	local y = 0;
+	hdssEB(CC_ShootChargeEnemyEID_14_3, playerindex, x, y, 9000, 0, oplayerID, 1400, helper_GetRandomItem());
+	hdssENSAIM(playerindex, level);
 	return true;
 end
 
 function ePlayerShootCharge_15_1(playerindex, level, oplayerID, px, py)
+	local basex = helper_GetCenterX(playerindex) * 2 - px;
+	local basey = 144;
+	hdssEFFSETUP(playerindex, LConst_effid_shootcharge, basex, basey, LConst_ShootCharge_EnemyDelay);
+	local baseangle = hdssAMAP(playerindex, basex, basey);
+	for i=0, 3 do
+		local angle = baseangle+(i-1.5)*3000;
+		local cosval = hdss.Get(HDSS_COSA, angle+18000);
+		local sinval = hdss.Get(HDSS_SINA, angle+18000);
+		local x = 80 * cosval + basex;
+		local y = 80 * sinval + basey;
+		local bangle = hdssAMAP(playerindex, x, y);
+		hdssEB(CC_ShootChargeEnemyEID_15_1, playerindex, x, y, bangle, 3.5, LConst_EnemyExType_AliceYellow, 240);
+		hdssEA_DELAY(playerindex, LConst_ShootCharge_EnemyDelay);
+		hdssENSAIM(playerindex, level);
+	end
 	return true;
 end
 
 function ePlayerShootCharge_15_2(playerindex, level, oplayerID, px, py)
+	local basex = helper_GetCenterX(playerindex) * 2 - px;
+	local basey = 144;
+	hdssEFFSETUP(playerindex, LConst_effid_shootcharge, basex, basey, LConst_ShootCharge_EnemyDelay);
+	local baseangle = hdssAMAP(playerindex, basex, basey);
+	for i=0, 3 do
+		local angle = baseangle+(i-1.5)*3000;
+		local cosval = hdss.Get(HDSS_COSA, angle+18000);
+		local sinval = hdss.Get(HDSS_SINA, angle+18000);
+		local x = 80 * cosval + basex;
+		local y = 80 * sinval + basey;
+		local bangle = hdssAMAP(playerindex, x, y);
+		hdssEB(CC_ShootChargeEnemyEID_15_2, playerindex, x, y, bangle, 3.5, LConst_EnemyExType_AliceYellow, 240);
+		hdssEA_DELAY(playerindex, LConst_ShootCharge_EnemyDelay);
+		hdssENSAIM(playerindex, level);
+	end
 	return true;
 end
 

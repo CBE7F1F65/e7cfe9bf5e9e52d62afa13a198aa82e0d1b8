@@ -478,7 +478,6 @@ function ePlayerDrain_12(playerindex, x, y, draintimer, type)
 	
 	local hscale;
 	local vscale;
-	local r;
 	if draintimer < 40 then
 		hscale = draintimer * 0.029375 + 0.075;
 		vscale = draintimer * 0.014 + 0.04;
@@ -488,8 +487,8 @@ function ePlayerDrain_12(playerindex, x, y, draintimer, type)
 	end
 	game.SetDrainSpriteInfo(playerindex, x, y, 0, hscale, vscale);
 	
-	r = vscale*37+hscale*hscale*128*64/vscale/74;
-	yoffset = r - vscale * 74;
+	local r = vscale*37+hscale*hscale*128*64/vscale/74;
+	local yoffset = r - vscale * 74;
 	hdssENAZBUILD(playerindex, ENAZTYPE_CIRCLE+ENAZOP_AND, x, y-yoffset, r);
 	hdssENAZBUILD(playerindex, ENAZTYPE_CIRCLE+ENAZOP_AND, x, y+yoffset, r);
 	return true;
@@ -529,10 +528,122 @@ function ePlayerDrain_13(playerindex, x, y, draintimer, type)
 end
 
 function ePlayerDrain_14(playerindex, x, y, draintimer, type)
+	if type ~= nil then
+		game.SetGhostActiveInfo(playerindex, 160, type+1, type+1, -9000, 0.94375, 2);
+		hdssSE(SE_GHOST_ACTIVATE, x, y);
+		return true;
+	end
+	
+	local hscale;
+	if draintimer < 12 then
+		hscale = draintimer * 0.05 + 0.15;
+	else
+		hscale = 0.75;
+	end
+	
+	local drainangle = hdss.Get(HDSS_D, LConst_Desc_DrainAngle+playerindex);
+	local moveangle = 9000;
+	local bkeyup = hdss.Get(HDSS_CHECKKEY, playerindex, KSI_UP);
+	local bkeydown = hdss.Get(HDSS_CHECKKEY, playerindex, KSI_DOWN);
+	local bkeyleft = hdss.Get(HDSS_CHECKKEY, playerindex, KSI_LEFT);
+	local bkeyright = hdss.Get(HDSS_CHECKKEY, playerindex, KSI_RIGHT);
+	if bkeyup and not bkeydown then
+		if bkeyleft and not bkeyright then
+			moveangle = -13500;
+		elseif not bkeyleft and bkeyright then
+			moveangle = -4500;
+		else
+			moveangle = -9000;
+		end
+	elseif not bkeyup and bkeydown then
+		if bkeyleft and not bkeyright then
+			moveangle = 13500;
+		elseif not bkeyleft and bkeyright then
+			moveangle = 4500;
+		else
+			moveangle = 9000;
+		end
+	else
+		if bkeyleft and not bkeyright then
+			moveangle = 18000;
+		elseif not bkeyleft and bkeyright then
+			moveangle = 0;
+		else
+			moveangle = drainangle-18000;
+		end
+	end
+	
+	moveangle = moveangle + 18000;
+	moveangle = hdss.Get(HDSS_REGANGLE, moveangle);
+	
+	local baseangle = drainangle;
+	if moveangle ~= drainangle then
+		
+		local plusval = 1500;
+		drainangle = hdss.Get(HDSS_REGANGLE, drainangle);
+		local bplus = true;
+		if moveangle > drainangle then
+			if drainangle + 18000 < moveangle then
+				bplus = false;
+			end
+		else
+			if moveangle + 18000 > drainangle then
+				bplus = false;
+			end
+		end
+		
+		if bplus then
+			if moveangle < drainangle then
+				moveangle = moveangle + 36000;
+			end
+			baseangle = drainangle + plusval;
+			if baseangle > moveangle then
+				baseangle = moveangle;
+			end
+		else
+			if moveangle > drainangle then
+				moveangle = moveangle - 36000;
+			end	
+			baseangle = drainangle - plusval;
+			if baseangle < moveangle then
+				baseangle = moveangle;
+			end
+		end
+		baseangle = hdss.Get(HDSS_REGANGLE, baseangle);
+	end
+	hdssSD(LConst_Desc_DrainAngle+playerindex, baseangle);
+	
+	game.SetDrainSpriteInfo(playerindex, x, y, baseangle, hscale);
+	
+	local r = hscale*(37+128*64/74);
+	local offset = r - hscale * 74;
+	local cosval = hdss.Get(HDSS_COSA, baseangle);
+	local sinval = hdss.Get(HDSS_SINA, baseangle);
+	hdssENAZBUILD(playerindex, ENAZTYPE_CIRCLE+ENAZOP_AND, x+offset*sinval, y+offset*cosval, r);
+	hdssENAZBUILD(playerindex, ENAZTYPE_CIRCLE+ENAZOP_AND, x-offset*sinval, y-offset*cosval, r);
 	return true;
 end
 
 function ePlayerDrain_15(playerindex, x, y, draintimer, type)
+	if type ~= nil then
+		local angle = hdssAMAP(playerindex, x, y);
+		game.SetGhostActiveInfo(playerindex, 160, type+1, type+1, angle, 0.625, 2);
+		hdssSE(SE_GHOST_ACTIVATE, x, y);
+		return true;
+	end
+	
+	local hscale;
+	if draintimer < 90 then
+		hscale = draintimer * 0.004 + 0.84;
+	else
+		hscale = 1.2;
+	end
+	game.SetDrainSpriteInfo(playerindex, x, y, 0, hscale);
+	
+	local r = hscale * 80;
+	local yoffset = hscale * 32;
+	
+	hdssENAZBUILD(playerindex, ENAZTYPE_RIGHTANGLED+ENAZOP_AND, x, y+yoffset, r, r, 13500);
 	return true;
 end
 

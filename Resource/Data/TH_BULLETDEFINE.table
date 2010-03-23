@@ -41,6 +41,7 @@ Comment	Type	SIID	nRoll	nColor	CollisionType	Collision_Main	Collision_Sub	FadeCo
 -	39	SI_BulletEx_Yuka_Big_0	0	1	1	38	0	255	255	0	640	90	0	2	1
 -	40	SI_BulletEx_Yuka_Middle_0	0	1	1	28	0	255	255	0	640	90	0	2	1
 -	41	SI_BulletEx_Yuka_Small_0	0	1	1	18	0	255	255	0	640	90	0	2	1
+-	42	SI_BulletEx_Reisen_0	1	1	1	38	0	255	255	0	640	4	0	2	1
 #		SpecialBullet(60~63)													
 -	60	SI_Null	0	16	0	0	0	0	255	0	0	90	0	2	0
 -	61	SI_Bullet_ShootItem_0	0	8	0	0	0	255	255	0	0	90	0	0	0

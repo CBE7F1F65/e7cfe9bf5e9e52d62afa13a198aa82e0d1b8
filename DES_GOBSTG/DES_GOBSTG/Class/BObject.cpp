@@ -120,7 +120,7 @@ bool BObject::checkCollisionRect(float aimx, float aimy, float rectPrep, float r
 {
 	float longside = rectPrep > rectParal ? rectPrep : rectParal;
 
-	if((fabsf(x-aimx)>longside+rOri)||(fabsf(y-aimy)>longside+rOri))
+	if((fabsf(x-aimx)>longside*M_SQRT2+rOri)||(fabsf(y-aimy)>longside*M_SQRT2+rOri))
 		return false;
 
 	newx = (float)((rotSin*(aimx-x)-rotCos*(aimy-y)));

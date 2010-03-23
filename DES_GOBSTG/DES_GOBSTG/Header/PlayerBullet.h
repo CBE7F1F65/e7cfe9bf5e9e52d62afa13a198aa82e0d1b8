@@ -18,6 +18,7 @@
 #define PBFLAG_REBOUND			0x0400
 #define PBFLAG_EXPLODE			0x0800
 #define PBFLAG_SCALEUP			0x1000
+#define PBFLAG_ZONELIKE			0x2000
 #define PBFLAG_POSTMASK			0xff00
 
 #define PB_FADEOUTTIME		32
@@ -32,7 +33,7 @@ public:
 
 	static void Init(HTEXTURE * tex);
 	static void BuildShoot(BYTE playerindex, BYTE playerID, int usetimer, bool bchargeshoot=false);
-	static int Build(BYTE playerindex, int shootdataID);
+	static int Build(BYTE playerindex, int shootdataID, bool explode=false, float xoffset=0, float yoffset=0);
 	static void ClearItem();
 	static void Action();
 	static void RenderAll(BYTE playerindex);

@@ -114,10 +114,36 @@ function Edef_SendExChase_13(playerindex, rank, x, y, timer, px, py)
 end
 
 function Edef_SendExChase_14(playerindex, rank, x, y, timer, px, py)
+	if hdssCOLLISION_CIRCLE(x, y, px, py, 96, true) then
+		hdssEA_FADEOUT(playerindex, -1);
+		hdssA(playerindex,
+			{
+				TIMEREQUAL, 96, FADEOUT
+			}
+		)
+		hdssB(playerindex, x, y, 9000, 0, CC_BulletEx_Reisen, 0, 32);
+		hdssA(playerindex);
+	end
 	return true;
 end
 
 function Edef_SendExChase_15(playerindex, rank, x, y, timer, px, py)
+	if timer == 1 then
+		hdssEA_FADEOUT(playerindex, 32);
+	elseif timer == 16 then
+		local angle = hdssAMAP(playerindex, x, y);
+		for i=0, 2 do
+			hdssA(playerindex,
+				{
+					TIMERLESS, 60, SPEEDSETADD, -4-i,
+					TIMEREQUAL, 60, ANGLESETADD, 18000,
+					TIMEREQUAL, 60, SPEEDSET, 250
+				}
+			)
+			hdssBC(playerindex, 12, angle, 0, x, y, 2.5+i*0.6, CC_Bullet_Scale, i+12);
+		end
+		hdssA(playerindex);
+	end
 	return true;
 end
 

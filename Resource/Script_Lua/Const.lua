@@ -50,6 +50,11 @@ LConst_EnemyExType_Lyrica	=	61
 LConst_EnemyExType_Mystia	=	62
 LConst_EnemyExType_Marlin	=	63
 LConst_EnemyExType_Lunasa	=	64
+LConst_EnemyExType_Reisen	=	65
+LConst_EnemyExType_AliceBlue = 66
+LConst_EnemyExType_AliceRed = 67
+LConst_EnemyExType_AliceGreen = 68
+LConst_EnemyExType_AliceYellow = 69
 
 LConst_GhostTypeStart	=	37
 LConst_GhostTypeGreen	=	LConst_GhostTypeStart

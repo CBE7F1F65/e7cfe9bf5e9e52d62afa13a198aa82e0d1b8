@@ -1560,6 +1560,7 @@ void Player::SendEx(BYTE playerindex, float x, float y)
 	if (_esindex >= 0)
 	{
 		Scripter::scr.Execute(SCR_EVENT, SCR_EVENT_PLAYERSENDEX, playerindex);
+		SE::push(SE_BULLET_SENDEX, x);
 	}
 }
 

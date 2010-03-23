@@ -189,11 +189,19 @@ function ePlayerSendExChase_13(playerindex, x, y, playerID, appendfloat)
 	return true;
 end
 
-function ePlayerSendExChase_14(playerindex, x, y, playerID, appendfloat)
+function ePlayerSendExChase_14(playerindex, x, y, playerID, appendfloat, angle, speed)
+	if angle == nil then
+		angle = RANDT(8990, 9010);
+	end
+	if speed == nil then
+		speed = RANDTF(2.0, 2.4);
+	end
+	hdssEB(CC_SendExChaseEnemyEID_14, playerindex, x, y, angle, speed, LConst_EnemyExType_Reisen, 0);
 	return true;
 end
 
 function ePlayerSendExChase_15(playerindex, x, y, playerID, appendfloat)
+	hdssEB(CC_SendExChaseEnemyEID_15, playerindex, x, y, 9000, 0, LConst_EnemyExType_AliceRed, 240);
 	return true;
 end
 

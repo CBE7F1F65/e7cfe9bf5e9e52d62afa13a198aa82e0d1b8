@@ -736,7 +736,7 @@ void Bullet::action()
 		{
 			diffuse = 0xffffff;
 			matchFadeOutColorType();
-			hscale = timer / 60.0f + 0.6f;
+			hscale = timer / 40.0f + 1.0f;
 			alpha = (BYTE)(32-timer) * 4 - 1;
 		}
 		else if(timer > 32 && timer < 96)

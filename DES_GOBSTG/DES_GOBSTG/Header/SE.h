@@ -26,6 +26,7 @@
 #define	SE_BULLET_CHANGE_2		18
 #define	SE_BULLET_BOUND			19
 #define	SE_BULLET_FADEOUT		20
+#define SE_BULLET_SENDEX		21
 
 #define	SE_BEAM_1				22
 #define	SE_BEAM_2				23

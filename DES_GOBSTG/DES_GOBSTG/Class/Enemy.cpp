@@ -172,7 +172,7 @@ void Enemy::Action()
 					en[j].toIndex(_index);
 					if (pen->able)
 					{
-						PlayerBullet::CheckAndSetLock((BObject *)pen, j, en[j].getIndex(), pen->checkActive() && pen->maxlife < 800 && (pen->flag & ENEMYFLAG_PBSHOTABLE));
+						PlayerBullet::CheckAndSetLock((BObject *)pen, j, en[j].getIndex(), pen->checkActive() && pen->maxlife < 100 && (pen->flag & ENEMYFLAG_PBSHOTABLE));
 						if (pen->type < PLAYERTYPEMAX)
 						{
 							bossindex[j] = en[j].getIndex();
@@ -1096,6 +1096,10 @@ bool Enemy::CheckENAZ(BYTE playerindex, float x, float y, float rori)
 {
 	bool haveor = false;
 	bool orcheck = false;
+	if (!enaz[playerindex].size())
+	{
+		return false;
+	}
 	for (list<EnemyActivationZone>::iterator it=enaz[playerindex].begin(); it!=enaz[playerindex].end(); it++)
 	{
 		bool checkret = true;
@@ -1325,28 +1329,31 @@ void Enemy::action()
 			}
 
 			Player::p[playerindex].DoEnemyCollapse(x, y, type);
-			int tscore = Player::p[playerindex].nSpellPoint;
-			ScoreDisplay _item;
-			if (tscore < PLAYER_NSPELLPOINTMAX)
+			if (BResource::res.enemydata[type].spellpoint)
 			{
-				itoa(tscore, _item.cScore, 10);
+				int tscore = Player::p[playerindex].nSpellPoint;
+				ScoreDisplay _item;
+				if (tscore < PLAYER_NSPELLPOINTMAX)
+				{
+					itoa(tscore, _item.cScore, 10);
+				}
+				else
+				{
+					strcpy(_item.cScore, "b");
+				}
+				_item.timer = 0;
+				_item.x = x;
+				_item.y = y;
+				if(tscore >= 300000)
+				{
+					_item.yellow = true;
+				}
+				else
+				{
+					_item.yellow = false;
+				}
+				scoredisplay[playerindex].push_back(_item);
 			}
-			else
-			{
-				strcpy(_item.cScore, "b");
-			}
-			_item.timer = 0;
-			_item.x = x;
-			_item.y = y;
-			if(tscore >= 300000)
-			{
-				_item.yellow = true;
-			}
-			else
-			{
-				_item.yellow = false;
-			}
-			scoredisplay[playerindex].push_back(_item);
 
 			BYTE blastmaxtime;
 			float blastr;

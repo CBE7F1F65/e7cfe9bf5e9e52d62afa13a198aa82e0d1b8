@@ -510,7 +510,7 @@ void FrontDisplay::RenderSpellName(BYTE playerindex)
 		DWORD ucol = (alpha<<24)|0xFF0000;
 		DWORD dcol = (alpha<<24)|0xFFFFFF;
 		gameinfodisplay.fsSpell[1-playerindex][spellclass-1].SetColor(ucol, ucol, dcol, dcol);
-		gameinfodisplay.fsSpell[1-playerindex][spellclass-1].Render(x, y, FONTSYS_DEFAULT_SHADOW, 0.85f);
+		gameinfodisplay.fsSpell[1-playerindex][spellclass-1].Render(x-100, y, FONTSYS_DEFAULT_SHADOW, 0.85f, 0, HGETEXT_MIDDLE|HGETEXT_LEFT);
 	}
 }
 

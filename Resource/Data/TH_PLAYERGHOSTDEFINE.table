@@ -62,6 +62,14 @@ Comment	Index	SIID	XAdj	YAdj	Speed	Flag	RollTime	ShootAngle	MoveR	StartAngle	Ble
 #		Yuka									
 -	104	SI_Null	0	0	0	0	0	0	0	0	2
 -	108	SI_Null	0	0	0	0	0	0	0	0	2
+#		Reisen									
+-	112	SI_Null	0	0	0	0	0	0	0	0	2
+-	116	SI_Null	0	0	0	0	0	0	0	0	2
+#		Alice									
+-	120	SI_PlayerGhost_15_01	-15	0	0	2	0	0	0	0	2
+-	121	SI_PlayerGhost_15_01	15	0	0	2	0	0	0	0	2
+-	124	SI_PlayerGhost_15_01	-5	15	0	2	0	0	0	0	2
+-	125	SI_PlayerGhost_15_01	5	15	0	2	0	0	0	0	2
 #		Sanae									
 -	352	SI_PlayerGhost_22_01	0	-25	0	14	0	0	0	0	2
 -	353	SI_PlayerGhost_22_02	-30	-15	0	14	0	0	0	0	2

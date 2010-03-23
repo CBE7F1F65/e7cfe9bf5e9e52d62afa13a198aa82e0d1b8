@@ -27,9 +27,12 @@ void Process::_Render(BYTE renderflag/* =M_RENDER_NULL */)
 		{
 			for (int j=M_GAMESQUARE_TOP; j<M_GAMESQUARE_BOTTOM; j++)
 			{
-				if (Enemy::CheckENAZ(playerindex, i, j, 1))
+				if (Player::p[playerindex].bDrain)
 				{
-					hge->Gfx_RenderLine(i, j, i+1, j);
+					if (Enemy::CheckENAZ(playerindex, i, j, 1))
+					{
+						hge->Gfx_RenderLine(i, j, i+1, j);
+					}
 				}
 			}
 		}
