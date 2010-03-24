@@ -1176,27 +1176,39 @@ int _HDSSCallGet::Call_BEBUILD(LuaState * ls)
 		BYTE _color = _INEXT_HDSS_LUAPARA;
 		float _length = _FNEXT_HDSS_LUAPARA;
 
+		float _width = 0;
 		BYTE _flag = BEAMFLAG_NONE;
+		int _fadeintime = 8;
 		int _fadeouttime = 0;
 		BYTE _tarID = 0xff;
 
 		_JNEXT_HDSS_LUAPARA;
 		if (bhavenext)
 		{
-			_flag = _IOBJ_HDSS_LUA;
+			_width = _FOBJ_HDSS_LUA;
 			_JNEXT_HDSS_LUAPARA;
 			if (bhavenext)
 			{
-				_fadeouttime = _IOBJ_HDSS_LUA;
+				_flag = _IOBJ_HDSS_LUA;
 				_JNEXT_HDSS_LUAPARA;
 				if (bhavenext)
 				{
-					_tarID = _IOBJ_HDSS_LUA;
+					_fadeintime = _IOBJ_HDSS_LUA;
+					_JNEXT_HDSS_LUAPARA;
+					if (bhavenext)
+					{
+						_fadeouttime = _IOBJ_HDSS_LUA;
+						_JNEXT_HDSS_LUAPARA;
+						if (bhavenext)
+						{
+							_tarID = _IOBJ_HDSS_LUA;
+						}
+					}
 				}
 			}
 		}
 
-		int iret = Beam::Build(_playerindex, _x, _y, _angle, _speed, _type, _color, _length, _flag, _fadeouttime, _tarID);
+		int iret = Beam::Build(_playerindex, _x, _y, _angle, _speed, _type, _color, _length, _width, _flag, _fadeintime, _fadeouttime, _tarID);
 		_PI_HDSS_LUA(iret);
 		return 1;
 	}

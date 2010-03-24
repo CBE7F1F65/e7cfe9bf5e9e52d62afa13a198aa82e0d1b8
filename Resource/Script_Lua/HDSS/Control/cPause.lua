@@ -139,7 +139,7 @@ function CEPause_DispatchConfirmSelect(selsyspauseconfirmid)
 		end
 	end
 	
-	if hdss.Get(HDSS_CHECKKEY, 0, KSI_QUICK, DIKEY_DOWN) then
+	if hdss.Get(HDSS_CHECKKEY, 0, KSI_QUICK, DIKEY_UP) then
 		hdssSE(SE_SYSTEM_CANCEL);
 		hdssSELCLEAR(selsyspauseconfirmid);
 		return -1;

@@ -6,6 +6,12 @@ function _eActiveGhostOver_Send3(playerindex)
 	end
 end
 
+function _eActiveGhostOver_Send1(playerindex)
+	local x, y, angle, rank = helper_GetActiveGhostOverInfo(playerindex);
+	local speed = 1 + rank * 0.1;
+	hdssB(playerindex, x, y, angle, speed, 2, 2);
+end
+
 function eActiveGhostOver_00(playerindex)
 	_eActiveGhostOver_Send3(playerindex);
 	return true;
@@ -87,7 +93,7 @@ function eActiveGhostOver_15(playerindex)
 end
 
 function eActiveGhostOver_16(playerindex)
-	_eActiveGhostOver_Send3(playerindex);
+	_eActiveGhostOver_Send1(playerindex);
 	return true;
 end
 

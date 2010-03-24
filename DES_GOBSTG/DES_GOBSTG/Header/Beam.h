@@ -19,12 +19,12 @@ public:
 	~Beam();
 
 	static void Init();
-	static int Build(BYTE playerindex, float x, float y, int angle, float speed, BYTE type, BYTE color, float length, BYTE flag = BEAMFLAG_NONE, int fadeouttime = 0, BYTE tarID = 0xff);
+	static int Build(BYTE playerindex, float x, float y, int angle, float speed, BYTE type, BYTE color, float length, float width = 0, BYTE flag = BEAMFLAG_NONE, int fadeintime = 8, int fadeouttime = 0, BYTE tarID = 0xff);
 	static void ClearItem();
 	static void Action();
 	static void RenderAll(BYTE playerindex);
 
-	void valueSet(WORD ID, float x, float y,int angle, float speed, BYTE type, BYTE color, float length, BYTE flag = BEAMFLAG_NONE, int fadeouttime = 0, BYTE tarID = 0xff);
+	void valueSet(WORD ID, float x, float y,int angle, float speed, BYTE type, BYTE color, float length, float width = 0, BYTE flag = BEAMFLAG_NONE, int fadeintime = 8, int fadeouttime = 0, BYTE tarID = 0xff);
 	bool isInRect(float aimx, float aimy, float r, int nextstep=0);
 
 	void SetVector(const BObject &ori, const BObject &aim);
@@ -43,12 +43,17 @@ public:
 	float	lastspeed;
 	float	holdoffset;
 	int		lastangle;
+	int		fadeintime;
 	int		fadeouttime;
+
+	float	texw;
+	float	texh;
 
 	bool	fadeout;
 	bool	able;
 
 	float	length;
+	float	width;
 	BYTE	flag;
 	BYTE	type;
 	BYTE	color;

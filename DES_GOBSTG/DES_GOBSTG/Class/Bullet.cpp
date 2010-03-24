@@ -311,7 +311,7 @@ bool Bullet::valueSet(BYTE _playerindex, WORD _ID, float _x, float _y, int _angl
 
 	for (int i=0; i<BULLET_EVENTMAX; i++)
 	{
-		eventID[i] = 0xff;
+		eventID[i] = 0;
 	}
 
 	tarID	=	_tarID;
@@ -399,6 +399,19 @@ void Bullet::DoIze()
 							memcpy(actionList, EventZone::bulletActionList[playerindex], BULLETACTIONMAX*sizeof(int));
 						}
 					}
+					if (it->type & EVENTZONE_TYPE_BULLETSTUPA)
+					{
+						if (!passedEvent(EVENTZONE_TYPE_BULLETSTUPA))
+						{
+							if (timer >= fadeinTime && type != it->eventID)
+							{
+								DWORD _tindex = bu[playerindex].getIndex();
+								Build(playerindex, x, y, angle, speed+it->power, it->eventID, 0);
+								bu[playerindex].toIndex(_tindex);
+								passEvent(EVENTZONE_TYPE_BULLETSTUPA);
+							}
+						}
+					}
 					if (it->type & EVENTZONE_TYPE_BULLETEVENT)
 					{
 						if (!passedEvent(it->eventID))
@@ -484,7 +497,7 @@ void Bullet::actionInStop()
 	DoUpdateRenderDepth();
 }
 
-bool Bullet::passedEvent(BYTE _eventID)
+bool Bullet::passedEvent(DWORD _eventID)
 {
 	for (int i=0; i<BULLET_EVENTMAX; i++)
 	{
@@ -492,7 +505,7 @@ bool Bullet::passedEvent(BYTE _eventID)
 		{
 			return true;
 		}
-		else if (eventID[i] == 0xff)
+		else if (eventID[i] == 0)
 		{
 			return false;
 		}
@@ -500,11 +513,11 @@ bool Bullet::passedEvent(BYTE _eventID)
 	return false;
 }
 
-void Bullet::passEvent(BYTE _eventID)
+void Bullet::passEvent(DWORD _eventID)
 {
 	for (int i=0; i<BULLET_EVENTMAX; i++)
 	{
-		if (eventID[i] == 0xff)
+		if (eventID[i] == 0)
 		{
 			eventID[i] = _eventID;
 			return;

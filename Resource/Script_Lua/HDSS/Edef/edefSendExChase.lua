@@ -152,6 +152,15 @@ function Edef_SendExChase_16(playerindex, rank, x, y, timer, px, py)
 end
 
 function Edef_SendExChase_17(playerindex, rank, x, y, timer, px, py)
+	if timer == 1 then
+		hdssEA_FADEOUT(playerindex, 42);
+	elseif math.mod(timer, 3) == 0 then
+		local nowindex = timer / 3;
+		local leftrightindi = math.mod(hdss.Get(HDSS_ENI, playerindex), 2) * 2 - 1;
+		local aimangle = hdss.Get(HDSS_ENAIMANGLE, playerindex);
+		local speed = (nowindex+3)*0.25;
+		hdssBC(playerindex, 8, aimangle+leftrightindi*nowindex*600, 0, x, y, speed, CC_Bullet_Coin, math.mod(nowindex, 3));
+	end
 	return true;
 end
 

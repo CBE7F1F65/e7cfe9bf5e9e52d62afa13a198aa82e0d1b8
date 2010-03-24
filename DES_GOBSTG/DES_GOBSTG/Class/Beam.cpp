@@ -10,6 +10,8 @@
 #include "../header/ProcessDefine.h"
 #include "../header/Process.h"
 #include "../header/GameAI.h"
+#include "../header/SpriteItemManager.h"
+#include "../header/BResource.h"
 
 #define	BEAMMAX				0x50
 
@@ -91,7 +93,7 @@ void Beam::RenderAll(BYTE playerindex)
 	}
 }
 
-int Beam::Build(BYTE playerindex, float x, float y, int angle, float speed, BYTE type, BYTE color, float length, BYTE flag, int fadeouttime, BYTE tarID)
+int Beam::Build(BYTE playerindex, float x, float y, int angle, float speed, BYTE type, BYTE color, float length, float width, BYTE flag, int fadeintime, int fadeouttime, BYTE tarID)
 {
 	if (be[playerindex].getSize() == BEAMMAX)
 	{
@@ -100,7 +102,7 @@ int Beam::Build(BYTE playerindex, float x, float y, int angle, float speed, BYTE
 	Beam * _tbe;
 	_tbe = be[playerindex].push_back();
 	int beindex = be[playerindex].getEndIndex();
-	_tbe->valueSet(beindex, x, y, angle, speed, type, color, length, flag, fadeouttime, tarID);
+	_tbe->valueSet(beindex, x, y, angle, speed, type, color, length, width, flag, fadeintime, fadeouttime, tarID);
 	return beindex;
 }
 
@@ -112,12 +114,12 @@ void Beam::Render()
 		int tblend = Bullet::sprite[i]->GetBlendMode();
 		Bullet::sprite[i]->SetBlendMode(BLEND_ALPHAADD);
 		Bullet::sprite[i]->SetColor(alpha<<24|diffuse);
-		Bullet::sprite[i]->RenderEx(x, y, ARC(angle+headangle+BULLET_ANGLEOFFSET), vscale, hscale);
+		Bullet::sprite[i]->RenderEx(x, y, ARC(angle+headangle+BULLET_ANGLEOFFSET), hscale, vscale);
 		Bullet::sprite[i]->SetBlendMode(tblend);
 	}
 }
 
-void Beam::valueSet(WORD _ID, float _x, float _y, int _angle, float _speed, BYTE _type, BYTE _color, float _length, BYTE _flag, int _fadeouttime, BYTE _tarID)
+void Beam::valueSet(WORD _ID, float _x, float _y, int _angle, float _speed, BYTE _type, BYTE _color, float _length, float _width, BYTE _flag, int _fadeintime, int _fadeouttime, BYTE _tarID)
 {
 	ID			=	_ID;
 	x			=	_x;
@@ -127,7 +129,9 @@ void Beam::valueSet(WORD _ID, float _x, float _y, int _angle, float _speed, BYTE
 	type		=	_type;
 	color		=	_color;
 	length		=	_length;
+	width		=	_width;
 	flag		=	_flag;
+	fadeintime	=	_fadeintime;
 	fadeouttime	=	_fadeouttime;
 
 	tarID		=	_tarID;
@@ -156,18 +160,37 @@ void Beam::valueSet(WORD _ID, float _x, float _y, int _angle, float _speed, BYTE
 
 	xplus = cost(angle);
 	yplus = sint(angle);
+
+	spriteData * spdata = SpriteItemManager::CastSprite(BResource::res.bulletdata[type].siid);
+	texw	=	spdata->tex_w;
+	texh	=	spdata->tex_h;
+
+	if (!width)
+	{
+		width = texw;
+	}
+
+	hscale = width / texh;
 	if(flag & BEAMFLAG_HORIZON)
 	{
-		hscale = length / 16.0f;
-		vscale = 0.1f;
+//		hscale = length / 16.0f;
+//		vscale = 0.1f;
+		/*
+		if (fadeintime > 0)
+		{
+			hscale = hscale / fadeintime;
+		}
+		*/
+		hscale = 0;
+		vscale = length / texh;
 		x += length * cost(angle) / 2;
 		y += length * sint(angle) / 2;
 		speed /= 100.0f;
 	}
 	else
 	{
-		hscale = 0;
-		vscale = 1;
+		hscale = 1;
+		vscale = 0;
 		xplus *= speed;
 		yplus *= speed;
 	}
@@ -183,7 +206,7 @@ void Beam::SetVector(float orix, float oriy, float aimx, float aimy)
 	length = DIST(orix, oriy, aimx, aimy) + holdoffset;
 	x = (orix + aimx) / 2;
 	y = (oriy + aimy) / 2;
-	hscale = length / 16.0f;
+	vscale = length / texh;
 	angle = aMainAngle(aimx, aimy);
 }
 
@@ -234,14 +257,13 @@ void Beam::action(BYTE playerindex)
 				Player::p[playerindex].DoShot();
 			}
 		}
-
 		if(!(flag & BEAMFLAG_HORIZON))
 		{
-			if(hscale * 16.0f < length)
+			if(vscale * texh < length)
 			{
 				x += xplus / 2;
 				y += yplus / 2;
-				hscale += speed / 16.0f;
+				vscale += speed / texh;
 			}
 			else if(!(flag & BEAMFLAG_STOP))
 			{
@@ -251,8 +273,10 @@ void Beam::action(BYTE playerindex)
 		}
 		else
 		{
-			if(vscale < 1)
-				vscale += speed;
+			if(timer < fadeintime)
+			{
+				hscale += width / texw / fadeintime;
+			}
 		}
 		if ((flag & BEAMFLAG_HORIZON) || (flag & BEAMFLAG_STOP))
 		{
@@ -270,7 +294,7 @@ void Beam::action(BYTE playerindex)
 			}
 			else
 			{
-				float factor = (hscale * 16.0f - holdoffset) / speed;
+				float factor = (vscale * texh - holdoffset) / speed;
 				SetVector(Target::tar[holdtar].x, Target::tar[holdtar].y, Target::tar[holdtar].x + factor * xplus, Target::tar[holdtar].y + factor * yplus);
 			}
 		}
@@ -318,10 +342,13 @@ void Beam::action(BYTE playerindex)
 			}
 
 		}
-		if(	x - hscale * 16 > M_DELETECLIENT_RIGHT_(playerindex) ||
-			x + hscale * 16 < M_DELETECLIENT_LEFT_(playerindex) ||
-			y - hscale * 16 > M_DELETECLIENT_BOTTOM ||
-			y + hscale * 16 < M_DELETECLIENT_TOP)
+		float nowlength = vscale * texh;
+		float nowwidth = hscale * texw;
+		float longside = nowlength > nowwidth ? nowlength : nowwidth;
+		if(	x - longside > M_DELETECLIENT_RIGHT_(playerindex) ||
+			x + longside < M_DELETECLIENT_LEFT_(playerindex) ||
+			y - longside > M_DELETECLIENT_BOTTOM ||
+			y + longside < M_DELETECLIENT_TOP)
 			exist = false;
 	}
 	else
@@ -334,7 +361,7 @@ void Beam::action(BYTE playerindex)
 			exist = false;
 		else
 		{
-			vscale -= 0.03125;
+			vscale -= width / texw / 32;//0.03125;
 			alpha = (BYTE)(32-timer) * 8 - 1;
 		}
 	}
@@ -348,12 +375,16 @@ bool Beam::isInRect(float aimx, float aimy, float r, int nextstep)
 
 	float _x = x;
 	float _y = y;
-	float nowlength = hscale * 5;
+
+	float rl = BResource::res.bulletdata[type].collisionMain;
+	float rs = BResource::res.bulletdata[type].collisionSub;
+
+	float nowrl = vscale * rl;
 	if (nextstep)
 	{
 		_x += xplus * nextstep;
 		_y += yplus * nextstep;
-		nowlength += 4;
+//		nowrl += 4;
 	}
 
 	float cx = _x;
@@ -373,6 +404,7 @@ bool Beam::isInRect(float aimx, float aimy, float r, int nextstep)
 		rotCos = cost(angle);
 		rotSin = sint(angle);
 	}
-	return CheckCollisionEllipse(_x, _y, aimx, aimy, 5.0f*vscale, nowlength, rotCos, rotSin, r);
+	float nowrs = hscale * rs;
+	return CheckCollisionEllipse(_x, _y, aimx, aimy, nowrs, nowrl, rotCos, rotSin, r);
 
 }

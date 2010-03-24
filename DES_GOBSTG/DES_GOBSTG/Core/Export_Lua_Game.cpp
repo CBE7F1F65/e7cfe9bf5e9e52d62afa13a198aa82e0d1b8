@@ -280,8 +280,16 @@ int Export_Lua_Game::LuaFn_Game_GetPlayerDrainInfo(LuaState * ls)
 	BYTE _playerindex = args[1].GetInteger();
 	int _eventID = args[2].GetInteger();
 	ls->PushInteger(Player::p[_playerindex].nowID);
-	ls->PushNumber(Player::p[_playerindex].x);
-	ls->PushNumber(Player::p[_playerindex].y);
+	if (_eventID == SCR_EVENT_PLAYERDRAINCHECK)
+	{
+		ls->PushNumber((*Enemy::en[_playerindex]).x);
+		ls->PushNumber((*Enemy::en[_playerindex]).y);
+	}
+	else
+	{
+		ls->PushNumber(Player::p[_playerindex].x);
+		ls->PushNumber(Player::p[_playerindex].y);
+	}
 	ls->PushInteger(Player::p[_playerindex].draintimer);
 	if (_eventID == SCR_EVENT_PLAYERDRAINCHECK)
 	{

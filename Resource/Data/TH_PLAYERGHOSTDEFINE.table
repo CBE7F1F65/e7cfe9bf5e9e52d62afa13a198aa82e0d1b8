@@ -70,10 +70,22 @@ Comment	Index	SIID	XAdj	YAdj	Speed	Flag	RollTime	ShootAngle	MoveR	StartAngle	Ble
 -	121	SI_PlayerGhost_15_01	15	0	0	2	0	0	0	0	2
 -	124	SI_PlayerGhost_15_01	-5	15	0	2	0	0	0	0	2
 -	125	SI_PlayerGhost_15_01	5	15	0	2	0	0	0	0	2
+#		Yamaxanadu									
+-	128	SI_PlayerGhost_16_01	-25	0	0	10	0	0	0	0	2
+-	129	SI_PlayerGhost_16_01	25	0	0	10	0	0	0	0	2
+-	130	SI_PlayerGhost_16_02	-40	0	0	10	0	0	0	0	2
+-	131	SI_PlayerGhost_16_02	40	0	0	10	0	0	0	0	2
+-	132	SI_PlayerGhost_16_01	25	0	0	10	0	0	0	0	2
+-	133	SI_PlayerGhost_16_01	-25	0	0	10	0	0	0	0	2
+-	134	SI_PlayerGhost_16_02	40	0	0	10	0	0	0	0	2
+-	135	SI_PlayerGhost_16_02	-40	0	0	10	0	0	0	0	2
+#		Komachi									
+-	136	SI_Null	0	0	0	0	0	0	0	0	2
+-	140	SI_Null	0	0	0	0	0	0	0	0	2
 #		Sanae									
--	352	SI_PlayerGhost_22_01	0	-25	0	14	0	0	0	0	2
--	353	SI_PlayerGhost_22_02	-30	-15	0	14	0	0	0	0	2
--	354	SI_PlayerGhost_22_02	30	-15	0	14	0	0	0	0	2
--	355	SI_PlayerGhost_22_01	0	15	0	14	0	0	0	0	2
--	356	SI_PlayerGhost_22_02	30	-15	0	14	0	0	0	0	2
--	357	SI_PlayerGhost_22_02	-30	-15	0	14	0	0	0	0	2
+-	176	SI_PlayerGhost_22_01	0	-25	0	14	0	0	0	0	2
+-	177	SI_PlayerGhost_22_02	-30	-15	0	14	0	0	0	0	2
+-	178	SI_PlayerGhost_22_02	30	-15	0	14	0	0	0	0	2
+-	180	SI_PlayerGhost_22_01	0	15	0	14	0	0	0	0	2
+-	181	SI_PlayerGhost_22_02	30	-15	0	14	0	0	0	0	2
+-	182	SI_PlayerGhost_22_02	-30	-15	0	14	0	0	0	0	2

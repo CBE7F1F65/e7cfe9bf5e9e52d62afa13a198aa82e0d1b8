@@ -1,7 +1,7 @@
 73	h5nc	48													
 Comment	Type	SIID	nRoll	nColor	CollisionType	Collision_Main	Collision_Sub	FadeColor	WhiteColor	AutoSendSetID	nTurnAngle	seID	EffID	RenderType	RenderDepth
 #		NormalBullet(0~29)													
--	0	SI_Bullet_ShuttleBeam_0	0	16	2	16	5	160	15	0	0	90	0	4	24
+-	0	SI_Bullet_ShuttleBeam_0	0	16	2	8	3	160	15	0	0	90	0	4	24
 -	1	SI_Bullet_Scale_0	0	16	1	2	2.5	160	15	0	0	90	0	2	14
 -	2	SI_Bullet_Ring_0	0	16	1	3	0	160	15	0	0	90	0	2	13
 -	3	SI_Bullet_MiddleBall_0	0	16	1	3	0	160	15	0	0	90	0	2	11
@@ -23,7 +23,7 @@ Comment	Type	SIID	nRoll	nColor	CollisionType	Collision_Main	Collision_Sub	FadeCo
 -	19	SI_Bullet_Butterfly_0	0	8	1	5	0	160	7	0	0	90	0	2	10
 -	20	SI_Bullet_Knife_0	0	8	2	6	5	160	7	0	0	90	0	2	6
 -	21	SI_Bullet_Quaver_0	0	3	1	7	0	255	128	0	240	90	0	2	4
--	22	SI_Bullet_Stupa_0	0	1	2	7	5	255	128	0	0	90	0	2	8
+-	22	SI_Bullet_Stupa_0	0	1	2	3.5	2.5	160	128	0	0	90	0	2	8
 -	23	SI_Bullet_LegatoQuaver_0	0	4	1	7	0	255	128	0	240	90	0	2	4
 -	24	SI_Bullet_BigShuttle_0	0	8	2	7	5	160	7	0	0	90	0	2	5
 -	25	SI_Bullet_RedFireBall_0	4	4	1	5	0	1	128	0	0	90	0	0	9

@@ -17,7 +17,7 @@ function Scene_s14(playerindex, timer)
 		hdss.Call(
 			HDSS_BGVALEX,
 			{
-				playerindex, 2, SI_Scene_14_2
+				playerindex, 2, SI_Scene_14_3
 			},
 			{
 				cenx-3200, 1920, -1440, 6400, 6400, -9000, 0, 0
@@ -33,7 +33,7 @@ function Scene_s14(playerindex, timer)
 			hdss.Call(
 				HDSS_BGVALEX,
 				{
-					playerindex, i, SI_Scene_14_1
+					playerindex, i, SI_Scene_14_1+i
 				},
 				{
 					cenx+(i*2-1)*3200, -4480, -4480, 6400, 6400, -9000, 0, 9000
@@ -55,7 +55,7 @@ function Scene_s14(playerindex, timer)
 		hdss.Call(
 			HDSS_BGVALEX,
 			{
-				playerindex, bgindex, SI_Scene_14_3+RANDT(0, 1), global.ARGB(0xff, 0xA0A0A0)
+				playerindex, bgindex, SI_Scene_14_4+RANDT(0, 1), global.ARGB(0xff, 0xA0A0A0)
 			},
 			{
 				cenx+(leftrightindi*2-1)*160, 0, -160, 128*scale, 128*scale, -9000, 0, 9000

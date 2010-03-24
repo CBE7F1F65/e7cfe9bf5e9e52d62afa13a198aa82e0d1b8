@@ -84,14 +84,16 @@ public:
 	static void SendBullet(BYTE playerindex, float x, float y, BYTE setID, BYTE * sendtime=NULL, float * speed = NULL);
 	void AddSendInfo(BYTE sendsetID, BYTE _sendtime);
 
-	bool passedEvent(BYTE eventID);
-	void passEvent(BYTE eventID);
+	bool passedEvent(DWORD eventID);
+	void passEvent(DWORD eventID);
 
 	bool ChangeAction(int nextstep=0);
 	void changeType(BYTE totype);
 
 public:
 	int		actionList[BULLETACTIONMAX];
+
+	DWORD	eventID[BULLET_EVENTMAX];
 
 	float	xplus;
 	float	yplus;
@@ -113,7 +115,6 @@ public:
 	BYTE	oldcolor;
 	BYTE	playerindex;
 	BYTE	typechangetimer;
-	BYTE	eventID[BULLET_EVENTMAX];
 
 	BYTE	sendtime;
 	BYTE	sendsetID;

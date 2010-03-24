@@ -95,6 +95,7 @@ LConst_effid_youmuslash	=	85
 
 LConst_effid_sendex_01	=	83
 LConst_effid_sendex_06	=	86
+LConst_effid_sendex_16	=	87
 
 LConst_ShootCharge_EnemyDelay	=	32
 

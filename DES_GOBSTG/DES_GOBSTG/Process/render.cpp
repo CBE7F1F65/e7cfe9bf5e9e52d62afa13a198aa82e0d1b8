@@ -38,6 +38,31 @@ void Process::_Render(BYTE renderflag/* =M_RENDER_NULL */)
 		}
 		*/
 		//
+		//
+		/*
+		if (Beam::be[playerindex].getSize())
+		{
+			DWORD i = 0;
+			DWORD size = Beam::be[playerindex].getSize();
+			for (Beam::be[playerindex].toBegin(); i<size; Beam::be[playerindex].toNext(), i++)
+			{
+				if (Beam::be[playerindex].isValid())
+				{
+					for (int i=M_GAMESQUARE_LEFT_(playerindex); i<M_GAMESQUARE_RIGHT_(playerindex); i++)
+					{
+						for (int j=M_GAMESQUARE_TOP; j<M_GAMESQUARE_BOTTOM; j++)
+						{
+							if ((*(Beam::be[playerindex])).isInRect(i, j, 1))
+							{
+								hge->Gfx_RenderLine(i, j, i+1, j, 0xffffff00);
+							}
+						}
+					}
+				}
+			}
+		}
+		*/
+		//
 	}
 	BGLayer::RenderFG(playerindex);
 }

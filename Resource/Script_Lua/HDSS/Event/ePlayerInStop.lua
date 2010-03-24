@@ -1,11 +1,6 @@
 function ePlayerInSpellStop(playerindex, bSpell, spellPlayerID, oplayerID, stoptimer, stopmaxtime, spellClass, spellLevel)
 
-	local x;
-	if playerindex == 0 then
-		x = CenterBossX_0;
-	else
-		x = CenterBossX_1;
-	end
+	local x = helper_GetCenterBossX(playerindex);
 	
 	if stoptimer == stopmaxtime - 2 then
 		for i=0, 1 do

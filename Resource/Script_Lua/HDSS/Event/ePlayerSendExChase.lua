@@ -34,7 +34,7 @@ function ePlayerSendExChase_01(playerindex, x, y, playerID, appendfloat, angleof
 	hdss.Call(
 		HDSS_BEB,
 		{
-			playerindex, x, y, -9000+angleoffset, speed, CC_Bullet_ShuttleBeam, 5, 720, BEAMFLAG_DELAY
+			playerindex, x, y, -9000+angleoffset, speed, CC_Bullet_ShuttleBeam, 5, 720, 0, BEAMFLAG_DELAY
 		}
 	)
 	hdssEFFSETUP(playerindex, LConst_effid_sendex_01, x, y, 64, angleoffset, 0.01);
@@ -206,10 +206,20 @@ function ePlayerSendExChase_15(playerindex, x, y, playerID, appendfloat)
 end
 
 function ePlayerSendExChase_16(playerindex, x, y, playerID, appendfloat)
+	hdssEFFSETUP(playerindex, LConst_effid_sendex_16, x, y, 300);
+	hdss.Call(HDSS_EZONEBUILD,
+		{
+			EZONETYPE_BULLETSTUPA, playerindex, x, y,
+			300, 64, 1.2, CC_Bullet_Stupa
+		}
+	)
 	return true;
 end
 
 function ePlayerSendExChase_17(playerindex, x, y, playerID, appendfloat)
+	local rank, cardlevel, bosslevel = hdss.Get(HDSS_RANK, 1-playerindex);
+	hdssEB(CC_SendExChaseEnemyEID_17, playerindex, x, y, 9000, 0, LConst_EnemyTypeNull, 0);
+	hdssENSAIM(playerindex, rank, 0, 0, RANDT(1, 36000));
 	return true;
 end
 

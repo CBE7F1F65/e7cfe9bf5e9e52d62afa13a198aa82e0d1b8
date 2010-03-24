@@ -648,10 +648,45 @@ function ePlayerDrain_15(playerindex, x, y, draintimer, type)
 end
 
 function ePlayerDrain_16(playerindex, x, y, draintimer, type)
+	if type ~= nil then
+		game.SetGhostActiveInfo(playerindex, 160, type+1, type+1, -9000, 0.625, 2);
+		hdssSE(SE_GHOST_ACTIVATE, x, y);
+		return true;
+	end
+	
+	local hscale;
+	if draintimer < 5 then
+		hscale = draintimer * 0.1 + 0.25;
+	else
+		hscale = 0.75;
+	end
+	game.SetDrainSpriteInfo(playerindex, x, y, 0, hscale);
+	
+	local r = hscale * 128;
+	
+	hdssENAZBUILD(playerindex, ENAZTYPE_CIRCLE+ENAZOP_AND, x, y, r);
+	
 	return true;
 end
 
 function ePlayerDrain_17(playerindex, x, y, draintimer, type)
+	if type ~= nil then
+		game.SetGhostActiveInfo(playerindex, 160, type+1, type+1, -9000, 0.625, 2);
+		hdssSE(SE_GHOST_ACTIVATE, x, y);
+		return true;
+	end
+	
+	local hscale;
+	if draintimer < 20 then
+		hscale = (20-draintimer) * 0.2375;
+	else
+		hscale = 0;
+	end
+	game.SetDrainSpriteInfo(playerindex, x, y, 0, hscale);
+	
+	local r = hscale * 128;
+	
+	hdssENAZBUILD(playerindex, ENAZTYPE_CIRCLE+ENAZOP_AND, x, y, r);
 	return true;
 end
 
