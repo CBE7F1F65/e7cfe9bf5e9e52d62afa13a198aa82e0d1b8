@@ -262,7 +262,13 @@ int _HDSSCallGet::Call_UPDATEPUSHEVENT(LuaState * ls)
 	if (true)
 	{
 		BYTE _index = _INEXT_HDSS_LUAPARA;
-		bool bret = PushKey::UpdatePushEvent(_index);
+		BYTE _playerindex = 0xff;
+		_JNEXT_HDSS_LUAPARA;
+		if (bhavenext)
+		{
+			_playerindex = _IOBJ_HDSS_LUA;
+		}
+		bool bret = PushKey::UpdatePushEvent(_index, _playerindex);
 		ls->PushBoolean(bret);
 		return 1;
 	}

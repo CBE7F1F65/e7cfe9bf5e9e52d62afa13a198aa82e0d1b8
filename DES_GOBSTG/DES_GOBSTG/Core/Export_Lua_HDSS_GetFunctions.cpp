@@ -457,19 +457,6 @@ int _HDSSCallGet::Get_REGANGLE(LuaState * ls)
 }
 
 
-int _HDSSCallGet::Get_PX(LuaState * ls)
-{
-	_ENTERGET_HDSS_LUA;
-	if (argscount > 1)
-	{
-		BYTE _playerindex = _INEXT_HDSS_LUAFUNC;
-		_PF_HDSS_LUA(Player::p[_playerindex].x);
-		_PI_HDSS_LUA(Player::p[_playerindex].nowID);
-		return 2;
-	}
-	return 0;
-}
-
 int _HDSSCallGet::Get_CHECKKEY(LuaState * ls)
 {
 	_ENTERGET_HDSS_LUA;
@@ -486,6 +473,19 @@ int _HDSSCallGet::Get_CHECKKEY(LuaState * ls)
 		bool bret = GameInput::GetKey(_playerindex, _ksi, _type);
 		_PB_HDSS_LUA(bret);
 		return 1;
+	}
+	return 0;
+}
+
+int _HDSSCallGet::Get_PX(LuaState * ls)
+{
+	_ENTERGET_HDSS_LUA;
+	if (argscount > 1)
+	{
+		BYTE _playerindex = _INEXT_HDSS_LUAFUNC;
+		_PF_HDSS_LUA(Player::p[_playerindex].x);
+		_PI_HDSS_LUA(Player::p[_playerindex].nowID);
+		return 2;
 	}
 	return 0;
 }
@@ -538,6 +538,32 @@ int _HDSSCallGet::Get_PBINFI(LuaState * ls)
 		_PI_HDSS_LUA(Player::p[_playerindex].infireasonflag);
 		_PI_HDSS_LUA(Player::p[_playerindex].infitimer);
 		return 3;
+	}
+	return 0;
+}
+
+int _HDSSCallGet::Get_PGX(LuaState * ls)
+{
+	_ENTERGET_HDSS_LUA;
+	if (argscount > 1)
+	{
+		BYTE _playerindex = _INEXT_HDSS_LUAFUNC;
+		BYTE _index = _INEXT_HDSS_LUAFUNC;
+		_PF_HDSS_LUA(Player::p[_playerindex].pg[_index].x);
+		return 1;
+	}
+	return 0;
+}
+
+int _HDSSCallGet::Get_PGY(LuaState * ls)
+{
+	_ENTERGET_HDSS_LUA;
+	if (argscount > 1)
+	{
+		BYTE _playerindex = _INEXT_HDSS_LUAFUNC;
+		BYTE _index = _INEXT_HDSS_LUAFUNC;
+		_PF_HDSS_LUA(Player::p[_playerindex].pg[_index].y);
+		return 1;
 	}
 	return 0;
 }

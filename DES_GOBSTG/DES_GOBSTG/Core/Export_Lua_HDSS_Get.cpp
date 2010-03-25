@@ -272,9 +272,9 @@ int Export_Lua_HDSS::LuaFn_HDSS_Get(LuaState * ls)
 		case SCR_PSLOWSPEED:
 			break;
 		case SCR_PGX:
-			break;
+			return _HDSSCallGet::Get_PGX(ls);
 		case SCR_PGY:
-			break;
+			return _HDSSCallGet::Get_PGY(ls);
 		case SCR_HAVEPLAYER:
 			break;
 		}

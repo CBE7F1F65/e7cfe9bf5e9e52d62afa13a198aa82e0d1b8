@@ -1,3 +1,3 @@
 function Spell_s20(playerindex, timer)
-	return true;
+	return Spell_s01(playerindex, timer);
 end

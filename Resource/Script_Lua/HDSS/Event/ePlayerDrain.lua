@@ -691,18 +691,108 @@ function ePlayerDrain_17(playerindex, x, y, draintimer, type)
 end
 
 function ePlayerDrain_18(playerindex, x, y, draintimer, type)
+	if type ~= nil then
+		game.SetGhostActiveInfo(playerindex, 160, type+1, type+1, -9000, 0.625, 2);
+		hdssSE(SE_GHOST_ACTIVATE, x, y);
+		return true;
+	end
+	
+	local hscale = 1;
+	
+	local drainangle = hdss.Get(HDSS_D, LConst_Desc_DrainAngle+playerindex)+9000;
+	local moveangle = 0;
+	if draintimer == 1 then
+		drainangle = 0;
+	end
+	local bkeyleft = hdss.Get(HDSS_CHECKKEY, playerindex, KSI_LEFT);
+	local bkeyright = hdss.Get(HDSS_CHECKKEY, playerindex, KSI_RIGHT);
+	if bkeyleft and not bkeyright then
+		moveangle = -9000;
+	elseif not bkeyleft and bkeyright then
+		moveangle = 9000;
+	end
+		
+	moveangle = hdss.Get(HDSS_REGANGLE, moveangle);
+	local baseangle = drainangle;
+	if moveangle ~= drainangle then
+		
+		local plusval = 600;
+		drainangle = hdss.Get(HDSS_REGANGLE, drainangle);
+		local bplus = true;
+		if moveangle > drainangle then
+			if drainangle + 18000 < moveangle then
+				bplus = false;
+			end
+		else
+			if moveangle + 18000 > drainangle then
+				bplus = false;
+			end
+		end
+		
+		if bplus then
+			if moveangle < drainangle then
+				moveangle = moveangle + 36000;
+			end
+			baseangle = drainangle + plusval;
+			if baseangle > moveangle then
+				baseangle = moveangle;
+			end
+		else
+			if moveangle > drainangle then
+				moveangle = moveangle - 36000;
+			end	
+			baseangle = drainangle - plusval;
+			if baseangle < moveangle then
+				baseangle = moveangle;
+			end
+		end
+		baseangle = hdss.Get(HDSS_REGANGLE, baseangle);
+	end
+	hdssSD(LConst_Desc_DrainAngle+playerindex, baseangle-9000);
+	
+	
+	game.SetDrainSpriteInfo(playerindex, x, y, baseangle, hscale);
+		
+	local r = 128 * hscale;
+	local rs = 80 * hscale;
+	local offset = 48;
+	local xoffset = hdss.Get(HDSS_COSA, baseangle+9000) * offset;
+	local yoffset = hdss.Get(HDSS_SINA, baseangle+9000) * offset;
+
+	hdssENAZBUILD(playerindex, ENAZTYPE_CIRCLE+ENAZOP_AND, x, y, r);
+	hdssENAZBUILD(playerindex, ENAZTYPE_CIRCLE+ENAZOP_NOTAND, x+xoffset, y+yoffset, rs);
 	return true;
 end
 
 function ePlayerDrain_19(playerindex, x, y, draintimer, type)
-	return true;
+	return ePlayerDrain_00(playerindex, x, y, draintimer, type);
 end
 
 function ePlayerDrain_20(playerindex, x, y, draintimer, type)
-	return true;
+	return ePlayerDrain_01(playerindex, x, y, draintimer, type);
 end
 
 function ePlayerDrain_21(playerindex, x, y, draintimer, type)
+	if type ~= nil then
+		game.SetGhostActiveInfo(playerindex, 160, type+1, type+1, -9000, 0.625, 2);
+		hdssSE(SE_GHOST_ACTIVATE, x, y);
+		return true;
+	end
+	
+	local pgx = hdss.Get(HDSS_PGX, playerindex, 0);
+	local pgy = hdss.Get(HDSS_PGY, playerindex, 0);
+	local hscale;
+	if draintimer < 16 then
+		hscale = draintimer * 0.1 + 0.4;
+	else
+		hscale = 2;
+	end
+	game.SetDrainSpriteInfo(playerindex, pgx, pgy, 0, hscale);
+	
+	local r = hscale * 32;
+	
+	hdssENAZBUILD(playerindex, ENAZTYPE_CIRCLE+ENAZOP_AND, pgx, pgy, r);
+	
 	return true;
 end
 

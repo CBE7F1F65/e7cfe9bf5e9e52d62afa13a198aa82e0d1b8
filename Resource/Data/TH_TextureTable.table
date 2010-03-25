@@ -40,9 +40,10 @@ Comment	Index	Texture
 -	58	Graphic/Sprite/Player/Player/pl_09_ex.png
 -	63	Graphic/Sprite/Player/Player/pl_14_ex.png
 -	64	Graphic/Sprite/Player/Player/pl_15_ex.png
--	65	Graphic/Sprite/Player/Player/pl_15_ex_2.png
 -	66	Graphic/Sprite/Player/Player/pl_17_ex.png
+-	71	Graphic/Sprite/Player/Player/pl_22_ex.png
 -	72	Graphic/Sprite/Player/Player/pl_23_ex.png
+-	82	Graphic/Sprite/Player/Player/pl_15_ex_2.png
 #		Face(110~159)
 -	110	Graphic/Sprite/Face/face_01.png
 -	111	Graphic/Sprite/Face/face_02.png
@@ -132,6 +133,7 @@ Comment	Index	Texture
 -	322	Graphic/Sprite/Player/DrainZone/pl_13_drain.png
 -	323	Graphic/Sprite/Player/DrainZone/pl_14_drain.png
 -	325	Graphic/Sprite/Player/DrainZone/pl_16_drain.png
+-	328	Graphic/Sprite/Player/DrainZone/pl_19_drain.png
 #		Other(360~459)
 -	360	Graphic/Scene/title.png
 -	361	Graphic/Scene/select.png

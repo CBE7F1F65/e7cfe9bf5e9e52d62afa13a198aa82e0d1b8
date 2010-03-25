@@ -316,6 +316,7 @@ bool Bullet::valueSet(BYTE _playerindex, WORD _ID, float _x, float _y, int _angl
 
 	tarID	=	_tarID;
 
+	
 	if (BResource::res.bulletdata[type].autosendsetID)
 	{
 		sendsetID = randt(0, 1) ? EFFSPSET_SYSTEM_SENDREDBULLET: EFFSPSET_SYSTEM_SENDBLUEBULLET;
@@ -325,6 +326,7 @@ bool Bullet::valueSet(BYTE _playerindex, WORD _ID, float _x, float _y, int _angl
 		sendsetID = 0;
 	}
 	AddSendInfo(sendsetID, 0);
+	
 
 	matchFadeInColorType();
 
@@ -409,6 +411,27 @@ void Bullet::DoIze()
 								Build(playerindex, x, y, angle, speed+it->power, it->eventID, 0);
 								bu[playerindex].toIndex(_tindex);
 								passEvent(EVENTZONE_TYPE_BULLETSTUPA);
+							}
+						}
+					}
+					if (it->type & EVENTZONE_TYPE_BULLETWARP)
+					{
+						if (!passedEvent(EVENTZONE_TYPE_BULLETWARP))
+						{
+							if (timer >= fadeinTime && type != it->eventID)
+							{
+								DWORD _tindex = bu[playerindex].getIndex();
+								if (speed < it->power)
+								{
+									speed = it->power;
+								}
+								int iret = Build(1-playerindex, x - SIGN(playerindex) * M_CLIENT_WIDTH/2, y, angle, speed, type, color);
+								if (iret >= 0)
+								{
+									(*(bu[1-playerindex])).passEvent(EVENTZONE_TYPE_BULLETWARP);
+								}
+								bu[playerindex].toIndex(_tindex);
+								passEvent(EVENTZONE_TYPE_BULLETWARP);
 							}
 						}
 					}

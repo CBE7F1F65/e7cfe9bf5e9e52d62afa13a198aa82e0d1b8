@@ -55,6 +55,7 @@ LConst_EnemyExType_AliceBlue = 66
 LConst_EnemyExType_AliceRed = 67
 LConst_EnemyExType_AliceGreen = 68
 LConst_EnemyExType_AliceYellow = 69
+LConst_EnemyExType_Remilia	=	70
 
 LConst_GhostTypeStart	=	37
 LConst_GhostTypeGreen	=	LConst_GhostTypeStart
@@ -96,6 +97,8 @@ LConst_effid_youmuslash	=	85
 LConst_effid_sendex_01	=	83
 LConst_effid_sendex_06	=	86
 LConst_effid_sendex_16	=	87
+LConst_effid_sendex_21_in	=	88
+LConst_effid_sendex_21_out	=	89
 
 LConst_ShootCharge_EnemyDelay	=	32
 

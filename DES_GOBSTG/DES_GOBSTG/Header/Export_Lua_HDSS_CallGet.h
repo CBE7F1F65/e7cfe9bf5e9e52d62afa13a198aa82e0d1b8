@@ -119,6 +119,8 @@ public:
 	static int Get_PLIFE(LuaState * ls);
 	static int Get_PBDRAIN(LuaState * ls);
 	static int Get_PBINFI(LuaState * ls);
+	static int Get_PGX(LuaState * ls);
+	static int Get_PGY(LuaState * ls);
 
 	static int Get_BGSINDEX(LuaState * ls);
 

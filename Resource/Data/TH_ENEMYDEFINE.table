@@ -49,3 +49,4 @@ Comment	Index	FaceIndex	SIID	Collision_W	Collision_H	Flag	StandFrame	RightPreFra
 -	67	-1	SI_EnemyExSprite_AliceRed_0	16	16	7	4	3	1	0	0	0	0	0	0	8	25	0	0	0	0	0	0	0	0	0	0	_	_
 -	68	-1	SI_EnemyExSprite_AliceGreen_0	16	16	7	4	3	1	0	0	0	0	0	0	8	25	0	0	0	0	0	0	0	0	0	0	_	_
 -	69	-1	SI_EnemyExSprite_AliceYellow_0	16	16	7	4	3	1	0	0	0	0	0	0	8	25	0	0	0	0	0	0	0	0	0	0	_	_
+-	70	-1	SI_EnemyExSprite_Remilia_0	16	16	0	4	0	4	0	0	1	0	0	0	8	25	0	0	0	0	0	0	0	0	0	0	_	_

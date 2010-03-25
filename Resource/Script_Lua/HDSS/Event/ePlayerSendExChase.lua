@@ -223,19 +223,70 @@ function ePlayerSendExChase_17(playerindex, x, y, playerID, appendfloat)
 	return true;
 end
 
-function ePlayerSendExChase_18(playerindex, x, y, playerID, appendfloat)
+function ePlayerSendExChase_18(playerindex, x, y, playerID, appendfloat, delaytime)
+	local rank, cardlevel, bosslevel = hdss.Get(HDSS_RANK, 1-playerindex);
+	hdssEB(CC_SendExChaseEnemyEID_18, playerindex, x, y, 9000, 0, LConst_EnemyExType_Remilia, 0);
+	if delaytime == nil then
+		delaytime = RANDT(1, 60);
+	end
+	hdssENSAIM(playerindex, rank, 0, 0, delaytime);
 	return true;
 end
 
 function ePlayerSendExChase_19(playerindex, x, y, playerID, appendfloat)
-	return true;
+	local rank, cardlevel, bosslevel = hdss.Get(HDSS_RANK, 1-playerindex);
+	local angle;
+	local speed = 1.4;
+	local type = CC_BulletEx_ReimuII;
+	local startacctime = 24;
+	local stopacctime = cardlevel * 6 + 32;
+	local acc = 6;
+	local afterstopadd = (stopacctime - startacctime) * acc
+	hdssA(playerindex, 
+		{
+			TIMERLESS, stopacctime, YSETACCADD, startacctime, acc,
+			TIMERGREAT, stopacctime, YSETADD, afterstopadd,
+			EVERY, BOUNCELR, 0 ,16,
+		}
+	);
+	angle = RANDT(-5500, -2500);
+	for i=0, 1 do
+		if i == 1 then
+			angle = -18000 - angle;
+		end
+		hdssB(playerindex, x, y, angle, speed, type, 0);
+	end
+	hdssA(playerindex);
 end
 
-function ePlayerSendExChase_20(playerindex, x, y, playerID, appendfloat)
+function ePlayerSendExChase_20(playerindex, x, y, playerID, appendfloat, angleoffset)
+	if angleoffset == nil then
+		angleoffset = 0;
+	end
+	local rank, cardlevel, bosslevel = hdss.Get(HDSS_RANK, 1-playerindex);
+	local speed = 18;
+	for i=0, 2 do
+		hdss.Call(
+			HDSS_BEB,
+			{
+				playerindex, x+(i-1)*8, y, -9000+angleoffset, speed, CC_Bullet_ShuttleBeam, 3, 360, 0, BEAMFLAG_DELAY
+			}
+		)
+	end
+	hdssEFFSETUP(playerindex, LConst_effid_sendex_01, x, y, 64, angleoffset, 0.01);
 	return true;
 end
 
 function ePlayerSendExChase_21(playerindex, x, y, playerID, appendfloat)
+	local ox = x+(1-playerindex*2)*TotalW/2;
+	hdssEFFSETUP(playerindex, LConst_effid_sendex_21_out, x, y, 300);
+	hdssEFFSETUP(1-playerindex, LConst_effid_sendex_21_in, ox, y, 300);
+	hdss.Call(HDSS_EZONEBUILD,
+		{
+			EZONETYPE_BULLETWARP, 1-playerindex, ox, y,
+			300, 64, 1.0, CC_Bullet_SmallBall
+		}
+	)
 	return true;
 end
 

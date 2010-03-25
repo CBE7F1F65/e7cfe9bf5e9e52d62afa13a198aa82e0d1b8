@@ -203,7 +203,7 @@ void PlayerGhost::action()
 	{
 		chasetime = 8;
 		BObject * _tpbobj;
-		if (PlayerBullet::GetLockAim(&_tpbobj, playerindex) && shooting)
+		if (PlayerBullet::GetLockAim(&_tpbobj, playerindex) && (shooting || shootingchargeone))
 		{
 			aimx = _tpbobj->x - _pgd->xadj;
 			aimy = _tpbobj->y - _pgd->yadj;
@@ -223,8 +223,8 @@ void PlayerGhost::action()
 
 	if (flag & PGFLAG_ABSSTAY)
 	{
-		aimx = _pgd->xadj;
-		aimy = _pgd->yadj;
+		aimx = M_GAMESQUARE_CENTER_X_(playerindex) + _pgd->xadj;
+		aimy = M_GAMESQUARE_CENTER_Y + _pgd->yadj;
 	}
 
 	if (!(flag & PGFLAG_SELFMOVEMASK))
@@ -291,6 +291,10 @@ void PlayerGhost::action()
 		{
 			chaseAim(aimx, aimy, chasetime);
 			updateMove();
+		}
+		else
+		{
+			timer = 0;
 		}
 	}
 	if (flag & PGFLAG_STANDSHAKE)

@@ -238,7 +238,7 @@ void SelectSystem::action()
 
 	if(fvselector != NULL)
 	{
-		PushKey::UpdatePushEvent(pushid);
+		PushKey::UpdatePushEvent(pushid, playerindex);
 		if (keyplus != PUSHKEY_KEYNULL)
 		{
 			if(GameInput::GetKey(playerindex, keyplus, DIKEY_DOWN))

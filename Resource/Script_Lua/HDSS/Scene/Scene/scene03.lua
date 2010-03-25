@@ -97,7 +97,7 @@ function Scene_s03(playerindex, timer)
 		hdssBGCOLOR(playerindex, 46, coltop, coltop, 0, 0);
 		
 		for i=0, 19 do
-			_Scene_s03_BuildOne(playerindex, cenx, cenx-576, (19-i)*128-1200, (19-i)*32-1300, SI_Scene_03_3_01+math.mod((i+13)*2, 16), i*2+3)
+			_Scene_s03_BuildOne(playerindex, cenx, cenx-576, (19-i)*128-1200, (19-i)*32-1300, SI_Scene_03_3_01+math.mod((i+13)*2, 16), i*2+3);
 		end
 	
 	elseif math.mod(timer, 16) == 0 then

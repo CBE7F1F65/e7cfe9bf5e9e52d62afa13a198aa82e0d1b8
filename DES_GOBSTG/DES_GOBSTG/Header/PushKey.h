@@ -31,7 +31,7 @@ class PushKey
 {
 public:
 	static bool SetPushEvent(BYTE ID, BYTE playerindex, int pushkey_1=PUSHKEY_KEYNULL, int pushkey_2=PUSHKEY_KEYNULL, int pushkey_3=PUSHKEY_KEYNULL, int pushkey_4=PUSHKEY_KEYNULL, int pushfirst=M_PUSH_FIRST, int pushrollto=M_PUSH_ROLLTO);
-	static bool UpdatePushEvent(BYTE ID);
+	static bool UpdatePushEvent(BYTE ID, BYTE playerindex=0xff);
 public:
 	static pushkeyEvent pushkeyevent[PUSHKEY_IDMAX];
 };

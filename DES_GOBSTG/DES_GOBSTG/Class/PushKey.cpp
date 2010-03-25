@@ -21,7 +21,7 @@ bool PushKey::SetPushEvent(BYTE ID, BYTE playerindex, int pushkey_1/* =PUSHKEY_K
 	return true;
 }
 
-bool PushKey::UpdatePushEvent(BYTE ID)
+bool PushKey::UpdatePushEvent(BYTE ID, BYTE _playerindex)
 {
 	if (ID >= PUSHKEY_IDMAX)
 	{
@@ -30,11 +30,16 @@ bool PushKey::UpdatePushEvent(BYTE ID)
 	pushkeyEvent * item = &(pushkeyevent[ID]);
 	bool pushed = false;
 
+	if (_playerindex == 0xff)
+	{
+		_playerindex = item->playerindex;
+	}
+
 	for (int i=0; i<PUSHKEY_KEYCHECKMAX; i++)
 	{
 		if (item->pushkey[i] != PUSHKEY_KEYNULL)
 		{
-			if (GameInput::GetKey(item->playerindex, item->pushkey[i]))
+			if (GameInput::GetKey(_playerindex, item->pushkey[i]))
 			{
 				pushed = true;
 				break;
@@ -54,7 +59,7 @@ bool PushKey::UpdatePushEvent(BYTE ID)
 			{
 				if (item->pushkey[i] != PUSHKEY_KEYNULL)
 				{
-					GameInput::SetKey(item->playerindex, item->pushkey[i], false);
+					GameInput::SetKey(_playerindex, item->pushkey[i], false);
 				}
 			}
 			return true;

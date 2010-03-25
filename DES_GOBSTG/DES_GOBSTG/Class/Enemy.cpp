@@ -196,7 +196,9 @@ void Enemy::Action()
 				}
 			}
 		}
+		//enaz.clear
 		enaz[j].clear();
+		//
 
 		i = 0;
 		size = scoredisplay[j].size;
@@ -393,7 +395,7 @@ void Enemy::ChangeType(BYTE _type)
 	type = _type;
 	enemyData * _enemydata = &(BResource::res.enemydata[type]);
 	faceindex = _enemydata->faceIndex;
-	if (!_enemydata->rightPreFrame && !_enemydata->leftPreFrame)
+	if (!_enemydata->rightPreFrame && !_enemydata->leftPreFrame && !_enemydata->rightFrame && !_enemydata->leftFrame)
 	{
 		bturnhead = true;
 		headangle = angle;
@@ -791,8 +793,8 @@ void Enemy::initFrameIndex()
 	int tfi = 0;
 	frameindex[ENEMY_FRAME_STAND] = tfi;
 
-	bool bhr = pdata->rightPreFrame;
-	bool bhl = pdata->leftPreFrame;
+	bool bhr = pdata->rightPreFrame || pdata->rightFrame;
+	bool bhl = pdata->leftPreFrame || pdata->leftFrame;
 
 	tfi += pdata->standFrame;
 	frameindex[ENEMY_FRAME_RIGHTPRE] = tfi;
