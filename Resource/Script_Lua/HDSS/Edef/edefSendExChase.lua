@@ -190,3 +190,7 @@ end
 function Edef_SendExChase_22(playerindex, rank, x, y, timer, px, py)
 	return true;
 end
+
+function Edef_SendExChase_23(playerindex, rank, x, y, timer, px, py)
+	return true;
+end

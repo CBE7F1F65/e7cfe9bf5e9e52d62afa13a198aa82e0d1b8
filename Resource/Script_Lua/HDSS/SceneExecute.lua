@@ -1,52 +1,58 @@
 LTable_SceneIDFunction	=
-{		
-	{0,	Scene_s00},
-	{1,	Scene_s01},
-	{2,	Scene_s02},
-	{3,	Scene_s03},
-	{4,	Scene_s04},
-	{5,	Scene_s05},
-	{6,	Scene_s06},
-	{7,	Scene_s07},
-	{8,	Scene_s08},
-	{9,	Scene_s09},
-	{10,	Scene_s10},
-	{11,	Scene_s11},
-	{12,	Scene_s12},
-	{13,	Scene_s13},
-	{14,	Scene_s14},
-	{15,	Scene_s15},
-	{16,	Scene_s16},
-	{17,	Scene_s17},
-	{18,	Scene_s18},
-	{19,	Scene_s19},
-	{20,	Scene_s20},
-	{21,	Scene_s21},
-	{22,	Scene_s22},
+{
+	{		
+		Scene_s00,
+		Scene_s01,
+		Scene_s02,
+		Scene_s03,
+		Scene_s04,
+		Scene_s05,
+		Scene_s06,
+		Scene_s07,
+		Scene_s08,
+		Scene_s09,
+		Scene_s10,
+		Scene_s11,
+		Scene_s12,
+		Scene_s13,
+		Scene_s14,
+		Scene_s15,
+		Scene_s16,
+		Scene_s17,
+		Scene_s18,
+		Scene_s19,
+		Scene_s20,
+		Scene_s21,
+		Scene_s22,
+		Scene_s23,
+	},
 
-	{100,	Spell_s00},
-	{101,	Spell_s01},
-	{102,	Spell_s02},
-	{103,	Spell_s03},
-	{104,	Spell_s04},
-	{105,	Spell_s05},
-	{106,	Spell_s06},
-	{107,	Spell_s07},
-	{108,	Spell_s08},
-	{109,	Spell_s09},
-	{110,	Spell_s10},
-	{111,	Spell_s11},
-	{112,	Spell_s12},
-	{113,	Spell_s13},
-	{114,	Spell_s14},
-	{115,	Spell_s15},
-	{116,	Spell_s16},
-	{117,	Spell_s17},
-	{118,	Spell_s18},
-	{119,	Spell_s19},
-	{120,	Spell_s20},
-	{121,	Spell_s21},
-	{122,	Spell_s22},
+	{
+		Spell_s00,
+		Spell_s01,
+		Spell_s02,
+		Spell_s03,
+		Spell_s04,
+		Spell_s05,
+		Spell_s06,
+		Spell_s07,
+		Spell_s08,
+		Spell_s09,
+		Spell_s10,
+		Spell_s11,
+		Spell_s12,
+		Spell_s13,
+		Spell_s14,
+		Spell_s15,
+		Spell_s16,
+		Spell_s17,
+		Spell_s18,
+		Spell_s19,
+		Spell_s20,
+		Spell_s21,
+		Spell_s22,
+		Spell_s23,
+	}
 }
 
 function SceneExecute(name, timer)
@@ -57,10 +63,17 @@ function SceneExecute(name, timer)
 		playerindex = 1;
 	end
 	
-	for i, it in pairs(LTable_SceneIDFunction) do
-		if it[1] == name then
-			return it[2](playerindex, timer);
-		end
+	local scenespellindi = 1;
+	local scenespellindex = name;
+	if name >= LConst_SceneSpellOffset then
+		scenespellindi = 2;
+		scenespellindex = name - LConst_SceneSpellOffset;
 	end
+	return LTable_SceneIDFunction[scenespellindi][scenespellindex+1](playerindex, timer);
+--	for i, it in pairs(LTable_SceneIDFunction) do
+--		if it[1] == name then
+--			return it[2](playerindex, timer);
+--		end
+--	end
 
 end

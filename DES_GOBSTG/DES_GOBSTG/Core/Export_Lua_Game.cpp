@@ -41,6 +41,7 @@ bool Export_Lua_Game::_LuaRegistFunction(LuaObject * obj)
 	_gameobj.Register("SendItemBullet", LuaFn_Game_SendItemBullet);
 	_gameobj.Register("GetPlayerMoveInfo", LuaFn_Game_GetPlayerMoveInfo);
 	_gameobj.Register("SetPerfectFreezeParam", LuaFn_Game_SetPerfectFreezeParam);
+	_gameobj.Register("GetOneMatchOverInfo", LuaFn_Game_GetOneMatchOverInfo);
 
 	return true;
 }
@@ -606,6 +607,20 @@ int Export_Lua_Game::LuaFn_Game_SetPerfectFreezeParam(LuaState * ls)
 			}
 			EventZone::bulletActionList[_playerindex][i-1] = _para.GetInteger();
 		}
+	}
+	return 0;
+}
+
+int Export_Lua_Game::LuaFn_Game_GetOneMatchOverInfo(LuaState * ls)
+{
+	LuaStack args(ls);
+	if (args.Count() > 0)
+	{
+		BYTE _playerindex = args[1].GetInteger();
+		ls->PushInteger(gametime);
+		ls->PushInteger(Player::p[_playerindex].nowID);
+		ls->PushInteger(Player::p[_playerindex].nLife);
+		return 3;
 	}
 	return 0;
 }

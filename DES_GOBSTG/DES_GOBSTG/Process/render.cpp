@@ -40,6 +40,32 @@ void Process::_Render(BYTE renderflag/* =M_RENDER_NULL */)
 		//
 		//
 		/*
+		if (Bullet::bu[playerindex].getSize())
+		{
+			DWORD i = 0;
+			DWORD size = Bullet::bu[playerindex].getSize();
+			for (Bullet::bu[playerindex].toBegin(); i<size; Bullet::bu[playerindex].toNext(), i++)
+			{
+				if (Bullet::bu[playerindex].isValid())
+				{
+					if ((*(Bullet::bu[playerindex])).type == 44)
+					{
+						for (int i=M_GAMESQUARE_LEFT_(playerindex); i<M_GAMESQUARE_RIGHT_(playerindex); i++)
+						{
+							for (int j=M_GAMESQUARE_TOP; j<M_GAMESQUARE_BOTTOM; j++)
+							{
+								if ((*(Bullet::bu[playerindex])).isInRect(i, j, 1))
+								{
+									hge->Gfx_RenderLine(i, j, i+1, j, 0xffffff00);
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		*/
+		/*
 		if (Beam::be[playerindex].getSize())
 		{
 			DWORD i = 0;

@@ -36,6 +36,7 @@ public:
 	static int LuaFn_Game_SendItemBullet(LuaState * ls);
 	static int LuaFn_Game_GetPlayerMoveInfo(LuaState * ls);
 	static int LuaFn_Game_SetPerfectFreezeParam(LuaState * ls);
+	static int LuaFn_Game_GetOneMatchOverInfo(LuaState * ls);
 };
 
 #endif

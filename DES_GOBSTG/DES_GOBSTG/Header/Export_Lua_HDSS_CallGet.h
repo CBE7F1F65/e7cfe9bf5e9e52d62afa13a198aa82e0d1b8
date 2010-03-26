@@ -46,6 +46,7 @@ public:
 	static int Call_BUACTIONSET(LuaState * ls);
 	static int Call_BUBUILDCIRCLE(LuaState * ls);
 	static int Call_BUBUILDLINE(LuaState * ls);
+	static int Call_BUDECANCEL(LuaState * ls);
 
 	static int Call_BEBUILD(LuaState * ls);
 

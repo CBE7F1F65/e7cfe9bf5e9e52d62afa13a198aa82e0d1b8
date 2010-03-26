@@ -60,7 +60,7 @@ void Bullet::Init(HTEXTURE _tex)
 			index = i*BULLETCOLORMAX+j;
 			sprite[index] = SpriteItemManager::CreateSprite(tbd->siid+j);
 			sprite[index]->SetBlendMode(tbd->blendtype);
-			if (BResource::res.bulletdata[i].collisiontype != BULLET_COLLISION_ELLIPSE && tbd->collisionSub)
+			if (BResource::res.bulletdata[i].collisiontype != BULLET_COLLISION_ELLIPSE && BResource::res.bulletdata[i].collisiontype != BULLET_COLLISION_RECT && tbd->collisionSub)
 			{
 				SpriteItemManager::SetSpriteHotSpot(sprite[index], SpriteItemManager::GetTexW(tbd->siid+j)/2.0f, SpriteItemManager::GetTexH(tbd->siid+j)/2.0f+tbd->collisionSub);
 			}
@@ -802,32 +802,41 @@ bool Bullet::isInRect(float aimx, float aimy, float r, int nextstep)
 			collisionfactor = 1.1f;
 		}
 	}
-	switch (tbd->collisiontype)
+	float rotCos;
+	float rotSin;
+	if (tbd->collisiontype ==  BULLET_COLLISION_ELLIPSE || tbd->collisiontype == BULLET_COLLISION_RECT)
 	{
-	case BULLET_COLLISION_NONE:
-		return false;
-		break;
-	case BULLET_COLLISION_CIRCLE: 
-		return CheckCollisionCircle(_x, _y, aimx, aimy, tbd->collisionMain * collisionfactor + r);
-		break;
-	case BULLET_COLLISION_ELLIPSE: 
-		float rotCos;
-		float rotSin;
 		if (!speed)
 		{
-			rotCos = xplus / speed;
-			rotSin = yplus / speed;
+			if (!xplus && !yplus)
+			{
+				rotCos = cost(angle);
+				rotSin = sint(angle);
+			}
+			else
+			{
+				rotCos = xplus / speed;
+				rotSin = yplus / speed;
+			}
 		}
 		else
 		{
 			rotCos = cost(angle);
 			rotSin = sint(angle);
 		}
-		return CheckCollisionEllipse(_x, _y, aimx, aimy, tbd->collisionSub * collisionfactor, tbd->collisionMain * collisionfactor, rotCos, rotSin, r);
-		break;
+	}
+	switch (tbd->collisiontype)
+	{
+	case BULLET_COLLISION_NONE:
+		return false;
+	case BULLET_COLLISION_CIRCLE: 
+		return CheckCollisionCircle(_x, _y, aimx, aimy, tbd->collisionMain * collisionfactor + r);
 	case BULLET_COLLISION_SQURE: 
 		return CheckCollisionSquare(_x, _y, aimx, aimy, tbd->collisionMain * collisionfactor, r);
-		break;
+	case BULLET_COLLISION_ELLIPSE:
+		return CheckCollisionEllipse(_x, _y, aimx, aimy, tbd->collisionSub * collisionfactor, tbd->collisionMain * collisionfactor, rotCos, rotSin, r);
+	case BULLET_COLLISION_RECT:
+		return CheckCollisionRect(_x, _y, aimx, aimy, tbd->collisionSub * collisionfactor, tbd->collisionMain * collisionfactor, rotCos, rotSin, r);
 	}
 	return false;
 }
@@ -1182,7 +1191,7 @@ bool Bullet::ChangeAction(int nextstep)
 					{
 						color = _EXEACL_(1);
 						oldcolor = color;
-						SE::push(SE_BULLET_CHANGE_2, x);
+//						SE::push(SE_BULLET_CHANGE_2, x);
 					}
 					++i;
 					doit = false;
@@ -1436,7 +1445,15 @@ bool Bullet::ChangeAction(int nextstep)
 
 				case REMAIN:
 					if(doit)
+					{
 						remain = true;
+					}
+					break;
+				case DECANCEL:
+					if (doit)
+					{
+						cancelable = false;
+					}
 					break;
 				case FADEOUT:
 					if(doit)

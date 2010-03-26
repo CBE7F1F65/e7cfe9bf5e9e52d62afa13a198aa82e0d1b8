@@ -1,4 +1,4 @@
-function CEOver_Init()
+function CEOver_Init()	
 end
 
 function CEOver_SetBG()

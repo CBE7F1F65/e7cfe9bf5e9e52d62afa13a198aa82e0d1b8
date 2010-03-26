@@ -139,10 +139,5 @@ function eSendGhost(playerindex, x, y, sendtime, acceladd, setID)
 end
 
 function eSendExAttack(playerindex, x, y, playerID, appendfloat, setID)
-		for i, it in pairs(LTable_ePlayerSendExChaseFunction) do
-			if it[1] == playerID then
-				return it[2](playerindex, x, y, playerID, appendfloat);
-			end
-		end
-	return true;
+	return LTable_ePlayerSendExChaseFunction[playerID+1](playerindex, x, y, playerID, appendfloat);
 end

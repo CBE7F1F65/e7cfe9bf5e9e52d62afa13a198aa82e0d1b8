@@ -296,6 +296,7 @@ int _HDSSCallGet::Call_SAVEREPLAY(LuaState * ls)
 	{
 		bool _bSave = false;
 		bool _bFill = false;
+		char * _filename = NULL;
 		_JNEXT_HDSS_LUAPARA;
 		if (bhavenext)
 		{
@@ -304,6 +305,11 @@ int _HDSSCallGet::Call_SAVEREPLAY(LuaState * ls)
 			if (bhavenext)
 			{
 				_bFill = _BOBJ_HDSS_LUA;
+				_JNEXT_HDSS_LUAPARA;
+				if (bhavenext)
+				{
+					_filename = _SOBJ_HDSS_LUA;
+				}
 			}
 		}
 
@@ -313,7 +319,7 @@ int _HDSSCallGet::Call_SAVEREPLAY(LuaState * ls)
 			{
 				Replay::rpy.Fill();
 			}
-			Replay::rpy.Save();
+			Replay::rpy.Save(_filename);
 		}
 		Replay::Release(false);
 	}
@@ -1164,6 +1170,24 @@ int _HDSSCallGet::Call_BUBUILDLINE(LuaState * ls)
 		}
 
 		Bullet::BuildLine(_playerindex, _num, _baseangle, _space, _baseindex, _x, _y, _angle, _anglefactor, _speed, _speedfactor, _type, _color, _fadeintime, _avoid);
+	}
+	return 0;
+}
+
+int _HDSSCallGet::Call_BUDECANCEL(LuaState * ls)
+{
+	_ENTERCALL_HDSS_LUA;
+	if (true)
+	{
+		BYTE _playerindex = _INEXT_HDSS_LUAPARA;
+		int _buindex = Bullet::bu[_playerindex].getIndex();
+		_JNEXT_HDSS_LUAPARA;
+		if (bhavenext)
+		{
+			_buindex = _IOBJ_HDSS_LUA;
+		}
+		Bullet::bu[_playerindex][_buindex].cancelable = false;
+		return 0;
 	}
 	return 0;
 }

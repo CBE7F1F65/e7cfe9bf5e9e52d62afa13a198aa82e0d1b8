@@ -137,11 +137,11 @@ function ePlayerDrain_02(playerindex, x, y, draintimer, type)
 		end
 		baseangle = hdss.Get(HDSS_REGANGLE, baseangle);
 	end
+	hdssSD(LConst_Desc_DrainAngle+playerindex, baseangle);
 	
 	local roffset = 15;
 	local cenx = x + roffset * hdss.Get(HDSS_COSA, baseangle+18000);
 	local ceny = y + roffset * hdss.Get(HDSS_SINA, baseangle+18000);
-	hdssSD(LConst_Desc_DrainAngle+playerindex, baseangle);
 	game.SetDrainSpriteInfo(playerindex, cenx, ceny, baseangle+9000, hscale, vscale);
 	
 	local r = 160;
@@ -839,6 +839,104 @@ function ePlayerDrain_22(playerindex, x, y, draintimer, type)
 	end
 	
 	hdssENAZBUILD(playerindex, ENAZTYPE_CIRCLE+ENAZOP_AND, x, y, r);
+	
+	return true;
+end
+
+function ePlayerDrain_23(playerindex, x, y, draintimer, type)
+	
+	if type ~= nil then
+		game.SetGhostActiveInfo(playerindex, 160, type+1, type+1, -9000, 0.625, 2);
+		hdssSE(SE_GHOST_ACTIVATE, x, y);
+		return true;
+	end
+	
+	local hscale;
+	local vscale;
+	local yoffset;
+	if draintimer < 8 then
+		hscale = draintimer * 4 + 32;
+		vscale = draintimer * 8 + 64;
+	else
+		hscale = 64
+		vscale = 128;
+	end
+	
+	local drainangle = hdss.Get(HDSS_D, LConst_Desc_DrainAngle+playerindex);
+	local moveangle = 9000;
+	local bkeyup = hdss.Get(HDSS_CHECKKEY, playerindex, KSI_UP);
+	local bkeydown = hdss.Get(HDSS_CHECKKEY, playerindex, KSI_DOWN);
+	local bkeyleft = hdss.Get(HDSS_CHECKKEY, playerindex, KSI_LEFT);
+	local bkeyright = hdss.Get(HDSS_CHECKKEY, playerindex, KSI_RIGHT);
+	if bkeyup and not bkeydown then
+		if bkeyleft and not bkeyright then
+			moveangle = -13500;
+		elseif not bkeyleft and bkeyright then
+			moveangle = -4500;
+		else
+			moveangle = -9000;
+		end
+	elseif not bkeyup and bkeydown then
+		if bkeyleft and not bkeyright then
+			moveangle = 13500;
+		elseif not bkeyleft and bkeyright then
+			moveangle = 4500;
+		else
+			moveangle = 9000;
+		end
+	else
+		if bkeyleft and not bkeyright then
+			moveangle = 18000;
+		elseif not bkeyleft and bkeyright then
+			moveangle = 0;
+		else
+			moveangle = drainangle-18000;
+		end
+	end
+	
+	moveangle = moveangle + 18000;
+	moveangle = hdss.Get(HDSS_REGANGLE, moveangle);
+	
+	local baseangle = drainangle;
+	if moveangle ~= drainangle then
+		
+		local plusval = 1500;
+		drainangle = hdss.Get(HDSS_REGANGLE, drainangle);
+		local bplus = true;
+		if moveangle > drainangle then
+			if drainangle + 18000 < moveangle then
+				bplus = false;
+			end
+		else
+			if moveangle + 18000 > drainangle then
+				bplus = false;
+			end
+		end
+		
+		if bplus then
+			if moveangle < drainangle then
+				moveangle = moveangle + 36000;
+			end
+			baseangle = drainangle + plusval;
+			if baseangle > moveangle then
+				baseangle = moveangle;
+			end
+		else
+			if moveangle > drainangle then
+				moveangle = moveangle - 36000;
+			end	
+			baseangle = drainangle - plusval;
+			if baseangle < moveangle then
+				baseangle = moveangle;
+			end
+		end
+		baseangle = hdss.Get(HDSS_REGANGLE, baseangle);
+	end
+	hdssSD(LConst_Desc_DrainAngle+playerindex, baseangle);
+	
+	game.SetDrainSpriteInfo(playerindex, x, y, baseangle+9000, hscale, vscale);
+		
+	hdssENAZBUILD(playerindex, ENAZTYPE_RECT+ENAZOP_AND, x, y, hscale/2, vscale/2, baseangle);
 	
 	return true;
 end

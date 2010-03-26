@@ -304,3 +304,19 @@ function ePlayerSendExChase_22(playerindex, x, y, playerID, appendfloat)
 	hdssA(playerindex);
 	return true;
 end
+
+function ePlayerSendExChase_23(playerindex, x, y, playerID, appendfloat, angle)
+	hdssA(playerindex,
+		{
+			TIMEREQUAL, 65, COLORSET, 1,
+			TIMEREQUAL, 74, COLORSET, 0,
+			TIMEREQUAL, 74, FADEOUT
+		}
+	)
+	if angle == nil then
+		angle = RANDT(1, 36000);
+	end
+	hdssB(playerindex, x, y, angle, 0, CC_BulletEx_Hatate, 0, 64);
+	hdssBUDECANCEL(playerindex);
+	hdssA(playerindex);
+end

@@ -24,6 +24,7 @@ void Process::frameEnd()
 		{
 //			SetState(STATE_CLEAR, -1);
 //			return;
+			Scripter::scr.Execute(SCR_EVENT, SCR_EVENT_ONEMATCHOVER, SCRIPT_CON_INIT);
 			if (Player::IsMatchEnd() >= 0)
 			{
 				SetState(STATE_CLEAR, -1);

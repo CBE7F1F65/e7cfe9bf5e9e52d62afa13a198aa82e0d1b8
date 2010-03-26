@@ -126,3 +126,8 @@ function eActiveGhostOver_22(playerindex)
 	_eActiveGhostOver_Send3(playerindex);
 	return true;
 end
+
+function eActiveGhostOver_23(playerindex)
+	_eActiveGhostOver_Send3(playerindex);
+	return true;
+end

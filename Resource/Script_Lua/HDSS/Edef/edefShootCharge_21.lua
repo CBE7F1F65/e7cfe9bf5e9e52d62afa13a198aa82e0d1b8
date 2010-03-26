@@ -44,8 +44,10 @@ function Edef_ShootChargeEnemyEID_21_2(playerindex, level, x, y, timer, px, py)
 	return true;
 end
 
-function Edef_ShootChargeEnemyEID_21_3(playerindex, level, x, y, timer, px, py)
-	_ePlayerShootCharge_3_SetBGS(playerindex, 21);
+function Edef_ShootChargeEnemyEID_21_3(playerindex, level, x, y, timer, px, py, overbgs)
+	if overbgs == nil or overbgs == false then
+		_ePlayerShootCharge_3_SetBGS(playerindex, 21);
+	end
 	if timer == 1 then
 		local cx = helper_GetCenterBossX(playerindex);
 		local cy = CenterBossY;
@@ -89,7 +91,7 @@ function Edef_ShootChargeEnemyEID_21_3_A(playerindex, level, x, y, timer, px, py
 		hdss.Call(
 			HDSS_BC,
 			{
-				playerindex, 2, aimangle + leftrightindi * timer * 200, 200, x, y, 0, CC_Bullet_Amulet, 4, 8, 16
+				playerindex, 2, aimangle + leftrightindi * timer * 200, 80, x, y, 0, CC_Bullet_Amulet, 4, 8, 16
 			}
 		)
 		hdssA(playerindex);
@@ -126,7 +128,7 @@ function Edef_ShootChargeEnemyEID_21_3_B(playerindex, level, x, y, timer, px, py
 		hdss.Call(
 			HDSS_BC,
 			{
-				playerindex, 4, aimangle + leftrightindi * nowindex * 200, 200, x, y, 0, CC_Bullet_Amulet, 3, 8, 16
+				playerindex, 4, aimangle + leftrightindi * nowindex * 200, 80, x, y, 0, CC_Bullet_Amulet, 3, 8, 16
 			}
 		)
 		hdssA(playerindex);

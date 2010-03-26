@@ -1,28 +1,29 @@
 LTable_PlayerWinLoseChat	=	
 {				
-	{0,	0,	"約束通り、お賽銭もらったわよ。",	"これはシャレになれないわね。"},
-	{1,	0,	"もう終わり？大したことじゃなかったぜ。",	"も、もう一回勝負しろ！"},
-	{2,	0,	"仕事の邪魔しないでくれる？",	"これはまた、困ったね。"},
-	{3,	0,	"winner",	"loser"},
-	{4,	0,	"winner",	"loser"},
-	{5,	0,	"winner",	"loser"},
-	{6,	0,	"winner",	"loser"},
-	{7,	0,	"winner",	"loser"},
-	{8,	0,	"winner",	"loser"},
-	{9,	0,	"winner",	"loser"},
-	{10,	0,	"winner",	"loser"},
-	{11,	0,	"winner",	"loser"},
-	{12,	0,	"winner",	"loser"},
-	{13,	0,	"winner",	"loser"},
-	{14,	0,	"winner",	"loser"},
-	{15,	0,	"winner",	"loser"},
-	{16,	0,	"winner",	"loser"},
-	{17,	0,	"winner",	"loser"},
-	{18,	0,	"winner",	"loser"},
-	{19,	0,	"winner",	"loser"},
-	{20,	0,	"winner",	"loser"},
-	{21,	0,	"winner",	"loser"},
-	{22,	0,	"私はいつも本気です。",	"負けてしまいました。"},
+	{0,	"約束通り、お賽銭もらったわよ。",	"これはシャレになれないわね。"},
+	{0,	"もう終わり？大したことじゃなかったぜ。",	"も、もう一回勝負しろ！"},
+	{0,	"仕事の邪魔しないでくれる？",	"これはまた、困ったね。"},
+	{0,	"winner",	"loser"},
+	{0,	"winner",	"loser"},
+	{0,	"winner",	"loser"},
+	{0,	"winner",	"loser"},
+	{0,	"winner",	"loser"},
+	{0,	"winner",	"loser"},
+	{0,	"winner",	"loser"},
+	{0,	"winner",	"loser"},
+	{0,	"winner",	"loser"},
+	{0,	"winner",	"loser"},
+	{0,	"winner",	"loser"},
+	{0,	"winner",	"loser"},
+	{0,	"winner",	"loser"},
+	{0,	"winner",	"loser"},
+	{0,	"winner",	"loser"},
+	{0,	"winner",	"loser"},
+	{0,	"winner",	"loser"},
+	{0,	"winner",	"loser"},
+	{0,	"winner",	"loser"},
+	{0,	"私はいつも本気です。",	"負けてしまいました。"},
+	{0,	"winner",	"loser"},
 }
 
 function CEClear_CloseUsed()
@@ -47,6 +48,21 @@ function ControlExecute_cClear(timer)
 	end
 	
 	if timer == 1 then
+		
+		--
+		if _DEBUG_MatchAndLog > 0 then
+			local filename = _DEBUG_GetSaveReplayName();
+			hdssSAVEREPLAY(true, true, filename);
+			local logstr = "SR :	"..filename;
+			LOG(logstr);
+			
+			_DEBUG_NewRandomMatch();
+			
+			return true;
+			
+		end
+		--
+		
 		for i=0, 1 do
 			local siadd = 1;
 			if i == winner then

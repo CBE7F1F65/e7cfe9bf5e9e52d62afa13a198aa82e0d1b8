@@ -146,3 +146,6 @@ Comment	Index	UserID	ChargeBullet	SIID	TimeMod	Flag	Power	DeleteTime	Arrange	Ang
 -	148	22	1	SI_PlayerBullet_22_1_0	8	1600	15	0	1	0	0	12	0.1	1	0	0	0	60
 -	149	22	1	SI_PlayerBullet_22_2_0	8	1D00	4	0	2	-1600	0	12	0.1	1	0	0	0	60
 -	150	22	1	SI_PlayerBullet_22_2_0	8	1D00	4	0	3	1600	0	12	0.1	1	0	0	0	60
+-	151	23	0	SI_PlayerBullet_23_0_0	4	1000	10	0	0	0	0	18	0	0.5	0	10	15	60
+-	152	23	0	SI_PlayerBullet_23_0_0	4	1000	10	0	0	0	0	18	0	0.5	0	-10	15	60
+-	153	23	1	SI_PlayerBullet_23_1_0	4	1000	10	0	1	0	0	18	0	0.5	0	0	0	60

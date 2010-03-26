@@ -19,11 +19,12 @@ Comment	Index	FaceIndex	SIID	Collision_W	Collision_H	Flag	StandFrame	RightPreFra
 -	15	15	SI_Boss_Alice_0	16	24	1007	1	4	1	0	0	0	3	0	0	6	1	0	31	36	1	-1	-1	-1	0	0	0	•¢•Í•π°§•ﬁ©`•¨•»•Ì•§•…	Alice Margatroid
 -	16	16	SI_Boss_Yamaxanadu_0	16	24	1007	4	3	1	0	0	0	1	0	0	6	1	0	31	36	1	-1	-1	-1	0	0	0	Àƒºæ”≥ä™°§•‰•ﬁ•∂• •…••	Shikieiki Yamaxanadu
 -	17	17	SI_Boss_Komachi_0	16	24	1007	4	3	1	0	0	0	4	0	0	6	1	0	31	36	1	-1	-1	-1	0	0	0	–°“∞âV°§–°ÓÆ	Onozuka Komachi
--	18	18	SI_Boss_Remilia_0	16	24	1007	1	1	1	0	0	0	4	0	1	6	1	0	31	36	1	-1	-1	-1	0	0	0	•Ï•ﬂ•Í•¢°§•π•´©`•Ï•√•»	Remilia Scarlet
+-	18	18	SI_Boss_Remilia_0	16	24	1007	1	1	1	0	0	3	1	0	0	6	1	0	31	36	1	-1	-1	-1	0	0	0	•Ï•ﬂ•Í•¢°§•π•´©`•Ï•√•»	Remilia Scarlet
 -	19	19	SI_Boss_ReimuII_0	16	24	1007	4	3	1	0	0	0	4	0	0	6	1	0	31	36	1	-1	-1	-1	0	0	0	≤©˚ê°§ÎëâÙ	Hakurei Reimu
 -	20	20	SI_Boss_MarisaII_0	16	24	1007	4	3	1	0	0	0	4	0	0	6	1	0	31	36	1	-1	-1	-1	0	0	0	ÏF”Í°§ƒß¿Ì…≥	Kirisame Marisa
 -	21	21	SI_Boss_Yukari_0	16	24	1007	1	2	1	2	1	0	2	0	0	6	1	0	31	36	1	-1	-1	-1	0	0	0	∞ÀÎÖ°§◊œ	Yakumo Yukari
 -	22	22	SI_Boss_Sanae_0	16	24	1007	4	3	1	0	0	0	3	0	0	6	1	0	31	36	1	-1	-1	-1	0	0	0	ñ|ÔLπ»°§‘Á√Á	Kotiya Sanae
+-	23	23	SI_Boss_Hatate_0	16	24	1007	4	3	1	0	0	0	4	0	0	6	1	0	31	36	1	-1	-1	-1	0	0	0	ä™∫£Ãƒ°§§œ§ø§∆	Himekaidou Hatate
 #		Enemy(32~36)																											
 -	32	-1	SI_EnemySprite_Blue_0	16	16	7	4	4	4	0	0	0	0	0	0	1	25	0	31	32	1	-1	-1	-1	10	54	3	_	_
 -	33	-1	SI_EnemySprite_Red_0	16	16	7	4	4	4	0	0	0	0	0	0	1	25	0	31	32	1	-1	-1	-1	12	66	3	_	_

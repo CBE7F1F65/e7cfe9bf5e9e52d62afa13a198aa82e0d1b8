@@ -130,7 +130,8 @@
 #define CALLEVENT		0x8100
 #define CHASE			0x8200
 #define	REMAIN			0x8300
-#define FADEOUT			0x8400
+#define DECANCEL		0x8400
+#define FADEOUT			0x8500
 #define BOUNCE			0x8800
 #define BOUNCELR		0x8900
 #define BOUNCETB		0x8A00

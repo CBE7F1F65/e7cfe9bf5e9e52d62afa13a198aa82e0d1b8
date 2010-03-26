@@ -89,6 +89,12 @@ function ControlExecute_cTitle(timer)
 	
 	if timer == 1 then
 		CETitle_Init();
+		--
+		if _DEBUG_MatchAndLog > 0 then
+			_DEBUG_NewRandomMatch();
+			return true;
+		end
+		--
 		CETitle_SetBG();
 		CETitle_SetupSelect(LConst_selsys_titleid);
 	end

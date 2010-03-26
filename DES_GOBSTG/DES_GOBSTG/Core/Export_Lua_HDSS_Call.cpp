@@ -112,6 +112,8 @@ int Export_Lua_HDSS::LuaFn_HDSS_Call(LuaState * ls)
 				return _HDSSCallGet::Call_BUBUILDCIRCLE(ls);
 			case SCR_BUBUILDLINE:
 				return _HDSSCallGet::Call_BUBUILDLINE(ls);
+			case SCR_BUDECANCEL:
+				return _HDSSCallGet::Call_BUDECANCEL(ls);
 			case SCR_BEBUILD:
 				return _HDSSCallGet::Call_BEBUILD(ls);
 			}

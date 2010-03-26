@@ -114,3 +114,8 @@ function ePlayerShot_22(playerindex, playerID, nLife, shottimer, shotdelay, ncha
 
 	return true;
 end
+
+function ePlayerShot_23(playerindex, playerID, nLife, shottimer, shotdelay, nchargemax)
+
+	return true;
+end

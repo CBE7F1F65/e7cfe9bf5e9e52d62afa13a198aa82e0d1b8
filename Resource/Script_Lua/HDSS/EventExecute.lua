@@ -1,19 +1,11 @@
 function _EventExecute_PlayerDrain(etype, playerindex)
 	local playerID, x, y, draintimer, type = game.GetPlayerDrainInfo(playerindex, etype);
-	for i, it in pairs(LTable_ePlayerDrainFunction) do
-		if it[1] == playerID then
-			return it[2](playerindex, x, y, draintimer, type);
-		end
-	end
+	return LTable_ePlayerDrainFunction[playerID+1](playerindex, x, y, draintimer, type);
 end
 
 function _EventExecute_PlayerShot(playerindex)
 	local playerID, nLife, shottimer, shotdelay, nchargemax = game.GetPlayerShotInfo(playerindex);
-	for i, it in pairs(LTable_ePlayerShotFunction) do
-		if it[1] == playerID then
-			return it[2](playerindex, playerID, nLife, shottimer, shotdelay, nchargemax);
-		end
-	end
+	return LTable_ePlayerShotFunction[playerID+1](playerindex, playerID, nLife, shottimer, shotdelay, nchargemax);
 end
 
 function _EventExecute_EffspChase(playerindex)
@@ -59,52 +51,33 @@ function _EventExecute_PlayerShootCharge(playerindex)
 	for i=0, 1 do
 		hdssBGVALUE(i, LConst_gamefg_spellflashid, SI_White, helper_GetCenterX(i), TotalH/2, TotalW/2, TotalH, col[i+1]);
 	end
-	
-	for i, it in pairs(LTable_ePlayerShootChargeFunction) do
-		if it[1] == oplayerID then
-			if it[2] == charge then
-				if charge == 3 then
-					local enindex, bossindex = hdss.Get(HDSS_ENI, playerindex);
-					if bossindex ~= 0xff then
-						hdssENTOI(playerindex, bossindex);
-						hdssEA_FADEOUT(playerindex, -1);
-						hdssENTOI(playerindex, enindex);
-					end
-				end
-				return it[3](1-playerindex, level, oplayerID, px, py, opx, opy, playerID);
-			end
+		
+	if charge == 3 then
+		local enindex, bossindex = hdss.Get(HDSS_ENI, playerindex);
+		if bossindex ~= 0xff then
+			hdssENTOI(playerindex, bossindex);
+			hdssEA_FADEOUT(playerindex, -1);
+			hdssENTOI(playerindex, enindex);
 		end
 	end
-	return true;
+	return LTable_ePlayerShootChargeFunction[oplayerID+1][charge](1-playerindex, level, oplayerID, px, py, opx, opy, playerID);
 end
 
 function _EventExecute_PlayerShootChargeOne(playerindex)
 	local oplayerID = hdss.Get(HDSS_CHARA, playerindex);
 	local opx = hdss.Get(HDSS_PX, playerindex);
 	local opy = hdss.Get(HDSS_PY, playerindex);
-	for i, it in pairs(LTable_ePlayerShootChargeOneFunction) do
-		if it[1] == oplayerID then
-			return it[2](playerindex, oplayerID, opx, opy);
-		end
-	end
+	return LTable_ePlayerShootChargeOneFunction[oplayerID+1](playerindex, oplayerID, opx, opy);
 end
 
 function _EventExecute_PlayerSendEx(playerindex)
 	local esindex, playerID, opx, opy, px, py, oplayerID, x, y = game.GetPlayerSendExInfo(playerindex);
-	for i, it in pairs(LTable_ePlayerSendExFunction) do
-		if it[1] == playerID then
-			return it[2](esindex, playerindex, playerID, opx, opy, px, py, oplayerID, x, y);
-		end
-	end
+	return LTable_ePlayerSendExFunction[playerID+1](esindex, playerindex, playerID, opx, opy, px, py, oplayerID, x, y);
 end
 
 function _EventExecute_ActiveGhostOver(playerindex)
 	local playerID = hdss.Get(HDSS_CHARA, playerindex);
-	for i, it in pairs(LTable_eActiveGhostOverFunction) do
-		if it[1] == playerID then
-			return it[2](playerindex);
-		end
-	end
+	return LTable_eActiveGhostOverFunction[playerID+1](playerindex);
 end
 
 function _EventExecute_PlayerSendLily(rank)
@@ -129,6 +102,22 @@ end
 
 function _EventExecute_BossFadeout(playerindex)
 	hdssBGSETUP(playerindex, LConst_bgset_spellid, BGLAYERSET_NONE);
+end
+
+function _EventExecute_OneMatchOver()
+	if _DEBUG_MatchAndLog > 0 then
+		local time;
+		local playerID = {};
+		local plLife = {};
+		local playername = {};
+		local siid;
+		for i=0, 1 do
+			time, playerID[i+1], plLife[i+1] = game.GetOneMatchOverInfo(i);
+			siid, playername[i+1] = game.GetPlayerContentTable(playerID[i+1]);
+		end
+		local logstr = "MO :	"..time.."	"..playerID[1].."	"..playername[1].."	"..plLife[1].."	"..playerID[2].."	"..playername[2].."	"..plLife[2].."	";
+		LOG(logstr);
+	end
 end
 
 function EventExecute(name, con)
@@ -157,6 +146,8 @@ function EventExecute(name, con)
 		return _EventExecute_PlayerSendItemBullet(con);
 	elseif name == EVENT_PLAYERINSTOP then
 		return _EventExecute_PlayerInStop(con);
+	elseif name == EVENT_ONEMATCHOVER then
+		return _EventExecute_OneMatchOver();
 	end
 	return true;
 

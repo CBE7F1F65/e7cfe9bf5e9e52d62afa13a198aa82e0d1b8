@@ -43,11 +43,11 @@ function hdssSTARTPREP(callinit)
 	)
 end
 
-function hdssSAVEREPLAY(bSave, bFill)
+function hdssSAVEREPLAY(bSave, bFill, filename)
 	return hdss.Call(
 		HDSS_SAVEREPLAY,
 		{
-			bSave, bFill
+			bSave, bFill, filename
 		}
 	)
 end
@@ -563,6 +563,15 @@ function hdssBC(playerindex, num, baseangle, baser, x, y, speed, type, color)
 	)
 end
 
+function hdssBUDECANCEL(playerindex, buindex)
+	return hdss.Call(
+		HDSS_BUDECANCEL,
+		{
+			playerindex, buindex
+		}
+	)
+end
+
 function hdssEB(eID, playerindex, x, y, angle, speed, type, life, take)
 	if take == nil or take == 0 then
 		return hdss.Call(
@@ -596,13 +605,11 @@ function hdssCHATON(leftID, rightID, flag)
 	end
 	local blf = false;
 	local brf = false;
-	for i, it in pairs(LTable_PlayerWinLoseChat) do
-		if it[1] == leftID and it[2] == 1 then
-			blf = true;
-		end
-		if it[1] == rightID and it[2] == 1 then
-			brf = true;
-		end
+	if LTable_PlayerWinLoseChat[leftID+1][1] == 1 then
+		blf = true;
+	end
+	if LTable_PlayerWinLoseChat[rightID+1][1] == 1 then
+		brf = true;
 	end
 	if blf then
 		flag = flag + CS_LF;
@@ -627,21 +634,17 @@ function hdssCHAT(ID, flag, text)
 		end
 	end
 	
-	for i, it in pairs(LTable_PlayerWinLoseChat) do
-		if it[1] == ID then
-			if it[2] == 0 then
-				if flag == CS_R then
-					flag = CS_R + CS_RF;
-				end
-			else
-				if flag == CS_L then
-					flag = CS_L + CS_LF;
-				end
-			end
-			if text == 0 or text == 1 then
-				text = it[3+text];
-			end
+	if LTable_PlayerWinLoseChat[ID+1][1] == 0 then
+		if flag == CS_R then
+			flag = CS_R + CS_RF;
 		end
+	else
+		if flag == CS_L then
+			flag = CS_L + CS_LF;
+		end
+	end
+	if text == 0 or text == 1 then
+		text = LTable_PlayerWinLoseChat[ID+1][2+text];
 	end
 	return hdss.Call(
 		HDSS_CHAT,

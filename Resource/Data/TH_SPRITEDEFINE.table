@@ -296,12 +296,8 @@ Comment	Index	SI_Name	Tex	Tex_x	Tex_y	Tex_w	Tex_h
 -	420	SI_Face_21	130	0	0	-1	-1
 -	421	SI_Face_22	131	0	0	-1	-1
 -	422	SI_Face_23	132	0	0	-1	-1
+-	423	SI_Face_24	133	0	0	-1	-1
 #		MusicName(500~549)					
--	500	SI_MusicName_01	363	0	0	256	13
--	501	SI_MusicName_02	363	0	13	256	13
--	502	SI_MusicName_03	363	0	26	256	13
--	503	SI_MusicName_04	363	0	39	256	13
--	504	SI_MusicName_05	363	0	52	256	13
 #		PlayerGhost(550~649)					
 -	550	SI_PlayerGhost_00_01	10	64	144	16	16
 -	551	SI_PlayerGhost_00_02	10	80	144	16	16
@@ -662,6 +658,8 @@ Comment	Index	SI_Name	Tex	Tex_x	Tex_y	Tex_w	Tex_h
 -	1134	SI_PlayerBullet_22_1_2	32	128	160	64	16
 -	1135	SI_PlayerBullet_22_1_3	32	192	160	64	16
 -	1136	SI_PlayerBullet_22_2_0	32	0	176	32	32
+-	1137	SI_PlayerBullet_23_0_0	73	0	0	64	64
+-	1138	SI_PlayerBullet_23_1_0	73	0	128	64	64
 #		Bullet(1400~1799)					
 -	1400	SI_Bullet_ShuttleBeam_0	2	0	0	16	16
 -	1401	SI_Bullet_ShuttleBeam_1	2	16	0	16	16
@@ -1034,6 +1032,8 @@ Comment	Index	SI_Name	Tex	Tex_x	Tex_y	Tex_w	Tex_h
 -	1831	SI_BulletEx_Yuka_Small_0	63	0	128	64	64
 -	1832	SI_BulletEx_Reisen_0	82	0	0	-1	-1
 -	1833	SI_BulletEx_ReimuII_0	50	96	0	32	32
+-	1834	SI_BulletEx_Hatate_0	233	0	0	128	256
+-	1835	SI_BulletEx_Hatate_1	233	128	0	128	256
 #		Player(2000~2999)					
 -	2000	SI_Player_Reimu_0	10	0	0	32	48
 -	2001	SI_Player_Reimu_1	10	32	0	32	48
@@ -1542,6 +1542,30 @@ Comment	Index	SI_Name	Tex	Tex_x	Tex_y	Tex_w	Tex_h
 -	2504	SI_Player_Sanae_21	32	160	96	32	48
 -	2505	SI_Player_Sanae_22	32	192	96	32	48
 -	2506	SI_Player_Sanae_23	32	224	96	32	48
+-	2507	SI_Player_Hatate_0	33	0	0	32	48
+-	2508	SI_Player_Hatate_1	33	32	0	32	48
+-	2509	SI_Player_Hatate_2	33	64	0	32	48
+-	2510	SI_Player_Hatate_3	33	96	0	32	48
+-	2511	SI_Player_Hatate_4	33	128	0	32	48
+-	2512	SI_Player_Hatate_5	33	160	0	32	48
+-	2513	SI_Player_Hatate_6	33	192	0	32	48
+-	2514	SI_Player_Hatate_7	33	224	0	32	48
+-	2515	SI_Player_Hatate_8	33	0	48	32	48
+-	2516	SI_Player_Hatate_9	33	32	48	32	48
+-	2517	SI_Player_Hatate_10	33	64	48	32	48
+-	2518	SI_Player_Hatate_11	33	96	48	32	48
+-	2519	SI_Player_Hatate_12	33	128	48	32	48
+-	2520	SI_Player_Hatate_13	33	160	48	32	48
+-	2521	SI_Player_Hatate_14	33	192	48	32	48
+-	2522	SI_Player_Hatate_15	33	224	48	32	48
+-	2523	SI_Player_Hatate_16	33	0	96	32	48
+-	2524	SI_Player_Hatate_17	33	32	96	32	48
+-	2525	SI_Player_Hatate_18	33	64	96	32	48
+-	2526	SI_Player_Hatate_19	33	96	96	32	48
+-	2527	SI_Player_Hatate_20	33	128	96	32	48
+-	2528	SI_Player_Hatate_21	33	160	96	32	48
+-	2529	SI_Player_Hatate_22	33	192	96	32	48
+-	2530	SI_Player_Hatate_23	33	224	96	32	48
 #		PlayerSpellCutIn(3000~3399)					
 -	3000	SI_PlayerSpellCutIn_01_LL	260	0	0	256	85
 -	3001	SI_PlayerSpellCutIn_01_LR	260	0	85	32	85
@@ -1635,6 +1659,10 @@ Comment	Index	SI_Name	Tex	Tex_x	Tex_y	Tex_w	Tex_h
 -	3089	SI_PlayerSpellCutIn_23_LR	282	0	85	32	85
 -	3090	SI_PlayerSpellCutIn_23_RL	282	0	170	256	85
 -	3091	SI_PlayerSpellCutIn_23_RR	282	224	85	32	85
+-	3092	SI_PlayerSpellCutIn_24_LL	283	0	0	256	85
+-	3093	SI_PlayerSpellCutIn_24_LR	283	0	85	32	85
+-	3094	SI_PlayerSpellCutIn_24_RL	283	0	170	256	85
+-	3095	SI_PlayerSpellCutIn_24_RR	283	224	85	32	85
 #		PlayerDrainZone(3400~3599)					
 -	3400	SI_PlayerDrainZone_01	310	0	0	-1	-1
 -	3401	SI_PlayerDrainZone_02	311	0	0	-1	-1
@@ -1659,6 +1687,7 @@ Comment	Index	SI_Name	Tex	Tex_x	Tex_y	Tex_w	Tex_h
 -	3420	SI_PlayerDrainZone_21	311	0	0	-1	-1
 -	3421	SI_PlayerDrainZone_22	310	0	0	-1	-1
 -	3422	SI_PlayerDrainZone_23	316	0	0	-1	-1
+-	3423	SI_PlayerDrainZone_24	318	0	0	-1	-1
 #		Scene(3600~3799)					
 -	3600	SI_Scene_00_1	560	0	0	-1	-1
 -	3601	SI_Scene_00_2	561	256	0	228	228
@@ -1749,6 +1778,8 @@ Comment	Index	SI_Name	Tex	Tex_x	Tex_y	Tex_w	Tex_h
 -	3686	SI_Scene_21_4_04	606	224	0	16	512
 -	3687	SI_Scene_22_1	608	0	0	256	512
 -	3688	SI_Scene_22_2	609	0	0	256	512
+-	3689	SI_Scene_23_1	610	0	0	-1	-1
+-	3690	SI_Scene_23_2	611	0	0	-1	-1
 #		Spell(3800~3999)					
 -	3800	SI_Spell_00_1	660	0	0	-1	-1
 -	3801	SI_Spell_00_2	661	0	0	-1	-1
@@ -2017,3 +2048,15 @@ Comment	Index	SI_Name	Tex	Tex_x	Tex_y	Tex_w	Tex_h
 -	4227	SI_Boss_Sanae_8	182	0	128	64	80
 -	4228	SI_Boss_Sanae_9	182	64	128	64	80
 -	4229	SI_Boss_Sanae_10	182	128	128	64	80
+-	4230	SI_Boss_Hatate_0	183	0	0	64	80
+-	4231	SI_Boss_Hatate_1	183	64	0	64	80
+-	4232	SI_Boss_Hatate_2	183	128	0	64	80
+-	4233	SI_Boss_Hatate_3	183	192	0	64	80
+-	4234	SI_Boss_Hatate_4	183	0	80	64	80
+-	4235	SI_Boss_Hatate_5	183	64	80	64	80
+-	4236	SI_Boss_Hatate_6	183	128	80	64	80
+-	4237	SI_Boss_Hatate_7	183	192	80	64	80
+-	4238	SI_Boss_Hatate_8	183	0	160	64	80
+-	4239	SI_Boss_Hatate_9	183	64	160	64	80
+-	4240	SI_Boss_Hatate_10	183	128	160	64	80
+-	4241	SI_Boss_Hatate_11	183	192	160	64	80

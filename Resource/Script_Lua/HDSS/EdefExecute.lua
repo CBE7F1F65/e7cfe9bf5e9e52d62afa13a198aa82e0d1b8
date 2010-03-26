@@ -23,7 +23,8 @@ LTable_EnemyEIDFunction	=
 	{CC_SendExChaseEnemyEID_19,	Edef_SendExChase_19},		
 	{CC_SendExChaseEnemyEID_20,	Edef_SendExChase_20},		
 	{CC_SendExChaseEnemyEID_21,	Edef_SendExChase_21},		
-	{CC_SendExChaseEnemyEID_22,	Edef_SendExChase_22},		
+	{CC_SendExChaseEnemyEID_22,	Edef_SendExChase_22},	
+	{CC_SendExChaseEnemyEID_23,	Edef_SendExChase_23},
 	{CC_ShootChargeEnemyEID_00_1,	Edef_ShootChargeEnemyEID_00_1},
 	{CC_ShootChargeEnemyEID_00_2,	Edef_ShootChargeEnemyEID_00_2},
 	{CC_ShootChargeEnemyEID_00_3,	Edef_ShootChargeEnemyEID_00_3},
@@ -208,6 +209,14 @@ LTable_EnemyEIDFunction	=
 	{CC_ShootChargeEnemyEID_22_3_C,	Edef_ShootChargeEnemyEID_22_3_C},
 	{CC_ShootChargeEnemyEID_22_3_D,	Edef_ShootChargeEnemyEID_22_3_D},
 	{CC_ShootChargeEnemyEID_22_3_E,	Edef_ShootChargeEnemyEID_22_3_E},
+	{CC_ShootChargeEnemyEID_23_1,	Edef_ShootChargeEnemyEID_23_1},
+	{CC_ShootChargeEnemyEID_23_2,	Edef_ShootChargeEnemyEID_23_2},
+	{CC_ShootChargeEnemyEID_23_3,	Edef_ShootChargeEnemyEID_23_3},
+	{CC_ShootChargeEnemyEID_23_3_A,	Edef_ShootChargeEnemyEID_23_3_A},
+	{CC_ShootChargeEnemyEID_23_3_B,	Edef_ShootChargeEnemyEID_23_3_B},
+	{CC_ShootChargeEnemyEID_23_3_C,	Edef_ShootChargeEnemyEID_23_3_C},
+	{CC_ShootChargeEnemyEID_23_3_D,	Edef_ShootChargeEnemyEID_23_3_D},
+	{CC_ShootChargeEnemyEID_23_3_E,	Edef_ShootChargeEnemyEID_23_3_E},
 
 }
 
@@ -215,11 +224,15 @@ LTable_EnemyEIDFunction	=
 function EdefExecute(name, timer)
 
 	local playerindex, eID, level, x, y, px, py = game.GetEdefInfo(name);
-	for i, it in pairs(LTable_EnemyEIDFunction) do
-		if it[1] == eID then
-			return it[2](playerindex, level, x, y, timer, px, py);
-		end
+	if eID >= CC_EnemyEID_Lily then
+		return LTable_EnemyEIDFunction[eID-CC_EnemyEID_Lily+1][2](playerindex, level, x, y, timer, px, py);
 	end
 	return true;
+--	for i, it in pairs(LTable_EnemyEIDFunction) do
+--		if it[1] == eID then
+--			return it[2](playerindex, level, x, y, timer, px, py);
+--		end
+--	end
+--	return true;
 
 end
