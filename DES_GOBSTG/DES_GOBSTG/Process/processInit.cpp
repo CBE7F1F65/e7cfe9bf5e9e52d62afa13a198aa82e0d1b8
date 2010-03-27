@@ -258,6 +258,12 @@ int Process::processInit()
 	char tnbuffer[M_STRMAX];
 	for(int i=1;i<TEXMAX;i++)
 	{
+		//
+		if (usingkaillera && i%16==0)
+		{
+			kailleraModifyPlayValues(kailleraintexchange, sizeof(int));
+		}
+		//
 		if(tex[i])
 			hge->Texture_Free(tex[i]);
 		tex[i] = NULL;

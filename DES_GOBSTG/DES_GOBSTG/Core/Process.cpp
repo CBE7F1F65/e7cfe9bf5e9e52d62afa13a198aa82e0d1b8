@@ -695,3 +695,48 @@ void Process::SetLastMatchChara(BYTE playerindex, WORD ID, WORD ID_sub_1, WORD I
 	lastmatchchara[playerindex][1] = ID_sub_1;
 	lastmatchchara[playerindex][2] = ID_sub_2;
 }
+
+int Process::InitKaillera(char * kgamename, int kplayer, int knplayers, int * seed)
+{
+	kailleraintexchange = (int *)malloc(knplayers*sizeof(int));
+	kaillerawordexchange = (WORD *)malloc(knplayers*sizeof(WORD));
+
+	kailleraplayer = kplayer-1;
+	kailleraintexchange[0] = *seed;
+	kailleraModifyPlayValues((void*)kailleraintexchange, sizeof(int));
+	*seed = kailleraintexchange[0];
+	for (int i=0; i<knplayers; i++)
+	{
+		kailleraintexchange[i] = 0;
+		kaillerawordexchange[i] = 0;
+	}
+
+	return 0;
+}
+
+void Process::ReleaseKaillera()
+{
+	free(kailleraintexchange);
+	free(kaillerawordexchange);
+}
+
+void Process::UpdateKailleraInput()
+{
+
+	if (usingkaillera)
+	{
+		if (kailleraplayer < 2)
+		{
+			kaillerawordexchange[0] = GameInput::gameinput[kailleraplayer].input;
+		}
+		else
+		{
+			kaillerawordexchange[0] = 0;
+		}
+		kailleraModifyPlayValues(kaillerawordexchange, sizeof(WORD));
+		for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
+		{
+			GameInput::gameinput[i].input = kaillerawordexchange[i];
+		}
+	}
+}

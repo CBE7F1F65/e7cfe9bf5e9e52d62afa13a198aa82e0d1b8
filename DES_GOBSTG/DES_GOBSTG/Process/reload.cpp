@@ -15,6 +15,11 @@ bool Process::reload()
 	Player::Init();
 	EventZone::Clear();
 
+	if (usingkaillera)
+	{
+		kailleraModifyPlayValues(kailleraintexchange, sizeof(int));
+	}
+
 	frameskip = M_DEFAULT_FRAMESKIP;
 	strcpy(rpyfilename, "");
 	Replay::rpy.InitReplayIndex();
@@ -38,6 +43,10 @@ bool Process::reload()
 		rendertar[i] = hge->Target_Create(M_CLIENT_WIDTH, M_CLIENT_HEIGHT, false);
 	}
 
+	if (usingkaillera)
+	{
+		kailleraModifyPlayValues(kailleraintexchange, sizeof(int));
+	}
 	GameAI::Init();
 	Bullet::Init(tex[TEX_BULLET]);
 	Enemy::Init(tex);
@@ -50,6 +59,10 @@ bool Process::reload()
 	BossInfo::Init();
 	InfoQuad::Init(tex[TEX_WHITE]);
 
+	if (usingkaillera)
+	{
+		kailleraModifyPlayValues(kailleraintexchange, sizeof(int));
+	}
 	FrontDisplay::fdisp.Init();
 	Fontsys::Init(FrontDisplay::fdisp.info.normalfont);
 	Fontsys::HeatUp();
@@ -63,6 +76,10 @@ bool Process::reload()
 	HGELOG("\nCleared up.\n");
 #endif
 
+	if (usingkaillera)
+	{
+		kailleraModifyPlayValues(kailleraintexchange, sizeof(int));
+	}
 	SetCurrentDirectory(hge->Resource_MakePath(""));
 
 	return true;

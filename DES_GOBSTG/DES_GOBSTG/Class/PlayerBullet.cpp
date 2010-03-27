@@ -623,10 +623,6 @@ void PlayerBullet::action()
 				TurnBullet(speed/4.0f);
 			}
 		}
-		if (xplus>1)
-		{
-			xplus=0;
-		}
 		if (deletetime && timer >= 16 && timer > deletetime-16)
 		{
 			alpha = (deletetime-timer)*0x0C;

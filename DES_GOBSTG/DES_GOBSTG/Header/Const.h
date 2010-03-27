@@ -223,6 +223,11 @@
 	#endif // _DEBUG
 #endif // __RELEASE
 
+#ifdef __RELEASE
+	#define DEFAULT_KAILLERADLLPATH		"Resource/kailleraclient.dll"
+#else
+	#define DEFAULT_KAILLERADLLPATH		"../../Resource/kailleraclient.dll"
+#endif
 
 //pushtimer
 #define M_PUSH_FIRST	40

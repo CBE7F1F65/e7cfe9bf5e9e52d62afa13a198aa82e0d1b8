@@ -767,8 +767,9 @@ function ePlayerShootCharge_23_3(playerindex, level, oplayerID, px, py)
 	--
 	local toindex = RANDT(0, 22);
 	--
+	hdssSD(LConst_Desc_HatateIndex+playerindex, toindex);
 	hdssEB(CC_ShootChargeEnemyEID_23_3, playerindex, x, y, 9000, 0, oplayerID, 1400, helper_GetRandomItem());
-	hdssENSAIM(playerindex, level, 0, 0, toindex);
+	hdssENSAIM(playerindex, level);
 	return true;
 end
 

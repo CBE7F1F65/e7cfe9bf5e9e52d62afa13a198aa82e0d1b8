@@ -1,5 +1,6 @@
 #include "../Header/GameInput.h"
 #include "../Header/ConstResource.h"
+#include "../Header/Process.h"
 
 GameInput GameInput::gameinput[M_PL_MATCHMAXPLAYER];
 HGE * GameInput::hge = NULL;
@@ -245,6 +246,11 @@ bool GameInput::UpdateInput(bool startstate)
 			gameinput[j].input |= 1<<KSI_SKIP;
 		}
 	}
+
+	//
+	Process::mp.UpdateKailleraInput();
+	//
+
 	return true;
 }
 

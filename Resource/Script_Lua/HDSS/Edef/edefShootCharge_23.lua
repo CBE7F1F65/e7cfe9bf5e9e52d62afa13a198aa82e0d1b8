@@ -68,11 +68,7 @@ function Edef_ShootChargeEnemyEID_23_3(playerindex, level, x, y, timer, px, py, 
 	if overbgs == nil or overbgs == false then
 		_ePlayerShootCharge_3_SetBGS(playerindex, 23);
 	end
-	local toindex = hdss.Get(HDSS_ENAIMANGLE, playerindex);
-	if toindex == nil or toindex < 0 or toindex > 22 then
-		toindex = RANDT(0, 22);
-		hdssENSAIM(playerindex, level, 0, 0, toindex);
-	end
+	local toindex = hdss.Get(HDSS_D, LConst_Desc_HatateIndex+playerindex);
 	return LTable_EnemyEIDFunction[toindex*8+CC_ShootChargeEnemyEID_00_3-CC_EnemyEID_Lily+1][2](playerindex, level, x, y, timer, px, py, true);
 end
 

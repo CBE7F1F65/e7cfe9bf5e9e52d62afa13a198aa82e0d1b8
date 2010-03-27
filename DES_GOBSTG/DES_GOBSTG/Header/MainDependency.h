@@ -35,6 +35,7 @@ using namespace std;
 	#pragma comment(lib, "hge.lib")
 #endif // _DEBUG
 
+#pragma comment(lib, "kailleraclient.lib")
 #pragma comment(lib, "bass.lib")
 #pragma comment(lib, "d3d9.lib")
 #pragma comment(lib, "d3dx9.lib")

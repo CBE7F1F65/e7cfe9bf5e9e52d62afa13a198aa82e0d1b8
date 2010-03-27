@@ -68,7 +68,7 @@ void Process::startPrep(bool callinit)
 	}
 	else
 	{
-		seed = timeGetTime();
+		seed = randt();//timeGetTime();
 		for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
 		{
 			SetLastMatchChara(i, Player::p[i].ID, Player::p[i].ID_sub_1, Player::p[i].ID_sub_2);

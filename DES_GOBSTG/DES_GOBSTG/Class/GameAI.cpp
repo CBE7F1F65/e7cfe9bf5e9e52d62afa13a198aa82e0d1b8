@@ -412,6 +412,15 @@ bool GameAI::SetMove()
 
 	float overr = 80.0f;
 
+	//
+#ifndef __DEBUG
+	for (int i=0; i<GAMEACTIVEINPUTMAX; i++)
+	{
+		GameInput::SetKey(playerindex, i, false);
+	}
+#endif
+	//
+
 	//below
 	if (aimtobelow)
 	{

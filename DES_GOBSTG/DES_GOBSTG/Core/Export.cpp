@@ -1,5 +1,6 @@
 #include "../Header/Export.h"
 #include "../Header/ConstResource.h"
+#include "../Header/kailleraclient.h"
 
 char Export::resourcefilename[M_PATHMAX];
 char Export::resbinname[M_PATHMAX];
@@ -26,6 +27,7 @@ void Export::Release()
 {
 	hge->Release();
 }
+
 
 bool Export::clientInitial(bool usesound /* = false */, bool extuse /* = false */)
 {
