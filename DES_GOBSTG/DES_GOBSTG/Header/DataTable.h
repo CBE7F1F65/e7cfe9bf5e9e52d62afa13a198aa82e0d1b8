@@ -13,7 +13,7 @@ public:
 	bool EffectTableDefine();
 	bool SETableDefine();
 	bool CustomConstFile();
-	bool SpellDefineFile();
+//	bool SpellDefineFile();
 	bool MusicDefineFile();
 	bool BulletDefineFile();
 	bool EnemyDefineFile();

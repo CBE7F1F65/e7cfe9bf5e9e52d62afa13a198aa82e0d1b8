@@ -42,9 +42,9 @@ protected:
 			int keyLeft;
 			int keyRight;
 			int keyFire;
-			int keySpecial;
+			int keyQuick;
 			int keySlow;
-			int keyChange;
+			int keyDrain;
 			int keyPause;
 			int keySkip;
 			int keyEnter;
@@ -56,9 +56,9 @@ protected:
 	union{
 		struct{
 			int	joyFire;
-			int	joySpecial;
+			int	joyQuick;
 			int	joySlow;
-			int	joyChange;
+			int	joyDrain;
 			int	joyPause;
 		};
 		int		joyKey[2][5];
@@ -74,6 +74,10 @@ protected:
 	int windoww;
 	int windowh;
 	int windowtopmost;
+
+	int musicvol;
+	int sevol;
+	char username[RPYINFO_USERNAMEMAX];
 
 	// 生成的消息映射函数
 	virtual BOOL OnInitDialog();
@@ -94,10 +98,23 @@ public:
 	afx_msg void OnBnClickedRenderskip2();
 	afx_msg void OnBnClickedRenderskip3();
 	afx_msg void OnEnChangeJoyFire();
-	afx_msg void OnEnChangeJoySpecial();
+	afx_msg void OnEnChangeJoyQuick();
 	afx_msg void OnEnChangeJoySlow();
-	afx_msg void OnEnChangeJoyBorder();
+	afx_msg void OnEnChangeJoyDrain();
 	afx_msg void OnEnChangeJoyPause();
 	afx_msg void OnBnClickedCheck1();
 	afx_msg BOOL OnHelpInfo(HELPINFO* pHelpInfo);
+	afx_msg void OnEnChangeJoyFire2();
+	afx_msg void OnEnChangeJoyQuick2();
+	afx_msg void OnEnChangeJoySlow2();
+	afx_msg void OnEnChangeJoyDrain2();
+	afx_msg void OnEnChangeJoyPause2();
+	afx_msg void OnBnClickedKeyCombineSlowDrain();
+	afx_msg void OnBnClickedKeyCombineSlowDrain2();
+	afx_msg void OnBnClickedJoyCombineSlowDrain();
+	afx_msg void OnBnClickedJoyCombineSlowDrain2();
+	afx_msg void OnEnChangeMusicvol();
+	afx_msg void OnEnChangeSevol();
+	afx_msg void OnEnChangeUsername();
+	afx_msg void OnEnKillfocusUsername();
 };

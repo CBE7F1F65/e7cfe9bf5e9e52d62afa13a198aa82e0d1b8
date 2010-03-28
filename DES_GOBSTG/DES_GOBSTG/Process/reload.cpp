@@ -17,7 +17,7 @@ bool Process::reload()
 
 	if (usingkaillera)
 	{
-		kailleraModifyPlayValues(kailleraintexchange, sizeof(int));
+		kailleraModifyPlayValues(kaillerabyteexchange, sizeof(BYTE));
 	}
 
 	frameskip = M_DEFAULT_FRAMESKIP;
@@ -45,7 +45,7 @@ bool Process::reload()
 
 	if (usingkaillera)
 	{
-		kailleraModifyPlayValues(kailleraintexchange, sizeof(int));
+		kailleraModifyPlayValues(kaillerabyteexchange, sizeof(BYTE));
 	}
 	GameAI::Init();
 	Bullet::Init(tex[TEX_BULLET]);
@@ -61,7 +61,7 @@ bool Process::reload()
 
 	if (usingkaillera)
 	{
-		kailleraModifyPlayValues(kailleraintexchange, sizeof(int));
+		kailleraModifyPlayValues(kaillerabyteexchange, sizeof(BYTE));
 	}
 	FrontDisplay::fdisp.Init();
 	Fontsys::Init(FrontDisplay::fdisp.info.normalfont);
@@ -78,7 +78,7 @@ bool Process::reload()
 
 	if (usingkaillera)
 	{
-		kailleraModifyPlayValues(kailleraintexchange, sizeof(int));
+		kailleraModifyPlayValues(kaillerabyteexchange, sizeof(BYTE));
 	}
 	SetCurrentDirectory(hge->Resource_MakePath(""));
 

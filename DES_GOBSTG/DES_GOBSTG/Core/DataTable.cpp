@@ -81,9 +81,9 @@ bool _DataTable::DataTableDefine()
 	strcpy(BResource::res.resdata.customconstfilename, BResource::res.resdata.datafoldername);
 	_READSTRINGBUFFERLINE(2);
 	strcat(BResource::res.resdata.customconstfilename, buffer);
-	strcpy(BResource::res.resdata.spelldefinefilename, BResource::res.resdata.datafoldername);
-	_READSTRINGBUFFERLINE(2);
-	strcat(BResource::res.resdata.spelldefinefilename, buffer);
+//	strcpy(BResource::res.resdata.spelldefinefilename, BResource::res.resdata.datafoldername);
+//	_READSTRINGBUFFERLINE(2);
+//	strcat(BResource::res.resdata.spelldefinefilename, buffer);
 	strcpy(BResource::res.resdata.musicdefinefilename, BResource::res.resdata.datafoldername);
 	_READSTRINGBUFFERLINE(2);
 	strcat(BResource::res.resdata.musicdefinefilename, buffer);
@@ -187,7 +187,7 @@ bool _DataTable::CustomConstFile()
 	}
 	return true;
 }
-
+/*
 bool _DataTable::SpellDefineFile()
 {
 //	BResource::res.spelldata.clear();
@@ -223,7 +223,7 @@ bool _DataTable::SpellDefineFile()
 	}
 	return true;
 }
-
+*/
 bool _DataTable::MusicDefineFile()
 {
 	ZeroMemory(BResource::res.musdata, RSIZE_MUSIC);
@@ -590,9 +590,11 @@ bool Data::GetTableFile(BYTE type)
 	case DATA_CUSTOMCONSTFILE:
 		_DataTable::datatable.CustomConstFile();
 		break;
+		/*
 	case DATA_SPELLDEFINEFILE:
 		_DataTable::datatable.SpellDefineFile();
 		break;
+		*/
 	case DATA_MUSICDEFINEFILE:
 		_DataTable::datatable.MusicDefineFile();
 		break;

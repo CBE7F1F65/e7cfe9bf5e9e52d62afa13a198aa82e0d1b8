@@ -13,12 +13,18 @@ function Edef_ShootChargeEnemyEID_21_1(playerindex, level, x, y, timer, px, py)
 		local angle = hdssAMAP(playerindex, x, y);
 		local speed = level * 0.1 + 1.6;
 		local type = CC_Bullet_SmallBall;
+		hdssA(playerindex,
+			{
+				TIMEREQUAL, 40, FADEOUT
+			}
+		)
 		for i=0, 1 do
 			if i == 1 then
 				type = CC_Bullet_Kunai;
 			end
 			hdssBC(playerindex, 32+level, angle, 0, x, y, speed, type, 5);
 		end
+		hdssA(playerindex);
 	end
 	return true;
 end
@@ -36,10 +42,16 @@ function Edef_ShootChargeEnemyEID_21_2(playerindex, level, x, y, timer, px, py)
 		end
 	elseif timer == 80 then
 		local angle = hdssAMAP(playerindex, x, y);
+		hdssA(playerindex,
+			{
+				TIMEREQUAL, 40, FADEOUT
+			}
+		)
 		for i=0, 1 do
 			local speed = level * 0.1 + 1.6 + i * 0.3;
 			hdssBC(playerindex, 32+level, angle, 0, x, y, speed, CC_Bullet_Kunai, 5);
 		end
+		hdssA(playerindex);
 	end
 	return true;
 end

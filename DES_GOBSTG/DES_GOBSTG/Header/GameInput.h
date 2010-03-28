@@ -73,6 +73,7 @@ public:
 	static bool UpdateInput(bool startstate=false);
 	WORD updateActiveInput(bool copylast=false);
 	static void SyncControlInput();
+	static void SyncControlInputSelf();
 	static void SyncForActiveInput();
 	static void SwapInput(bool setswap);
 private:

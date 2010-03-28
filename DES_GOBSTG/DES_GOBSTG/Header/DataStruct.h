@@ -72,13 +72,13 @@ struct resourceData
 
 	char binfilename[M_PATHMAX];
 	char binname[M_PATHMAX];
-	char spellaccessfilename[M_PATHMAX];
+//	char spellaccessfilename[M_PATHMAX];
 	char rabinname[M_STRMAX];
 	char scriptfilename[M_PATHMAX];
 	char scrbinname[M_PATHMAX];
 
 	char customconstfilename[M_PATHMAX];
-	char spelldefinefilename[M_PATHMAX];
+//	char spelldefinefilename[M_PATHMAX];
 	char musicdefinefilename[M_PATHMAX];
 	char bulletdefinefilename[M_PATHMAX];
 	char enemydefinefilename[M_PATHMAX];

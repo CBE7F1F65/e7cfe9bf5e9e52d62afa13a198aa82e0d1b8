@@ -109,15 +109,24 @@ void Replay::Fill()
 	rpyinfo.hour = systime.wHour;
 	rpyinfo.minute = systime.wMinute;
 
-	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
-	{
-		// TODO:
-		strcpy(rpyinfo.username[i], Process::mp.username);
-	}
-
 	rpyinfo.lost = Player::lostStack / Process::mp.framecounter;
 	rpyinfo.matchmode = Process::mp.matchmode;
 	rpyinfo.offset = replayIndex;
+
+	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
+	{
+		// TODO:
+		strcpy(rpyinfo.username[i], Process::mp.username[i]);
+	}
+	if (rpyinfo.matchmode == M_MATCHMODE_C2P)
+	{
+		strcpy(rpyinfo.username[0], RESCONFIGDEFAULT_USERNAME);
+	}
+	else if (rpyinfo.matchmode == M_MATCHMODE_P2C)
+	{
+		strcpy(rpyinfo.username[1], RESCONFIGDEFAULT_USERNAME);
+	}
+
 }
 
 void Replay::partFill(BYTE part)

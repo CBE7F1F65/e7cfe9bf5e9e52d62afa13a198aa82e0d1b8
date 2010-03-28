@@ -60,6 +60,8 @@ bool BResource::Fill()
 	strcpy(resdata.widefontname, Data::data.sRead(DATA_RESOURCEFILE, Data::data.sLinkType(RESDATAS_FONT), Data::data.nLinkType(RESDATAN_FONT), RESDEFAULT_FONTFONT));
 
 	sec = Data::data.sLinkType(RESDATAS_FOLDER);
+
+	/*
 	for (int i=0; i<M_SCRIPTFOLDERMAX; i++)
 	{
 		strcpy(resdata.scriptfoldername[i], Data::data.sRead(DATA_RESOURCEFILE, sec, Data::data.nLinkType(RESDATAN_SCRIPTFOLDER_1+i), RESDEFAULT_SCRIPTFOLDER));
@@ -72,6 +74,7 @@ bool BResource::Fill()
 			CreateDirectory(resdata.scriptfoldername[i], NULL);
 		}
 	}
+	*/
 	strcpy(resdata.snapshotfoldername, Data::data.sRead(DATA_RESOURCEFILE, sec, Data::data.nLinkType(RESDATAN_SNAPSHOTFOLDER), RESDEFAULT_SNAPSHOTFOLDER));
 	if(_access(resdata.snapshotfoldername, 00) == -1)
 	{
@@ -102,7 +105,7 @@ bool BResource::Fill()
 	strcat(resdata.binfilename, resdata.binname);
 	//copy to Data::data
 	//
-
+/*
 	strcpy(resdata.rabinname, Data::data.sRead(DATA_RESOURCEFILE, sec, Data::data.nLinkType(RESDATAN_SPELLACCESSFILE), RESDEFAULT_DATASPELLACCESS));
 	strcpy(resdata.spellaccessfilename, resdata.datafoldername);
 	strcat(resdata.spellaccessfilename, resdata.rabinname);
@@ -114,7 +117,7 @@ bool BResource::Fill()
 	strcat(resdata.scriptfilename, resdata.scrbinname);
 	//copy to Data::data
 	//
-
+*/
 	strcpy(resdata.datadefinefilename, resdata.datafoldername);
 	strcat(resdata.datadefinefilename, Data::data.sRead(DATA_RESOURCEFILE, sec, Data::data.nLinkType(RESDATAN_DATADEFINEFILE), RESDEFAULT_DATADATADEFINE));
 	//copy to Data::data
@@ -476,15 +479,24 @@ bool BResource::Gain(void * pStrdesc, void * pCustomConstData)
 	return ret;
 }
 
-bool BResource::LoadPackage()
+bool BResource::LoadPackage(int packindex)
+{
+	if(strlen(resdata.packagefilename[packindex]) && !hge->Resource_AttachPack(resdata.packagefilename[packindex], Data::data.password))
+	{
+#ifdef __DEBUG
+		HGELOG("%s\nFailed in Loading Package File %s.", HGELOG_ERRSTR, resdata.packagefilename[packindex]);
+#endif
+		return false;
+	}
+	return true;
+}
+
+bool BResource::LoadAllPackage()
 {
 	for(int i=0; i<PACKAGEMAX; i++)
 	{
-		if(strlen(resdata.packagefilename[i]) && !hge->Resource_AttachPack(resdata.packagefilename[i], Data::data.password))
+		if (!LoadPackage(i))
 		{
-#ifdef __DEBUG
-			HGELOG("%s\nFailed in Loading Package File %s.", HGELOG_ERRSTR, resdata.packagefilename[i]);
-#endif
 			return false;
 		}
 	}
@@ -495,14 +507,14 @@ void BResource::CopyData()
 {
 	Data::data.binname = resdata.binname;
 	Data::data.binfilename = resdata.binfilename;
-	Data::data.rabinname = resdata.rabinname;
-	Data::data.spellaccessfilename = resdata.spellaccessfilename;
-	Data::data.scrbinname = resdata.scrbinname;
-	Data::data.scriptfilename = resdata.scriptfilename;
+//	Data::data.rabinname = resdata.rabinname;
+//	Data::data.spellaccessfilename = resdata.spellaccessfilename;
+//	Data::data.scrbinname = resdata.scrbinname;
+//	Data::data.scriptfilename = resdata.scriptfilename;
 	if (!Data::data.binmode)
 	{
 		Data::data.customconstfilename = resdata.customconstfilename;
-		Data::data.spelldefinefilename = resdata.spelldefinefilename;
+//		Data::data.spelldefinefilename = resdata.spelldefinefilename;
 		Data::data.musicdefinefilename = resdata.musicdefinefilename;
 		Data::data.bulletdefinefilename = resdata.bulletdefinefilename;
 		Data::data.enemydefinefilename = resdata.enemydefinefilename;
@@ -522,16 +534,20 @@ bool BResource::SetDataFile()
 {
 	if(!Data::data.SetFile(Data::data.binfilename, DATA_BINFILE))
 		return false;
+	/*
 	if(!Data::data.SetFile(Data::data.spellaccessfilename, DATA_SPELLACCESSFILE))
 		return false;
 	if(!Data::data.SetFile(Data::data.scriptfilename, DATA_SCRIPTFILE))
 		return false;
+	*/
 	if (!Data::data.binmode)
 	{
 		if(!Data::data.SetFile(Data::data.customconstfilename, DATA_CUSTOMCONSTFILE))
 			return false;
+		/*
 		if(!Data::data.SetFile(Data::data.spelldefinefilename, DATA_SPELLDEFINEFILE))
 			return false;
+			*/
 		if(!Data::data.SetFile(Data::data.musicdefinefilename, DATA_MUSICDEFINEFILE))
 			return false;
 		if (!Data::data.SetFile(Data::data.bulletdefinefilename, DATA_BULLETDEFINEFILE))

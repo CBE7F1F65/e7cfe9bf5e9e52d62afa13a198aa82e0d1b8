@@ -15,15 +15,15 @@ Data::Data()
 
 	binfilename = NULL;
 	binname = NULL;
-	spellaccessfilename = NULL;
-	rabinname = NULL;
-	scriptfilename = NULL;
-	scrbinname = NULL;
+//	spellaccessfilename = NULL;
+//	rabinname = NULL;
+//	scriptfilename = NULL;
+//	scrbinname = NULL;
 	resourcefilename = NULL;
 	resbinname = NULL;
 
 	customconstfilename = NULL;
-	spelldefinefilename = NULL;
+//	spelldefinefilename = NULL;
 	musicdefinefilename = NULL;
 	bulletdefinefilename = NULL;
 	enemydefinefilename = NULL;
@@ -179,7 +179,7 @@ DWORD Data::nLinkNum(DWORD name, DWORD num)
 	name |= (num & ~DATANBINMASK_NUM);
 	return name;
 }
-
+/*
 WORD Data::raGetIndi(int sno)
 {
 	return indi[sno];
@@ -188,7 +188,7 @@ void Data::raSetIndi(int sno, WORD _indi)
 {
 	indi[sno] = _indi;
 }
-
+*/
 int Data::getSpellNumber(int sno)
 {
 	return BResource::res.spelldata[sno].spellnumber;
@@ -350,21 +350,23 @@ void Data::getFile(BYTE type)
 	case DATA_RESOURCEFILE:
 		nowfilename = resourcefilename;
 		break;
-
+/*
 	case DATA_SCRIPTFILE:
 		nowfilename = scriptfilename;
 		break;
-
+*/
 	case DATA_CUSTOMCONSTFILE:
 		nowfilename = customconstfilename;
 		break;
-		
+		/*
 	case DATA_SPELLACCESSFILE:
 		nowfilename = spellaccessfilename;
 		break;
+		
 	case DATA_SPELLDEFINEFILE:
 		nowfilename = spelldefinefilename;
 		break;
+		*/
 
 	case DATA_MUSICDEFINEFILE:
 		nowfilename = musicdefinefilename;
@@ -442,20 +444,23 @@ bool Data::Init(BYTE type)
 
 		switch(type)
 		{
+			/*
 		case DATA_SCRIPTFILE:
 			fname = scriptfilename;
 			bname = scrbinname;
 			break;
-/*
+			*/
+
 		case DATA_RESOURCEFILE:
 			fname = resourcefilename;
 			bname = resbinname;
 			break;
-*/
+/*
 		case DATA_SPELLACCESSFILE:
 			fname = spellaccessfilename;
 			bname = rabinname;
 			break;
+			*/
 		}
 
 		BYTE * _content;
@@ -464,6 +469,7 @@ bool Data::Init(BYTE type)
 		BYTE * _memheader;
 		_memheader = CreateMemHeader(type);
 
+		/*
 		if(type == DATA_SPELLACCESSFILE)
 		{
 			_size = M_BINHEADER_OFFSET + sizeof(WORD) * DATARA_INDIMAX;
@@ -479,9 +485,10 @@ bool Data::Init(BYTE type)
 		}
 		else
 		{
+		*/
 			_size = M_BINHEADER_OFFSET;
 			_content = _memheader;
-		}
+//		}
 
 		hgeMemoryFile memfile;
 		memfile.data = _content;
@@ -555,7 +562,7 @@ failed:
 				return false;
 		}
 	}
-
+/*
 	if(type == DATA_SPELLACCESSFILE)
 	{
 		hge->Resource_AttachPack(nowfilename, password);
@@ -573,7 +580,7 @@ failed:
 		}
 		hge->Resource_Free(content);
 	}
-
+*/
 	return true;
 }
 
@@ -637,7 +644,7 @@ bool Data::GetAllTable()
 #endif // __DEBUG
 		return false;
 	}
-
+/*
 	if (!GetTableFile(DATA_SPELLDEFINEFILE))
 	{
 #ifdef __DEBUG
@@ -645,7 +652,7 @@ bool Data::GetAllTable()
 #endif // __DEBUG
 		return false;
 	}
-
+*/
 	if (!GetTableFile(DATA_BULLETDEFINEFILE))
 	{
 #ifdef __DEBUG
@@ -695,26 +702,32 @@ bool Data::GetAllTable()
 
 bool Data::CheckHeader(BYTE type)
 {
-	if(type == DATA_SCRIPTFILE ||
-		type == DATA_RESOURCEFILE && binmode ||
-		type == DATA_SPELLACCESSFILE)
+	if(/*type == DATA_SCRIPTFILE ||*/
+		type == DATA_RESOURCEFILE && binmode/*
+		 ||
+				type == DATA_SPELLACCESSFILE*/
+		)
 	{
 		char * fname;
 		char * bname;
 		switch(type)
 		{
+			/*
 		case DATA_SCRIPTFILE:
 			fname = scriptfilename;
 			bname = scrbinname;
 			break;
+			*/
 		case DATA_RESOURCEFILE:
 			fname = resourcefilename;
 			bname = resbinname;
 			break;
+			/*
 		case DATA_SPELLACCESSFILE:
 			fname = spellaccessfilename;
 			bname = rabinname;
 			break;
+			*/
 		}
 		BYTE * _content;
 		DWORD _size;
@@ -767,6 +780,7 @@ bool Data::SaveBin()
 	}
 
 	//spellaccessfile
+	/*
 	getFile(DATA_SPELLACCESSFILE);
 	BYTE * _radata;
 	_size = DATARA_INDIMAX * DATARA_INDI_SIZE + DATA_HEADEROFFSET;
@@ -798,7 +812,7 @@ bool Data::SaveBin()
 	}
 
 	free(_radata);
-
+*/
 	return ret;
 }
 

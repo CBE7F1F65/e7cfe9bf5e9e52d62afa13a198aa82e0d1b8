@@ -31,7 +31,8 @@ public:
 	void CopyData();
 	void GetUIString();
 	bool SetDataFile();
-	bool LoadPackage();
+	bool LoadPackage(int packindex);
+	bool LoadAllPackage();
 
 	void ReleaseCustomConst();
 	void MallocCustomConst();

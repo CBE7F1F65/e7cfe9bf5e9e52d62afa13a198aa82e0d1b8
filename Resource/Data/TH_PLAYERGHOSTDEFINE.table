@@ -13,8 +13,8 @@ Comment	Index	SIID	XAdj	YAdj	Speed	Flag	RollTime	ShootAngle	MoveR	StartAngle	Ble
 -	8	SI_PlayerGhost_01_01	0	-25	0	14	0	0	0	0	2
 -	12	SI_PlayerGhost_01_02	0	15	0	14	0	0	0	0	2
 #		Sakuya									
--	16	SI_PlayerGhost_02_01	0	-25	0	14	0	0	0	0	2
--	20	SI_PlayerGhost_02_01	0	-25	0	14	0	0	0	0	2
+-	16	SI_Empty	0	-25	0	14	0	0	0	0	2
+-	20	SI_Empty	0	-25	0	14	0	0	0	0	2
 #		Youmu									
 -	24	SI_Null	0	0	0	0	0	0	0	0	2
 -	28	SI_Null	0	0	0	0	0	0	0	0	2

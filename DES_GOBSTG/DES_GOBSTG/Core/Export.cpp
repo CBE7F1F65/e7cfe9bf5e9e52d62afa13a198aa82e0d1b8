@@ -58,11 +58,13 @@ bool Export::clientInitial(bool usesound /* = false */, bool extuse /* = false *
 	bool bret = SetIni(extuse);
 	if (bret)
 	{
+		/*
 		char strtitle[M_STRMAX];
 		strcpy(strtitle, GAME_TITLE);
 		strcat(strtitle, "  ");
 		strcat(strtitle, GAME_VERSION_STR);
-		hge->System_SetState(HGE_TITLE, strtitle);
+		*/
+		hge->System_SetState(HGE_TITLE, GAME_TITLE_STR/*strtitle*/);
 		hge->System_SetState(HGE_LOGFILE, LOG_STR_FILENAME);
 	}
 

@@ -12,10 +12,6 @@
 			<Tool
 				Name="GeneralTool"
 				InterproceduralOptimization="true"/>
-			<Tool
-				Name="CppCmplrTool"
-				Parallelization="true"
-				UseIntelOptimizedHeaders="true"/>
 		</Configuration>
 	</Configurations>
 	<Files/>

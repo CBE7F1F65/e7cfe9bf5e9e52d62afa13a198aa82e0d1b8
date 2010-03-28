@@ -100,15 +100,28 @@ rebuild:
 	sevol			= hge->Ini_GetInt(RESCONFIGS_VOLUME, RESCONFIGN_VOLSE, RESCONFIGDEFAULT_VOLSE);
 
 	screenmode		= hge->Ini_GetInt(RESCONFIGS_CUSTOM, RESCONFIGN_SCREENMODE, RESCONFIGDEFAULT_SCREENMODE);
-	strcpy(username, hge->Ini_GetString(RESCONFIGS_CUSTOM, RESCONFIGN_USERNAME, RESCONFIGDEFAULT_USERNAME));
+	strcpy(username[0], hge->Ini_GetString(RESCONFIGS_CUSTOM, RESCONFIGN_USERNAME, RESCONFIGDEFAULT_USERNAME));
+	strcpy(username[1], username[0]);
 	renderskip		= hge->Ini_GetInt(RESCONFIGS_CUSTOM, RESCONFIGN_RENDERSKIP, RESCONFIGDEFAULT_RENDERSKIP);
 
-	lastmatchchara[0][0]	= hge->Ini_GetInt(RESCONFIGS_CUSTOM, RESCONFIGN_LASTMATCHCHARA_1_1, RESCONFIGDEFAULT_LASTMATCHCHARA_1_1);
-	lastmatchchara[0][1]	= hge->Ini_GetInt(RESCONFIGS_CUSTOM, RESCONFIGN_LASTMATCHCHARA_1_2, RESCONFIGDEFAULT_LASTMATCHCHARA_1_2);
-	lastmatchchara[0][2]	= hge->Ini_GetInt(RESCONFIGS_CUSTOM, RESCONFIGN_LASTMATCHCHARA_1_3, RESCONFIGDEFAULT_LASTMATCHCHARA_1_3);
-	lastmatchchara[1][0]	= hge->Ini_GetInt(RESCONFIGS_CUSTOM, RESCONFIGN_LASTMATCHCHARA_2_1, RESCONFIGDEFAULT_LASTMATCHCHARA_2_1);
-	lastmatchchara[1][1]	= hge->Ini_GetInt(RESCONFIGS_CUSTOM, RESCONFIGN_LASTMATCHCHARA_2_2, RESCONFIGDEFAULT_LASTMATCHCHARA_2_2);
-	lastmatchchara[1][2]	= hge->Ini_GetInt(RESCONFIGS_CUSTOM, RESCONFIGN_LASTMATCHCHARA_2_3, RESCONFIGDEFAULT_LASTMATCHCHARA_2_3);
+	if (usingkaillera)
+	{
+		lastmatchchara[0][0]	= RESCONFIGDEFAULT_LASTMATCHCHARA_1_1;
+		lastmatchchara[0][1]	= RESCONFIGDEFAULT_LASTMATCHCHARA_1_2;
+		lastmatchchara[0][2]	= RESCONFIGDEFAULT_LASTMATCHCHARA_1_3;
+		lastmatchchara[1][0]	=  RESCONFIGDEFAULT_LASTMATCHCHARA_2_1;
+		lastmatchchara[1][1]	=  RESCONFIGDEFAULT_LASTMATCHCHARA_2_2;
+		lastmatchchara[1][2]	=  RESCONFIGDEFAULT_LASTMATCHCHARA_2_3;
+	}
+	else
+	{
+		lastmatchchara[0][0]	= hge->Ini_GetInt(RESCONFIGS_CUSTOM, RESCONFIGN_LASTMATCHCHARA_1_1, RESCONFIGDEFAULT_LASTMATCHCHARA_1_1);
+		lastmatchchara[0][1]	= hge->Ini_GetInt(RESCONFIGS_CUSTOM, RESCONFIGN_LASTMATCHCHARA_1_2, RESCONFIGDEFAULT_LASTMATCHCHARA_1_2);
+		lastmatchchara[0][2]	= hge->Ini_GetInt(RESCONFIGS_CUSTOM, RESCONFIGN_LASTMATCHCHARA_1_3, RESCONFIGDEFAULT_LASTMATCHCHARA_1_3);
+		lastmatchchara[1][0]	= hge->Ini_GetInt(RESCONFIGS_CUSTOM, RESCONFIGN_LASTMATCHCHARA_2_1, RESCONFIGDEFAULT_LASTMATCHCHARA_2_1);
+		lastmatchchara[1][1]	= hge->Ini_GetInt(RESCONFIGS_CUSTOM, RESCONFIGN_LASTMATCHCHARA_2_2, RESCONFIGDEFAULT_LASTMATCHCHARA_2_2);
+		lastmatchchara[1][2]	= hge->Ini_GetInt(RESCONFIGS_CUSTOM, RESCONFIGN_LASTMATCHCHARA_2_3, RESCONFIGDEFAULT_LASTMATCHCHARA_2_3);
+	}
 
 	//
 
@@ -135,7 +148,7 @@ rebuild:
 	}
 
 #ifdef __DEBUG
-	HGELOG("Succeeded in gaining Data::data from Config File.");
+	HGELOG("Succeeded in gaining data from Config File.");
 #endif
 	hge->Resource_AttachPack(RESLOADING_PCK, Export::GetPassword());
 	texInit = hge->Texture_Load(RESLOADING_TEX);
@@ -149,7 +162,50 @@ int Process::processInit()
 
 	if (gametime == 1)
 	{
-		return processPreInitial();
+		int iret = processPreInitial();
+		if (usingkaillera)
+		{
+
+			/*
+			kailleraintexchange[0] = 0;
+						for (int i=0; i<4; i++)
+						{
+							kailleraintexchange[0] |= username[0][i]<<(i*8);
+						}
+						int kiret = -1;
+						while (kiret != sizeof(char)*4*kailleranplayers)
+						{
+							kiret = kailleraModifyPlayValues(kailleraintexchange, sizeof(char)*4);
+						}
+						for (int i=0; i<4; i++)
+						{
+							for (int j=0; j<M_PL_MATCHMAXPLAYER; j++)
+							{
+								username[j][i] = (kailleraintexchange[j] >> (i*8)) & 0xff;
+							}
+						}
+			
+						kailleraintexchange[0] = 0;
+						for (int i=0; i<4; i++)
+						{
+							kailleraintexchange[0] |= username[0][i+4]<<(i*8);
+						}
+						kiret = -1;
+						while (kiret != sizeof(char)*4*kailleranplayers)
+						{
+							kiret = kailleraModifyPlayValues(kailleraintexchange, sizeof(char)*4);
+						}
+						for (int i=0; i<4; i++)
+						{
+							for (int j=0; j<M_PL_MATCHMAXPLAYER; j++)
+							{
+								username[j][i+4] = (kailleraintexchange[j] >> (i*8)) & 0xff;
+							}
+						}*/
+			
+
+		}
+		return iret;
 	}
 
 	if (texInit)
@@ -226,10 +282,17 @@ int Process::processInit()
 		return PQUIT;
 	}
 
-	if(!BResource::res.LoadPackage())
+	for (int i=0; i<PACKAGEMAX; i++)
 	{
-		errorcode = PROC_ERROR_PACKAGE;
-		return PQUIT;
+		if(!BResource::res.LoadPackage(i))
+		{
+			errorcode = PROC_ERROR_PACKAGE;
+			return PQUIT;
+		}
+		if (usingkaillera)
+		{
+			kailleraModifyPlayValues(kaillerabyteexchange, sizeof(BYTE));
+		}
 	}
 
 	BGLayer::Init(tex);

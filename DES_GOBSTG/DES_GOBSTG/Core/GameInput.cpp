@@ -249,9 +249,39 @@ bool GameInput::UpdateInput(bool startstate)
 
 	//
 	Process::mp.UpdateKailleraInput();
+	SyncControlInputSelf();
 	//
 
 	return true;
+}
+
+void GameInput::SyncControlInputSelf()
+{
+	if (GetKey(0, KSI_PAUSE) || GetKey(1, KSI_PAUSE))
+	{
+		SetKey(0, KSI_PAUSE);
+		SetKey(1, KSI_PAUSE);
+	}
+	if (GetKey(0, KSI_SKIP) || GetKey(1, KSI_SKIP))
+	{
+		SetKey(0, KSI_SKIP);
+		SetKey(1, KSI_SKIP);
+	}
+	if (GetKey(0, KSI_ENTER) || GetKey(1, KSI_ENTER))
+	{
+		SetKey(0, KSI_ENTER);
+		SetKey(1, KSI_ENTER);
+	}
+	if (GetKey(0, KSI_ESCAPE) || GetKey(1, KSI_ESCAPE))
+	{
+		SetKey(0, KSI_ESCAPE);
+		SetKey(1, KSI_ESCAPE);
+	}
+	if (GetKey(0, KSI_CAPTURE) || GetKey(1, KSI_CAPTURE))
+	{
+		SetKey(0, KSI_CAPTURE);
+		SetKey(1, KSI_CAPTURE);
+	}
 }
 
 void GameInput::SyncControlInput()

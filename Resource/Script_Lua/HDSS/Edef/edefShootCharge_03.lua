@@ -58,7 +58,7 @@ function Edef_ShootChargeEnemyEID_03_3(playerindex, level, x, y, timer, px, py, 
 		hdssEA_REPOSITION(playerindex, 60);
 	elseif timer == 810 then
 		hdssEA_FADEOUT(playerindex, -1);
-	elseif math.mod(timer, 160) == 60 then
+	elseif math.mod(timer, 180) == 60 then
 		local pattern = RANDT(0, 2);
 		hdssSD(LConst_Desc_BossPattern+playerindex, pattern);
 		if pattern == 0 then
@@ -73,7 +73,7 @@ function Edef_ShootChargeEnemyEID_03_3(playerindex, level, x, y, timer, px, py, 
 			hdssEB(CC_ShootChargeEnemyEID_03_3_C, playerindex, x, y, 9000, 0, LConst_EnemyTypeNull, 10);
 			hdssENSAIM(playerindex, level, 0, 0, aimangle);
 		end
-	elseif timer > 60 and math.mod(timer, 160) == 30 then
+	elseif timer > 60 and math.mod(timer, 180) == 30 then
 		local cenx = helper_GetCenterX(playerindex);
 		local xoffset = CenterW * 2 / 5;
 		local randpos = RANDT(0, 1);

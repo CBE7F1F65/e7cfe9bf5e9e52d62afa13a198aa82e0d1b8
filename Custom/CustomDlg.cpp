@@ -219,11 +219,24 @@ BEGIN_MESSAGE_MAP(CCustomDlg, CDialog)
 	ON_BN_CLICKED(IDC_RENDERSKIP_2, OnBnClickedRenderskip2)
 	ON_BN_CLICKED(IDC_RENDERSKIP_3, OnBnClickedRenderskip3)
 	ON_EN_CHANGE(IDC_JOY_FIRE, OnEnChangeJoyFire)
-	ON_EN_CHANGE(IDC_JOY_SPECIAL, OnEnChangeJoySpecial)
+	ON_EN_CHANGE(IDC_JOY_QUICK, OnEnChangeJoyQuick)
 	ON_EN_CHANGE(IDC_JOY_SLOW, OnEnChangeJoySlow)
-	ON_EN_CHANGE(IDC_JOY_CHANGE, OnEnChangeJoyBorder)
+	ON_EN_CHANGE(IDC_JOY_DRAIN, OnEnChangeJoyDrain)
 	ON_EN_CHANGE(IDC_JOY_PAUSE, OnEnChangeJoyPause)
 	ON_WM_HELPINFO()
+	ON_EN_CHANGE(IDC_JOY_FIRE_2, &CCustomDlg::OnEnChangeJoyFire2)
+	ON_EN_CHANGE(IDC_JOY_QUICK_2, &CCustomDlg::OnEnChangeJoyQuick2)
+	ON_EN_CHANGE(IDC_JOY_SLOW_2, &CCustomDlg::OnEnChangeJoySlow2)
+	ON_EN_CHANGE(IDC_JOY_DRAIN_2, &CCustomDlg::OnEnChangeJoyDrain2)
+	ON_EN_CHANGE(IDC_JOY_PAUSE_2, &CCustomDlg::OnEnChangeJoyPause2)
+	ON_BN_CLICKED(IDC_KEYCOMBINESLOWDRAIN, &CCustomDlg::OnBnClickedKeyCombineSlowDrain)
+	ON_BN_CLICKED(IDC_KEYCOMBINESLOWDRAIN2, &CCustomDlg::OnBnClickedKeyCombineSlowDrain2)
+	ON_BN_CLICKED(IDC_JOYCOMBINESLOWDRAIN, &CCustomDlg::OnBnClickedJoyCombineSlowDrain)
+	ON_BN_CLICKED(IDC_JOYCOMBINESLOWDRAIN2, &CCustomDlg::OnBnClickedJoyCombineSlowDrain2)
+	ON_EN_CHANGE(IDC_MUSICVOL, &CCustomDlg::OnEnChangeMusicvol)
+	ON_EN_CHANGE(IDC_SEVOL, &CCustomDlg::OnEnChangeSevol)
+	ON_EN_CHANGE(IDC_USERNAME, &CCustomDlg::OnEnChangeUsername)
+	ON_EN_KILLFOCUS(IDC_USERNAME, &CCustomDlg::OnEnKillfocusUsername)
 END_MESSAGE_MAP()
 
 void CCustomDlg::LoadIniValue()
@@ -242,7 +255,7 @@ void CCustomDlg::LoadIniValue()
 	keyKey[0][11]		= hge->Ini_GetInt(RESCONFIGS_KEYSETTING_1, RESCONFIGN_KEYESCAPE, RESCONFIGDEFAULT_KEYESCAPE);
 	keyKey[0][12]		= hge->Ini_GetInt(RESCONFIGS_KEYSETTING_1, RESCONFIGN_KEYCAPTURE, RESCONFIGDEFAULT_KEYCAPTURE);
 
-	keyKey[1][1]		= hge->Ini_GetInt(RESCONFIGS_KEYSETTING_2, RESCONFIGN_KEYUP, RESCONFIGDEFAULT_KEYUP_2);
+	keyKey[1][0]		= hge->Ini_GetInt(RESCONFIGS_KEYSETTING_2, RESCONFIGN_KEYUP, RESCONFIGDEFAULT_KEYUP_2);
 	keyKey[1][1]		= hge->Ini_GetInt(RESCONFIGS_KEYSETTING_2, RESCONFIGN_KEYDOWN, RESCONFIGDEFAULT_KEYDOWN_2);
 	keyKey[1][2]		= hge->Ini_GetInt(RESCONFIGS_KEYSETTING_2, RESCONFIGN_KEYLEFT, RESCONFIGDEFAULT_KEYLEFT_2);
 	keyKey[1][3]		= hge->Ini_GetInt(RESCONFIGS_KEYSETTING_2, RESCONFIGN_KEYRIGHT, RESCONFIGDEFAULT_KEYRIGHT_2);
@@ -275,6 +288,10 @@ void CCustomDlg::LoadIniValue()
 
 	screenmode		= hge->Ini_GetInt(RESCONFIGS_CUSTOM, RESCONFIGN_SCREENMODE, RESCONFIGDEFAULT_SCREENMODE);
 	renderskip		= hge->Ini_GetInt(RESCONFIGS_CUSTOM, RESCONFIGN_RENDERSKIP, RESCONFIGDEFAULT_RENDERSKIP);
+	strcpy(username, hge->Ini_GetString(RESCONFIGS_CUSTOM, RESCONFIGN_USERNAME, RESCONFIGDEFAULT_USERNAME));
+
+	musicvol		= hge->Ini_GetInt(RESCONFIGS_VOLUME, RESCONFIGN_VOLMUSIC, RESCONFIGDEFAULT_VOLMUSIC);
+	sevol			= hge->Ini_GetInt(RESCONFIGS_VOLUME, RESCONFIGN_VOLSE, RESCONFIGDEFAULT_VOLSE);
 
 	defaultwindow	= hge->Ini_GetInt(RESCONFIGS_CUSTOMWINDOW, RESCONFIGN_DEFAULTWINDOW, RESCONFIGDEFAULT_DEFAULTWINDOW);
 	windowleftx		= hge->Ini_GetInt(RESCONFIGS_CUSTOMWINDOW, RESCONFIGN_WINDOWLEFT, RESCONFIGDEFAULT_WINDOWLEFT);
@@ -306,7 +323,7 @@ void CCustomDlg::LoadDefaultValue()
 	keyKey[0][11]		= RESCONFIGDEFAULT_KEYESCAPE;	
 	keyKey[0][12]		= RESCONFIGDEFAULT_KEYCAPTURE;
 
-	keyKey[1][1]		= RESCONFIGDEFAULT_KEYUP_2;
+	keyKey[1][0]		= RESCONFIGDEFAULT_KEYUP_2;
 	keyKey[1][1]		= RESCONFIGDEFAULT_KEYDOWN_2;
 	keyKey[1][2]		= RESCONFIGDEFAULT_KEYLEFT_2;
 	keyKey[1][3]		= RESCONFIGDEFAULT_KEYRIGHT_2;	
@@ -347,6 +364,11 @@ void CCustomDlg::LoadDefaultValue()
 	windoww			= RESCONFIGDEFAULT_WINDOWWIDTH;
 	windowh			= RESCONFIGDEFAULT_WINDOWHEIGHT;
 	windowtopmost	= RESCONFIGDEFAULT_WINDOWTOPMOST;
+
+	musicvol = RESCONFIGDEFAULT_VOLMUSIC;
+	sevol = RESCONFIGDEFAULT_VOLSE;
+
+	strcpy(username, RESCONFIGDEFAULT_USERNAME);
 }
 
 bool CCustomDlg::checkValid(bool reporterror)
@@ -363,19 +385,21 @@ bool CCustomDlg::checkValid(bool reporterror)
 					GetDlgItem(IDC_KEY_UP + i)->SetFocus();
 				}
 				return false;
-			}
-			for (int j=i+1; j<13; j++)
-			{
-				if (keyKey[k][i] == keyKey[k][j])
-				{
-					if (reporterror)
-					{
-						MessageBox(STR_MSG_KEYUSED);
-						GetDlgItem(IDC_KEY_UP + i)->SetFocus();
-					}
-					return false;
-				}
-			}
+			}/*
+
+			 for (int j=i+1; j<13; j++)
+			 {
+			 if (keyKey[k][i] == keyKey[k][j])
+			 {
+			 if (reporterror)
+			 {
+			 MessageBox(STR_MSG_KEYUSED);
+			 GetDlgItem(IDC_KEY_UP + i)->SetFocus();
+			 }
+			 return false;
+			 }
+			 }*/
+
 		}
 		for (int i=0; i<5; i++)
 		{
@@ -387,19 +411,21 @@ bool CCustomDlg::checkValid(bool reporterror)
 					GetDlgItem(IDC_JOY_FIRE + i)->SetFocus();
 				}
 				return false;
-			}
-			for (int j=i+1; j<5; j++)
-			{
-				if (joyKey[k][i] == joyKey[k][j])
-				{
-					if (reporterror)
-					{
-						MessageBox(STR_MSG_KEYUSED);
-						GetDlgItem(IDC_JOY_FIRE + i)->SetFocus();
-					}
-					return false;
-				}
-			}
+			}/*
+
+			 for (int j=i+1; j<5; j++)
+			 {
+			 if (joyKey[k][i] == joyKey[k][j])
+			 {
+			 if (reporterror)
+			 {
+			 MessageBox(STR_MSG_KEYUSED);
+			 GetDlgItem(IDC_JOY_FIRE + i)->SetFocus();
+			 }
+			 return false;
+			 }
+			 }*/
+
 		}
 	}
 	if(screenmode < 0 || screenmode > 1)
@@ -414,6 +440,22 @@ bool CCustomDlg::checkValid(bool reporterror)
 	}
 	defaultwindow = defaultwindow ? 1 : 0;
 	windowtopmost = windowtopmost ? 1 : 0;
+	if (musicvol > 100)
+	{
+		musicvol = 100;
+	}
+	if (musicvol < 0)
+	{
+		musicvol = 0;
+	}
+	if (sevol > 100)
+	{
+		sevol = 100;
+	}
+	if (sevol < 0)
+	{
+		sevol = 0;
+	}
 	return true;
 }
 
@@ -434,8 +476,9 @@ bool CCustomDlg::saveFile()
 		hge->	Ini_SetInt(RESCONFIGS_KEYSETTING_1, RESCONFIGN_KEYENTER, keyKey[0][10]);
 		hge->	Ini_SetInt(RESCONFIGS_KEYSETTING_1, RESCONFIGN_KEYESCAPE, keyKey[0][11]);
 		hge->	Ini_SetInt(RESCONFIGS_KEYSETTING_1, RESCONFIGN_KEYCAPTURE, keyKey[0][12]);
+		hge->	Ini_SetInt(RESCONFIGS_KEYSETTING_1, RESCONFIGN_KEYCOMBINESLOWDRAIN, keycombineslowdrain[0]);
 
-		hge->	Ini_SetInt(RESCONFIGS_KEYSETTING_2, RESCONFIGN_KEYUP, keyKey[1][1]);
+		hge->	Ini_SetInt(RESCONFIGS_KEYSETTING_2, RESCONFIGN_KEYUP, keyKey[1][0]);
 		hge->	Ini_SetInt(RESCONFIGS_KEYSETTING_2, RESCONFIGN_KEYDOWN, keyKey[1][1]);
 		hge->	Ini_SetInt(RESCONFIGS_KEYSETTING_2, RESCONFIGN_KEYLEFT, keyKey[1][2]);
 		hge->	Ini_SetInt(RESCONFIGS_KEYSETTING_2, RESCONFIGN_KEYRIGHT, keyKey[1][3]);
@@ -448,18 +491,21 @@ bool CCustomDlg::saveFile()
 		hge->	Ini_SetInt(RESCONFIGS_KEYSETTING_2, RESCONFIGN_KEYENTER, keyKey[1][10]);
 		hge->	Ini_SetInt(RESCONFIGS_KEYSETTING_2, RESCONFIGN_KEYESCAPE, keyKey[1][11]);
 		hge->	Ini_SetInt(RESCONFIGS_KEYSETTING_2, RESCONFIGN_KEYCAPTURE, keyKey[1][12]);
+		hge->	Ini_SetInt(RESCONFIGS_KEYSETTING_2, RESCONFIGN_KEYCOMBINESLOWDRAIN, keycombineslowdrain[1]);
 
 		hge->	Ini_SetInt(RESCONFIGS_KEYSETTING_1, RESCONFIGN_JOYFIRE, joyKey[0][0]);
 		hge->	Ini_SetInt(RESCONFIGS_KEYSETTING_1, RESCONFIGN_JOYQUICK, joyKey[0][1]);
 		hge->	Ini_SetInt(RESCONFIGS_KEYSETTING_1, RESCONFIGN_JOYSLOW, joyKey[0][2]);
 		hge->	Ini_SetInt(RESCONFIGS_KEYSETTING_1, RESCONFIGN_JOYDRAIN, joyKey[0][3]);
 		hge->	Ini_SetInt(RESCONFIGS_KEYSETTING_1, RESCONFIGN_JOYPAUSE, joyKey[0][4]);
+		hge->	Ini_SetInt(RESCONFIGS_KEYSETTING_1, RESCONFIGN_JOYCOMBINESLOWDRAIN, joycombineslowdrain[0]);
 
-		hge->	Ini_SetInt(RESCONFIGS_KEYSETTING_2, RESCONFIGN_JOYFIRE, joyKey[1][1]);
+		hge->	Ini_SetInt(RESCONFIGS_KEYSETTING_2, RESCONFIGN_JOYFIRE, joyKey[1][0]);
 		hge->	Ini_SetInt(RESCONFIGS_KEYSETTING_2, RESCONFIGN_JOYQUICK, joyKey[1][1]);
 		hge->	Ini_SetInt(RESCONFIGS_KEYSETTING_2, RESCONFIGN_JOYSLOW, joyKey[1][2]);
 		hge->	Ini_SetInt(RESCONFIGS_KEYSETTING_2, RESCONFIGN_JOYDRAIN, joyKey[1][3]);
 		hge->	Ini_SetInt(RESCONFIGS_KEYSETTING_2, RESCONFIGN_JOYPAUSE, joyKey[1][4]);
+		hge->	Ini_SetInt(RESCONFIGS_KEYSETTING_2, RESCONFIGN_JOYCOMBINESLOWDRAIN, joycombineslowdrain[1]);
 
 		hge->	Ini_SetInt(RESCONFIGS_CUSTOM, RESCONFIGN_SCREENMODE, screenmode);
 		hge->	Ini_SetInt(RESCONFIGS_CUSTOM, RESCONFIGN_RENDERSKIP, renderskip);
@@ -470,6 +516,11 @@ bool CCustomDlg::saveFile()
 		hge->	Ini_SetInt(RESCONFIGS_CUSTOMWINDOW, RESCONFIGN_WINDOWWIDTH, windoww);
 		hge->	Ini_SetInt(RESCONFIGS_CUSTOMWINDOW, RESCONFIGN_WINDOWHEIGHT, windowh);
 		hge->	Ini_SetInt(RESCONFIGS_CUSTOMWINDOW, RESCONFIGN_WINDOWTOPMOST, windowtopmost);
+
+		hge->	Ini_SetInt(RESCONFIGS_VOLUME, RESCONFIGN_VOLMUSIC, musicvol);
+		hge->	Ini_SetInt(RESCONFIGS_VOLUME, RESCONFIGN_VOLSE, sevol);
+
+		hge->	Ini_SetString(RESCONFIGS_CUSTOM, RESCONFIGN_USERNAME, username);
 
 		return true;
 	}
@@ -488,7 +539,14 @@ void CCustomDlg::SetDisplay()
 			{
 				if (dvn[j].dik == keyKey[k][i])
 				{
-					SetDlgItemText(IDC_KEY_UP + i, dvn[j].name);
+					if (k == 0)
+					{
+						SetDlgItemText(IDC_KEY_UP + i, dvn[j].name);
+					}
+					else
+					{
+						SetDlgItemText(IDC_KEY_UP_2 + i, dvn[j].name);
+					}
 					break;
 				}
 				j++;
@@ -496,9 +554,22 @@ void CCustomDlg::SetDisplay()
 		}
 		for (int i=0; i<5; i++)
 		{
-			SetDlgItemText(IDC_JOY_FIRE + i, itoa(joyKey[k][i], buffer, 10));
+			if (k == 0)
+			{
+				SetDlgItemText(IDC_JOY_FIRE + i, itoa(joyKey[k][i], buffer, 10));
+			}
+			else
+			{
+				SetDlgItemText(IDC_JOY_FIRE_2 + i, itoa(joyKey[k][i], buffer, 10));
+			}
 		}
 	}
+
+	itoa(musicvol, buffer, 10);
+	SetDlgItemText(IDC_MUSICVOL, buffer);
+	itoa(sevol, buffer, 10);
+	SetDlgItemText(IDC_SEVOL, buffer);
+	SetDlgItemText(IDC_USERNAME, username);
 
 	CheckRadioButton(IDC_FULLSCREEN, IDC_WINDOW, screenmode ? IDC_FULLSCREEN : IDC_WINDOW);
 
@@ -537,6 +608,11 @@ void CCustomDlg::SetDisplay()
 	SetDlgItemText(IDC_TOPY, itoa(windowtopy, buffer, 10));
 	SetDlgItemText(IDC_WINDOWW, itoa(windoww, buffer, 10));
 	SetDlgItemText(IDC_WINDOWH, itoa(windowh, buffer, 10));
+
+	CheckDlgButton(IDC_KEYCOMBINESLOWDRAIN, keycombineslowdrain[0] ? BST_CHECKED : BST_UNCHECKED);
+	CheckDlgButton(IDC_KEYCOMBINESLOWDRAIN2, keycombineslowdrain[1] ? BST_CHECKED : BST_UNCHECKED);
+	CheckDlgButton(IDC_JOYCOMBINESLOWDRAIN, joycombineslowdrain[0] ? BST_CHECKED : BST_UNCHECKED);
+	CheckDlgButton(IDC_JOYCOMBINESLOWDRAIN2, joycombineslowdrain[1] ? BST_CHECKED : BST_UNCHECKED);
 }
 
 // CCustomDlg 消息处理程序
@@ -626,6 +702,7 @@ BOOL CCustomDlg::PreTranslateMessage(MSG* pMsg)
 	CWnd * wndnow = GetFocus();
 	bool checkinput = false;
 	int idcnow;
+	int leftrightindi=0;
 	int keyid;
 
 	for (int i=0; i<13; i++)
@@ -637,6 +714,21 @@ BOOL CCustomDlg::PreTranslateMessage(MSG* pMsg)
 			keyid = i;
 			checkinput = true;
 			break;
+		}
+	}
+	if (!checkinput)
+	{
+		leftrightindi = 1;
+		for (int i=0; i<13; i++)
+		{
+			idcnow = IDC_KEY_UP_2 + i;
+			wndinput[i] = GetDlgItem(idcnow);
+			if (wndinput[i] == wndnow)
+			{
+				keyid = i;
+				checkinput = true;
+				break;
+			}
 		}
 	}
 
@@ -667,7 +759,7 @@ BOOL CCustomDlg::PreTranslateMessage(MSG* pMsg)
 			}
 
 			CWnd::SetDlgItemText(idcnow, dvn[i].name);
-			keyKey[0][keyid] = dvn[i].dik;
+			keyKey[leftrightindi][keyid] = dvn[i].dik;
 
 			GetDlgItem(idcnow + 1)->SetFocus();
 			SetDisplay();
@@ -831,10 +923,10 @@ void CCustomDlg::OnEnChangeJoyFire()
 	joyKey[0][0] = atoi(buffer);
 }
 
-void CCustomDlg::OnEnChangeJoySpecial()
+void CCustomDlg::OnEnChangeJoyQuick()
 {
 	TCHAR buffer[M_STRMAX];
-	GetDlgItemText(IDC_JOY_SPECIAL, buffer, M_STRITOAMAX);
+	GetDlgItemText(IDC_JOY_QUICK, buffer, M_STRITOAMAX);
 	joyKey[0][1] = atoi(buffer);
 }
 
@@ -845,10 +937,10 @@ void CCustomDlg::OnEnChangeJoySlow()
 	joyKey[0][2] = atoi(buffer);
 }
 
-void CCustomDlg::OnEnChangeJoyBorder()
+void CCustomDlg::OnEnChangeJoyDrain()
 {
 	TCHAR buffer[M_STRMAX];
-	GetDlgItemText(IDC_JOY_CHANGE, buffer, M_STRITOAMAX);
+	GetDlgItemText(IDC_JOY_DRAIN, buffer, M_STRITOAMAX);
 	joyKey[0][3] = atoi(buffer);
 }
 
@@ -873,4 +965,93 @@ BOOL CCustomDlg::OnHelpInfo(HELPINFO* pHelpInfo)
 	// TODO: 在此添加消息处理程序代码和/或调用默认值
 
 	return TRUE;
+}
+
+void CCustomDlg::OnEnChangeJoyFire2()
+{
+	TCHAR buffer[M_STRMAX];
+	GetDlgItemText(IDC_JOY_FIRE_2, buffer, M_STRITOAMAX);
+	joyKey[1][0] = atoi(buffer);
+}
+
+void CCustomDlg::OnEnChangeJoyQuick2()
+{
+	TCHAR buffer[M_STRMAX];
+	GetDlgItemText(IDC_JOY_QUICK_2, buffer, M_STRITOAMAX);
+	joyKey[1][1] = atoi(buffer);
+}
+
+void CCustomDlg::OnEnChangeJoySlow2()
+{
+	TCHAR buffer[M_STRMAX];
+	GetDlgItemText(IDC_JOY_SLOW_2, buffer, M_STRITOAMAX);
+	joyKey[1][2] = atoi(buffer);
+}
+
+void CCustomDlg::OnEnChangeJoyDrain2()
+{
+	TCHAR buffer[M_STRMAX];
+	GetDlgItemText(IDC_JOY_DRAIN_2, buffer, M_STRITOAMAX);
+	joyKey[1][3] = atoi(buffer);
+}
+
+void CCustomDlg::OnEnChangeJoyPause2()
+{
+	TCHAR buffer[M_STRMAX];
+	GetDlgItemText(IDC_JOY_PAUSE_2, buffer, M_STRITOAMAX);
+	joyKey[1][4] = atoi(buffer);
+}
+void CCustomDlg::OnBnClickedKeyCombineSlowDrain()
+{
+	keycombineslowdrain[0] = IsDlgButtonChecked(IDC_KEYCOMBINESLOWDRAIN);
+	SetDisplay();
+}
+
+void CCustomDlg::OnBnClickedKeyCombineSlowDrain2()
+{
+	keycombineslowdrain[1] = IsDlgButtonChecked(IDC_KEYCOMBINESLOWDRAIN2);
+	SetDisplay();
+}
+
+void CCustomDlg::OnBnClickedJoyCombineSlowDrain()
+{
+	joycombineslowdrain[0] = IsDlgButtonChecked(IDC_JOYCOMBINESLOWDRAIN);
+	SetDisplay();
+}
+
+void CCustomDlg::OnBnClickedJoyCombineSlowDrain2()
+{
+	joycombineslowdrain[1] = IsDlgButtonChecked(IDC_JOYCOMBINESLOWDRAIN2);
+	SetDisplay();
+}
+
+void CCustomDlg::OnEnChangeMusicvol()
+{
+	TCHAR buffer[M_STRMAX];
+	GetDlgItemText(IDC_MUSICVOL, buffer, M_STRITOAMAX);
+	musicvol = atoi(buffer);
+}
+
+void CCustomDlg::OnEnChangeSevol()
+{
+	TCHAR buffer[M_STRMAX];
+	GetDlgItemText(IDC_SEVOL, buffer, M_STRITOAMAX);
+	sevol = atoi(buffer);
+}
+
+void CCustomDlg::OnEnChangeUsername()
+{
+	
+}
+
+void CCustomDlg::OnEnKillfocusUsername()
+{
+	TCHAR buffer[M_STRMAX];
+	GetDlgItemText(IDC_USERNAME, buffer, M_STRMAX);
+	if (strcmp(username, buffer))
+	{
+		strncpy(username, buffer, RPYINFO_USERNAMEMAX-1);
+		username[RPYINFO_USERNAMEMAX-1] = 0;
+	}
+	SetDisplay();
 }

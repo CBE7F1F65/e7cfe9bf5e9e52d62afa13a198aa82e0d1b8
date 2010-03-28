@@ -42,7 +42,6 @@ void Process::Release()
 		hge->	Ini_SetInt(RESCONFIGS_VOLUME, RESCONFIGN_VOLSE, sevol);
 
 		hge->	Ini_SetInt(RESCONFIGS_CUSTOM, RESCONFIGN_SCREENMODE, screenmode);
-		hge->	Ini_SetString(RESCONFIGS_CUSTOM, RESCONFIGN_USERNAME, username);
 
 		hge->	Ini_SetInt(RESCONFIGS_CUSTOM, RESCONFIGN_LASTMATCHCHARA_1_1, lastmatchchara[0][0]);
 		hge->	Ini_SetInt(RESCONFIGS_CUSTOM, RESCONFIGN_LASTMATCHCHARA_1_2, lastmatchchara[0][1]);
@@ -698,15 +697,24 @@ void Process::SetLastMatchChara(BYTE playerindex, WORD ID, WORD ID_sub_1, WORD I
 
 int Process::InitKaillera(char * kgamename, int kplayer, int knplayers, int * seed)
 {
-	kailleraintexchange = (int *)malloc(knplayers*sizeof(int));
-	kaillerawordexchange = (WORD *)malloc(knplayers*sizeof(WORD));
+	if (strcmp(kgamename, GAME_TITLE_STR))
+	{
+		return -1;
+	}
 
 	kailleraplayer = kplayer-1;
+	kailleranplayers = knplayers;
 	kailleraintexchange[0] = *seed;
-	kailleraModifyPlayValues((void*)kailleraintexchange, sizeof(int));
-	*seed = kailleraintexchange[0];
-	for (int i=0; i<knplayers; i++)
+	int retlength = -1;
+	while (retlength != sizeof(int)*knplayers)
 	{
+		retlength = kailleraModifyPlayValues((void*)kailleraintexchange, sizeof(int));
+	}
+	*seed = kailleraintexchange[0];
+//
+	for (int i=0; i<M_KAILLERMAXPLAYER; i++)
+	{
+		kaillerabyteexchange[i] = 0;
 		kailleraintexchange[i] = 0;
 		kaillerawordexchange[i] = 0;
 	}
@@ -716,8 +724,6 @@ int Process::InitKaillera(char * kgamename, int kplayer, int knplayers, int * se
 
 void Process::ReleaseKaillera()
 {
-	free(kailleraintexchange);
-	free(kaillerawordexchange);
 }
 
 void Process::UpdateKailleraInput()
@@ -727,7 +733,7 @@ void Process::UpdateKailleraInput()
 	{
 		if (kailleraplayer < 2)
 		{
-			kaillerawordexchange[0] = GameInput::gameinput[kailleraplayer].input;
+			kaillerawordexchange[0] = GameInput::gameinput[0].input;
 		}
 		else
 		{

@@ -47,7 +47,7 @@ bool EditorRes::Load()
 	Data::data.GetIni();
 	Export::clientAdjustWindow();
 	BResource::res.Fill();
-	BResource::res.LoadPackage();
+	BResource::res.LoadAllPackage();
 	font = new hgeFont("EditorFont\\font.fnt");
 //	BResource::res.SetDataFile();
 

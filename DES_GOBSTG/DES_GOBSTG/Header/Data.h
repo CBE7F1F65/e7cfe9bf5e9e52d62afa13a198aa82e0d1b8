@@ -5,12 +5,12 @@
 #include "Const.h"
 
 #define DATA_MEMORYHEADER		0x20
-#define DATA_SPELLACCESSFILE	0x21
-#define DATA_SCRIPTFILE			0x22
+//#define DATA_SPELLACCESSFILE	0x21
+//#define DATA_SCRIPTFILE			0x22
 
 #define DATA_TABLEHEADER		0x40
 #define DATA_CUSTOMCONSTFILE	0x41
-#define DATA_SPELLDEFINEFILE	0x42
+//#define DATA_SPELLDEFINEFILE	0x42
 #define DATA_MUSICDEFINEFILE	0x44
 
 #define DATA_BULLETDEFINEFILE	0x48
@@ -38,8 +38,8 @@
 #define DATABIN_TYPE_LONGLONG	0x04
 #define DATABIN_TYPE_STRING		0x08
 
-#define DATARA_INDI_SIZE		0x02
-#define DATARA_INDIMAX			(S1-S0)
+//#define DATARA_INDI_SIZE		0x02
+//#define DATARA_INDIMAX			(S1-S0)
 
 /*
 Section Align
@@ -142,18 +142,18 @@ enum{
 	RESDATAS_DATAFILE,
 
 	RESDATAN_BINFILE,
-	RESDATAN_SPELLACCESSFILE,
-	RESDATAN_SCRIPTFILE,
+//	RESDATAN_SPELLACCESSFILE,
+//	RESDATAN_SCRIPTFILE,
 
 	RESDATAN_CUSTOMCONSTFILE,
-	RESDATAN_SPELLDEFINEFILE,
+//	RESDATAN_SPELLDEFINEFILE,
 	RESDATAN_MUSICDEFINEFILE,
 	RESDATAN_SCENEDEFINEFILE,
 	RESDATAN_BULLETDEFINEFILE,
 	RESDATAN_ENEMYDEFINEFILE,
 	RESDATAN_PLAYERDEFINEFILE,
 	RESDATAN_SPRITEDEFINEFILE,
-	RESDATAN_PLAYERBULLETDEFINEFILE,
+//	RESDATAN_PLAYERBULLETDEFINEFILE,
 	RESDATAN_PLAYERSHOOTDEFINEFILE,
 	RESDATAN_PLAYERGHOSTDEFINEFILE,
 	RESDATAN_DATADEFINEFILE,
@@ -168,7 +168,7 @@ enum{
 	RESDATAS_EFFECTSYS,
 
 	RESDATAS_FOLDER,
-
+/*
 	RESDATAN_SCRIPTFOLDER_1,
 	RESDATAN_SCRIPTFOLDER_2,
 	RESDATAN_SCRIPTFOLDER_3,
@@ -177,7 +177,7 @@ enum{
 	RESDATAN_SCRIPTFOLDER_6,
 	RESDATAN_SCRIPTFOLDER_7,
 	RESDATAN_SCRIPTFOLDER_8,
-	RESDATAN_SNAPSHOTFOLDER,
+*/	RESDATAN_SNAPSHOTFOLDER,
 	RESDATAN_REPLAYFOLDER,
 	RESDATAN_DATAFOLDER,
 	RESDATAN_EFFECTSYSFOLDER,
@@ -300,10 +300,10 @@ public:
 	char * getPlayerEName(int type);
 
 	void MoveDown(DWORD sec, BYTE i);
-
+/*
 	WORD raGetIndi(int sno);
 	void raSetIndi(int sno, WORD indi);
-
+*/
 	int nMeet(int sno, bool bSpell = false);
 	int nGet(int sno, bool bSpell = false);
 	LONGLONG nHighScore(int sno, BYTE difflv, bool bSpell = false, bool bPractice = false);
@@ -320,7 +320,7 @@ public:
 
 
 public:
-	WORD indi[DATARA_INDIMAX];
+//	WORD indi[DATARA_INDIMAX];
 	char buf[M_STRMAX];
 	char transbufs[M_STRMAX];
 	char transbufn[M_STRMAX];
@@ -334,15 +334,15 @@ public:
 	char * nowfilename;
 	char * binfilename;
 	char * binname;
-	char * spellaccessfilename;
-	char * rabinname;
-	char * scriptfilename;
-	char * scrbinname;
+//	char * spellaccessfilename;
+//	char * rabinname;
+//	char * scriptfilename;
+//	char * scrbinname;
 	char * resourcefilename;
 	char * resbinname;
 
 	char * customconstfilename;
-	char * spelldefinefilename;
+//	char * spelldefinefilename;
 	char * musicdefinefilename;
 	char * bulletdefinefilename;
 	char * enemydefinefilename;

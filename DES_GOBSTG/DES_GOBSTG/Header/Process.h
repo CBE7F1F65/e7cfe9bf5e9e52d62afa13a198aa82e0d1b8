@@ -117,7 +117,7 @@ public:
 	HTEXTURE	tex[TEXMAX];
 
 	//read ini
-	char	username[RPYINFO_USERNAMEMAX];
+	char	username[M_PL_MATCHMAXPLAYER][RPYINFO_USERNAMEMAX];
 	int		screenmode;
 	int		bgmvol;
 	int		sevol;
@@ -127,8 +127,9 @@ public:
 	bool	usingkaillera;
 	BYTE	kailleranplayers;
 	BYTE	kailleraplayer;
-	int *	kailleraintexchange;
-	WORD *	kaillerawordexchange;
+	BYTE 	kaillerabyteexchange[M_KAILLERMAXPLAYER];
+	int 	kailleraintexchange[M_KAILLERMAXPLAYER];
+	WORD 	kaillerawordexchange[M_KAILLERMAXPLAYER];
 
 	//replay
 	char	rpyfilename[M_PATHMAX];

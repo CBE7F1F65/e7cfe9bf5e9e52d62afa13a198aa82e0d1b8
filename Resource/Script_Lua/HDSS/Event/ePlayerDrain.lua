@@ -352,7 +352,7 @@ end
 function ePlayerDrain_07(playerindex, x, y, draintimer, type)
 	
 	if type ~= nil then
-		game.SetGhostActiveInfo(playerindex, 160, type+1, type+1, -9000, 0.625, 2);
+		game.SetGhostActiveInfo(playerindex, 160, type+1, type+1, -9000, 0.875, 2);
 		hdssSE(SE_GHOST_ACTIVATE, x, y);
 		return true;
 	end

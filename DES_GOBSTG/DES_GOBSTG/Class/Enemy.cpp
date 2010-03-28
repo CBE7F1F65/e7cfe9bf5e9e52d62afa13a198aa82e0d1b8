@@ -1260,6 +1260,8 @@ void Enemy::action()
 		{
 			xplus = speed * cost(angle);
 			yplus = speed * sint(angle);
+			lastspeed = speed;
+			lastangle = angle;
 		}
 
 		lastx = x;

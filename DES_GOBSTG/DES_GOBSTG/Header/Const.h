@@ -3,8 +3,11 @@
 
 #define GAME_VERSION		0x073
 #define GAME_VERSION_STR	"ver.0x073"
+#define GAME_VERSION_SUB		0.98
+#define GAME_VERSION_SUB_STR	"-0.98"
 #define GAME_SIGNATURE		"h5nc"
-#define GAME_TITLE			"ñ|∑Ωèé÷√àˆ"
+#define GAME_TITLE			"ñ|∑Ωª®”≥âV Phantasmagoria of Flower View."
+#define GAME_TITLE_STR		GAME_TITLE " " GAME_SIGNATURE " " GAME_VERSION_STR " " GAME_VERSION_SUB_STR
 
 #define GAMEVERSION_CORE		0x08
 #define GAMEVERSION_ALGORITHM	0x04
@@ -183,6 +186,8 @@
 #define M_SQUARE_2			0.70710678f
 
 #define M_BINHEADER_OFFSET	0x40
+
+#define M_KAILLERMAXPLAYER	8
 
 #define PLAYERTYPEMAX		0x20
 #define SCENEMAX			PLAYERTYPEMAX

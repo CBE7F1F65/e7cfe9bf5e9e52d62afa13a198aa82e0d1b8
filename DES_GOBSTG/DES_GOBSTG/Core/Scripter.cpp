@@ -276,7 +276,7 @@ bool Scripter::LoadAll(HTEXTURE * texset)
 #ifndef __NOTUSELUA
 	return LoadAll_Lua(texset);
 #endif
-
+/*
 	binoffset = 0;
 
 	strdescIndex = 0;
@@ -400,6 +400,7 @@ bool Scripter::LoadAll(HTEXTURE * texset)
 	bincontent = NULL;
 
 	return Resize();
+	*/
 }
 
 bool Scripter::LoadScript(const char * filename)

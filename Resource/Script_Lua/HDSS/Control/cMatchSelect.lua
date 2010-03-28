@@ -35,7 +35,7 @@ function CEMatchSelect_SetSelect_Match(selsysmatchid)
 	
 	local _siusetable =
 	{
-		SI_MatchSelect_N2N,
+--		SI_MatchSelect_N2N,
 		SI_MatchSelect_P2P,
 		SI_MatchSelect_P2C,
 		SI_MatchSelect_C2P
@@ -60,7 +60,7 @@ function CEMatchSelect_SetSelect_Match(selsysmatchid)
 	hdss.Call(
 		HDSS_SELSETUP,
 		{
-			selsysmatchid, 4, 0, 0, KSI_UP, KSI_DOWN, KSI_FIRE
+			selsysmatchid, 3, 0, 0, KSI_UP, KSI_DOWN, KSI_FIRE
 		}
 	)
 end
@@ -69,16 +69,17 @@ function CEMatchSelect_DispatchSelect_Match(selsysmatchid)
 	--SelectOver
 	local complete, select = hdss.Get(HDSS_SELCOMPLETE, selsysmatchid);
 	if complete then
+--		if select == 0 then
+--			game.SetMatchMode(MatchMode_N2N);
+--			return true;
+--		else
 		if select == 0 then
-			game.SetMatchMode(MatchMode_N2N);
-			return true;
-		elseif select == 1 then
 			hdssBGVALUE(0, LConst_uibg_bottomid, SI_MatchSelect_P2P, TotalCenterX, 440);
 			game.SetMatchMode(MatchMode_P2P);
-		elseif select == 2 then
+		elseif select == 1 then
 			hdssBGVALUE(0, LConst_uibg_bottomid, SI_MatchSelect_P2C, TotalCenterX, 440);
 			game.SetMatchMode(MatchMode_P2C);
-		elseif select == 3 then
+		elseif select == 2 then
 			hdssBGVALUE(0, LConst_uibg_bottomid, SI_MatchSelect_C2P, TotalCenterX, 440);
 			game.SetMatchMode(MatchMode_C2P);
 		end
