@@ -713,6 +713,7 @@ scrKeyWord scrKeyTable[] =
 	{"MatchMode_P2P",			M_MATCHMODE_P2P},
 	{"MatchMode_P2C",			M_MATCHMODE_P2C},
 	{"MatchMode_C2P",			M_MATCHMODE_C2P},
+	{"MatchMode_C2C",			M_MATCHMODE_C2C},
 	{"Latency_Min",				M_LATENCY_MIN},
 	{"Latency_Max",				M_LATENCY_MAX},
 

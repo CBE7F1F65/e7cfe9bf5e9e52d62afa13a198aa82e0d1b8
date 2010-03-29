@@ -118,11 +118,11 @@ void Replay::Fill()
 		// TODO:
 		strcpy(rpyinfo.username[i], Process::mp.username[i]);
 	}
-	if (rpyinfo.matchmode == M_MATCHMODE_C2P)
+	if (rpyinfo.matchmode == M_MATCHMODE_C2P || rpyinfo.matchmode == M_MATCHMODE_C2C)
 	{
 		strcpy(rpyinfo.username[0], RESCONFIGDEFAULT_USERNAME);
 	}
-	else if (rpyinfo.matchmode == M_MATCHMODE_P2C)
+	else if (rpyinfo.matchmode == M_MATCHMODE_P2C || rpyinfo.matchmode == M_MATCHMODE_C2C)
 	{
 		strcpy(rpyinfo.username[1], RESCONFIGDEFAULT_USERNAME);
 	}

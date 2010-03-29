@@ -80,7 +80,7 @@ void Process::startPrep(bool callinit)
 	Replay::rpy.InitReplayIndex(replaymode, part);
 
 	clearPrep();
-	if (matchmode == M_MATCHMODE_P2C)
+	if (matchmode == M_MATCHMODE_P2C || matchmode == M_MATCHMODE_C2C)
 	{
 		GameAI::ai[1].SetAble(true);
 	}
@@ -88,7 +88,7 @@ void Process::startPrep(bool callinit)
 	{
 		GameAI::ai[1].SetAble(false);
 	}
-	if (matchmode == M_MATCHMODE_C2P)
+	if (matchmode == M_MATCHMODE_C2P || matchmode == M_MATCHMODE_C2C)
 	{
 		GameAI::ai[0].SetAble(true);
 	}

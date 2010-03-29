@@ -33,10 +33,10 @@ function Edef_ShootChargeEnemyEID_21_2(playerindex, level, x, y, timer, px, py)
 	if timer == 1 then
 		hdssEA_FADEOUT(playerindex, 80);
 		local cenx = helper_GetCenterX(playerindex);
-		for i=0, level/4+1 do
+		for i=0, level/4+2 do
 		local aimx = cenx + RANDTF(-136, 136);
 		local aimy = RANDTF(144, 272);
-			ePlayerSendExChase_21(playerindex, aimx, aimy, 0xff, 0);
+			ePlayerSendExChase_21(1-playerindex, aimx, aimy, 0xff, 0);
 			hdssEFFSETUP(playerindex, LConst_effid_shootcharge, aimx, aimy, LConst_ShootCharge_EnemyDelay);
 			hdssEFFSETUP(1-playerindex, LConst_effid_shootcharge, aimx+(1-playerindex*2)*TotalW/2, aimy, LConst_ShootCharge_EnemyDelay);
 		end

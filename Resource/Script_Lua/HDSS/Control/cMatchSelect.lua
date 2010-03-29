@@ -81,7 +81,11 @@ function CEMatchSelect_DispatchSelect_Match(selsysmatchid)
 			game.SetMatchMode(MatchMode_P2C);
 		elseif select == 2 then
 			hdssBGVALUE(0, LConst_uibg_bottomid, SI_MatchSelect_C2P, TotalCenterX, 440);
-			game.SetMatchMode(MatchMode_C2P);
+			if hdss.Get(HDSS_CHECKKEY, 0, KSI_SLOW) or hdss.Get(HDSS_CHECKKEY, 1, KSI_SLOW) then
+				game.SetMatchMode(MatchMode_C2C);
+			else
+				game.SetMatchMode(MatchMode_C2P);
+			end
 		end
 		CEMatchSelect_ExitState(STATE_PLAYER_SELECT, false);
 	elseif hdss.Get(HDSS_CHECKKEY, 0, KSI_QUICK, DIKEY_DOWN) then

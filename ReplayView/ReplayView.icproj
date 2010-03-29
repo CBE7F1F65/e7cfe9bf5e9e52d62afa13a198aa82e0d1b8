@@ -27,9 +27,7 @@
 				Name="CppCmplrTool"
 				GlobalOptimizations="true"
 				OptimizeForWindowsApplication="true"
-				ImproveFloatingPointConsistency="1"
-				Parallelization="true"
-				UseIntelOptimizedHeaders="true"/>
+				ImproveFloatingPointConsistency="1"/>
 		</Configuration>
 	</Configurations>
 	<Files/>

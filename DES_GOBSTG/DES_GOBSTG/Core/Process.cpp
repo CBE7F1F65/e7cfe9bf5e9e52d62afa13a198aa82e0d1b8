@@ -733,13 +733,19 @@ void Process::UpdateKailleraInput()
 	{
 		if (kailleraplayer < 2)
 		{
+			GameInput::SetKey(0, KSI_CAPTURE, false);
+			GameInput::SetKey(0, KSI_ESCAPE, false);
 			kaillerawordexchange[0] = GameInput::gameinput[0].input;
 		}
 		else
 		{
 			kaillerawordexchange[0] = 0;
 		}
-		kailleraModifyPlayValues(kaillerawordexchange, sizeof(WORD));
+		int iret = -1;
+		while (iret != sizeof(WORD) * kailleranplayers)
+		{
+			iret = kailleraModifyPlayValues(kaillerawordexchange, sizeof(WORD));
+		}
 		for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
 		{
 			GameInput::gameinput[i].input = kaillerawordexchange[i];
