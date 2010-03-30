@@ -211,6 +211,7 @@ struct playershootData
 	int addangle;
 	int deletetime;
 	int siid;
+	int hitonfactor;
 	bool bchargeshoot;
 	float xbias;
 	float ybias;

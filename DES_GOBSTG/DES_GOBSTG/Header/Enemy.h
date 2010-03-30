@@ -139,6 +139,7 @@ public:
 
 	void DoShot();
 	bool DoActivate();
+	void ForceActive();
 	bool checkActive();
 	static bool CheckENAZ(BYTE playerindex, float x, float y, float rori=0);
 
@@ -151,7 +152,7 @@ public:
 	void GetBlastInfo(BYTE * maxtime=NULL, float * r=NULL, float * power=NULL);
 
 	void GetCollisionRect(float * w, float * h);
-	void CostLife(float power);
+	bool CostLife(float power);
 
 	void giveItem(BYTE playerindex);
 

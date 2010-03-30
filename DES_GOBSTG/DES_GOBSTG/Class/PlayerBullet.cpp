@@ -439,7 +439,7 @@ void PlayerBullet::Lock()
 
 void PlayerBullet::hitOn()
 {
-	Player::p[playerindex].DoPlayerBulletHit(hitonfactor);
+//	Player::p[playerindex].DoPlayerBulletHit(hitonfactor);
 	if (flag & PBFLAG_ZONELIKE)
 	{
 		return;
@@ -475,7 +475,7 @@ bool PlayerBullet::isInRange(float aimx, float aimy, float w, float h)
 		}
 		else if ((flag & PBFLAG_BEAM)/* && !(timer % 24)*/)
 		{
-			Player::p[playerindex].DoPlayerBulletHit(hitonfactor);
+//			Player::p[playerindex].DoPlayerBulletHit(hitonfactor);
 		}
 		return true;
 	}
@@ -703,9 +703,10 @@ void PlayerBullet::action()
 	able = exist && !fadeout;
 }
 
-float PlayerBullet::CheckShoot(BYTE playerindex, float aimx, float aimy, float aimw, float aimh)
+bool PlayerBullet::CheckShoot(BYTE playerindex, Enemy * en, float aimx, float aimy, float aimw, float aimh)
 {
-	float totalpower = 0.0f;
+//	float totalpower = 0.0f;
+	bool hit = false;
 	if (pb[playerindex].getSize())
 	{
 		DWORD i = 0;
@@ -716,10 +717,15 @@ float PlayerBullet::CheckShoot(BYTE playerindex, float aimx, float aimy, float a
 			{
 				if ((*pb[playerindex]).isInRange(aimx, aimy, aimw, aimh))
 				{
-					totalpower += (*pb[playerindex]).power;
+					hit = true;
+//					totalpower += (*pb[playerindex]).power;
+					if (en->CostLife((*pb[playerindex]).power))
+					{
+						Player::p[playerindex].DoPlayerBulletHit((*pb[playerindex]).hitonfactor);
+					}
 				}
 			}
 		}
 	}
-	return totalpower;
+	return hit;
 }

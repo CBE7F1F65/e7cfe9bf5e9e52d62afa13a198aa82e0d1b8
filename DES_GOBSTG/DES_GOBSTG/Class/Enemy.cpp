@@ -881,14 +881,19 @@ void Enemy::GetCollisionRect(float * w, float * h)
 	*h = BResource::res.enemydata[type].collision_h;
 }
 
-void Enemy::CostLife(float power)
+bool Enemy::CostLife(float power)
 {
 	if (infitimer)
 	{
-		return;
+		return false;
 	}
 	life -= power * damagerate;
 	damage = true;
+	if (life < 0)
+	{
+		return true;
+	}
+	return false;
 }
 
 bool Enemy::isInRect(float aimx, float aimy, float r, float w, float h, int nextstep/* =0 */)
@@ -995,33 +1000,33 @@ void Enemy::DoShot()
 			}
 			if (isInShootingRect(it->x, it->y, it->r))
 			{
-				CostLife(it->power);
+				if ( CostLife(it->power) )
+				{
+					if (it->type & EVENTZONE_TYPE_NOSEND)
+					{
+						sendsetID = 0;
+					}
+					if (sendsetID)
+					{
+						ForceActive();
+					}
+				}
 				// TODO:
 //				Player::p[playerindex].DoPlayerBulletHit();
 
-				if (life < 0 && (it->type & EVENTZONE_TYPE_NOSEND))
-				{
-					sendsetID = 0;
-				}
 			}
 		}
 	}
 
 	if (life >= 0 && (flag & ENEMYFLAG_PBSHOTABLE))
 	{
-		float costpower = PlayerBullet::CheckShoot(playerindex, x, y ,tw, th);
-		if (costpower)
-		{
-			CostLife(costpower);
-		}
+		PlayerBullet::CheckShoot(playerindex, this, x, y ,tw, th);
+		/*
 		if (life < 0)
 		{
-			if (type == 37)
-			{
-				Player::p[playerindex].DoPlayerBulletHit(0);
-			}
 			Player::p[playerindex].DoPlayerBulletHit(-1);
 		}
+		*/
 
 	}
 
@@ -1076,6 +1081,11 @@ void Enemy::DoShot()
 
 }
 
+void Enemy::ForceActive()
+{
+	Scripter::scr.Execute(SCR_EVENT, SCR_EVENT_PLAYERDRAINCHECK, playerindex);
+}
+
 bool Enemy::DoActivate()
 {
 	if (!enaz[playerindex].size())
@@ -1087,7 +1097,7 @@ bool Enemy::DoActivate()
 		float rori = (BResource::res.enemydata[type].collision_w + BResource::res.enemydata[type].collision_h) / 4;
 		if (CheckENAZ(playerindex, x, y, rori))
 		{
-			Scripter::scr.Execute(SCR_EVENT, SCR_EVENT_PLAYERDRAINCHECK, playerindex);
+			ForceActive();
 			return true;
 		}
 	}

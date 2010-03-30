@@ -24,6 +24,7 @@
 #define PB_FADEOUTTIME		32
 
 #include "BObject.h"
+#include "Enemy.h"
 
 class PlayerBullet : public BObject
 {
@@ -37,7 +38,7 @@ public:
 	static void ClearItem();
 	static void Action();
 	static void RenderAll(BYTE playerindex);
-	static float CheckShoot(BYTE playerindex, float aimx, float aimy, float aimw, float aimh=0.0f);
+	static bool CheckShoot(BYTE playerindex, Enemy * en, float aimx, float aimy, float aimw, float aimh=0.0f);
 
 	void valueSet(BYTE playerindex, WORD ID, BYTE arrange, float xbias, float ybias, float scale, int angle, int addangle, float speed, float accelspeed, float power, int hitonfactor, WORD flag, BYTE seID, int deletetime);
 
