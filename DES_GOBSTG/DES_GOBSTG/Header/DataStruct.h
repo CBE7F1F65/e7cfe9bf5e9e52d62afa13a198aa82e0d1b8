@@ -144,6 +144,7 @@ struct enemyData
 	float collision_h;
 	float blastr;
 	float blastpower;
+	float blastdamagerate;
 	float expoint;
 	int ghostpoint;
 	int bulletpoint;

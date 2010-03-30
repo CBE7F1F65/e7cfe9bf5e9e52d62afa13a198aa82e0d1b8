@@ -3,7 +3,7 @@ Comment	Type	Collision_r	FastSpeed	SlowSpeed	ChargeSpeed	AddChargeRate	ShotDelay
 -	0	0.5	4	2	4	1	12	50	1	35	-1.25	7.5	0	SI_Player_Reimu_0	SI_Face_01	SI_PlayerSpellCutIn_01	霊符「陰陽印」	霊符「夢想封印」	霊符「博麗幻影」	7	SI_PlayerDrainZone_01	64	8	4	4	4	4	迷いの竹林 -REIMU-	博麗·霊夢	Hakurei Reimu
 -	1	1	5	3	3.3	1.15	8	45	32	30	-1	8	0	SI_Player_Marisa_0	SI_Face_02	SI_PlayerSpellCutIn_02	魔符「スターダスト」	魔符「スターダストレヴァリエ」	魔符「イリュージョンスター」	8	SI_PlayerDrainZone_02	32	8	4	4	4	4	迷いの竹林 -MARISA-	霧雨·魔理沙	Kirisame Marisa
 -	2	1	4	3.2	3.6	1	8	55	32	22.5	-0.5	11.5	0	SI_Player_Sakuya_0	SI_Face_03	SI_PlayerSpellCutIn_03	時符「プライベートヴィジョン」	時符「プライベートヴィジョン」	時符「ミステリアスジャック」	9	SI_PlayerDrainZone_03	64	8	4	4	4	4	幻草原 -SAKUYA-	十六夜·咲夜	Izayoi Sakuya
--	3	1	5	2.1	2.2	1	8	33	1	17.5	0	17.5	0	SI_Player_Youmu_0	SI_Face_04	SI_PlayerSpellCutIn_04	迷符「纏縛剣」	迷符「纏縛剣」	迷符「半身大悟」	10	SI_PlayerDrainZone_04	64	8	4	4	4	4	白玉楼階段 -YOUMU-	魂魄·妖夢	Konpaku Youmu
+-	3	1	5	2.1	2.2	1	8	33	18	17.5	0	17.5	0	SI_Player_Youmu_0	SI_Face_04	SI_PlayerSpellCutIn_04	迷符「纏縛剣」	迷符「纏縛剣」	迷符「半身大悟」	10	SI_PlayerDrainZone_04	64	8	4	4	4	4	白玉楼階段 -YOUMU-	魂魄·妖夢	Konpaku Youmu
 -	4	1	5.5	3.5	4	1	8	60	40	25	-1	3	0	SI_Player_Aya_0	SI_Face_05	SI_PlayerSpellCutIn_05	風符「風神一扇」	風符「風神一扇」	疾風「風神少女」	16	SI_PlayerDrainZone_05	32	8	4	4	4	4	大蝦蟇の池 -AYA-	射命丸·文	Syameimaru Aya
 -	5	1	4	1.9	2.9	1	8	40	16	16	-0.5	5	0	SI_Player_Yuyuko_0	SI_Face_06	SI_PlayerSpellCutIn_06	死符「酔人の生、死の夢幻」	死符「酔人の生、死の夢幻」	「西行寺無余涅槃」	2	SI_PlayerDrainZone_06	8	4	1	3	0	0	白玉楼 -YUYUKO-	西行寺·幽々子	Saigyouzi Yuyuko
 -	6	1	5	2.4	2.8	1	8	60	8	35	-1.25	7.5	3	SI_Player_Medicine_0	SI_Face_07	SI_PlayerSpellCutIn_07	毒符「神経の毒」	毒符「神経の毒」	毒符「憂鬱の毒」	17	SI_PlayerDrainZone_07	8	8	4	4	4	4	無名の丘 -MEDICINE-	メディスン·メランコリー	Medicine Melancholy

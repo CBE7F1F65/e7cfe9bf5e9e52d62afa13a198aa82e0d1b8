@@ -33,7 +33,7 @@ void EventZone::Render()
 {
 	if (sprite && timer > 0)
 	{
-		sprite->RenderEx(x, y, ARC(timer*turnangle), r*2/width);
+		sprite->RenderEx(x, y, ARC(timer*turnangle), rx*2/width);
 	}
 }
 
@@ -45,7 +45,7 @@ void EventZone::RenderAll(BYTE playerindex)
 	}
 }
 
-void EventZone::Build(DWORD _type, BYTE _playerindex, float _x, float _y, int _maxtime, float _r/* =EVENTZONE_OVERZONE */, float _power/* =0 */, DWORD _eventID/* =EVENTZONE_EVENT_NULL */, float _rspeed/* =0 */, int inittimer/* =0 */, int _siid/* =-1 */, int _turnangle/* =0 */)
+void EventZone::Build(DWORD _type, BYTE _playerindex, float _x, float _y, int _maxtime, float _rx/* =EVENTZONE_OVERZONE */, float _ry/* =EVENTZONE_OVERZONE */, float _power/* =0 */, DWORD _eventID/* =EVENTZONE_EVENT_NULL */, float _rspeed/* =0 */, int inittimer/* =0 */, int _siid/* =-1 */, int _turnangle/* =0 */)
 {
 	EventZone _ezone;
 	ezone[_playerindex].push_back(_ezone);
@@ -56,7 +56,8 @@ void EventZone::Build(DWORD _type, BYTE _playerindex, float _x, float _y, int _m
 	_pezone->y = _y;
 	_pezone->timer = inittimer;
 	_pezone->maxtime = _maxtime;
-	_pezone->r = _r;
+	_pezone->rx = _rx;
+	_pezone->ry = _ry;
 	_pezone->power = _power;
 	_pezone->eventID = _eventID;
 	_pezone->rspeed = _rspeed;
@@ -94,7 +95,8 @@ void EventZone::Action()
 bool EventZone::action()
 {
 	timer++;
-	r += rspeed;
+	rx += rspeed;
+	ry += rspeed;
 	if (sprite && timer*5 > maxtime*4)
 	{
 		BYTE alpha = INTER(0, 0xff, (maxtime-timer)*5.0f/(maxtime));
@@ -107,8 +109,18 @@ bool EventZone::action()
 	return false;
 }
 
-bool EventZone::isInRect(float aimx, float aimy, float aimr, int nextstep/* =0 */)
+bool EventZone::isInRect(float aimx, float aimy, float aimr, float oriw, float orih, int nextstep/* =0 */)
 {
-	float _r = r + rspeed * nextstep;
-	return BObject::CheckCollisionBigCircle(x, y, aimx, aimy, _r);
+	if (type & EVENTZONE_CHECKTYPE_CIRCLE)
+	{
+		float _r = aimr + rx + rspeed * nextstep + (oriw+orih)/2;
+		return BObject::CheckCollisionBigCircle(x, y, aimx, aimy, _r);
+	}
+	else if (type & EVENTZONE_CHECKTYPE_SQUARE)
+	{
+		float _rx = rx + rspeed * nextstep + oriw;
+		float _ry = ry + rspeed * nextstep + orih;
+		return BObject::CheckCollisionSquare(x, y, aimx, aimy, _rx, _ry, aimr);
+	}
+	return false;
 }

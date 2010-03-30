@@ -168,6 +168,8 @@ int Export_Lua_HDSS::LuaFn_HDSS_Call(LuaState * ls)
 			{
 			case SCR_EFFSETUP:
 				return _HDSSCallGet::Call_EFFSETUP(ls);
+			case SCR_EFFMOVETO:
+				return _HDSSCallGet::Call_EFFMOVETO(ls);
 			}
 			break;
 			/************************************************************************/

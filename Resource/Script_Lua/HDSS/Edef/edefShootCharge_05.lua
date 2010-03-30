@@ -46,10 +46,10 @@ function Edef_ShootChargeEnemyEID_05_3(playerindex, level, x, y, timer, px, py, 
 		hdssSD(LConst_Desc_BossPattern+playerindex, pattern);
 	elseif timer == 810 then
 		hdssEA_FADEOUT(playerindex, -1);
-	elseif timer > 60 and math.mod(timer, 120) < 60 then
+	elseif timer > 60 and math.mod(timer-60, 180) < 60 then
 		if math.mod(timer, 15) == 0 then
 			local aimangle;
-			local nowindex = math.mod(timer, 120) / 15;
+			local nowindex = math.mod(timer-60, 180) / 15;
 			if nowindex == 0 then
 				aimangle = hdssAMAP(playerindex, x, y);
 				hdssENSAIM(playerindex, level, 0, 0, aimangle);
@@ -58,7 +58,7 @@ function Edef_ShootChargeEnemyEID_05_3(playerindex, level, x, y, timer, px, py, 
 			end
 			local num = level;
 			local leftrightindi = math.mod(nowindex, 2)*2-1;
-			local angleoffset = leftrightindi * 400;
+			local angleoffset = leftrightindi * 200;
 			for i=0, 3 do
 				local speed = level * 0.1 + 2.0 + i * 0.5;
 				hdssA(playerindex,
@@ -69,7 +69,7 @@ function Edef_ShootChargeEnemyEID_05_3(playerindex, level, x, y, timer, px, py, 
 				hdssBC(playerindex, num, aimangle+angleoffset, 80, x, y, speed, CC_Bullet_Butterfly, 1);
 				hdssA(playerindex,
 					{
-						TIMEREQUAL, 9, ANGLESETADD, leftrightindi*13500+i*350
+						TIMEREQUAL, 9, ANGLESETADD, leftrightindi*13500+i*150
 					}
 				)
 				hdssBC(playerindex, num, aimangle+angleoffset, 80, x, y, speed, CC_Bullet_Butterfly, 2);

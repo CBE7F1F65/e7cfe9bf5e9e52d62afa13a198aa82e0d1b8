@@ -64,10 +64,8 @@ function _EventExecute_PlayerShootCharge(playerindex)
 end
 
 function _EventExecute_PlayerShootChargeOne(playerindex)
-	local oplayerID = hdss.Get(HDSS_CHARA, playerindex);
-	local opx = hdss.Get(HDSS_PX, playerindex);
-	local opy = hdss.Get(HDSS_PY, playerindex);
-	return LTable_ePlayerShootChargeOneFunction[oplayerID+1](playerindex, oplayerID, opx, opy);
+	local oplayerID, opx, opy, timer, maxtime = game.GetPlayerShootChargeOneInfo(playerindex);
+	return LTable_ePlayerShootChargeOneFunction[oplayerID+1](playerindex, oplayerID, opx, opy, timer, maxtime);
 end
 
 function _EventExecute_PlayerSendEx(playerindex)

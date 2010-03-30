@@ -864,7 +864,8 @@ int _HDSSCallGet::Call_EZONEBUILD(LuaState * ls)
 		float _y = _FNEXT_HDSS_LUAPARA;
 
 		int _maxtime = 1;
-		float _r = EVENTZONE_OVERZONE;
+		float _rx = EVENTZONE_OVERZONE;
+		float _ry = EVENTZONE_OVERZONE;
 		float _power = 0;
 		DWORD _eventID = EVENTZONE_EVENT_NULL;
 		float _rspeed = 0;
@@ -879,31 +880,36 @@ int _HDSSCallGet::Call_EZONEBUILD(LuaState * ls)
 			_JNEXT_HDSS_LUAPARA;
 			if (bhavenext)
 			{
-				_r = _FOBJ_HDSS_LUA;
+				_rx = _FOBJ_HDSS_LUA;
 				_JNEXT_HDSS_LUAPARA;
 				if (bhavenext)
 				{
-					_power = _FOBJ_HDSS_LUA;
+					_ry = _FOBJ_HDSS_LUA;
 					_JNEXT_HDSS_LUAPARA;
 					if (bhavenext)
 					{
-						_eventID = _IOBJ_HDSS_LUA;
+						_power = _FOBJ_HDSS_LUA;
 						_JNEXT_HDSS_LUAPARA;
 						if (bhavenext)
 						{
-							_rspeed = _FOBJ_HDSS_LUA;
+							_eventID = _IOBJ_HDSS_LUA;
 							_JNEXT_HDSS_LUAPARA;
 							if (bhavenext)
 							{
-								_inittimer = _IOBJ_HDSS_LUA;
+								_rspeed = _FOBJ_HDSS_LUA;
 								_JNEXT_HDSS_LUAPARA;
 								if (bhavenext)
 								{
-									_siid = _IOBJ_HDSS_LUA;
+									_inittimer = _IOBJ_HDSS_LUA;
 									_JNEXT_HDSS_LUAPARA;
 									if (bhavenext)
 									{
-										_turnangle = _IOBJ_HDSS_LUA;
+										_siid = _IOBJ_HDSS_LUA;
+										_JNEXT_HDSS_LUAPARA;
+										if (bhavenext)
+										{
+											_turnangle = _IOBJ_HDSS_LUA;
+										}
 									}
 								}
 							}
@@ -913,7 +919,7 @@ int _HDSSCallGet::Call_EZONEBUILD(LuaState * ls)
 			}
 		}
 
-		EventZone::Build(_type, _playerindex, _x, _y, _maxtime, _r, _power, _eventID, _rspeed, _inittimer, _siid, _turnangle);
+		EventZone::Build(_type, _playerindex, _x, _y, _maxtime, _rx, _ry, _power, _eventID, _rspeed, _inittimer, _siid, _turnangle);
 	}
 	return 0;
 }
@@ -977,8 +983,39 @@ int _HDSSCallGet::Call_EFFSETUP(LuaState * ls)
 				Effectsys::effsys[_playerindex][_index].chaseSet(_chasetimer, _tarAim);
 			}
 		}
+		Effectsys::effsys[_playerindex][_index].MoveTo(_x, _y, _z);
 		_PI_HDSS_LUA(_index);
 		return 1;
+	}
+	return 0;
+}
+
+int _HDSSCallGet::Call_EFFMOVETO(LuaState * ls)
+{
+	_ENTERCALL_HDSS_LUA;
+	if (true)
+	{
+		BYTE _playerindex = _INEXT_HDSS_LUAPARA;
+		BYTE _effindex = _INEXT_HDSS_LUAPARA;
+		float _x = _FNEXT_HDSS_LUAPARA;
+		float _y = _FNEXT_HDSS_LUAPARA;
+
+		float _z = 0;
+		bool _bForce = false;
+
+		_JNEXT_HDSS_LUAPARA;
+		if (bhavenext)
+		{
+			_z = _FOBJ_HDSS_LUA;
+			_JNEXT_HDSS_LUAPARA;
+			if (bhavenext)
+			{
+				_bForce = _BOBJ_HDSS_LUA;
+			}
+		}
+
+		Effectsys::effsys[_playerindex][_effindex].MoveTo(_x, _y, _z, _bForce);
+		return 0;
 	}
 	return 0;
 }

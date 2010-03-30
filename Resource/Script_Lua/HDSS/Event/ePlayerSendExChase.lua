@@ -87,13 +87,13 @@ function ePlayerSendExChase_05(playerindex, x, y, playerID, appendfloat)
 	for i=0, 1 do
 		hdssA(playerindex,
 			{
-				TIMERLESS, 90, ANGLESETADD, (i*2-1)*100,
+				TIMERLESS, 90, ANGLESETADD, (i*2-1)*75,
 				TIMERLESS, 90, SPEEDSETADD, 4
 			}
 		)
 		hdss.Call(HDSS_BC,
 			{
-				playerindex, 12, angle, 0, x, y, 1.6, CC_Bullet_Butterfly, 2+i, i*16+8
+				playerindex, 8, angle, 0, x, y, 1.6, CC_Bullet_Butterfly, 2+i, i*16+8
 			}
 		)
 	end
@@ -105,8 +105,8 @@ function ePlayerSendExChase_06(playerindex, x, y, playerID, appendfloat)
 	hdssEFFSETUP(playerindex, LConst_effid_sendex_06, x, y, 300);
 	hdss.Call(HDSS_EZONEBUILD,
 		{
-			EZONETYPE_PLAYERSPEED, playerindex, x, y,
-			300, 72, 0.4
+			EZONETYPE_PLAYERSPEED+EZONECHECK_CIRCLE, playerindex, x, y,
+			300, 72, 0, 0.4
 		}
 	)
 	return true;
@@ -209,8 +209,8 @@ function ePlayerSendExChase_16(playerindex, x, y, playerID, appendfloat)
 	hdssEFFSETUP(playerindex, LConst_effid_sendex_16, x, y, 300);
 	hdss.Call(HDSS_EZONEBUILD,
 		{
-			EZONETYPE_BULLETSTUPA, playerindex, x, y,
-			300, 64, 1.2, CC_Bullet_Stupa
+			EZONETYPE_BULLETSTUPA+EZONECHECK_CIRCLE, playerindex, x, y,
+			300, 64, 0, 1.2, CC_Bullet_Stupa
 		}
 	)
 	return true;
@@ -283,8 +283,8 @@ function ePlayerSendExChase_21(playerindex, x, y, playerID, appendfloat)
 	hdssEFFSETUP(1-playerindex, LConst_effid_sendex_21_in, ox, y, 300);
 	hdss.Call(HDSS_EZONEBUILD,
 		{
-			EZONETYPE_BULLETWARP, 1-playerindex, ox, y,
-			300, 64, 1.0, CC_Bullet_SmallBall
+			EZONETYPE_BULLETWARP+EZONECHECK_CIRCLE, 1-playerindex, ox, y,
+			300, 64, 0, 1.0, CC_Bullet_SmallBall
 		}
 	)
 	return true;

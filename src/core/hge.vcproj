@@ -5,6 +5,7 @@
 	Name="hge"
 	OwnerKey="{EAF909A5-FA59-4C3D-9431-0FCC20D5BCF9}"
 	ProjectGUID="{32B00EEA-7CF8-44B6-82B4-0EA67C7C4E54}"
+	RootNamespace="hge"
 	TargetFrameworkVersion="0"
 	>
 	<Platforms>

@@ -10,7 +10,7 @@ function _Edef_ShootChargeEnemyEID_07_CallPerfectFreeze(x, y, level)
 		)
 		hdss.Call(HDSS_EZONEBUILD,
 			{
-				EZONETYPE_BULLETPERFECTFREEZE, i, helper_GetCenterX(i), CenterY, 
+				EZONETYPE_BULLETPERFECTFREEZE+EZONECHECK_CIRCLE, i, helper_GetCenterX(i), CenterY, 
 				4, EVENTZONE_OVERZONE
 			}
 		)

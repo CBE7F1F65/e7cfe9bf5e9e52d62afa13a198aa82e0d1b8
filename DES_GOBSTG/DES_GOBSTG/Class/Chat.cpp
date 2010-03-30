@@ -200,7 +200,7 @@ bool Chat::chatOn(BYTE leftID, BYTE rightID, BYTE chatsprite)
 		
 		for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
 		{
-			EventZone::Build(EVENTZONE_TYPE_BULLETFADEOUT, i, Player::p[i].x, Player::p[i].y);
+			EventZone::Build(EVENTZONE_TYPE_BULLETFADEOUT|EVENTZONE_CHECKTYPE_CIRCLE, i, Player::p[i].x, Player::p[i].y);
 //			Bullet::IzeBuild(i, BULLETIZE_FAITH, Player::p[i].x, Player::p[i].y);
 		}
 

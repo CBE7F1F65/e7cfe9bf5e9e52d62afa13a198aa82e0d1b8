@@ -316,7 +316,7 @@ bool GameAI::CheckEventZoneCollision(EventZone * item)
 	{
 		if (moveablepos[i].risk < GAMEAI_RISK_DEATH)
 		{
-			if (item->isInRect(moveablepos[i].x, moveablepos[i].y, r*4, 0))
+			if (item->isInRect(moveablepos[i].x, moveablepos[i].y, r*4))
 			{
 				moveablepos[i].risk += addrisk;
 				bret = true;

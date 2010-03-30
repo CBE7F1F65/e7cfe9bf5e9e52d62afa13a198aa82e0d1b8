@@ -76,6 +76,7 @@ LConst_Desc_DrainAngle	=	FREEBEGIN + 12
 LConst_Desc_BossPattern	=	FREEBEGIN + 14
 LConst_Desc_TeiShotTime	=	FREEBEGIN + 16
 LConst_Desc_HatateIndex	=	FREEBEGIN + 18
+LConst_Desc_YoumuSlashEffIndex	=	FREEBEGIN + 20
 
 LConst_gamefg_fadeIid	=	BGLAYERMAX 
 LConst_gamefg_fadeIIid	=	BGLAYERMAX + 1

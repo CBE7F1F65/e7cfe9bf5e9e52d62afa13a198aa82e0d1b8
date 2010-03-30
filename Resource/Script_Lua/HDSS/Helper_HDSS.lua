@@ -441,6 +441,15 @@ function hdssEFFSETUP(playerindex, effID, x, y, lifetime, angle, speed)
 	)
 end
 
+function hdssEFFMOVETO(playerindex, effindex, x, y, z, bForce)
+	return hdss.Call(
+		HDSS_EFFMOVETO,
+		{
+			playerindex, effindex, x, y, z, bForce
+		}
+	)
+end
+
 function hdssEA(playerindex, ac, fpara, ipara)
 	if fpara == nil then
 		fpara = {0, 0, 0, 0};

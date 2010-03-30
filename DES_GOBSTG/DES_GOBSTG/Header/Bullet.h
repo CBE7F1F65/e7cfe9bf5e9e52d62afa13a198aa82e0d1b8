@@ -62,7 +62,7 @@ public:
 	void action();
 	void actionInStop();
 
-	void DoIze();
+	int DoIze();
 	bool DoCollision();
 	void DoGraze();
 	void DoUpdateRenderDepth();
@@ -82,7 +82,7 @@ public:
 	void matchFadeInColorType();
 	void matchFadeOutColorType();
 
-	static void SendBullet(BYTE playerindex, float x, float y, BYTE setID, BYTE * sendtime=NULL, float * speed = NULL);
+	static void SendBullet(BYTE playerindex, float x, float y, BYTE setID, BYTE * sendtime=NULL, float * speed = NULL, int sendbonus=1);
 	void AddSendInfo(BYTE sendsetID, BYTE _sendtime);
 
 	bool passedEvent(DWORD eventID);
@@ -119,6 +119,7 @@ public:
 
 	BYTE	sendtime;
 	BYTE	sendsetID;
+	int		sendbonus;
 
 	BYTE	bouncetime;
 

@@ -37,6 +37,7 @@ bool Export_Lua_Game::_LuaRegistFunction(LuaObject * obj)
 	_gameobj.Register("GetEnumReplayInfo", LuaFn_Game_GetEnumReplayInfo);
 	_gameobj.Register("SetEnumReplayByIndex", LuaFn_Game_SetEnumReplayByIndex);
 	_gameobj.Register("GetPlayerShootChargeInfo", LuaFn_Game_GetPlayerShootChargeInfo);
+	_gameobj.Register("GetPlayerShootChargeOneInfo", LuaFn_Game_GetPlayerShootChargeOneInfo);
 	_gameobj.Register("GetEdefInfo", LuaFn_Game_GetEdefInfo);
 	_gameobj.Register("SendItemBullet", LuaFn_Game_SendItemBullet);
 	_gameobj.Register("GetPlayerMoveInfo", LuaFn_Game_GetPlayerMoveInfo);
@@ -526,6 +527,20 @@ int Export_Lua_Game::LuaFn_Game_GetPlayerShootChargeInfo(LuaState * ls)
 	ls->PushNumber(Player::p[_playerindex].y);
 	ls->PushInteger(Player::p[1-_playerindex].nowID);
 	return 8;
+}
+
+int Export_Lua_Game::LuaFn_Game_GetPlayerShootChargeOneInfo(LuaState * ls)
+{
+	LuaStack args(ls);
+	BYTE _playerindex = args[1].GetInteger();
+	BYTE _ID = Player::p[_playerindex].nowID;
+	BYTE _shootchargemaxtime = BResource::res.playerdata[_ID].shootchargetime;
+	ls->PushInteger(_ID);
+	ls->PushNumber(Player::p[_playerindex].x);
+	ls->PushNumber(Player::p[_playerindex].y);
+	ls->PushInteger(_shootchargemaxtime-Player::p[_playerindex].shootchargetimer+1);
+	ls->PushInteger(_shootchargemaxtime);
+	return 5;
 }
 
 int Export_Lua_Game::LuaFn_Game_GetEdefInfo(LuaState * ls)

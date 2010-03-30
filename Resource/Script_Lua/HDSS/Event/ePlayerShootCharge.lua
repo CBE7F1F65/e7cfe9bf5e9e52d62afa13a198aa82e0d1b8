@@ -684,22 +684,22 @@ function ePlayerShootCharge_20_3(playerindex, level, oplayerID, px, py)
 end
 
 function ePlayerShootCharge_21_1(playerindex, level, oplayerID, px, py)
-	local x = helper_GetCenterX(1-playerindex);
-	local y = CenterY;
-	hdssEFFSETUP(1-playerindex, LConst_effid_shootcharge, x, y, LConst_ShootCharge_EnemyDelay);
-	hdssEB(CC_ShootChargeEnemyEID_21_1, 1-playerindex, x, y, 9000, 0, LConst_EnemyTypeNull, 10);
-	hdssEA_DELAY(1-playerindex, LConst_ShootCharge_EnemyDelay);
-	hdssENSAIM(1-playerindex, level);
+	local x = helper_GetCenterX(playerindex);
+	local y = CenterY-40;
+	hdssEFFSETUP(playerindex, LConst_effid_shootcharge, x, y, LConst_ShootCharge_EnemyDelay);
+	hdssEB(CC_ShootChargeEnemyEID_21_1, playerindex, x, y, 9000, 0, LConst_EnemyTypeNull, 10);
+	hdssEA_DELAY(playerindex, LConst_ShootCharge_EnemyDelay);
+	hdssENSAIM(playerindex, level);
 	return true;
 end
 
 function ePlayerShootCharge_21_2(playerindex, level, oplayerID, px, py)
-	local x = helper_GetCenterX(1-playerindex);
-	local y = CenterY;
-	hdssEFFSETUP(1-playerindex, LConst_effid_shootcharge, x, y, LConst_ShootCharge_EnemyDelay);
-	hdssEB(CC_ShootChargeEnemyEID_21_2, 1-playerindex, x, y, 9000, 0, LConst_EnemyTypeNull, 10);
-	hdssEA_DELAY(1-playerindex, LConst_ShootCharge_EnemyDelay);
-	hdssENSAIM(1-playerindex, level);
+	local x = helper_GetCenterX(playerindex);
+	local y = CenterY-40;
+	hdssEFFSETUP(playerindex, LConst_effid_shootcharge, x, y, LConst_ShootCharge_EnemyDelay);
+	hdssEB(CC_ShootChargeEnemyEID_21_2, playerindex, x, y, 9000, 0, LConst_EnemyTypeNull, 10);
+	hdssEA_DELAY(playerindex, LConst_ShootCharge_EnemyDelay);
+	hdssENSAIM(playerindex, level);
 	return true;
 end
 
@@ -775,136 +775,120 @@ end
 
 --
 
-function ePlayerShootChargeOne_00(playerindex, oplayerID, opx, opy)
+function ePlayerShootChargeOne_00(playerindex, oplayerID, opx, opy, timer, maxtime)
 	return true;
 end
 
-function ePlayerShootChargeOne_01(playerindex, oplayerID, opx, opy)
+function ePlayerShootChargeOne_01(playerindex, oplayerID, opx, opy, timer, maxtime)
 	return true;
 end
 
-function ePlayerShootChargeOne_02(playerindex, oplayerID, opx, opy)
+function ePlayerShootChargeOne_02(playerindex, oplayerID, opx, opy, timer, maxtime)
 	return true;
 end
 
-function ePlayerShootChargeOne_03(playerindex, oplayerID, opx, opy)
-	hdssSE(CC_SE_Slash, opx);
-	hdssEFFSETUP(playerindex, LConst_effid_youmuslash, opx, opy-25, 32);
+function ePlayerShootChargeOne_03(playerindex, oplayerID, opx, opy, timer, maxtime)
+	if timer == 1 then
+		hdssSE(CC_SE_Slash, opx);
+		local effindex = hdssEFFSETUP(playerindex, LConst_effid_youmuslash, opx, opy-28, 32);
+		hdssSD(LConst_Desc_YoumuSlashEffIndex+playerindex, effindex);
+		hdss.Call(HDSS_EZONEBUILD,
+			{
+				EZONETYPE_PLAYERSPEED+EZONECHECK_CIRCLE, playerindex, opx, opy,
+				18, EVENTZONE_OVERZONE, EVENTZONE_OVERZONE, 0.5
+			}
+		)
+	end
+	local offset = timer/2;
+	local effindex = hdss.Get(HDSS_D, LConst_Desc_YoumuSlashEffIndex+playerindex);
+	local aimx = opx+8-offset;
+	local aimy = opy-28-offset;
+	hdssEFFMOVETO(playerindex, effindex, aimx, aimy, 0, true);
 	hdss.Call(HDSS_EZONEBUILD,
 		{
-			EZONETYPE_BULLETFADEOUT+EZONETYPE_ENEMYDAMAGE, playerindex, opx, opy-33,
-			18, 16, 15
-		}
-	)
-	hdss.Call(HDSS_EZONEBUILD,
-		{
-			EZONETYPE_BULLETFADEOUT+EZONETYPE_ENEMYDAMAGE, playerindex, opx+16, opy-33,
-			18, 12, 7
-		}
-	)
-	hdss.Call(HDSS_EZONEBUILD,
-		{
-			EZONETYPE_BULLETFADEOUT+EZONETYPE_ENEMYDAMAGE, playerindex, opx-16, opy-33,
-			18, 12, 7
-		}
-	)
-	hdss.Call(HDSS_EZONEBUILD,
-		{
-			EZONETYPE_BULLETFADEOUT+EZONETYPE_ENEMYDAMAGE, playerindex, opx+28, opy-33,
-			18, 12, 7
-		}
-	)
-	hdss.Call(HDSS_EZONEBUILD,
-		{
-			EZONETYPE_BULLETFADEOUT+EZONETYPE_ENEMYDAMAGE, playerindex, opx-28, opy-33,
-			18, 12, 7
-		}
-	)
-	hdss.Call(HDSS_EZONEBUILD,
-		{
-			EZONETYPE_PLAYERSPEED, playerindex, opx, opy,
-			18, EVENTZONE_OVERZONE, 0.2
+			EZONETYPE_BULLETFADEOUT+EZONETYPE_ENEMYDAMAGE+EZONECHECK_SQUARE, playerindex, aimx, aimy,
+			2, 38+offset, 15.5+offset, 15
 		}
 	)
 	return true;
 end
 
-function ePlayerShootChargeOne_04(playerindex, oplayerID, opx, opy)
+function ePlayerShootChargeOne_04(playerindex, oplayerID, opx, opy, timer, maxtime)
 	return true;
 end
 
-function ePlayerShootChargeOne_05(playerindex, oplayerID, opx, opy)
+function ePlayerShootChargeOne_05(playerindex, oplayerID, opx, opy, timer, maxtime)
 	return true;
 end
 
-function ePlayerShootChargeOne_06(playerindex, oplayerID, opx, opy)
+function ePlayerShootChargeOne_06(playerindex, oplayerID, opx, opy, timer, maxtime)
 	return true;
 end
 
-function ePlayerShootChargeOne_07(playerindex, oplayerID, opx, opy)
+function ePlayerShootChargeOne_07(playerindex, oplayerID, opx, opy, timer, maxtime)
 	return true;
 end
 
-function ePlayerShootChargeOne_08(playerindex, oplayerID, opx, opy)
+function ePlayerShootChargeOne_08(playerindex, oplayerID, opx, opy, timer, maxtime)
 	return true;
 end
 
-function ePlayerShootChargeOne_09(playerindex, oplayerID, opx, opy)
+function ePlayerShootChargeOne_09(playerindex, oplayerID, opx, opy, timer, maxtime)
 	return true;
 end
 
-function ePlayerShootChargeOne_10(playerindex, oplayerID, opx, opy)
+function ePlayerShootChargeOne_10(playerindex, oplayerID, opx, opy, timer, maxtime)
 	return true;
 end
 
-function ePlayerShootChargeOne_11(playerindex, oplayerID, opx, opy)
+function ePlayerShootChargeOne_11(playerindex, oplayerID, opx, opy, timer, maxtime)
 	return true;
 end
 
-function ePlayerShootChargeOne_12(playerindex, oplayerID, opx, opy)
+function ePlayerShootChargeOne_12(playerindex, oplayerID, opx, opy, timer, maxtime)
 	return true;
 end
 
-function ePlayerShootChargeOne_13(playerindex, oplayerID, opx, opy)
+function ePlayerShootChargeOne_13(playerindex, oplayerID, opx, opy, timer, maxtime)
 	return true;
 end
 
-function ePlayerShootChargeOne_14(playerindex, oplayerID, opx, opy)
+function ePlayerShootChargeOne_14(playerindex, oplayerID, opx, opy, timer, maxtime)
 	return true;
 end
 
-function ePlayerShootChargeOne_15(playerindex, oplayerID, opx, opy)
+function ePlayerShootChargeOne_15(playerindex, oplayerID, opx, opy, timer, maxtime)
 	return true;
 end
 
-function ePlayerShootChargeOne_16(playerindex, oplayerID, opx, opy)
+function ePlayerShootChargeOne_16(playerindex, oplayerID, opx, opy, timer, maxtime)
 	return true;
 end
 
-function ePlayerShootChargeOne_17(playerindex, oplayerID, opx, opy)
+function ePlayerShootChargeOne_17(playerindex, oplayerID, opx, opy, timer, maxtime)
 	return true;
 end
 
-function ePlayerShootChargeOne_18(playerindex, oplayerID, opx, opy)
+function ePlayerShootChargeOne_18(playerindex, oplayerID, opx, opy, timer, maxtime)
 	return true;
 end
 
-function ePlayerShootChargeOne_19(playerindex, oplayerID, opx, opy)
+function ePlayerShootChargeOne_19(playerindex, oplayerID, opx, opy, timer, maxtime)
 	return true;
 end
 
-function ePlayerShootChargeOne_20(playerindex, oplayerID, opx, opy)
+function ePlayerShootChargeOne_20(playerindex, oplayerID, opx, opy, timer, maxtime)
 	return true;
 end
 
-function ePlayerShootChargeOne_21(playerindex, oplayerID, opx, opy)
+function ePlayerShootChargeOne_21(playerindex, oplayerID, opx, opy, timer, maxtime)
 	return true;
 end
 
-function ePlayerShootChargeOne_22(playerindex, oplayerID, opx, opy)
+function ePlayerShootChargeOne_22(playerindex, oplayerID, opx, opy, timer, maxtime)
 	return true;
 end
 
-function ePlayerShootChargeOne_23(playerindex, oplayerID, opx, opy)
+function ePlayerShootChargeOne_23(playerindex, oplayerID, opx, opy, timer, maxtime)
 	return true;
 end

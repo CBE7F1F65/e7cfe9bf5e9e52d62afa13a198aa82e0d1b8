@@ -57,7 +57,7 @@ function Edef_ShootChargeEnemyEID_04_3(playerindex, level, x, y, timer, px, py, 
 			local angle = hdssAMAP(playerindex, x, y);
 			hdssSE(SE_BOSS_POWER_1, x);
 			for i=0, 2 do
-				local speed = 3.8 + level * 0.1;
+				local speed = 4.2 + level * 0.1;
 				local color = 3;
 				if i == 1 then
 					color = 1;
@@ -83,7 +83,7 @@ function Edef_ShootChargeEnemyEID_04_3_A(playerindex, level, x, y, timer, px, py
 	if timer == 1 then
 		hdssEA_FADEOUT(playerindex, (16+level)* 2);
 	end
-	local speed = 2.7 + level * 0.1 + RANDTF(-0.5, 0.5);
+	local speed = 3.7 + level * 0.1 + RANDTF(-0.5, 0.5);
 	local num = math.mod(timer, 2) + 2;
 	local type = CC_Bullet_SmallBall;
 	if num == 2 then

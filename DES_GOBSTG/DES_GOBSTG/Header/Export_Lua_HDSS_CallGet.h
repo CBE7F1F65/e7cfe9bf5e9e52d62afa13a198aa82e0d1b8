@@ -63,6 +63,7 @@ public:
 	static int Call_EZONEBUILD(LuaState * ls);
 
 	static int Call_EFFSETUP(LuaState * ls);
+	static int Call_EFFMOVETO(LuaState * ls);
 
 	static int Call_BGVALUE(LuaState * ls);
 	static int Call_BGVALEX(LuaState * ls);

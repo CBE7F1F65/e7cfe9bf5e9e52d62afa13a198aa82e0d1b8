@@ -145,8 +145,6 @@ void Player::ClearSet(BYTE _round)
 	nBulletPoint = 0;
 	nSpellPoint	= 0;
 
-	nSendBulletBonus = 0;
-
 	nLifeCost	=	0;
 	fCharge = 0;
 	if (_round == 0)
@@ -392,8 +390,6 @@ void Player::action()
 	lastx[0] = x;
 	lasty[0] = y;
 
-	nSendBulletBonus = 0;
-
 	//AI
 	//	GameAI::ai[playerindex].UpdateBasicInfo(x, y, speed, slowspeed, BResource::res.playerdata[nowID].collision_r);
 	GameAI::ai[playerindex].SetMove();
@@ -496,6 +492,7 @@ void Player::action()
 	}
 	if (shootchargetimer)
 	{
+		Scripter::scr.Execute(SCR_EVENT, SCR_EVENT_PLAYERSHOOTCHARGEONE, playerindex);
 		PlayerBullet::BuildShoot(playerindex, nowID, shootchargetimer, true);
 		shootchargetimer--;
 	}
@@ -871,7 +868,7 @@ bool Player::CostLife()
 	}
 	else if (costlifetimer == 50)
 	{
-		EventZone::Build(EVENTZONE_TYPE_BULLETFADEOUT|EVENTZONE_TYPE_ENEMYDAMAGE|EVENTZONE_TYPE_NOSEND, playerindex, x, y, 10, 0, 10, EVENTZONE_EVENT_NULL, 15.6);
+		EventZone::Build(EVENTZONE_TYPE_BULLETFADEOUT|EVENTZONE_TYPE_ENEMYDAMAGE|EVENTZONE_TYPE_NOSEND|EVENTZONE_CHECKTYPE_CIRCLE, playerindex, x, y, 10, 0, 0, 10, EVENTZONE_EVENT_NULL, 15.6);
 	}
 	else if (costlifetimer == 60)
 	{
@@ -901,7 +898,7 @@ bool Player::Collapse()
 	{
 		for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
 		{
-			EventZone::Build(EVENTZONE_TYPE_BULLETFADEOUT|EVENTZONE_TYPE_ENEMYDAMAGE|EVENTZONE_TYPE_NOSEND, i, p[i].x, p[i].y, 64, EVENTZONE_OVERZONE, 1000, EVENTZONE_EVENT_NULL, 16);
+			EventZone::Build(EVENTZONE_TYPE_BULLETFADEOUT|EVENTZONE_TYPE_ENEMYDAMAGE|EVENTZONE_TYPE_NOSEND|EVENTZONE_CHECKTYPE_CIRCLE, i, p[i].x, p[i].y, 64, EVENTZONE_OVERZONE, 0, 1000, EVENTZONE_EVENT_NULL, 16);
 			p[i].SetInfi(PLAYERINFI_COLLAPSE, 64);
 		}
 
@@ -1214,22 +1211,19 @@ void Player::DoPlayerBulletHit(int hitonfactor)
 	}
 }
 
-void Player::DoSendBullet(float x, float y)
+void Player::DoSendBullet(float x, float y, int sendbonus)
 {
-	AddComboHit(1, false);
-	AddGhostPoint(2, x, y);
-	AddBulletPoint(3, x, y);
-	int addspellpoint = nComboHitOri * 9;
-	if (addspellpoint > 1000)
+	for (int i=0; i<sendbonus; i++)
 	{
-		addspellpoint = 1000;
-	}
-	AddSpellPoint(addspellpoint);
-	nSendBulletBonus++;
-	if (nSendBulletBonus > 4)
-	{
-		nSendBulletBonus = 0;
-		DoSendBullet(x, y);
+		AddComboHit(1, false);
+		AddGhostPoint(2, x, y);
+		AddBulletPoint(3, x, y);
+		int addspellpoint = nComboHitOri * 9;
+		if (addspellpoint > 1000)
+		{
+			addspellpoint = 1000;
+		}
+		AddSpellPoint(addspellpoint);
 	}
 }
 
@@ -1438,7 +1432,6 @@ void Player::setShootingCharge(BYTE _shootingchargeflag)
 		if (shootingchargeflag & _PL_SHOOTINGCHARGE_1)
 		{
 			shootchargetimer = BResource::res.playerdata[nowID].shootchargetime;
-			Scripter::scr.Execute(SCR_EVENT, SCR_EVENT_PLAYERSHOOTCHARGEONE, playerindex);
 		}
 		if (_shootingchargeflag & ~_PL_SHOOTINGCHARGE_1)
 		{
@@ -1542,7 +1535,7 @@ BYTE Player::shootCharge(BYTE nChargeLevel, bool nodelete)
 		Process::mp.SetStop(FRAME_STOPFLAG_SPELLSET|FRAME_STOPFLAG_PLAYERINDEX_0|FRAME_STOPFLAG_PLAYERINDEX_1, PL_SHOOTINGCHARGE_STOPTIME);
 		if (chargezoner)
 		{
-			EventZone::Build(EVENTZONE_TYPE_BULLETFADEOUT|EVENTZONE_TYPE_ENEMYDAMAGE|EVENTZONE_TYPE_NOSEND, playerindex, x, y, chargezonemaxtime, 0, 10, EVENTZONE_EVENT_NULL, chargezoner/chargezonemaxtime, -2, SpriteItemManager::GetIndexByName(SI_PLAYER_CHARGEZONE), 400);
+			EventZone::Build(EVENTZONE_TYPE_BULLETFADEOUT|EVENTZONE_TYPE_ENEMYDAMAGE|EVENTZONE_TYPE_NOSEND|EVENTZONE_CHECKTYPE_CIRCLE, playerindex, x, y, chargezonemaxtime, 0, 0, 10, EVENTZONE_EVENT_NULL, chargezoner/chargezonemaxtime, -2, SpriteItemManager::GetIndexByName(SI_PLAYER_CHARGEZONE), 400);
 		}
 		if (nChargeLevel < 5)
 		{

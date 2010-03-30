@@ -95,6 +95,10 @@ int Enemy::Build(WORD eID, BYTE playerindex, float x, float y, int angle, float 
 	}
 	if (_pen)
 	{
+		if (life > 0.5f)
+		{
+			life -= 0.5f;
+		}
 		_pen->valueSet(playerindex, eID, x, y, angle, speed, type, life, infitimer);
 		return en[playerindex].getIndex();
 	}
@@ -936,27 +940,6 @@ bool Enemy::isInRect(float aimx, float aimy, float r, float w, float h, int next
 	return CheckCollisionSquare(_x, _y, aimx, aimy, w, h, _r);
 }
 
-bool Enemy::isInShootingRect(float aimx, float aimy, float _r)
-{
-	float _tw;
-	float _th;
-	GetCollisionRect(&_tw, &_th);
-
-	float _x = x;
-	float _y = y;
-
-	_tw /= 2;
-	_th /= 2;
-	if (CheckCollisionBigCircle(_x, _y, aimx - _tw, aimy + _th, _r) ||
-		CheckCollisionBigCircle(_x, _y, aimx + _tw, aimy + _th, _r) ||
-		CheckCollisionBigCircle(_x, _y, aimx - _tw, aimy - _th, _r) ||
-		CheckCollisionBigCircle(_x, _y, aimx + _tw, aimy - _th, _r))
-	{
-		return true;
-	}
-	return false;
-}
-
 void Enemy::actionInStop()
 {
 	if (!fadeout)
@@ -998,9 +981,9 @@ void Enemy::DoShot()
 					continue;
 				}
 			}
-			if (isInShootingRect(it->x, it->y, it->r))
+			if (it->isInRect(x, y, 0, tw, th))
 			{
-				if ( CostLife(it->power) )
+				if ( CostLife(it->power * BResource::res.enemydata[type].blastdamagerate) )
 				{
 					if (it->type & EVENTZONE_TYPE_NOSEND)
 					{
@@ -1011,8 +994,6 @@ void Enemy::DoShot()
 						ForceActive();
 					}
 				}
-				// TODO:
-//				Player::p[playerindex].DoPlayerBulletHit();
 
 			}
 		}
@@ -1342,7 +1323,10 @@ void Enemy::action()
 				giveItem(playerindex);
 			}
 
-			Player::p[playerindex].DoEnemyCollapse(x, y, type);
+			if (life < 0)
+			{
+				Player::p[playerindex].DoEnemyCollapse(x, y, type);
+			}
 			if (BResource::res.enemydata[type].spellpoint)
 			{
 				int tscore = Player::p[playerindex].nSpellPoint;
@@ -1375,7 +1359,7 @@ void Enemy::action()
 			GetBlastInfo(&blastmaxtime, &blastr, &blastpower);
 			if (blastmaxtime && blastr > 0)
 			{
-				EventZone::Build(EVENTZONE_TYPE_SENDBULLET, playerindex, x, y, blastmaxtime, blastr);
+				EventZone::Build(EVENTZONE_TYPE_SENDBULLET|EVENTZONE_CHECKTYPE_CIRCLE, playerindex, x, y, blastmaxtime, blastr);
 //				EventZone::Build(EVENTZONE_TYPE_ENEMYDAMAGE, playerindex, x, y, blastmaxtime, 0, blastpower, EVENTZONE_EVENT_NULL, blastr/blastmaxtime);
 			}
 
@@ -1398,7 +1382,7 @@ void Enemy::action()
 			GetBlastInfo(&blastmaxtime, &blastr, &blastpower);
 			if (blastmaxtime && blastr > 0)
 			{
-				EventZone::Build(EVENTZONE_TYPE_ENEMYDAMAGE+EVENTZONE_TYPE_ENEMYBLAST, playerindex, x, y, blastmaxtime, blastr, blastpower);
+				EventZone::Build(EVENTZONE_TYPE_ENEMYDAMAGE|EVENTZONE_TYPE_ENEMYBLAST|EVENTZONE_CHECKTYPE_CIRCLE, playerindex, x, y, blastmaxtime, 0, 0, blastpower, EVENTZONE_EVENT_NULL, blastr/blastmaxtime);
 			}
 		}
 		

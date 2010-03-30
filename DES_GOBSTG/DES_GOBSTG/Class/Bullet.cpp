@@ -325,6 +325,7 @@ bool Bullet::valueSet(BYTE _playerindex, WORD _ID, float _x, float _y, int _angl
 	{
 		sendsetID = 0;
 	}
+	sendbonus = 0;
 	AddSendInfo(sendsetID, 0);
 	
 
@@ -354,8 +355,9 @@ bool Bullet::valueSet(BYTE _playerindex, WORD _ID, float _x, float _y, int _angl
 	return true;
 }
 
-void Bullet::DoIze()
+int Bullet::DoIze()
 {
+	int sendbonus = 0;
 	if (cancelable || BossInfo::bossinfo.flag>=BOSSINFO_COLLAPSE)
 	{
 		for (list<EventZone>::iterator it=EventZone::ezone[playerindex].begin(); it!=EventZone::ezone[playerindex].end(); it++)
@@ -366,7 +368,7 @@ void Bullet::DoIze()
 			}
 			if ((it->type) & EVENTZONE_TYPEMASK_BULLET)
 			{
-				if (isInRect(it->x, it->y, it->r))
+				if (it->isInRect(x, y, 0))
 				{
 					if (it->type & EVENTZONE_TYPE_BULLETFADEOUT)
 					{
@@ -380,9 +382,13 @@ void Bullet::DoIze()
 						{
 							if (sendsetID)
 							{
-								SE::push(SE_BULLET_ERASE, x);
-								fadeout = true;
-								timer = 0;
+								if (!sendbonus)
+								{
+									SE::push(SE_BULLET_ERASE, x);
+									fadeout = true;
+									timer = 0;
+								}
+								sendbonus++;
 							}
 						}
 					}
@@ -448,6 +454,7 @@ void Bullet::DoIze()
 			}
 		}
 	}
+	return sendbonus;
 }
 
 void Bullet::DoGraze()
@@ -510,7 +517,11 @@ void Bullet::actionInStop()
 	index = ID;
 	if (!fadeout)
 	{
-		DoIze();
+		int sendbonusret = DoIze();
+		if (sendbonusret > sendbonus)
+		{
+			sendbonus = sendbonusret;
+		}
 		if (timer > fadeinTime)
 		{
 			DoGraze();
@@ -549,7 +560,7 @@ void Bullet::passEvent(DWORD _eventID)
 	eventID[0] = _eventID;
 }
 
-void Bullet::SendBullet(BYTE playerindex, float x, float y, BYTE setID, BYTE * sendtime, float * speed)
+void Bullet::SendBullet(BYTE playerindex, float x, float y, BYTE setID, BYTE * sendtime, float * speed, int sendbonus)
 {
 	int siidindex = EFFSPSEND_COLOR_RED;
 	if (playerindex)
@@ -558,7 +569,7 @@ void Bullet::SendBullet(BYTE playerindex, float x, float y, BYTE setID, BYTE * s
 	}
 	if (sendtime)
 	{
-		Player::p[1-playerindex].DoSendBullet(x, y);
+		Player::p[1-playerindex].DoSendBullet(x, y, sendbonus);
 	}
 	float _hscale = randtf(0.6f, 0.8f);
 	int esindex = EffectSp::Build(setID, playerindex, EffectSp::senditemsiid[siidindex][0], x, y, 0, _hscale);
@@ -726,7 +737,11 @@ void Bullet::action()
 			}
 		}
 
-		DoIze();
+		int sendbonusret = DoIze();
+		if (sendbonusret > sendbonus)
+		{
+			sendbonus = sendbonusret;
+		}
 		headangle += SIGN(color) * BResource::res.bulletdata[type].nTurnAngle;
 		if(tarID != 0xff)
 		{
@@ -759,7 +774,7 @@ void Bullet::action()
 						sendsetID += 2;
 					}
 				}
-				SendBullet(1-playerindex, x, y, sendsetID, &sendtime, &speed);
+				SendBullet(1-playerindex, x, y, sendsetID, &sendtime, &speed, sendbonus);
 			}
 		}
 		else if(timer == 32)

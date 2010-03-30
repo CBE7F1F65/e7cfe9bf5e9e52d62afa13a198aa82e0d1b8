@@ -188,7 +188,7 @@ int PlayerBullet::Build(BYTE playerindex, int shootdataID, bool explode/* =false
 	}
 	pb[playerindex].push_back(_pb)->valueSet(playerindex, shootdataID, item->arrange, item->xbias+xoffset, item->ybias+yoffset, 
 		item->scale, item->angle, item->addangle, item->speed, item->accelspeed, 
-		item->power, item->deletetime, item->flag, item->seID, item->deletetime);
+		item->power, item->hitonfactor, item->flag, item->seID, item->deletetime);
 	return pb[playerindex].getEndIndex();
 }
 

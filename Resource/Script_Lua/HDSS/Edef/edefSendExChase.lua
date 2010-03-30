@@ -99,7 +99,7 @@ function Edef_SendExChase_11(playerindex, rank, x, y, timer, px, py)
 	elseif timer > 16 then
 		if math.mod(timer, 4) == 0 then
 			local angle = hdssAMAP(playerindex, x, y);
-			hdssB(playerindex, x, y, angle, 1.0, CC_Bullet_Quaver, 2);
+			hdssB(playerindex, x, y, angle, 0.75, CC_Bullet_Quaver, 2);
 		end
 	end
 	return true;
@@ -167,8 +167,8 @@ end
 function Edef_SendExChase_18(playerindex, rank, x, y, timer, px, py)
 	local delaytimer = hdss.Get(HDSS_ENAIMANGLE, playerindex);
 	if timer == 1 then
-		hdssEA_FADEOUT(playerindex, delaytimer+60);
-	elseif timer > delaytimer and timer <= delaytimer + 48 then
+		hdssEA_FADEOUT(playerindex, delaytimer+36);
+	elseif timer > delaytimer and timer <= delaytimer + 24 then
 		local speed = RANDT(1.4, 2.0);
 		hdssB(playerindex, x, y, RANDT(1, 36000), speed, CC_Bullet_Kunai, 1);
 	end

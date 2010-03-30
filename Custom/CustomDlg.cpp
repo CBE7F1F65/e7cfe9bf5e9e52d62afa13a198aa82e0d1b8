@@ -235,6 +235,10 @@ BEGIN_MESSAGE_MAP(CCustomDlg, CDialog)
 	ON_BN_CLICKED(IDC_JOYCOMBINESLOWDRAIN2, &CCustomDlg::OnBnClickedJoyCombineSlowDrain2)
 	ON_EN_CHANGE(IDC_MUSICVOL, &CCustomDlg::OnEnChangeMusicvol)
 	ON_EN_CHANGE(IDC_SEVOL, &CCustomDlg::OnEnChangeSevol)
+	ON_EN_CHANGE(IDC_LEFTX, &CCustomDlg::OnEnChangeLeftX)
+	ON_EN_CHANGE(IDC_TOPY, &CCustomDlg::OnEnChangeTopY)
+	ON_EN_CHANGE(IDC_WINDOWW, &CCustomDlg::OnEnChangeWindowW)
+	ON_EN_CHANGE(IDC_WINDOWH, &CCustomDlg::OnEnChangeWindowH)
 	ON_EN_CHANGE(IDC_USERNAME, &CCustomDlg::OnEnChangeUsername)
 	ON_EN_KILLFOCUS(IDC_USERNAME, &CCustomDlg::OnEnKillfocusUsername)
 END_MESSAGE_MAP()
@@ -1054,4 +1058,33 @@ void CCustomDlg::OnEnKillfocusUsername()
 		username[RPYINFO_USERNAMEMAX-1] = 0;
 	}
 	SetDisplay();
+}
+
+
+void CCustomDlg::OnEnChangeLeftX()
+{
+	TCHAR buffer[M_STRMAX];
+	GetDlgItemText(IDC_LEFTX, buffer, M_STRITOAMAX);
+	windowleftx = atoi(buffer);
+}
+
+void CCustomDlg::OnEnChangeTopY()
+{
+	TCHAR buffer[M_STRMAX];
+	GetDlgItemText(IDC_TOPY, buffer, M_STRITOAMAX);
+	windowtopy = atoi(buffer);
+}
+
+void CCustomDlg::OnEnChangeWindowW()
+{
+	TCHAR buffer[M_STRMAX];
+	GetDlgItemText(IDC_WINDOWW, buffer, M_STRITOAMAX);
+	windoww = atoi(buffer);
+}
+
+void CCustomDlg::OnEnChangeWindowH()
+{
+	TCHAR buffer[M_STRMAX];
+	GetDlgItemText(IDC_WINDOWH, buffer, M_STRITOAMAX);
+	windowh = atoi(buffer);
 }

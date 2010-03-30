@@ -115,6 +115,10 @@ public:
 	afx_msg void OnBnClickedJoyCombineSlowDrain2();
 	afx_msg void OnEnChangeMusicvol();
 	afx_msg void OnEnChangeSevol();
+	afx_msg void OnEnChangeLeftX();
+	afx_msg void OnEnChangeTopY();
+	afx_msg void OnEnChangeWindowW();
+	afx_msg void OnEnChangeWindowH();
 	afx_msg void OnEnChangeUsername();
 	afx_msg void OnEnKillfocusUsername();
 };

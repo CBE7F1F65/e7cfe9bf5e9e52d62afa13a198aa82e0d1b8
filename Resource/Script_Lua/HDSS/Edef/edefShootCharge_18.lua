@@ -72,7 +72,7 @@ function Edef_ShootChargeEnemyEID_18_3(playerindex, level, x, y, timer, px, py, 
 			hdssEB(CC_ShootChargeEnemyEID_18_3_B, playerindex, x, y, 9000, 0, LConst_EnemyTypeNull, 10);
 			hdssENSAIM(playerindex, level, 0, 0, aimangle);
 		elseif pattern == 2 then
-			for i=0, level/8+4 do
+			for i=0, level/8+2.5 do
 				ePlayerSendExChase_18(playerindex, x+RANDT(-40, 40), y+RANDT(-40, 40), 0xff, 0, RANDT(30, 90));
 			end
 		elseif pattern == 3 then
@@ -82,7 +82,7 @@ function Edef_ShootChargeEnemyEID_18_3(playerindex, level, x, y, timer, px, py, 
 				}
 			)
 			local speed = level * 0.1 + 2.4;
-			hdssBC(playerindex, 64+level, RANDT(1, 36000), 0, x, y, speed, CC_Bullet_Shuttle, 2);
+			hdssBC(playerindex, 48+level, RANDT(1, 36000), 0, x, y, speed, CC_Bullet_Shuttle, 2);
 			hdssA(playerindex);
 		end
 	end
