@@ -338,14 +338,16 @@ int Process::processInit()
 		}
 
 		tex[i] = hge->Texture_Load(tnbuffer);
-#ifdef __DEBUG
 		if(tex[i] == NULL)
 		{
+#ifdef __DEBUG
 			HGELOG("%s\nFailed in loading Texture File %s.(To be assigned to Index %d).", HGELOG_ERRSTR, tnbuffer, i);
 			errorcode = PROC_ERROR_TEXTURE;
+#endif
 			tex[i] = tex[TEX_WHITE];
 //			return PQUIT;
 		}
+#ifdef __DEBUG
 		else
 		{
 			HGELOG("Succeeded in loading Texture File %s.(Assigned to Index %d).", tnbuffer, i);

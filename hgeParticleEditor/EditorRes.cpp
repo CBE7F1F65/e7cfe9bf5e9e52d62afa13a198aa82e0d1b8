@@ -57,7 +57,13 @@ bool EditorRes::Load()
 		{
 			tex[i] = hge->Texture_Load(BResource::res.resdata.texfilename[i]);
 			if(!tex[i])
-				return false;
+			{
+				if (!tex[TEX_WHITE])
+				{
+					return false;
+				}
+				tex[i] = tex[TEX_WHITE];
+			}
 		}
 	}
 
