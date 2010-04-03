@@ -855,11 +855,11 @@ function ePlayerDrain_23(playerindex, x, y, draintimer, type)
 	local vscale;
 	local yoffset;
 	if draintimer < 8 then
-		hscale = draintimer * 4 + 32;
-		vscale = draintimer * 8 + 64;
+		hscale = draintimer * 5 + 40;
+		vscale = draintimer * 10 + 80;
 	else
-		hscale = 64
-		vscale = 128;
+		hscale = 80;
+		vscale = 160;
 	end
 	
 	local drainangle = hdss.Get(HDSS_D, LConst_Desc_DrainAngle+playerindex);
@@ -934,9 +934,9 @@ function ePlayerDrain_23(playerindex, x, y, draintimer, type)
 	end
 	hdssSD(LConst_Desc_DrainAngle+playerindex, baseangle);
 	
-	game.SetDrainSpriteInfo(playerindex, x, y, baseangle+9000, hscale, vscale);
+	game.SetDrainSpriteInfo(playerindex, x, y-80, baseangle+9000, hscale, vscale);
 		
-	hdssENAZBUILD(playerindex, ENAZTYPE_RECT+ENAZOP_AND, x, y, hscale/2, vscale/2, baseangle);
+	hdssENAZBUILD(playerindex, ENAZTYPE_RECT+ENAZOP_AND, x, y-80, hscale/2, vscale/2, baseangle);
 	
 	return true;
 end
