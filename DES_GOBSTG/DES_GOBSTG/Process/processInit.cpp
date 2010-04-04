@@ -332,19 +332,20 @@ int Process::processInit()
 		tex[i] = NULL;
 
 		strcpy(tnbuffer, BResource::res.resdata.texfilename[i]);
-		if(!strlen(tnbuffer))
+		if(strlen(tnbuffer))
 		{
-			strcpy(tnbuffer, BResource::res.resdata.texfilename[TEX_WHITE]);
+			tex[i] = hge->Texture_Load(tnbuffer);
+//			strcpy(tnbuffer, BResource::res.resdata.texfilename[TEX_WHITE]);
 		}
 
-		tex[i] = hge->Texture_Load(tnbuffer);
 		if(tex[i] == NULL)
 		{
 #ifdef __DEBUG
 			HGELOG("%s\nFailed in loading Texture File %s.(To be assigned to Index %d).", HGELOG_ERRSTR, tnbuffer, i);
 			errorcode = PROC_ERROR_TEXTURE;
 #endif
-			tex[i] = tex[TEX_WHITE];
+//			tex[i] = tex[TEX_WHITE];
+			tex[i] = hge->Texture_Create(0, 0);
 //			return PQUIT;
 		}
 #ifdef __DEBUG

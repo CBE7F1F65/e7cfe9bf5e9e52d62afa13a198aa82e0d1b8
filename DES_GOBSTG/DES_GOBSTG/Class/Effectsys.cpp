@@ -82,8 +82,15 @@ bool Effectsys::Init(HTEXTURE * tex, const char * foldername, char name[][M_PATH
 	char buffer[M_STRMAX];
 	for(int i=0;i<EFFECTSYSTYPEMAX;i++)
 	{
+		if (!strlen(name[i]))
+		{
+			hgeEffectBasicInfo ebi;
+			ZeroMemory(&ebi, sizeof(hgeEffectBasicInfo));
+			efftype[i].SetBasicInfo(&ebi);
+			continue;
+		}
 		strcpy(buffer, foldername);
-		strcat(buffer, strlen(name[i]) ? name[i] : name[0]);
+		strcat(buffer, name[i]);
 
 		if(Export::effLoad(buffer, &efftype[i], tex) < 0)
 		{

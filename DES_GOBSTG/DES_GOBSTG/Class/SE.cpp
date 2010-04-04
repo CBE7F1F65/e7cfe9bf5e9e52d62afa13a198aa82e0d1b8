@@ -18,9 +18,9 @@ bool SE::Initial()
 		strcpy(buffer, BResource::res.resdata.sefilename[i]);
 		if(!strlen(buffer))
 		{
-			if(i < SE_FREEBEGIN)
-				strcpy(buffer, BResource::res.resdata.sefilename[SE_DEFAULT]);
-			else
+//			if(i < SE_FREEBEGIN)
+//				strcpy(buffer, BResource::res.resdata.sefilename[SE_DEFAULT]);
+//			else
 				continue;
 		}
 		se[i].eff = hge->Effect_Load(buffer);

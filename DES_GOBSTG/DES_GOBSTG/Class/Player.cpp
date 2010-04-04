@@ -881,7 +881,7 @@ bool Player::CostLife()
 		GameInput::SetKey(playerindex, KSI_DOWN, false);
 		GameInput::SetKey(playerindex, KSI_LEFT, false);
 		GameInput::SetKey(playerindex, KSI_RIGHT, false);
-		GameInput::SetKey(playerindex, KSI_FIRE, false);
+//		GameInput::SetKey(playerindex, KSI_FIRE, false);
 		GameInput::SetKey(playerindex, KSI_QUICK, false);
 		GameInput::SetKey(playerindex, KSI_SLOW, false);
 		GameInput::SetKey(playerindex, KSI_DRAIN, false);
@@ -961,13 +961,16 @@ bool Player::Collapse()
 
 bool Player::Shoot()
 {
-	if(flag & PLAYER_SHOT || Chat::chatitem.IsChatting())
+	if(Chat::chatitem.IsChatting())
 	{
 		shoottimer = 0;
 		return true;
 	}
 
-	PlayerBullet::BuildShoot(playerindex, nowID, shoottimer);
+	if (!(flag & PLAYER_SHOT) && !(flag & PLAYER_COSTLIFE))
+	{
+		PlayerBullet::BuildShoot(playerindex, nowID, shoottimer);
+	}
 	shoottimer++;
 	//
 	if(shootnotpushtimer > _PLAYER_SHOOTNOTPUSHOVER)

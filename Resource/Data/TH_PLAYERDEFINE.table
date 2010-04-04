@@ -19,8 +19,8 @@ Comment	Type	Collision_r	FastSpeed	SlowSpeed	ChargeSpeed	AddChargeRate	ShotDelay
 -	16	1	5	2.4	3.3	1	8	60	40	35	-1.25	7.5	0	SI_Player_Yamaxanadu_0	SI_Face_17	SI_PlayerSpellCutIn_17	罪符「彷徨える大罪」	罪符「彷徨える大罪」	審判「ラストジャッジメント」	20	SI_PlayerDrainZone_17	4	8	4	4	4	4	無縁塚 -SHIKIEIKI-	四季映姫·ヤマザナドゥ	Shikieiki Yamaxanadu
 -	17	1	4.1	2.2	3.2	1	8	60	60	40	-1	18	0	SI_Player_Komachi_0	SI_Face_18	SI_PlayerSpellCutIn_18	投銭「宵越しの銭」	投銭「宵越しの銭」	死神「ヒガンルトゥール」	19	SI_PlayerDrainZone_18	4	8	4	4	4	4	再思の道 -KOMACHI-	小野塚·小町	Onozuka Komachi
 -	18	1	5	2.3	4	1	8	55	48	35	-1.25	7.5	0	SI_Player_Remilia_0	SI_Face_19	SI_PlayerSpellCutIn_19	紅符「スカーレットシュート」	紅符「スカーレットシュート」	紅魔「スカーレットデビル」	0	SI_PlayerDrainZone_19	4	4	3	3	0	0	紅魔館 -REMILIA-	レミリア·スカーレット	Remilia Scarlet
--	19	1	4	2	4	1.15	12	50	32	35	-1.25	7.5	0	SI_Player_ReimuII_0	SI_Face_20	SI_PlayerSpellCutIn_20	「陰陽印」	「夢想封印」	「博麗幻影」	4	SI_PlayerDrainZone_20	64	8	4	4	4	4	迷いの竹林 -REIMU-	博麗·霊夢	Hakurei Reimu
--	20	1	5	3	3.3	1.15	8	45	8	30	-1	8	0	SI_Player_MarisaII_0	SI_Face_21	SI_PlayerSpellCutIn_21	「スターダスト」	「スターダストレヴァリエ」	「イリュージョンスター」	5	SI_PlayerDrainZone_21	32	8	4	4	4	4	迷いの竹林 -MARISA-	霧雨·魔理沙	Kirisame Marisa
+-	19	1	4	2	4	1.15	12	50	32	35	-1.25	7.5	0	SI_Player_ReimuII_0	SI_Face_20	SI_PlayerSpellCutIn_20	「陰陽印」	「夢想封印」	「博麗幻影」	4	SI_PlayerDrainZone_20	64	8	4	4	4	4	迷いの竹林 -REIMU-	ハクレイ·レイム	Hakurei Reimu
+-	20	1	5	3	3.3	1.15	8	45	8	30	-1	8	0	SI_Player_MarisaII_0	SI_Face_21	SI_PlayerSpellCutIn_21	「スターダスト」	「スターダストレヴァリエ」	「イリュージョンスター」	5	SI_PlayerDrainZone_21	32	8	4	4	4	4	迷いの竹林 -MARISA-	キリサメ·マリサ	Kirisame Marisa
 -	21	1	4	2	4	1	8	60	60	40	-1	18	0	SI_Player_Yukari_0	SI_Face_22	SI_PlayerSpellCutIn_22	境符「移転境界」	境符「移転境界」	「深弾幕結界　-夢幻泡影-」	3	SI_PlayerDrainZone_22	16	4	4	4	0	0	博麗大結界 -YUKARI-	八雲·紫	Yakumo Yukari
 -	22	1	4.65	2.65	3.4	1	8	55	32	8	-0.2	4	0	SI_Player_Sanae_0	SI_Face_23	SI_PlayerSpellCutIn_23	奇跡「神の風」	秘術「一子相伝の弾幕」	奇跡「八坂の神風」	21	SI_PlayerDrainZone_23	12	8	4	4	4	4	守矢の神社 -SANAE-	東風谷·早苗	Kotiya Sanae
 -	23	1	4.5	3	4	1	8	40	32	60	-0.75	50	0	SI_Player_Hatate_0	SI_Face_24	SI_PlayerSpellCutIn_24	現代「既存写真」	現代「既存写真」	念写「リプレイ」	22	SI_PlayerDrainZone_24	4	8	4	4	4	4	妖怪の山 -HATATE-	姫海棠·はたて	Himekaidou Hatate

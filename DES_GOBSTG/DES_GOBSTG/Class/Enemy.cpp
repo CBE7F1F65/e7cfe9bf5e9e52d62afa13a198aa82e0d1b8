@@ -1064,7 +1064,10 @@ void Enemy::DoShot()
 
 void Enemy::ForceActive()
 {
-	Scripter::scr.Execute(SCR_EVENT, SCR_EVENT_PLAYERDRAINCHECK, playerindex);
+	if (!checkActive())
+	{
+		Scripter::scr.Execute(SCR_EVENT, SCR_EVENT_PLAYERDRAINCHECK, playerindex);
+	}
 }
 
 bool Enemy::DoActivate()
@@ -1230,7 +1233,7 @@ void Enemy::action()
 			en[playerindex].toIndex(_index);
 		}
 
-		if (!Player::p[playerindex].bInfi)
+		if (!Player::p[playerindex].bInfi && !(flag & ENEMYFLAG_NOPLAYERCOLLISION))
 		{
 			if ((tw || th))
 			{
