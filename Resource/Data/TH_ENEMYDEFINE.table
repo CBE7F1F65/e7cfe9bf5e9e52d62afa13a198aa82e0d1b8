@@ -32,12 +32,12 @@ Comment	Index	FaceIndex	SIID	Collision_W	Collision_H	Flag	StandFrame	RightPreFra
 -	35	-1	SI_EnemySprite_Big_0	16	16	7	4	4	4	0	0	0	0	0	0	1	25	0	31	32	1	-1	-1	-1	14	75	3	1	_	_
 -	36	-1	SI_EnemySprite_Lily_0	16	16	7	4	4	0	0	0	0	0	0	0	2	1	0	31	32	75	0	400	1000	0	0	0	1	_	_
 #		Ghost(37~43)																												
--	37	-1	SI_GhostSprite_Green_0	16	16	7	4	0	0	0	0	0	0	0	0	3	25	0	0	0	2.5	0	-1	-2	0	0	0	2.666666667	_	_
--	38	-1	SI_GhostSprite_GreenActive_0	16	16	7	8	0	0	0	0	0	0	0	0	3	25	40	0	32	2.5	0	-1	-2	10	54	3	2.666666667	_	_
--	39	-1	SI_GhostSprite_Yellow_0	16	16	7	4	0	0	0	0	0	0	0	0	3	25	0	0	0	5	0	-1	-2	0	0	0	2.666666667	_	_
--	40	-1	SI_GhostSprite_YellowActive_0	16	16	7	8	0	0	0	0	0	0	0	0	3	25	40	0	32	5	0	-1	-2	12	60	3	2.666666667	_	_
--	41	-1	SI_GhostSprite_Red_0	16	16	7	4	0	0	0	0	0	0	0	0	3	25	0	0	0	7.5	0	-1	-2	0	0	0	2.666666667	_	_
--	42	-1	SI_GhostSprite_RedActive_0	16	16	7	8	0	0	0	0	0	0	0	0	3	25	40	0	32	7.5	0	-1	-2	12	60	3	2.666666667	_	_
+-	37	-1	SI_GhostSprite_Green_0	16	16	7	4	0	0	0	0	0	0	0	0	3	25	0	0	0	2.5	0	-1	-2	0	0	0	8	_	_
+-	38	-1	SI_GhostSprite_GreenActive_0	16	16	7	8	0	0	0	0	0	0	0	0	3	25	40	0	32	2.5	0	-1	-2	10	54	3	8	_	_
+-	39	-1	SI_GhostSprite_Yellow_0	16	16	7	4	0	0	0	0	0	0	0	0	3	25	0	0	0	5	0	-1	-2	0	0	0	8	_	_
+-	40	-1	SI_GhostSprite_YellowActive_0	16	16	7	8	0	0	0	0	0	0	0	0	3	25	40	0	32	5	0	-1	-2	12	60	3	8	_	_
+-	41	-1	SI_GhostSprite_Red_0	16	16	7	4	0	0	0	0	0	0	0	0	3	25	0	0	0	7.5	0	-1	-2	0	0	0	8	_	_
+-	42	-1	SI_GhostSprite_RedActive_0	16	16	7	8	0	0	0	0	0	0	0	0	3	25	40	0	32	7.5	0	-1	-2	12	60	3	8	_	_
 #		Charge(44~60)																												
 -	44	-1	SI_Null	0	0	0	0	0	0	0	0	0	0	0	0	4	25	0	0	0	0	0	0	0	0	0	0	1	_	_
 #		Special(61~79)																												

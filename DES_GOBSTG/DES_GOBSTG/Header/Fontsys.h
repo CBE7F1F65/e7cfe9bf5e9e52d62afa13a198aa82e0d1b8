@@ -50,6 +50,7 @@ public:
 	HTARGET tar;
 	int lines;
 	int maxcharinline;
+	bool signedup;
 
 	static list<Fontsys *> fontsys;
 	static HD3DFONT font;

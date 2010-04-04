@@ -1,20 +1,8 @@
 #include "../Header/Process.h"
 #include "../Header/Scripter.h"
-#include "../Header/BGLayer.h"
-#include "../Header/Player.h"
-#include "../Header/DataConnector.h"
-#include "../Header/SelectSystem.h"
-#include "../Header/SE.h"
-#include "../Header/Data.h"
-#include "../Header/Fontsys.h"
-#include "../Header/Replay.h"
-#include "../Header/BResource.h"
-#include "../Header/Export.h"
 #include "../Header/FrontDisplay.h"
-#include "../Header/SpriteItemManager.h"
-#include "../Header/FrontDisplayName.h"
-#include "../Header/PushKey.h"
-#include "../Header/ConstResource.h"
+#include "../Header/GameInput.h"
+#include "../Header/Replay.h"
 
 int Process::processOver()
 {
@@ -44,6 +32,7 @@ int Process::processOver()
 				FrontDisplay::fdisp.SetState(FDISP_SPELLNAME_0+i, FDISPSTATE_OFF);
 			}
 			FrontDisplay::fdisp.SetState(FDISP_MUSICNAME, FDISPSTATE_OFF);
+			GameInput::SwapInput(false);
 		}
 		return PTURN;
 	}

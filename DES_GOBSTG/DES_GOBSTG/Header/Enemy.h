@@ -160,7 +160,7 @@ public:
 
 	static void SendGhost(BYTE playerindex, float x, float y, BYTE setID, BYTE * sendtime=NULL, float * acceladd=NULL);
 	void AddSendInfo(BYTE sendsetID, BYTE sendtime, float accel, float acceladd);
-	void SetActiveInfo(BYTE activemaxtime, WORD eID, BYTE type, int angle, float speed, float damagerate);
+	void SetActiveInfo(BYTE activemaxtime, WORD eID, BYTE type, int angle, float accelspeed, float damagerate);
 
 public:
 	Effectsys	effCollapse;

@@ -1193,7 +1193,7 @@ void Enemy::action()
 	}
 	timer++;
 
-	if (timer < 60)
+	if (timer < 60 || activetimer)
 	{
 		if (accel)
 		{
@@ -1418,7 +1418,7 @@ void Enemy::GetBlastInfo(BYTE * maxtime/* =NULL */, float * r/* =NULL */, float 
 	}
 }
 
-void Enemy::SetActiveInfo(BYTE _activemaxtime, WORD _eID, BYTE _type, int _angle, float _speed, float _damagerate)
+void Enemy::SetActiveInfo(BYTE _activemaxtime, WORD _eID, BYTE _type, int _angle, float _accelspeed, float _damagerate)
 {
 	if (!exist || fadeout)
 	{
@@ -1426,11 +1426,11 @@ void Enemy::SetActiveInfo(BYTE _activemaxtime, WORD _eID, BYTE _type, int _angle
 	}
 	activemaxtime = _activemaxtime;
 	ID = _eID;
-	angle = _angle;
-	speed = _speed;
-	accel = 0;
-	damagerate = _damagerate;
 	ChangeType(_type);
+	angle = _angle;
+	speed = 0;
+	accel = _accelspeed;
+	damagerate = _damagerate;
 	setAction();
 	updateAction();
 	activetimer = 1;

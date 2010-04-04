@@ -11,6 +11,7 @@ Fontsys::Fontsys()
 {
 	tar = NULL;
 	sprite = NULL;
+	signedup = false;
 //	ZeroMemory(&quad, sizeof(hgeQuad));
 	strcpy(text, "");
 }
@@ -34,7 +35,7 @@ bool Fontsys::SignOff(bool erase)
 {
 	ReleaseTargetAndSprite();
 	strcpy(text, "");
-	if (!erase)
+	if (!erase || !signedup)
 	{
 		return true;
 	}
@@ -264,6 +265,8 @@ void Fontsys::SignUp(const char * _text, HD3DFONT _font)
 	{
 		fontsys.push_back(this);
 	}
+
+	signedup = true;
 }
 
 void Fontsys::Render(float x, float y, float shadow, float hscale, float vscale, BYTE alignflag)

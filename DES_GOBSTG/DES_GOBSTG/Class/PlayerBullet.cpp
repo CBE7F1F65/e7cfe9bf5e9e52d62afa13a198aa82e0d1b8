@@ -255,7 +255,7 @@ void PlayerBullet::valueSet(BYTE _playerindex, WORD _ID, BYTE _arrange, float _x
 
 	if (flag & PBFLAG_BEAM)
 	{
-		hscale = M_GAMESQUARE_HEIGHT / SpriteItemManager::GetTexW(BResource::res.playershootdata[ID].siid);
+		hscale = M_CLIENT_HEIGHT / SpriteItemManager::GetTexW(BResource::res.playershootdata[ID].siid);
 		vscale = scale / SpriteItemManager::GetTexH(BResource::res.playershootdata[ID].siid);
 		angle = -9000;
 		for (int i=0; i<PLAYERBULLETTYPE; i++)
@@ -458,9 +458,9 @@ bool PlayerBullet::isInRange(float aimx, float aimy, float w, float h)
 		w += scale / 2;
 		if (timer == 0)
 		{
-			aimy += M_GAMESQUARE_HEIGHT / 2;
+			aimy += M_CLIENT_HEIGHT / 2;
 		}
-		h = M_GAMESQUARE_HEIGHT / 2;
+		h = M_CLIENT_HEIGHT / 2;
 	}
 	float rOri = BResource::res.playershootdata[ID].collisionr * hscale;
 	if (checkCollisionSquare(aimx, aimy, w, h, rOri))
@@ -534,7 +534,7 @@ void PlayerBullet::action()
 			{
 				y = Player::p[playerindex].y;
 			}
-			y += - M_GAMESQUARE_HEIGHT / 2 + ybias;
+			y += - M_CLIENT_HEIGHT / 2 + ybias;
 			xplus = 0;
 			yplus = 0;
 			if (timer == 8)
@@ -693,7 +693,7 @@ void PlayerBullet::action()
 				taimy = Player::p[playerindex].pg[arrange-1].y;
 			}
 			taimx += xbias;
-			taimy += -M_GAMESQUARE_HEIGHT / 2 + ybias;
+			taimy += -M_CLIENT_HEIGHT / 2 + ybias;
 			chaseAim(taimx, taimy, (64-timer));
 			updateMove();
 			angle = -9000;
@@ -722,6 +722,10 @@ bool PlayerBullet::CheckShoot(BYTE playerindex, Enemy * en, float aimx, float ai
 					if (en->CostLife((*pb[playerindex]).power))
 					{
 						Player::p[playerindex].DoPlayerBulletHit((*pb[playerindex]).hitonfactor);
+						if ((*pb[playerindex]).hitonfactor >= 0)
+						{
+							en->ForceActive();
+						}
 					}
 				}
 			}

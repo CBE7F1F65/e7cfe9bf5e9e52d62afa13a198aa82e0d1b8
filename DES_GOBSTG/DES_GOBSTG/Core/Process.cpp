@@ -60,11 +60,11 @@ void Process::Release()
 	}
 
 	//
+	Fontsys::Release();
 	SelectSystem::ClearAll();
 	Bullet::Release();
 	PlayerBullet::Release();
 	Item::Release();
-	Fontsys::Release();
 	BossInfo::Release();
 	Chat::chatitem.Release();
 	EffectSp::Release();

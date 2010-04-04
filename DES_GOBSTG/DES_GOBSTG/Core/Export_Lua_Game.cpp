@@ -359,10 +359,10 @@ int Export_Lua_Game::LuaFn_Game_SetGhostActiveInfo(LuaState * ls)
 	WORD _eID = args[3].GetInteger();
 	BYTE _type = args[4].GetInteger();
 	int _angle = args[5].GetInteger();
-	float _speed = args[6].GetFloat();
+	float _accelspeed = args[6].GetFloat();
 	float _damagerate = args[7].GetFloat();
 
-	(*Enemy::en[_playerindex]).SetActiveInfo(_activemaxtime, _eID, _type, _angle, _speed, _damagerate);
+	(*Enemy::en[_playerindex]).SetActiveInfo(_activemaxtime, _eID, _type, _angle, _accelspeed, _damagerate);
 	return 0;
 }
 

@@ -40,6 +40,10 @@ Project("{EAF909A5-FA59-4C3D-9431-0FCC20D5BCF9}") = "hgehelp", "..\src\helpers\h
 	EndProjectSection
 EndProject
 Project("{EAF909A5-FA59-4C3D-9431-0FCC20D5BCF9}") = "ResourceUnpack", "..\ResourceUnpack\ResourceUnpack.icproj", "{BEA2A916-C4FB-4973-AEEE-425555BE1B13}"
+	ProjectSection(ProjectDependencies) = postProject
+		{1F75C075-6CD9-41D2-A771-F12556414E93} = {1F75C075-6CD9-41D2-A771-F12556414E93}
+		{9F8AACB6-5F1B-463C-ADF0-CD0ADA749A06} = {9F8AACB6-5F1B-463C-ADF0-CD0ADA749A06}
+	EndProjectSection
 EndProject
 Project("{EAF909A5-FA59-4C3D-9431-0FCC20D5BCF9}") = "LuaPlus", "..\LuaPlus\LuaPlus.icproj", "{ACB58A18-DE6E-4C2F-BC64-93C8673CBEBE}"
 EndProject
