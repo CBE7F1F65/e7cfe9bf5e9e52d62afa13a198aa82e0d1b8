@@ -344,13 +344,18 @@ bool PlayerBullet::CheckAndSetLock(BObject * pbobj, BYTE playerindex, int locked
 
 bool PlayerBullet::GetLockAim(BObject ** ppbobj, BYTE playerindex)
 {
-	if(locked[playerindex] == PBLOCK_LOST)
+	int lockedid = activelocked[playerindex];
+	if (activelocked[playerindex] == PBLOCK_LOST)
+	{
+		lockedid = locked[playerindex];
+	}
+	if (lockedid == PBLOCK_LOST)
 	{
 		return false;
 	}
 	if (ppbobj)
 	{
-		*ppbobj = &(Enemy::en[playerindex][locked[playerindex]]);
+		*ppbobj = &(Enemy::en[playerindex][lockedid]);
 		return true;
 	}
 	return false;
@@ -486,10 +491,7 @@ bool PlayerBullet::isInRange(float aimx, float aimy, float w, float h)
 void PlayerBullet::DelayShoot()
 {
 	BObject * _tpbobj = NULL;
-	if (locked[playerindex] != PBLOCK_LOST)
-	{
-		_tpbobj = &(Enemy::en[playerindex][locked[playerindex]]);
-	}
+	GetLockAim(&_tpbobj, playerindex);
 	if(timer == 1)
 	{
 		speed = -speed;

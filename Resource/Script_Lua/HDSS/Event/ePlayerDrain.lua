@@ -352,7 +352,7 @@ end
 function ePlayerDrain_07(playerindex, x, y, draintimer, type)
 	
 	if type ~= nil then
-		game.SetGhostActiveInfo(playerindex, 160, type+1, type+1, -9000, 0.011015625, LConst_ActiveGhostDefaultDamageRate);
+		game.SetGhostActiveInfo(playerindex, 200, type+1, type+1, -9000, LConst_ActiveGhostDefaultAccel, LConst_ActiveGhostDefaultDamageRate);
 		hdssSE(SE_GHOST_ACTIVATE, x, y);
 		return true;
 	end
