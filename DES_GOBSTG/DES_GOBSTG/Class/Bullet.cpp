@@ -473,12 +473,14 @@ bool Bullet::DoCollision()
 {
 	if(isInRect(Player::p[playerindex].x, Player::p[playerindex].y, Player::p[playerindex].r))
 	{
+		/*
 		if (cancelable)
 		{
 			sendsetID = 0;
 			fadeout = true;
 			timer = 0;
 		}
+		*/
 		Player::p[playerindex].DoShot();
 		return true;
 	}
