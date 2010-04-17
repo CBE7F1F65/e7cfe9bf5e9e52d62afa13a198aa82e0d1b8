@@ -289,11 +289,6 @@ public:
 	bool CheckMemHeader(const BYTE * memdata, DWORD size, BYTE type);
 	bool CheckHeader(BYTE type);
 
-	int getSpellNumber(int sno);
-	int getSpellUser(int sno);
-	char * getSpellName(int sno);
-	char * getSpellUserName(int sno);
-	char * getSpellUserEName(int sno);
 	char * getEnemyName(int type);
 	char * getEnemyEName(int type);
 	char * getPlayerName(int type);

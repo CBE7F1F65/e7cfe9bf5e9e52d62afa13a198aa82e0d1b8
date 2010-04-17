@@ -189,34 +189,6 @@ void Data::raSetIndi(int sno, WORD _indi)
 	indi[sno] = _indi;
 }
 */
-int Data::getSpellNumber(int sno)
-{
-	return BResource::res.spelldata[sno].spellnumber;
-}
-
-int Data::getSpellUser(int sno)
-{
-	return BResource::res.spelldata[sno].userID;
-}
-
-char * Data::getSpellName(int sno)
-{
-	strcpy(buf, BResource::res.spelldata[sno].spellname);
-	return buf;
-}
-
-char * Data::getSpellUserName(int sno)
-{
-	strcpy(buf, getEnemyName(BResource::res.spelldata[sno].userID));
-	return buf;
-}
-
-char * Data::getSpellUserEName(int sno)
-{
-	strcpy(buf, getEnemyEName(BResource::res.spelldata[sno].userID));
-	return buf;
-}
-
 char * Data::getEnemyName(int type)
 {
 	if (type < 0 || type >= ENEMYTYPEMAX)

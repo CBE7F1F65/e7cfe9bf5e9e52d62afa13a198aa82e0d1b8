@@ -43,6 +43,7 @@ void BossInfo::Clear()
 //bossinfo
 bool BossInfo::Fill(int _sno)
 {
+/*
 	spellData * item = &(BResource::res.spelldata[_sno]);
 	sno = _sno;
 	spellflag = item->spellflag;
@@ -51,7 +52,8 @@ bool BossInfo::Fill(int _sno)
 	strcpy(enemyename, Data::data.getEnemyEName(item->userID));
 	limit = item->timelimit;
 	remain = item->remain;
-	turntoscene = item->turntoscene;
+	turntoscene = item->turntoscene;*/
+
 	return true;
 }
 

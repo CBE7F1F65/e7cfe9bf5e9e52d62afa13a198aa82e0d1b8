@@ -16,7 +16,6 @@
 #define RSIZE_SPRITENUMBER	(sizeof(int))
 #define RSIZE_PLAYERSHOOT	(sizeof(playershootData) * PLAYERSHOOTTYPEMAX)
 #define RSIZE_PLAYERGHOST	(sizeof(playerghostData) * PLAYERGHOSTTYPEMAX)
-#define RSIZE_SPELL			(sizeof(spellData) * SPELLDATAMAX)
 
 class BResource
 {
@@ -43,8 +42,6 @@ public:
 
 	musicData musdata[MUSICMAX];
 	resourceData resdata;
-//	vector<spellData> spelldata;
-	spellData spelldata[SPELLDATAMAX];
 	bulletData bulletdata[BULLETTYPEMAX];
 	enemyData enemydata[ENEMYTYPEMAX];
 	playerData playerdata[PLAYERTYPEMAX];

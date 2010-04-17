@@ -1,5 +1,5 @@
 function ControlExecute(name, con)
-	
+
 	if name == STATE_START then
 		return ControlExecute_cStart(con);
 	elseif name == STATE_PAUSE then

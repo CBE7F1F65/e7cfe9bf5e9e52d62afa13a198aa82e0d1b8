@@ -823,7 +823,7 @@ bool Bullet::isInRect(float aimx, float aimy, float r, int nextstep)
 	float rotSin;
 	if (tbd->collisiontype ==  BULLET_COLLISION_ELLIPSE || tbd->collisiontype == BULLET_COLLISION_RECT)
 	{
-		if (!speed)
+		if (speed)
 		{
 			if (!xplus && !yplus)
 			{
