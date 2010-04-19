@@ -70,7 +70,7 @@ void PlayerBullet::Init(HTEXTURE * _tex)
 
 	for (int i=0; i<PLAYERSHOOTTYPEMAX; i++)
 	{
-		for (int j=0; j<4; j++)
+		for (int j=0; j<PLAYERBULLETTYPE; j++)
 		{
 			sprite[i][j] = SpriteItemManager::CreateSprite(BResource::res.playershootdata[i].siid+(((BResource::res.playershootdata[i].flag)&PBFLAG_ANIMATION)?j:0));
 		}

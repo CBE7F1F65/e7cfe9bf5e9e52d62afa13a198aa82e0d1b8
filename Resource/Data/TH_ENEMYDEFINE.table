@@ -4,7 +4,7 @@ Comment	Index	FaceIndex	SIID	Collision_W	Collision_H	Flag	StandFrame	RightPreFra
 -	0	0	SI_Boss_Reimu_0	16	24	1007	4	3	1	0	0	0	4	0	0	6	1	0	31	36	1	-1	-1	-1	0	0	0	1	²©û¡¤ë‘‰ô	Hakurei Reimu
 -	1	1	SI_Boss_Marisa_0	16	24	1007	4	3	1	0	0	0	1	0	0	6	1	0	31	36	1	-1	-1	-1	0	0	0	1	ìFÓê¡¤Ä§ÀíÉ³	Kirisame Marisa
 -	2	2	SI_Boss_Sakuya_0	16	24	1007	4	3	1	0	0	0	0	0	0	6	1	0	31	36	1	-1	-1	-1	0	0	0	1	Ê®ÁùÒ¹¡¤†DÒ¹	Izayoi Sakuya
--	3	3	SI_Boss_Youmu_0	16	24	1007	4	3	1	3	1	4	4	0	0	6	1	0	31	36	1	-1	-1	-1	0	0	0	1	»êÆÇ¡¤Ñı‰ô	Konpaku Youmu
+-	3	3	SI_Boss_Youmu_0	16	24	1007	4	3	1	3	1	4	1	0	0	6	1	0	31	36	1	-1	-1	-1	0	0	0	1	»êÆÇ¡¤Ñı‰ô	Konpaku Youmu
 -	4	4	SI_Boss_Aya_0	16	24	1007	4	3	1	0	0	0	4	0	0	6	1	0	31	36	1	-1	-1	-1	0	0	0	1	ÉäÃüÍè¡¤ÎÄ	Syameimaru Aya
 -	5	5	SI_Boss_Yuyuko_0	16	24	1007	2	3	1	0	0	0	0	0	0	6	1	0	31	36	1	-1	-1	-1	0	0	0	1	Î÷ĞĞËÂ¡¤ÓÄ¡©×Ó	Saigyouzi Yuyuko
 -	6	6	SI_Boss_Medicine_0	16	24	1007	4	3	1	0	0	0	0	0	0	6	1	0	31	36	1	-1	-1	-1	0	0	0	1	¥á¥Ç¥£¥¹¥ó¡¤¥á¥é¥ó¥³¥ê©`	Medicine Melancholy
