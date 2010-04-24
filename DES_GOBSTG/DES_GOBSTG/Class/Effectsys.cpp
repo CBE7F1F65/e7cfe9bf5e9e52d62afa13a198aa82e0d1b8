@@ -77,8 +77,17 @@ void Effectsys::RenderAll(BYTE playerindex)
 	}
 }
 
+void Effectsys::Release()
+{
+	for (int i=0; i<EFFECTSYSTYPEMAX; i++)
+	{
+		efftype[i].FreeList();
+	}
+}
+
 bool Effectsys::Init(HTEXTURE * tex, const char * foldername, char name[][M_PATHMAX])
 {
+	Release();
 	char buffer[M_STRMAX];
 	for(int i=0;i<EFFECTSYSTYPEMAX;i++)
 	{

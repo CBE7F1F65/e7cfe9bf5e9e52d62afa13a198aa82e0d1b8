@@ -71,6 +71,7 @@ void Process::Release()
 	FrontDisplay::fdisp.Release();
 	Enemy::Release();
 	SpriteItemManager::Release();
+	Effectsys::Release();
 	hgeEffectSystem::Release();
 	Replay::Release();
 
