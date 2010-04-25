@@ -265,6 +265,7 @@ int Export_Lua::LoadPackedLuaFiles(LuaState * ls)
 	hge->Resource_AttachPack(DEFAULT_BINSCRIPTFILE, M_SCRIPT_PASSWORD);
 	DWORD size = 0;
 	BYTE * content = hge->Resource_Load(DEFAULT_BINLUAFILE, &size);
+	hge->Resource_RemovePack(DEFAULT_BINSCRIPTFILE);
 	if (!content)
 	{
 		return -1;

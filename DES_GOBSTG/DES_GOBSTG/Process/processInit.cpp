@@ -152,6 +152,7 @@ rebuild:
 #endif
 	hge->Resource_AttachPack(RESLOADING_PCK, Export::GetPassword());
 	texInit = hge->Texture_Load(RESLOADING_TEX);
+	hge->Resource_RemovePack(RESLOADING_PCK);
 
 	return PGO;
 }
@@ -213,7 +214,7 @@ int Process::processInit()
 		hge->Texture_Free(texInit);
 		texInit = NULL;
 	}
-	hge->Resource_RemovePack(RESLOADING_PCK);
+//	hge->Resource_RemovePack(RESLOADING_PCK);
 
 	bool binmode = Export::GetResourceFile();
 

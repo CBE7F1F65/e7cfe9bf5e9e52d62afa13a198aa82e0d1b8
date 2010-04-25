@@ -135,7 +135,12 @@ bool CALL HGE_Impl::Resource_CreatePack(const char * filename, int password, hge
 
 	va_end(ap);
 
-	return Resource_AttachPack(filename, password);
+	if (Resource_AttachPack(filename, password))
+	{
+		Resource_RemovePack(filename);
+		return true;
+	}
+	return false;
 }
 // end
 

@@ -270,6 +270,7 @@ bool Export::rpyLoad(const char * filename, replayInfo * _rpyinfo, partInfo * _p
 
 	hge->Resource_AttachPack(filename, password ^ REPLAYPASSWORD_XORMAGICNUM);
 	content = hge->Resource_Load(hge->Resource_GetPackFirstFileName(filename), &_size);
+	hge->Resource_RemovePack(filename);
 	if(content)
 	{
 		memcpy(_rpyinfo ? _rpyinfo : &rpyinfo, content+RPYOFFSET_RPYINFO, RPYSIZE_RPYINFO);
@@ -565,6 +566,7 @@ bool Export::unpackFile(const char * zipname, const char * filename)
 	}
 
 	_content = hge->Resource_Load(filename, &_size);
+	hge->Resource_RemovePack(zipname);
 	if(_content)
 	{
 		char pathbuffer[M_STRMAX];
@@ -640,6 +642,7 @@ bool Export::unpackFromIni(const char * inifilename)
 				return false;
 			}
 		}
+		hge->Resource_RemovePack(zipname);
 	}
 	return true;
 }

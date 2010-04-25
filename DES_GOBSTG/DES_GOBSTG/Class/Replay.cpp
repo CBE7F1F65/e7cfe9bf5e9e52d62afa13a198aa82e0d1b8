@@ -160,6 +160,7 @@ bool Replay::Check(const char * _filename)
 	hge->Resource_AttachPack(treplayfilename, Data::data.password ^ REPLAYPASSWORD_XORMAGICNUM);
 
 	content = hge->Resource_Load(hge->Resource_GetPackFirstFileName(treplayfilename));
+	hge->Resource_RemovePack(treplayfilename);
 	if(content)
 	{
 		if(strcmp((char *)(content + RPYOFFSET_SIGNATURE), BResource::res.resdata.replaysignature11))
