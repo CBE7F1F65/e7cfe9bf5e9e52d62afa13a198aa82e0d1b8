@@ -149,7 +149,7 @@ void BGLayer::scaleSet(float _hscale, float _vscale)
 
 void BGLayer::zSet(float z0, float z1, float z2, float z3)
 {
-	if (!exist)
+	if (!exist || !sprite)
 	{
 		return;
 	}
@@ -158,7 +158,7 @@ void BGLayer::zSet(float z0, float z1, float z2, float z3)
 
 void BGLayer::colorSet(DWORD col0, DWORD col1, DWORD col2, DWORD col3)
 {
-	if (!exist)
+	if (!exist || !sprite)
 	{
 		return;
 	}
