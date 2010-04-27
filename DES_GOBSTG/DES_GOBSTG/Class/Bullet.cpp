@@ -15,6 +15,9 @@
 #include "../header/GameAI.h"
 #include "../header/Process.h"
 
+#define _BULLETRENDERFLAG_NONE	0
+#define _BULLETRENDERFLAG_ROUND	1
+
 RenderDepth Bullet::renderDepth[M_PL_MATCHMAXPLAYER][BULLETTYPEMAX];
 
 int Bullet::_actionList[M_PL_MATCHMAXPLAYER][BULLETACTIONMAX];
@@ -215,7 +218,12 @@ void Bullet::Render()
 	if (sprite[i])
 	{
 		sprite[i]->SetColor(alpha<<24 | diffuse);
-		sprite[i]->RenderEx(x, y, ARC(angle+headangle+BULLET_ANGLEOFFSET), hscale);
+		float arc = 0;
+		if (!(BResource::res.bulletdata[type].renderflag & _BULLETRENDERFLAG_ROUND))
+		{
+			arc = ARC(angle+headangle+BULLET_ANGLEOFFSET);
+		}
+		sprite[i]->RenderEx(x, y, arc, hscale);
 		eff.Render();
 	}
 }

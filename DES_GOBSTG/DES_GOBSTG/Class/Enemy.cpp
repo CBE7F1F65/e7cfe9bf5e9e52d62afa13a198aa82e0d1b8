@@ -336,7 +336,7 @@ void Enemy::setTar(BYTE _tarID)
 	tarID = _tarID;
 }
 
-void Enemy::setTake(int _take)
+void Enemy::setTake(DWORD _take)
 {
 	take = _take;
 }
