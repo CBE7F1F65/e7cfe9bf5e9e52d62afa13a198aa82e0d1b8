@@ -190,6 +190,9 @@ bool GameInput::UpdateInput(bool startstate)
 	{
 		gameinput[j].lastInput = gameinput[j].input;
 		gameinput[j].input = 0;
+	}
+	for (int j=0; j<M_PL_MATCHMAXPLAYER; j++)
+	{
 		for (int i=0; i<GAMEINPUTKEYMAX; i++)
 		{
 			gameinput[j].input |= (hge->Input_GetDIKey(gameinput[j].keyKey[i])?1:0)<<i;
@@ -245,10 +248,12 @@ bool GameInput::UpdateInput(bool startstate)
 		{
 			gameinput[j].input |= 1<<KSI_SKIP;
 		}
+#ifdef __PSP
+		break;
+#endif // __PSP
 	}
 
 	//
-	Process::mp.UpdateKailleraInput();
 	SyncControlInputSelf();
 	//
 

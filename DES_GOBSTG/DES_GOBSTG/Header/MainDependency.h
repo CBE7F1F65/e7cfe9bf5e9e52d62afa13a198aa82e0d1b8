@@ -1,12 +1,16 @@
 #ifndef _MAINDEPENDENCY_H
 #define _MAINDEPENDENCY_H
 
+#ifdef __WIN32
 #include <windows.h>
+#endif // __WIN32
 #include <list>
 #include <vector>
 #include "../Header/VectorList.h"
+#ifdef __WIN32
 #include <io.h>
 #include <assert.h>
+#endif // __WIN32
 
 using namespace std;
 
@@ -21,6 +25,7 @@ using namespace std;
 #pragma warning(disable:4800)
 #pragma warning(disable:1786)
 
+#ifdef __WIN32
 #pragma comment(lib, "winmm.lib")
 
 #ifdef _DEBUG
@@ -35,9 +40,9 @@ using namespace std;
 	#pragma comment(lib, "hge.lib")
 #endif // _DEBUG
 
-#pragma comment(lib, "kailleraclient.lib")
 #pragma comment(lib, "bass.lib")
 #pragma comment(lib, "d3d9.lib")
 #pragma comment(lib, "d3dx9.lib")
+#endif // __WIN32
 
 #endif

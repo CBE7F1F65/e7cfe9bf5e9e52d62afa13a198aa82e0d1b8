@@ -51,7 +51,7 @@ void Process::startPrep(bool callinit)
 	replayend = false;
 	SetState(STATE_START);
 
-	SetCurrentDirectory(hge->Resource_MakePath(""));
+	hge->Resource_SetCurrentDirectory(hge->Resource_MakePath(""));
 
 	BYTE part = 0;
 	if (replaymode)
@@ -111,7 +111,7 @@ void Process::startPrep(bool callinit)
 	}
 	Player::ClearRound();
 	FrontDisplay::fdisp.SignUpSpell();
-	musicChange(BResource::res.playerdata[scene].musicID);
+	musicChange(BResource::bres.playerdata[scene].musicID);
 
 	if(!replaymode)
 	{

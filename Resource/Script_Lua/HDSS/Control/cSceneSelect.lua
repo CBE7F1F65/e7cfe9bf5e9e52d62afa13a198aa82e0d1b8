@@ -20,27 +20,24 @@ function CESceneSelect_SetSelect(selsyssceneid, pushkeyid)
 		-8, 0,
 		8, 8
 	}
-	
+
+	local scale = 1.5;
+
 	hdss.Call(
 		HDSS_SELBUILD,
 		{
-			selsyssceneid, 0, -1, TotalCenterX, ystart
+			selsyssceneid, 0, SI_SceneName_Default, TotalCenterX, ystart, scale
 		},
-		tableSelectOffset,
-		{
-			"ÒŽ¶¨¤ÎˆöËù", LConst_selsys_ucol, LConst_selsys_dcol, LConst_selsys_shadow, 0, 0, 0.75
-		}
+		tableSelectOffset
 	)
 	hdss.Call(
 		HDSS_SELBUILD,
 		{
-			selsyssceneid, 1, -1, TotalCenterX, ystart + yoffset
+			selsyssceneid, 1, SI_SceneName_Random, TotalCenterX, ystart + yoffset, scale
 		},
-		tableSelectOffset,
-		{
-			"¤É¤Ã¤«", LConst_selsys_ucol, LConst_selsys_dcol, LConst_selsys_shadow, 0, 0, 0.75
-		}
+		tableSelectOffset
 	)
+
 
 	for i=0, scenecount-1 do
 		
@@ -52,12 +49,9 @@ function CESceneSelect_SetSelect(selsyssceneid, pushkeyid)
 		hdss.Call(
 			HDSS_SELBUILD,
 			{
-				selsyssceneid, i+2, -1, TotalCenterX, ystart + (i+2) * yoffset
+				selsyssceneid, i+2, SI_SceneName_01+i, TotalCenterX, ystart + (i+2) * yoffset, scale
 			},
-			tableSelectOffset,
-			{
-				scenename, ucol, dcol, LConst_selsys_shadow, 0, 0, 0.65, 0.75
-			}
+			tableSelectOffset
 		)
 	end
 	hdss.Call(
@@ -87,6 +81,7 @@ function CESceneSelect_ExitState(tostate)
 	CESceneSelect_CloseUsed();
 	hdssSETSTATE(tostate);
 	if tostate == STATE_START then
+		game.FreeTexture();
 		hdssSTARTPREP();
 	end
 end

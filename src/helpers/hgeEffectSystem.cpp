@@ -1,4 +1,5 @@
 #include "../../include/hgeEffectSystem.h"
+#include "../../include/hgevector.h"
 #include <stdio.h>
 
 HGE * hgeEffectSystem::hge = NULL;
@@ -92,20 +93,26 @@ int hgeEffectSystem::Load(const char * filename, HTEXTURE tex /* = 0 */, HTEXTUR
 	if(!_content)
 		return -1;
 	memcpy(&(ebi), _content + _offset, sizeof(hgeEffectBasicInfo));
-	texnum = ebi.tex;
-	if (tex == 0)
-	{
-		if(texnum < 0 || !texset[texnum])
+	texnum = ebi.tex.texindex;
+/*
+	if (tex.tex == 0)
+	{*/
+
+		if(texnum < 0/* || !texset[texnum].tex*/)
 		{
 			hge->Resource_Free(_content);
 			return texnum;
 		}
-		ebi.tex = texset[texnum];
+		HTEXTURE ttex(texnum, NULL);
+		ebi.tex = ttex;
+//		ebi.tex = texset[texnum];
+/*
 	}
 	else
 	{
 		ebi.tex = tex;
-	}
+	}*/
+
 	_offset += sizeof(hgeEffectBasicInfo);
 	while(_offset < _size)
 	{
@@ -214,7 +221,7 @@ void hgeEffectSystem::Render(hge3DPoint *ptfar, DWORD colormask)
 			hgeSprite * _sprite = emitterItem->emitter.sprite;
 			if (_sprite)
 			{
-				_sprite->SetColor((*(DWORD *)&(obj->color))&colormask);
+				_sprite->SetColor((/**(DWORD *)&*/(obj->color))&colormask);
 				_sprite->SetZ(obj->z, obj->z + obj->zStretch, obj->z + obj->zStretch, obj->z, ptfar);
 				_sprite->RenderEx(obj->x, obj->y, obj->fHeadDirection, obj->fScaleX, obj->fScaleY);
 			}
@@ -433,10 +440,10 @@ void hgeEffectSystem::Update()
 			//Raditial & Tangential
 			if(obj->fSpeedRaditial || obj->fSpeedTangential)
 			{
-				D3DXVECTOR3 _obj3(obj->x, obj->y, obj->z);
-				D3DXVECTOR3 _ori3(x, y, z);
-				D3DXVECTOR3 _vec3 = _ori3 - _obj3;
-				D3DXVec3Normalize(&_vec3, &_vec3);
+				hgeVector _obj3(obj->x, obj->y, obj->z);
+				hgeVector _ori3(x, y, z);
+				hgeVector _vec3 = _ori3 - _obj3;
+				_vec3.Normalize();
 				if(obj->fSpeedRaditial)
 				{
 					_obj3 += _vec3 * obj->fSpeedRaditial;
@@ -458,9 +465,11 @@ void hgeEffectSystem::Update()
 						_x = _z * sinf(emitter->eei.fRotationY);
 						_z = - _z * cosf(emitter->eei.fRotationY);
 					}
-					D3DXVECTOR3 _up(_x, _y, _z);
-					D3DXVec3Cross(&_vec3, &_vec3, &_up);
-					D3DXVec3Normalize(&_vec3, &_vec3);
+					hgeVector _up(_x, _y, _z);
+					_vec3 = _vec3.Cross(&_up);
+					_vec3.Normalize();
+//					D3DXVec3Cross(&_vec3, &_vec3, &_up);
+//					D3DXVec3Normalize(&_vec3, &_vec3);
 					_obj3 += _vec3 * obj->fSpeedTangential;
 				}
 				obj->x = _obj3.x;
@@ -546,7 +555,7 @@ void hgeEffectSystem::UpdateValue(float * value, float * bufferValue, hgeEffectA
 	}
 }
 
-void hgeEffectSystem::UpdateColorValue(float * value, float * bufferValue, hgeEffectAffectorInfo * eai, int nAge)
+void hgeEffectSystem::UpdateColorValue(DWORD * value, DWORD * bufferValue, hgeEffectAffectorInfo * eai, int nAge)
 {
 	DWORD * col = (DWORD *)value;
 	DWORD * buffercol = (DWORD *)bufferValue;

@@ -5,13 +5,12 @@
 #include "../header/Export.h"
 #include "../header/ProcessDefine.h"
 #include "../header/Process.h"
+#include "../Header/BResource.h"
 
 BGLayerSet BGLayer::bglayerset[M_PL_MATCHMAXPLAYER][BGLAYERSETMAX];
 BGLayer BGLayer::ubg[M_PL_MATCHMAXPLAYER][UBGLAYERMAX];
 
 WORD BGLayer::setindex = 0;
-
-HTEXTURE * BGLayer::tex = NULL;
 
 BGLayer::BGLayer()
 {
@@ -24,7 +23,7 @@ BGLayer::~BGLayer()
 	SpriteItemManager::FreeSprite(&sprite);
 }
 
-void BGLayer::Init(HTEXTURE * _tex)
+void BGLayer::Init()
 {
 	for (int j=0; j<M_PL_MATCHMAXPLAYER; j++)
 	{
@@ -42,7 +41,6 @@ void BGLayer::Init(HTEXTURE * _tex)
 		}
 	}
 	setindex = 0;
-	tex = _tex;
 }
 
 void BGLayer::KillOtherLayer(BYTE playerindex)
@@ -82,7 +80,7 @@ void BGLayer::valueSet(int siID, float cenx, float ceny, float w, float h, DWORD
 	zSpeed = 0;
 
 	spriteData * _sd = SpriteItemManager::CastSprite(siID);
-	HTEXTURE _tex = tex[_sd->tex];
+	HTEXTURE _tex(_sd->tex, NULL);
 
 	float _x = cenx;
 	float _y = ceny;
@@ -422,7 +420,7 @@ void BGLayer::Render()
 {
 	if (sprite)
 	{
-		hge->Gfx_RenderQuad(&(sprite->quad));
+		SpriteItemManager::RenderQuad(&(sprite->quad));
 	}
 }
 

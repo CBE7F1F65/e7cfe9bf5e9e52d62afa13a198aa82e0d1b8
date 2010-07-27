@@ -44,7 +44,7 @@ void BossInfo::Clear()
 bool BossInfo::Fill(int _sno)
 {
 /*
-	spellData * item = &(BResource::res.spelldata[_sno]);
+	spellData * item = &(BResource::bres.spelldata[_sno]);
 	sno = _sno;
 	spellflag = item->spellflag;
 	strcpy(spellname, item->spellname);
@@ -64,6 +64,7 @@ bool BossInfo::isSpell()
 
 void BossInfo::bossUp()
 {
+/*
 //	Fill(mp.scene);
 
 	failed	= false;
@@ -81,7 +82,8 @@ void BossInfo::bossUp()
 //		meet = DataConnector::nMeet() - 1;
 //		if(meet < 0)
 //			meet = 0;
-	}
+	}*/
+
 }
 
 void BossInfo::Release()

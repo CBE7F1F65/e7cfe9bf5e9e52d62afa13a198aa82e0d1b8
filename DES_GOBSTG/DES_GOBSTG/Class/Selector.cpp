@@ -14,12 +14,10 @@ Selector::Selector()
 
 Selector::~Selector()
 {
-	fsinfo.SignOff();
 }
 
 void Selector::Complete()
 {
-	fsinfo.SignOff();
 }
 
 void Selector::valueSet(BYTE _ID, int siID, float cenx, float ceny, float _hscale, float _vscale, BYTE _flag /* = SEL_NULL */)
@@ -52,13 +50,13 @@ void Selector::valueSet(BYTE _ID, int siID, float cenx, float ceny, float _hscal
 	}
 }
 
-void Selector::infoSet(char * info, DWORD ucol /* = 0xffffffff */, DWORD dcol /* = 0xffffffff */, float shadow /* = FONTSYS_DEFAULT_SHADOW */, float xoffset/* =0 */, float yoffset/* =0 */, float hscale/* =1.0f */, float vscale/* =0.0f */, BYTE alignflag/* =HGETEXT_CENTER|HGETEXT_MIDDLE */, bool sync /* = false*/)
+void Selector::infoSet(char * info, DWORD ucol /* = 0xffffffff */, DWORD dcol /* = 0xffffffff */, float shadow, float xoffset/* =0 */, float yoffset/* =0 */, float hscale/* =1.0f */, float vscale/* =0.0f */, BYTE alignflag/* =HGETEXT_CENTER|HGETEXT_MIDDLE */, bool sync /* = false*/)
 {
 	if (!info || !strlen(info))
 	{
 		return;
 	}
-	fsinfo.SignUp(info);
+	fsinfo.SignUp(info, hscale);
 	infoucol = ucol;
 	infodcol = dcol;
 	infoshadow = shadow;
@@ -94,7 +92,7 @@ void Selector::Render()
 {
 	if (sprite)
 	{
-		sprite->RenderEx(x, y, 0, hscale, vscale);
+		SpriteItemManager::RenderSpriteEx(sprite, x, y, 0, hscale, vscale);
 	}
 }
 
@@ -104,7 +102,8 @@ void Selector::RenderInfo()
 	{
 		return;
 	}
-	fsinfo.Render(x+infoxoffset, y+infoyoffset, infoshadow, infohscale, infovscale, infoalignflag);
+	fsinfo.SetColor(infoucol, infoucol, infodcol, infodcol);
+	fsinfo.Render(x+infoxoffset, y+infoyoffset, infoshadow, infoalignflag);
 }
 
 void Selector::ChangeState(BYTE state, BYTE op)
@@ -338,10 +337,12 @@ bool Selector::PostAction(int * select, int sellock, int nPageNum, float fadebeg
 	{
 		sprite->SetColor((alpha << 24) | (0xffffff));
 	}
+/*
 	fsinfo.SetColor((alpha << 24) | (infoucol & 0xFFFFFF), 0);
 	fsinfo.SetColor((alpha << 24) | (infoucol & 0xFFFFFF), 1);
 	fsinfo.SetColor((alpha << 24) | (infodcol & 0xFFFFFF), 2);
-	fsinfo.SetColor((alpha << 24) | (infodcol & 0xFFFFFF), 3);
+	fsinfo.SetColor((alpha << 24) | (infodcol & 0xFFFFFF), 3);*/
+
 
 	if (fademode)
 	{
@@ -353,8 +354,10 @@ bool Selector::PostAction(int * select, int sellock, int nPageNum, float fadebeg
 				sprite->SetColor(0, 0);
 				sprite->SetColor(0, 1);
 			}
+/*
 			fsinfo.SetColor(0, 0);
-			fsinfo.SetColor(0, 1);
+			fsinfo.SetColor(0, 1);*/
+
 			break;
 		case SELFADE_DOWN:
 			if (sprite)
@@ -362,8 +365,10 @@ bool Selector::PostAction(int * select, int sellock, int nPageNum, float fadebeg
 				sprite->SetColor(0, 2);
 				sprite->SetColor(0, 3);
 			}
+/*
 			fsinfo.SetColor(0, 2);
-			fsinfo.SetColor(0, 3);
+			fsinfo.SetColor(0, 3);*/
+
 			break;
 		case SELFADE_LEFT:
 			if (sprite)
@@ -371,8 +376,10 @@ bool Selector::PostAction(int * select, int sellock, int nPageNum, float fadebeg
 				sprite->SetColor(0, 0);
 				sprite->SetColor(0, 3);
 			}
+/*
 			fsinfo.SetColor(0, 0);
-			fsinfo.SetColor(0, 3);
+			fsinfo.SetColor(0, 3);*/
+
 			break;
 		case SELFADE_RIGHT:
 			if (sprite)
@@ -380,8 +387,10 @@ bool Selector::PostAction(int * select, int sellock, int nPageNum, float fadebeg
 				sprite->SetColor(0, 1);
 				sprite->SetColor(0, 2);
 			}
+/*
 			fsinfo.SetColor(0, 1);
-			fsinfo.SetColor(0, 2);
+			fsinfo.SetColor(0, 2);*/
+
 			break;
 		}
 	}

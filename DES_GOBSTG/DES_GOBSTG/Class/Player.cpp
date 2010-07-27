@@ -391,7 +391,7 @@ void Player::action()
 	lasty[0] = y;
 
 	//AI
-	//	GameAI::ai[playerindex].UpdateBasicInfo(x, y, speed, slowspeed, BResource::res.playerdata[nowID].collision_r);
+	//	GameAI::ai[playerindex].UpdateBasicInfo(x, y, speed, slowspeed, BResource::bres.playerdata[nowID].collision_r);
 	GameAI::ai[playerindex].SetMove();
 	//
 	
@@ -700,7 +700,7 @@ void Player::action()
 			y = PL_MOVABLE_TOP;
 	}
 	//AI
-	GameAI::ai[playerindex].UpdateBasicInfo(x, y, speed*speedfactor, slowspeed*speedfactor, r, BResource::res.playerdata[nowID].aidraintime);
+	GameAI::ai[playerindex].UpdateBasicInfo(x, y, speed*speedfactor, slowspeed*speedfactor, r, BResource::bres.playerdata[nowID].aidraintime);
 	float aiaimx = _PL_MERGETOPOS_X_(playerindex);
 	float aiaimy = _PL_MERGETOPOS_Y;
 	bool tobelow = false;
@@ -1125,7 +1125,7 @@ void Player::DoEnemyCollapse(float x, float y, BYTE type)
 	AddComboHit(1, true);
 	AddCharge(0, addcharge);
 
-	enemyData * edata = &(BResource::res.enemydata[type]);
+	enemyData * edata = &(BResource::bres.enemydata[type]);
 	AddExPoint(edata->expoint, x, y);
 
 	int addghostpoint;
@@ -1342,16 +1342,16 @@ void Player::Render()
 {
 	if (spdrain && bDrain)
 	{
-		spdrain->RenderEx(drainx, drainy, ARC(drainheadangle), drainhscale, drainvscale);
+		SpriteItemManager::RenderSpriteEx(spdrain, drainx, drainy, ARC(drainheadangle), drainhscale, drainvscale);
 		if (draincopyspriteangle)
 		{
-			spdrain->RenderEx(drainx, drainy, ARC(drainheadangle+draincopyspriteangle), drainhscale, drainvscale);
+			SpriteItemManager::RenderSpriteEx(spdrain, drainx, drainy, ARC(drainheadangle+draincopyspriteangle), drainhscale, drainvscale);
 		}
 	}
 	if (sprite)
 	{
 		sprite->SetColor(alpha<<24|diffuse);
-		sprite->RenderEx(x, y, 0, hscale, vscale);
+		SpriteItemManager::RenderSpriteEx(sprite, x, y, 0, hscale, vscale);
 	}
 }
 
@@ -1434,7 +1434,7 @@ void Player::setShootingCharge(BYTE _shootingchargeflag)
 		shootingchargeflag |= _shootingchargeflag;
 		if (shootingchargeflag & _PL_SHOOTINGCHARGE_1)
 		{
-			shootchargetimer = BResource::res.playerdata[nowID].shootchargetime;
+			shootchargetimer = BResource::bres.playerdata[nowID].shootchargetime;
 		}
 		if (_shootingchargeflag & ~_PL_SHOOTINGCHARGE_1)
 		{
@@ -1685,7 +1685,7 @@ BYTE Player::AddCharge(float addcharge, float addchargemax)
 	float addchargemaxval = addchargemax;
 	if (addchargemax > 0)
 	{
-		addchargemaxval = addchargemax * BResource::res.playerdata[nowID].addchargerate;
+		addchargemaxval = addchargemax * BResource::bres.playerdata[nowID].addchargerate;
 	}
 	fChargeMax += addchargemaxval;
 	if (fChargeMax > PLAYER_CHARGEMAX)

@@ -104,17 +104,21 @@ function CEPlayerSelect_SetSelect(bleft, x)
 		hdss.Call(
 			HDSS_SELBUILD,
 			{
-				selsysplayerid, i, siid, x + i * TotalW / 4, TotalCenterY, 0.75
+				selsysplayerid, i, siid, x + i * TotalW / 4, TotalCenterY, 1.5
 			},
 			{
 				0, 0,
 				-4, -4,
 				0, 0,
 				8, 8
-			},
-			{
-				strname, ucol, dcol, LConst_selsys_shadow, (TotalCenterX-x)/2, -80, 1.2
+
+
+
 			}
+--			,
+--			{
+--				strname, ucol, dcol, LConst_selsys_shadow, (TotalCenterX-x)/2, -80, 1.2
+--			}
 		)
 	end
 	local playerindex = 1;
@@ -144,6 +148,7 @@ function CEPlayerSelect_CloseUsed(bcloseall)
 end
 
 function CEPlayerSelect_ExitState(tostate, bcloseall)
+	game.FreeTexture();
 	CEPlayerSelect_CloseUsed(bcloseall);
 	hdssSETSTATE(tostate);
 end
@@ -164,7 +169,7 @@ function CEPlayerSelect_DispatchSelect(bleft, x, bothercomplete)
 	if complete then
 		
 		local siid = game.GetPlayerContentTable(select);
-		hdssBGVALUE(0, uibgid, siid, x, TotalCenterY, -0.75, -0.75, global.ARGB(0xff, 0));
+		hdssBGVALUE(0, uibgid, siid, x, TotalCenterY, -1.5, -1.5, global.ARGB(0xff, 0));
 		local pindex = _CEPlayerSelect_GetPIndex(bleft);
 		hdssSETCHARA(pindex, select);		
 		ret = 1;

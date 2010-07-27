@@ -12,13 +12,21 @@
 #define INITGUID
 
 #include "hge_impl.h"
+
+#ifdef __PSP
+#include <pspkernel.h>
+#include <pspdebug.h>
+#include <pspctrl.h>
+#endif // __PSP
+
 /************************************************************************/
 /* These header files are added by h5nc (h5nc@yahoo.com.cn)             */
 /************************************************************************/
-#include <dinput.h>
-#include <objbase.h>
+//#include <objbase.h>
 
+#ifdef __WIN32
 GUID HGE_Impl::joyGuid[DIJOY_MAXDEVICE];
+#endif
 
 char *KeyNames[] =
 {
@@ -82,10 +90,13 @@ void CALL HGE_Impl::Input_GetMousePos(float *x, float *y)
 
 void CALL HGE_Impl::Input_SetMousePos(float x, float y)
 {
+#ifdef __WIN32
 	POINT pt;
 	pt.x=(long)x; pt.y=(long)y;
 	ClientToScreen(hwnd, &pt);
+
 	SetCursorPos(pt.x,pt.y);
+#endif
 }
 
 int CALL HGE_Impl::Input_GetMouseWheel()
@@ -103,8 +114,10 @@ bool CALL HGE_Impl::Input_GetKeyState(int key)
 	/************************************************************************/
 	/* This condition is added by h5nc (h5nc@yahoo.com.cn)                  */
 	/************************************************************************/
+#ifdef __WIN32
 	if(bActive)
 		return ((GetKeyState(key) & 0x8000) != 0);
+#endif
 	return false;
 }
 
@@ -149,11 +162,16 @@ int CALL HGE_Impl::Input_GetChar()
 
 void HGE_Impl::_InputInit()
 {
+#ifdef __WIN32
 	POINT	pt;
 	GetCursorPos(&pt);
 	ScreenToClient(hwnd, &pt);
 	Xpos = (float)pt.x;
 	Ypos = (float)pt.y;
+#else
+	Xpos = 0;
+	Ypos = 0;
+#endif
 
 	memset(&keyz, 0, sizeof(keyz));
 }
@@ -201,6 +219,7 @@ bool CALL HGE_Impl::Input_SetDIKey(int key, bool set)
 
 bool CALL HGE_Impl::Input_GetDIJoy(int joy, BYTE stateType /* = DIKEY_PRESSED */, int joydevice/* =0 */)
 {
+#ifdef __WIN32
 	if(joy >=0 && joy < 32)
 	{
 		switch(stateType)
@@ -305,12 +324,14 @@ bool CALL HGE_Impl::Input_GetDIJoy(int joy, BYTE stateType /* = DIKEY_PRESSED */
 			return false;
 		}
 	}
+#endif
 	return false;
 }
 // end
 
 void HGE_Impl::_UpdateMouse()
 {
+#ifdef __WIN32
 	POINT	pt;
 	RECT	rc;
 
@@ -322,10 +343,12 @@ void HGE_Impl::_UpdateMouse()
 		bMouseOver=true;
 	else
 		bMouseOver=false;
+#endif
 }
 
 void HGE_Impl::_BuildEvent(int type, int key, int scan, int flags, int x, int y)
 {
+#ifdef __WIN32
 	CInputEventList *last, *eptr=new CInputEventList;
 	unsigned char kbstate[256];
 	POINT pt;
@@ -378,10 +401,15 @@ void HGE_Impl::_BuildEvent(int type, int key, int scan, int flags, int x, int y)
 	if(pt.x==-1) { eptr->event.x=Xpos;eptr->event.y=Ypos; }
 	else
 	{
+		RECT rect;
+		GetClientRect(hwnd, &rect);
+		float windoww = rect.right - rect.left;
+		float windowh = rect.bottom - rect.top;
+
 		if(pt.x<0) pt.x=0;
 		if(pt.y<0) pt.y=0;
-		if(pt.x>=nScreenWidth) pt.x=nScreenWidth-1;
-		if(pt.y>=nScreenHeight) pt.y=nScreenHeight-1;
+		if(pt.x>=windoww) pt.x=windoww-1;
+		if(pt.y>=windowh) pt.y=windowh-1;
 
 		eptr->event.x=(float)pt.x;
 		eptr->event.y=(float)pt.y;
@@ -404,11 +432,13 @@ void HGE_Impl::_BuildEvent(int type, int key, int scan, int flags, int x, int y)
 	else if(eptr->event.type==INPUT_MOUSEMOVE)
 	{
 		Xpos=eptr->event.x;Ypos=eptr->event.y;
+
 	}
 	else if(eptr->event.type==INPUT_MOUSEWHEEL)
 	{
 		Zpos+=eptr->event.wheel;
 	}
+#endif
 }
 
 void HGE_Impl::_ClearQueue()
@@ -431,6 +461,7 @@ void HGE_Impl::_ClearQueue()
 /* These functions are added by h5nc (h5nc@yahoo.com.cn)                */
 /************************************************************************/
 // begin
+#ifdef __WIN32
 BOOL CALLBACK HGE_Impl::_EnumJoysticksCallback (const DIDEVICEINSTANCE * pdidInstance, VOID* pContext)
 {
 	int count = *(int*)pContext;
@@ -448,17 +479,24 @@ BOOL CALLBACK HGE_Impl::_EnumJoysticksCallback (const DIDEVICEINSTANCE * pdidIns
 
 	return (DIENUM_CONTINUE);
 }
+#endif
 
 LPDIRECTINPUT8 CALL HGE_Impl::Input_GetDevice()
 {
+#ifdef __WIN32
 	return lpDInput;
+#else
+	return NULL;
+#endif
 }
 
 int HGE_Impl::_DIInit()
 {
-	lpDIKDevice = NULL;
 
 	bool keyable = true;
+	bool nojoy = true;
+#ifdef __WIN32
+	lpDIKDevice = NULL;
 
 	if (FAILED (DirectInput8Create (hInstance, DIRECTINPUT_VERSION, IID_IDirectInput8, (void**) &lpDInput, NULL)))
 	{
@@ -482,7 +520,6 @@ int HGE_Impl::_DIInit()
 		keyable = false;
 	}
 
-	bool nojoy = true;
 	int enumcount = 0;
 	for (int i=0; i<DIJOY_MAXDEVICE; i++)
 	{
@@ -588,17 +625,28 @@ int HGE_Impl::_DIInit()
 			}
 		}
 	}
+#endif
+
+#ifdef __PSP
+	sceCtrlSetSamplingCycle(0);
+	sceCtrlSetSamplingMode(PSP_CTRL_MODE_ANALOG);
+#endif // __PSP
 
 	return ((!nojoy)?0:ERROR_NOJOYSTICK) | (keyable?0:ERROR_NOKEYBOARD);
 }
 
 bool HGE_Impl::Input_HaveJoy(int joydevice)
 {
+#ifdef __WIN32
 	return haveJoy[joydevice];
+#else
+	return false;
+#endif
 }
 
 void HGE_Impl::_DIRelease()
 {
+#ifdef __WIN32
 	if(lpDIKDevice != NULL)
 	{
 		lpDIKDevice->Unacquire();
@@ -614,6 +662,7 @@ void HGE_Impl::_DIRelease()
 			lpDIJDevice[i] = NULL;
 		}
 	}
+#endif
 }
 
 int HGE_Impl::_DIUpdate()
@@ -621,7 +670,7 @@ int HGE_Impl::_DIUpdate()
 	bool keyable = true;
 
 	memcpy(lastKeyState, keyState, sizeof(keyState));
-
+#ifdef __WIN32
 	if(lpDIKDevice == NULL)
 	{
 		_DIRelease();
@@ -632,8 +681,10 @@ int HGE_Impl::_DIUpdate()
 //			return ERROR_NOKEYBOARD;
 		}
 	}
+#endif
 	if(keyable)
 	{
+#ifdef __WIN32
 		HRESULT hRet = lpDIKDevice->GetDeviceState(256, keyState);
 		if(FAILED(hRet)/* && hRet == DIERR_INPUTLOST*/)
 		{
@@ -648,10 +699,33 @@ int HGE_Impl::_DIUpdate()
 				keyable = false;
 		}
 		if(hwnd != GetActiveWindow())
+		{
 			ZeroMemory(&keyState, sizeof(keyState));
+		}
+#else
+		/************************************************************************/
+		/* TODO                                                                 */
+		/************************************************************************/
+		ZeroMemory(&keyState, sizeof(keyState));
+
+#ifdef __PSP
+		SceCtrlData pad;
+		sceCtrlPeekBufferPositive(&pad, 1);
+		//Analog pad.Lx, Pad.Ly
+		for (int i=0; i<32; i++)
+		{
+			if (pad.Buttons & (1<<i))
+			{
+				keyState[i] = 1<<7;
+			}
+		}
+#endif // __PSP
+
+#endif // __WIN32
 	}
 
 	bool nojoy = true;
+#ifdef __WIN32
 	for (int i=0; i<DIJOY_MAXDEVICE; i++)
 	{
 		lastJoyState[i] = joyState[i];
@@ -693,6 +767,7 @@ int HGE_Impl::_DIUpdate()
 			nojoy = false;
 		}
 	}
+#endif
 
 	return ((!nojoy)?0:ERROR_NOJOYSTICK) | (keyable?0:ERROR_NOKEYBOARD);
 }

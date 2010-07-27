@@ -77,11 +77,15 @@ public:
 	~DataPrinter();
 
 	static bool PrintScore();
+#ifdef __WIN32
 	static bool WriteString(string * str, HANDLE hFile);
+#endif // __WIN32
 	static bool PrintReplayData(const char * foldername, const char * filename);
 	static void getHeader();
 
+#ifdef __WIN32
 	static string str;
+#endif // __WIN32
 	static replayInfo rpyinfo;
 	static partInfo partinfo[RPYPARTMAX];
 	static replayFrame rpyframe[M_SAVEINPUTMAX];

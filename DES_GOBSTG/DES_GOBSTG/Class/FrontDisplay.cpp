@@ -130,7 +130,7 @@ void FrontDisplay::SignUpSpell()
 	{
 		for (int i=0; i<3; i++)
 		{
-			gameinfodisplay.fsSpell[j][i].SignUp(BResource::res.playerdata[Player::p[j].nowID].spellname[i], info.smallfont);
+			gameinfodisplay.fsSpell[j][i].SignUp(BResource::bres.playerdata[Player::p[j].nowID].spellname[i]);
 		}
 	}
 }
@@ -157,7 +157,7 @@ void FrontDisplay::OnShootCharge(BYTE playerindex, BYTE nowshootingcharge)
 void FrontDisplay::OnChangeMusic(int musicID)
 {
 	SetState(FDISP_MUSICNAME, FDISPSTATE_ON);
-	gameinfodisplay.fsMusic.SignUp(BResource::res.musdata[musicID].musicname, info.tinyfont);
+	gameinfodisplay.fsMusic.SignUp(BResource::bres.musdata[musicID].musicname, 0.75f);
 }
 
 void FrontDisplay::action()
@@ -247,9 +247,11 @@ void FrontDisplay::RenderHeadInfo(BYTE playerindex)
 			color = (alpha<<24)+0xffffff;
 		}
 		gameinfodisplay.charge->SetColor(color);
-		gameinfodisplay.charge->Render(px, py-tyoffset-10);
+		SpriteItemManager::RenderSprite(gameinfodisplay.charge, px, py-tyoffset-10);
 		info.headdigitfont->SetColor(color);
-		info.headdigitfont->printf(px, py-tyoffset-6, HGETEXT_CENTER, "%d / %d", ncharge, nchargemax);
+		char tbuff[M_STRMAX];
+		sprintf(tbuff, "%d / %d", ncharge, nchargemax);
+		SpriteItemManager::FontPrintf(info.headdigitfont, px, py-tyoffset-6, HGETEXT_CENTER, tbuff);
 	}
 	if (gameinfodisplay.lastlifecountdown[playerindex])
 	{
@@ -267,9 +269,9 @@ void FrontDisplay::RenderHeadInfo(BYTE playerindex)
 		}
 		color = (alpha<<24)+0xffffff;
 		gameinfodisplay.caution->SetColor(color);
-		gameinfodisplay.caution->Render(px, py-tyoffset-8);
+		SpriteItemManager::RenderSprite(gameinfodisplay.caution, px, py-tyoffset-8);
 		gameinfodisplay.lastlife->SetColor(color);
-		gameinfodisplay.lastlife->Render(px, py-tyoffset);
+		SpriteItemManager::RenderSprite(gameinfodisplay.lastlife, px, py-tyoffset);
 	}
 	if (gameinfodisplay.gaugefilledcountdown[playerindex])
 	{
@@ -290,11 +292,13 @@ void FrontDisplay::RenderHeadInfo(BYTE playerindex)
 		}
 		color = (alpha<<24)+0xffffff;
 		gameinfodisplay.gaugefilled->SetColor(color);
-		gameinfodisplay.gaugefilled->Render(px, py-tyoffset-10);
+		SpriteItemManager::RenderSprite(gameinfodisplay.gaugefilled, px, py-tyoffset-10);
 		gameinfodisplay.gaugelevel->SetColor(color);
-		gameinfodisplay.gaugelevel->Render(px-16, py-tyoffset);
+		SpriteItemManager::RenderSprite(gameinfodisplay.gaugelevel, px-16, py-tyoffset);
 		info.headdigitfont->SetColor(color);
-		info.headdigitfont->printf(px+16, py-tyoffset-8, HGETEXT_CENTER, "%d", nchargemax);
+		char tbuff[M_STRMAX];
+		sprintf(tbuff, "%d", nchargemax);
+		SpriteItemManager::FontPrintf(info.headdigitfont, px+16, py-tyoffset-8, HGETEXT_CENTER, tbuff);
 	}
 	if (gameinfodisplay.lilycountdown)
 	{
@@ -312,9 +316,9 @@ void FrontDisplay::RenderHeadInfo(BYTE playerindex)
 		}
 		color = (alpha<<24)+0xffffff;
 		gameinfodisplay.caution->SetColor(color);
-		gameinfodisplay.caution->Render(px, py-tyoffset-8);
+		SpriteItemManager::RenderSprite(gameinfodisplay.caution, px, py-tyoffset-8);
 		gameinfodisplay.lily->SetColor(color);
-		gameinfodisplay.lily->Render(px, py-tyoffset);
+		SpriteItemManager::RenderSprite(gameinfodisplay.lily, px, py-tyoffset);
 	}
 }
 
@@ -336,12 +340,12 @@ void FrontDisplay::RenderPanel()
 
 		for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
 		{
-			panel.spellpoint->Render(spellpointx[i], M_GAMESQUARE_TOP);
+			SpriteItemManager::RenderSprite(panel.spellpoint, spellpointx[i], M_GAMESQUARE_TOP);
 			spriteData * _spd = SpriteItemManager::CastSprite(panel.combobarindex);
 			float fcombogage = ((float)Player::p[i].nComboGage) / PLAYER_COMBOGAGEMAX;
 			SpriteItemManager::SetSpriteTextureRect(panel.combobar, _spd->tex_x, _spd->tex_y, _spd->tex_w*fcombogage, _spd->tex_h);
 			SpriteItemManager::SetSpriteHotSpot(panel.combobar, 0, 0);
-			panel.combobar->Render(spellpointx[i]+2, M_GAMESQUARE_TOP+30);
+			SpriteItemManager::RenderSprite(panel.combobar, spellpointx[i]+2, M_GAMESQUARE_TOP+30);
 
 			bool usered = true;
 			if (Player::p[i].nComboGage < PLAYER_COMBOALERT && Player::p[i].nComboGage > PLAYER_COMBORESET)
@@ -361,16 +365,17 @@ void FrontDisplay::RenderPanel()
 					buffer[j] += 10;
 				}
 			}
-			info.spellpointdigitfont->printf(spellpointx[i]+38, M_GAMESQUARE_TOP+16, HGETEXT_RIGHT, "%s", buffer);
+			SpriteItemManager::FontPrintf(info.spellpointdigitfont, spellpointx[i]+38, M_GAMESQUARE_TOP+16, HGETEXT_RIGHT, buffer);
 			int nSpellPoint = Player::p[i].nSpellPoint;
-			info.spellpointdigitfont->printf(spellpointx[i]+38, M_GAMESQUARE_TOP+16, HGETEXT_LEFT, "%06d", nSpellPoint);
+			sprintf(buffer, "%06d", nSpellPoint);
+			SpriteItemManager::FontPrintf(info.spellpointdigitfont, spellpointx[i]+38, M_GAMESQUARE_TOP+16, HGETEXT_LEFT, buffer);
 
 			if (Player::p[i].winflag)
 			{
-				panel.winindi->RenderEx(winindix[i][0], M_GAMESQUARE_TOP+winindih, ARC(panel.winindiheadangle));
+				SpriteItemManager::RenderSpriteEx(panel.winindi, winindix[i][0], M_GAMESQUARE_TOP+winindih, ARC(panel.winindiheadangle));
 				if (i == Player::IsMatchEnd())
 				{
-					panel.winindi->RenderEx(winindix[i][1], M_GAMESQUARE_TOP+winindih, ARC(panel.winindiheadangle));
+					SpriteItemManager::RenderSpriteEx(panel.winindi, winindix[i][1], M_GAMESQUARE_TOP+winindih, ARC(panel.winindiheadangle));
 				}
 			}
 
@@ -379,7 +384,7 @@ void FrontDisplay::RenderPanel()
 			SpriteItemManager::SetSpriteTextureRect(panel.slot, _spd->tex_x, _spd->tex_y, _spd->tex_w*fslot, _spd->tex_h);
 			SpriteItemManager::SetSpriteHotSpot(panel.slot, 0, _spd->tex_h);
 			panel.slot->SetColor(0xff808080);
-			panel.slot->Render(M_GAMESQUARE_LEFT_(i)+16, M_GAMESQUARE_BOTTOM);
+			SpriteItemManager::RenderSprite(panel.slot, M_GAMESQUARE_LEFT_(i)+16, M_GAMESQUARE_BOTTOM);
 			fslot = Player::p[i].fCharge / PLAYER_CHARGEMAX;
 			SpriteItemManager::SetSpriteTextureRect(panel.slot, _spd->tex_x, _spd->tex_y, _spd->tex_w*fslot, _spd->tex_h);
 			SpriteItemManager::SetSpriteHotSpot(panel.slot, 0, _spd->tex_h);
@@ -390,37 +395,40 @@ void FrontDisplay::RenderPanel()
 			{
 				panel.slot->SetColor(0xffffff80);
 			}
-			panel.slot->Render(M_GAMESQUARE_LEFT_(i)+16, M_GAMESQUARE_BOTTOM);
-			panel.slotback->Render(M_GAMESQUARE_LEFT_(i), M_GAMESQUARE_BOTTOM);
+			SpriteItemManager::RenderSprite(panel.slot, M_GAMESQUARE_LEFT_(i)+16, M_GAMESQUARE_BOTTOM);
+			SpriteItemManager::RenderSprite(panel.slotback, M_GAMESQUARE_LEFT_(i), M_GAMESQUARE_BOTTOM);
 			float tempx;
 			for (int j=0; j<PLAYER_DEFAULTINITLIFE/2; j++)
 			{
 				tempx = panel.lifeindi[FDISP_LIFEINDI_FULL]->GetWidth() * (j-(PLAYER_DEFAULTINITLIFE/2)/2) + M_GAMESQUARE_CENTER_X_(i);
 				if (Player::p[i].nLife > j * 2 + 1)
 				{
-					panel.lifeindi[FDISP_LIFEINDI_FULL]->Render(tempx, M_GAMESQUARE_TOP);
+					SpriteItemManager::RenderSprite(panel.lifeindi[FDISP_LIFEINDI_FULL], tempx, M_GAMESQUARE_TOP);
 				}
 				else if (Player::p[i].nLife > j * 2)
 				{
-					panel.lifeindi[FDISP_LIFEINDI_HALF]->Render(tempx, M_GAMESQUARE_TOP);
+					SpriteItemManager::RenderSprite(panel.lifeindi[FDISP_LIFEINDI_HALF], tempx, M_GAMESQUARE_TOP);
 				}
 				else
 				{
-					panel.lifeindi[FDISP_LIFEINDI_EMPTY]->Render(tempx, M_GAMESQUARE_TOP);
+					SpriteItemManager::RenderSprite(panel.lifeindi[FDISP_LIFEINDI_EMPTY], tempx, M_GAMESQUARE_TOP);
 				}
 			}
 			if (info.spellpointdigitfont)
 			{
-				info.spellpointdigitfont->printf(M_GAMESQUARE_LEFT_(i)+2, M_GAMESQUARE_BOTTOM-11, HGETEXT_LEFT, "%02d", Player::p[i].cardlevel);
-				info.spellpointdigitfont->printf(M_GAMESQUARE_RIGHT_(i)-2, M_GAMESQUARE_BOTTOM-11, HGETEXT_RIGHT, "%02d", Player::p[i].bosslevel);
+				char tbuff[M_STRITOAMAX];
+				sprintf(tbuff, "%02d", Player::p[i].cardlevel);
+				SpriteItemManager::FontPrintf(info.spellpointdigitfont, M_GAMESQUARE_LEFT_(i)+2, M_GAMESQUARE_BOTTOM-11, HGETEXT_LEFT, tbuff);
+				sprintf(tbuff, "%02d", Player::p[i].bosslevel);
+				SpriteItemManager::FontPrintf(info.spellpointdigitfont, M_GAMESQUARE_RIGHT_(i)-2, M_GAMESQUARE_BOTTOM-11, HGETEXT_RIGHT, tbuff);
 			}
 		}
 		for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
 		{
-			panel.leftedge[i]->Render(M_GAMESQUARE_LEFT_(i)-M_GAMESQUARE_EDGE/2, M_GAMESQUARE_CENTER_Y);
-			panel.rightedge[i]->Render(M_GAMESQUARE_RIGHT_(i)+M_GAMESQUARE_EDGE/2, M_GAMESQUARE_CENTER_Y);
-			panel.topedge[i]->Render(M_GAMESQUARE_CENTER_X_(i), M_GAMESQUARE_TOP-M_GAMESQUARE_EDGE/2);
-			panel.bottomedge[i]->Render(M_GAMESQUARE_CENTER_X_(i), M_GAMESQUARE_BOTTOM+M_GAMESQUARE_EDGE/2);
+			SpriteItemManager::RenderSprite(panel.leftedge[i], M_GAMESQUARE_LEFT_(i)-M_GAMESQUARE_EDGE/2, M_GAMESQUARE_CENTER_Y);
+			SpriteItemManager::RenderSprite(panel.rightedge[i], M_GAMESQUARE_RIGHT_(i)+M_GAMESQUARE_EDGE/2, M_GAMESQUARE_CENTER_Y);
+			SpriteItemManager::RenderSprite(panel.topedge[i], M_GAMESQUARE_CENTER_X_(i), M_GAMESQUARE_TOP-M_GAMESQUARE_EDGE/2);
+			SpriteItemManager::RenderSprite(panel.bottomedge[i], M_GAMESQUARE_CENTER_X_(i), M_GAMESQUARE_BOTTOM+M_GAMESQUARE_EDGE/2);
 			if (Player::p[i].flag & PLAYER_COSTLIFE)
 			{
 				DWORD col = 0xffffffff;
@@ -444,23 +452,28 @@ void FrontDisplay::RenderPanel()
 				alpha = INTER(0xff, 0, (musicstate-120)/60.0f);
 			}
 			DWORD col = (alpha<<24)|0xffff00;
-			gameinfodisplay.fsMusic.SetColor(col, col, col, col);
-			gameinfodisplay.fsMusic.Render(x, y);
+			gameinfodisplay.fsMusic.SetColor(col);
+			gameinfodisplay.fsMusic.Render(x, y, 0, HGETEXT_CENTER|HGETEXT_TOP);
 		}
 	}
 	if(info.asciifont)
 	{
+		char tbuff[M_STRMAX];
 #ifdef __DEBUG
-		info.asciifont->printf(
+		sprintf(tbuff, 
+			"%f %f",
+			hge->Timer_GetWorstFPS(35)/M_DEFAULT_RENDERSKIP,
+			hge->Timer_GetFPS()/M_DEFAULT_RENDERSKIP);
+		SpriteItemManager::FontPrintf(info.asciifont, 
 			400,
 			465,
 			0,
-			"%f %f",
-			hge->Timer_GetWorstFPS(35)/M_DEFAULT_RENDERSKIP,
-			hge->Timer_GetFPS()/M_DEFAULT_RENDERSKIP
+			tbuff
 			);
-		info.asciifont->printf(8, 465, 0, "%d %d", gametime, hge->System_GetState(HGE_FRAMECOUNTER));
-		info.asciifont->printf(540, 1, 0, "%f",	hge->Timer_GetTime());
+		sprintf(tbuff, "%d %d", gametime, hge->System_GetState(HGE_FRAMECOUNTER));
+		SpriteItemManager::FontPrintf(info.asciifont, 8, 465, 0, tbuff);
+		sprintf(tbuff, "%f",	hge->Timer_GetTime());
+		SpriteItemManager::FontPrintf(info.asciifont, 540, 1, 0, tbuff);
 #endif
 		if (((Process::mp.IsInGame() && Player::CheckAble()) || Process::mp.state == STATE_OVER) && info.asciifont)
 		{
@@ -479,7 +492,8 @@ void FrontDisplay::RenderPanel()
 				sprintf(strfpsbuffer, "%.2ffps", hge->Timer_GetFPS(35));
 			}
 			info.asciifont->Render(M_CLIENT_CENTER_X, M_CLIENT_BOTTOM-14, HGETEXT_CENTER, strfpsbuffer);
-			info.asciifont->printf(M_CLIENT_CENTER_X, M_CLIENT_TOP, HGETEXT_CENTER, "%02d:%02d", usingtime/3600, (usingtime/60)%60);
+			sprintf(strfpsbuffer, "%02d:%02d", usingtime/3600, (usingtime/60)%60);
+			SpriteItemManager::FontPrintf(info.asciifont, M_CLIENT_CENTER_X, M_CLIENT_TOP, HGETEXT_CENTER, strfpsbuffer);
 		}
 	}
 }
@@ -506,11 +520,11 @@ void FrontDisplay::RenderSpellName(BYTE playerindex)
 		}
 		float y = M_GAMESQUARE_TOP + 60;
 		gameinfodisplay.spellline->SetColor((alpha<<24)|0xffffff);
-		gameinfodisplay.spellline->Render(x, y);
+		SpriteItemManager::RenderSprite(gameinfodisplay.spellline, x, y);
 		DWORD ucol = (alpha<<24)|0xFF0000;
 		DWORD dcol = (alpha<<24)|0xFFFFFF;
 		gameinfodisplay.fsSpell[1-playerindex][spellclass-1].SetColor(ucol, ucol, dcol, dcol);
-		gameinfodisplay.fsSpell[1-playerindex][spellclass-1].Render(x-100, y, FONTSYS_DEFAULT_SHADOW, 0.85f, 0, HGETEXT_MIDDLE|HGETEXT_LEFT);
+		gameinfodisplay.fsSpell[1-playerindex][spellclass-1].Render(x-100, y, FONTSYS_DEFAULT_SHADOW);
 	}
 }
 
@@ -532,7 +546,7 @@ void FrontDisplay::RenderEnemyX()
 			{
 				info.enemyx->SetColor(0xffffffff);
 			}
-			info.enemyx->Render(bossx, M_CLIENT_BOTTOM);
+			SpriteItemManager::RenderSprite(info.enemyx, bossx, M_CLIENT_BOTTOM);
 		}
 	}
 /*
@@ -547,9 +561,7 @@ bool FrontDisplay::Init()
 {
 	Release();
 
-	info.normalfont = hge->Font_Load(BResource::res.resdata.widefontname, 20);
-	info.smallfont = hge->Font_Load(BResource::res.resdata.widefontname, 16);
-	info.tinyfont = hge->Font_Load(BResource::res.resdata.widefontname, 10);
+	info.normalfont = hge->Font_Load(BResource::bres.resdata.widefontname, 16);
 
 	int idx = 0;
 
@@ -659,10 +671,10 @@ bool FrontDisplay::Init()
 	{
 		for (int i=0; i<3; i++)
 		{
-			gameinfodisplay.fsSpell[j][i].SignUp("", info.smallfont);
+			gameinfodisplay.fsSpell[j][i].SignUp("");
 		}
 	}
-	gameinfodisplay.fsMusic.SignUp("", info.normalfont);
+	gameinfodisplay.fsMusic.SignUp("");
 
 	//ascii
 
@@ -751,16 +763,6 @@ void FrontDisplay::Release()
 		hge->Font_Free(info.normalfont);
 		info.normalfont = NULL;
 	}
-	if (info.smallfont)
-	{
-		hge->Font_Free(info.smallfont);
-		info.smallfont = NULL;
-	}
-	if (info.tinyfont)
-	{
-		hge->Font_Free(info.tinyfont);
-		info.tinyfont = NULL;
-	}
 	SpriteItemManager::FreeSprite(&info.cutin);
 	SpriteItemManager::FreeSprite(&info.plchat_1);
 	SpriteItemManager::FreeSprite(&info.plchat_2);
@@ -805,13 +807,4 @@ void FrontDisplay::Release()
 	{
 		SpriteItemManager::FreeSprite(&ascii.ascii[i]);
 	}
-
-	for (int j=0; j<M_PL_MATCHMAXPLAYER; j++)
-	{
-		for (int i=0; i<3; i++)
-		{
-			gameinfodisplay.fsSpell[j][i].SignOff();
-		}
-	}
-	gameinfodisplay.fsMusic.SignOff();
 }

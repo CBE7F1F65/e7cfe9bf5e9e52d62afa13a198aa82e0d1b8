@@ -46,26 +46,12 @@ bool EditorRes::Load()
 	}
 	Data::data.GetIni();
 	Export::clientAdjustWindow();
-	BResource::res.Fill();
-	BResource::res.LoadAllPackage();
+	BResource::bres.Fill();
+	BResource::bres.LoadAllPackage();
 	font = new hgeFont("EditorFont\\font.fnt");
-//	BResource::res.SetDataFile();
+//	BResource::bres.SetDataFile();
 
-	for(int i=0; i<TEXMAX; i++)
-	{
-		if(strlen(BResource::res.resdata.texfilename[i]))
-		{
-			tex[i] = hge->Texture_Load(BResource::res.resdata.texfilename[i]);
-			if(!tex[i])
-			{
-				if (!tex[TEX_WHITE])
-				{
-					return false;
-				}
-				tex[i] = tex[TEX_WHITE];
-			}
-		}
-	}
+	BResource::bres.LoadTexture();
 
 	bg = new hgeSprite(tex[TEX_WHITE], 0, 0, 1, 1);
 	bg->SetColor(0x60ffffff);
@@ -86,11 +72,11 @@ bool EditorRes::ReloadEffect(int ID)
 {
 	ReleaseEffect(ID);
 	char buffer[M_STRMAX];
-	if(strlen(BResource::res.resdata.effectsysfilename[ID]))
+	if(strlen(BResource::bres.resdata.effectsysfilename[ID]))
 	{
 		eff[ID] = new hgeEffectSystem;
-		strcpy(buffer, BResource::res.resdata.effectsysfoldername);
-		strcat(buffer, BResource::res.resdata.effectsysfilename[ID]);
+		strcpy(buffer, BResource::bres.resdata.effectsysfoldername);
+		strcat(buffer, BResource::bres.resdata.effectsysfilename[ID]);
 		texnum[ID] = Export::effLoad(buffer, eff[ID], tex);
 		if(texnum[ID] < 0)
 		{
@@ -160,14 +146,14 @@ char * EditorRes::GetFilename(int effi)
 
 char * EditorRes::GetFullFilename(int effi)
 {
-	strcpy(fullfilename, BResource::res.resdata.effectsysfoldername);
+	strcpy(fullfilename, BResource::bres.resdata.effectsysfoldername);
 	strcat(fullfilename, GetFilename(effi));
 	return fullfilename;
 }
 
 bool EditorRes::Save(int savei)
 {
-	if(!eff[savei] || texnum[savei] < 0 ||!tex[texnum[savei]])
+	if(!eff[savei] || texnum[savei] < 0 ||!tex[texnum[savei]].tex)
 	{
 		MessageBox(NULL, "Failed in Saving Effectsystem.", "Error", MB_OK);
 		return false;
@@ -205,7 +191,7 @@ void EditorRes::Release()
 
 	for(int i=0; i<TEXMAX; i++)
 	{
-		if(tex[i])
+		if(tex[i].tex)
 			hge->Texture_Free(tex[i]);
 		tex[i] = NULL;
 	}

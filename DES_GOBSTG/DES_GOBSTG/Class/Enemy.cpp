@@ -24,8 +24,6 @@ BYTE Enemy::nEnemyNow[M_PL_MATCHMAXPLAYER][ENEMY_NMAXSETMAX];
 #define _SCOREDISPLAYMAX		(ENEMYMAX*2)
 VectorList<ScoreDisplay> Enemy::scoredisplay[M_PL_MATCHMAXPLAYER];
 
-HTEXTURE * Enemy::tex = NULL;
-
 #define _ENEMYDELETE_LEFT_(X)	(M_GAMESQUARE_LEFT_(X)-M_GAMESQUARE_EDGE)
 #define _ENEMYDELETE_RIGHT_(X)	(M_GAMESQUARE_RIGHT_(X)+M_GAMESQUARE_EDGE)
 #define _ENEMYDELETE_TOP		(M_GAMESQUARE_TOP-M_GAMESQUARE_EDGE)
@@ -44,10 +42,9 @@ Enemy::~Enemy()
 	SpriteItemManager::FreeSprite(&sprite);
 }
 
-void Enemy::Init(HTEXTURE * _tex)
+void Enemy::Init()
 {
 	Release();
-	tex = _tex;
 	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
 	{
 		en[i].init(ENEMYMAX);
@@ -68,8 +65,8 @@ void Enemy::Release()
 
 int Enemy::Build(WORD eID, BYTE playerindex, float x, float y, int angle, float speed, BYTE type, float life, int infitimer)
 {
-	BYTE nmaxset = BResource::res.enemydata[type].nmaxset;
-	BYTE nmax = BResource::res.enemydata[type].nmax;
+	BYTE nmaxset = BResource::bres.enemydata[type].nmaxset;
+	BYTE nmax = BResource::bres.enemydata[type].nmax;
 	if (nmax && nEnemyNow[playerindex][nmaxset] > nmax)
 	{
 		return -1;
@@ -162,7 +159,7 @@ void Enemy::Action()
 				Enemy * pen = &(*(en[j]));
 				if (pen->exist)
 				{
-					BYTE nmaxset = BResource::res.enemydata[(*en[j]).type].nmaxset;
+					BYTE nmaxset = BResource::bres.enemydata[(*en[j]).type].nmaxset;
 					nEnemyNow[j][nmaxset]++;
 					DWORD _index = en[j].getIndex();
 					if (!binstop)
@@ -317,7 +314,7 @@ void Enemy::Render()
 	if (sprite)
 	{
 		sprite->SetColor(alpha<<24|diffuse);
-		sprite->RenderEx(x, y, ARC(headangle), hscale, vscale);
+		SpriteItemManager::RenderSpriteEx(sprite, x, y, ARC(headangle), hscale, vscale);
 	}
 }
 
@@ -397,7 +394,7 @@ void Enemy::valueSet(BYTE _playerindex, WORD _eID, float _x, float _y, int _angl
 void Enemy::ChangeType(BYTE _type)
 {
 	type = _type;
-	enemyData * _enemydata = &(BResource::res.enemydata[type]);
+	enemyData * _enemydata = &(BResource::bres.enemydata[type]);
 	faceindex = _enemydata->faceIndex;
 	if (!_enemydata->rightPreFrame && !_enemydata->leftPreFrame && !_enemydata->rightFrame && !_enemydata->leftFrame)
 	{
@@ -585,7 +582,7 @@ void Enemy::updateFrame(BYTE frameenum, int usetimer /* = -1*/)
 	{
 		return;
 	}
-	enemyData * pdata = &(BResource::res.enemydata[type]);
+	enemyData * pdata = &(BResource::bres.enemydata[type]);
 	frameoffset++;
 	BYTE tbyte;
 	switch (nowstate)
@@ -751,7 +748,7 @@ void Enemy::updateFrameAsMove()
 
 void Enemy::updateAction()
 {
-	enemyData * pdata = &(BResource::res.enemydata[type]);
+	enemyData * pdata = &(BResource::bres.enemydata[type]);
 	if(!actionflag)
 	{
 		updateFrameAsMove();
@@ -793,7 +790,7 @@ void Enemy::updateAction()
 
 void Enemy::initFrameIndex()
 {
-	enemyData * pdata = &(BResource::res.enemydata[type]);
+	enemyData * pdata = &(BResource::bres.enemydata[type]);
 	int tfi = 0;
 	frameindex[ENEMY_FRAME_STAND] = tfi;
 
@@ -855,7 +852,7 @@ void Enemy::initFrameIndex()
 BYTE Enemy::getFrameIndex(BYTE frameenum)
 {
 	flipx = false;
-	enemyData * pdata = &(BResource::res.enemydata[type]);
+	enemyData * pdata = &(BResource::bres.enemydata[type]);
 	if ((frameenum == ENEMY_FRAME_RIGHTPRE || frameenum == ENEMY_FRAME_RIGHT) && (!pdata->rightPreFrame) ||
 		(frameenum == ENEMY_FRAME_LEFTPRE || frameenum == ENEMY_FRAME_LEFT) && (!pdata->leftPreFrame))
 	{
@@ -873,7 +870,7 @@ void Enemy::setFrame(BYTE frameenum)
 
 void Enemy::setIndexFrame(BYTE index)
 {
-	enemyData * pdata = &(BResource::res.enemydata[type]);
+	enemyData * pdata = &(BResource::bres.enemydata[type]);
 	SpriteItemManager::ChangeSprite(pdata->siid+index, sprite);
 //	sprite->SetFlip(flipx, false);
 	SpriteItemManager::SetSpriteFlip(sprite, flipx);
@@ -881,8 +878,8 @@ void Enemy::setIndexFrame(BYTE index)
 
 void Enemy::GetCollisionRect(float * w, float * h)
 {
-	*w = BResource::res.enemydata[type].collision_w;
-	*h = BResource::res.enemydata[type].collision_h;
+	*w = BResource::bres.enemydata[type].collision_w;
+	*h = BResource::bres.enemydata[type].collision_h;
 }
 
 bool Enemy::CostLife(float power)
@@ -902,10 +899,10 @@ bool Enemy::CostLife(float power)
 
 bool Enemy::isInRect(float aimx, float aimy, float r, float w, float h, int nextstep/* =0 */)
 {
-	WORD infinmaxset = BResource::res.playerdata[Player::p[playerindex].nowID].infinmaxset;
+	WORD infinmaxset = BResource::bres.playerdata[Player::p[playerindex].nowID].infinmaxset;
 	if (infinmaxset)
 	{
-		BYTE nmaxset = BResource::res.enemydata[type].nmaxset;
+		BYTE nmaxset = BResource::bres.enemydata[type].nmaxset;
 		for (int i=0; i<4; i++)
 		{
 			infinmaxset>>(i*4);
@@ -983,7 +980,7 @@ void Enemy::DoShot()
 			}
 			if (it->isInRect(x, y, 0, tw, th))
 			{
-				if ( CostLife(it->power * BResource::res.enemydata[type].blastdamagerate) )
+				if ( CostLife(it->power * BResource::bres.enemydata[type].blastdamagerate) )
 				{
 					if (it->type & EVENTZONE_TYPE_NOSEND)
 					{
@@ -1078,7 +1075,7 @@ bool Enemy::DoActivate()
 	}
 	if (!checkActive() && Player::p[playerindex].bDrain)
 	{
-		float rori = (BResource::res.enemydata[type].collision_w + BResource::res.enemydata[type].collision_h) / 4;
+		float rori = (BResource::bres.enemydata[type].collision_w + BResource::bres.enemydata[type].collision_h) / 4;
 		if (CheckENAZ(playerindex, x, y, rori))
 		{
 			ForceActive();
@@ -1330,13 +1327,13 @@ void Enemy::action()
 			{
 				Player::p[playerindex].DoEnemyCollapse(x, y, type);
 			}
-			if (BResource::res.enemydata[type].spellpoint)
+			if (BResource::bres.enemydata[type].spellpoint)
 			{
 				int tscore = Player::p[playerindex].nSpellPoint;
 				ScoreDisplay _item;
 				if (tscore < PLAYER_NSPELLPOINTMAX)
 				{
-					itoa(tscore, _item.cScore, 10);
+					hge->Math_itoa(tscore, _item.cScore);
 				}
 				else
 				{
@@ -1409,15 +1406,15 @@ void Enemy::GetBlastInfo(BYTE * maxtime/* =NULL */, float * r/* =NULL */, float 
 {
 	if (maxtime)
 	{
-		*maxtime = BResource::res.enemydata[type].blastmaxtime;
+		*maxtime = BResource::bres.enemydata[type].blastmaxtime;
 	}
 	if (r)
 	{
-		*r = BResource::res.enemydata[type].blastr;
+		*r = BResource::bres.enemydata[type].blastr;
 	}
 	if (power)
 	{
-		*power = BResource::res.enemydata[type].blastpower;
+		*power = BResource::bres.enemydata[type].blastpower;
 	}
 }
 

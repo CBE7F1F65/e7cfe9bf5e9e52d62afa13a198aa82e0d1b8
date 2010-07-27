@@ -560,18 +560,18 @@ void CCustomDlg::SetDisplay()
 		{
 			if (k == 0)
 			{
-				SetDlgItemText(IDC_JOY_FIRE + i, itoa(joyKey[k][i], buffer, 10));
+				SetDlgItemText(IDC_JOY_FIRE + i, hge->Math_itoa(joyKey[k][i], buffer));
 			}
 			else
 			{
-				SetDlgItemText(IDC_JOY_FIRE_2 + i, itoa(joyKey[k][i], buffer, 10));
+				SetDlgItemText(IDC_JOY_FIRE_2 + i, hge->Math_itoa(joyKey[k][i], buffer));
 			}
 		}
 	}
 
-	itoa(musicvol, buffer, 10);
+	hge->Math_itoa(musicvol, buffer);
 	SetDlgItemText(IDC_MUSICVOL, buffer);
-	itoa(sevol, buffer, 10);
+	hge->Math_itoa(sevol, buffer);
 	SetDlgItemText(IDC_SEVOL, buffer);
 	SetDlgItemText(IDC_USERNAME, username);
 
@@ -608,10 +608,10 @@ void CCustomDlg::SetDisplay()
 	}
 
 	CheckDlgButton(IDC_TOPMOST, windowtopmost ? BST_CHECKED : BST_UNCHECKED);
-	SetDlgItemText(IDC_LEFTX, itoa(windowleftx, buffer, 10));
-	SetDlgItemText(IDC_TOPY, itoa(windowtopy, buffer, 10));
-	SetDlgItemText(IDC_WINDOWW, itoa(windoww, buffer, 10));
-	SetDlgItemText(IDC_WINDOWH, itoa(windowh, buffer, 10));
+	SetDlgItemText(IDC_LEFTX, hge->Math_itoa(windowleftx, buffer));
+	SetDlgItemText(IDC_TOPY, hge->Math_itoa(windowtopy, buffer));
+	SetDlgItemText(IDC_WINDOWW, hge->Math_itoa(windoww, buffer));
+	SetDlgItemText(IDC_WINDOWH, hge->Math_itoa(windowh, buffer));
 
 	CheckDlgButton(IDC_KEYCOMBINESLOWDRAIN, keycombineslowdrain[0] ? BST_CHECKED : BST_UNCHECKED);
 	CheckDlgButton(IDC_KEYCOMBINESLOWDRAIN2, keycombineslowdrain[1] ? BST_CHECKED : BST_UNCHECKED);

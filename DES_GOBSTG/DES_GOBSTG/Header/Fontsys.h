@@ -4,10 +4,7 @@
 #include "MainDependency.h"
 #include "Const.h"
 
-#define FONTSYSMAX			0x40
-
-#define FONTSYS_CHATUSE			FONTSYSMAX-2
-#define FONTSYS_SPELLNAMEUSE	FONTSYSMAX-1
+#define FONTSYS_DEFAULT_SHADOW	0.4f
 
 #define FONTSYS_TRANSCHAR		'|'
 #define FONTSYS_CONTROLCHAR		'E'
@@ -19,41 +16,31 @@
 #define FONTSYS_CHATTEXTWIDTH	300
 #define FONTSYS_CHATTEXTHEIGHT	80
 
-#define FONTSYS_DEFAULT_SHADOW	0.4f
-
 class Fontsys
 {
 public:
 	Fontsys();
 	~Fontsys();
 
-	static void Init(HD3DFONT font = NULL);
-	static void HeatUp();
-	static bool GfxRestore();
+	static void Init(HD3DFONT d3dfont);
+	static void HeatUp(bool rebuildfont=false);
+	static void DoHeatUpBuffer(const char* str, list<int> * charcodelist);
+	static void FocusChanged();
 	static void Release();
 
-	void SignUp(const char * text = NULL, HD3DFONT font=NULL);
-	bool SignOff(bool erase = true);
-	void ReleaseTargetAndSprite();
-	void SetColor(DWORD col, int i);
+	void SignUp(const char * text = NULL, float scale=1.0f);
 	void SetColor(DWORD col0, DWORD col1, DWORD col2, DWORD col3);
-	void Render(float x, float y, float shadow = FONTSYS_DEFAULT_SHADOW, float hscale = 1, float vscale = 0, BYTE alignflag=HGETEXT_CENTER|HGETEXT_MIDDLE);
+	void SetColor(DWORD col, int i=-1);
+	void Render(float x, float y, float shadow = 0, BYTE alignflag = HGETEXT_LEFT|HGETEXT_TOP);
 
-	static int strTranslate(char * dtext, const char * stext, int * maxchar);
+	int strTranslate(char * dtext, const char * stext);
 
 public:
 	char text[M_STRMAX];
-	HD3DFONT usingfont;
-//	hgeQuad quad;
-	hgeSprite * sprite;
-	DWORD col[4];
-	HTARGET tar;
-	int lines;
-	int maxcharinline;
-	bool signedup;
+	float fontscale;
 
-	static list<Fontsys *> fontsys;
-	static HD3DFONT font;
+	static HD3DFONT d3dfont;
+	static hgeFont * font;
 };
 
 #endif

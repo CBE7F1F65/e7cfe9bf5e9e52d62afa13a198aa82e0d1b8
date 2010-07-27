@@ -4,6 +4,7 @@ Signature=h5nc
 FileType=129
 
 [Font]
+FileName=Graphic/font.fnt
 FontName=MS Gothic
 
 [DataFile]

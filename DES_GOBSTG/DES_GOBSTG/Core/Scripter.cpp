@@ -227,9 +227,9 @@ bool Scripter::Resize()
 }
 
 #ifndef __NOTUSELUA
-bool Scripter::LoadAll_Lua(HTEXTURE * texset)
+bool Scripter::LoadAll_Lua()
 {
-	Export_Lua::InitHGE(hge, texset);
+	Export_Lua::InitHGE(hge);
 	Export_Lua::LuaRegistFunction();
 	Export_Lua::LuaRegistConst();
 	int iret = Export_Lua::ReadLuaFileTable();
@@ -254,7 +254,7 @@ bool Scripter::LoadAll_Lua(HTEXTURE * texset)
 }
 #endif
 
-bool Scripter::LoadAll(HTEXTURE * texset)
+bool Scripter::LoadAll()
 {
 	control.clear();
 	stage.clear();
@@ -274,7 +274,7 @@ bool Scripter::LoadAll(HTEXTURE * texset)
 	FillCustomConstDesc();
 
 #ifndef __NOTUSELUA
-	return LoadAll_Lua(texset);
+	return LoadAll_Lua();
 #endif
 /*
 	binoffset = 0;
@@ -322,13 +322,13 @@ bool Scripter::LoadAll(HTEXTURE * texset)
 
 		for (int i=0; i<M_SCRIPTFOLDERMAX; i++)
 		{
-			if (strlen(BResource::res.resdata.scriptfoldername[i]))
+			if (strlen(BResource::bres.resdata.scriptfoldername[i]))
 			{
-				SetCurrentDirectory(hge->Resource_MakePath(BResource::res.resdata.scriptfoldername[i]));
+				SetCurrentDirectory(hge->Resource_MakePath(BResource::bres.resdata.scriptfoldername[i]));
 				char enumfile[M_PATHMAX];
-				strcpy(enumfile, BResource::res.resdata.scriptfoldername[i]);
+				strcpy(enumfile, BResource::bres.resdata.scriptfoldername[i]);
 				strcat(enumfile, "*.");
-				strcat(enumfile, BResource::res.resdata.scriptextensionname7);
+				strcat(enumfile, BResource::bres.resdata.scriptextensionname7);
 
 				char * buffer;
 				buffer = hge->Resource_EnumFiles(enumfile);
@@ -565,7 +565,7 @@ addblock:
 						if(!binmode && file)
 						{
 							char tbuff[M_STRITOAMAX];
-							ltoa(ftell(file), tbuff, 16);
+							sprintf(tbuff, "%x", ftell(file));
 							HGELOG("Point to 0x%s.", tbuff);
 						}
 #endif
@@ -613,6 +613,12 @@ Token Scripter::GetToken()
 	ret.type = 0;
 	ret.value = 0;
 
+	int i = 0;
+	bool quoted = false;
+	bool bIsAddress = false;
+	int kti = 0;
+	bool bFound = false;
+
 	if(binmode)
 	{
 		goto exit;
@@ -624,8 +630,6 @@ Token Scripter::GetToken()
 		goto exit;
 	}
 
-	int i = 0;
-	bool quoted = false;
 	while(true)
 	{
 		if(!fread(&buffer[i], 1, 1, file))
@@ -784,9 +788,9 @@ Token Scripter::GetToken()
 		ret.value = 0;
 		for(int j=0; j<SCR_CUSTOMCONSTMAX; j++)
 		{
-			if(!strcmp(&buffer[1], BResource::res.customconstdata[j].name))
+			if(!strcmp(&buffer[1], BResource::bres.customconstdata[j].name))
 			{
-				ret.value = BResource::res.customconstdata[j].value;
+				ret.value = BResource::bres.customconstdata[j].value;
 				break;
 			}
 		}
@@ -796,9 +800,9 @@ Token Scripter::GetToken()
 	else if (!strncmp(buffer, "SI_", 3))
 	{
 		bool bIsSIItem = false;
-		for (int j=0; j<BResource::res.spritenumber; j++)
+		for (int j=0; j<BResource::bres.spritenumber; j++)
 		{
-			if (!strcmp(&buffer[3], &(BResource::res.spritedata[j].spritename[3])))
+			if (!strcmp(&buffer[3], &(BResource::bres.spritedata[j].spritename[3])))
 			{
 				ret.value = j;
 				bIsSIItem = true;
@@ -815,7 +819,6 @@ Token Scripter::GetToken()
 	ret.type |= SCR_TOKEN_KEYWORD;
 
 	//variable
-	bool bIsAddress = false;
 	if(buffer[0] == '[' && buffer[strlen(buffer)-1] == ']')
 	{
 		bIsAddress = true;
@@ -875,7 +878,6 @@ Token Scripter::GetToken()
 	}
 
 	//keyword
-	bool bFound = false;
 	//timefunc
 	if (!strncmp(buffer, SCRKT_STR_TIMEFUNC, sizeof(char)*SCRKT_SIZE_TIMEFUNC))
 	{
@@ -926,7 +928,6 @@ Token Scripter::GetToken()
 		bFound = true;
 	}
 	//keyword
-	int kti = 0;
 	if (!bFound)
 	{
 		for(; scrKeyTable[kti].code != SCR_CONST || strcmp(scrKeyTable[kti].word, SCR_CONST_STR); kti++)

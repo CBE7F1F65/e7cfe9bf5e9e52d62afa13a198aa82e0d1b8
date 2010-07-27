@@ -13,7 +13,6 @@ Process::Process()
 	ZeroMemory(&channelsyncinfo, sizeof(hgeChannelSyncInfo));
 	retvalue	= PGO;
 	errorcode	= PROC_ERROR_INIFILE;
-	ZeroMemory(tex, sizeof(HTEXTURE) * TEXMAX);
 
 	musicID = -1;
 	screenmode = 0;
@@ -87,13 +86,8 @@ void Process::Release()
 			sprendertar[i] = NULL;
 		}
 	}
-	for(int i=0;i<TEXMAX;i++)
-	{
-		if(tex[i])
-			hge->Texture_Free(tex[i]);
-		tex[i] = NULL;
-	}
-	if (texInit)
+	BResource::bres.FreeTexture();
+	if (texInit.tex)
 	{
 		hge->Texture_Free(texInit);
 		texInit = NULL;
@@ -105,7 +99,7 @@ void Process::ClearAll()
 {
 	SelectSystem::ClearAll();
 	Effectsys::ClearAll();
-	BGLayer::Init(tex);
+	BGLayer::Init();
 	Enemy::ClearAll();
 //	Ghost::ClearAll();
 	Target::ClearAll();
@@ -198,16 +192,16 @@ void Process::musicChange(int ID, bool force)
 	}
 	if(!hge->Channel_IsPlaying(channel) || musicID != ID || force)
 	{
-		if (musicID < 0 || strcmp(BResource::res.musdata[ID].musicfilename, BResource::res.musdata[musicID].musicfilename))
+		if (musicID < 0 || strcmp(BResource::bres.musdata[ID].musicfilename, BResource::bres.musdata[musicID].musicfilename))
 		{
 			if(stream)
 				hge->Stream_Free(stream);
-			stream = hge->Stream_Load(BResource::res.musdata[ID].musicfilename, 0, false);
+			stream = hge->Stream_Load(BResource::bres.musdata[ID].musicfilename, 0, false);
 		}
 		musicID = ID;
-		channelsyncinfo.startPos = BResource::res.musdata[musicID].startpos;
-		channelsyncinfo.introLength = BResource::res.musdata[musicID].introlength;
-		channelsyncinfo.allLength = BResource::res.musdata[musicID].alllength;
+		channelsyncinfo.startPos = BResource::bres.musdata[musicID].startpos;
+		channelsyncinfo.introLength = BResource::bres.musdata[musicID].introlength;
+		channelsyncinfo.allLength = BResource::bres.musdata[musicID].alllength;
 		if (channel)
 		{
 			musicSlide(0, bgmvol);
@@ -230,15 +224,15 @@ void Process::musicChange(int ID, bool force)
 
 void Process::SnapShot()
 {
-	SYSTEMTIME systime;
-	GetLocalTime(&systime);
+	WORD wYear, wMonth, wDay, wHour, wMinute, wSecond, wMilliseconds;
+	hge->Timer_GetSystemTime(&wYear, &wMonth, NULL, &wDay, &wHour, &wMinute, &wSecond, &wMilliseconds);
 	
 	char snapshotfilename[M_PATHMAX];
 	strcpy(snapshotfilename, "");
 	sprintf(snapshotfilename, "%s%s_%04d_%02d_%02d_%02d_%02d_%02d_%04d.%s",
-		BResource::res.resdata.snapshotfoldername,
+		BResource::bres.resdata.snapshotfoldername,
 		SNAPSHOT_PRIFIX,
-		systime.wYear, systime.wMonth, systime.wDay, systime.wHour, systime.wMinute, systime.wSecond, systime.wMilliseconds,
+		wYear, wMonth, wDay, wHour, wMinute, wSecond, wMilliseconds,
 		SNAPSHOT_EXTENSION);
 	hge->System_Snapshot(snapshotfilename);
 }
@@ -694,62 +688,4 @@ void Process::SetLastMatchChara(BYTE playerindex, WORD ID, WORD ID_sub_1, WORD I
 	lastmatchchara[playerindex][0] = ID;
 	lastmatchchara[playerindex][1] = ID_sub_1;
 	lastmatchchara[playerindex][2] = ID_sub_2;
-}
-
-int Process::InitKaillera(char * kgamename, int kplayer, int knplayers, int * seed)
-{
-	if (strcmp(kgamename, GAME_TITLE_STR))
-	{
-		return -1;
-	}
-
-	kailleraplayer = kplayer-1;
-	kailleranplayers = knplayers;
-	kailleraintexchange[0] = *seed;
-	int retlength = -1;
-	while (retlength != sizeof(int)*knplayers)
-	{
-		retlength = kailleraModifyPlayValues((void*)kailleraintexchange, sizeof(int));
-	}
-	*seed = kailleraintexchange[0];
-//
-	for (int i=0; i<M_KAILLERMAXPLAYER; i++)
-	{
-		kaillerabyteexchange[i] = 0;
-		kailleraintexchange[i] = 0;
-		kaillerawordexchange[i] = 0;
-	}
-
-	return 0;
-}
-
-void Process::ReleaseKaillera()
-{
-}
-
-void Process::UpdateKailleraInput()
-{
-
-	if (usingkaillera)
-	{
-		if (kailleraplayer < 2)
-		{
-			GameInput::SetKey(0, KSI_CAPTURE, false);
-			GameInput::SetKey(0, KSI_ESCAPE, false);
-			kaillerawordexchange[0] = GameInput::gameinput[0].input;
-		}
-		else
-		{
-			kaillerawordexchange[0] = 0;
-		}
-		int iret = -1;
-		while (iret != sizeof(WORD) * kailleranplayers)
-		{
-			iret = kailleraModifyPlayValues(kaillerawordexchange, sizeof(WORD));
-		}
-		for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
-		{
-			GameInput::gameinput[i].input = kaillerawordexchange[i];
-		}
-	}
 }

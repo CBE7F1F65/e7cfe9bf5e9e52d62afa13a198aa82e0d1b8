@@ -108,3 +108,5 @@ LConst_effid_sendex_21_out	=	89
 LConst_ShootCharge_EnemyDelay	=	32
 
 LConst_musicid_title	=	6
+
+LConst_StringTableID_LTable_PlayerWinLoseChat	=	1

@@ -7,7 +7,9 @@
 replayFrame DataPrinter::rpyframe[M_SAVEINPUTMAX];
 partInfo DataPrinter::partinfo[RPYPARTMAX];
 replayInfo DataPrinter::rpyinfo;
+#ifdef __WIN32
 string DataPrinter::str;
+#endif // __WIN32
 
 DataPrinter::DataPrinter()
 {
@@ -72,6 +74,7 @@ void DataPrinter::getHeader()
 
 }
 
+#ifdef __WIN32
 bool DataPrinter::WriteString(string * str, HANDLE hFile)
 {
 	if (hFile == INVALID_HANDLE_VALUE)
@@ -87,6 +90,7 @@ bool DataPrinter::WriteString(string * str, HANDLE hFile)
 	}
 	return false;
 }
+#endif // __WIN32
 
 bool DataPrinter::PrintScore()
 {	

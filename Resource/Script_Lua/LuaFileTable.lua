@@ -1,5 +1,6 @@
 luaFileTable	=	{
 									"Script_Lua/Const.lua",
+									"Script_Lua/String.lua",
 									"Script_Lua/HDSS/Control/*.lua",
 									"Script_Lua/HDSS/Event/*.lua",
 									"Script_Lua/HDSS/Edef/*.lua",

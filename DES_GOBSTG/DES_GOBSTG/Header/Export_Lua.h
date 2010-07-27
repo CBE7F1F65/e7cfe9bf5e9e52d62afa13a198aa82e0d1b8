@@ -23,7 +23,7 @@ public:
 	Export_Lua();
 	~Export_Lua();
 public:
-	static void InitHGE(HGE * hge = NULL, HTEXTURE * texset = NULL);
+	static void InitHGE(HGE * hge = NULL);
 	static void ReleaseHGE();
 
 	static void Release(LuaState * ls = NULL);
@@ -45,6 +45,9 @@ public:
 	static int ReadLuaFileTable(LuaState * ls = NULL);
 
 	static void ShowError(int errortype, const char * err);
+
+	static void HeatUp(list<int> * charcodelist, LuaState * ls=NULL);
+	static void HeatUp(list<int> * charcodelist, LuaState * ls, LuaObject * obj);
 
 	//lua
 
@@ -101,7 +104,6 @@ public:
 public:
 	static HGE * hge;
 	static LuaStateOwner state;
-	static HTEXTURE * texset;
 };
 
 #endif

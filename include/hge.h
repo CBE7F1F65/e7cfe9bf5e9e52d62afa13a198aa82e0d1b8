@@ -10,6 +10,8 @@
 #ifndef HGE_H
 #define HGE_H
 
+#include "hge_defines.h"
+
 /************************************************************************/
 /* This header is added by h5nc (h5nc@yahoo.com.cn)                     */
 /************************************************************************/
@@ -25,20 +27,30 @@
 #define ZLIB_USEPSW
 
 #include <math.h>
+#include <stdio.h>
+#include <stdarg.h>
+#include <stdlib.h>
+#include <string.h>
+
+#ifdef __WIN32
+#ifdef WIN32
+#ifdef _DEBUG
+#include "../mmgr/mmgr.h"
+#endif // _DEBUG
+#endif // WIN32
+#endif // __WIN32
+
+#ifdef __WIN32
 
 #include <windows.h>
-
-/************************************************************************/
-/* These lines is added by h5nc (h5nc@yahoo.com.cn)                     */
-/************************************************************************/
-// begin
 #define DIRECTINPUT_VERSION 0x0800
 
 #include <dinput.h>			//add by Thor/h5nc
 #include <d3d9.h>			//add by Thor/h5nc
 #include <d3dx9.h>			//add by Thor/h5nc
 #pragma comment(lib,"dinput8.lib")
-// end
+
+#endif
 
 #define HGE_VERSION 0x180
 
@@ -48,7 +60,15 @@
 #define EXPORT
 #endif
 
+#ifdef __WIN32
 #define CALL  __stdcall
+#else
+
+#ifdef __PSP
+#define CALL
+#endif // __PSP
+
+#endif // __WIN32
 
 #ifdef __BORLANDC__
  #define floorf (float)floor
@@ -60,10 +80,25 @@
  #define powf (float)pow
  #define fabsf (float)fabs
 
- #define min(x,y) ((x) < (y)) ? (x) : (y)
- #define max(x,y) ((x) > (y)) ? (x) : (y)
+#endif
+#ifndef min
+#define min(x,y) ((x) < (y)) ? (x) : (y)
+#endif
+#ifndef max
+#define max(x,y) ((x) > (y)) ? (x) : (y)
 #endif
 
+#ifndef ZeroMemory
+#define ZeroMemory(Destination,Length) memset((Destination),0,(Length))
+#endif
+
+#ifndef __WIN32
+typedef void *	LPDIRECTINPUT8;
+#endif
+
+#ifndef _MAX_PATH
+#define _MAX_PATH   260
+#endif
 
 /*
 ** Common data types
@@ -74,13 +109,62 @@ typedef unsigned short      WORD;
 typedef unsigned char       BYTE;
 #endif
 
-/************************************************************************/
-/* This define is added by h5nc (h5nc@yahoo.com.cn)                     */
-/************************************************************************/
 #ifndef QWORD
+#ifdef __WIN32
 typedef unsigned __int64	QWORD;
+#else
+
+#ifdef __PSP
+typedef u64	QWORD;
+#endif // __PSP
+
+#endif // __WIN32
 #endif
 
+#ifndef LONGLONG
+#ifdef __WIN32
+typedef __int64			LONGLONG;
+#else
+
+#ifdef __PSP
+typedef s64	LONGLONG;
+#endif // __PSP
+
+#endif // __WIN32
+typedef QWORD ULONGLONG;
+#endif
+
+#ifndef NULL
+#define NULL	(0)
+#endif
+
+#ifndef isspace
+#define isspace(X) ((X)==0x20 || (X)>=0x09&&(X)<=0x0D)
+#endif
+#ifndef iswspace
+#define iswspace	isspace
+#endif
+
+#ifndef isdigit
+#define isdigit(X) ((X)>='0' && (X)<='9')
+#endif
+#ifndef iswdigit
+#define iswdigit	isdigit
+#endif
+
+#ifndef islower
+#define islower(X) ((X)>='a' && (X)<='z')
+#endif
+#ifndef iswlower
+#define iswlower	islower
+#endif
+
+#ifndef isupper
+#define isupper(X) ((X)>='A' && (X)<='Z')
+#endif
+#ifndef iswupper
+#define iswupper	isupper
+#endif
 /*
 ** Common math constants
 */
@@ -115,12 +199,80 @@ typedef unsigned __int64	QWORD;
 /*
 ** HGE Handle types
 */
-typedef DWORD HTEXTURE;
+//typedef DWORD HTEXTURE;
 typedef DWORD HTARGET;
+typedef DWORD HSAMPLE;
 typedef DWORD HEFFECT;
 typedef DWORD HMUSIC;
 typedef DWORD HSTREAM;
 typedef DWORD HCHANNEL;
+
+typedef struct tagHgeTextureInfo
+{
+	DWORD * tex;
+	float texw;
+	float texh;
+}hgeTextureInfo;
+
+class HTEXTURE
+{
+public:
+	HTEXTURE()
+	{
+		_Init();
+	};
+	HTEXTURE(int _texindex, DWORD _tex)
+	{
+		_Init(_texindex, _tex);
+	};
+	HTEXTURE(DWORD _tex)
+	{
+		_Init(0, _tex);
+	};
+
+	HTEXTURE & operator = (DWORD _tex)
+	{
+		_Init(0, _tex);
+		return *this;
+	};
+	DWORD GetTexture(int ntexinfo, hgeTextureInfo * texinfo)
+	{
+		if (!tex && texinfo && texindex<ntexinfo)
+		{
+			if (texinfo[texindex].tex)
+			{
+				return *texinfo[texindex].tex;
+			}
+			return NULL;
+		}
+		return tex;
+	};
+	int GetTextureWidthByInfo(int ntexinfo, hgeTextureInfo * texinfo)
+	{
+		if (!texinfo || texindex>=ntexinfo)
+		{
+			return 1;
+		}
+		return texinfo[texindex].texw;
+	};
+	int GetTextureHeightByInfo(int ntexinfo, hgeTextureInfo * texinfo)
+	{
+		if (!texinfo || texindex>=ntexinfo)
+		{
+			return 1;
+		}
+		return texinfo[texindex].texh;
+	};
+private:
+	void _Init(int _texindex=0, DWORD _tex=NULL)
+	{
+		texindex=_texindex;
+		tex = _tex;
+	};
+public:
+	int texindex;
+	DWORD tex;
+};
 
 /************************************************************************/
 /* This define is added by Yuki                                         */
@@ -199,6 +351,8 @@ enum hgeFuncState
 	HGE_FOCUSGAINFUNC	= 0x0204,   // bool*()	focus gain function	(default: NULL)
 	HGE_GFXRESTOREFUNC	= 0x0205,   // bool*()	graphics restore function		(default: NULL)
 	HGE_EXITFUNC		= 0x0206,   // bool*()	exit function		(default: NULL)
+
+	HGE_LOADTEXTUREFUNC	= 0x0211,	// bool*()	load texture function	(default: NULL)
 	
 	HGEFUNCSTATE_FORCE_DWORD = 0x7FFFFFFF
 };
@@ -272,6 +426,7 @@ typedef bool (*hgeCallback)();
 /*
 ** HGE Primitive type constants
 */
+#define HGEPRIM_POINTS		1
 #define HGEPRIM_LINES		2
 #define HGEPRIM_TRIPLES		3
 #define HGEPRIM_QUADS		4
@@ -287,6 +442,21 @@ struct hgeVertex
 	DWORD			col;		// color
 	float			tx, ty;		// texture coordinates
 };
+
+#ifdef __PSP
+struct pspVertex
+{
+	unsigned int color;
+	float x,y,z;
+};
+
+struct pspVertexUV
+{
+	float u, v;
+	unsigned int color;
+	float x,y,z;
+};
+#endif // __PSP
 
 
 /*
@@ -548,14 +718,7 @@ public:
 	virtual	void		CALL	System_Log(const char *format, ...) = 0;
 	virtual bool		CALL	System_Launch(const char *url) = 0;
 	virtual void		CALL	System_Snapshot(const char *filename=0) = 0;
-
-	/************************************************************************/
-	/* These functions are added by h5nc (h5nc@yahoo.com.cn)                */
-	/************************************************************************/
-	// begin
-	virtual float			CALL	System_Transform3DPoint(hge3DPoint * pt, hge3DPoint *ptfar=NULL) = 0;
-	virtual float			CALL	System_Transform3DPoint(float &x, float &y, float &z, hge3DPoint *ptfar=NULL) = 0;
-	// end
+	virtual int			CALL	System_MessageBox(const char * text, const char * title, DWORD type) = 0;
 
 private:
 	virtual void		CALL	System_SetStateBool  (hgeBoolState   state, bool        value) = 0;
@@ -568,6 +731,7 @@ private:
 	virtual HWND		CALL	System_GetStateHwnd  (hgeHwndState   state) = 0;
 	virtual int			CALL	System_GetStateInt   (hgeIntState    state) = 0;
 	virtual const char*	CALL	System_GetStateString(hgeStringState state) = 0;
+
 public:
 	inline void					System_SetState(hgeBoolState   state, bool        value) { System_SetStateBool  (state, value); }
 	inline void					System_SetState(hgeFuncState   state, hgeCallback value) { System_SetStateFunc  (state, value); }
@@ -581,8 +745,32 @@ public:
 	inline const char*			System_GetState(hgeStringState state) { return System_GetStateString(state); }
 
 	/************************************************************************/
+	/* These functions are added by h5nc (h5nc@yahoo.com.cn)                */
+	/************************************************************************/
+	// begin
+	virtual float		CALL	Math_Transform3DPoint(hge3DPoint * pt, hge3DPoint *ptfar=NULL) = 0;
+	virtual float		CALL	Math_Transform3DPoint(float &x, float &y, float &z, hge3DPoint *ptfar=NULL) = 0;
+	// end
+	virtual char*		CALL	Math_itoa(int ival, char * buffer) = 0;
+	virtual int			CALL	Math_atoi(const char * buffer) = 0;
+	virtual char*		CALL	Math_ftoa(float fval, char * buffer) = 0;
+	virtual float		CALL	Math_atof(const char * buffer) = 0;
+	virtual LONGLONG	CALL	Math_atoll(const char * buffer) = 0;
+	virtual D3DXMATRIX*	CALL	Math_MatrixIdentity( D3DXMATRIX * pOut ) = 0;
+	virtual D3DXMATRIX*	CALL	Math_MatrixTranslation( D3DXMATRIX *pOut, float x, float y, float z ) = 0;
+	virtual D3DXMATRIX*	CALL	Math_MatrixRotationX( D3DXMATRIX *pOut, float angle ) = 0;
+	virtual D3DXMATRIX*	CALL	Math_MatrixRotationY( D3DXMATRIX *pOut, float angle ) = 0;
+	virtual D3DXMATRIX*	CALL	Math_MatrixRotationZ( D3DXMATRIX *pOut, float angle ) = 0;
+	virtual D3DXMATRIX*	CALL	Math_MatrixScaling( D3DXMATRIX *pOut, float sx, float sy, float sz ) = 0;
+	virtual D3DXMATRIX*	CALL	Math_MatrixMultiply( D3DXMATRIX *pOut, const D3DXMATRIX *pM1, const D3DXMATRIX *pM2 ) = 0;
+	virtual D3DXMATRIX*	CALL	Math_MatrixOrthoOffCenterLH(D3DXMATRIX *pOut, float l, float r, float b, float t, float zn, float zf) = 0;
+
+	/************************************************************************/
 	/* This function is modified by h5nc (h5nc@yahoo.com.cn)                */
 	/************************************************************************/
+	virtual void		CALL	Resource_DeleteFile(const char *filename) = 0;
+	virtual DWORD		CALL	Resource_FileSize(const char *filename, FILE * file=NULL) = 0;
+	virtual void		CALL	Resource_SetCurrentDirectory(const char *filename) = 0;
 	virtual BYTE*		CALL	Resource_Load(const char *filename, DWORD *size=0) = 0;
 	virtual void		CALL	Resource_Free(void *res) = 0;
 	/************************************************************************/
@@ -601,6 +789,8 @@ public:
 	virtual char*		CALL	Resource_MakePath(const char *filename) = 0;
 	virtual char*		CALL	Resource_EnumFiles(const char *wildcard=0) = 0;
 	virtual char*		CALL	Resource_EnumFolders(const char *wildcard=0) = 0;
+	virtual bool		CALL	Resource_AccessFile(const char *filename) = 0;
+	virtual bool		CALL	Resource_CreateDirectory(const char *filename) = 0;
 	/************************************************************************/
 	/* These functions are added by h5nc (h5nc@yahoo.com.cn)                */
 	/************************************************************************/
@@ -616,12 +806,12 @@ public:
 	virtual char*		CALL	Resource_GetPackFirstFileName(const char * packfilename) = 0;
 	// end
 
-	virtual	void		CALL	Ini_SetInt(const char *section, const char *name, int value) = 0;
-	virtual	int			CALL	Ini_GetInt(const char *section, const char *name, int def_val) = 0;
-	virtual	void		CALL	Ini_SetFloat(const char *section, const char *name, float value) = 0;
-	virtual	float		CALL	Ini_GetFloat(const char *section, const char *name, float def_val) = 0;
-	virtual	void		CALL	Ini_SetString(const char *section, const char *name, const char *value) = 0;
-	virtual	char*		CALL	Ini_GetString(const char *section, const char *name, const char *def_val) = 0;
+	virtual	void		CALL	Ini_SetInt(const char *section, const char *name, int value, char * inifilename=NULL) = 0;
+	virtual	int			CALL	Ini_GetInt(const char *section, const char *name, int def_val, char * inifilename=NULL) = 0;
+	virtual	void		CALL	Ini_SetFloat(const char *section, const char *name, float value, char * inifilename=NULL) = 0;
+	virtual	float		CALL	Ini_GetFloat(const char *section, const char *name, float def_val, char * inifilename=NULL) = 0;
+	virtual	void		CALL	Ini_SetString(const char *section, const char *name, const char *value, char * inifilename=NULL) = 0;
+	virtual	char*		CALL	Ini_GetString(const char *section, const char *name, const char *def_val, char * inifilename=NULL) = 0;
 
 	/************************************************************************/
 	/* This function is modified by h5nc (h5nc@yahoo.com.cn)                */
@@ -630,6 +820,8 @@ public:
 	virtual int			CALL	Random_Int(int min, int max, bool bSelf=false) = 0;
 	virtual float		CALL	Random_Float(float min, float max, bool bSelf=false) = 0;
 
+	virtual void		CALL	Timer_GetSystemTime(WORD *wYear=NULL, WORD *wMonth=NULL, WORD *wDayOfWeek=NULL, WORD *wDay=NULL, WORD *wHour=NULL, WORD *wMinute=NULL, WORD *wSecond=NULL, WORD *wMilliseconds=NULL) = 0;
+	virtual LONGLONG	CALL	Timer_GetFileTime() = 0;
 	virtual float		CALL	Timer_GetTime() = 0;
 	virtual float		CALL	Timer_GetDelta() = 0;
 	/************************************************************************/
@@ -641,7 +833,8 @@ public:
 	/************************************************************************/
 	// begin
 	virtual float		CALL	Timer_GetWorstFPS(int mod) = 0;
-	inline	LONGLONG			Timer_GetCurrentSystemTime(){LARGE_INTEGER Counter; QueryPerformanceCounter(&Counter); return Counter.QuadPart;}
+	virtual	LONGLONG	CALL	Timer_GetCurrentSystemTime() = 0;
+	virtual LONGLONG	CALL	Timer_GetPerformanceFrequency() = 0;
 	//end
 
 	virtual HEFFECT		CALL	Effect_Load(const char *filename, DWORD size=0) = 0;
@@ -724,6 +917,7 @@ public:
 	virtual bool		CALL	Gfx_BeginScene(HTARGET target=0) = 0;
 	virtual void		CALL	Gfx_EndScene() = 0;
 	virtual void		CALL	Gfx_Clear(DWORD color) = 0;
+	virtual void		CALL	Gfx_RenderPoint(float x, float y, float z=0.0f, DWORD color=0xFFFFFFFF) = 0;
 	virtual void		CALL	Gfx_RenderLine(float x1, float y1, float x2, float y2, DWORD color=0xFFFFFFFF, float z=0) = 0;
 	virtual void		CALL	Gfx_RenderTriple(const hgeTriple *triple) = 0;
 	virtual void		CALL	Gfx_RenderQuad(const hgeQuad *quad) = 0;
@@ -734,8 +928,10 @@ public:
 	/************************************************************************/
 	/* These functions are added by h5nc (h5nc@yahoo.com.cn)                */
 	/************************************************************************/
-	virtual void		CALL	Gfx_SetTransform(D3DTRANSFORMSTATETYPE State, CONST D3DMATRIX * pMatrix) = 0;
+	virtual void		CALL	Gfx_SetTransform(D3DTRANSFORMSTATETYPE State, const D3DMATRIX * pMatrix) = 0;
 	virtual D3DMATRIX	CALL	Gfx_GetTransform(D3DTRANSFORMSTATETYPE State) = 0;
+
+	virtual void	CALL	Gfx_SetTextureInfo(int nTexInfo, hgeTextureInfo * texInfo=NULL) = 0;
 
 	virtual HTARGET		CALL	Target_Create(int width, int height, bool zbuffer) = 0;
 	virtual void		CALL	Target_Free(HTARGET target) = 0;
@@ -744,10 +940,16 @@ public:
 	virtual HTEXTURE	CALL	Texture_Create(int width, int height) = 0;
 	virtual HTEXTURE	CALL	Texture_Load(const char *filename, DWORD size=0, bool bMipmap=false) = 0;
 	virtual void		CALL	Texture_Free(HTEXTURE tex) = 0;
+	virtual DWORD		CALL	Texture_GetTexture(HTEXTURE tex) = 0;
 	virtual int			CALL	Texture_GetWidth(HTEXTURE tex, bool bOriginal=false) = 0;
 	virtual int			CALL	Texture_GetHeight(HTEXTURE tex, bool bOriginal=false) = 0;
 	virtual DWORD*		CALL	Texture_Lock(HTEXTURE tex, bool bReadOnly=true, int left=0, int top=0, int width=0, int height=0) = 0;
 	virtual void		CALL	Texture_Unlock(HTEXTURE tex) = 0;
+	virtual bool		CALL	Texture_Save(HTEXTURE tex, const char * filename, DWORD filetype) = 0;
+
+	virtual bool		CALL	Texture_LoadTextureWhenNeeded(HTEXTURE * tex) = 0;
+	virtual void		CALL	Texture_SetTextureToLoad(HTEXTURE * tex) = 0;
+	virtual HTEXTURE *	CALL	Texture_GetTextureToLoad() = 0;
 
 	/************************************************************************/
 	/* These functions are added by Yuki                                    */

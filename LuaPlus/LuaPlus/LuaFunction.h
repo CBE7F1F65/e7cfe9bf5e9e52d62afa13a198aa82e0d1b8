@@ -16,8 +16,6 @@
 #include "LuaPlusInternal.h"
 #include "LuaAutoBlock.h"
 
-#include <Windows.h>
-
 namespace LuaPlus {
 
 #define LUAFUNCTION_PRECALL() \

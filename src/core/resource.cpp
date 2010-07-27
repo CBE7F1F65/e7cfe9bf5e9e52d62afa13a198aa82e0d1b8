@@ -17,6 +17,9 @@
 /************************************************************************/
 #include "ZLIB\zip.h"
 
+#ifdef __PSP
+#include <pspiofilemgr.h>
+#endif // __PSP
 
 /************************************************************************/
 /* This function is modified by h5nc (h5nc@yahoo.com.cn)                */
@@ -89,6 +92,8 @@ bool CALL HGE_Impl::Resource_AddFileInPack(const char * filename, int password, 
 	zipCloseFileInZip(zip);
 	zipClose(zip, NULL);
 
+	Resource_RemovePack(filename);
+
 	return true;
 }
 
@@ -128,19 +133,16 @@ bool CALL HGE_Impl::Resource_CreatePack(const char * filename, int password, hge
 		}
 		zipCloseFileInZip(zip);
 
-		vai = va_arg(ap, hgeMemoryFile *);
+		vai = (hgeMemoryFile *)va_arg(ap, hgeMemoryFile *);
 	}
 
 	zipClose(zip, NULL);
 
 	va_end(ap);
 
-	if (Resource_AttachPack(filename, password))
-	{
-		Resource_RemovePack(filename);
-		return true;
-	}
-	return false;
+	bool bret = Resource_AttachPack(filename, password);
+	Resource_RemovePack(filename);
+	return bret;
 }
 // end
 
@@ -237,6 +239,61 @@ char * CALL HGE_Impl::Resource_GetPackFirstFileName(const char * packfilename)
 }
 // end
 
+void CALL HGE_Impl::Resource_DeleteFile(const char *filename)
+{
+#ifdef __WIN32
+	DeleteFile(Resource_MakePath(filename));
+#else
+
+#ifdef __PSP
+	sceIoRemove(Resource_MakePath(filename));
+#endif // __PSP
+
+#endif // __WIN32
+}
+
+DWORD CALL HGE_Impl::Resource_FileSize(const char *filename, FILE * file)
+{
+	if (!filename)
+	{
+		return 0;
+	}
+	bool toclose = false;
+	DWORD nowseek = 0;
+	if (!file)
+	{
+		file = fopen(Resource_MakePath(filename), "rb");
+		toclose = true;
+	}
+
+	if (!file)
+	{
+		return 0;
+	}
+	nowseek = ftell(file);
+	fseek(file, 0, SEEK_END);
+	DWORD size = ftell(file);
+	fseek(file, nowseek, SEEK_SET);
+	if (toclose)
+	{
+		fclose(file);
+	}
+	return size;
+}
+
+void CALL HGE_Impl::Resource_SetCurrentDirectory(const char *filename)
+{
+#ifdef __WIN32
+	SetCurrentDirectory(Resource_MakePath(filename));
+#else
+
+#ifdef __PSP
+//	sceIoChdir(Resource_MakePath(filename));
+#endif // __PSP
+
+#endif // __WIN32
+}
+
 /************************************************************************/
 /* This function is modified by h5nc (h5nc@yahoo.com.cn)                */
 /************************************************************************/
@@ -251,7 +308,11 @@ BYTE * CALL HGE_Impl::Resource_Load(const char *filename, DWORD *size)
 	unz_file_info file_info;
 	int done, i;
 	BYTE * ptr;
+#ifdef __WIN32
 	HANDLE hF;
+#else
+	FILE * hF;
+#endif
 
 	if(size)
 		*size = 0;
@@ -275,6 +336,7 @@ BYTE * CALL HGE_Impl::Resource_Load(const char *filename, DWORD *size)
 			for(i=0; szZipName[i]; i++)	{ if(szZipName[i]=='/') szZipName[i]='\\'; }
 			if(!strcmp(szName,szZipName))
 			{
+				System_Log("%d %d", Resource_GetPSW(resItem->password), resItem->password);
 				if(unzOpenCurrentFilePassword(zip, Resource_GetPSW(resItem->password)/* ? resItem->password : 0*/) != UNZ_OK)
 				{
 					unzClose(zip);
@@ -317,33 +379,57 @@ BYTE * CALL HGE_Impl::Resource_Load(const char *filename, DWORD *size)
 
 	// Load from file
 _fromfile:
-
+#ifdef __WIN32
 	hF = CreateFile(Resource_MakePath(filename), GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL | FILE_FLAG_RANDOM_ACCESS, NULL);
-	if(hF == INVALID_HANDLE_VALUE)
+	if (hF == INVALID_HANDLE_VALUE)
+#else
+	hF = fopen(Resource_MakePath(filename), "rb");
+	if (!hF)
+#endif
 	{
 		sprintf(szName, res_err, filename);
 		_PostError(szName);
 		return 0;
 	}
+#ifdef __WIN32
 	file_info.uncompressed_size = GetFileSize(hF, NULL);
+#else
+	file_info.uncompressed_size = Resource_FileSize(filename, hF);
+#endif
 	ptr = (BYTE *)malloc(file_info.uncompressed_size);
 	if(!ptr)
 	{
+#ifdef __WIN32
 		CloseHandle(hF);
+#else
+		fclose(hF);
+#endif
 		sprintf(szName, res_err, filename);
 		_PostError(szName);
 		return 0;
 	}
-	if(ReadFile(hF, ptr, file_info.uncompressed_size, &file_info.uncompressed_size, NULL ) == 0)
+#ifdef __WIN32
+	if (ReadFile(hF, ptr, file_info.uncompressed_size, &file_info.uncompressed_size, NULL ) == 0)
+#else
+	if (fread(ptr, file_info.uncompressed_size, 1, hF) == 0)
+#endif
 	{
+#ifdef __WIN32
 		CloseHandle(hF);
+#else
+		fclose(hF);
+#endif
 		free(ptr);
 		sprintf(szName, res_err, filename);
 		_PostError(szName);
 		return 0;
 	}
-	
+
+#ifdef __WIN32
 	CloseHandle(hF);
+#else
+	fclose(hF);
+#endif
 	if(size) *size=file_info.uncompressed_size;
 	return ptr;
 }
@@ -408,10 +494,15 @@ char* CALL HGE_Impl::Resource_MakePath(const char *filename)
 	int i;
 
 	if(!filename)
-		strcpy(szTmpFilename, szAppPath);
-	else if(filename[0]=='\\' || filename[0]=='/' || filename[1]==':')
+		strcpy(szTmpFilename, szResourcePath);
+	else if(filename[0]=='\\' || filename[0]=='/' || filename[1]==':'
+#ifndef __WIN32
+		|| strlen(filename) >= strlen(szResourcePath) && !strncmp(filename, szResourcePath, strlen(szResourcePath))
+#endif // __WIN32
+		)
+	{
 		strcpy(szTmpFilename, filename);
-	
+	}
 	else
 	{
 		char szTmp[256];
@@ -443,6 +534,7 @@ char* CALL HGE_Impl::Resource_MakePath(const char *filename)
 
 char* CALL HGE_Impl::Resource_EnumFiles(const char *wildcard)
 {
+#ifdef __WIN32
 	if(wildcard)
 	{
 		if(hSearch) { FindClose(hSearch); hSearch=0; }
@@ -461,10 +553,13 @@ char* CALL HGE_Impl::Resource_EnumFiles(const char *wildcard)
 			if(!(SearchData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)) return SearchData.cFileName;
 		}
 	}
+#endif
+	return NULL;
 }
 
 char* CALL HGE_Impl::Resource_EnumFolders(const char *wildcard)
 {
+#ifdef __WIN32
 	if(wildcard)
 	{
 		if(hSearch) { FindClose(hSearch); hSearch=0; }
@@ -487,4 +582,39 @@ char* CALL HGE_Impl::Resource_EnumFolders(const char *wildcard)
 					return SearchData.cFileName;
 		}
 	}
+#endif
+	return NULL;
+}
+
+bool CALL HGE_Impl::Resource_AccessFile(const char *filename)
+{
+#ifdef __WIN32
+	if (_access(Resource_MakePath(filename), 00) == -1)
+	{
+		return false;
+	}
+#else
+
+	FILE * file = fopen(Resource_MakePath(filename), "rb");
+	if (!file)
+	{
+		return false;
+	}
+	fclose(file);
+
+#endif // __WIN32
+	return true;
+}
+
+bool CALL HGE_Impl::Resource_CreateDirectory(const char *filename)
+{
+#ifdef __WIN32
+	return CreateDirectory(Resource_MakePath(filename), NULL);
+#else
+
+#ifdef __PSP
+	sceIoMkdir(Resource_MakePath(filename), 0777);
+#endif // __PSP
+
+#endif // __WIN32
 }

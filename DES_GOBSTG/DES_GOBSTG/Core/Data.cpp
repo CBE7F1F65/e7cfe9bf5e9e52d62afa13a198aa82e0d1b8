@@ -83,7 +83,7 @@ char * Data::translateSection(DWORD sec)
 	{
 		char buffer[M_STRITOAMAX];
 		strcat(transbufs, "_");
-		strcat(transbufs, itoa((sec & ~DATASBINMASK_NUM), buffer, 10));
+		strcat(transbufs, hge->Math_itoa((sec & ~DATASBINMASK_NUM), buffer));
 	}
 	return transbufs;
 }
@@ -103,7 +103,7 @@ char * Data::translateName(DWORD name)
 	{
 		char buffer[M_STRITOAMAX];
 		strcat(transbufn, "_");
-		strcat(transbufn, itoa((name & ~DATASBINMASK_NUM), buffer, 10));
+		strcat(transbufn, hge->Math_itoa((name & ~DATASBINMASK_NUM), buffer));
 	}
 	return transbufn;
 }
@@ -195,7 +195,7 @@ char * Data::getEnemyName(int type)
 	{
 		return NULL;
 	}
-	return BResource::res.enemydata[type].name;
+	return BResource::bres.enemydata[type].name;
 }
 
 char * Data::getEnemyEName(int type)
@@ -204,7 +204,7 @@ char * Data::getEnemyEName(int type)
 	{
 		return NULL;
 	}
-	return BResource::res.enemydata[type].ename;
+	return BResource::bres.enemydata[type].ename;
 }
 
 char * Data::getPlayerName(int type)
@@ -213,7 +213,7 @@ char * Data::getPlayerName(int type)
 	{
 		return NULL;
 	}
-	return BResource::res.playerdata[type].name;
+	return BResource::bres.playerdata[type].name;
 }
 
 char * Data::getPlayerEName(int type)
@@ -222,7 +222,7 @@ char * Data::getPlayerEName(int type)
 	{
 		return NULL;
 	}
-	return BResource::res.playerdata[type].ename;
+	return BResource::bres.playerdata[type].ename;
 }
 
 void Data::MoveDown(DWORD sec, BYTE i)
@@ -283,7 +283,7 @@ BYTE * Data::CreateMemHeader(BYTE type)
 	strcat(buffer, "]\r\n");
 	strcat(buffer, translateName(nLinkType(DATAN_GAMEVERSION)));
 	strcat(buffer, "=");
-	strcat(buffer, itoa(GAME_VERSION, tbuff, 10));
+	strcat(buffer, hge->Math_itoa(GAME_VERSION, tbuff));
 	strcat(buffer, "\r\n");
 	strcat(buffer, translateName(nLinkType(DATAN_SIGNATURE)));
 	strcat(buffer, "=");
@@ -291,7 +291,7 @@ BYTE * Data::CreateMemHeader(BYTE type)
 	strcat(buffer, "\r\n");
 	strcat(buffer, translateName(nLinkType(DATAN_FILETYPE)));
 	strcat(buffer, "=");
-	strcat(buffer, itoa(type, tbuff, 10));
+	strcat(buffer, hge->Math_itoa(type, tbuff));
 	strcat(buffer, "\r\n");
 
 	memcpy(memheader, buffer, strlen(buffer));
@@ -396,14 +396,11 @@ bool Data::Init(BYTE type)
 		return true;
 	}
 
-	SYSTEMTIME systime;
-	FILETIME filetime;
-
 	getFile(type);
 	if(!nowfilename)
 		return false;
 
-	DeleteFile(nowfilename);
+	hge->Resource_DeleteFile(nowfilename);
 
 	if(type == DATA_BINFILE)
 		bin.clear();
@@ -481,12 +478,11 @@ bool Data::Init(BYTE type)
 
 		hge->Resource_CreatePack(nowfilename, password, &memfile, NULL);
 
-		GetLocalTime(&systime);
-		SystemTimeToFileTime(&systime, &filetime);
+		LONGLONG tnowtime = hge->Timer_GetFileTime();
 		iWrite(type, sLinkType(DATAS_HEADER), nLinkType(DATAN_GAMEVERSION), GAME_VERSION);
 		sWrite(type, sLinkType(DATAS_HEADER), nLinkType(DATAN_SIGNATURE), GAME_SIGNATURE);
 		iWrite(type, sLinkType(DATAS_HEADER), nLinkType(DATAN_FILETYPE), type);
-		lWrite(DATA_BINFILE, sLinkType(DATAS_TOTAL), nLinkType(DATAN_FIRSTRUNTIME), (((LONGLONG)filetime.dwHighDateTime)<<32)|filetime.dwLowDateTime);
+		lWrite(DATA_BINFILE, sLinkType(DATAS_TOTAL), nLinkType(DATAN_FIRSTRUNTIME), tnowtime);
 	}
 #ifdef __DEBUG
 	HGELOG("Succeeded in rebuilding Data File %s.", nowfilename);
@@ -514,7 +510,7 @@ bool Data::SetFile(const char * _filename, BYTE type)
 		}
 		hge->Resource_Free(content);
 	}
-	if(_access(nowfilename, 00) == -1 ||
+	if(!hge->Resource_AccessFile(nowfilename) ||
 		!CheckHeader(type))
 	{
 		if(type == DATA_BINFILE || (type & DATA_MEMORYHEADER))
@@ -901,9 +897,13 @@ bool Data::iWrite(BYTE type, DWORD section, DWORD name, int value)
 		}
 		else
 		{
+			hge->Ini_SetInt(translateSection(section), translateName(name), value, nowfilename);
+			return true;
+/*
 			sprintf(buf, "%d", value);
 			if(WritePrivateProfileString(translateSection(section), translateName(name), buf, nowfilename))
-				return true;
+				return true;*/
+
 		}
 	}
 	return false;
@@ -919,10 +919,13 @@ int Data::iRead(BYTE type, DWORD section, DWORD name, int def_val)
 		}
 		else
 		{
+			return hge->Ini_GetInt(translateSection(section), translateName(name), def_val, nowfilename);
+/*
 			if(GetPrivateProfileString(translateSection(section), translateName(name), "", buf, sizeof(buf), nowfilename))
 			{
 				return atoi(buf);
-			}
+			}*/
+
 		}
 	}
 	return def_val;
@@ -939,9 +942,14 @@ bool Data::lWrite(BYTE type, DWORD section, DWORD name, LONGLONG value)
 		}
 		else
 		{
+			sprintf(buf, "%d", value);
+			hge->Ini_SetString(translateSection(section), translateName(name), buf, nowfilename);
+			return true;
+/*
 			_i64toa(value, buf, 10);
 			if(WritePrivateProfileString(translateSection(section), translateName(name), buf, nowfilename))
-				return true;
+				return true;*/
+
 		}
 	}
 	return false;
@@ -957,10 +965,23 @@ LONGLONG Data::lRead(BYTE type, DWORD section, DWORD name, LONGLONG def_val)
 		}
 		else
 		{
+			strcpy(buf, hge->Ini_GetString(translateSection(section), translateName(name), "", nowfilename));
+			if (!strlen(buf))
+			{
+				return def_val;
+			}
+			else
+			{
+				LONGLONG value;
+				sscanf(buf, "%d", &value);
+				return value;
+			}
+/*
 			if(GetPrivateProfileString(translateSection(section), translateName(name), "", buf, sizeof(buf), nowfilename))
 			{
 				return _atoi64(buf);
-			}
+			}*/
+
 		}
 	}
 	return def_val;
@@ -977,9 +998,13 @@ bool Data::fWrite(BYTE type, DWORD section, DWORD name, float value)
 		}
 		else
 		{
+			hge->Ini_SetFloat(translateSection(section), translateName(name), value, nowfilename);
+			return true;
+/*
 			sprintf(buf, "%f", value);
 			if(WritePrivateProfileString(translateSection(section), translateName(name), buf, nowfilename))
-				return true;
+				return true;*/
+
 		}
 	}
 	return false;
@@ -995,10 +1020,13 @@ float Data::fRead(BYTE type, DWORD section, DWORD name, float def_val)
 		}
 		else
 		{
+			return hge->Ini_GetFloat(translateSection(section), translateName(name), def_val, nowfilename);
+/*
 			if(GetPrivateProfileString(translateSection(section), translateName(name), "", buf, sizeof(buf), nowfilename))
 			{
 				return float(atof(buf));
-			}
+			}*/
+
 		}
 	}
 	return def_val;
@@ -1015,8 +1043,12 @@ bool Data::sWrite(BYTE type, DWORD section, DWORD name, const char * value)
 		}
 		else
 		{
+			hge->Ini_SetString(translateSection(section), translateName(name), value, nowfilename);
+			return true;
+/*
 			if(WritePrivateProfileString(translateSection(section), translateName(name), value, nowfilename))
-				return true;
+				return true;*/
+
 		}
 	}
 	return false;
@@ -1032,7 +1064,8 @@ char * Data::sRead(BYTE type, DWORD section, DWORD name, const char * def_val)
 		}
 		else
 		{
-			GetPrivateProfileString(translateSection(section), translateName(name), def_val, buf, sizeof(buf), nowfilename);
+			strcpy(buf, hge->Ini_GetString(translateSection(section), translateName(name), def_val, nowfilename));
+//			GetPrivateProfileString(translateSection(section), translateName(name), def_val, buf, sizeof(buf), nowfilename);
 		}
 	}
 	else
@@ -1045,7 +1078,7 @@ bool Data::SetEffectSystemResourceName(int effi, const char * filename)
 {
 	if(effi < 0 || effi >= EFFECTSYSTYPEMAX)
 		return false;
-	strcpy(BResource::res.resdata.effectsysfilename[effi], filename);
+	strcpy(BResource::bres.resdata.effectsysfilename[effi], filename);
 	FILE * file = checkTableFile(DATA_EFFECTTABLEDEFINE);
 	if (file == NULL)
 	{
@@ -1066,9 +1099,9 @@ bool Data::SetEffectSystemResourceName(int effi, const char * filename)
 	fprintf(file, "%s\t%s\r\n", comment[0], comment[1]);
 	for (int i=0; i<EFFECTSYSTYPEMAX; i++)
 	{
-		if (strlen(BResource::res.resdata.effectsysfilename[i]))
+		if (strlen(BResource::bres.resdata.effectsysfilename[i]))
 		{
-			fprintf(file, "%d\t%s\r\n", i, BResource::res.resdata.effectsysfilename[i]);
+			fprintf(file, "%d\t%s\r\n", i, BResource::bres.resdata.effectsysfilename[i]);
 		}
 	}
 	fclose(file);
@@ -1092,11 +1125,11 @@ bool Data::GetEffectSystemResourceName(int effi, char * filename)
 {
 	if(!filename || effi < 0 || effi >= EFFECTSYSTYPEMAX)
 		return false;
-	if (!strlen(BResource::res.resdata.effectsysfilename[effi]))
+	if (!strlen(BResource::bres.resdata.effectsysfilename[effi]))
 	{
 		return false;
 	}
-	strcpy(filename, BResource::res.resdata.effectsysfilename[effi]);
+	strcpy(filename, BResource::bres.resdata.effectsysfilename[effi]);
 	/*
 	DWORD sec = sLinkType(RESDATAS_EFFECTSYS);
 	DWORD name = nLinkNum(nLinkType(RESDATAN_TYPE), effi+1);
@@ -1178,12 +1211,15 @@ int Data::nTryStageTime(int stage, BYTE difflv)
 LONGLONG Data::getTotalRunTime()
 {
 	LONGLONG firstruntime = lRead(DATA_BINFILE, sLinkType(DATAS_TOTAL), nLinkType(DATAN_FIRSTRUNTIME), 0);
+	LONGLONG tlnowtime;
+	tlnowtime = hge->Timer_GetFileTime();
+/*
 	FILETIME nowfiletime;
 	SYSTEMTIME nowsystemtime;
-	LONGLONG tlnowtime;
 	GetLocalTime(&nowsystemtime);
 	SystemTimeToFileTime(&nowsystemtime, &nowfiletime);
 	tlnowtime = (((LONGLONG)nowfiletime.dwHighDateTime)<<32) | nowfiletime.dwLowDateTime;
+*/
 
 	if (!firstruntime)
 	{

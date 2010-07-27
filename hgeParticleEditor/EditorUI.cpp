@@ -34,21 +34,21 @@ void EditorUI::SetupEB(bool updateList)
 		strcpy(eres.iteminfo[UIITEM_EB_NLIFETIME].info, "nLifeTime");
 		eres.iteminfo[UIITEM_EB_NLIFETIME_VALUE].state = UIITEM_STATE_NORMAL;
 		eres.iteminfo[UIITEM_EB_NLIFETIME_VALUE].inputtype = UIINPUTTYPE_INT;
-		strcpy(eres.iteminfo[UIITEM_EB_NLIFETIME_VALUE].info, itoa(eres.eff[ebnum]->ebi.nLifeTime, buffer, 10));
+		strcpy(eres.iteminfo[UIITEM_EB_NLIFETIME_VALUE].info, hge->Math_itoa(eres.eff[ebnum]->ebi.nLifeTime, buffer));
 
 		eres.iteminfo[UIITEM_EB_NREPEATDELAY].state = UIITEM_STATE_NORMAL;
 		eres.iteminfo[UIITEM_EB_NREPEATDELAY].inputtype = UIINPUTTYPE_INT;
 		strcpy(eres.iteminfo[UIITEM_EB_NREPEATDELAY].info, "nRpDelay");
 		eres.iteminfo[UIITEM_EB_NREPEATDELAY_VALUE].state = UIITEM_STATE_NORMAL;
 		eres.iteminfo[UIITEM_EB_NREPEATDELAY_VALUE].inputtype = UIINPUTTYPE_INT;
-		strcpy(eres.iteminfo[UIITEM_EB_NREPEATDELAY_VALUE].info, itoa(eres.eff[ebnum]->ebi.nRepeatDelay, buffer, 10));
+		strcpy(eres.iteminfo[UIITEM_EB_NREPEATDELAY_VALUE].info, hge->Math_itoa(eres.eff[ebnum]->ebi.nRepeatDelay, buffer));
 
 		eres.iteminfo[UIITEM_EB_TEX].state = UIITEM_STATE_NORMAL;
 		eres.iteminfo[UIITEM_EB_TEX].inputtype = UIINPUTTYPE_INT;
 		strcpy(eres.iteminfo[UIITEM_EB_TEX].info, "Texure");
 		eres.iteminfo[UIITEM_EB_TEX_VALUE].state = UIITEM_STATE_NORMAL;
 		eres.iteminfo[UIITEM_EB_TEX_VALUE].inputtype = UIINPUTTYPE_INT;
-		strcpy(eres.iteminfo[UIITEM_EB_TEX_VALUE].info, itoa(eres.texnum[ebnum], buffer, 10));
+		strcpy(eres.iteminfo[UIITEM_EB_TEX_VALUE].info, hge->Math_itoa(eres.texnum[ebnum], buffer));
 
 		if(updateList)
 		{
@@ -108,28 +108,28 @@ void EditorUI::SetupEE(bool updateList)
 		strcpy(eres.iteminfo[UIITEM_EE_NSTARTTIME].info, "nStartTime");
 		eres.iteminfo[UIITEM_EE_NSTARTTIME_VALUE].state = UIITEM_STATE_NORMAL;
 		eres.iteminfo[UIITEM_EE_NSTARTTIME_VALUE].inputtype = UIINPUTTYPE_INT;
-		strcpy(eres.iteminfo[UIITEM_EE_NSTARTTIME_VALUE].info, itoa(emitter->eei.nStartTime, buffer, 10));
+		strcpy(eres.iteminfo[UIITEM_EE_NSTARTTIME_VALUE].info, hge->Math_itoa(emitter->eei.nStartTime, buffer));
 
 		eres.iteminfo[UIITEM_EE_NENDTIME].state = UIITEM_STATE_NORMAL;
 		eres.iteminfo[UIITEM_EE_NENDTIME].inputtype = UIINPUTTYPE_INT;
 		strcpy(eres.iteminfo[UIITEM_EE_NENDTIME].info, "nEndTime");
 		eres.iteminfo[UIITEM_EE_NENDTIME_VALUE].state = UIITEM_STATE_NORMAL;
 		eres.iteminfo[UIITEM_EE_NENDTIME_VALUE].inputtype = UIINPUTTYPE_INT;
-		strcpy(eres.iteminfo[UIITEM_EE_NENDTIME_VALUE].info, itoa(emitter->eei.nEndTime, buffer, 10));
+		strcpy(eres.iteminfo[UIITEM_EE_NENDTIME_VALUE].info, hge->Math_itoa(emitter->eei.nEndTime, buffer));
 
 		eres.iteminfo[UIITEM_EE_NLIFETIMEMIN].state = UIITEM_STATE_NORMAL;
 		eres.iteminfo[UIITEM_EE_NLIFETIMEMIN].inputtype = UIINPUTTYPE_INT;
 		strcpy(eres.iteminfo[UIITEM_EE_NLIFETIMEMIN].info, "nLifeMin");
 		eres.iteminfo[UIITEM_EE_NLIFETIMEMIN_VALUE].state = UIITEM_STATE_NORMAL;
 		eres.iteminfo[UIITEM_EE_NLIFETIMEMIN_VALUE].inputtype = UIINPUTTYPE_INT;
-		strcpy(eres.iteminfo[UIITEM_EE_NLIFETIMEMIN_VALUE].info, itoa(emitter->eei.nLfieTimeMin, buffer, 10));
+		strcpy(eres.iteminfo[UIITEM_EE_NLIFETIMEMIN_VALUE].info, hge->Math_itoa(emitter->eei.nLfieTimeMin, buffer));
 
 		eres.iteminfo[UIITEM_EE_NLIFETIMEMAX].state = UIITEM_STATE_NORMAL;
 		eres.iteminfo[UIITEM_EE_NLIFETIMEMAX].inputtype = UIINPUTTYPE_INT;
 		strcpy(eres.iteminfo[UIITEM_EE_NLIFETIMEMAX].info, "nLifeMax");
 		eres.iteminfo[UIITEM_EE_NLIFETIMEMAX_VALUE].state = UIITEM_STATE_NORMAL;
 		eres.iteminfo[UIITEM_EE_NLIFETIMEMAX_VALUE].inputtype = UIINPUTTYPE_INT;
-		strcpy(eres.iteminfo[UIITEM_EE_NLIFETIMEMAX_VALUE].info, itoa(emitter->eei.nLifeTimeMax, buffer, 10));
+		strcpy(eres.iteminfo[UIITEM_EE_NLIFETIMEMAX_VALUE].info, hge->Math_itoa(emitter->eei.nLifeTimeMax, buffer));
 
 
 		eres.iteminfo[UIITEM_EE_FEMITNUM].state = UIITEM_STATE_NORMAL;
@@ -250,21 +250,21 @@ void EditorUI::SetupEE(bool updateList)
 		strcpy(eres.iteminfo[UIITEM_EE_BLEND].info, "Blend");
 		eres.iteminfo[UIITEM_EE_BLEND_VALUE].state = UIITEM_STATE_NORMAL;
 		eres.iteminfo[UIITEM_EE_BLEND_VALUE].inputtype = UIINPUTTYPE_INT;
-		strcpy(eres.iteminfo[UIITEM_EE_BLEND_VALUE].info, itoa(emitter->eei.blend, buffer, 10));
+		strcpy(eres.iteminfo[UIITEM_EE_BLEND_VALUE].info, hge->Math_itoa(emitter->eei.blend, buffer));
 		
 		eres.iteminfo[UIITEM_EE_BTRACE].state = UIITEM_STATE_NORMAL;
 		eres.iteminfo[UIITEM_EE_BTRACE].inputtype = UIINPUTTYPE_INT;
 		strcpy(eres.iteminfo[UIITEM_EE_BTRACE].info, "bTrace");
 		eres.iteminfo[UIITEM_EE_BTRACE_VALUE].state = UIITEM_STATE_NORMAL;
 		eres.iteminfo[UIITEM_EE_BTRACE_VALUE].inputtype = UIINPUTTYPE_INT;
-		strcpy(eres.iteminfo[UIITEM_EE_BTRACE_VALUE].info, itoa(emitter->eei.bTrace, buffer, 10));
+		strcpy(eres.iteminfo[UIITEM_EE_BTRACE_VALUE].info, hge->Math_itoa(emitter->eei.bTrace, buffer));
 		
 		eres.iteminfo[UIITEM_EE_BADJUSTDIRECTION].state = UIITEM_STATE_NORMAL;
 		eres.iteminfo[UIITEM_EE_BADJUSTDIRECTION].inputtype = UIINPUTTYPE_INT;
 		strcpy(eres.iteminfo[UIITEM_EE_BADJUSTDIRECTION].info, "bAdjustDir");
 		eres.iteminfo[UIITEM_EE_BADJUSTDIRECTION_VALUE].state = UIITEM_STATE_NORMAL;
 		eres.iteminfo[UIITEM_EE_BADJUSTDIRECTION_VALUE].inputtype = UIINPUTTYPE_INT;
-		strcpy(eres.iteminfo[UIITEM_EE_BADJUSTDIRECTION_VALUE].info, itoa(emitter->eei.bAdjustDirection, buffer, 10));
+		strcpy(eres.iteminfo[UIITEM_EE_BADJUSTDIRECTION_VALUE].info, hge->Math_itoa(emitter->eei.bAdjustDirection, buffer));
 
 		if(updateList)
 		{
@@ -310,21 +310,21 @@ void EditorUI::SetupEA()
 		strcpy(eres.iteminfo[UIITEM_EA_NAFFECTORSTARTTIME].info, "nStartTime");
 		eres.iteminfo[UIITEM_EA_NAFFECTORSTARTTIME_VALUE].state = UIITEM_STATE_NORMAL;
 		eres.iteminfo[UIITEM_EA_NAFFECTORSTARTTIME_VALUE].inputtype = UIINPUTTYPE_INT;
-		strcpy(eres.iteminfo[UIITEM_EA_NAFFECTORSTARTTIME_VALUE].info, itoa(affector->eai.nAffectorStartTime, buffer, 10));
+		strcpy(eres.iteminfo[UIITEM_EA_NAFFECTORSTARTTIME_VALUE].info, hge->Math_itoa(affector->eai.nAffectorStartTime, buffer));
 
 		eres.iteminfo[UIITEM_EA_NAFFECTORENDTIME].state = UIITEM_STATE_NORMAL;
 		eres.iteminfo[UIITEM_EA_NAFFECTORENDTIME].inputtype = UIINPUTTYPE_INT;
 		strcpy(eres.iteminfo[UIITEM_EA_NAFFECTORENDTIME].info, "nEndTime");
 		eres.iteminfo[UIITEM_EA_NAFFECTORENDTIME_VALUE].state = UIITEM_STATE_NORMAL;
 		eres.iteminfo[UIITEM_EA_NAFFECTORENDTIME_VALUE].inputtype = UIINPUTTYPE_INT;
-		strcpy(eres.iteminfo[UIITEM_EA_NAFFECTORENDTIME_VALUE].info, itoa(affector->eai.nAffectorEndTime, buffer, 10));
+		strcpy(eres.iteminfo[UIITEM_EA_NAFFECTORENDTIME_VALUE].info, hge->Math_itoa(affector->eai.nAffectorEndTime, buffer));
 
 		eres.iteminfo[UIITEM_EA_NRANDOMPICKINTERVAL].state = UIITEM_STATE_NORMAL;
 		eres.iteminfo[UIITEM_EA_NRANDOMPICKINTERVAL].inputtype = UIINPUTTYPE_INT;
 		strcpy(eres.iteminfo[UIITEM_EA_NRANDOMPICKINTERVAL].info, "nPickInter");
 		eres.iteminfo[UIITEM_EA_NRANDOMPICKINTERVAL_VALUE].state = UIITEM_STATE_NORMAL;
 		eres.iteminfo[UIITEM_EA_NRANDOMPICKINTERVAL_VALUE].inputtype = UIINPUTTYPE_INT;
-		strcpy(eres.iteminfo[UIITEM_EA_NRANDOMPICKINTERVAL_VALUE].info, itoa(affector->eai.nRandomPickInterval, buffer, 10));
+		strcpy(eres.iteminfo[UIITEM_EA_NRANDOMPICKINTERVAL_VALUE].info, hge->Math_itoa(affector->eai.nRandomPickInterval, buffer));
 
 
 		eres.iteminfo[UIITEM_EA_FSTARTVALUEMIN].state = UIITEM_STATE_NORMAL;
@@ -500,21 +500,21 @@ void EditorUI::SetupEA()
 		strcpy(eres.iteminfo[UIITEM_EA_BUSESTARTVALUE].info, "bUseStart");
 		eres.iteminfo[UIITEM_EA_BUSESTARTVALUE_VALUE].state = UIITEM_STATE_NORMAL;
 		eres.iteminfo[UIITEM_EA_BUSESTARTVALUE_VALUE].inputtype = UIINPUTTYPE_INT;
-		strcpy(eres.iteminfo[UIITEM_EA_BUSESTARTVALUE_VALUE].info, itoa(affector->eai.bUseStartValue, buffer, 10));
+		strcpy(eres.iteminfo[UIITEM_EA_BUSESTARTVALUE_VALUE].info, hge->Math_itoa(affector->eai.bUseStartValue, buffer));
 
 		eres.iteminfo[UIITEM_EA_BUSEENDVALUE].state = UIITEM_STATE_NORMAL;
 		eres.iteminfo[UIITEM_EA_BUSEENDVALUE].inputtype = UIINPUTTYPE_INT;
 		strcpy(eres.iteminfo[UIITEM_EA_BUSEENDVALUE].info, "bUseEnd");
 		eres.iteminfo[UIITEM_EA_BUSEENDVALUE_VALUE].state = UIITEM_STATE_NORMAL;
 		eres.iteminfo[UIITEM_EA_BUSEENDVALUE_VALUE].inputtype = UIINPUTTYPE_INT;
-		strcpy(eres.iteminfo[UIITEM_EA_BUSEENDVALUE_VALUE].info, itoa(affector->eai.bUseEndValue, buffer, 10));
+		strcpy(eres.iteminfo[UIITEM_EA_BUSEENDVALUE_VALUE].info, hge->Math_itoa(affector->eai.bUseEndValue, buffer));
 		
 		eres.iteminfo[UIITEM_EA_TYPE].state = UIITEM_STATE_NORMAL;
 		eres.iteminfo[UIITEM_EA_TYPE].inputtype = UIINPUTTYPE_INT;
 		strcpy(eres.iteminfo[UIITEM_EA_TYPE].info, "Type");
 		eres.iteminfo[UIITEM_EA_TYPE_VALUE].state = UIITEM_STATE_NORMAL;
 		eres.iteminfo[UIITEM_EA_TYPE_VALUE].inputtype = UIINPUTTYPE_INT;
-		strcpy(eres.iteminfo[UIITEM_EA_TYPE_VALUE].info, itoa(affector->eai.type, buffer, 10));
+		strcpy(eres.iteminfo[UIITEM_EA_TYPE_VALUE].info, hge->Math_itoa(affector->eai.type, buffer));
 	}
 	else
 	{
@@ -855,7 +855,7 @@ void EditorUI::Update()
 		int i;
 		for(i=eres.bgtex-1; i>=0; i--)
 		{
-			if(eres.tex[i])
+			if(eres.tex[i].tex)
 			{
 				bFound = true;
 				break;
@@ -865,7 +865,7 @@ void EditorUI::Update()
 		{
 			for(i=TEXMAX-1; i>eres.bgtex; i--)
 			{
-				if(eres.tex[i])
+				if(eres.tex[i].tex)
 				{
 					bFound = true;
 					break;
@@ -1041,9 +1041,9 @@ void EditorUI::Update()
 		if(emitter)
 		{
 			strcpy(title, "Emitter_");
-			strcat(title, itoa(ebnum, buff, 10));
+			strcat(title, hge->Math_itoa(ebnum, buff));
 			strcat(title, "_");
-			strcat(title, itoa(emitter->ID, buff, 10));
+			strcat(title, hge->Math_itoa(emitter->ID, buff));
 		}
 		else
 		{
@@ -1055,11 +1055,11 @@ void EditorUI::Update()
 		{
 			strcpy(title, eres.GetAffectorName(affector->eai.type));
 			strcat(title, "_");
-			strcat(title, itoa(ebnum, buff, 10));
+			strcat(title, hge->Math_itoa(ebnum, buff));
 			strcat(title, "_");
-			strcat(title, itoa(emitter->ID, buff, 10));
+			strcat(title, hge->Math_itoa(emitter->ID, buff));
 			strcat(title, "_");
-			strcat(title, itoa(affector->ID, buff, 10));
+			strcat(title, hge->Math_itoa(affector->ID, buff));
 		}
 		else
 		{
@@ -1396,10 +1396,10 @@ bool EditorUI::Delete()
 		strcpy(buffer, "Delete ");
 		strcat(buffer, eres.GetFullFilename(ebnum));
 		strcat(buffer, " ?");
-		if(MessageBox(NULL, buffer, "", MB_OKCANCEL) == IDOK)
+		if(hge->System_MessageBox(buffer, "", MB_OKCANCEL) == IDOK)
 		{
 			Data::data.SetEffectSystemResourceName(ebnum, "");
-			DeleteFile(hge->Resource_MakePath(eres.fullfilename));
+			hge->Resource_DeleteFile(hge->Resource_MakePath(eres.fullfilename));
 			delete eres.eff[ebnum];
 			eres.eff[ebnum] = NULL;
 			eres.texnum[ebnum] = -1;
@@ -1420,7 +1420,7 @@ bool EditorUI::Delete()
 			strcat(buffer, " ? (");
 			strcat(buffer, eres.GetFullFilename(ebnum));
 			strcat(buffer, ")");
-			if(MessageBox(NULL, buffer, "", MB_OKCANCEL) == IDOK)
+			if(hge->System_MessageBox(buffer, "", MB_OKCANCEL) == IDOK)
 			{
 				int delID = emitter->ID;
 
@@ -1459,7 +1459,7 @@ bool EditorUI::Delete()
 			strcat(buffer, " ? (");
 			strcat(buffer, eres.GetFullFilename(ebnum));
 			strcat(buffer, ")");
-			if(MessageBox(NULL, buffer, "", MB_OKCANCEL) == IDOK)
+			if(hge->System_MessageBox(buffer, "", MB_OKCANCEL) == IDOK)
 			{
 				int delID = affector->ID;
 
@@ -1606,7 +1606,7 @@ bool EditorUI::ChangeBGTex(int texnum)
 		int i;
 		for(i=eres.bgtex+1; i<TEXMAX; i++)
 		{
-			if(eres.tex[i])
+			if(eres.tex[i].tex)
 			{
 				bFound = true;
 				break;
@@ -1616,7 +1616,7 @@ bool EditorUI::ChangeBGTex(int texnum)
 		{
 			for(i=0; i<eres.bgtex; i++)
 			{
-				if(eres.tex[i])
+				if(eres.tex[i].tex)
 				{
 					bFound = true;
 					break;
@@ -1627,7 +1627,7 @@ bool EditorUI::ChangeBGTex(int texnum)
 			texnum = i;
 	}
 
-	if(eres.tex[texnum])
+	if(eres.tex[texnum].tex)
 	{
 		eres.bg->SetTexture(eres.tex[texnum]);
 		eres.bg->SetTextureRect(0, 0, hge->Texture_GetWidth(eres.tex[texnum]), hge->Texture_GetHeight(eres.tex[texnum]));
@@ -1686,7 +1686,7 @@ bool EditorUI::EditEB()
 	{
 		if(ival >= 0 && ival < TEXMAX)
 		{
-			if(eres.tex[ival])
+			if(eres.tex[ival].tex)
 			{
 				eres.eff[ebnum]->ebi.tex = eres.tex[ival];
 				eres.texnum[ebnum] = ival;
@@ -2152,13 +2152,16 @@ void EditorUI::Render()
 	{
 		if(eres.iteminfo[i].state)
 		{
-			eres.font->printfb(eres.iteminfo[i].x, eres.iteminfo[i].y, eres.iteminfo[i].w, eres.iteminfo[i].h, HGETEXT_MIDDLE | HGETEXT_CENTER, "%s", eres.iteminfo[i].info);
+			eres.font->printfb(eres.iteminfo[i].x, eres.iteminfo[i].y, eres.iteminfo[i].w, eres.iteminfo[i].h, HGETEXT_MIDDLE | HGETEXT_CENTER, eres.iteminfo[i].info);
 		}
 	}
 
 	if(eres.font)
 	{
-		eres.font->printf(M_ACTIVECLIENT_RIGHT, M_ACTIVECLIENT_BOTTOM - UIITEM_FONT, HGETEXT_RIGHT, "%f", hge->Timer_GetFPS(35));
-		eres.font->printf(M_ACTIVECLIENT_LEFT, M_ACTIVECLIENT_BOTTOM - UIITEM_FONT, HGETEXT_LEFT, "(%d, %d, %d) nLives=%d (%d)", (int)mx, (int)my, (int)zpos, nlives, nobj);
+		char tbuff[M_STRMAX];
+		sprintf(tbuff, "%f", hge->Timer_GetFPS(35));
+		eres.font->printf(M_ACTIVECLIENT_RIGHT, M_ACTIVECLIENT_BOTTOM - UIITEM_FONT, HGETEXT_RIGHT, tbuff);
+		sprintf(tbuff, "(%d, %d, %d) nLives=%d (%d)", (int)mx, (int)my, (int)zpos, nlives, nobj);
+		eres.font->printf(M_ACTIVECLIENT_LEFT, M_ACTIVECLIENT_BOTTOM - UIITEM_FONT, HGETEXT_LEFT, tbuff);
 	}
 }

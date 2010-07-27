@@ -1,10 +1,10 @@
 #ifndef __NOTUSELUA
 #ifndef __NOTUSEHDSS
 
-#include "../Header/../Header/Export_Lua_HDSS.h"
-#include "../Header/../Header/LuaConstDefine.h"
-#include "../Header/../Header/keytable.h"
-#include "../Header/../Header/BResource.h"
+#include "../Header/Export_Lua_HDSS.h"
+#include "../Header/LuaConstDefine.h"
+#include "../Header/keytable.h"
+#include "../Header/BResource.h"
 
 LuaFunction<bool> * Export_Lua_HDSS::controlExecute;
 LuaFunction<bool> * Export_Lua_HDSS::stageExecute;
@@ -54,11 +54,11 @@ bool Export_Lua_HDSS::_LuaRegistConst(LuaObject * obj)
 	}
 
 	//SI
-	for (i=0; i<BResource::res.spritenumber; i++)
+	for (i=0; i<BResource::bres.spritenumber; i++)
 	{
-		if (strlen(BResource::res.spritedata[i].spritename))
+		if (strlen(BResource::bres.spritedata[i].spritename))
 		{
-			obj->SetInteger(BResource::res.spritedata[i].spritename, i);
+			obj->SetInteger(BResource::bres.spritedata[i].spritename, i);
 		}
 	}
 	return true;

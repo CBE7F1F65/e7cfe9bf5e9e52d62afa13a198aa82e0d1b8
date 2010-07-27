@@ -1,8 +1,8 @@
 #ifndef __NOTUSELUA
 
-#include "../Header/../Header/Export_Lua.h"
-#include "../Header/../Header/LuaConstDefine.h"
-#include "../Header/../Header/BResource.h"
+#include "../Header/Export_Lua.h"
+#include "../Header/LuaConstDefine.h"
+#include "../Header/BResource.h"
 
 bool Export_Lua::_LuaRegistConst(LuaObject * obj)
 {
@@ -173,9 +173,9 @@ bool Export_Lua::_LuaRegistCustomConst(LuaObject * obj)
 	// CustomConst
 	for (int i=0; i<SCR_CUSTOMCONSTMAX; i++)
 	{
-		if (strlen(BResource::res.customconstdata[i].name))
+		if (strlen(BResource::bres.customconstdata[i].name))
 		{
-			obj->SetInteger(BResource::res.customconstdata[i].name, BResource::res.customconstdata[i].value);
+			obj->SetInteger(BResource::bres.customconstdata[i].name, BResource::bres.customconstdata[i].value);
 		}
 	}
 

@@ -15,7 +15,7 @@ public:
 	InfoQuad();
 	~InfoQuad();
 
-	static void Init(HTEXTURE tex);
+	static void Init();
 
 	void valueSet(
 		BYTE type, float x, float y,
@@ -30,8 +30,6 @@ public:
 	float	x;
 	float	y;
 	BYTE	type;
-
-	static HTEXTURE tex;
 };
 
 #endif

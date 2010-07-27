@@ -1,7 +1,6 @@
 #ifndef _VECTORLIST_H
 #define _VECTORLIST_H
-
-#include <windows.h>
+#include <string.h>
 
 #define VECLST_INDEXERROR	0xffffffff
 
@@ -17,7 +16,7 @@ public:
 		valid = NULL;
 		init(0);
 	}
-	VectorList(DWORD count)
+	VectorList(unsigned long count)
 	{
 		item = NULL;
 		valid = NULL;
@@ -46,7 +45,7 @@ public:
 	{
 		init(capacity);
 	}
-	void init(DWORD count)
+	void init(unsigned long count)
 	{
 		clear();
 		capacity = count;
@@ -57,7 +56,7 @@ public:
 		}
 		if (valid)
 		{
-			ZeroMemory(valid, sizeof(bool) * capacity);
+			memset(valid, 0, sizeof(bool) * capacity);
 		}
 		ibegin = 0;
 		iend = 0;
@@ -146,14 +145,14 @@ public:
 		memcpy(push_front(), &_item, sizeof(_Ty));
 		return &item[ibegin];
 	}
-	DWORD pop()
+	unsigned long pop()
 	{
 		if (!size || !valid[index])
 		{
 			return index;
 		}
 
-		DWORD _index = index;
+		unsigned long _index = index;
 		valid[index] = false;
 		item[index].~_Ty();
 		if (index == ibegin)
@@ -193,9 +192,9 @@ public:
 		index = _index;
 		return index;
 	}
-	DWORD pop(DWORD _index)
+	unsigned long pop(unsigned long _index)
 	{
-		DWORD _tindex = index;
+		unsigned long _tindex = index;
 		if (toIndex(_index) == VECLST_INDEXERROR)
 		{
 			return VECLST_INDEXERROR;
@@ -204,25 +203,25 @@ public:
 		index = _tindex;
 		return _index;
 	}
-	DWORD pop_back()
+	unsigned long pop_back()
 	{
 		return pop(iend);
 	}
-	DWORD pop_front()
+	unsigned long pop_front()
 	{
 		return pop(ibegin);
 	}
-	DWORD toBegin()
+	unsigned long toBegin()
 	{
 		index = ibegin;
 		return index;
 	}
-	DWORD toEnd()
+	unsigned long toEnd()
 	{
 		index = iend;
 		return index;
 	}
-	DWORD toNext()
+	unsigned long toNext()
 	{
 		if (index < capacity - 1)
 		{
@@ -234,12 +233,12 @@ public:
 		}
 		return index;
 	}
-	DWORD toNext(bool sizeonly)
+	unsigned long toNext(bool sizeonly)
 	{
 		if (sizeonly)
 		{
-			DWORD _zero = zero;
-			DWORD _capacity = capacity;
+			unsigned long _zero = zero;
+			unsigned long _capacity = capacity;
 			zero = ibegin;
 			capacity = iend + 1;
 			toNext();
@@ -253,7 +252,7 @@ public:
 		}
 		return toNext();
 	}
-	DWORD toPrev()
+	unsigned long toPrev()
 	{
 		if (index > zero)
 		{
@@ -265,12 +264,12 @@ public:
 		}
 		return index;
 	}
-	DWORD toPrev(bool sizeonly)
+	unsigned long toPrev(bool sizeonly)
 	{
 		if (sizeonly)
 		{
-			DWORD _zero = zero;
-			DWORD _capacity = capacity;
+			unsigned long _zero = zero;
+			unsigned long _capacity = capacity;
 			zero = ibegin;
 			capacity = iend + 1;
 			toPrev();
@@ -284,7 +283,7 @@ public:
 		}
 		return toPrev();
 	}
-	DWORD toIndex(DWORD _index)
+	unsigned long toIndex(unsigned long _index)
 	{
 		if (_index >= capacity)
 		{
@@ -356,23 +355,23 @@ public:
 		}
 		return false;
 	}
-	DWORD getIndex()
+	unsigned long getIndex()
 	{
 		return index;
 	}
-	DWORD getBeginIndex()
+	unsigned long getBeginIndex()
 	{
 		return ibegin;
 	}
-	DWORD getEndIndex()
+	unsigned long getEndIndex()
 	{
 		return iend;
 	}
-	DWORD getSize()
+	unsigned long getSize()
 	{
 		return size;
 	}
-	DWORD getCapacity()
+	unsigned long getCapacity()
 	{
 		return capacity;
 	}
@@ -391,7 +390,7 @@ public:
 	{
 		return item[index];
 	}
-	_Ty & operator[](DWORD _index) const
+	_Ty & operator[](unsigned long _index) const
 	{
 		if (_index < capacity)
 		{
@@ -406,13 +405,13 @@ public:
 public:
 	_Ty * item;
 	bool * valid;
-	DWORD index;
-	DWORD pushedindex;
-	DWORD ibegin;
-	DWORD zero;
-	DWORD iend;
-	DWORD size;
-	DWORD capacity;
+	unsigned long index;
+	unsigned long pushedindex;
+	unsigned long ibegin;
+	unsigned long zero;
+	unsigned long iend;
+	unsigned long size;
+	unsigned long capacity;
 };
 
 #endif

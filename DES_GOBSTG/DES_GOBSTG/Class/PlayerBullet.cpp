@@ -17,7 +17,6 @@ int PlayerBullet::locked[M_PL_MATCHMAXPLAYER];
 int PlayerBullet::activelocked[M_PL_MATCHMAXPLAYER];
 
 hgeSprite * PlayerBullet::sprite[PLAYERSHOOTTYPEMAX][PLAYERBULLETTYPE];
-HTEXTURE * PlayerBullet::tex;
 
 DWORD PlayerBullet::bcol0;
 DWORD PlayerBullet::bcol1;
@@ -56,9 +55,8 @@ PlayerBullet::~PlayerBullet()
 {
 }
 
-void PlayerBullet::Init(HTEXTURE * _tex)
+void PlayerBullet::Init()
 {
-	tex = _tex;
 	Release();
 
 	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
@@ -72,7 +70,7 @@ void PlayerBullet::Init(HTEXTURE * _tex)
 	{
 		for (int j=0; j<PLAYERBULLETTYPE; j++)
 		{
-			sprite[i][j] = SpriteItemManager::CreateSprite(BResource::res.playershootdata[i].siid+(((BResource::res.playershootdata[i].flag)&PBFLAG_ANIMATION)?j:0));
+			sprite[i][j] = SpriteItemManager::CreateSprite(BResource::bres.playershootdata[i].siid+(((BResource::bres.playershootdata[i].flag)&PBFLAG_ANIMATION)?j:0));
 		}
 	}
 }
@@ -159,7 +157,7 @@ void PlayerBullet::BuildShoot(BYTE playerindex, BYTE playerID, int usetimer, boo
 	playershootData * item;
 	for (int i=0; i<PLAYERSHOOTTYPEMAX; i++)
 	{
-		item = &(BResource::res.playershootdata[i]);
+		item = &(BResource::bres.playershootdata[i]);
 		if (item->userID == playerID)
 		{
 			if ((bchargeshoot) ^ (item->bchargeshoot))
@@ -181,7 +179,7 @@ int PlayerBullet::Build(BYTE playerindex, int shootdataID, bool explode/* =false
 		return -1;
 	}
 	PlayerBullet _pb;
-	playershootData * item = &(BResource::res.playershootdata[shootdataID]);
+	playershootData * item = &(BResource::bres.playershootdata[shootdataID]);
 	if (!(item->timeMod) && !explode)
 	{
 		return -1;
@@ -255,8 +253,8 @@ void PlayerBullet::valueSet(BYTE _playerindex, WORD _ID, BYTE _arrange, float _x
 
 	if (flag & PBFLAG_BEAM)
 	{
-		hscale = M_CLIENT_HEIGHT / SpriteItemManager::GetTexW(BResource::res.playershootdata[ID].siid);
-		vscale = scale / SpriteItemManager::GetTexH(BResource::res.playershootdata[ID].siid);
+		hscale = M_CLIENT_HEIGHT / SpriteItemManager::GetTexW(BResource::bres.playershootdata[ID].siid);
+		vscale = scale / SpriteItemManager::GetTexH(BResource::bres.playershootdata[ID].siid);
 		angle = -9000;
 		for (int i=0; i<PLAYERBULLETTYPE; i++)
 		{
@@ -302,12 +300,12 @@ void PlayerBullet::Render()
 		/*
 		if (flag & PBFLAG_BEAM)
 		{
-			spriteData * spdata = SpriteItemManager::CastSprite(BResource::res.playershootdata[ID].siid);
+			spriteData * spdata = SpriteItemManager::CastSprite(BResource::bres.playershootdata[ID].siid);
 			sprite[ID][animation]->SetTextureRect(spdata->tex_x+timer*speed, spdata->tex_y, spdata->tex_w, spdata->tex_h);
 		}
 		*/
 		sprite[ID][animation]->SetColor((alpha<<24)|diffuse);
-		sprite[ID][animation]->RenderEx(x, y, ARC(angle+headangle), hscale, vscale);
+		SpriteItemManager::RenderSpriteEx(sprite[ID][animation], x, y, ARC(angle+headangle), hscale, vscale);
 	}
 }
 
@@ -467,7 +465,7 @@ bool PlayerBullet::isInRange(float aimx, float aimy, float w, float h)
 		}
 		h = M_CLIENT_HEIGHT / 2;
 	}
-	float rOri = BResource::res.playershootdata[ID].collisionr * hscale;
+	float rOri = BResource::bres.playershootdata[ID].collisionr * hscale;
 	if (checkCollisionSquare(aimx, aimy, w, h, rOri))
 	{
 		if (hiton)
@@ -675,7 +673,7 @@ void PlayerBullet::action()
 //				SE::push(SE_PLAYER_EXPLODE, x);
 			}
 
-//			EventZone::Build(EVENTZONE_TYPE_ENEMYDAMAGE, playerindex, x, y, 32/BResource::res.playershootdata[ID].timeMod, SpriteItemManager::GetTexW(BResource::res.playershootdata[ID].siid), power);
+//			EventZone::Build(EVENTZONE_TYPE_ENEMYDAMAGE, playerindex, x, y, 32/BResource::bres.playershootdata[ID].timeMod, SpriteItemManager::GetTexW(BResource::bres.playershootdata[ID].siid), power);
 		}
 		if (flag & PBFLAG_SCALEUP)
 		{

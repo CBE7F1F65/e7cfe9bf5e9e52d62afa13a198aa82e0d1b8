@@ -3,7 +3,7 @@
 int Process::processPreInitial()
 {
 	bool rebuilddone = false;
-	if(_access(CONFIG_STR_FILENAME, 00) == -1)
+	if(!hge->Resource_AccessFile(CONFIG_STR_FILENAME))
 	{
 rebuild:
 		if (rebuilddone)
@@ -11,7 +11,7 @@ rebuild:
 			errorcode = PROC_ERROR_INIFILE;
 			return PQUIT;
 		}
-		DeleteFile(CONFIG_STR_FILENAME);
+		hge->Resource_DeleteFile(CONFIG_STR_FILENAME);
 
 		hge->	Ini_SetInt(Data::data.translateSection(Data::data.sLinkType(DATAS_HEADER)), Data::data.translateName(Data::data.nLinkType(DATAN_GAMEVERSION)), GAME_VERSION);
 		hge->	Ini_SetString(Data::data.translateSection(Data::data.sLinkType(DATAS_HEADER)), Data::data.translateName(Data::data.nLinkType(DATAN_SIGNATURE)), GAME_SIGNATURE);
@@ -104,24 +104,12 @@ rebuild:
 	strcpy(username[1], username[0]);
 	renderskip		= hge->Ini_GetInt(RESCONFIGS_CUSTOM, RESCONFIGN_RENDERSKIP, RESCONFIGDEFAULT_RENDERSKIP);
 
-	if (usingkaillera)
-	{
-		lastmatchchara[0][0]	= RESCONFIGDEFAULT_LASTMATCHCHARA_1_1;
-		lastmatchchara[0][1]	= RESCONFIGDEFAULT_LASTMATCHCHARA_1_2;
-		lastmatchchara[0][2]	= RESCONFIGDEFAULT_LASTMATCHCHARA_1_3;
-		lastmatchchara[1][0]	=  RESCONFIGDEFAULT_LASTMATCHCHARA_2_1;
-		lastmatchchara[1][1]	=  RESCONFIGDEFAULT_LASTMATCHCHARA_2_2;
-		lastmatchchara[1][2]	=  RESCONFIGDEFAULT_LASTMATCHCHARA_2_3;
-	}
-	else
-	{
-		lastmatchchara[0][0]	= hge->Ini_GetInt(RESCONFIGS_CUSTOM, RESCONFIGN_LASTMATCHCHARA_1_1, RESCONFIGDEFAULT_LASTMATCHCHARA_1_1);
-		lastmatchchara[0][1]	= hge->Ini_GetInt(RESCONFIGS_CUSTOM, RESCONFIGN_LASTMATCHCHARA_1_2, RESCONFIGDEFAULT_LASTMATCHCHARA_1_2);
-		lastmatchchara[0][2]	= hge->Ini_GetInt(RESCONFIGS_CUSTOM, RESCONFIGN_LASTMATCHCHARA_1_3, RESCONFIGDEFAULT_LASTMATCHCHARA_1_3);
-		lastmatchchara[1][0]	= hge->Ini_GetInt(RESCONFIGS_CUSTOM, RESCONFIGN_LASTMATCHCHARA_2_1, RESCONFIGDEFAULT_LASTMATCHCHARA_2_1);
-		lastmatchchara[1][1]	= hge->Ini_GetInt(RESCONFIGS_CUSTOM, RESCONFIGN_LASTMATCHCHARA_2_2, RESCONFIGDEFAULT_LASTMATCHCHARA_2_2);
-		lastmatchchara[1][2]	= hge->Ini_GetInt(RESCONFIGS_CUSTOM, RESCONFIGN_LASTMATCHCHARA_2_3, RESCONFIGDEFAULT_LASTMATCHCHARA_2_3);
-	}
+	lastmatchchara[0][0]	= hge->Ini_GetInt(RESCONFIGS_CUSTOM, RESCONFIGN_LASTMATCHCHARA_1_1, RESCONFIGDEFAULT_LASTMATCHCHARA_1_1);
+	lastmatchchara[0][1]	= hge->Ini_GetInt(RESCONFIGS_CUSTOM, RESCONFIGN_LASTMATCHCHARA_1_2, RESCONFIGDEFAULT_LASTMATCHCHARA_1_2);
+	lastmatchchara[0][2]	= hge->Ini_GetInt(RESCONFIGS_CUSTOM, RESCONFIGN_LASTMATCHCHARA_1_3, RESCONFIGDEFAULT_LASTMATCHCHARA_1_3);
+	lastmatchchara[1][0]	= hge->Ini_GetInt(RESCONFIGS_CUSTOM, RESCONFIGN_LASTMATCHCHARA_2_1, RESCONFIGDEFAULT_LASTMATCHCHARA_2_1);
+	lastmatchchara[1][1]	= hge->Ini_GetInt(RESCONFIGS_CUSTOM, RESCONFIGN_LASTMATCHCHARA_2_2, RESCONFIGDEFAULT_LASTMATCHCHARA_2_2);
+	lastmatchchara[1][2]	= hge->Ini_GetInt(RESCONFIGS_CUSTOM, RESCONFIGN_LASTMATCHCHARA_2_3, RESCONFIGDEFAULT_LASTMATCHCHARA_2_3);
 
 	//
 
@@ -164,52 +152,10 @@ int Process::processInit()
 	if (gametime == 1)
 	{
 		int iret = processPreInitial();
-		if (usingkaillera)
-		{
-
-			/*
-			kailleraintexchange[0] = 0;
-						for (int i=0; i<4; i++)
-						{
-							kailleraintexchange[0] |= username[0][i]<<(i*8);
-						}
-						int kiret = -1;
-						while (kiret != sizeof(char)*4*kailleranplayers)
-						{
-							kiret = kailleraModifyPlayValues(kailleraintexchange, sizeof(char)*4);
-						}
-						for (int i=0; i<4; i++)
-						{
-							for (int j=0; j<M_PL_MATCHMAXPLAYER; j++)
-							{
-								username[j][i] = (kailleraintexchange[j] >> (i*8)) & 0xff;
-							}
-						}
-			
-						kailleraintexchange[0] = 0;
-						for (int i=0; i<4; i++)
-						{
-							kailleraintexchange[0] |= username[0][i+4]<<(i*8);
-						}
-						kiret = -1;
-						while (kiret != sizeof(char)*4*kailleranplayers)
-						{
-							kiret = kailleraModifyPlayValues(kailleraintexchange, sizeof(char)*4);
-						}
-						for (int i=0; i<4; i++)
-						{
-							for (int j=0; j<M_PL_MATCHMAXPLAYER; j++)
-							{
-								username[j][i+4] = (kailleraintexchange[j] >> (i*8)) & 0xff;
-							}
-						}*/
-			
-
-		}
 		return iret;
 	}
 
-	if (texInit)
+	if (texInit.tex)
 	{
 		hge->Texture_Free(texInit);
 		texInit = NULL;
@@ -230,7 +176,7 @@ int Process::processInit()
 	}
 	else
 	{
-		if(!BResource::res.Fill())
+		if(!BResource::bres.Fill())
 		{
 #ifdef __DEBUG
 			HGELOG("Error in Filling Resource Data.");
@@ -238,12 +184,12 @@ int Process::processInit()
 			errorcode = PROC_ERROR_RESOURCE;
 			return PQUIT;
 		}
-		if(!Scripter::scr.LoadAll(tex))
+		if(!Scripter::scr.LoadAll())
 		{
 			errorcode = PROC_ERROR_SCRIPT;
 			return PQUIT;
 		}
-		if(!BResource::res.Pack(Scripter::strdesc, BResource::res.customconstdata))
+		if(!BResource::bres.Pack(Scripter::strdesc, BResource::bres.customconstdata))
 		{
 #ifdef __DEBUG
 			HGELOG("Error in Packing Resource Data.");
@@ -251,7 +197,7 @@ int Process::processInit()
 			errorcode = PROC_ERROR_TRANSLATE;
 			return PQUIT;
 		}
-		if(!BResource::res.SetDataFile())
+		if(!BResource::bres.SetDataFile())
 		{
 			errorcode = PROC_ERROR_DATA;
 			return PQUIT;
@@ -259,9 +205,9 @@ int Process::processInit()
 	}
 	if (binmode)
 	{
-		BResource::res.MallocCustomConst();
+		BResource::bres.MallocCustomConst();
 	}
-	if(!BResource::res.Gain(Scripter::strdesc, /*binmode?*/BResource::res.customconstdata/*:NULL*/))
+	if(!BResource::bres.Gain(Scripter::strdesc, /*binmode?*/BResource::bres.customconstdata/*:NULL*/))
 	{
 #ifdef __DEBUG
 		HGELOG("Error in Gaining Resource Data.");
@@ -269,7 +215,10 @@ int Process::processInit()
 		errorcode = PROC_ERROR_DATA;
 		return PQUIT;
 	}
-	if(Scripter::scr.binmode && !Scripter::scr.LoadAll(tex))
+
+	BResource::bres.InitTexinfo();
+
+	if(Scripter::scr.binmode && !Scripter::scr.LoadAll())
 	{
 		errorcode = PROC_ERROR_SCRIPT;
 		return PQUIT;
@@ -285,18 +234,14 @@ int Process::processInit()
 
 	for (int i=0; i<PACKAGEMAX; i++)
 	{
-		if(!BResource::res.LoadPackage(i))
+		if(!BResource::bres.LoadPackage(i))
 		{
 			errorcode = PROC_ERROR_PACKAGE;
 			return PQUIT;
 		}
-		if (usingkaillera)
-		{
-			kailleraModifyPlayValues(kaillerabyteexchange, sizeof(BYTE));
-		}
 	}
 
-	BGLayer::Init(tex);
+	BGLayer::Init();
 
 	SE::vol = sevol;
 	if(!SE::Initial())
@@ -305,62 +250,14 @@ int Process::processInit()
 		return PQUIT;
 	}
 
-	tex[TEX_WHITE] = hge->Texture_Load(BResource::res.resdata.texfilename[TEX_WHITE]);
-#ifdef __DEBUG
-	if(tex[TEX_WHITE] == NULL)
-	{
-		HGELOG("%s\nFailed in loading Texture File %s.(To be assigned to Index %d).", HGELOG_ERRSTR, BResource::res.resdata.texfilename[TEX_WHITE], TEX_WHITE);
-		errorcode = PROC_ERROR_TEXTURE;
-		return PQUIT;
-	}
-	else
-	{
-		HGELOG("Succeeded in loading Texture File %s.(Assigned to Index %d).", BResource::res.resdata.texfilename[TEX_WHITE], TEX_WHITE);
-	}
-#endif
+#ifdef __WIN32
+	BResource::bres.LoadTexture();
+#endif // __WIN32
 
-	char tnbuffer[M_STRMAX];
-	for(int i=1;i<TEXMAX;i++)
-	{
-		//
-		if (usingkaillera && i%16==0)
-		{
-			kailleraModifyPlayValues(kailleraintexchange, sizeof(int));
-		}
-		//
-		if(tex[i])
-			hge->Texture_Free(tex[i]);
-		tex[i] = NULL;
+	SpriteItemManager::Init();
 
-		strcpy(tnbuffer, BResource::res.resdata.texfilename[i]);
-		if(strlen(tnbuffer))
-		{
-			tex[i] = hge->Texture_Load(tnbuffer);
-//			strcpy(tnbuffer, BResource::res.resdata.texfilename[TEX_WHITE]);
-		}
-
-		if(tex[i] == NULL)
-		{
-#ifdef __DEBUG
-			HGELOG("%s\nFailed in loading Texture File %s.(To be assigned to Index %d).", HGELOG_ERRSTR, tnbuffer, i);
-			errorcode = PROC_ERROR_TEXTURE;
-#endif
-//			tex[i] = tex[TEX_WHITE];
-			tex[i] = hge->Texture_Create(0, 0);
-//			return PQUIT;
-		}
-#ifdef __DEBUG
-		else
-		{
-			HGELOG("Succeeded in loading Texture File %s.(Assigned to Index %d).", tnbuffer, i);
-		}
-#endif
-	}
-
-	SpriteItemManager::Init(tex);
-
-	Fontsys::Init();
-	if(!Effectsys::Init(tex, BResource::res.resdata.effectsysfoldername, BResource::res.resdata.effectsysfilename))
+	Fontsys::Init(FrontDisplay::fdisp.info.normalfont);
+	if(!Effectsys::Init(BResource::bres.tex, BResource::bres.resdata.effectsysfoldername, BResource::bres.resdata.effectsysfilename))
 	{
 #ifdef __DEBUG
 		HGELOG("%s\nFailed in Initializing Effectsys.", HGELOG_ERRSTR);

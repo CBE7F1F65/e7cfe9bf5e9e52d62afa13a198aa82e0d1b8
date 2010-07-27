@@ -104,28 +104,55 @@ void Process::_RenderTar()
 				delete sprendertar[i];
 			}
 			sprendertar[i] = new hgeSprite(hge->Target_GetTexture(rendertar[i]), M_GAMESQUARE_LEFT_(i), M_GAMESQUARE_TOP, M_GAMESQUARE_WIDTH, M_GAMESQUARE_HEIGHT);
-			sprendertar[i]->Render(M_GAMESQUARE_CENTER_X_(i), M_GAMESQUARE_CENTER_Y);
+			SpriteItemManager::RenderSprite(sprendertar[i], M_GAMESQUARE_CENTER_X_(i), M_GAMESQUARE_CENTER_Y);
 		}
 	}
 }
 
 int Process::render()
 {
+#ifdef __PSP
+	hge->Gfx_BeginScene();
+	hge->Gfx_Clear(0x00000000);
+#endif
+
 	bool isingame = IsInGame();
 	if (isingame)
 	{
+#ifdef __WIN32
 		hge->Gfx_BeginScene(rendertar[0]);
 		hge->Gfx_Clear(0x00000000);
+#else
+#ifdef __PSP
+		hge->Gfx_SetClipping(M_SIDE_EDGE, 0, SCREEN_WIDTH/2-M_SIDE_EDGE, SCREEN_HEIGHT);
+#endif // __PSP
+#endif // __WIN32
 		_Render(M_RENDER_LEFT);
+#ifdef __WIN32
 		hge->Gfx_EndScene();
+#endif // __WIN32
+#ifdef __WIN32
 		hge->Gfx_BeginScene(rendertar[1]);
 		hge->Gfx_Clear(0x00000000);
+#else
+#ifdef __PSP
+		hge->Gfx_SetClipping(SCREEN_WIDTH/2, 0, SCREEN_WIDTH/2-M_SIDE_EDGE, SCREEN_HEIGHT);
+#endif // __PSP
+#endif // __WIN32
 		_Render(M_RENDER_RIGHT);
+#ifdef __WIN32
 		hge->Gfx_EndScene();
+#endif // __WIN32
 	}
 
+#ifdef __WIN32
 	hge->Gfx_BeginScene();
 	hge->Gfx_Clear(0x00000000);
+#else
+#ifdef __PSP
+	hge->Gfx_SetClipping(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+#endif // __PSP
+#endif // __WIN32
 	Export::clientSetMatrix();
 	if (state == STATE_INIT)
 	{
@@ -162,7 +189,7 @@ int Process::render()
 
 int Process::renderInit()
 {
-	if (texInit)
+	if (texInit.tex)
 	{
 		hgeQuad quad;
 		quad.blend = BLEND_DEFAULT;
@@ -176,7 +203,7 @@ int Process::renderInit()
 		quad.v[1].x = M_CLIENT_RIGHT;	quad.v[1].y = M_CLIENT_TOP;	quad.v[1].z = 0;
 		quad.v[2].x = M_CLIENT_RIGHT;	quad.v[2].y = M_CLIENT_BOTTOM;	quad.v[2].z = 0;
 		quad.v[3].x = M_CLIENT_LEFT;	quad.v[3].y = M_CLIENT_BOTTOM;	quad.v[3].z = 0;
-		hge->Gfx_RenderQuad(&quad);
+		SpriteItemManager::RenderQuad(&quad);
 	}
 	return PGO;
 }

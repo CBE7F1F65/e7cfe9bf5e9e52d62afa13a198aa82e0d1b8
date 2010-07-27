@@ -152,7 +152,7 @@ void Item::Render()
 {
 	if (sprite[ID])
 	{
-		sprite[ID]->RenderEx(x, y, ARC(headangle));
+		SpriteItemManager::RenderSpriteEx(sprite[ID], x, y, ARC(headangle));
 	}
 }
 

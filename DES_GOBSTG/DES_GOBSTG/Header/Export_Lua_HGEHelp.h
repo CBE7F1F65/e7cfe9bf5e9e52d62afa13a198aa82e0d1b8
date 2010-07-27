@@ -14,7 +14,7 @@ public:
 	static hgeSprite * _Helper_New_hgeSprite(HTEXTURE tex, float x, float y, float w, float h);
 	static hgeSprite * _Helper_New_hgeSprite(const hgeSprite & spr);
 	static hgeEffectSystem * _Helper_New_hgeES();
-	static hgeEffectSystem * _Helper_New_hgeES(const char * filename, HTEXTURE tex = 0, HTEXTURE * texset = 0);
+	static hgeEffectSystem * _Helper_New_hgeES(const char * filename, HTEXTURE tex = 0);
 	static hgeEffectSystem * _Helper_New_hgeES(const hgeEffectSystem & eff);
 
 	// Font

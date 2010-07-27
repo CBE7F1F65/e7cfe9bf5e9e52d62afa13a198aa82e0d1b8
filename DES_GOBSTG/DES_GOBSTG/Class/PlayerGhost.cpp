@@ -37,7 +37,7 @@ void PlayerGhost::valueSet(BYTE _playerindex, WORD _ID, bool move)
 	lastchasing	=	false;
 	active = true;
 
-	playerghostData * _pgd = &(BResource::res.playerghostdata[ID]);
+	playerghostData * _pgd = &(BResource::bres.playerghostdata[ID]);
 
 	if (_pgd->siid)
 	{
@@ -78,7 +78,7 @@ void PlayerGhost::Render()
 	if (active && sprite)
 	{
 		sprite->SetColor((alpha<<24)|diffuse);
-		sprite->RenderEx(x, y, ARC(headangle), scale);
+		SpriteItemManager::RenderSpriteEx(sprite, x, y, ARC(headangle), scale);
 	}
 }
 
@@ -190,7 +190,7 @@ void PlayerGhost::action()
 
 	DWORD ownertimer = Player::p[playerindex].timer;
 
-	playerghostData * _pgd = &(BResource::res.playerghostdata[ID]);
+	playerghostData * _pgd = &(BResource::bres.playerghostdata[ID]);
 
 	if (flag & PGFLAG_TRACE)
 	{
@@ -327,7 +327,7 @@ void PlayerGhost::action()
 		headangle = 0;
 	}
 
-	SpriteItemManager::SetSprite(_pgd->siid, sprite, Process::mp.tex);
+	SpriteItemManager::SetSprite(_pgd->siid, sprite);
 	if (flag & PGFLAG_SYNCPLAYER)
 	{
 		int siidoffset = Player::p[playerindex].nowframeindex;

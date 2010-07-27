@@ -114,7 +114,7 @@ void Beam::Render()
 		int tblend = Bullet::sprite[i]->GetBlendMode();
 		Bullet::sprite[i]->SetBlendMode(BLEND_ALPHAADD);
 		Bullet::sprite[i]->SetColor(alpha<<24|diffuse);
-		Bullet::sprite[i]->RenderEx(x, y, ARC(angle+headangle+BULLET_ANGLEOFFSET), hscale, vscale);
+		SpriteItemManager::RenderSpriteEx(Bullet::sprite[i], x, y, ARC(angle+headangle+BULLET_ANGLEOFFSET), hscale, vscale);
 		Bullet::sprite[i]->SetBlendMode(tblend);
 	}
 }
@@ -161,7 +161,7 @@ void Beam::valueSet(WORD _ID, float _x, float _y, int _angle, float _speed, BYTE
 	xplus = cost(angle);
 	yplus = sint(angle);
 
-	spriteData * spdata = SpriteItemManager::CastSprite(BResource::res.bulletdata[type].siid);
+	spriteData * spdata = SpriteItemManager::CastSprite(BResource::bres.bulletdata[type].siid);
 	texw	=	spdata->tex_w;
 	texh	=	spdata->tex_h;
 
@@ -376,8 +376,8 @@ bool Beam::isInRect(float aimx, float aimy, float r, int nextstep)
 	float _x = x;
 	float _y = y;
 
-	float rl = BResource::res.bulletdata[type].collisionMain;
-	float rs = BResource::res.bulletdata[type].collisionSub;
+	float rl = BResource::bres.bulletdata[type].collisionMain;
+	float rs = BResource::bres.bulletdata[type].collisionSub;
 
 	float nowrl = vscale * rl;
 	if (nextstep)

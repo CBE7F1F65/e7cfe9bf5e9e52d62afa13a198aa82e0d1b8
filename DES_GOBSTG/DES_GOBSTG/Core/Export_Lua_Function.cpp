@@ -1,12 +1,12 @@
 #ifndef __NOTUSELUA
 
-#include "../Header/../Header/Export_Lua.h"
-#include "../Header/../Header/LuaConstDefine.h"
+#include "../Header/Export_Lua.h"
+#include "../Header/LuaConstDefine.h"
 
-#include "../Header/../Header/Export_Lua_HGE.h"
-#include "../Header/../Header/Export_Lua_HGEHelp.h"
-#include "../Header/../Header/Export_Lua_HDSS.h"
-#include "../Header/../Header/Export_Lua_Game.h"
+#include "../Header/Export_Lua_HGE.h"
+#include "../Header/Export_Lua_HGEHelp.h"
+#include "../Header/Export_Lua_HDSS.h"
+#include "../Header/Export_Lua_Game.h"
 
 bool Export_Lua::_LuaRegistFunction(LuaObject * obj)
 {
@@ -536,20 +536,26 @@ int Export_Lua::LuaFn_Global_GetLocalTime(LuaState * ls)
 	LuaStackObject table;
 	QWORD qret;
 
+/*
 	SYSTEMTIME systime;
 	FILETIME filetime;
 	GetLocalTime(&systime);
-	SystemTimeToFileTime(&systime, &filetime);
+	SystemTimeToFileTime(&systime, &filetime);*/
+
+
+	WORD wYear, wMonth, wDayOfWeek, wDay, wHour, wMinute, wSecond, wMilliseconds;
+	hge->Timer_GetSystemTime(&wYear, &wMonth, &wDayOfWeek, &wDay, &wHour, &wMinute, &wSecond, &wMilliseconds);
+
 	table = ls->CreateTable();
-	table.SetInteger("wYear", systime.wYear);
-	table.SetInteger("wMonth", systime.wMonth);
-	table.SetInteger("wDayOfWeek", systime.wDayOfWeek);
-	table.SetInteger("wDay", systime.wDay);
-	table.SetInteger("wHour", systime.wHour);
-	table.SetInteger("wMinute", systime.wMinute);
-	table.SetInteger("wSecond", systime.wSecond);
-	table.SetInteger("wMilliseconds", systime.wMilliseconds);
-	qret = (((QWORD)(filetime.dwHighDateTime))<<32) + filetime.dwLowDateTime;
+	table.SetInteger("wYear", wYear);
+	table.SetInteger("wMonth", wMonth);
+	table.SetInteger("wDayOfWeek", wDayOfWeek);
+	table.SetInteger("wDay", wDay);
+	table.SetInteger("wHour", wHour);
+	table.SetInteger("wMinute", wMinute);
+	table.SetInteger("wSecond", wSecond);
+	table.SetInteger("wMilliseconds", wMilliseconds);
+	qret = hge->Timer_GetFileTime();
 
 	ls->PushValue(table);
 	_LuaHelper_PushQWORD(ls, qret);
@@ -560,6 +566,7 @@ int Export_Lua::LuaFn_Global_GetClipBoard(LuaState * ls)
 {
 	LuaStack args(ls);
 
+#ifdef __WIN32
 	if (OpenClipboard(NULL))
 	{
 		HANDLE hData = GetClipboardData(CF_TEXT);
@@ -569,6 +576,7 @@ int Export_Lua::LuaFn_Global_GetClipBoard(LuaState * ls)
 		CloseClipboard();
 		return 1;
 	}
+#endif // __WIN32
 	return 0;
 }
 
@@ -577,7 +585,8 @@ int Export_Lua::LuaFn_Global_GetPrivateProfileString(LuaState * ls)
 	LuaStack args(ls);
 	char sret[M_STRINGMAX];
 
-	GetPrivateProfileString(args[1].GetString(), args[2].GetString(), args[3].GetString(), sret, M_STRINGMAX, args[4].GetString());
+	strcpy(sret, hge->Ini_GetString(args[1].GetString(), args[2].GetString(), args[3].GetString(), (char *)args[4].GetString()));
+//	GetPrivateProfileString(args[1].GetString(), args[2].GetString(), args[3].GetString(), sret, M_STRINGMAX, args[4].GetString());
 
 	_LuaHelper_PushString(ls, sret);
 	return 1;
@@ -587,7 +596,8 @@ int Export_Lua::LuaFn_Global_WritePrivateProfileString(LuaState * ls)
 {
 	LuaStack args(ls);
 
-	WritePrivateProfileString(args[1].GetString(), args[2].GetString(), args[3].GetString(), args[4].GetString());
+	hge->Ini_SetString(args[1].GetString(), args[2].GetString(), args[3].GetString(), (char *)args[4].GetString());
+//	WritePrivateProfileString(args[1].GetString(), args[2].GetString(), args[3].GetString(), args[4].GetString());
 
 	return 0;
 }
@@ -615,7 +625,7 @@ int Export_Lua::LuaFn_Global_MessageBox(LuaState * ls)
 			}
 		}
 	}
-	iret = MessageBox(hge->System_GetState(HGE_HWND), stext, scaption, (UINT)type);
+	iret = hge->System_MessageBox(stext, scaption, (DWORD)type);
 
 	ls->PushInteger(iret);
 	return 1;
@@ -816,6 +826,7 @@ int Export_Lua::LuaFn_LuaState_RShift(LuaState * ls)
 int Export_Lua::LuaFn_LuaState_ReadLineInContent(LuaState * ls)
 {
 	LuaStack args(ls);
+#ifdef __WIN32
 	string sret;
 	DWORD dret;
 
@@ -859,6 +870,12 @@ int Export_Lua::LuaFn_LuaState_ReadLineInContent(LuaState * ls)
 	_LuaHelper_PushDWORD(ls, dret);
 	_LuaHelper_PushDWORD(ls, size);
 	return 3;
+
+#else
+
+	return 0;
+
+#endif // __WIN32
 }
 
 #endif

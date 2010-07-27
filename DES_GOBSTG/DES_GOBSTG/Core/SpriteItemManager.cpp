@@ -2,7 +2,6 @@
 #include "../Header/FrontDisplayName.h"
 #include "../Header/BResource.h"
 
-HTEXTURE * SpriteItemManager::tex;
 int SpriteItemManager::nullIndex = 0;
 int SpriteItemManager::yesIndex = 0;
 int SpriteItemManager::noIndex = 0;
@@ -21,9 +20,14 @@ SpriteItemManager::~SpriteItemManager()
 
 }
 
-void SpriteItemManager::Init(HTEXTURE * _tex)
+bool SpriteItemManager::LoadTextureWhenNeededCallBack()
 {
-	tex = _tex;
+	return LoadTextureWhenNeeded(*(hge->Texture_GetTextureToLoad()));
+}
+
+void SpriteItemManager::Init()
+{
+	hge->System_SetState(HGE_LOADTEXTUREFUNC, SpriteItemManager::LoadTextureWhenNeededCallBack);
 	FreeFrontSprite();
 }
 
@@ -34,47 +38,47 @@ void SpriteItemManager::Release()
 
 HTEXTURE SpriteItemManager::GetTexture(int index)
 {
-	if (index < 0 || index >= BResource::res.spritenumber || !tex)
+	if (index < 0 || index >= BResource::bres.spritenumber)
 	{
 		return NULL;
 	}
-	return tex[BResource::res.spritedata[index].tex];
+	return BResource::bres.tex[BResource::bres.spritedata[index].tex];
 }
 
 float SpriteItemManager::GetTexX(int index)
 {
-	if (index < 0 || index >= BResource::res.spritenumber)
+	if (index < 0 || index >= BResource::bres.spritenumber)
 	{
 		return 0;
 	}
-	return BResource::res.spritedata[index].tex_x;
+	return BResource::bres.spritedata[index].tex_x;
 }
 
 float SpriteItemManager::GetTexY(int index)
 {
-	if (index < 0 || index >= BResource::res.spritenumber)
+	if (index < 0 || index >= BResource::bres.spritenumber)
 	{
 		return 0;
 	}
-	return BResource::res.spritedata[index].tex_y;
+	return BResource::bres.spritedata[index].tex_y;
 }
 
 float SpriteItemManager::GetTexW(int index)
 {
-	if (index < 0 || index >= BResource::res.spritenumber)
+	if (index < 0 || index >= BResource::bres.spritenumber)
 	{
 		return 0;
 	}
-	return BResource::res.spritedata[index].tex_w;
+	return BResource::bres.spritedata[index].tex_w;
 }
 
 float SpriteItemManager::GetTexH(int index)
 {
-	if (index < 0 || index >= BResource::res.spritenumber)
+	if (index < 0 || index >= BResource::bres.spritenumber)
 	{
 		return 0;
 	}
-	return BResource::res.spritedata[index].tex_h;
+	return BResource::bres.spritedata[index].tex_h;
 }
 
 void SpriteItemManager::FrontSpriteAction()
@@ -108,7 +112,7 @@ void SpriteItemManager::RenderFrontSprite()
 			}
 			frontsprite[i].sprite->SetColor(frontsprite[i].col);
 			frontsprite[i].sprite->SetBlendMode(frontsprite[i].blend);
-			frontsprite[i].sprite->RenderEx(frontsprite[i].x, frontsprite[i].y, frontsprite[i].rot, frontsprite[i].hscale, frontsprite[i].vscale);
+			RenderSpriteEx(frontsprite[i].sprite, frontsprite[i].x, frontsprite[i].y, frontsprite[i].rot, frontsprite[i].hscale, frontsprite[i].vscale);
 		}
 	}
 }
@@ -123,9 +127,9 @@ int SpriteItemManager::GetIndexByName(const char * spritename)
 	{
 		return -1;
 	}
-	for (int i=0; i<BResource::res.spritenumber; i++)
+	for (int i=0; i<BResource::bres.spritenumber; i++)
 	{
-		if (!strcmp(spritename, BResource::res.spritedata[i].spritename))
+		if (!strcmp(spritename, BResource::bres.spritedata[i].spritename))
 		{
 			return i;
 			break;
@@ -136,14 +140,14 @@ int SpriteItemManager::GetIndexByName(const char * spritename)
 
 spriteData * SpriteItemManager::CastSprite(int index)
 {
-	if (index >= 0 && index < BResource::res.spritenumber)
+	if (index >= 0 && index < BResource::bres.spritenumber)
 	{
-		return &(BResource::res.spritedata[index]);
+		return &(BResource::bres.spritedata[index]);
 	}
 	return NULL;
 }
 
-bool SpriteItemManager::SetSprite(int index, hgeSprite * sprite, HTEXTURE * tex)
+bool SpriteItemManager::SetSprite(int index, hgeSprite * sprite)
 {
 	if (!sprite)
 	{
@@ -159,9 +163,10 @@ bool SpriteItemManager::SetSprite(int index, hgeSprite * sprite, HTEXTURE * tex)
 	{
 		return false;
 	}
-	SetSpriteData(sprite, tex[_sd->tex], _sd->tex_x, _sd->tex_y, 
-		_sd->tex_w < 0 ? hge->Texture_GetWidth(tex[_sd->tex])-_sd->tex_x : _sd->tex_w, 
-		_sd->tex_h < 0 ? hge->Texture_GetHeight(tex[_sd->tex])-_sd->tex_y : _sd->tex_h);
+	HTEXTURE tex(_sd->tex, NULL);
+	SetSpriteData(sprite, tex, _sd->tex_x, _sd->tex_y, 
+		_sd->tex_w < 0 ? hge->Texture_GetWidth(tex)-_sd->tex_x : _sd->tex_w, 
+		_sd->tex_h < 0 ? hge->Texture_GetHeight(tex)-_sd->tex_y : _sd->tex_h);
 	return true;
 }
 
@@ -279,10 +284,6 @@ void SpriteItemManager::SetFrontSpriteFadeoutTime(int ID, int fadeouttime)
 hgeSprite * SpriteItemManager::CreateNullSprite()
 {
 	hgeSprite * sprite;
-	if (!tex)
-	{
-		return NULL;
-	}
 	sprite = CreateSprite(nullIndex);
 	return sprite;
 }
@@ -290,17 +291,14 @@ hgeSprite * SpriteItemManager::CreateNullSprite()
 hgeSprite * SpriteItemManager::CreateSprite(int index)
 {
 	hgeSprite * sprite;
-	if (!tex)
-	{
-		return NULL;
-	}
 //	sprite = CreateNullSprite();
 	sprite = new hgeSprite();
 	if (index < 0)
 	{
 		return sprite;
 	}
-	SetSpriteData(sprite, tex[BResource::res.spritedata[index].tex], BResource::res.spritedata[index].tex_x, BResource::res.spritedata[index].tex_y, BResource::res.spritedata[index].tex_w, BResource::res.spritedata[index].tex_h);
+	HTEXTURE tex(BResource::bres.spritedata[index].tex, NULL);
+	SetSpriteData(sprite, tex, BResource::bres.spritedata[index].tex_x, BResource::bres.spritedata[index].tex_y, BResource::bres.spritedata[index].tex_w, BResource::bres.spritedata[index].tex_h);
 	return sprite;
 }
 
@@ -309,10 +307,6 @@ bool SpriteItemManager::SetSpriteData(hgeSprite * sprite, HTEXTURE _tex, float t
 	if (!sprite)
 	{
 		return false;
-	}
-	if (!_tex)
-	{
-		_tex = tex[TEX_WHITE];
 	}
 	sprite->SetTexture(_tex);
 	if (!SetSpriteTextureRect(sprite, texx, texy, texw, texh))
@@ -376,7 +370,8 @@ bool SpriteItemManager::ChangeSprite(int index, hgeSprite * sprite)
 	{
 		return false;
 	}
-	SetSpriteData(sprite, tex[BResource::res.spritedata[index].tex], BResource::res.spritedata[index].tex_x, BResource::res.spritedata[index].tex_y, BResource::res.spritedata[index].tex_w, BResource::res.spritedata[index].tex_h);
+	HTEXTURE tex(BResource::bres.spritedata[index].tex, NULL);
+	SetSpriteData(sprite, tex, BResource::bres.spritedata[index].tex_x, BResource::bres.spritedata[index].tex_y, BResource::bres.spritedata[index].tex_w, BResource::bres.spritedata[index].tex_h);
 	return true;
 }
 
@@ -415,7 +410,7 @@ void SpriteItemManager::FreeSprite(hgeSprite ** sprite)
 
 bool SpriteItemManager::ptFace(int index, hgeSprite * sprite)
 {
-	if (!sprite || !tex)
+	if (!sprite)
 	{
 		return false;
 	}
@@ -424,24 +419,74 @@ bool SpriteItemManager::ptFace(int index, hgeSprite * sprite)
 		SpriteItemManager::SetSpriteTextureRect(sprite, 0, 0, 0, 0);
 		return true;
 	}
-	ChangeSprite(BResource::res.playerdata[index].faceSIID, sprite);
+	ChangeSprite(BResource::bres.playerdata[index].faceSIID, sprite);
 	return true;
 }
-/*
-bool SpriteItemManager::ptName(int index, hgeSprite * sprite, bool enemy)
+
+bool SpriteItemManager::LoadTextureWhenNeeded(HTEXTURE tex)
 {
-	if (!sprite || !tex)
+	if (hge->Texture_GetTexture(tex) == NULL)
 	{
-		return false;
-	}
-	if (index < 0)
-	{
-		sprite->SetTextureRect(0, 0, 0, 0);
+		BResource::bres.LoadTexture(tex.texindex);
 		return true;
 	}
-	spriteData * tsd = &(BResource::res.spritedata[index+(enemy?nameIndexEnemy:nameIndexPlayer)]);
-	sprite->SetTexture(tex[tsd->tex]);
-	sprite->SetTextureRect(tsd->tex_x, tsd->tex_y, tsd->tex_w, tsd->tex_h);
-	return true;
+	return false;
 }
-*/
+
+void SpriteItemManager::RenderSprite( hgeSprite * sprite, float x, float y )
+{
+	if (!sprite)
+	{
+		return;
+	}
+//	LoadTextureWhenNeeded(sprite->quad.tex);
+	sprite->Render(x, y);
+}
+
+void SpriteItemManager::RenderSpriteEx( hgeSprite * sprite, float x, float y, float rot, float hscale/*=1.0f*/, float vscale/*=0.0f*/ )
+{
+	if (!sprite)
+	{
+		return;
+	}
+//	LoadTextureWhenNeeded(sprite->quad.tex);
+	sprite->RenderEx(x, y, rot, hscale, vscale);
+}
+
+void SpriteItemManager::FontPrintf( hgeFont * font, float x, float y, int align, const char * str)
+{
+	if (!font)
+	{
+		return;
+	}
+	font->printf(x, y, align, str);
+}
+
+void SpriteItemManager::FontPrintfb( hgeFont * font, float x, float y, float w, float h, int align, const char * str)
+{
+	if (!font)
+	{
+		return;
+	}
+	font->printfb(x, y, w, h, align, str);
+}
+
+void SpriteItemManager::EffectSystemRender( hgeEffectSystem * eff, hge3DPoint *ptfar, DWORD colormask )
+{
+	if (!eff)
+	{
+		return;
+	}
+//	LoadTextureWhenNeeded(eff->ebi.tex);
+	eff->Render(ptfar, colormask);
+}
+
+void SpriteItemManager::RenderQuad( hgeQuad * quad )
+{
+	if (!quad)
+	{
+		return;
+	}
+//	LoadTextureWhenNeeded(quad->tex);
+	hge->Gfx_RenderQuad(quad);
+}

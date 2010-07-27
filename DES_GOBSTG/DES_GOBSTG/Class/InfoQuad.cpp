@@ -1,7 +1,5 @@
 #include "../header/InfoQuad.h"
 
-HTEXTURE InfoQuad::tex;
-
 InfoQuad::InfoQuad()
 {
 }
@@ -10,9 +8,8 @@ InfoQuad::~InfoQuad()
 {
 }
 
-void InfoQuad::Init(HTEXTURE _tex)
+void InfoQuad::Init()
 {
-	tex = _tex;
 }
 
 void InfoQuad::valueSet(
@@ -27,6 +24,7 @@ void InfoQuad::valueSet(
 	x			=	_x;
 	y			=	_y;
 
+	HTEXTURE tex(TEX_WHITE, NULL);
 	quad.tex	=	tex;
 
 	quad.v[0].tx = 0;	quad.v[0].ty = 0;

@@ -2,11 +2,13 @@
 #include "../Header/data.h"
 #include "../Header/ConstResource.h"
 
-BResource BResource::res;
+BResource BResource::bres;
 
 BResource::BResource()
 {
 	ZeroMemory(&resdata, RSIZE_RESOURCE);
+	ZeroMemory(tex, sizeof(HTEXTURE) * TEXMAX);
+	ZeroMemory(texinfo, sizeof(hgeTextureInfo) * TEXMAX);
 	customconstdata = NULL;
 	spritenumber = 0;
 	spritedata = NULL;
@@ -57,6 +59,7 @@ bool BResource::Fill()
 	DWORD name;
 
 	//resource
+	strcpy(resdata.fontfilename, Data::data.sRead(DATA_RESOURCEFILE, Data::data.sLinkType(RESDATAS_FONT), Data::data.nLinkType(RESDATAN_FILENAME), RESDEFAULT_FONTFILE));
 	strcpy(resdata.widefontname, Data::data.sRead(DATA_RESOURCEFILE, Data::data.sLinkType(RESDATAS_FONT), Data::data.nLinkType(RESDATAN_FONT), RESDEFAULT_FONTFONT));
 
 	sec = Data::data.sLinkType(RESDATAS_FOLDER);
@@ -69,31 +72,31 @@ bool BResource::Fill()
 		{
 			continue;
 		}
-		if(_access(resdata.scriptfoldername[i], 00) == -1)
+		if(_access(resdata.scriptfoldername[i]))
 		{
 			CreateDirectory(resdata.scriptfoldername[i], NULL);
 		}
 	}
 	*/
 	strcpy(resdata.snapshotfoldername, Data::data.sRead(DATA_RESOURCEFILE, sec, Data::data.nLinkType(RESDATAN_SNAPSHOTFOLDER), RESDEFAULT_SNAPSHOTFOLDER));
-	if(_access(resdata.snapshotfoldername, 00) == -1)
+	if(!hge->Resource_AccessFile(resdata.snapshotfoldername))
 	{
-		CreateDirectory(resdata.snapshotfoldername, NULL);
+		hge->Resource_CreateDirectory(resdata.snapshotfoldername);
 	}
 	strcpy(resdata.replayfoldername, Data::data.sRead(DATA_RESOURCEFILE, sec, Data::data.nLinkType(RESDATAN_REPLAYFOLDER), RESDEFAULT_REPLAYFOLDER));
-	if(_access(resdata.replayfoldername, 00) == -1)
+	if(!hge->Resource_AccessFile(resdata.replayfoldername))
 	{
-		CreateDirectory(resdata.replayfoldername, NULL);
+		hge->Resource_CreateDirectory(resdata.replayfoldername);
 	}
 	strcpy(resdata.datafoldername, Data::data.sRead(DATA_RESOURCEFILE, sec, Data::data.nLinkType(RESDATAN_DATAFOLDER), RESDEFAULT_DATAFOLDER));
-	if(_access(resdata.datafoldername, 00) == -1)
+	if(!hge->Resource_AccessFile(resdata.datafoldername))
 	{
-		CreateDirectory(resdata.datafoldername, NULL);
+		hge->Resource_CreateDirectory(resdata.datafoldername);
 	}
 	strcpy(resdata.effectsysfoldername, Data::data.sRead(DATA_RESOURCEFILE, sec, Data::data.nLinkType(RESDATAN_EFFECTSYSFOLDER), RESDEFAULT_DATAFOLDER));
-	if(_access(resdata.effectsysfoldername, 00) == -1)
+	if(!hge->Resource_AccessFile(resdata.effectsysfoldername))
 	{
-		CreateDirectory(resdata.effectsysfoldername, NULL);
+		hge->Resource_CreateDirectory(resdata.effectsysfoldername);
 	}
 
 	char buffer[M_STRMAX];
@@ -324,6 +327,7 @@ bool BResource::Pack(void * pStrdesc, void * pCustomConstData)
 		RSIZE_RESOURCE + 
 		RSIZE_STRINGDESC + 
 		RSIZE_CUSTOMCONST + 
+		RSIZE_TEXTURE + 
 		RSIZE_MUSIC + 
 		RSIZE_BULLET + 
 		RSIZE_ENEMY + 
@@ -366,6 +370,8 @@ bool BResource::Pack(void * pStrdesc, void * pCustomConstData)
 		memcpy(content+offset, pCustomConstData, RSIZE_CUSTOMCONST);
 	}
 	offset += RSIZE_CUSTOMCONST;
+	memcpy(content+offset, texturedata, RSIZE_TEXTURE);
+	offset += RSIZE_TEXTURE;
 	memcpy(content+offset, musdata, RSIZE_MUSIC);
 	offset += RSIZE_MUSIC;
 	memcpy(content+offset, bulletdata, RSIZE_BULLET);
@@ -429,6 +435,8 @@ bool BResource::Gain(void * pStrdesc, void * pCustomConstData)
 			if(pCustomConstData)
 				memcpy(pCustomConstData, content+offset, RSIZE_CUSTOMCONST);
 			offset += RSIZE_CUSTOMCONST;
+			memcpy(texturedata, content+offset, RSIZE_TEXTURE);
+			offset += RSIZE_TEXTURE;
 			memcpy(musdata, content+offset, RSIZE_MUSIC);
 			offset += RSIZE_MUSIC;
 			memcpy(bulletdata, content+offset, RSIZE_BULLET);
@@ -464,13 +472,13 @@ bool BResource::Gain(void * pStrdesc, void * pCustomConstData)
 	}
 	hge->Resource_Free(content);
 
-	if(_access(resdata.snapshotfoldername, 00) == -1)
+	if(!hge->Resource_AccessFile(resdata.snapshotfoldername))
 	{
-		CreateDirectory(resdata.snapshotfoldername, NULL);
+		hge->Resource_CreateDirectory(resdata.snapshotfoldername);
 	}
-	if(_access(resdata.replayfoldername, 00) == -1)
+	if(!hge->Resource_AccessFile(resdata.replayfoldername))
 	{
-		CreateDirectory(resdata.replayfoldername, NULL);
+		hge->Resource_CreateDirectory(resdata.replayfoldername);
 	}
 	return ret;
 }
@@ -497,6 +505,85 @@ bool BResource::LoadAllPackage()
 		}
 	}
 	return true;
+}
+
+void BResource::InitTexinfo()
+{
+	for (int i=0; i<TEXMAX; i++)
+	{
+		texinfo[i].tex = NULL;
+		texinfo[i].texw = texturedata[i].width;
+		texinfo[i].texh = texturedata[i].height;
+	}
+	for (int i=0; i<TEXMAX; i++)
+	{
+		tex[i].texindex = i;
+		texinfo[i].tex = &tex[i].tex;
+	}
+	hge->Gfx_SetTextureInfo(TEXMAX, texinfo);
+}
+
+bool BResource::LoadTexture( int texindex/*=-1*/ )
+{
+	if (texindex < 0)
+	{
+		for (int i=0; i<TEXMAX; i++)
+		{
+			LoadTexture(i);
+		}
+		return true;
+	}
+
+	char tnbuffer[M_STRMAX];
+	if(tex[texindex].tex)
+		hge->Texture_Free(tex[texindex]);
+	tex[texindex].tex = NULL;
+
+	strcpy(tnbuffer, bres.texturedata[texindex].texfilename);
+	if(strlen(tnbuffer))
+	{
+		tex[texindex] = hge->Texture_Load(tnbuffer);
+//		strcpy(tnbuffer, BResource::bres.resdata.texfilename[TEX_WHITE]);
+	}
+
+	if(tex[texindex].tex == NULL)
+	{
+#ifdef __DEBUG
+		HGELOG("%s\nFailed in loading Texture File %s.(To be assigned to Index %d).", HGELOG_ERRSTR, tnbuffer, texindex);
+#endif
+//		tex[i] = tex[TEX_WHITE];
+		tex[texindex] = hge->Texture_Create(0, 0);
+		return false;
+	}
+#ifdef __DEBUG
+	else
+	{
+		HGELOG("Succeeded in loading Texture File %s.(Assigned to Index %d).", tnbuffer, texindex);
+	}
+#endif
+	tex[texindex].texindex = texindex;
+	return true;
+}
+
+bool BResource::FreeTexture( int texindex/*=-1*/ )
+{
+	if (texindex < 0)
+	{
+		for (int i=0; i<TEXMAX; i++)
+		{
+			FreeTexture(i);
+		}
+		return true;
+	}
+
+	if (tex[texindex].tex)
+	{
+		hge->Texture_Free(tex[texindex]);
+		tex[texindex] = NULL;
+		tex[texindex].texindex = texindex;
+		return true;
+	}
+	return false;
 }
 
 void BResource::CopyData()
@@ -572,6 +659,7 @@ bool BResource::SetDataFile()
 	}
 	return true;
 }
+
 /*
 int BResource::SplitString(const char * str)
 {

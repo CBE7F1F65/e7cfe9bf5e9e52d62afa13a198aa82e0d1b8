@@ -1,6 +1,8 @@
 #include "../header/SE.h"
 #include "../header/BResource.h"
+#ifdef __WIN32
 #include "../../../src/core/BASS/bass.h"
+#endif // __WIN32
 
 //pan coefficient
 #define M_SE_PAN 0.35f
@@ -15,11 +17,11 @@ bool SE::Initial()
 	char buffer[M_STRMAX];
 	for(int i = 0;i < SEMAX;i++)
 	{
-		strcpy(buffer, BResource::res.resdata.sefilename[i]);
+		strcpy(buffer, BResource::bres.resdata.sefilename[i]);
 		if(!strlen(buffer))
 		{
 //			if(i < SE_FREEBEGIN)
-//				strcpy(buffer, BResource::res.resdata.sefilename[SE_DEFAULT]);
+//				strcpy(buffer, BResource::bres.resdata.sefilename[SE_DEFAULT]);
 //			else
 				continue;
 		}

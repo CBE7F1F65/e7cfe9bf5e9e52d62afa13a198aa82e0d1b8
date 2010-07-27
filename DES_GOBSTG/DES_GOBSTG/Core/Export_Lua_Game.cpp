@@ -43,6 +43,8 @@ bool Export_Lua_Game::_LuaRegistFunction(LuaObject * obj)
 	_gameobj.Register("GetPlayerMoveInfo", LuaFn_Game_GetPlayerMoveInfo);
 	_gameobj.Register("SetPerfectFreezeParam", LuaFn_Game_SetPerfectFreezeParam);
 	_gameobj.Register("GetOneMatchOverInfo", LuaFn_Game_GetOneMatchOverInfo);
+	_gameobj.Register("FreeTexture", LuaFn_Game_LoadTexture);
+	_gameobj.Register("FreeTexture", LuaFn_Game_FreeTexture);
 
 	return true;
 }
@@ -177,7 +179,7 @@ int Export_Lua_Game::LuaFn_Game_GetPlayerContentTable(LuaState * ls)
 		int _playercount = PLAYERTYPEMAX;
 		for (int i=0; i<PLAYERTYPEMAX; i++)
 		{
-			if (!strlen(BResource::res.playerdata[i].name))
+			if (!strlen(BResource::bres.playerdata[i].name))
 			{
 				_playercount = i;
 				break;
@@ -189,9 +191,9 @@ int Export_Lua_Game::LuaFn_Game_GetPlayerContentTable(LuaState * ls)
 	else
 	{
 		int _index = args[1].GetInteger();
-		ls->PushInteger(BResource::res.playerdata[_index].faceSIID);
-		_LuaHelper_PushString(ls, BResource::res.playerdata[_index].name);
-		_LuaHelper_PushString(ls, BResource::res.playerdata[_index].ename);
+		ls->PushInteger(BResource::bres.playerdata[_index].faceSIID);
+		_LuaHelper_PushString(ls, BResource::bres.playerdata[_index].name);
+		_LuaHelper_PushString(ls, BResource::bres.playerdata[_index].ename);
 		return 3;
 	}
 	return 0;
@@ -205,7 +207,7 @@ int Export_Lua_Game::LuaFn_Game_GetSceneContentTable(LuaState * ls)
 		int _scenecount = SCENEMAX;
 		for (int i=0; i<SCENEMAX; i++)
 		{
-			if (!strlen(BResource::res.playerdata[i].scenename))
+			if (!strlen(BResource::bres.playerdata[i].scenename))
 			{
 				_scenecount = i;
 				break;
@@ -217,7 +219,7 @@ int Export_Lua_Game::LuaFn_Game_GetSceneContentTable(LuaState * ls)
 	else
 	{
 		int _index = args[1].GetInteger();
-		ls->PushString(BResource::res.playerdata[_index].scenename);
+		ls->PushString(BResource::bres.playerdata[_index].scenename);
 		return 1;
 	}
 	return 0;
@@ -534,7 +536,7 @@ int Export_Lua_Game::LuaFn_Game_GetPlayerShootChargeOneInfo(LuaState * ls)
 	LuaStack args(ls);
 	BYTE _playerindex = args[1].GetInteger();
 	BYTE _ID = Player::p[_playerindex].nowID;
-	BYTE _shootchargemaxtime = BResource::res.playerdata[_ID].shootchargetime;
+	BYTE _shootchargemaxtime = BResource::bres.playerdata[_ID].shootchargetime;
 	ls->PushInteger(_ID);
 	ls->PushNumber(Player::p[_playerindex].x);
 	ls->PushNumber(Player::p[_playerindex].y);
@@ -638,6 +640,41 @@ int Export_Lua_Game::LuaFn_Game_GetOneMatchOverInfo(LuaState * ls)
 		return 3;
 	}
 	return 0;
+}
+
+int Export_Lua_Game::LuaFn_Game_LoadTexture(LuaState * ls)
+{
+	LuaStack args(ls);
+	int _texindex = -1;
+
+	if (args.Count() > 0)
+	{
+		_texindex = args[1].GetInteger();
+	}
+
+	bool bret = BResource::bres.LoadTexture(_texindex);
+	ls->PushBoolean(bret);
+	return 1;
+}
+
+int Export_Lua_Game::LuaFn_Game_FreeTexture(LuaState * ls)
+{
+	LuaStack args(ls);
+#ifndef __WIN32
+	int _texindex = -1;
+
+	if (args.Count() > 0)
+	{
+		_texindex = args[1].GetInteger();
+	}
+
+	bool bret = BResource::bres.FreeTexture(_texindex);
+	ls->PushBoolean(bret);
+#else
+	ls->PushBoolean(true);
+#endif // __WIN32
+
+	return 1;
 }
 
 #endif

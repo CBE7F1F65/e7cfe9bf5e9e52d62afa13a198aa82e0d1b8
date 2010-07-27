@@ -52,7 +52,7 @@ public:
 	Bullet();
 	~Bullet();
 
-	static void Init(HTEXTURE tex);
+	static void Init();
 	static void Release();
 	static void ClearItem();
 	static void Action();
@@ -129,7 +129,6 @@ public:
 
 	static RenderDepth renderDepth[M_PL_MATCHMAXPLAYER][BULLETTYPEMAX];
 	static hgeSprite * sprite[BULLETTYPECOLORMAX];
-	static HTEXTURE tex;
 	static WORD index;
 	static VectorList<Bullet>bu[M_PL_MATCHMAXPLAYER];
 };

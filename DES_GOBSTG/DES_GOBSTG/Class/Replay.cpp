@@ -10,7 +10,7 @@
 list<_ReplayNameListItem> Replay::_rpyfilenamelist;
 
 Replay Replay::rpy;
-Replay Replay::enumrpy[RPYENUMMAX];
+Replay * Replay::enumrpy = NULL;
 int Replay::nenumrpy = 0;
 
 Replay::Replay()
@@ -31,7 +31,7 @@ void Replay::Release(bool deletefiles/* =true */)
 	{
 		if (deletefiles)
 		{
-			DeleteFile(it->filename);
+			hge->Resource_DeleteFile(it->filename);
 		}
 		it = _rpyfilenamelist.erase(it);
 	}
@@ -49,12 +49,14 @@ int Replay::GetEnumReplay()
 {
 	ReleaseEnumReplay();
 
-	SetCurrentDirectory(hge->Resource_MakePath(BResource::res.resdata.replayfoldername));
+	enumrpy = new Replay[RPYENUMMAX];
+
+	hge->Resource_SetCurrentDirectory(hge->Resource_MakePath(BResource::bres.resdata.replayfoldername));
 	char * buffer;
 	char enumfile[M_STRMAX];
-	strcpy(enumfile, BResource::res.resdata.replayfoldername);
+	strcpy(enumfile, BResource::bres.resdata.replayfoldername);
 	strcat(enumfile, "*.");
-	strcat(enumfile, BResource::res.resdata.replayextensionname7);
+	strcat(enumfile, BResource::bres.resdata.replayextensionname7);
 	buffer = hge->Resource_EnumFiles(enumfile);
 
 	int tnrpys = 0;
@@ -75,21 +77,28 @@ int Replay::GetEnumReplay()
 
 void Replay::ReleaseEnumReplay()
 {
-	for (int i=0; i<RPYENUMMAX; i++)
+	if (enumrpy)
 	{
-		if (strlen(enumrpy[i].filename))
+		for (int i=0; i<RPYENUMMAX; i++)
 		{
-			Export::rpyFree(enumrpy[i].filename);
-			strcpy(enumrpy[i].filename, "");
+			if (strlen(enumrpy[i].filename))
+			{
+				Export::rpyFree(enumrpy[i].filename);
+				strcpy(enumrpy[i].filename, "");
+			}
 		}
+		delete[] enumrpy;
 	}
 	nenumrpy = 0;
 }
 
 void Replay::Fill()
 {
-	SYSTEMTIME systime;
-	GetLocalTime(&systime);
+// 	SYSTEMTIME systime;
+// 	GetLocalTime(&systime);
+
+	WORD wYear, wMonth, wDay, wHour, wMinute;
+	hge->Timer_GetSystemTime(&wYear, &wMonth, NULL, &wDay, &wHour, &wMinute);
 
 //	rpyinfo.modeflag = (Process::mp.spellmode?M_RPYMODE_SPELL:0)|(Process::mp.practicemode?M_RPYMODE_PRACTICE:0);
 
@@ -103,11 +112,11 @@ void Replay::Fill()
 
 	rpyinfo.scene = Process::mp.scene;
 	rpyinfo.alltime = Process::mp.alltime;
-	rpyinfo.year = systime.wYear;
-	rpyinfo.month = systime.wMonth;
-	rpyinfo.day = systime.wDay;
-	rpyinfo.hour = systime.wHour;
-	rpyinfo.minute = systime.wMinute;
+	rpyinfo.year = wYear;
+	rpyinfo.month = wMonth;
+	rpyinfo.day = wDay;
+	rpyinfo.hour = wHour;
+	rpyinfo.minute = wMinute;
 
 	rpyinfo.lost = Player::lostStack / Process::mp.framecounter;
 	rpyinfo.matchmode = Process::mp.matchmode;
@@ -155,7 +164,7 @@ bool Replay::Check(const char * _filename)
 
 	strcpy(filename, _filename);
 	char treplayfilename[M_PATHMAX];
-	strcpy(treplayfilename, BResource::res.resdata.replayfoldername);
+	strcpy(treplayfilename, BResource::bres.resdata.replayfoldername);
 	strcat(treplayfilename, _filename);
 	hge->Resource_AttachPack(treplayfilename, Data::data.password ^ REPLAYPASSWORD_XORMAGICNUM);
 
@@ -163,11 +172,11 @@ bool Replay::Check(const char * _filename)
 	hge->Resource_RemovePack(treplayfilename);
 	if(content)
 	{
-		if(strcmp((char *)(content + RPYOFFSET_SIGNATURE), BResource::res.resdata.replaysignature11))
+		if(strcmp((char *)(content + RPYOFFSET_SIGNATURE), BResource::bres.resdata.replaysignature11))
 			goto exit;
 		if(*(DWORD *)(content + RPYOFFSET_VERSION) != GAME_VERSION)
 			goto exit;
-		if(strcmp((char *)(content + RPYOFFSET_COMPLETESIGN), BResource::res.resdata.replaycompletesign3))
+		if(strcmp((char *)(content + RPYOFFSET_COMPLETESIGN), BResource::bres.resdata.replaycompletesign3))
 			goto exit;
 		bret = true;
 	}
@@ -216,7 +225,7 @@ bool Replay::Load(const char * _filename, bool getInput)
 	if(Check(_filename))
 	{
         char treplayfilename[M_PATHMAX];
-		strcpy(treplayfilename, BResource::res.resdata.replayfoldername);
+		strcpy(treplayfilename, BResource::bres.resdata.replayfoldername);
 		strcat(treplayfilename, _filename);
 		ret = Export::rpyLoad(treplayfilename, &rpyinfo, partinfo, getInput ? replayframe : NULL);
 		if (getInput)
@@ -259,7 +268,7 @@ void Replay::CreateSaveFilename(char * filename)
 			}
 			strcat(_filename, buffer);
 			strcat(_filename, ".");
-			strcat(_filename, BResource::res.resdata.replayextensionname7);
+			strcat(_filename, BResource::bres.resdata.replayextensionname7);
 			break;;
 		}
 	}
@@ -287,11 +296,11 @@ void Replay::Save(const char * replayfilename)
 	DWORD _size = RPYOFFSET_INPUTDATA + (replayIndex + 1) * RPYSIZE_FRAME;
 	BYTE * _rpydata = (BYTE *)malloc(_size);
 	DWORD tdw;
-	memcpy(_rpydata + RPYOFFSET_SIGNATURE, BResource::res.resdata.replaysignature11, RPYSIZE_SIGNATURE);
+	memcpy(_rpydata + RPYOFFSET_SIGNATURE, BResource::bres.resdata.replaysignature11, RPYSIZE_SIGNATURE);
 	tdw = GAME_VERSION;
 	memcpy(_rpydata + RPYOFFSET_VERSION, &tdw, RPYSIZE_VERSION);
-	memcpy(_rpydata + RPYOFFSET_COMPLETESIGN, BResource::res.resdata.replaycompletesign3, RPYSIZE_COMPLETESIGN);
-	memcpy(_rpydata + RPYOFFSET_TAG, BResource::res.resdata.replaytag3, RPYSIZE_TAG);
+	memcpy(_rpydata + RPYOFFSET_COMPLETESIGN, BResource::bres.resdata.replaycompletesign3, RPYSIZE_COMPLETESIGN);
+	memcpy(_rpydata + RPYOFFSET_TAG, BResource::bres.resdata.replaytag3, RPYSIZE_TAG);
 	tdw = RPYOFFSET_PARTINFO;
 	memcpy(_rpydata + RPYOFFSET_INFOOFFSET, &tdw, RPYSIZE_INFOOFFSET);
 	strcpy(buffer, "");
@@ -308,12 +317,12 @@ void Replay::Save(const char * replayfilename)
 	*/
 
 	char treplayfilename[M_PATHMAX];
-	strcpy(treplayfilename, BResource::res.resdata.replayfoldername);
+	strcpy(treplayfilename, BResource::bres.resdata.replayfoldername);
 	strcat(treplayfilename, savefilename);
 
 	char crcfilename[M_PATHMAX];
 	strcpy(crcfilename, savefilename);
-	strcat(crcfilename, itoa(hge->Resource_GetCRC(_rpydata, _size), buffer, 10));
+	strcat(crcfilename, hge->Math_itoa(hge->Resource_GetCRC(_rpydata, _size), buffer));
 	hgeMemoryFile memfile;
 	memfile.filename = crcfilename;
 	memfile.data = _rpydata;

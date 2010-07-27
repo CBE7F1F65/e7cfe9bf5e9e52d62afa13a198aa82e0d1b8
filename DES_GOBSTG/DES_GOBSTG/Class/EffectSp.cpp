@@ -67,7 +67,7 @@ void EffectSp::Render()
 		SpriteItemManager::ChangeSprite(siidnow, sprite);
 		sprite->SetColor((alpha<<24)|diffuse);
 		sprite->SetBlendMode(blend);
-		sprite->RenderEx(x, y, ARC(angle+headangle), hscale, vscale);
+		SpriteItemManager::RenderSpriteEx(sprite, x, y, ARC(angle+headangle), hscale, vscale);
 	}
 }
 

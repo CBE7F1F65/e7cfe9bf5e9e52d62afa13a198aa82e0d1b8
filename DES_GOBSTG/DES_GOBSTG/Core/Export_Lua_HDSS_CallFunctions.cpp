@@ -5,7 +5,7 @@
 #include "../Header/Export_Lua_HDSS_CallGet.h"
 #include "../Header/processPrep.h"
 
-#include "../Header/../Header/Export_Lua_HDSS_CallGetDefine.h"
+#include "../Header/Export_Lua_HDSS_CallGetDefine.h"
 
 bool _HDSSCallGet::bhavenext=false;
 LuaObject _HDSSCallGet::_para;

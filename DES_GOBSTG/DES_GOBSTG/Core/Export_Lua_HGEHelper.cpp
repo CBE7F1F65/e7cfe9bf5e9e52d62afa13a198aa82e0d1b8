@@ -1,8 +1,10 @@
 #ifndef __NOTUSELUA
 
-#include "../Header/../Header/Export_Lua_HGEHelp.h"
-#include "../Header/../Header/LuaConstDefine.h"
-#include "../Header/../Header/Export.h"
+#include "../Header/Export_Lua_HGEHelp.h"
+#include "../Header/LuaConstDefine.h"
+#include "../Header/Export.h"
+#include "../Header/BResource.h"
+#include "../Header/SpriteItemManager.h"
 
 list<hgeFont *> Export_Lua_HGEHelp::fontList;
 list<hgeSprite *> Export_Lua_HGEHelp::spriteList;
@@ -251,7 +253,7 @@ int Export_Lua_HGEHelp::LuaFn_hgeFont_printfb(LuaState * ls)
 	LuaStack args(ls);
 	hgeFont * _font = _LuaHelper_hgeFont_Get(&args);
 
-	_font->printfb(args[2].GetFloat(), args[3].GetFloat(), args[4].GetFloat(), args[5].GetFloat(), args[6].GetInteger(), args[7].GetString());
+	SpriteItemManager::FontPrintfb(_font, args[2].GetFloat(), args[3].GetFloat(), args[4].GetFloat(), args[5].GetFloat(), args[6].GetInteger(), args[7].GetString());
 
 	return 0;
 }
@@ -583,10 +585,10 @@ hgeEffectSystem * Export_Lua_HGEHelp::_Helper_New_hgeES()
 	return _es;
 }
 
-hgeEffectSystem * Export_Lua_HGEHelp::_Helper_New_hgeES(const char * filename, HTEXTURE tex /* = 0 */, HTEXTURE * texset /* = 0 */)
+hgeEffectSystem * Export_Lua_HGEHelp::_Helper_New_hgeES(const char * filename, HTEXTURE tex /* = 0 */)
 {
 	hgeEffectSystem * _es = NULL;
-	_es = new hgeEffectSystem(filename, tex, texset);
+	_es = new hgeEffectSystem(filename, tex, BResource::bres.tex);
 	if (_es)
 	{
 		esList.push_back(_es);
@@ -665,7 +667,7 @@ int Export_Lua_HGEHelp::LuaFn_hgeES_NewES(LuaState * ls)
 				_htexture = (HTEXTURE)(_LuaHelper_GetDWORD(&_obj));
 			}
 			const char * filename = args[1].GetString();
-			_es = _Helper_New_hgeES(filename, _htexture, texset);
+			_es = _Helper_New_hgeES(filename, _htexture);
 		}
 		else
 		{
@@ -762,7 +764,7 @@ int Export_Lua_HGEHelp::LuaFn_hgeES_Render(LuaState * ls)
 		}
 	}
 
-	_es->Render(ptfar, colormask);
+	SpriteItemManager::EffectSystemRender(_es, ptfar, colormask);
 
 	return 0;
 }
@@ -989,11 +991,11 @@ int Export_Lua_HGEHelp::LuaFn_hgeSprite_Render(LuaState * ls)
 				}
 			}
 		}
-		_sprite->RenderEx(args[2].GetFloat(), args[3].GetFloat(), rot, hscale, vscale);
+		SpriteItemManager::RenderSpriteEx(_sprite, args[2].GetFloat(), args[3].GetFloat(), rot, hscale, vscale);
 	}
 	else
 	{
-		_sprite->Render(args[2].GetFloat(), args[3].GetFloat());
+		SpriteItemManager::RenderSprite(_sprite, args[2].GetFloat(), args[3].GetFloat());
 	}
 
 	return 0;
@@ -1151,12 +1153,16 @@ int Export_Lua_HGEHelp::LuaFn_hgeSprite_GetTexture(LuaState * ls)
 {
 	LuaStack args(ls);
 	hgeSprite * _sprite = _LuaHelper_hgeSprite_Get(&args);
+	int iret;
 	DWORD dret;
 
-	dret = (DWORD)(_sprite->GetTexture());
+	HTEXTURE _tex = _sprite->GetTexture();
+	iret = _tex.texindex;
+	dret = hge->Texture_GetTexture(_tex);
 
+	ls->PushInteger(iret);
 	_LuaHelper_PushDWORD(ls, dret);
-	return 1;
+	return 2;
 }
 
 int Export_Lua_HGEHelp::LuaFn_hgeSprite_GetTextureRect(LuaState * ls)

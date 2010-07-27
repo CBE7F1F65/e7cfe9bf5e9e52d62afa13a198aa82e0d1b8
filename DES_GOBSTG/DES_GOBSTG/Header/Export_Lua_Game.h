@@ -38,6 +38,8 @@ public:
 	static int LuaFn_Game_GetPlayerMoveInfo(LuaState * ls);
 	static int LuaFn_Game_SetPerfectFreezeParam(LuaState * ls);
 	static int LuaFn_Game_GetOneMatchOverInfo(LuaState * ls);
+	static int LuaFn_Game_LoadTexture(LuaState * ls);
+	static int LuaFn_Game_FreeTexture(LuaState * ls);
 };
 
 #endif

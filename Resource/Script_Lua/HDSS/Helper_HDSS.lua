@@ -653,7 +653,7 @@ function hdssCHAT(ID, flag, text)
 		end
 	end
 	if text == 0 or text == 1 then
-		text = LTable_PlayerWinLoseChat[ID+1][2+text];
+		text = luaStringTable[LConst_StringTableID_LTable_PlayerWinLoseChat][ID+1][1+text];
 	end
 	return hdss.Call(
 		HDSS_CHAT,

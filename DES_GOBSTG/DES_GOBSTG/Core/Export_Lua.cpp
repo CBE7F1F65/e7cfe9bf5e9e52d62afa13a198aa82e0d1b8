@@ -8,7 +8,6 @@
 
 LuaStateOwner Export_Lua::state;
 HGE * Export_Lua::hge = NULL;
-HTEXTURE * Export_Lua::texset = NULL;
 
 Export_Lua::Export_Lua()
 {
@@ -27,17 +26,13 @@ void Export_Lua::Release(LuaState * ls /* = NULL */)
 	ReleaseHGE();
 }
 
-void Export_Lua::InitHGE(HGE * _hge, HTEXTURE * _texset)
+void Export_Lua::InitHGE(HGE * _hge)
 {
 	Release();
 	state->OpenLibs();
 	if (_hge != NULL)
 	{
 		hge = _hge;
-	}
-	if (_texset != NULL)
-	{
-		texset = _texset;
 	}
 }
 
@@ -51,7 +46,7 @@ int Export_Lua::ReadLuaFileTable(LuaState * ls)
 	{
 		ls = state;
 	}
-	if (_access(hge->Resource_MakePath(DEFAULT_LUAFILETABLEFILE), 0) == -1)
+	if (!hge->Resource_AccessFile(hge->Resource_MakePath(DEFAULT_LUAFILETABLEFILE)))
 	{
 		return -1;
 	}
@@ -59,7 +54,7 @@ int Export_Lua::ReadLuaFileTable(LuaState * ls)
 	iret = DoLuaFile(ls, DEFAULT_LUAFILETABLEFILE);
 	if (iret == 0)
 	{
-		if (_access(hge->Resource_MakePath(DEFAULT_LUACONSTFILE), 0) != -1)
+		if (!hge->Resource_AccessFile(hge->Resource_MakePath(DEFAULT_LUACONSTFILE)))
 		{
 			iret = DoLuaFile(ls, DEFAULT_LUACONSTFILE);
 		}
@@ -69,7 +64,7 @@ int Export_Lua::ReadLuaFileTable(LuaState * ls)
 
 int Export_Lua::_LoadLuaFile(LuaState * ls, const char * filename, bool bDoFile /* = false */, int * filecount /* = NULL */, FILE * outputfile /* = NULL */)
 {
-	char fullfilename[MAX_PATH];
+	char fullfilename[M_PATHMAX];
 	strcpy(fullfilename, hge->Resource_MakePath(filename));
 	int iret = 0;
 	if (bDoFile)
@@ -126,7 +121,7 @@ int Export_Lua::LoadLuaFile(LuaState * ls, const char * filename, bool bDoFile /
 	}
 	int iret = 0;
 	bool wildcard = false;
-	char filenamebuffer[MAX_PATH];
+	char filenamebuffer[M_PATHMAX];
 	strcpy(filenamebuffer, filename);
 	for (int i=0; i<strlen(filenamebuffer); i++)
 	{
@@ -226,7 +221,7 @@ int Export_Lua::PackLuaFiles(LuaState * ls)
 	iret = ls->Dump(writer, (void *)outputfile, 1, '=');
 	fclose(outputfile);
 
-	DeleteFile(hge->Resource_MakePath(DEFAULT_TEMPLUAFILE));
+	hge->Resource_DeleteFile(hge->Resource_MakePath(DEFAULT_TEMPLUAFILE));
 	if (iret != 0)
 	{
 		ShowError(LUAERROR_DUMPINGSCRIPT, ls->GetError(iret));
@@ -276,7 +271,7 @@ int Export_Lua::LoadPackedLuaFiles(LuaState * ls)
 		ShowError(LUAERROR_LOADINGSCRIPT, ls->GetError(iret));
 	}
 	hge->Resource_Free(content);
-	DeleteFile(hge->Resource_MakePath(DEFAULT_BINLUAFILE));
+	hge->Resource_DeleteFile(hge->Resource_MakePath(DEFAULT_BINLUAFILE));
 	return iret;
 }
 
@@ -300,7 +295,7 @@ void Export_Lua::ShowError(int errortype, const char * err)
 	default:
 		strcpy(msgtitle, "Error!");
 	}
-	MessageBox(hge->System_GetState(HGE_HWND), err, msgtitle, MB_OK);
+	hge->System_MessageBox(err, msgtitle, MB_OK);
 	if (!hge->System_GetState(HGE_LOGFILE) || !strlen(hge->System_GetState(HGE_LOGFILE)))
 	{
 		hge->System_SetState(HGE_LOGFILE, LOG_STR_FILENAME);
@@ -308,4 +303,41 @@ void Export_Lua::ShowError(int errortype, const char * err)
 	hge->System_Log("%s: %s", msgtitle, err);
 }
 
+#include "../Header/Fontsys.h"
+
+void Export_Lua::HeatUp(list<int> * charcodelist, LuaState * ls)
+{
+	HeatUp(charcodelist, ls, NULL);
+}
+
+void Export_Lua::HeatUp( list<int> * charcodelist, LuaState * ls, LuaObject * obj )
+{
+	if (!ls)
+	{
+		ls = state;
+	}
+	LuaObject _obj;
+	if (!obj)
+	{
+		_obj = ls->GetGlobals().GetByName(DEFAULT_LUASTRINGTABLENAME);
+		if (!_obj.IsTable())
+		{
+			return;
+		}
+		obj = &_obj;
+	}
+	int num = obj->GetTableCount();
+	for (int i=0; i<num; i++)
+	{
+		LuaObject tobj = obj->GetByIndex(i+1);
+		if (tobj.IsTable())
+		{
+			HeatUp(charcodelist, ls, &tobj);
+		}
+		else if (tobj.IsString())
+		{
+			Fontsys::DoHeatUpBuffer(tobj.GetString(), charcodelist);
+		}
+	}
+}
 #endif

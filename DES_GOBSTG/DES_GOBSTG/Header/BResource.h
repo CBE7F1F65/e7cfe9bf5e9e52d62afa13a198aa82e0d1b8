@@ -7,6 +7,7 @@
 #define RSIZE_RESOURCE		(sizeof(resourceData))
 #define RSIZE_STRINGDESC	(sizeof(char) * M_STRMAX * STRINGDESCMAX)
 #define RSIZE_CUSTOMCONST	(sizeof(customconstData) * SCR_CUSTOMCONSTMAX)
+#define RSIZE_TEXTURE		(sizeof(textureData) * TEXMAX)
 #define RSIZE_MUSIC			(sizeof(musicData) * MUSICMAX)
 #define RSIZE_BULLET		(sizeof(bulletData) * BULLETTYPEMAX)
 #define RSIZE_ENEMY			(sizeof(enemyData) * ENEMYTYPEMAX)
@@ -33,6 +34,10 @@ public:
 	bool LoadPackage(int packindex);
 	bool LoadAllPackage();
 
+	void InitTexinfo();
+	bool LoadTexture(int texindex=-1);
+	bool FreeTexture(int texindex=-1);
+
 	void ReleaseCustomConst();
 	void MallocCustomConst();
 	void ReleaseSpriteData();
@@ -51,8 +56,13 @@ public:
 	playershootData playershootdata[PLAYERSHOOTTYPEMAX];
 	playerghostData playerghostdata[PLAYERGHOSTTYPEMAX];
 	customconstData * customconstdata;
+	textureData texturedata[TEXMAX];
 
-	static BResource res;
+	//texture
+	HTEXTURE	tex[TEXMAX];
+	hgeTextureInfo texinfo[TEXMAX];
+
+	static BResource bres;
 };
 
 extern HGE * hge;

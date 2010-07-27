@@ -33,7 +33,7 @@ void EventZone::Render()
 {
 	if (sprite && timer > 0)
 	{
-		sprite->RenderEx(x, y, ARC(timer*turnangle), rx*2/width);
+		SpriteItemManager::RenderSpriteEx(sprite, x, y, ARC(timer*turnangle), rx*2/width);
 	}
 }
 

@@ -108,7 +108,7 @@ public:
 	~Enemy();
 
 	static int Build(WORD eID, BYTE playerindex, float x, float y, int angle, float speed, BYTE type, float life, int infitimer=0);
-	static void Init(HTEXTURE * tex);
+	static void Init();
 	static void Release();
 	static void Action();
 	static void ClearAll();
@@ -237,7 +237,6 @@ public:
 	static BYTE nEnemyNow[M_PL_MATCHMAXPLAYER][ENEMY_NMAXSETMAX];
 
 	hgeSprite * sprite;
-	static HTEXTURE * tex;
 	static VectorList<Enemy> en[M_PL_MATCHMAXPLAYER];
 	static list<EnemyActivationZone> enaz[M_PL_MATCHMAXPLAYER];
 	static VectorList<ScoreDisplay> scoredisplay[M_PL_MATCHMAXPLAYER];

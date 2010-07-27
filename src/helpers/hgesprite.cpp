@@ -47,15 +47,16 @@ void hgeSprite::NewSprite(HTEXTURE texture, float texx, float texy, float w, flo
 {
 	float texx1, texy1, texx2, texy2;
 
-	if(texture)
+	tex_width = (float)hge->Texture_GetWidth(texture);
+	tex_height = (float)hge->Texture_GetHeight(texture);
+
+	if (!tex_width)
 	{
-		tex_width = (float)hge->Texture_GetWidth(texture);
-		tex_height = (float)hge->Texture_GetHeight(texture);
+		tex_width = 1;
 	}
-	else
+	if (!tex_height)
 	{
-		tex_width = 1.0f;
-		tex_height = 1.0f;
+		tex_height = 1;
 	}
 
 	if (w < 0 || h < 0)
@@ -277,15 +278,15 @@ void hgeSprite::SetTexture(HTEXTURE tex)
 
 	quad.tex=tex;
 
-	if(tex)
+	tw = (float)hge->Texture_GetWidth(tex);
+	th = (float)hge->Texture_GetHeight(tex);
+	if (!tw)
 	{
-		tw = (float)hge->Texture_GetWidth(tex);
-		th = (float)hge->Texture_GetHeight(tex);
+		tw = 1;
 	}
-	else
+	if (!th)
 	{
-		tw = 1.0f;
-		th = 1.0f;
+		th = 1;
 	}
 
 	if(tw!=tex_width || th!=tex_height)
@@ -404,7 +405,7 @@ bool hgeSprite::SetZ(float z0, float z1, float z2, float z3, hge3DPoint *ptfar)
 		for (int i=0; i<4; i++)
 		{
 			//use z0
-			float zscale = hge->System_Transform3DPoint(quad.v[i].x, quad.v[i].y, quad.v[0].z, ptfar);
+			float zscale = hge->Math_Transform3DPoint(quad.v[i].x, quad.v[i].y, quad.v[0].z, ptfar);
 			if (i == 0)
 			{
 				scale3d = zscale;

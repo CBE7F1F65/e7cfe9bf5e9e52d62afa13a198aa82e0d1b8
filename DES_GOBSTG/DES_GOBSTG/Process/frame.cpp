@@ -21,7 +21,7 @@ int Process::frame()
 #ifdef __DEBUG
 	if(hge->Input_GetKeyState(HGEK_BACKSPACE))
 	{
-		Scripter::scr.LoadAll(tex);
+		Scripter::scr.LoadAll();
 		state = STATE_TITLE;
 		gametime = 0;
 		return PTURN;
@@ -112,12 +112,7 @@ int Process::frame()
 
 	if(playing && !playtimeStart)
 	{
-		SYSTEMTIME tsystime;
-		FILETIME tfiletime;
-		GetLocalTime(&tsystime);
-		SystemTimeToFileTime(&tsystime, &tfiletime);
-
-		playtimeStart = (((LONGLONG)tfiletime.dwHighDateTime) << 32) | tfiletime.dwLowDateTime;
+		playtimeStart = hge->Timer_GetFileTime();
 	}
 	else if(!playing && playtimeStart)
 	{

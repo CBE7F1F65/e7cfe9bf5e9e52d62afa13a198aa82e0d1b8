@@ -5,6 +5,7 @@
 #include "../header/Target.h"
 #include "../header/ProcessDefine.h"
 #include "../header/Process.h"
+#include "../Header/SpriteItemManager.h"
 
 VectorList<Effectsys> Effectsys::effsys[M_PL_MATCHMAXPLAYER];
 hgeEffectSystem Effectsys::efftype[EFFECTSYSTYPEMAX];
@@ -209,7 +210,7 @@ void Effectsys::SetColorMask(DWORD color)
 void Effectsys::Render()
 {
 	BYTE renderflag = Export::GetRenderFlagByPlayerIndex(playerindex);
-	eff.Render(Export::GetFarPoint(renderflag), (alpha<<24)|diffuse);
+	SpriteItemManager::EffectSystemRender(&eff, Export::GetFarPoint(renderflag), (alpha<<24)|diffuse);
 }
 
 void Effectsys::MoveTo(float _x, float _y, float _z, bool bForce)
@@ -240,7 +241,10 @@ void Effectsys::action(bool byself)
 	if (chasetimer)
 	{
 		chasetimer--;
-		chaseAim(Target::tar[tarAim].x, Target::tar[tarAim].y, chasetimer);
+		if (tarAim < TARGETMAX)
+		{
+			chaseAim(Target::tar[tarAim].x, Target::tar[tarAim].y, chasetimer);
+		}
 	}
 
 	if (speed)

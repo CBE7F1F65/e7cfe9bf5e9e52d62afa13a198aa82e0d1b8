@@ -26,7 +26,7 @@ public:
 	SpriteItemManager();
 	~SpriteItemManager();
 
-	static void Init(HTEXTURE * tex);
+	static void Init();
 	static void Release();
 	static hgeSprite * CreateSprite(int index);
 	static bool CreateSprite(int index, hgeSprite ** sprite);
@@ -54,7 +54,7 @@ public:
 	static void FreeFrontSprite(int ID=-1);
 	static void RenderFrontSprite();
 
-	static bool SetSprite(int index, hgeSprite * sprite, HTEXTURE * tex);
+	static bool SetSprite(int index, hgeSprite * sprite);
 
 	static HTEXTURE GetTexture(int index);
 	static float GetTexX(int index);
@@ -64,9 +64,17 @@ public:
 
 	static bool ptFace(int index, hgeSprite * sprite);
 
-public:
-	static HTEXTURE * tex;
+	static bool LoadTextureWhenNeeded(HTEXTURE tex);
+	static bool LoadTextureWhenNeededCallBack();
 
+	static void RenderSprite(hgeSprite * sprite, float x, float y);
+	static void RenderSpriteEx(hgeSprite * sprite, float x, float y, float rot, float hscale=1.0f, float vscale=0.0f);
+	static void FontPrintf(hgeFont * font, float x, float y, int align, const char * str);
+	static void FontPrintfb(hgeFont * font, float x, float y, float w, float h, int align, const char * str);
+	static void EffectSystemRender(hgeEffectSystem * eff, hge3DPoint *ptfar=NULL, DWORD colormask=0xffffffff);
+	static void RenderQuad(hgeQuad * quad);
+
+public:
 	static int yesIndex;
 	static int noIndex;
 	static int cancelIndex;

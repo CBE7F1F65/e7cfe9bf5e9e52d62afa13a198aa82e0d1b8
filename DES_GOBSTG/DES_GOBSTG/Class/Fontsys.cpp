@@ -1,131 +1,177 @@
-#include "../header/Fontsys.h"
-#include "../header/Main.h"
-#include "../header/Scripter.h"
-#include "../header/Data.h"
-#include "../header/SpriteItemManager.h"
+#include "../Header/Fontsys.h"
+#include "../Header/Main.h"
+#include "../Header/Scripter.h"
+#include "../Header/Data.h"
+#include "../Header/SpriteItemManager.h"
+#include "../Header/Player.h"
+#include "../Header/BResource.h"
 
-list<Fontsys *> Fontsys::fontsys;
-HD3DFONT Fontsys::font = NULL;
+HD3DFONT Fontsys::d3dfont = NULL;
+hgeFont * Fontsys::font = NULL;
 
 Fontsys::Fontsys()
 {
-	tar = NULL;
-	sprite = NULL;
-	signedup = false;
-//	ZeroMemory(&quad, sizeof(hgeQuad));
-	strcpy(text, "");
 }
 
 Fontsys::~Fontsys()
 {
-	ReleaseTargetAndSprite();
-}
-
-void Fontsys::ReleaseTargetAndSprite()
-{
-	if (tar)
-	{
-		hge->Target_Free(tar);
-		tar = NULL;
-	}
-	SpriteItemManager::FreeSprite(&sprite);
-}
-
-bool Fontsys::SignOff(bool erase)
-{
-	ReleaseTargetAndSprite();
-	strcpy(text, "");
-	if (!erase || !signedup)
-	{
-		return true;
-	}
-	for (list<Fontsys *>::iterator it=fontsys.begin(); it!= fontsys.end(); it++)
-	{
-		if (*it == this)
-		{
-			it = fontsys.erase(it);
-			return true;
-		}
-	}
-//	ZeroMemory(&quad, sizeof(hgeQuad));
-	return false;
 }
 
 void Fontsys::Release()
 {
-	for (list<Fontsys *>::iterator it=fontsys.begin(); it!=fontsys.end();)
+	if (font)
 	{
-		if ((*it)->SignOff(false))
-		{
-			it = fontsys.erase(it);
-		}
-		else
-		{
-			it++;
-		}
+		delete font;
+		font = NULL;
 	}
-	fontsys.clear();
 }
 
-void Fontsys::Init(HD3DFONT _font)
+void Fontsys::Init(HD3DFONT _d3dfont)
 {
-	if (_font != NULL)
-	{
-		font = _font;
-	}
+	d3dfont = _d3dfont;
 	Release();
+//	changeID = -1;
 }
 
-void Fontsys::HeatUp()
+void Fontsys::DoHeatUpBuffer( const char* str, list<int> * charcodelist )
 {
+	int nowindex = 0;
+	int len = strlen(str);
+	if (len)
+	{
+		while (nowindex < len)
+		{
+			int i=*(unsigned char*)(&(str[nowindex]));
+			nowindex++;
+			if (i > 0x7f && nowindex < len)
+			{
+				i = i << 8;
+				i = i | (*(unsigned char*)(&(str[nowindex])));
+				nowindex++;
+			}
+			else
+			{
+				continue;
+			}
+			bool tocontinue = false;
+			list<int>::iterator it=charcodelist->begin();
+			for (; it!=charcodelist->end(); it++)
+			{
+				if (*it == i)
+				{
+					tocontinue = true;
+					break;
+				}
+				else if (*it > i)
+				{
+					break;
+				}
+			}
+			if (tocontinue)
+			{
+				continue;
+			}
+			int _charcode = i;
+			charcodelist->insert(it, 1, _charcode);
+//			charcodelist->push_back(_charcode);
+		}
+	}
+}
+
+void Fontsys::HeatUp(bool rebuildfont)
+{
+	if (rebuildfont)
+	{
+#ifdef __WIN32
+		if (!d3dfont)
+		{
+			return;
+		}
+
+		list<int> charcodelist;
+
+		for (int i=0; i<PLAYERTYPEMAX; i++)
+		{
+			DoHeatUpBuffer(BResource::bres.playerdata[i].name, &charcodelist);
+			for (int j=0; j<3; j++)
+			{
+				DoHeatUpBuffer(BResource::bres.playerdata[i].spellname[j], &charcodelist);
+			}
+		}
+		for (int i=0; i<ENEMYTYPEMAX; i++)
+		{
+			DoHeatUpBuffer(BResource::bres.enemydata[i].name, &charcodelist);
+			DoHeatUpBuffer(BResource::bres.enemydata[i].ename, &charcodelist);
+		}
+		for (int i=0; i<MUSICMAX; i++)
+		{
+			DoHeatUpBuffer(BResource::bres.musdata[i].musicname, &charcodelist);
+		}
+		Export_Lua::HeatUp(&charcodelist);
+
+		int * charcodes = (int *)malloc(charcodelist.size() * sizeof(int));
+		int i = 0;
+		for (list<int>::iterator it=charcodelist.begin(); it!=charcodelist.end(); it++, i++)
+		{
+			charcodes[i] = *it;
+		}
+		if (hgeFont::CreateFontFileByInfo(charcodes, i, BResource::bres.resdata.fontfilename, d3dfont))
+		{
+		}
+		free(charcodes);
+#endif // __WIN32
+	}
+
+	if (font)
+	{
+		delete font;
+	}
+	font = new hgeFont(BResource::bres.resdata.fontfilename);
+
 	/*
 	for (int i=0; i<scr.strdescIndex; i+=(i+1))
 	{
 		SignUp(FONTSYS_CHATUSE, strdesc[i]);
 	}
 	*/
-	/*
-	Fontsys _fs;
+/*
 	for (int i=0; i<PLAYERTYPEMAX; i++)
 	{
-		_fs.SignUp(data.getPlayerName(i));
+		SignUp(i%FONTSYSMAX, Data::data.getPlayerName(i), 1.25f);
 	}
 	for (int i=0; i<ENEMYTYPEMAX; i++)
 	{
-		_fs.SignUp(data.getEnemyName(i));
-	}
-	_fs.SignOff();
-	*/
+		SignUp(i%FONTSYSMAX, Data::data.getEnemyName(i), 1.25f);
+	}*/
+
 }
 
-bool Fontsys::GfxRestore()
+void Fontsys::FocusChanged()
 {
-	for (list<Fontsys *>::iterator it=fontsys.begin(); it!=fontsys.end(); it++)
+/*
+	Release();
+	SignUp(FONTSYS_CHATUSE, NULL, fontscale[FONTSYS_CHATUSE]);
+	SignUp(FONTSYS_SPELLNAMEUSE, NULL, fontscale[FONTSYS_SPELLNAMEUSE]);
+	if (changeID >= 0)
 	{
-		HD3DFONT _usingfont = (*it)->usingfont;
-		(*it)->SignUp(NULL, _usingfont);
-//		(*it)->sprite->SetTexture(hge->Target_GetTexture((*it)->tar));
-	}
-	return true;
+		for (int i=0; i<=changeID; i++)
+		{
+			SignUp(i, NULL, fontscale[i]);
+		}
+	}*/
+
 }
 
-int Fontsys::strTranslate(char * dtext, const char * stext, int * maxchar)
+int Fontsys::strTranslate(char * dtext, const char * stext)
 {
-	int _lines = 1;
-	int _maxcharinline = -1;
-	int lastj = 0;
+	int ret = 1;
 	int j=0;
 	strcpy(dtext, "");
-	for(int i=0; i<(int)strlen(stext); i++)
+	for(int i=0;i<(int)strlen(stext);i++)
 	{
 		if (stext[i] == '\n')
 		{
-			if (_maxcharinline < j - lastj)
-			{
-				_maxcharinline = j - lastj;
-			}
-			lastj = j;
-			_lines++;
+			ret++;
 		}
 		if (stext[i]<0)
 		{
@@ -195,83 +241,32 @@ int Fontsys::strTranslate(char * dtext, const char * stext, int * maxchar)
 		strcat(dtext, tbuff);
 		j++;
 	}
-	if (_maxcharinline < j - lastj)
-	{
-		_maxcharinline = j - lastj;
-	}
-	if (maxchar)
-	{
-		*maxchar = _maxcharinline;
-	}
-	return _lines;
+	return ret;
 }
 
-void Fontsys::SignUp(const char * _text, HD3DFONT _font)
+void Fontsys::SignUp(const char * _text, float scale)
 {
-	HTEXTURE tex;
-
 	if (_text != NULL)
 	{
-		SignOff();
-		lines = strTranslate(text, _text, &maxcharinline);
+		strTranslate(text, _text);
 	}
-	ReleaseTargetAndSprite();
-	tar = hge->Target_Create(FONTSYS_TARGETWIDTH, FONTSYS_TARGETHEIGHT, false);
-	if (!_font)
-	{
-		_font = font;
-	}
-	usingfont = _font;
-
-	int fontheight = hge->Gfx_RenderTextToTarget(&tex, tar, _font, text, 0, 0, FONTSYS_TARGETWIDTH, FONTSYS_TARGETHEIGHT);
-
-//	float w = strlen(text) * M_FONTWIDTH;
-//	float h = lines * M_FONTHEIGHT;
-	float w = (fontheight / lines) * 0.55f * (maxcharinline+1);
-	float h = fontheight;
-	if (w > FONTSYS_TARGETWIDTH)
-	{
-		w = FONTSYS_TARGETWIDTH;
-	}
-	if (h > FONTSYS_TARGETHEIGHT)
-	{
-		h = FONTSYS_TARGETHEIGHT;
-	}
-//	float tx = w / FONTSYS_TARGETWIDTH;
-//	float ty = h / FONTSYS_TARGETHEIGHT;
-
-	if (tex)
-	{
-		sprite = SpriteItemManager::CreateNullSprite();
-		SpriteItemManager::SetSpriteData(sprite, tex, 0, 0, w, h);
-		sprite->SetBlendMode(BLEND_DEFAULT);
-	}
-
-	/*
-	quad.tex = tex;
-	quad.blend = BLEND_DEFAULT;
-	quad.v[0].tx = 0;	quad.v[0].ty = 0;
-	quad.v[1].tx = tx;	quad.v[1].ty = 0;
-	quad.v[2].tx = tx;	quad.v[2].ty = ty;
-	quad.v[3].tx = 0;	quad.v[3].ty = ty;
-	quad.v[0].z = quad.v[1].z = quad.v[2].z = quad.v[3].z = 0;
-	quad.v[0].x = 0;					quad.v[0].y = 0;
-	quad.v[1].x = w;	quad.v[1].y = 0;
-	quad.v[2].x = w;	quad.v[2].y = h;
-	quad.v[3].x = 0;	quad.v[3].y = h;
-	*/
-
-	if (_text)
-	{
-		fontsys.push_back(this);
-	}
-
-	signedup = true;
+	fontscale = scale;
+	
 }
 
-void Fontsys::Render(float x, float y, float shadow, float hscale, float vscale, BYTE alignflag)
+void Fontsys::SetColor(DWORD col0, DWORD col1, DWORD col2, DWORD col3)
 {
-	if (!sprite)
+	font->SetColor(col0, col1, col2, col3);
+}
+
+void Fontsys::SetColor(DWORD col, int i)
+{
+	font->SetColor(col, i);
+}
+
+void Fontsys::Render(float x, float y, float shadow, BYTE alignflag)
+{
+	if (!font)
 	{
 		return;
 	}
@@ -280,101 +275,12 @@ void Fontsys::Render(float x, float y, float shadow, float hscale, float vscale,
 		DWORD _col[4];
 		for (int i=0; i<4; i++)
 		{
-			_col[i] = col[i];
+			_col[i] = font->GetColor(i);
 		}
-		DWORD __col[4];
-		for (int i=0; i<4; i++)
-		{
-			__col[i] = _col[i] & 0xFF000000;
-		}
-		SetColor(__col[0], __col[1], __col[2], __col[3]);
-		Render(x+shadow*2, y+shadow*2, 0, hscale, vscale, alignflag);
-
-		for (int i=0; i<4; i++)
-		{
-			__col[i] = (GETA(_col[i]) / 4) << 24 | (_col[i] & 0xFFFFFF);
-		}
-
-		SetColor(__col[0], __col[1], __col[2], __col[3]);
-		Render(x+shadow, y+shadow, 0, hscale, vscale, alignflag);
-		Render(x+shadow, y-shadow, 0, hscale, vscale, alignflag);
-		Render(x-shadow, y-shadow, 0, hscale, vscale, alignflag);
-		Render(x-shadow, y+shadow, 0, hscale, vscale, alignflag);
-		SetColor(_col[0], _col[1], _col[2], _col[3]);
+		font->SetColor(_col[0]&0xff000000, _col[1]&0xff000000, _col[2]&0xff000000, _col[3]&0xff000000);
+		Render(x+shadow, y+shadow, 0, alignflag);
+		font->SetColor(_col[0], _col[1], _col[2], _col[3]);
 	}
-	else
-	{
-		SetColor(col[0], col[1], col[2], col[3]);
-	}
-	float hotx;
-	float hoty;
-	float w = sprite->GetWidth();
-	float h = sprite->GetHeight();
-	switch (alignflag & HGETEXT_HORZMASK)
-	{
-	case HGETEXT_LEFT:
-		hotx = 0;
-		break;
-	case HGETEXT_CENTER:
-		hotx = w / 2;
-		break;
-	case HGETEXT_RIGHT:
-		hotx = w;
-		break;
-	}
-	switch (alignflag & HGETEXT_VERTMASK)
-	{
-	case HGETEXT_TOP:
-		hoty = 0;
-		break;
-	case HGETEXT_MIDDLE:
-		hoty = h / 2;
-		break;
-	case HGETEXT_BOTTOM:
-		hoty = h;
-		break;
-	}
-	sprite->SetColor(col[0], col[1], col[2], col[3]);
-	SpriteItemManager::SetSpriteHotSpot(sprite, hotx, hoty);
-//	sprite->SetHotSpot(hotx, hoty);
-	sprite->RenderEx(x, y, 0, hscale, vscale);
-	/*
-	float w = quad.v[1].x - quad.v[0].x;
-	float h = quad.v[2].y - quad.v[0].y;
-
-	quad.v[0].col = quad.v[1].col = ucol;
-	quad.v[2].col = quad.v[3].col = dcol;
-
-	quad.v[0].x = x - hext;		quad.v[0].y = y - vext;
-	quad.v[1].x = x + w + hext;	quad.v[1].y = y - vext;
-	quad.v[2].x = x + w + hext;	quad.v[2].y = y + h + vext;
-	quad.v[3].x = x - hext;		quad.v[3].y = y + h + vext;
-
-	hge->Gfx_RenderQuad(&quad);
-
-	quad.v[0].x = x;		quad.v[0].y = y;
-	quad.v[1].x = x + w;	quad.v[1].y = y;
-	quad.v[2].x = x + w;	quad.v[2].y = y + h;
-	quad.v[3].x = x;		quad.v[3].y = y + h;
-	*/
-}
-
-void Fontsys::SetColor(DWORD _col, int i)
-{
-	if (i < 0)
-	{
-		SetColor(_col, _col, _col, _col);
-	}
-	else
-	{
-		col[i] = _col;
-	}
-}
-
-void Fontsys::SetColor(DWORD col0, DWORD col1, DWORD col2, DWORD col3)
-{
-	col[0] = col0;
-	col[1] = col1;
-	col[2] = col2;
-	col[3] = col3;
+	font->SetScale(fontscale);
+	font->Render(x, y, alignflag, text);
 }

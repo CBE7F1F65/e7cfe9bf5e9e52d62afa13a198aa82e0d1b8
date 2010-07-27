@@ -1,6 +1,5 @@
 #include "../Header/Export.h"
 #include "../Header/ConstResource.h"
-#include "../Header/kailleraclient.h"
 
 char Export::resourcefilename[M_PATHMAX];
 char Export::resbinname[M_PATHMAX];
@@ -34,11 +33,11 @@ bool Export::clientInitial(bool usesound /* = false */, bool extuse /* = false *
 	hge->Resource_SetPath(DEFAULT_RESOURCEPATH);
 	char respath[_MAX_PATH];
 	strcpy(respath, hge->Resource_MakePath(""));
-	if(_access(respath, 00) == -1)
+	if(!hge->Resource_AccessFile(respath))
 	{
-		CreateDirectory(respath, NULL);
+		hge->Resource_CreateDirectory(respath);
 	}
-	SetCurrentDirectory(hge->Resource_MakePath(""));
+	hge->Resource_SetCurrentDirectory(hge->Resource_MakePath(""));
 	
 	hge->System_SetState(HGE_FPS, M_DEFAULT_FPS);
 	hge->System_SetState(HGE_FRAMESKIP, M_DEFAULT_FRAMESKIP);
@@ -54,7 +53,7 @@ bool Export::clientInitial(bool usesound /* = false */, bool extuse /* = false *
 	hge->System_SetState(HGE_USESOUND, usesound);
 	hge->System_SetState(HGE_HIDEMOUSE, false);
 
-	SetCurrentDirectory(hge->Resource_MakePath(""));
+	hge->Resource_SetCurrentDirectory(hge->Resource_MakePath(""));
 	bool bret = SetIni(extuse);
 	if (bret)
 	{
@@ -80,21 +79,101 @@ bool Export::clientAfterInitial()
 	matView2DMode = hge->Gfx_GetTransform(D3DTS_VIEW);
 	matProj2DMode = hge->Gfx_GetTransform(D3DTS_PROJECTION);
 
+#ifdef __PSP
+	float scaleval = SCREEN_HEIGHT / M_CLIENT_HEIGHT;
+	float offsetval = (SCREEN_WIDTH - M_CLIENT_WIDTH*scaleval)/2.0f;
+
+	matView2DMode._11 = scaleval;
+	matView2DMode._22 = scaleval;
+	matView2DMode._33 = scaleval;
+	matView2DMode._41 = offsetval;
+#endif // __PSP
+
+/*
+	HGELOG("View2DMode");
+	for (int i=0; i<4; i++)
+	{
+		for (int j=0; j<4; j++)
+		{
+			HGELOG("%f", matView2DMode.m[i][j]);
+		}
+	}
+	HGELOG("Proj2DMode");
+	for (int i=0; i<4; i++)
+	{
+		for (int j=0; j<4; j++)
+		{
+			HGELOG("%f", matProj2DMode.m[i][j]);
+		}
+	}
+*/
+
 	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
 	{
+#ifdef __WIN32
 		D3DXMATRIX _matView(
 			1.0f, 0.0f, 0.0f, 0.0f,
 			0.0f, -1.0f, 0.0f, 0.0f,
 			0.0f, 0.0f, -1.0f, 0.0f,
 			-M_GAMESQUARE_CENTER_X_(i), M_GAMESQUARE_CENTER_Y, M_GAMESQUARE_HEIGHT/2.0f, 1.0f
 			);
-		matView[i] = _matView;
 		D3DXMATRIX _matProj(
 			M_CLIENT_HEIGHT/M_CLIENT_WIDTH, 0.0f, 0.0f, 0.0f,
 			0.0f, 1.0f, 0.0f, 0.0f,
 			(M_GAMESQUARE_CENTER_X_(i)-M_CLIENT_CENTER_X)/(M_CLIENT_WIDTH/2), 0.0f, 0.0f, 1.0f,
 			-M_PROJECTIONMATRIX_OFFSET*(M_CLIENT_HEIGHT/M_CLIENT_HEIGHT), M_PROJECTIONMATRIX_OFFSET, 0.0f, -0.55f
 			);
+#else
+
+#ifdef __PSP
+		D3DXMATRIX _matView;
+		D3DXMATRIX _matProj;
+
+		_matView.m[0][0] = scaleval;
+		_matView.m[0][1] = 0.0f;
+		_matView.m[0][2] = 0.0f;
+		_matView.m[0][3] = 0.0f;
+
+		_matView.m[1][0] = 0.0f;
+		_matView.m[1][1] = scaleval;
+		_matView.m[1][2] = 0.0f;
+		_matView.m[1][3] = 0.0f;
+
+		_matView.m[2][0] = 0.0f;
+		_matView.m[2][1] = 0.0f;
+		_matView.m[2][2] = scaleval;
+		_matView.m[2][3] = 0.0f;
+
+		_matView.m[3][0] = offsetval;
+		_matView.m[3][1] = 0.0f;
+		_matView.m[3][2] = 0.0f;
+		_matView.m[3][3] = 1.0f;
+
+		_matProj.m[0][0] = scaleval;
+		_matProj.m[0][1] = 0.0f;
+		_matProj.m[0][2] = 0.0f;
+		_matProj.m[0][3] = 0.0f;
+
+		_matProj.m[1][0] = 0.0f;
+		_matProj.m[1][1] = -1.0f;
+		_matProj.m[1][2] = 0.0f;
+		_matProj.m[1][3] = 0.0f;
+
+		_matProj.m[2][0] = (M_CLIENT_CENTER_X-M_GAMESQUARE_CENTER_X_(i))/(M_CLIENT_HEIGHT/2)*scaleval;
+		_matProj.m[2][1] = 0.0f;
+		_matProj.m[2][2] = -1.0f;
+		_matProj.m[2][3] = -1.0f;
+
+		_matProj.m[3][0] = -SCREEN_HEIGHT/2;
+		_matProj.m[3][1] = SCREEN_HEIGHT/2;
+		_matProj.m[3][2] = SCREEN_HEIGHT/2;
+		_matProj.m[3][3] = SCREEN_HEIGHT/2;
+
+#endif // __PSP
+
+#endif // __WIN32
+
+		matView[i] = _matView;
 		matProj[i] = _matProj;
 	}
 
@@ -110,8 +189,9 @@ void Export::clientSetMatrixUser(D3DXMATRIX matWorld, D3DXMATRIX matView, D3DXMA
 
 void Export::clientSetMatrix(float _worldx, float _worldy, float _worldz, BYTE renderflag)
 {
-	D3DXMATRIXA16 matWorld;
-	D3DXMatrixTranslation(&matWorld, _worldx, _worldy, _worldz);
+	D3DXMATRIX matWorld;
+	hge->Math_MatrixIdentity(&matWorld);
+	hge->Math_MatrixTranslation(&matWorld, _worldx, _worldy, _worldz);
 	hge->Gfx_SetTransform( D3DTS_WORLD, &matWorld );
 
 	if (hge->System_GetState(HGE_2DMODE) || renderflag == M_RENDER_NULL)
@@ -174,7 +254,7 @@ bool Export::clientSet3DMode()
 
 bool Export::SetIni(bool extuse)
 {
-	if (extuse && _access(hge->Resource_MakePath(CONFIG_STR_FILENAME), 00) == -1)
+	if (extuse && !hge->Resource_AccessFile(hge->Resource_MakePath(CONFIG_STR_FILENAME)))
 	{
 		hge->System_SetState(HGE_INIFILE, CONFIG_STR_DEFAULTFILENAME);
 		return false;
@@ -185,6 +265,7 @@ bool Export::SetIni(bool extuse)
 
 void Export::clientAdjustWindow()
 {
+#ifdef __WIN32
 	if (!hge->Ini_GetInt(RESCONFIGS_CUSTOMWINDOW, RESCONFIGN_DEFAULTWINDOW, RESCONFIGDEFAULT_DEFAULTWINDOW))
 	{
 		int windowleft = hge->Ini_GetInt(RESCONFIGS_CUSTOMWINDOW, RESCONFIGN_WINDOWLEFT, RESCONFIGDEFAULT_WINDOWLEFT);
@@ -194,6 +275,7 @@ void Export::clientAdjustWindow()
 		HWND windowtopmost = hge->Ini_GetInt(RESCONFIGS_CUSTOMWINDOW, RESCONFIGN_WINDOWTOPMOST, RESCONFIGDEFAULT_WINDOWTOPMOST) ? HWND_TOPMOST: HWND_NOTOPMOST;
 		SetWindowPos(hge->System_GetState(HGE_HWND), windowtopmost, windowleft, windowtop, windowwidth, windowheight, SWP_FRAMECHANGED);
 	}
+#endif // __WIN32
 }
 
 BYTE Export::GetPlayerIndexByRenderFlag(BYTE renderflag)
@@ -345,6 +427,7 @@ bool Export::packFile(const char * zipname, const char * filename)
 
 bool Export::packFolder(const char * zipname, const char * foldername, const char * filterstr, int * initcount)
 {
+#ifdef __WIN32
 	bool ret = true;
 	WIN32_FIND_DATA SearchData;
 
@@ -535,6 +618,12 @@ bool Export::packFolder(const char * zipname, const char * foldername, const cha
 	}
 #endif
 	return ret;
+
+#else
+
+	return true;
+
+#endif // __WIN32
 }
 
 bool Export::effSave(const char * filename, hgeEffectSystem * eff, int texnum)
@@ -577,11 +666,11 @@ bool Export::unpackFile(const char * zipname, const char * filename)
 				strncpy(pathbuffer, filename, i);
 				pathbuffer[i] = 0;
 
-				if (!_access(hge->Resource_MakePath(pathbuffer), 00))
+				if (!hge->Resource_AccessFile(hge->Resource_MakePath(pathbuffer)))
 				{
 					continue;
 				}
-				CreateDirectory(hge->Resource_MakePath(pathbuffer), NULL);
+				hge->Resource_CreateDirectory(hge->Resource_MakePath(pathbuffer));
 			}
 		}
 		FILE * file = fopen(hge->Resource_MakePath(filename), "wb");

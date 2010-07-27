@@ -41,7 +41,7 @@ public:
 	static list<_ReplayNameListItem> _rpyfilenamelist;
 
 	static Replay rpy;
-	static Replay enumrpy[RPYENUMMAX];
+	static Replay * enumrpy;
 	static int nenumrpy;
 };
 

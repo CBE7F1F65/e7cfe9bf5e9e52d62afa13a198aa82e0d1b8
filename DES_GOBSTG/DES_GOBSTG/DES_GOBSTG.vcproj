@@ -76,7 +76,7 @@
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
 				AdditionalLibraryDirectories="../lib/vc;../../lib/vc"
-				DelayLoadDLLs="hge_d.dll;kailleraclient.dll"
+				DelayLoadDLLs="hge_d.dll"
 				GenerateDebugInformation="true"
 				AssemblyDebug="1"
 				SubSystem="2"
@@ -170,7 +170,7 @@
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="../lib/vc;../../lib/vc"
 				IgnoreDefaultLibraryNames=""
-				DelayLoadDLLs="hge.dll;kailleraclient.dll"
+				DelayLoadDLLs="hge.dll"
 				GenerateDebugInformation="false"
 				GenerateMapFile="false"
 				MapExports="false"
@@ -268,7 +268,7 @@
 				OutputFile="$(OutDir)/$(ProjectName).exe"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="../lib/vc;../../lib/vc"
-				DelayLoadDLLs="hge.dll;kailleraclient.dll"
+				DelayLoadDLLs="hge.dll"
 				GenerateDebugInformation="false"
 				GenerateMapFile="false"
 				MapExports="false"
@@ -692,10 +692,6 @@
 				</File>
 				<File
 					RelativePath=".\Header\GameInput.h"
-					>
-				</File>
-				<File
-					RelativePath=".\Header\kailleraclient.h"
 					>
 				</File>
 				<File

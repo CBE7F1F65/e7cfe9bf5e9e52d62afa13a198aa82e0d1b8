@@ -5,7 +5,6 @@
 #include "Export.h"
 #include "Const.h"
 #include "ProcessDefine.h"
-#include "kailleraclient.h"
 
 class Process
 {
@@ -77,11 +76,6 @@ public:
 
 	void	ClearAll();
 
-	//
-	int		InitKaillera(char * kgamename, int kplayer, int knplayers, int * seed);
-	void	ReleaseKaillera();
-	void	UpdateKailleraInput();
-
 public:
 	union{
 		struct{
@@ -113,23 +107,12 @@ public:
 		int		joyKey[M_PL_MATCHMAXPLAYER][6];
 	};
 
-	//texture
-	HTEXTURE	tex[TEXMAX];
-
 	//read ini
 	char	username[M_PL_MATCHMAXPLAYER][RPYINFO_USERNAMEMAX];
 	int		screenmode;
 	int		bgmvol;
 	int		sevol;
 	int		lastmatchchara[M_PL_MATCHMAXPLAYER][M_PL_ONESETPLAYER];
-
-	//net
-	bool	usingkaillera;
-	BYTE	kailleranplayers;
-	BYTE	kailleraplayer;
-	BYTE 	kaillerabyteexchange[M_KAILLERMAXPLAYER];
-	int 	kailleraintexchange[M_KAILLERMAXPLAYER];
-	WORD 	kaillerawordexchange[M_KAILLERMAXPLAYER];
 
 	//replay
 	char	rpyfilename[M_PATHMAX];

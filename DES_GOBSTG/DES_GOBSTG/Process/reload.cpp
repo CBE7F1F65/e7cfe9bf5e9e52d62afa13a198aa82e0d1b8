@@ -2,9 +2,9 @@
 
 bool Process::reload()
 {
-	SetCurrentDirectory(hge->Resource_MakePath(""));
+	hge->Resource_SetCurrentDirectory(hge->Resource_MakePath(""));
 
-	BGLayer::Init(tex);
+	BGLayer::Init();
 	Enemy::ClearAll();
 //	Ghost::ClearAll();
 	Target::ClearAll();
@@ -14,11 +14,6 @@ bool Process::reload()
 	BossInfo::Clear();
 	Player::Init();
 	EventZone::Clear();
-
-	if (usingkaillera)
-	{
-		kailleraModifyPlayValues(kaillerabyteexchange, sizeof(BYTE));
-	}
 
 	frameskip = M_DEFAULT_FRAMESKIP;
 	strcpy(rpyfilename, "");
@@ -43,26 +38,19 @@ bool Process::reload()
 		rendertar[i] = hge->Target_Create(M_CLIENT_WIDTH, M_CLIENT_HEIGHT, false);
 	}
 
-	if (usingkaillera)
-	{
-		kailleraModifyPlayValues(kaillerabyteexchange, sizeof(BYTE));
-	}
 	GameAI::Init();
-	Bullet::Init(tex[TEX_BULLET]);
-	Enemy::Init(tex);
+	Bullet::Init();
+	Enemy::Init();
 	Item::Init();
 	Beam::Init();
-	PlayerBullet::Init(tex);
-	SpriteItemManager::Init(tex);
+	PlayerBullet::Init();
+	SpriteItemManager::Init();
 	EffectSp::Init();
 
 	BossInfo::Init();
-	InfoQuad::Init(tex[TEX_WHITE]);
+	InfoQuad::Init();
 
-	if (usingkaillera)
-	{
-		kailleraModifyPlayValues(kaillerabyteexchange, sizeof(BYTE));
-	}
+
 	FrontDisplay::fdisp.Init();
 	Fontsys::Init(FrontDisplay::fdisp.info.normalfont);
 	Fontsys::HeatUp();
@@ -76,11 +64,7 @@ bool Process::reload()
 	HGELOG("\nCleared up.\n");
 #endif
 
-	if (usingkaillera)
-	{
-		kailleraModifyPlayValues(kaillerabyteexchange, sizeof(BYTE));
-	}
-	SetCurrentDirectory(hge->Resource_MakePath(""));
+	hge->Resource_SetCurrentDirectory(hge->Resource_MakePath(""));
 
 	return true;
 }

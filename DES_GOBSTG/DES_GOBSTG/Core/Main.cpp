@@ -1,10 +1,19 @@
-#include <vld.h>
-
 #include "../Header/Process.h"
 #include "../Header/Fontsys.h"
 
 #include "../Header/Main.h"
 #include "../Header/GameInput.h"
+
+#ifdef __PSP
+#include <pspkernel.h>
+PSP_MODULE_INFO("h5nc", 0, 1, 1);
+PSP_MAIN_THREAD_ATTR(0);
+PSP_HEAP_SIZE_KB(-256);
+extern "C"
+{
+#include "../../include/exception.h"
+};
+#endif // __PSP
 
 HGE *hge = NULL;
 
@@ -40,20 +49,19 @@ bool FrameFunc()
 
 bool GfxRestoreFunc()
 {
-	return Fontsys::GfxRestore();
+	return true;
 }
 
 bool ExitFunc()
 {
-	if (Process::mp.usingkaillera)
-	{
-		kailleraEndGame();
-	}
 	return true;
 }
 
 int GameStart(int seed=0)
 {
+#ifdef __PSP
+	initExceptionHandler();
+#endif // __PSP
 	Export::clientInitial(true);
 
 	if(hge->System_Initiate())
@@ -64,7 +72,8 @@ int GameStart(int seed=0)
 		Process::mp.state = STATE_INIT;
 		if (!seed)
 		{
-			seed = timeGetTime();
+			seed = hge->Timer_GetCurrentSystemTime();
+//			seed = timeGetTime();
 		}
 		Process::mp.seed = seed;
 		srandt(Process::mp.seed);
@@ -75,25 +84,11 @@ int GameStart(int seed=0)
 	return 0;
 }
 
-int WINAPI KailleraGameCallback(char *game, int player, int numplayers)
-{
-	int seed = timeGetTime();
-	while (!seed)
-	{
-		seed = timeGetTime();
-	}
-	int iret = Process::mp.InitKaillera(game, player, numplayers, &seed);
-
-	if (!iret)
-	{
-		return GameStart(seed);
-	}
-	MessageBox(NULL, "Game Version Error", "Error", MB_OK);
-	//
-	return iret;
-}
-
+#ifdef __WIN32
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR lpCmdLine, int)
+#else
+int main(int argc, char* argv[])
+#endif // __WIN32
 {
 	hge = hgeCreate(HGE_VERSION);
 
@@ -102,44 +97,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR lpCmdLine, int)
 	hge->System_SetState(HGE_GFXRESTOREFUNC, GfxRestoreFunc);
 	hge->System_SetState(HGE_EXITFUNC, ExitFunc);
 
-	if (strlen(lpCmdLine))
-	{
-		Process::mp.usingkaillera = true;
-	}
-	if (Process::mp.usingkaillera)
-	{
-		int ret = kailleraInit();
-		kailleraInfos ki;
-		ZeroMemory(&ki, sizeof(kailleraInfos));
-		ki.appName = GAME_TITLE_STR;
-		char * GameList = GAME_TITLE_STR "\x00" "\x00";
-		ki.gameList =GameList;
-		ki.chatReceivedCallback = NULL;
-		ki.clientDroppedCallback = NULL;
-		ki.moreInfosCallback = NULL;
-		ki.gameCallback = KailleraGameCallback;
-		ret = kailleraSetInfos(&ki);
-		if (ret >= 0)
-		{
-			ret = kailleraSelectServerDialog(0);
-		}
-		Process::mp.ReleaseKaillera();
-	}
-	else
-	{
-		GameStart();
-	}
+	GameStart();
 
 	//
 	Process::mp.Release();
 	//	hge->System_Shutdown();
 	hge->Release();
-	if (Process::mp.usingkaillera)
-	{
-		kailleraShutdown();
-	}
-
-
 	
 	return 0;
 }

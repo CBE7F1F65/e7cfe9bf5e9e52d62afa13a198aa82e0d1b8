@@ -12,8 +12,6 @@
 
 #include "..\..\include\hge.h"
 #include <stdio.h>
-#include <d3d9.h>
-#include <d3dx9.h>
 
 #define D3DFVF_HGEVERTEX (D3DFVF_XYZ | D3DFVF_DIFFUSE | D3DFVF_TEX1)
 #define VERTEX_BUFFER_SIZE 4000
@@ -23,8 +21,10 @@ struct CRenderTargetList
 {
 	int					width;
 	int					height;
+#ifdef __WIN32
 	IDirect3DTexture9*	pTex;
 	IDirect3DSurface9*	pDepth;
+#endif
 	CRenderTargetList*	next;
 };
 
@@ -91,9 +91,6 @@ public:
 	virtual void		CALL	System_Shutdown();
 	virtual bool		CALL	System_Start();
 
-	virtual float		CALL	System_Transform3DPoint(hge3DPoint * pt, hge3DPoint *ptfar=NULL){return pt->scale = System_Transform3DPoint(pt->x, pt->y, pt->z, ptfar);};
-	virtual float		CALL	System_Transform3DPoint(float &x, float &y, float &z, hge3DPoint *ptfar=NULL);
-
 	virtual void		CALL	System_SetStateBool  (hgeBoolState   state, bool        value);
 	virtual void		CALL	System_SetStateFunc  (hgeFuncState   state, hgeCallback value);
 	virtual void		CALL	System_SetStateHwnd  (hgeHwndState   state, HWND        value);
@@ -108,7 +105,27 @@ public:
 	virtual	void		CALL	System_Log(const char *format, ...);
 	virtual bool		CALL	System_Launch(const char *url);
 	virtual void		CALL	System_Snapshot(const char *filename=0);
+	virtual int			CALL	System_MessageBox(const char * text, const char * title, DWORD type);
 
+	virtual float		CALL	Math_Transform3DPoint(hge3DPoint * pt, hge3DPoint *ptfar=NULL){return pt->scale = Math_Transform3DPoint(pt->x, pt->y, pt->z, ptfar);};
+	virtual float		CALL	Math_Transform3DPoint(float &x, float &y, float &z, hge3DPoint *ptfar=NULL);
+	virtual char*		CALL	Math_itoa(int ival, char * buffer);
+	virtual int			CALL	Math_atoi(const char * buffer);
+	virtual char*		CALL	Math_ftoa(float fval, char * buffer);
+	virtual float		CALL	Math_atof(const char * buffer);
+	virtual LONGLONG	CALL	Math_atoll(const char * buffer);
+	virtual D3DXMATRIX*	CALL	Math_MatrixIdentity(D3DXMATRIX * pOut);
+	virtual D3DXMATRIX*	CALL	Math_MatrixTranslation( D3DXMATRIX *pOut, float x, float y, float z );
+	virtual D3DXMATRIX*	CALL	Math_MatrixRotationX( D3DXMATRIX *pOut, float angle );
+	virtual D3DXMATRIX*	CALL	Math_MatrixRotationY( D3DXMATRIX *pOut, float angle );
+	virtual D3DXMATRIX*	CALL	Math_MatrixRotationZ( D3DXMATRIX *pOut, float angle );
+	virtual D3DXMATRIX*	CALL	Math_MatrixScaling( D3DXMATRIX *pOut, float sx, float sy, float sz );
+	virtual D3DXMATRIX*	CALL	Math_MatrixMultiply( D3DXMATRIX *pOut, const D3DXMATRIX *pM1, const D3DXMATRIX *pM2 );
+	virtual D3DXMATRIX*	CALL	Math_MatrixOrthoOffCenterLH(D3DXMATRIX *pOut, float l, float r, float b, float t, float zn, float zf);
+
+	virtual void		CALL	Resource_DeleteFile(const char *filename);
+	virtual DWORD		CALL	Resource_FileSize(const char *filename, FILE * file=NULL);
+	virtual void		CALL	Resource_SetCurrentDirectory(const char *filename);
 	virtual BYTE*		CALL	Resource_Load(const char *filename, DWORD *size=0);
 	virtual void		CALL	Resource_Free(void *res);
 	virtual bool		CALL	Resource_AttachPack(const char *filename, int password=0);
@@ -118,6 +135,8 @@ public:
 	virtual char*		CALL	Resource_MakePath(const char *filename);
 	virtual char*		CALL	Resource_EnumFiles(const char *wildcard=0);
 	virtual char*		CALL	Resource_EnumFolders(const char *wildcard=0);
+	virtual bool		CALL	Resource_AccessFile(const char *filename);
+	virtual bool		CALL	Resource_CreateDirectory(const char *filename);
 	virtual bool		CALL	Resource_CreatePack(const char * filename, int password, hgeMemoryFile * first, ...);
 	virtual bool		CALL	Resource_AddFileInPack(const char * filename, int password, hgeMemoryFile * memfile);
 	virtual DWORD		CALL	Resource_GetCRC(const BYTE * content, DWORD size);
@@ -128,21 +147,25 @@ public:
 #endif // ZLIB_USEPSW
 	virtual char*		CALL	Resource_GetPackFirstFileName(const char * packfilename);
 
-	virtual	void		CALL	Ini_SetInt(const char *section, const char *name, int value);
-	virtual	int 		CALL	Ini_GetInt(const char *section, const char *name, int def_val);
-	virtual	void		CALL	Ini_SetFloat(const char *section, const char *name, float value);
-	virtual	float		CALL	Ini_GetFloat(const char *section, const char *name, float def_val);
-	virtual	void		CALL	Ini_SetString(const char *section, const char *name, const char *value);
-	virtual	char*		CALL	Ini_GetString(const char *section, const char *name, const char *def_val);
+	virtual	void		CALL	Ini_SetInt(const char *section, const char *name, int value, char * inifilename=NULL);
+	virtual	int 		CALL	Ini_GetInt(const char *section, const char *name, int def_val, char * inifilename=NULL);
+	virtual	void		CALL	Ini_SetFloat(const char *section, const char *name, float value, char * inifilename=NULL);
+	virtual	float		CALL	Ini_GetFloat(const char *section, const char *name, float def_val, char * inifilename=NULL);
+	virtual	void		CALL	Ini_SetString(const char *section, const char *name, const char *value, char * inifilename=NULL);
+	virtual	char*		CALL	Ini_GetString(const char *section, const char *name, const char *def_val, char * inifilename=NULL);
 
 	virtual int			CALL	Random_Seed(int seed=0);
 	virtual int			CALL	Random_Int(int min, int max, bool bSelf=false);
 	virtual float		CALL	Random_Float(float min, float max, bool bSelf=false);
 
+	virtual void		CALL	Timer_GetSystemTime(WORD *wYear=NULL, WORD *wMonth=NULL, WORD *wDayOfWeek=NULL, WORD *wDay=NULL, WORD *wHour=NULL, WORD *wMinute=NULL, WORD *wSecond=NULL, WORD *wMilliseconds=NULL);
+	virtual LONGLONG	CALL	Timer_GetFileTime();
 	virtual float		CALL	Timer_GetTime();
 	virtual float		CALL	Timer_GetDelta();
 	virtual float		CALL	Timer_GetFPS(int mod = 0);
 	virtual float		CALL	Timer_GetWorstFPS(int mod);
+	virtual	LONGLONG	CALL	Timer_GetCurrentSystemTime();
+	virtual LONGLONG	CALL	Timer_GetPerformanceFrequency();
 
 	virtual HEFFECT		CALL	Effect_Load(const char *filename, DWORD size=0);
 	virtual void		CALL	Effect_Free(HEFFECT eff);
@@ -208,6 +231,7 @@ public:
 	virtual bool		CALL	Gfx_BeginScene(HTARGET target=0);
 	virtual void		CALL	Gfx_EndScene();
 	virtual void		CALL	Gfx_Clear(DWORD color);
+	virtual void		CALL	Gfx_RenderPoint(float x, float y, float z=0.0f, DWORD color=0xFFFFFFFF);
 	virtual void		CALL	Gfx_RenderLine(float x1, float y1, float x2, float y2, DWORD color=0xFFFFFFFF, float z=0);
 	virtual void		CALL	Gfx_RenderTriple(const hgeTriple *triple);
 	virtual void		CALL	Gfx_RenderQuad(const hgeQuad *quad);
@@ -215,8 +239,9 @@ public:
 	virtual void		CALL	Gfx_FinishBatch(int nprim);
 	virtual void		CALL	Gfx_SetClipping(int x=0, int y=0, int w=0, int h=0);
 	virtual void		CALL	Gfx_SetTransform(float x=0, float y=0, float dx=0, float dy=0, float rot=0, float hscale=0, float vscale=0); 
-	virtual void		CALL	Gfx_SetTransform(D3DTRANSFORMSTATETYPE State, CONST D3DMATRIX * pMatrix);
+	virtual void		CALL	Gfx_SetTransform(D3DTRANSFORMSTATETYPE State, const D3DMATRIX * pMatrix);
 	virtual D3DMATRIX	CALL	Gfx_GetTransform(D3DTRANSFORMSTATETYPE State);
+	virtual void		CALL	Gfx_SetTextureInfo(int nTexInfo, hgeTextureInfo * texinfo=NULL);
 
 	virtual HTARGET		CALL	Target_Create(int width, int height, bool zbuffer);
 	virtual void		CALL	Target_Free(HTARGET target);
@@ -225,11 +250,16 @@ public:
 	virtual HTEXTURE	CALL	Texture_Create(int width, int height);
 	virtual HTEXTURE	CALL	Texture_Load(const char *filename, DWORD size=0, bool bMipmap=false);
 	virtual void		CALL	Texture_Free(HTEXTURE tex);
+	virtual DWORD		CALL	Texture_GetTexture(HTEXTURE tex);
 	virtual int			CALL	Texture_GetWidth(HTEXTURE tex, bool bOriginal=false);
 	virtual int			CALL	Texture_GetHeight(HTEXTURE tex, bool bOriginal=false);
 	virtual DWORD*		CALL	Texture_Lock(HTEXTURE tex, bool bReadOnly=true, int left=0, int top=0, int width=0, int height=0);
 	virtual void		CALL	Texture_Unlock(HTEXTURE tex);
+	virtual bool		CALL	Texture_Save(HTEXTURE tex, const char * filename, DWORD filetype);
 
+	virtual bool		CALL	Texture_LoadTextureWhenNeeded(HTEXTURE * tex);
+	virtual void		CALL	Texture_SetTextureToLoad(HTEXTURE * tex);
+	virtual HTEXTURE *	CALL	Texture_GetTextureToLoad();
 	
 	/* font support 
 	add by Yuki */
@@ -265,6 +295,7 @@ public:
 	bool				(*procFocusGainFunc)();
 	bool				(*procGfxRestoreFunc)();
 	bool				(*procExitFunc)();
+	bool				(*procLoadTextureFunc)();
 	const char*			szIcon;
 	char				szWinTitle[256];
 	int					nScreenWidth;
@@ -301,6 +332,7 @@ public:
 	// end
 	HWND				hwndParent;
 
+#ifdef __WIN32
 	// Graphics
 	D3DPRESENT_PARAMETERS*  d3dpp;
 	IDirect3D9*				pD3D;
@@ -319,6 +351,8 @@ public:
 
 	IDirect3DSurface9*	pScreenSurf;
 	IDirect3DSurface9*	pScreenDepth;
+#endif
+
 	CRenderTargetList*	pTargets;
 	CRenderTargetList*	pCurTarget;
 
@@ -331,7 +365,12 @@ public:
 	int					nPrim;
 	int					CurPrimType;
 	int					CurBlendMode;
-	HTEXTURE			CurTexture;
+	DWORD				CurTexture;
+
+	int					nTexInfo;
+	hgeTextureInfo	*	texInfo;
+
+	HTEXTURE	*	textoload;
 
 	bool				_GfxInit();
 	void				_GfxDone();
@@ -340,7 +379,9 @@ public:
 	void				_Resize(int width, int height);
 	bool				_init_lost();
 	void				_render_batch(bool bEndScene=false);
+#ifdef __WIN32
 	int					_format_id(D3DFORMAT fmt);
+#endif
 	void				_SetBlendMode(int blend);
 	void				_SetProjectionMatrix(int width, int height);
 	
@@ -354,6 +395,9 @@ public:
 	void				_SetSampleVolume(int vol);
 	void				_SetStreamVolume(int vol);
 	void				_SetFXVolume(int vol);
+
+	DWORD				_IniGetPrivateProfileString(const char * appname, const char * keyname, const char * defval, char * retstr, DWORD size, const char * filename);
+	bool				_IniWritePrivateProfileString(const char * appname, const char * keyname, const char * val, const char * filename);
 
 
 	// Input
@@ -380,6 +424,7 @@ public:
 
 	BYTE				keyState[256];
 	BYTE				lastKeyState[256];
+#ifdef __WIN32
 	LPDIRECTINPUT8		lpDInput;
 	LPDIRECTINPUTDEVICE8 lpDIKDevice;
 	LPDIRECTINPUTDEVICE8 lpDIJDevice[DIJOY_MAXDEVICE];
@@ -387,11 +432,14 @@ public:
 	DIJOYSTATE          lastJoyState[DIJOY_MAXDEVICE];
 	bool				haveJoy[DIJOY_MAXDEVICE];
 	static GUID			joyGuid[DIJOY_MAXDEVICE];
+#endif
 
 	int					_DIInit();
 	void				_DIRelease();
 	int					_DIUpdate();
+#ifdef __WIN32
 	static BOOL CALLBACK _EnumJoysticksCallback (const DIDEVICEINSTANCE * pdidInstance, VOID* pContext);
+#endif
 	// end
 
 
@@ -402,8 +450,10 @@ public:
 	/************************************************************************/
 	char				szPackFirstFilename[_MAX_PATH];
 	CResourceList*		res;
+#ifdef __WIN32
 	HANDLE				hSearch;
 	WIN32_FIND_DATA		SearchData;
+#endif
 
 
 	// Timer

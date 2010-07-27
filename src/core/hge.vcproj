@@ -51,6 +51,7 @@
 				Name="VCCLCompilerTool"
 				AdditionalOptions="/QIfist "
 				Optimization="0"
+				AdditionalIncludeDirectories="e:\cygwin\usr\local\pspdev\psp\sdk\include\"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;HGEDLL"
 				StringPooling="false"
 				BasicRuntimeChecks="3"
@@ -111,7 +112,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="call &quot;..\..\DES_GOBSTG_GROUP\PostBuildEvent.bat&quot; ..\..\Resource\Debug\ ..\..\..\LuaEngine\Resource\Debug\ ..\..\Resource\ ..\..\..\LuaEngine\Resource\"
+				CommandLine="call &quot;PostBuildEvent.bat&quot; ..\..\Resource\Debug\ ..\..\Resource\"
 			/>
 		</Configuration>
 		<Configuration
@@ -156,6 +157,7 @@
 				OmitFramePointers="true"
 				EnableFiberSafeOptimizations="true"
 				WholeProgramOptimization="true"
+				AdditionalIncludeDirectories="e:\cygwin\usr\local\pspdev\psp\sdk\include\"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;HGEDLL"
 				StringPooling="true"
 				RuntimeLibrary="0"
@@ -197,7 +199,7 @@
 				SubSystem="0"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
-				ImportLibrary=".\Release/hge.lib"
+				ImportLibrary="..\..\lib\vc\hge.lib"
 				TargetMachine="0"
 			/>
 			<Tool
@@ -220,7 +222,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="call &quot;..\..\DES_GOBSTG_GROUP\PostBuildEvent.bat&quot; ..\..\Resource\Debug\ ..\..\..\LuaEngine\Resource\Debug\ ..\..\Resource\ ..\..\..\LuaEngine\Resource\"
+				CommandLine="call &quot;PostBuildEvent.bat&quot; ..\..\Resource\Debug\ ..\..\Resource\"
 			/>
 		</Configuration>
 	</Configurations>
@@ -326,6 +328,10 @@
 						PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_MBCS;_USRDLL;HGEDLL;$(NoInherit)"
 					/>
 				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\math.cpp"
+				>
 			</File>
 			<File
 				RelativePath="random.cpp"
@@ -495,6 +501,54 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="MMGR"
+				>
+				<File
+					RelativePath="..\..\mmgr\mmgr.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\mmgr\mmgr.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\mmgr\nommgr.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Exception"
+				>
+				<File
+					RelativePath="..\Exception\exception.c"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\exception.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="PSP"
+				>
+				<File
+					RelativePath="..\PSP\PSP_framebuffer.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\PSP\PSP_framebuffer.h"
+					>
+				</File>
+				<File
+					RelativePath="..\PSP\PSP_graphics.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\PSP\PSP_graphics.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -502,6 +556,10 @@
 			>
 			<File
 				RelativePath="..\..\include\hge.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\include\hge_defines.h"
 				>
 			</File>
 			<File

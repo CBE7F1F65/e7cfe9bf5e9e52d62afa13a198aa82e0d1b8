@@ -8,6 +8,13 @@ struct customconstData{
 	int value;
 };
 
+struct textureData
+{
+	char texfilename[M_STRMAX];
+	int width;
+	int height;
+};
+
 struct musicData{
 	char musicname[M_STRMAX];
 	char musicfilename[M_PATHMAX];
@@ -60,12 +67,12 @@ struct uiStringData
 struct resourceData
 {
 	//resource file
-	char texfilename[TEXMAX][M_PATHMAX];
 	char sefilename[SEMAX][M_PATHMAX];
 	char effectsysfilename[EFFECTSYSTYPEMAX][M_PATHMAX];
 	char packagefilename[PACKAGEMAX][M_PATHMAX];
 
 	//font
+	char fontfilename[M_STRMAX];
 	char widefontname[M_STRMAX];
 
 	//datafile
@@ -200,10 +207,10 @@ struct playerData
 struct spriteData 
 {
 	char spritename[M_STRMAX];
-	int tex_x;
-	int tex_y;
-	int tex_w;
-	int tex_h;
+	float tex_x;
+	float tex_y;
+	float tex_w;
+	float tex_h;
 	int tex;
 };
 

@@ -141,7 +141,7 @@ void CResourceUnpackDlg::OnBnClickedUnpack()
 	strncpy(upperfolder, szIniFilename, i);
 	upperfolder[i] = 0;
 	hge->Resource_SetPath(upperfolder);
-	SetCurrentDirectory(upperfolder);
+	hge->Resource_SetCurrentDirectory(upperfolder);
 
 	if (Export::unpackFromIni(szIniFilename))
 	{
@@ -162,12 +162,12 @@ void CResourceUnpackDlg::OnEnChangeFoldername()
 	// 同时将 ENM_CHANGE 标志“或”运算到掩码中。
 
 	// TODO:  在此添加控件通知处理程序代码
-	foldernameText.GetWindowText(szIniFilename, MAX_PATH);
+	foldernameText.GetWindowText(szIniFilename, M_PATHMAX);
 	if (!strlen(szIniFilename))
 	{
 		unpackButton.EnableWindow(FALSE);
 	}
-	else if (!_access(hge->Resource_MakePath(szIniFilename), 00))
+	else if (!hge->Resource_AccessFile(hge->Resource_MakePath(szIniFilename)))
 	{
 		unpackButton.EnableWindow(TRUE);
 	}

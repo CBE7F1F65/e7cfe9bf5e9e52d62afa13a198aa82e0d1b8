@@ -20,6 +20,7 @@ enum {
 #define DEFAULT_BINSCRIPTFILE		"Script.dat"
 #define DEFAULT_TEMPLUAFILE			"Script_Lua/Script.tmp"
 #define DEFAULT_LUAFILETABLENAME		"luaFileTable"
+#define DEFAULT_LUASTRINGTABLENAME		"luaStringTable"
 #define DEFAULT_BUSEUNPACKEDFILESNAME	"bUseUnpackedFiles"
 #define M_STRINGMAX		0x80
 #define M_MESSAGESTRMAX	0x100
