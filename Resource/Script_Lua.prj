@@ -7,14 +7,14 @@ Create Tagfile=0
 Filter=
 Include Sub Directories=1
 Project Directory=E:\hge\Resource\Script_Lua
-Project Start=DA07060005000400100027000E00000035
+Project Start=DA07080003001900140038001300000064
 Project Tagfile=
 Project Wordfile=
 Relative to Project File=1
 Save Account=0
 Use Relative Directory=1
 Using VCS=0
-Working Time=1617046
+Working Time=1632471
 [Folders]
 HDSS=1
 HDSS - Control=1
@@ -25,6 +25,8 @@ HDSS - Scene=1
 .\ - ÎÄµµ=1
 .\ - HDSS=1
 .\ - HDSS - Control=1
+.\ - HDSS - Scene=1
+.\ - HDSS - Scene - Scene=1
 [uemakeXp]
 ReleaseMode=0
 [Debug Settings]
@@ -35,12 +37,16 @@ Symbol Paths=
 Working Directory=
 [Open Files]
 Active File Display Mode=3
-Active File Index=0
-Open File Line0=915
-Open File Pos0=911
-Open File Window Pos0=2,3,-1,-1,-4,-30,110,145,1682,582
-Open File0=E:\hge\Resource\TH_CONFIG.ini
-Open File1=
+Active File Index=1
+Open File Line0=410
+Open File Line1=125
+Open File Pos0=909
+Open File Pos1=442
+Open File Window Pos0=0,1,-1,-1,-8,-30,25,25,496,463
+Open File Window Pos1=2,3,-1,-1,-8,-30,50,50,1066,402
+Open File0=E:\hge\Resource\Script_Lua\HDSS\Scene\Scene\scene00.lua
+Open File1=E:\hge\Resource\Script_Lua\HDSS\Scene\Scene\scene14.lua
+Open File2=
 [Group Filter]
 .\=*.lua
 [Files]

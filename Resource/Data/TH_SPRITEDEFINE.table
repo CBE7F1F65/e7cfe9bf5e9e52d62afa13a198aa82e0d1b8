@@ -38,6 +38,18 @@ Comment	Index	SI_Name	Tex	Tex_x	Tex_y	Tex_w	Tex_h
 #		UIResult(50~59)					
 -	50	SI_Result_Save	7	256	192	256	32
 -	51	SI_Result_OverWrite	7	0	224	256	32
+#		IphoneUI(60~79)					
+-	60	SI_IPhone_Left	6	256	320	16	16
+-	61	SI_IPhone_Right	6	272	320	16	16
+-	62	SI_IPhone_Up	6	288	320	16	16
+-	63	SI_IPhone_Down	6	304	320	16	16
+-	64	SI_IPhone_OK	6	256	352	32	32
+-	65	SI_IPhone_Cancel	6	288	352	32	32
+-	66	SI_IPhone_Pause	6	320	352	32	32
+-	67	SI_IPhone_Shoot	6	256	384	48	32
+-	68	SI_IPhone_Charge	6	304	384	48	32
+-	69	SI_IPhone_Drain	6	256	416	48	32
+-	70	SI_IPhone_Quick	6	304	416	48	32
 #		ASCII(80~179)					
 -	80	SI_ASCIIBig_Null	6	1	320	12	14
 -	81	SI_ASCIIBig_!	6	15	320	12	14
