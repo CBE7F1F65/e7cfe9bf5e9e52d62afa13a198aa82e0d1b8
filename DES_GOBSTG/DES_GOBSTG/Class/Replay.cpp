@@ -88,6 +88,7 @@ void Replay::ReleaseEnumReplay()
 			}
 		}
 		delete[] enumrpy;
+		enumrpy = NULL;
 	}
 	nenumrpy = 0;
 }

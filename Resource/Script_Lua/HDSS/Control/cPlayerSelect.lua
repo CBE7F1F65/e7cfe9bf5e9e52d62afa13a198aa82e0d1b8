@@ -206,7 +206,7 @@ function _CEPlayerSelect_SyncInput(bleftcomplete, brightcomplete)
 		if hdss.Get(HDSS_CHECKKEY, i, KSI_RIGHT) then
 			hdssSETKEY(i, KSI_DOWN);
 		end
-		if hdss.Get(HDSS_CHECKKEY, i, KSI_SLOW) then
+		if hdss.Get(HDSS_CHECKKEY, i, KSI_SLOW) and (hdss.Get(HDSS_CHECKKEY, i, KSI_LEFT) or hdss.Get(HDSS_CHECKKEY, i, KSI_RIGHT)) then
 			hdssSETKEY(i, KSI_UP, false);
 			hdssSETKEY(i, KSI_DOWN, false);
 		end
