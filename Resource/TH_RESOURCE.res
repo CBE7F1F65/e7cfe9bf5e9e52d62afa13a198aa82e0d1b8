@@ -29,7 +29,7 @@ ScriptFolder_7=Script/Stage/
 SnapShotFolder=SnapShot/
 ReplayFolder=Replay/
 DataFolder=Data/
-EffectsysFolder=Effectsys/
+EffectsysFolder=EffectSys/
 
 [Extension]
 ScriptExt_7=script

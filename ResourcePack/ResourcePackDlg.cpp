@@ -186,7 +186,7 @@ void CResourcePackDlg::OnEnChangeFoldername()
 	{
 		packButton.EnableWindow(FALSE);
 	}
-	else if (!hge->Resource_AccessFile(hge->Resource_MakePath(szPath)))
+	else if (hge->Resource_AccessFile(hge->Resource_MakePath(szPath)))
 	{
 		packButton.EnableWindow(TRUE);
 	}

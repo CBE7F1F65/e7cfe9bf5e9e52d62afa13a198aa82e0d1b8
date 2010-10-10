@@ -167,7 +167,7 @@ void CResourceUnpackDlg::OnEnChangeFoldername()
 	{
 		unpackButton.EnableWindow(FALSE);
 	}
-	else if (!hge->Resource_AccessFile(hge->Resource_MakePath(szIniFilename)))
+	else if (hge->Resource_AccessFile(hge->Resource_MakePath(szIniFilename)))
 	{
 		unpackButton.EnableWindow(TRUE);
 	}

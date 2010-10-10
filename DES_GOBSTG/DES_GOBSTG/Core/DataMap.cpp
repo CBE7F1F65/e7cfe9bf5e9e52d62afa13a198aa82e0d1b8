@@ -98,7 +98,7 @@ dataMapTable dataMap[] =
 	{"Package",				0x20000000},
 	{"Texture",				0x21000000},
 	{"SoundEffect",			0x22000000},
-	{"Effectsys",			0x24000000},
+	{"EffectSys",			0x24000000},
 
 	{"Folder",				0x32000000},
 /*	{"ScriptFolder_1",		0x32010000},
@@ -112,7 +112,7 @@ dataMapTable dataMap[] =
 */	{"SnapShotFolder",		0x32090000},
 	{"ReplayFolder",		0x320A0000},
 	{"DataFolder",			0x320B0000},
-	{"EffectsysFolder",		0x320C0000},
+	{"EffectSysFolder",		0x320C0000},
 
 	{"Extension",			0x33000000},
 	{"ScriptExt_7",			0x33010000},

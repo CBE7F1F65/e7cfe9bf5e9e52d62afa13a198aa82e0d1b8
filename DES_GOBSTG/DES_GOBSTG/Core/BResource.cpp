@@ -93,7 +93,7 @@ bool BResource::Fill()
 	{
 		hge->Resource_CreateDirectory(resdata.datafoldername);
 	}
-	strcpy(resdata.effectsysfoldername, Data::data.sRead(DATA_RESOURCEFILE, sec, Data::data.nLinkType(RESDATAN_EFFECTSYSFOLDER), RESDEFAULT_DATAFOLDER));
+	strcpy(resdata.effectsysfoldername, Data::data.sRead(DATA_RESOURCEFILE, sec, Data::data.nLinkType(RESDATAN_EFFECTSYSFOLDER), RESDEFAULT_EFFECTSYSFOLDER));
 	if(!hge->Resource_AccessFile(resdata.effectsysfoldername))
 	{
 		hge->Resource_CreateDirectory(resdata.effectsysfoldername);
