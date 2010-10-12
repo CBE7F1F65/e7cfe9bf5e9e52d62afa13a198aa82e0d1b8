@@ -236,7 +236,7 @@
 
 #define RESCONFIGS_SYSTEM			"System"
 #define RESCONFIGN_USE3DMODE		"Use3DMode"
-#define RESCONFIGDEFAULT_USE3DMODE		1
+#define RESCONFIGDEFAULT_USE3DMODE		0
 
 #define RESLOADING_PCK	"Loading.pck"
 #define RESLOADING_TEX	"Loading/loading.tex"

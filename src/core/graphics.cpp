@@ -1107,8 +1107,7 @@ DWORD * CALL HGE_Impl::Texture_Lock(HTEXTURE tex, bool bReadOnly, int left, int 
 
 	if(FAILED(pTex->LockRect(0, &TRect, prec, flags)))
 	{
-		_
-		PostError("Can't lock texture");
+		_PostError("Can't lock texture");
 		return NULL;
 	}
 

@@ -106,7 +106,11 @@ typedef void *	LPDIRECTINPUT8;
 ** Common data types
 */
 #ifndef DWORD
+#if defined __IPHONE
 typedef unsigned int       DWORD;
+#else
+typedef unsigned long       DWORD;
+#endif
 typedef unsigned short      WORD;
 typedef unsigned char       BYTE;
 #endif
@@ -187,6 +191,14 @@ typedef QWORD ULONGLONG;
 #define M_2_SQRTPI 1.12837916709551257390f
 #define M_SQRT2    1.41421356237309504880f
 #define M_SQRT1_2  0.707106781186547524401f
+#endif
+
+#ifndef __IPHONE
+#define M_FOLDER_SLASH			'\\'
+#define M_FOLDER_SLASH_WRONG	'/'
+#else
+#define M_FOLDER_SLASH			'/'
+#define M_FOLDER_SLASH_WRONG	'\\'
 #endif
 
 /************************************************************************/

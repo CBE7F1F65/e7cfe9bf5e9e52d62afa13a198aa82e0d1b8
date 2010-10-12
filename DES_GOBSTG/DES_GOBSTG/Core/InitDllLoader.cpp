@@ -1,4 +1,4 @@
-#if defined __WIN32
+#if defined WIN32
 #include "../Header/MainDependency.h"
 
 #pragma init_seg(lib)

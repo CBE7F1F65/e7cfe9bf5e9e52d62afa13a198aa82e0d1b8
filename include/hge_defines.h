@@ -121,14 +121,6 @@
 	} LARGE_INTEGER;
 #endif
 
-#ifndef __IPHONE
-#define M_FOLDER_SLASH			'\\'
-#define M_FOLDER_SLASH_WRONG	'/'
-#else
-#define M_FOLDER_SLASH			'/'
-#define M_FOLDER_SLASH_WRONG	'\\'
-#endif
-
 #ifndef _MAX_PATH
 #define _MAX_PATH   260
 #endif

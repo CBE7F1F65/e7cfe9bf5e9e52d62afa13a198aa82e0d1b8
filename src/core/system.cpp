@@ -913,19 +913,20 @@ bool HGE_Impl::_System_StartLoop()
 	// (if in "child mode" the parent application will do this for us)
 	
 #ifdef __WIN32
+	MSG		msg;
 	if(!hwndParent)
 	{
 		if (PeekMessage(&msg,NULL,0,0,PM_REMOVE))
 		{ 
-			if (msg.message == WM_QUIT)	break;
+			if (msg.message == WM_QUIT)	return false;
 			// TranslateMessage(&msg);
 			DispatchMessage(&msg);
-			continue;
+			return true;
 		}
 	}
 	
 	if(IsIconic(hwnd))
-		continue;
+		return true;
 #endif
 	
 	// Check if mouse is over HGE window for Input_IsMouseOver
@@ -942,7 +943,6 @@ bool HGE_Impl::_System_StartLoop()
 	/************************************************************************/
 	// begin
 #ifdef __WIN32
-	MSG		msg;
 	
 	/************************************************************************/
 	/* These parameters are added by h5nc (h5nc@yahoo.com.cn)               */

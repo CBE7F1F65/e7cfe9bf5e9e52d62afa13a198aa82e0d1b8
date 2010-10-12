@@ -1,5 +1,6 @@
 #include "../include/hge.h"
 #include "../DES_GOBSTG/DES_GOBSTG/Header/Export.h"
+#include "../DES_GOBSTG/DES_GOBSTG/Header/ConstResource.h"
 #include "../DES_GOBSTG/DES_GOBSTG/Header/BResource.h"
 #include "../DES_GOBSTG/DES_GOBSTG/Header/Data.h"
 #include "../include/hgeEffectSystem.h"
@@ -73,7 +74,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	if(hge->System_Initiate())
 	{
-		Export::clientAfterInitial();
+		Export::clientAfterInitial(RESCONFIGDEFAULT_SCREENSCALE);
 		if(eres.Load())
 		{
 			hge->System_Start();
