@@ -128,7 +128,9 @@ rebuild:
 		goto rebuild;
 	}
 	else {
+#if defined __IPHONE
 		Export::clientResetMatrix(screenscale);
+#endif
 	}
 
 	if (infodisplayscale <= 0 || infodisplayscale > 1.5f) {

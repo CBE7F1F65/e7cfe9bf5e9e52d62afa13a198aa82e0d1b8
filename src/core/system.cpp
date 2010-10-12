@@ -425,7 +425,13 @@ void CALL HGE_Impl::System_SetStateBool(hgeBoolState state, bool value)
 
 		case HGE_DONTSUSPEND:	bDontSuspend=value; break;
 			
-		case HGE_2DMODE:		b2DMode=value; break;
+		case HGE_2DMODE:		
+								if (VertArray && b2DMode != value)
+								{
+									_render_batch();
+								}
+								b2DMode=value;
+								break;
 		case HGE_MANAGELOOP:	bManageLoop=value; break;
 
 			/************************************************************************/
