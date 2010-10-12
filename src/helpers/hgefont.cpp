@@ -7,7 +7,7 @@
 */
 
 
-#include "..\..\include\hgefont.h"
+#include "../../include/hgefont.h"
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -797,7 +797,7 @@ bool hgeFont::CreateFontFileByInfo( int * charcode, int num, const char * fontfi
 	}
 	hge->Gfx_Clear(0x00000000);
 
-	char savefilenamebase[256];
+	char savefilenamebase[_MAX_PATH];
 	char buffer[256];
 	char textbuffer[16];
 	strcpy(buffer, "[HGEFONT]\n\n");
@@ -810,7 +810,7 @@ bool hgeFont::CreateFontFileByInfo( int * charcode, int num, const char * fontfi
 	while (filenamelen > 1)
 	{
 		filenamelen--;
-		if (savefilenamebase[filenamelen] != '/' && savefilenamebase[filenamelen] != '\\')
+		if (savefilenamebase[filenamelen] != M_FOLDER_SLASH && savefilenamebase[filenamelen] != M_FOLDER_SLASH_WRONG)
 		{
 			savefilenamebase[filenamelen] = 0;
 		}

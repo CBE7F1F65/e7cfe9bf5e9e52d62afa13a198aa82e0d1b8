@@ -11,6 +11,8 @@ D3DXMATRIX Export::matView2DMode;
 D3DXMATRIX Export::matProj2DMode;
 D3DXMATRIX Export::matView[M_PL_MATCHMAXPLAYER];
 D3DXMATRIX Export::matProj[M_PL_MATCHMAXPLAYER];
+D3DXMATRIX Export::matViewSuper;
+D3DXMATRIX Export::matProjSuper;
 
 hge3DPoint Export::ptfar;
 
@@ -53,7 +55,7 @@ bool Export::clientInitial(bool usesound /* = false */, bool extuse /* = false *
 	hge->System_SetState(HGE_USESOUND, usesound);
 	hge->System_SetState(HGE_HIDEMOUSE, false);
 
-	hge->Resource_SetCurrentDirectory(hge->Resource_MakePath(""));
+//	hge->Resource_SetCurrentDirectory(hge->Resource_MakePath(""));
 	bool bret = SetIni(extuse);
 	if (bret)
 	{
@@ -64,9 +66,12 @@ bool Export::clientInitial(bool usesound /* = false */, bool extuse /* = false *
 		strcat(strtitle, GAME_VERSION_STR);
 		*/
 		hge->System_SetState(HGE_TITLE, GAME_TITLE_STR/*strtitle*/);
+#ifndef __IPHONE
 		hge->System_SetState(HGE_LOGFILE, LOG_STR_FILENAME);
+#endif
 	}
 
+	hge->System_SetState(HGE_2DMODE, false);
 	if (!hge->Ini_GetInt(RESCONFIGS_SYSTEM, RESCONFIGN_USE3DMODE, RESCONFIGDEFAULT_USE3DMODE))
 	{
 		clientSet2DMode();
@@ -74,110 +79,179 @@ bool Export::clientInitial(bool usesound /* = false */, bool extuse /* = false *
 	return bret;
 }
 
-bool Export::clientAfterInitial()
+bool Export::clientResetMatrix(float screenscale)
 {
-	matView2DMode = hge->Gfx_GetTransform(D3DTS_VIEW);
-	matProj2DMode = hge->Gfx_GetTransform(D3DTS_PROJECTION);
-
-#ifdef __PSP
+	memcpy(&matView2DMode ,&(hge->Gfx_GetTransform(D3DTS_VIEW)), sizeof(D3DXMATRIX));
+	memcpy(&matProj2DMode ,&(hge->Gfx_GetTransform(D3DTS_PROJECTION)), sizeof(D3DXMATRIX));
+	
+	
+#if defined __IPHONE
+	matProj2DMode.m[0][0] = SCREEN_HEIGHT/SCREEN_WIDTH;
+	matProj2DMode.m[0][1] = 0.0f;
+	matProj2DMode.m[0][2] = 0.0f;
+	matProj2DMode.m[0][3] = 0.0f;
+	matProj2DMode.m[1][0] = 0.0f;
+	matProj2DMode.m[1][1] = -1.0f;
+	matProj2DMode.m[1][2] = 0.0f;
+	matProj2DMode.m[1][3] = 0.0f;
+	matProj2DMode.m[2][0] = 0.0f;
+	matProj2DMode.m[2][1] = 0.0f;
+	matProj2DMode.m[2][2] = -1.0f;
+	matProj2DMode.m[2][3] = -1.0f;
+	matProj2DMode.m[3][0] = -SCREEN_HEIGHT/2;
+	matProj2DMode.m[3][1] = SCREEN_HEIGHT/2;
+	matProj2DMode.m[3][2] = SCREEN_HEIGHT/2;
+	matProj2DMode.m[3][3] = SCREEN_HEIGHT/2;
+	
+	hge->Math_MatrixIdentity(&matView2DMode);
+#endif
+	
+	memcpy(&matViewSuper, &matView2DMode, sizeof(D3DXMATRIX));
+	memcpy(&matProjSuper, &matProj2DMode, sizeof(D3DXMATRIX));
+	
+	
+#ifndef __WIN32
+#if defined __PSP
 	float scaleval = SCREEN_HEIGHT / M_CLIENT_HEIGHT;
 	float offsetval = (SCREEN_WIDTH - M_CLIENT_WIDTH*scaleval)/2.0f;
-
+#elif defined __IPHONE
+	float scaleval = SCREEN_WIDTH / M_CLIENT_HEIGHT * screenscale;
+	float offsetval = (SCREEN_HEIGHT - M_CLIENT_WIDTH*scaleval)/2.0f;
+#endif
+	
+#if defined __PSP
 	matView2DMode._11 = scaleval;
 	matView2DMode._22 = scaleval;
 	matView2DMode._33 = scaleval;
 	matView2DMode._41 = offsetval;
-#endif // __PSP
-
-/*
-	HGELOG("View2DMode");
-	for (int i=0; i<4; i++)
-	{
-		for (int j=0; j<4; j++)
-		{
-			HGELOG("%f", matView2DMode.m[i][j]);
-		}
-	}
-	HGELOG("Proj2DMode");
-	for (int i=0; i<4; i++)
-	{
-		for (int j=0; j<4; j++)
-		{
-			HGELOG("%f", matProj2DMode.m[i][j]);
-		}
-	}
-*/
-
+#elif defined __IPHONE
+	
+	//	matView2DMode._42 = offsetval;
+	hge->Math_MatrixRotationZ(&matView2DMode, M_PI_2);
+	hge->Math_MatrixTranslation(&matView2DMode, M_CLIENT_HEIGHT+SCREEN_WIDTH*(1-screenscale)/scaleval, offsetval/scaleval, 0);
+	hge->Math_MatrixScaling(&matView2DMode, scaleval, scaleval, scaleval);
+	
+	hge->Math_MatrixRotationZ(&matViewSuper, M_PI_2);
+	hge->Math_MatrixTranslation(&matViewSuper, SCREEN_WIDTH, 0, 0);
+	
+#endif
+#endif // __WIN32
+	
+	/*
+	 HGELOG("View2DMode");
+	 for (int i=0; i<4; i++)
+	 {
+	 for (int j=0; j<4; j++)
+	 {
+	 HGELOG("%f", matView2DMode.m[i][j]);
+	 }
+	 }
+	 HGELOG("Proj2DMode");
+	 for (int i=0; i<4; i++)
+	 {
+	 for (int j=0; j<4; j++)
+	 {
+	 HGELOG("%f", matProj2DMode.m[i][j]);
+	 }
+	 }
+	 */
+	
 	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
 	{
-#ifdef __WIN32
+#if defined __WIN32
 		D3DXMATRIX _matView(
-			1.0f, 0.0f, 0.0f, 0.0f,
-			0.0f, -1.0f, 0.0f, 0.0f,
-			0.0f, 0.0f, -1.0f, 0.0f,
-			-M_GAMESQUARE_CENTER_X_(i), M_GAMESQUARE_CENTER_Y, M_GAMESQUARE_HEIGHT/2.0f, 1.0f
-			);
+							1.0f, 0.0f, 0.0f, 0.0f,
+							0.0f, -1.0f, 0.0f, 0.0f,
+							0.0f, 0.0f, -1.0f, 0.0f,
+							-M_GAMESQUARE_CENTER_X_(i), M_GAMESQUARE_CENTER_Y, M_GAMESQUARE_HEIGHT/2.0f, 1.0f
+							);
 		D3DXMATRIX _matProj(
-			M_CLIENT_HEIGHT/M_CLIENT_WIDTH, 0.0f, 0.0f, 0.0f,
-			0.0f, 1.0f, 0.0f, 0.0f,
-			(M_GAMESQUARE_CENTER_X_(i)-M_CLIENT_CENTER_X)/(M_CLIENT_WIDTH/2), 0.0f, 0.0f, 1.0f,
-			-M_PROJECTIONMATRIX_OFFSET*(M_CLIENT_HEIGHT/M_CLIENT_HEIGHT), M_PROJECTIONMATRIX_OFFSET, 0.0f, -0.55f
-			);
+							M_CLIENT_HEIGHT/M_CLIENT_WIDTH, 0.0f, 0.0f, 0.0f,
+							0.0f, 1.0f, 0.0f, 0.0f,
+							(M_GAMESQUARE_CENTER_X_(i)-M_CLIENT_CENTER_X)/(M_CLIENT_WIDTH/2), 0.0f, 0.0f, 1.0f,
+							-M_PROJECTIONMATRIX_OFFSET*(M_CLIENT_HEIGHT/M_CLIENT_HEIGHT), M_PROJECTIONMATRIX_OFFSET, 0.0f, -0.55f
+							);
 #else
-
-#ifdef __PSP
 		D3DXMATRIX _matView;
 		D3DXMATRIX _matProj;
-
+#if defined __PSP
 		_matView.m[0][0] = scaleval;
 		_matView.m[0][1] = 0.0f;
 		_matView.m[0][2] = 0.0f;
 		_matView.m[0][3] = 0.0f;
-
+		
 		_matView.m[1][0] = 0.0f;
 		_matView.m[1][1] = scaleval;
 		_matView.m[1][2] = 0.0f;
 		_matView.m[1][3] = 0.0f;
-
+		
 		_matView.m[2][0] = 0.0f;
 		_matView.m[2][1] = 0.0f;
 		_matView.m[2][2] = scaleval;
 		_matView.m[2][3] = 0.0f;
-
+		
 		_matView.m[3][0] = offsetval;
 		_matView.m[3][1] = 0.0f;
 		_matView.m[3][2] = 0.0f;
 		_matView.m[3][3] = 1.0f;
-
+#elif defined __IPHONE
+		memcpy(&_matView, &matView2DMode, sizeof(D3DXMATRIX));
+#endif
+		
+#if defined __PSP
 		_matProj.m[0][0] = scaleval;
 		_matProj.m[0][1] = 0.0f;
 		_matProj.m[0][2] = 0.0f;
 		_matProj.m[0][3] = 0.0f;
-
+		
 		_matProj.m[1][0] = 0.0f;
 		_matProj.m[1][1] = -1.0f;
 		_matProj.m[1][2] = 0.0f;
 		_matProj.m[1][3] = 0.0f;
-
+		
 		_matProj.m[2][0] = (M_CLIENT_CENTER_X-M_GAMESQUARE_CENTER_X_(i))/(M_CLIENT_HEIGHT/2)*scaleval;
 		_matProj.m[2][1] = 0.0f;
 		_matProj.m[2][2] = -1.0f;
 		_matProj.m[2][3] = -1.0f;
-
+		
 		_matProj.m[3][0] = -SCREEN_HEIGHT/2;
 		_matProj.m[3][1] = SCREEN_HEIGHT/2;
 		_matProj.m[3][2] = SCREEN_HEIGHT/2;
 		_matProj.m[3][3] = SCREEN_HEIGHT/2;
-
-#endif // __PSP
-
+#elif defined __IPHONE
+		_matProj.m[0][0] = SCREEN_HEIGHT/SCREEN_WIDTH;
+		_matProj.m[0][1] = 0.0f;
+		_matProj.m[0][2] = 0.0f;
+		_matProj.m[0][3] = 0.0f;
+		
+		_matProj.m[1][0] = 0.0f;
+		_matProj.m[1][1] = -1.0f;
+		_matProj.m[1][2] = 0.0f;
+		_matProj.m[1][3] = 0.0f;
+		
+		_matProj.m[2][0] = 0.0f;
+		_matProj.m[2][1] = -(M_CLIENT_CENTER_X-M_GAMESQUARE_CENTER_X_(i))/(M_CLIENT_HEIGHT/2)*scaleval;
+		_matProj.m[2][2] = -1.0f;
+		_matProj.m[2][3] = -1.0f;
+		
+		_matProj.m[3][0] = -SCREEN_HEIGHT/2;
+		_matProj.m[3][1] = SCREEN_HEIGHT/2;
+		_matProj.m[3][2] = SCREEN_HEIGHT/2;
+		_matProj.m[3][3] = SCREEN_HEIGHT/2;
+#endif
+		
 #endif // __WIN32
-
+		
 		matView[i] = _matView;
 		matProj[i] = _matProj;
 	}
-
+	
 	return true;
+}
+
+bool Export::clientAfterInitial(float screenscale)
+{
+	return clientResetMatrix(screenscale);
 }
 
 void Export::clientSetMatrixUser(D3DXMATRIX matWorld, D3DXMATRIX matView, D3DXMATRIX matProj)
@@ -193,6 +267,12 @@ void Export::clientSetMatrix(float _worldx, float _worldy, float _worldz, BYTE r
 	hge->Math_MatrixIdentity(&matWorld);
 	hge->Math_MatrixTranslation(&matWorld, _worldx, _worldy, _worldz);
 	hge->Gfx_SetTransform( D3DTS_WORLD, &matWorld );
+	
+	if (renderflag == M_RENDER_SUPER) {
+		hge->Gfx_SetTransform( D3DTS_VIEW, &matViewSuper );
+		hge->Gfx_SetTransform( D3DTS_PROJECTION, &matProjSuper );
+		return;
+	}
 
 	if (hge->System_GetState(HGE_2DMODE) || renderflag == M_RENDER_NULL)
 	{
@@ -206,7 +286,7 @@ void Export::clientSetMatrix(float _worldx, float _worldy, float _worldz, BYTE r
 	{
 		index = 0;
 	}
-	else
+	else if (renderflag == M_RENDER_RIGHT)
 	{
 		index = 1;
 	}
@@ -254,12 +334,14 @@ bool Export::clientSet3DMode()
 
 bool Export::SetIni(bool extuse)
 {
+#ifndef __IPHONE
 	if (extuse && !hge->Resource_AccessFile(hge->Resource_MakePath(CONFIG_STR_FILENAME)))
 	{
 		hge->System_SetState(HGE_INIFILE, CONFIG_STR_DEFAULTFILENAME);
 		return false;
 	}
 	hge->System_SetState(HGE_INIFILE, CONFIG_STR_FILENAME);
+#endif
 	return true;
 }
 
@@ -308,7 +390,7 @@ bool Export::GetResourceFile(bool readbin)
 {
 	strcpy(resourcefilename, hge->Ini_GetString(RESCONFIGS_RESOURCE, RESCONFIGN_RESOURCEFILE, RESCONFIGDEFAULT_RESOURCEFILE));
 	strcpy(resbinname, hge->Ini_GetString(RESCONFIGS_RESOURCE, RESCONFIGN_RESBINNAME, RESCONFIGDEFAULT_RESBINNAME));
-	if(strlen(resourcefilename) && !readbin)
+	if(strlen(resourcefilename) && strcmp(resourcefilename, " ") && !readbin)
 	{
 		strcpy(resourcefilename, hge->Resource_MakePath(resourcefilename));
 		return false;

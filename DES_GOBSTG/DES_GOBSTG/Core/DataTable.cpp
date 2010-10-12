@@ -543,7 +543,7 @@ FILE * Data::checkTableFile(BYTE type)
 	{
 		return NULL;
 	}
-	FILE * file = fopen(nowfilename, "rb");
+	FILE * file = fopen(hge->Resource_MakePath(nowfilename), "rb");
 	if (!file)
 	{
 		return NULL;

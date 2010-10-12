@@ -1,3 +1,4 @@
+#if defined __WIN32
 #include "../Header/MainDependency.h"
 
 #pragma init_seg(lib)
@@ -19,3 +20,4 @@ private:
 	HMODULE modulehge;
 
 } _initDllLoader;
+#endif

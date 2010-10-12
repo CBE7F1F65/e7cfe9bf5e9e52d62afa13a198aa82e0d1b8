@@ -215,9 +215,10 @@ void FrontDisplay::RenderHeadInfo(BYTE playerindex)
 	{
 		return;
 	}
-	float yoffset = 24.0f;
-	float ybottomoffset = 32.0f;
-	float yoffsetadd = 22.0f;
+	float displayscale = Process::mp.infodisplayscale/Process::mp.screenscale;
+	float yoffset = 24.0f*displayscale;
+	float ybottomoffset = 32.0f*displayscale;
+	float yoffsetadd = 22.0f*displayscale;
 	float px = Player::p[playerindex].x;
 	float py = Player::p[playerindex].y;
 	DWORD color = 0xffffffff;
@@ -247,7 +248,7 @@ void FrontDisplay::RenderHeadInfo(BYTE playerindex)
 			color = (alpha<<24)+0xffffff;
 		}
 		gameinfodisplay.charge->SetColor(color);
-		SpriteItemManager::RenderSprite(gameinfodisplay.charge, px, py-tyoffset-10);
+		SpriteItemManager::RenderSpriteEx(gameinfodisplay.charge, px, py-tyoffset-10*displayscale, 0, displayscale);
 		info.headdigitfont->SetColor(color);
 		char tbuff[M_STRMAX];
 		sprintf(tbuff, "%d / %d", ncharge, nchargemax);
@@ -269,9 +270,9 @@ void FrontDisplay::RenderHeadInfo(BYTE playerindex)
 		}
 		color = (alpha<<24)+0xffffff;
 		gameinfodisplay.caution->SetColor(color);
-		SpriteItemManager::RenderSprite(gameinfodisplay.caution, px, py-tyoffset-8);
+		SpriteItemManager::RenderSpriteEx(gameinfodisplay.caution, px, py-tyoffset-8*displayscale, 0, displayscale);
 		gameinfodisplay.lastlife->SetColor(color);
-		SpriteItemManager::RenderSprite(gameinfodisplay.lastlife, px, py-tyoffset);
+		SpriteItemManager::RenderSpriteEx(gameinfodisplay.lastlife, px, py-tyoffset, 0, displayscale);
 	}
 	if (gameinfodisplay.gaugefilledcountdown[playerindex])
 	{
@@ -292,13 +293,13 @@ void FrontDisplay::RenderHeadInfo(BYTE playerindex)
 		}
 		color = (alpha<<24)+0xffffff;
 		gameinfodisplay.gaugefilled->SetColor(color);
-		SpriteItemManager::RenderSprite(gameinfodisplay.gaugefilled, px, py-tyoffset-10);
+		SpriteItemManager::RenderSpriteEx(gameinfodisplay.gaugefilled, px, py-tyoffset-10*displayscale, 0, displayscale);
 		gameinfodisplay.gaugelevel->SetColor(color);
-		SpriteItemManager::RenderSprite(gameinfodisplay.gaugelevel, px-16, py-tyoffset);
+		SpriteItemManager::RenderSpriteEx(gameinfodisplay.gaugelevel, px-16*displayscale, py-tyoffset, 0, displayscale);
 		info.headdigitfont->SetColor(color);
 		char tbuff[M_STRMAX];
 		sprintf(tbuff, "%d", nchargemax);
-		SpriteItemManager::FontPrintf(info.headdigitfont, px+16, py-tyoffset-8, HGETEXT_CENTER, tbuff);
+		SpriteItemManager::FontPrintf(info.headdigitfont, px+16*displayscale, py-tyoffset-8*displayscale, HGETEXT_CENTER, tbuff);
 	}
 	if (gameinfodisplay.lilycountdown)
 	{
@@ -316,18 +317,19 @@ void FrontDisplay::RenderHeadInfo(BYTE playerindex)
 		}
 		color = (alpha<<24)+0xffffff;
 		gameinfodisplay.caution->SetColor(color);
-		SpriteItemManager::RenderSprite(gameinfodisplay.caution, px, py-tyoffset-8);
+		SpriteItemManager::RenderSpriteEx(gameinfodisplay.caution, px, py-tyoffset-8*displayscale, 0, displayscale);
 		gameinfodisplay.lily->SetColor(color);
-		SpriteItemManager::RenderSprite(gameinfodisplay.lily, px, py-tyoffset);
+		SpriteItemManager::RenderSpriteEx(gameinfodisplay.lily, px, py-tyoffset, 0, displayscale);
 	}
 }
 
 void FrontDisplay::RenderPanel()
 {
+	float displayscale = Process::mp.infodisplayscale/Process::mp.screenscale;
 	if (panelstate)
 	{
 		float spellpointx[M_PL_MATCHMAXPLAYER];
-		spellpointx[0] = M_GAMESQUARE_RIGHT_0-panel.spellpoint->GetWidth();
+		spellpointx[0] = M_GAMESQUARE_RIGHT_0-panel.spellpoint->GetWidth()*displayscale;
 		spellpointx[1] = M_GAMESQUARE_LEFT_1;
 		float winindix[M_PL_MATCHMAXPLAYER][2];
 		float winindiw = panel.winindi->GetWidth();
@@ -340,12 +342,12 @@ void FrontDisplay::RenderPanel()
 
 		for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
 		{
-			SpriteItemManager::RenderSprite(panel.spellpoint, spellpointx[i], M_GAMESQUARE_TOP);
+			SpriteItemManager::RenderSpriteEx(panel.spellpoint, spellpointx[i], M_GAMESQUARE_TOP, 0, displayscale);
 			spriteData * _spd = SpriteItemManager::CastSprite(panel.combobarindex);
 			float fcombogage = ((float)Player::p[i].nComboGage) / PLAYER_COMBOGAGEMAX;
 			SpriteItemManager::SetSpriteTextureRect(panel.combobar, _spd->tex_x, _spd->tex_y, _spd->tex_w*fcombogage, _spd->tex_h);
 			SpriteItemManager::SetSpriteHotSpot(panel.combobar, 0, 0);
-			SpriteItemManager::RenderSprite(panel.combobar, spellpointx[i]+2, M_GAMESQUARE_TOP+30);
+			SpriteItemManager::RenderSpriteEx(panel.combobar, spellpointx[i]+2*displayscale, M_GAMESQUARE_TOP+30*displayscale, 0, displayscale);
 
 			bool usered = true;
 			if (Player::p[i].nComboGage < PLAYER_COMBOALERT && Player::p[i].nComboGage > PLAYER_COMBORESET)
@@ -365,10 +367,10 @@ void FrontDisplay::RenderPanel()
 					buffer[j] += 10;
 				}
 			}
-			SpriteItemManager::FontPrintf(info.spellpointdigitfont, spellpointx[i]+38, M_GAMESQUARE_TOP+16, HGETEXT_RIGHT, buffer);
+			SpriteItemManager::FontPrintf(info.spellpointdigitfont, spellpointx[i]+38*displayscale, M_GAMESQUARE_TOP+16*displayscale, HGETEXT_RIGHT, buffer);
 			int nSpellPoint = Player::p[i].nSpellPoint;
 			sprintf(buffer, "%06d", nSpellPoint);
-			SpriteItemManager::FontPrintf(info.spellpointdigitfont, spellpointx[i]+38, M_GAMESQUARE_TOP+16, HGETEXT_LEFT, buffer);
+			SpriteItemManager::FontPrintf(info.spellpointdigitfont, spellpointx[i]+38*displayscale, M_GAMESQUARE_TOP+16*displayscale, HGETEXT_LEFT, buffer);
 
 			if (Player::p[i].winflag)
 			{
@@ -418,9 +420,9 @@ void FrontDisplay::RenderPanel()
 			{
 				char tbuff[M_STRITOAMAX];
 				sprintf(tbuff, "%02d", Player::p[i].cardlevel);
-				SpriteItemManager::FontPrintf(info.spellpointdigitfont, M_GAMESQUARE_LEFT_(i)+2, M_GAMESQUARE_BOTTOM-11, HGETEXT_LEFT, tbuff);
+				SpriteItemManager::FontPrintf(info.spellpointdigitfont, M_GAMESQUARE_LEFT_(i)+2*displayscale, M_GAMESQUARE_BOTTOM-11*displayscale, HGETEXT_LEFT, tbuff);
 				sprintf(tbuff, "%02d", Player::p[i].bosslevel);
-				SpriteItemManager::FontPrintf(info.spellpointdigitfont, M_GAMESQUARE_RIGHT_(i)-2, M_GAMESQUARE_BOTTOM-11, HGETEXT_RIGHT, tbuff);
+				SpriteItemManager::FontPrintf(info.spellpointdigitfont, M_GAMESQUARE_RIGHT_(i)-2*displayscale, M_GAMESQUARE_BOTTOM-11*displayscale, HGETEXT_RIGHT, tbuff);
 			}
 		}
 		for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
@@ -685,6 +687,8 @@ bool FrontDisplay::Init()
 	}
 
 	//font
+	
+	float displayscale = Process::mp.infodisplayscale/Process::mp.screenscale;
 
 	info.itemfont = new hgeFont();
 	for (int i='0'; i<30+'0'; i++)
@@ -692,12 +696,14 @@ bool FrontDisplay::Init()
 		info.itemfont->ChangeSprite(i, itemnum.itemnum[i-'0']);
 	}
 	info.itemfont->ChangeSprite('b', itemnum.bonus);
+	info.itemfont->SetScale(displayscale);
 	
 	info.spellpointdigitfont = new hgeFont();
 	for (int i='0'; i<22+'0'; i++)
 	{
 		info.spellpointdigitfont->ChangeSprite(i, spellpointnum.spellpointnum[i-'0']);
 	}
+	info.spellpointdigitfont->SetScale(displayscale);
 
 	info.headdigitfont = new hgeFont();
 	for (int i='0'; i<10+'0'; i++)
@@ -707,12 +713,14 @@ bool FrontDisplay::Init()
 	info.headdigitfont->ChangeSprite('/', gameinfodisplay.slash);
 	info.headdigitfont->ChangeSprite(':', gameinfodisplay.colon);
 	info.headdigitfont->ChangeSprite(' ', gameinfodisplay.space);
+	info.headdigitfont->SetScale(displayscale);
 
 	info.asciifont = new hgeFont();
 	for (int i=FDISP_ASCII_BEGIN; i<=FDISP_ASCII_END; i++)
 	{
 		info.asciifont->ChangeSprite(i, ascii.ascii[i-FDISP_ASCII_BEGIN]);
 	}
+	info.asciifont->SetScale(displayscale);
 
 	SetState(FDISP_PANEL, FDISPSTATE_OFF);
 

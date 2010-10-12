@@ -409,7 +409,7 @@ size_t LuaObject::ToStrLen()
 int LuaObject::GetInteger() const
 {
 	luaplus_assert(m_state  &&  IsInteger());
-	return (int)(unsigned int)nvalue(&m_object);
+	return (int)/*(unsigned int)*/nvalue(&m_object);
 }
 
 

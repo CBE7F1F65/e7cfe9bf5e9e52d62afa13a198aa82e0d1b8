@@ -217,8 +217,8 @@ static void setprogdir (lua_State *L) {
   const char* luaplusdllName = "luaplus_1100.so";
 #endif // _DEBUG
   Dl_info info;
-  dladdr(setprogdir, &info);
-  buff = malloc(MAXPATHLEN + 1);
+  dladdr((void*)setprogdir, &info);
+  buff = (char*)malloc(MAXPATHLEN + 1);
   strcpy(buff, info.dli_fname);
   lb = strrchr(buff, '/');
   *lb = '\0';

@@ -225,6 +225,8 @@ typedef unsigned int JDIMENSION;
 
 #ifndef HAVE_BOOLEAN
 typedef int boolean;
+#elif defined __IPHONE
+typedef unsigned char boolean;
 #endif
 #ifndef FALSE			/* in case these macros already exist */
 #define FALSE	0		/* values of boolean */

@@ -10,7 +10,7 @@
 #ifndef HGE_IMPL_H
 #define HGE_IMPL_H
 
-#include "..\..\include\hge.h"
+#include "../../include/hge.h"
 #include <stdio.h>
 
 #define D3DFVF_HGEVERTEX (D3DFVF_XYZ | D3DFVF_DIFFUSE | D3DFVF_TEX1)
@@ -275,6 +275,10 @@ public:
 	static HGE_Impl*	_Interface_Get();
 	void				_FocusChange(bool bAct);
 	void				_PostError(char *error);
+	
+	bool				_System_StartPre();
+	bool				_System_StartLoop();
+	bool				_System_StartPost();
 
 	bool				bActive;
 	char				szError[256];
@@ -323,6 +327,7 @@ public:
 	/************************************************************************/
 	// begin
 	bool				b2DMode;
+	bool				bManageLoop;
 	/************************************************************************/
 	/* These members are added by h5nc (h5nc@yahoo.com.cn)                  */
 	/************************************************************************/

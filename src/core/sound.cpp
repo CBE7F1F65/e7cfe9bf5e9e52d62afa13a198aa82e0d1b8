@@ -14,12 +14,18 @@
 
 #include "hge_impl.h"
 
-#ifdef __WIN32
+#if defined __WIN32
 #define BASSDEF(f) (WINAPI *f)	// define the functions as pointers
-#include "BASS\bass.h"
+#endif
+#if defined __WIN32 || defined __IPHONE
+#include "BASS/bass.h"
 #endif
 
+#if defined __WIN32
 #define LOADBASSFUNCTION(f) *((void**)&f)=(void*)GetProcAddress(hBass,#f)
+#elif defined __IPHONE
+#define LOADBASSFUNCTION(f) (#f)
+#endif
 
 
 HEFFECT CALL HGE_Impl::Effect_Load(const char *filename, DWORD size)
@@ -27,7 +33,7 @@ HEFFECT CALL HGE_Impl::Effect_Load(const char *filename, DWORD size)
 	DWORD _size, length, samples;
 	HSAMPLE hs = NULL;
 	HSTREAM hstrm;
-#ifdef __WIN32
+#if defined __WIN32 || defined __IPHONE
 	BASS_CHANNELINFO info;
 #endif
 	void *buffer, *data;
@@ -42,7 +48,7 @@ HEFFECT CALL HGE_Impl::Effect_Load(const char *filename, DWORD size)
 			data=Resource_Load(filename, &_size);
 			if(!data) return NULL;
 		}
-#ifdef __WIN32
+#if defined __WIN32 || defined __IPHONE
 		hs=BASS_SampleLoad(TRUE, data, 0, _size, 4, BASS_SAMPLE_OVER_VOL);
 		if(!hs) {
 			hstrm=BASS_StreamCreateFile(TRUE, data, 0, _size, BASS_STREAM_DECODE);
@@ -68,7 +74,6 @@ HEFFECT CALL HGE_Impl::Effect_Load(const char *filename, DWORD size)
 			}
 		}
 #endif
-
 		if(!size) Resource_Free(data);
 		return hs;
 	}
@@ -79,7 +84,7 @@ HCHANNEL CALL HGE_Impl::Effect_Play(HEFFECT eff)
 {
 	if(hBass)
 	{
-#ifdef __WIN32
+#if defined __WIN32 || defined __IPHONE
 		HCHANNEL chn;
 		chn=BASS_SampleGetChannel(eff, FALSE);
 		BASS_ChannelPlay(chn, FALSE);
@@ -93,7 +98,7 @@ HCHANNEL CALL HGE_Impl::Effect_PlayEx(HEFFECT eff, int volume, int pan, float pi
 {
 	if(hBass)
 	{
-#ifdef __WIN32
+#if defined __WIN32 || defined __IPHONE
 		BASS_SAMPLE info;
 		HCHANNEL chn;
 		BASS_SampleGetInfo(eff, &info);
@@ -117,7 +122,7 @@ HCHANNEL CALL HGE_Impl::Effect_PlayEx(HEFFECT eff, int volume, int pan, float pi
 
 void CALL HGE_Impl::Effect_Free(HEFFECT eff)
 {
-#ifdef __WIN32
+#if defined __WIN32 || defined __IPHONE
 	if(hBass) BASS_SampleFree(eff);
 #endif
 }
@@ -274,11 +279,11 @@ HSTREAM CALL HGE_Impl::Stream_Load(const char *filename, DWORD size, bool bLoad)
 				data=Resource_Load(filename, &_size);
 				if(!data) return 0;
 			}
-#ifdef __WIN32
+#if defined __WIN32 || defined __IPHONE
 			hs=BASS_StreamCreateFile(TRUE, data, 0, _size, BASS_STREAM_PRESCAN);
 #endif
 		}
-#ifdef __WIN32
+#if defined __WIN32 || defined __IPHONE
 		else
 		{
 			hs=BASS_StreamCreateFile(FALSE, Resource_MakePath(filename), 0, 0, BASS_STREAM_PRESCAN);
@@ -322,7 +327,7 @@ void CALL HGE_Impl::Stream_Free(HSTREAM stream)
 			stmPrev=stmItem;
 			stmItem=stmItem->next;
 		}
-#ifdef __WIN32
+#if defined __WIN32 || defined __IPHONE
 		BASS_StreamFree(stream);
 #endif
 	}
@@ -332,7 +337,7 @@ HCHANNEL CALL HGE_Impl::Stream_Play(HSTREAM stream, bool loop, int volume)
 {
 	if(hBass)
 	{
-#ifdef __WIN32
+#if defined __WIN32 || defined __IPHONE
 		BASS_CHANNELINFO info;
 		BASS_ChannelGetInfo(stream, &info);
 //		BASS_ChannelSetAttributes(stream, info.freq, volume, 0);
@@ -351,14 +356,14 @@ HCHANNEL CALL HGE_Impl::Stream_Play(HSTREAM stream, bool loop, int volume)
 
 void CALL HGE_Impl::Channel_SetPanning(HCHANNEL chn, int pan)
 {
-#ifdef __WIN32
+#if defined __WIN32 || defined __IPHONE
 	if(hBass) BASS_ChannelSetAttribute(chn, BASS_ATTRIB_PAN, (float)pan / 100.0f);
 #endif
 }
 
 void CALL HGE_Impl::Channel_SetVolume(HCHANNEL chn, int volume)
 {
-#ifdef __WIN32
+#if defined __WIN32 || defined __IPHONE
 	if(hBass) BASS_ChannelSetAttribute(chn, BASS_ATTRIB_VOL, (float)volume / 100.0f);
 #endif
 }
@@ -367,7 +372,7 @@ void CALL HGE_Impl::Channel_SetPitch(HCHANNEL chn, float pitch)
 {
 	if(hBass)
 	{
-#ifdef __WIN32
+#if defined __WIN32 || defined __IPHONE
 		BASS_CHANNELINFO info;
 		BASS_ChannelGetInfo(chn, &info);
 		BASS_ChannelSetAttribute(chn, BASS_ATTRIB_FREQ, pitch*info.freq);
@@ -377,35 +382,35 @@ void CALL HGE_Impl::Channel_SetPitch(HCHANNEL chn, float pitch)
 
 void CALL HGE_Impl::Channel_Pause(HCHANNEL chn)
 {
-#ifdef __WIN32
+#if defined __WIN32 || defined __IPHONE
 	if(hBass) BASS_ChannelPause(chn);
 #endif
 }
 
 void CALL HGE_Impl::Channel_Resume(HCHANNEL chn)
 {
-#ifdef __WIN32
+#if defined __WIN32 || defined __IPHONE
 	if(hBass) BASS_ChannelPlay(chn, FALSE);
 #endif
 }
 
 void CALL HGE_Impl::Channel_Stop(HCHANNEL chn)
 {
-#ifdef __WIN32
+#if defined __WIN32 || defined __IPHONE
 	if(hBass) BASS_ChannelStop(chn);
 #endif
 }
 
 void CALL HGE_Impl::Channel_PauseAll()
 {
-#ifdef __WIN32
+#if defined __WIN32 || defined __IPHONE
 	if(hBass) BASS_Pause();
 #endif
 }
 
 void CALL HGE_Impl::Channel_ResumeAll()
 {
-#ifdef __WIN32
+#if defined __WIN32 || defined __IPHONE
 	if(hBass) BASS_Start();
 #endif
 }
@@ -414,7 +419,7 @@ void CALL HGE_Impl::Channel_StopAll()
 {
 	if(hBass)
 	{
-#ifdef __WIN32
+#if defined __WIN32 || defined __IPHONE
 		BASS_Stop();
 		BASS_Start();
 #endif
@@ -425,7 +430,7 @@ bool CALL HGE_Impl::Channel_IsPlaying(HCHANNEL chn)
 {
 	if(hBass)
 	{
-#ifdef __WIN32
+#if defined __WIN32 || defined __IPHONE
 		if(BASS_ChannelIsActive(chn)==BASS_ACTIVE_PLAYING) return true;
 		return false;
 #endif
@@ -436,7 +441,7 @@ bool CALL HGE_Impl::Channel_IsPlaying(HCHANNEL chn)
 QWORD CALL HGE_Impl::Channel_GetLength(HCHANNEL chn) {
 	if(hBass)
 	{
-#ifdef __WIN32
+#if defined __WIN32 || defined __IPHONE
 		return BASS_ChannelGetLength(chn, BASS_POS_BYTE);
 #endif
 	}
@@ -446,7 +451,7 @@ QWORD CALL HGE_Impl::Channel_GetLength(HCHANNEL chn) {
 QWORD CALL HGE_Impl::Channel_GetPos(HCHANNEL chn) {
 	if(hBass)
 	{
-#ifdef __WIN32
+#if defined __WIN32 || defined __IPHONE
 		return BASS_ChannelGetPosition(chn, BASS_POS_BYTE);
 #endif
 	}
@@ -456,7 +461,7 @@ QWORD CALL HGE_Impl::Channel_GetPos(HCHANNEL chn) {
 void CALL HGE_Impl::Channel_SetPos(HCHANNEL chn, QWORD pos) {
 	if(hBass)
 	{
-#ifdef __WIN32
+#if defined __WIN32 || defined __IPHONE
 		BASS_ChannelSetPosition(chn, pos, BASS_POS_BYTE);
 #endif
 	}
@@ -470,7 +475,7 @@ void CALL HGE_Impl::Channel_SetStartPos(HCHANNEL chn, hgeChannelSyncInfo * pcsi)
 {
 	if (pcsi != NULL && hBass)
 	{
-#ifdef __WIN32
+#if defined __WIN32 || defined __IPHONE
 		BASS_ChannelSetPosition(chn, pcsi->startPos, BASS_POS_BYTE);
 #endif
 	}
@@ -483,7 +488,7 @@ void CALL HGE_Impl::Channel_SlideTo(HCHANNEL channel, float _time, int volume, i
 {
 	if(hBass)
 	{
-#ifdef __WIN32
+#if defined __WIN32 || defined __IPHONE
 		BASS_CHANNELINFO info;
 		BASS_ChannelGetInfo(channel, &info);
 
@@ -510,7 +515,7 @@ bool CALL HGE_Impl::Channel_IsSliding(HCHANNEL channel)
 {
 	if(hBass)
 	{
-#ifdef __WIN32
+#if defined __WIN32 || defined __IPHONE
 		if(BASS_ChannelIsSliding(channel, BASS_ATTRIB_VOL)) return true;
 		return false;
 #endif
@@ -525,8 +530,13 @@ bool CALL HGE_Impl::Channel_IsSliding(HCHANNEL channel)
 bool HGE_Impl::_SoundInit()
 {
 	if(!bUseSound || hBass) return true;
-#ifdef __WIN32
+#if defined __WIN32 || defined __IPHONE
+#if defined __WIN32
 	hBass=LoadLibrary(szBassDllFile);
+#elif defined __IPHONE
+	hBass=1;
+#endif
+#endif
 	if (!hBass)
 	{
 		_PostError("Can't load BASS.DLL");
@@ -591,10 +601,23 @@ bool HGE_Impl::_SoundInit()
 	LOADBASSFUNCTION(BASS_ChannelRemoveSync);
 
 	bSilent=false;
-	if (!BASS_Init(-1,nSampleRate,0,hwnd,NULL))
+	if (!BASS_Init(-1,nSampleRate,0,
+#if defined __WIN32
+				   hwnd,
+#elif defined __IPHONE
+				   NULL,
+#endif
+				   NULL))
 	{
 		System_Log("BASS Init failed, using no sound");
-		BASS_Init(0,nSampleRate,0,hwnd,NULL);
+		BASS_Init(0,nSampleRate,0,
+#if defined __WIN32
+				  hwnd,
+#elif defined __IPHONE
+				  NULL,
+#endif
+
+				  NULL);
 		bSilent=true;
 	}
 	else
@@ -602,7 +625,6 @@ bool HGE_Impl::_SoundInit()
 //		System_Log("Sound Device: %s",BASS_GetDeviceDescription(1));
 		System_Log("Sample rate: %ld\n", nSampleRate);
 	}
-#endif
 
 	//BASS_SetConfig(BASS_CONFIG_BUFFER, 5000);
 	//BASS_SetConfig(BASS_CONFIG_UPDATEPERIOD, 50);
@@ -624,7 +646,7 @@ void HGE_Impl::_SoundDone()
 		/************************************************************************/
 		/* This condition is added by h5nc (h5nc@yahoo.com.cn)                  */
 		/************************************************************************/
-#ifdef __WIN32
+#if defined __WIN32 || defined __IPHONE
 		if (HIWORD(BASS_GetVersion()) == BASSVERSION)
 		{
 			BASS_Stop();
@@ -632,8 +654,9 @@ void HGE_Impl::_SoundDone()
 		}
 
 		//int err = BASS_ErrorGetCode(); 
-
+#if defined __WIN32
 		FreeLibrary(hBass);
+#endif
 #endif
 		hBass=0;
 
@@ -650,21 +673,21 @@ void HGE_Impl::_SoundDone()
 
 void HGE_Impl::_SetSampleVolume(int vol)
 {
-#ifdef __WIN32
+#if defined __WIN32 || defined __IPHONE
 	if(hBass) BASS_SetConfig(BASS_CONFIG_GVOL_SAMPLE, vol);
 #endif
 }
 
 void HGE_Impl::_SetStreamVolume(int vol)
 {
-#ifdef __WIN32
+#if defined __WIN32 || defined __IPHONE
 	if(hBass) BASS_SetConfig(BASS_CONFIG_GVOL_STREAM, vol);
 #endif // __WIN32
 }
 
 void HGE_Impl::_SetFXVolume(int vol)
 {
-#ifdef __WIN32
+#if defined __WIN32 || defined __IPHONE
 	if(hBass) BASS_SetConfig(BASS_CONFIG_GVOL_SAMPLE, vol);
 #endif // __WIN32
 }
@@ -672,7 +695,7 @@ void HGE_Impl::_SetFXVolume(int vol)
 /************************************************************************/
 /* These functions are added by h5nc (h5nc@yahoo.com.cn)                */
 /************************************************************************/
-#ifdef __WIN32
+#if defined __WIN32 || defined __IPHONE
 void CALLBACK _BASS_Sync_Func(HSYNC handle, DWORD channel, DWORD data, void * _pcsi)
 {
 	hgeChannelSyncInfo * pcsi = (hgeChannelSyncInfo *)_pcsi;
@@ -690,7 +713,7 @@ void HGE_Impl::Channel_SetLoop(HCHANNEL channel, hgeChannelSyncInfo * pcsi)
 		{
 			Channel_RemoveLoop(channel, pcsi);
 		}
-#ifdef __WIN32
+#if defined __WIN32 || defined __IPHONE
 		pcsi->sync = BASS_ChannelSetSync(channel, BASS_SYNC_POS|BASS_SYNC_MIXTIME, pcsi->startPos+pcsi->allLength, _BASS_Sync_Func, pcsi);
 		BASS_ChannelUpdate(channel, 0);
 #endif // __WIN32
@@ -701,7 +724,7 @@ void HGE_Impl::Channel_RemoveLoop(HCHANNEL channel, hgeChannelSyncInfo * pcsi)
 {
 	if (pcsi != NULL && hBass)
 	{
-#ifdef __WIN32
+#if defined __WIN32 || defined __IPHONE
 		BASS_ChannelRemoveSync(channel, pcsi->sync);
 #endif // __WIN32
 	}

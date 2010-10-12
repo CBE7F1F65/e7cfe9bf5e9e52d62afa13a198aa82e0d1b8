@@ -15,14 +15,27 @@ Process::Process()
 	errorcode	= PROC_ERROR_INIFILE;
 
 	musicID = -1;
-	screenmode = 0;
+	screenmode = RESCONFIGDEFAULT_SCREENMODE;
+	screenscale = RESCONFIGDEFAULT_SCREENSCALE;
+	infodisplayscale = RESCONFIGDEFAULT_INFODISPLAYSCALE;
 
 	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
 	{
 		rendertar[i] = NULL;
 		sprendertar[i] = NULL;
 		SetShake(i, 0, true);
+		
+#if defined __IPHONE
+		touchMoveID[i] = 0xff;
+		shootTriger[i] = false;
+		drainTriger[i] = false;
+		tapTimer[i] = 0;
+#endif
 	}
+#if defined __IPHONE
+	ZeroMemory(touchinfo, sizeof(TouchInfo)*TOUCHPOINT_MAX);
+	ZeroMemory(touchdirectmove, sizeof(TouchDirectMove)*M_PL_MATCHMAXPLAYER);
+#endif
 
 	texInit = NULL;
 }
@@ -41,7 +54,6 @@ void Process::Release()
 		hge->	Ini_SetInt(RESCONFIGS_VOLUME, RESCONFIGN_VOLSE, sevol);
 
 		hge->	Ini_SetInt(RESCONFIGS_CUSTOM, RESCONFIGN_SCREENMODE, screenmode);
-
 		hge->	Ini_SetInt(RESCONFIGS_CUSTOM, RESCONFIGN_LASTMATCHCHARA_1_1, lastmatchchara[0][0]);
 		hge->	Ini_SetInt(RESCONFIGS_CUSTOM, RESCONFIGN_LASTMATCHCHARA_1_2, lastmatchchara[0][1]);
 		hge->	Ini_SetInt(RESCONFIGS_CUSTOM, RESCONFIGN_LASTMATCHCHARA_1_3, lastmatchchara[0][2]);
@@ -689,3 +701,60 @@ void Process::SetLastMatchChara(BYTE playerindex, WORD ID, WORD ID_sub_1, WORD I
 	lastmatchchara[playerindex][1] = ID_sub_1;
 	lastmatchchara[playerindex][2] = ID_sub_2;
 }
+
+#if defined __IPHONE
+
+void _TranslateTouchPoint(float *x, float *y)
+{
+	float scaleval = M_CLIENT_HEIGHT / SCREEN_WIDTH;
+	float orix = *x;
+	float oriy = *y;
+	*x = oriy;
+	*y = (SCREEN_WIDTH-orix);
+//	*x = (oriy-SCREEN_HEIGHT/2)*scaleval+M_CLIENT_WIDTH/2;
+//	*y = (SCREEN_WIDTH-orix)*scaleval;
+}
+
+void Process::TouchCallback_ButtonDown(float x, float y, int ID)
+{
+	_TranslateTouchPoint(&x, &y);
+	touchinfo[ID].x = x;
+	touchinfo[ID].y = y;
+	touchinfo[ID].initx = x;
+	touchinfo[ID].inity = y;
+	touchinfo[ID].lastx = x;
+	touchinfo[ID].lasty = y;
+	touchinfo[ID].toupdate = false;
+	touchinfo[ID].touched = true;
+}
+
+void Process::TouchCallback_ButtonUp(float x, float y, int ID)
+{
+	_TranslateTouchPoint(&x, &y);
+	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++) {
+		if (touchMoveID[i] == ID) {
+			touchMoveID[i] = 0xff;
+			break;
+		}
+	}
+	ZeroMemory(&(touchinfo[ID]), sizeof(TouchInfo));
+}
+
+
+void Process::TouchCallback_Move(float x, float y, int ID)
+{
+	_TranslateTouchPoint(&x, &y);
+	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++) {
+		if (ID == touchMoveID[i]) {
+			if (touchinfo[ID].toupdate) {
+				touchinfo[ID].lastx = touchinfo[ID].x;
+				touchinfo[ID].lasty = touchinfo[ID].y;
+				touchinfo[ID].toupdate = false;
+			}
+			touchinfo[ID].x = x;
+			touchinfo[ID].y = y;
+			break;
+		}
+	}
+}
+#endif

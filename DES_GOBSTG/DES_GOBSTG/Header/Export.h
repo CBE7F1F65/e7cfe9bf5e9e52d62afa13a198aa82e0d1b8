@@ -75,7 +75,8 @@ public:
 	~Export();
 
 	static bool clientInitial(bool usesound = false, bool extuse = false);
-	static bool clientAfterInitial();
+	static bool clientAfterInitial(float screenscale);
+	static bool clientResetMatrix(float screenscale);
 	static hge3DPoint * GetFarPoint(BYTE renderflag);
 	static void clientSetMatrix(float worldx = 0, float worldy = 0, float worldz = 0, BYTE renderflag=M_RENDER_NULL);
 	static void clientSetMatrixUser(D3DXMATRIX matWorld, D3DXMATRIX matView, D3DXMATRIX matProj);
@@ -118,6 +119,8 @@ public:
 	static D3DXMATRIX matProj2DMode;
 	static D3DXMATRIX matView[M_PL_MATCHMAXPLAYER];
 	static D3DXMATRIX matProj[M_PL_MATCHMAXPLAYER];
+	static D3DXMATRIX matViewSuper;
+	static D3DXMATRIX matProjSuper;
 	static hge3DPoint ptfar;
 };
 

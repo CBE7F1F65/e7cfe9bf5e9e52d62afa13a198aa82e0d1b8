@@ -42,7 +42,7 @@ typedef struct _DumpConstStruct
 		lua_WChar wsval[0x40];
 #endif /* LUA_WIDESTRING */
 		char sval[0x40];
-	};
+	} dunion;
 	struct _DumpConstStruct * next;
 } DumpConstStruct;
 
@@ -85,17 +85,17 @@ void luaU_DumpPushLuaConst(
 	case LUA_TNIL:
 		break;
 	case LUA_TSTRING:
-		strcpy(list->sval, sval);
+		strcpy(list->dunion.sval, sval);
 		break;
 #if LUA_WIDESTRING
 	case LUA_TWSTRING:
-		wcscpy(list->wsval, wsval);
+		wcscpy(list->dunion.wsval, wsval);
 #endif;/* LUA_WIDESTRING */
 	case LUA_TNUMBER:
-		list->lnval = lnval;
+		list->dunion.lnval = lnval;
 		break;
 	case LUA_TBOOLEAN:
-		list->bval = bval;
+		list->dunion.bval = bval;
 		break;
 	default:
 		lua_assert(0);
@@ -279,13 +279,13 @@ static void DumpString(const TString* s, DumpState* D)
 	  switch (pos->type)
 	  {
 	  case LUA_TBOOLEAN:
-		  DumpChar(pos->bval,D);
+		  DumpChar(pos->dunion.bval,D);
 		  return;
 	  case LUA_TNUMBER:
-		  DumpNumber(pos->lnval,D);
+		  DumpNumber(pos->dunion.lnval,D);
 		  return;
 	  case LUA_TSTRING:
-		  DumpString_s(pos->sval,D);
+		  DumpString_s(pos->dunion.sval,D);
 		  return;
 #if LUA_WIDESTRING
 	  case LUA_TWSTRING:

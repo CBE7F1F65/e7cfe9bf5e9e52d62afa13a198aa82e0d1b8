@@ -2,9 +2,11 @@
 #define HGE_DEFINES_H
 
 #ifndef __PSP
-#ifndef __WIN32
-#define __WIN32
-#endif
+	#ifndef __IPHONE
+		#ifndef __WIN32
+			#define __WIN32
+		#endif
+	#endif // __IPHONE
 #endif // __PSP
 
 #ifndef __WIN32
@@ -15,79 +17,142 @@
 //typedef unsigned __int64	QWORD;
 //typedef __int64			LONGLONG;
 
-#ifdef __PSP
-#include <psptypes.h>
-#include <pspgu.h>
-typedef s64	__int64;
-#define SCREEN_WIDTH 480.0f
-#define SCREEN_HEIGHT 272.0f
-#endif // __PSP
+#if defined __PSP
+	#include <psptypes.h>
+	#include <pspgu.h>
+	typedef s64	__int64;
+#ifndef SCREEN_WIDTH
+	#define SCREEN_WIDTH 480.0f
+#endif
+#ifndef SCREEN_HEIGHT
+	#define SCREEN_HEIGHT 272.0f
+#endif
+#elif defined __IPHONE
+	#include	<OpenGLES/ES1/gl.h>
+	#include	<OpenGLES/ES1/glext.h>
+	#include	<math.h>
+	#include	<unistd.h>
+#ifndef SCREEN_WIDTH
+	#define SCREEN_WIDTH 320.0f
+#endif
+#ifndef SCREEN_HEIGHT
+	#define SCREEN_HEIGHT 480.0f
+#endif
+#else
+#ifndef SCREEN_WIDTH
+	#define SCREEN_WIDTH 640.0f
+#endif
+#ifndef SCREEN_HEIGHT
+	#define SCREEN_HEIGHT 480.0f
+#endif
+#endif
 
 /************************************************************************/
 /*                                                                      */
 /************************************************************************/
 
 #ifndef DWORD
-typedef unsigned long       DWORD;
-typedef unsigned short      WORD;
-typedef unsigned char       BYTE;
+	typedef unsigned int       DWORD;
+	typedef unsigned short      WORD;
+	typedef unsigned char       BYTE;
 #endif
 
+#ifndef __WIN32
+	#ifdef __IPHONE
+		#include <inttypes.h>
+		#include <ctype.h>
+		#include <stdio.h>
+/*
+		#ifndef strupr
+			char * strupr(char * str)
+			{
+				for (int i=0; i<strlen(str); i++)
+				{
+					if (str[i] >= 'a' && str[i] <= 'z')
+					{
+						str[i] += ('A' - 'a');
+					}
+				}
+				return str;
+			}
+		#endif
+ */
+	#endif // __IPHONE
+#endif // __WIN32
+
 #ifndef QWORD
-#ifdef __PSP
-typedef u64		QWORD;
-#else
-typedef unsigned __int64	QWORD;
-#endif // __PSP
+	#ifdef __PSP
+		typedef u64		QWORD;
+	#elif __IPHONE
+		typedef uint64_t	QWORD;
+	#else // __IPHONE
+		typedef unsigned __int64	QWORD;
+	#endif // __PSP
 #endif
 
 #ifndef LONGLONG
-typedef __int64			LONGLONG;
-typedef QWORD ULONGLONG;
+	#ifdef __IPHONE
+		typedef int64_t		LONGLONG;
+	#else
+		typedef __int64			LONGLONG;
+	#endif // __IPHONE
+	typedef QWORD ULONGLONG;
 #endif
 
 #ifndef NULL
-#define NULL	(0)
+	#define NULL	(0)
 #endif
 
 #ifndef LONG
-typedef long LONG;
+	typedef long LONG;
 #endif
 
 #ifndef LARGE_INTEGER
-typedef union _LARGE_INTEGER {
-	struct {
-		DWORD LowPart;
-		LONG HighPart;
-	};
-	struct {
-		DWORD LowPart;
-		LONG HighPart;
-	} u;
-	LONGLONG QuadPart;
-} LARGE_INTEGER;
+	typedef union _LARGE_INTEGER {
+		struct {
+			DWORD LowPart;
+			LONG HighPart;
+		};
+		struct {
+			DWORD LowPart;
+			LONG HighPart;
+		} u;
+		LONGLONG QuadPart;
+	} LARGE_INTEGER;
+#endif
+
+#ifndef __IPHONE
+#define M_FOLDER_SLASH			'\\'
+#define M_FOLDER_SLASH_WRONG	'/'
+#else
+#define M_FOLDER_SLASH			'/'
+#define M_FOLDER_SLASH_WRONG	'\\'
+#endif
+
+#ifndef _MAX_PATH
+#define _MAX_PATH   260
 #endif
 
 #ifndef RECT
-typedef struct tagRECT
-{
-	LONG    left;
-	LONG    top;
-	LONG    right;
-	LONG    bottom;
-} RECT;
+	typedef struct tagRECT
+	{
+		LONG    left;
+		LONG    top;
+		LONG    right;
+		LONG    bottom;
+	} RECT;
 #endif
 
 #ifndef HANDLE
-typedef void * HANDLE;
+	typedef void * HANDLE;
 #endif
 
 #ifndef HINSTANCE
-typedef unsigned long		HINSTANCE;
+	typedef unsigned long		HINSTANCE;
 #endif
 
 #ifndef HWND
-typedef	unsigned long		HWND;
+	typedef	unsigned long		HWND;
 #endif
 
 #define MB_OK                       0x00000000L
@@ -342,9 +407,15 @@ typedef enum _D3DTRANSFORMSTATETYPE {
 #define D3DTS_WORLD3 D3DTS_WORLDMATRIX(3)*/
 
 typedef enum _D3DTRANSFORMSTATETYPE {
+#ifdef __PSP
 	D3DTS_WORLD			=	GU_MODEL,
 	D3DTS_VIEW          =	GU_VIEW,
 	D3DTS_PROJECTION    =	GU_PROJECTION,
+#elif __IPHONE
+	D3DTS_WORLD			=	GL_MODELVIEW,
+	D3DTS_VIEW			=	GL_MODELVIEW,
+	D3DTS_PROJECTION	=	GL_PROJECTION,
+#endif
 }D3DTRANSFORMSTATETYPE;
 
 

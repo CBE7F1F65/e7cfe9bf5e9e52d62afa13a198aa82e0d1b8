@@ -18,6 +18,9 @@ struct textureData
 struct musicData{
 	char musicname[M_STRMAX];
 	char musicfilename[M_PATHMAX];
+#ifdef __IPHONE
+	char _unused[4];
+#endif
 	LONGLONG startpos;
 	LONGLONG introlength;
 	LONGLONG alllength;

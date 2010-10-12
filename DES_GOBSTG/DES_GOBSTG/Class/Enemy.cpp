@@ -304,7 +304,7 @@ void Enemy::RenderScore(BYTE _playerindex)
 				FrontDisplay::fdisp.info.itemfont->SetColor(0xffffff00);
 			else
 				FrontDisplay::fdisp.info.itemfont->SetColor(0xffffffff);
-			FrontDisplay::fdisp.info.itemfont->RenderEx(_item->x, _item->y-10-_item->timer/4, HGETEXT_CENTER, _item->cScore);
+			FrontDisplay::fdisp.info.itemfont->RenderEx(_item->x, _item->y-10-_item->timer/4, HGETEXT_CENTER, _item->cScore, FrontDisplay::fdisp.info.itemfont->GetScale());
 		}
 	}
 }

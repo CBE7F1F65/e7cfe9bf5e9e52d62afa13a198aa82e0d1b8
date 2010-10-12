@@ -41,7 +41,6 @@
 #define _PLAYER_LIFECOSTMAX	2880
 #define _PLAYER_COMBOHITMAX	999
 
-#define _PLAYER_SHOOTPUSHOVER	9
 #define _PLAYER_SHOOTNOTPUSHOVER	9
 
 #define _PL_SPELLBONUS_BOSS_1	100000
@@ -364,6 +363,25 @@ bool Player::Action()
 
 void Player::action()
 {
+	
+#if defined __IPHONE
+#define _M_MOVINGMIN	1
+	if (!GameAI::ai[playerindex].able) {
+		if (!(flag & PLAYER_SHOT)) {
+			float tx = Process::mp.touchdirectmove[playerindex].x;
+			if (tx > _M_MOVINGMIN) {
+				GameInput::SetKey(playerindex, KSI_RIGHT, true);
+			}
+			else if (tx < -_M_MOVINGMIN){
+				GameInput::SetKey(playerindex, KSI_LEFT, true);
+			}
+			if (fabsf(tx) <= slowspeed) {
+				GameInput::SetKey(playerindex, KSI_SLOW, true);
+			}
+		}
+	}
+#endif
+	
 	float nowspeed = 0;
 	timer++;
 
@@ -601,7 +619,7 @@ void Player::action()
 				shootnotpushtimer++;
 			}
 		}
-		if (shootpushtimer < _PLAYER_SHOOTPUSHOVER)
+		if (shootpushtimer < PLAYER_SHOOTPUSHOVER)
 		{
 			if (GameInput::GetKey(playerindex, KSI_FIRE))
 			{
@@ -626,7 +644,7 @@ void Player::action()
 				{
 					flag &= ~PLAYER_SHOOT;
 					bCharge = true;
-					if (shootpushtimer >= _PLAYER_SHOOTPUSHOVER && !(flag & PLAYER_CHARGE))
+					if (shootpushtimer >= PLAYER_SHOOTPUSHOVER && !(flag & PLAYER_CHARGE))
 					{
 						chargetimer = 0;
 						flag |= PLAYER_CHARGE;
@@ -654,6 +672,15 @@ void Player::action()
 			flag &= ~PLAYER_DRAIN;
 		}
 
+#if defined __IPHONE
+		if (!GameAI::ai[playerindex].able) {
+			if (Process::mp.touchMoveID[playerindex] != 0xff && !(flag & PLAYER_COSTLIFE)) {
+				x += Process::mp.touchdirectmove[playerindex].x * speedfactor;
+				y += Process::mp.touchdirectmove[playerindex].y * speedfactor;
+			}
+		}
+		else {
+#endif
 		if((GameInput::GetKey(playerindex, KSI_UP) ^ GameInput::GetKey(playerindex, KSI_DOWN)) &&
 			GameInput::GetKey(playerindex, KSI_LEFT) ^ GameInput::GetKey(playerindex, KSI_RIGHT))
 			nowspeed *= M_SQUARE_2;
@@ -663,8 +690,19 @@ void Player::action()
 			y += nowspeed;
 		if(GameInput::GetKey(playerindex, KSI_LEFT))
 		{
-			updateFrame(PLAYER_FRAME_LEFTPRE);
 			x -= nowspeed;
+		}
+		if(GameInput::GetKey(playerindex, KSI_RIGHT))
+		{
+			x += nowspeed;
+		}
+#if defined __IPHONE
+		}
+#endif
+
+		if(GameInput::GetKey(playerindex, KSI_LEFT))
+		{
+			updateFrame(PLAYER_FRAME_LEFTPRE);
 		}
 		if(GameInput::GetKey(playerindex, KSI_RIGHT))
 		{
@@ -676,7 +714,6 @@ void Player::action()
 			{
 				updateFrame(PLAYER_FRAME_STAND);
 			}
-			x += nowspeed;
 		}
 		if (!GameInput::GetKey(playerindex, KSI_LEFT) && !GameInput::GetKey(playerindex, KSI_RIGHT))
 		{

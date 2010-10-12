@@ -588,4 +588,19 @@
 /*
 #define SI_BORDER_CIRCLE	"SI_BorderCircle"
 */
+
+#if defined __IPHONE
+#define SI_IPHONE_LEFT	"SI_IPhone_Left"
+#define SI_IPHONE_RIGHT	"SI_IPhone_Right"
+#define SI_IPHONE_UP	"SI_IPhone_Up"
+#define SI_IPHONE_DOWN	"SI_IPhone_Down"
+#define SI_IPHONE_OK	"SI_IPhone_OK"
+#define SI_IPHONE_CANCEL	"SI_IPhone_Cancel"
+#define SI_IPHONE_PAUSE	"SI_IPhone_Pause"
+#define SI_IPHONE_SHOOT	"SI_IPhone_Shoot"
+#define SI_IPHONE_CHARGE	"SI_IPhone_Charge"
+#define SI_IPHONE_DRAIN	"SI_IPhone_Drain"
+#define SI_IPHONE_QUICK	"SI_IPhone_Quick"
+#endif
+
 #endif

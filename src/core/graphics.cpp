@@ -12,12 +12,14 @@
 /************************************************************************/
 
 #include "hge_impl.h"
-#ifdef __WIN32
+
+#if defined __WIN32
+
 #include <d3d9.h>
 #include <d3dx9.h>
-#else
 
-#ifdef __PSP
+#elif defined __PSP
+
 #include <pspkernel.h>
 #include <pspdisplay.h>
 #include <pspdebug.h>
@@ -32,7 +34,14 @@ static unsigned int __attribute__((aligned(16))) gulist[262144];
 
 #define SLICE_SIZE_F			64.0f
 
-#endif // __PSP
+#elif defined __IPHONE
+
+#include "../PSP/PSP_graphics.h"
+
+DWORD _ARGBtoABGR(DWORD color)
+{
+	return (GETR(color) | (GETG(color)<<8) | (GETB(color)<<16) | (GETA(color)<<24));
+}
 
 #endif
 
@@ -53,19 +62,23 @@ void CALL HGE_Impl::Gfx_Clear(DWORD color)
 	}
 	else
 	{
-#ifdef __WIN32
+#if defined __WIN32
 		if(bZBuffer)
 			pD3DDevice->Clear( 0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, color, 1.0f, 0 );
 		else
 			pD3DDevice->Clear( 0, NULL, D3DCLEAR_TARGET, color, 1.0f, 0 );
-#else
-
-#ifdef __PSP
+#elif defined __PSP
 		sceGuDisable(GU_SCISSOR_TEST);
 		sceGuClearColor(color);
 		sceGuClear(GU_COLOR_BUFFER_BIT);
 		sceGuEnable(GU_SCISSOR_TEST);
-#endif // __PSP
+
+#elif defined __IPHONE
+		
+		glDisable(GL_SCISSOR_TEST);
+		glClearColor( (float)GETR(color), (float)GETG(color), (float)GETB(color), (float)GETA(color) );
+		glClear( GL_COLOR_BUFFER_BIT );
+		glEnable(GL_SCISSOR_TEST);
 
 #endif
 	}
@@ -81,12 +94,12 @@ void CALL HGE_Impl::Gfx_SetClipping(int x, int y, int w, int h)
 		scr_height=pHGE->System_GetStateInt(HGE_SCREENHEIGHT);
 	}
 	else {
-#ifdef __WIN32
+#if defined __WIN32
 		scr_width=Texture_GetWidth((HTEXTURE)((DWORD)pCurTarget->pTex));
 		scr_height=Texture_GetHeight((HTEXTURE)((DWORD)pCurTarget->pTex));
 #endif // __WIN32
 	}
-#ifdef __WIN32
+#if defined __WIN32
 	D3DVIEWPORT9 vp;
 
 	if(!w) {
@@ -122,9 +135,7 @@ void CALL HGE_Impl::Gfx_SetClipping(int x, int y, int w, int h)
 	Math_MatrixOrthoOffCenterLH(&tmp, (float)vp.X, (float)(vp.X+vp.Width), -((float)(vp.Y+vp.Height)), -((float)vp.Y), vp.MinZ, vp.MaxZ);
 	Math_MatrixMultiply(&matProj, &matProj, &tmp);
 	pD3DDevice->SetTransform(D3DTS_PROJECTION, &matProj);
-#else
-
-#ifdef __PSP
+#elif defined __PSP
 	if (!w)
 	{
 		w = scr_width;
@@ -132,8 +143,14 @@ void CALL HGE_Impl::Gfx_SetClipping(int x, int y, int w, int h)
 	}
 	sceGuEnable(GU_SCISSOR_TEST);
 	sceGuScissor(x,y,x+w,y+h);
-#endif // __PSP
-
+#elif defined __IPHONE
+	if (!w)
+	{
+		w = scr_width;
+		h = scr_height;
+	}
+	glEnable(GL_SCISSOR_TEST);
+	glScissor(x, y, w, h);
 #endif
 }
 
@@ -162,25 +179,30 @@ void CALL HGE_Impl::Gfx_SetTransform(float x, float y, float dx, float dy, float
 
 void CALL HGE_Impl::Gfx_SetTransform(D3DTRANSFORMSTATETYPE State, const D3DMATRIX * pMatrix)
 {
-#ifdef __WIN32
+#if defined __WIN32
 	pD3DDevice->SetTransform(State, pMatrix);
-#else
-
+#elif defined __PSP
 	sceGumMatrixMode((int)State);
 	sceGumLoadIdentity();
 	sceGumMultMatrix((ScePspFMatrix4*)pMatrix);
-
+#elif defined __IPHONE
+	glMatrixMode((int)State);
+	glLoadIdentity();
+	glMultMatrixf((GLfloat*)pMatrix);
 #endif
 }
 
 D3DMATRIX CALL HGE_Impl::Gfx_GetTransform(D3DTRANSFORMSTATETYPE State)
 {
 	D3DMATRIX mat;
-#ifdef __WIN32
+#if defined __WIN32
 	pD3DDevice->GetTransform(State, &mat);
-#else
+#elif defined __PSP
 	sceGumMatrixMode((int)State);
 	sceGumStoreMatrix((ScePspFMatrix4*)&mat);
+#elif defined __IPHONE
+	glMatrixMode((GLenum)State);
+	glLoadMatrixf((GLfloat*)&mat);
 #endif
 	return mat;
 }
@@ -193,7 +215,7 @@ void CALL HGE_Impl::Gfx_SetTextureInfo(int _nTexInfo, hgeTextureInfo * _texInfo)
 
 bool CALL HGE_Impl::Gfx_BeginScene(HTARGET targ)
 {
-#ifdef __WIN32
+#if defined __WIN32
 	LPDIRECT3DSURFACE9 pSurf=0, pDepth=0;
 	CRenderTargetList *target=(CRenderTargetList *)targ;
 	D3DDISPLAYMODE Mode;
@@ -274,12 +296,8 @@ bool CALL HGE_Impl::Gfx_BeginScene(HTARGET targ)
 	}
 	pD3DDevice->BeginScene();
 	pVB->Lock( 0, 0, (void**)&VertArray, 0 );
-#else
-	/************************************************************************/
-	/* TODO                                                                 */
-	/************************************************************************/
-
-#ifdef __PSP
+	
+#elif defined __PSP
 	sceGuStart(GU_DIRECT, gulist);
 	matProj.m[0][0] = SCREEN_HEIGHT/SCREEN_WIDTH;
 	matProj.m[0][1] = 0.0f;
@@ -304,8 +322,34 @@ bool CALL HGE_Impl::Gfx_BeginScene(HTARGET targ)
 
 	sceGumMatrixMode(GU_VIEW);
 	sceGumLoadIdentity();
-#endif // __PSP
 
+#elif defined __IPHONE
+	
+	matProj.m[0][0] = SCREEN_HEIGHT/SCREEN_WIDTH;
+	matProj.m[0][1] = 0.0f;
+	matProj.m[0][2] = 0.0f;
+	matProj.m[0][3] = 0.0f;
+	matProj.m[1][0] = 0.0f;
+	matProj.m[1][1] = -1.0f;
+	matProj.m[1][2] = 0.0f;
+	matProj.m[1][3] = 0.0f;
+	matProj.m[2][0] = 0.0f;
+	matProj.m[2][1] = 0.0f;
+	matProj.m[2][2] = -1.0f;
+	matProj.m[2][3] = -1.0f;
+	matProj.m[3][0] = -SCREEN_HEIGHT/2;
+	matProj.m[3][1] = SCREEN_HEIGHT/2;
+	matProj.m[3][2] = SCREEN_HEIGHT/2;
+	matProj.m[3][3] = SCREEN_HEIGHT/2;
+	
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+//	glOrthof(0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, SCREEN_HEIGHT/2, 0);
+	glMultMatrixf((GLfloat*)&matProj);
+	
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	
 #endif //__WIN32
 	return true;
 }
@@ -336,26 +380,21 @@ int __freemem()
 void CALL HGE_Impl::Gfx_EndScene()
 {
 	_render_batch(true);
-#ifdef __WIN32
+#if defined __WIN32
 	pD3DDevice->EndScene();
 	if(!pCurTarget) pD3DDevice->Present( NULL, NULL, NULL, NULL );
-#else
-	/************************************************************************/
-	/* TODO                                                                 */
-	/************************************************************************/
-
-#ifdef __PSP
+#elif defined __PSP
 	sceGuFinish();
 	sceGuSync(0,0);
-
 
 	pspDebugScreenSetXY(0, 0);
 	int freemem = __freemem();
 	pspDebugScreenPrintf("%f  %d(%.2fM)", Timer_GetFPS(), freemem, freemem*1.0f/(1024*1024));
 
-
 	sceGuSwapBuffers();
-#endif // __PSP
+#elif defined __IPHONE
+//	glFlush();
+//	glBindTexture(GL_TEXTURE_2D, 0);
 
 #endif
 }
@@ -373,7 +412,7 @@ DWORD _ARGBtoABGR(DWORD color)
 
 void CALL HGE_Impl::Gfx_RenderPoint(float x, float y, float z, DWORD color)
 {
-#ifdef __WIN32
+#if defined __WIN32
 	if(VertArray)
 	{
 		if(CurPrimType!=HGEPRIM_POINTS || nPrim>=VERTEX_BUFFER_SIZE/HGEPRIM_POINTS || CurTexture || CurBlendMode!=BLEND_DEFAULT)
@@ -394,9 +433,7 @@ void CALL HGE_Impl::Gfx_RenderPoint(float x, float y, float z, DWORD color)
 
 		nPrim++;
 	}
-#else
-
-#ifdef __PSP
+#elif defined __PSP
 	struct pspVertex* vertices = (struct pspVertex*)sceGuGetMemory(1 * sizeof(struct pspVertex));
 	if (!vertices)
 	{
@@ -412,14 +449,14 @@ void CALL HGE_Impl::Gfx_RenderPoint(float x, float y, float z, DWORD color)
 	sceGuAmbientColor(0xffffffff);
 	sceGumDrawArray(GU_POINTS, GU_COLOR_8888|GU_VERTEX_32BITF|GU_TRANSFORM_3D, 1*1, 0, vertices);
 	sceGuEnable(GU_TEXTURE_2D);
-#endif // __PSP
+#elif defined __IPHONE
 
 #endif // __WIN32
 }
 
 void CALL HGE_Impl::Gfx_RenderLine(float x1, float y1, float x2, float y2, DWORD color, float z)
 {
-#ifdef __WIN32
+#if defined __WIN32
 	if(VertArray)
 	{
 		if(CurPrimType!=HGEPRIM_LINES || nPrim>=VERTEX_BUFFER_SIZE/HGEPRIM_LINES || CurTexture || CurBlendMode!=BLEND_DEFAULT)
@@ -441,10 +478,8 @@ void CALL HGE_Impl::Gfx_RenderLine(float x1, float y1, float x2, float y2, DWORD
 
 		nPrim++;
 	}
-#else
-
-#ifdef __PSP
-	struct pspVertex* vertices = (struct pspVertex*)sceGuGetMemory(2 * sizeof(struct pspVertex));
+#elif defined __PSP
+	struct pspVertex* vertices = (struct pspVertex*)sceGuGetMemory(HGEPRIM_LINES * sizeof(struct pspVertex));
 	if (!vertices)
 	{
 		return;
@@ -463,10 +498,36 @@ void CALL HGE_Impl::Gfx_RenderLine(float x1, float y1, float x2, float y2, DWORD
 	sceGuShadeModel(GU_FLAT);
 	sceGuShadeModel(GU_SMOOTH);
 	sceGuAmbientColor(0xffffffff);
-	sceGumDrawArray(GU_LINES, GU_COLOR_8888|GU_VERTEX_32BITF|GU_TRANSFORM_3D, 1*2, 0, vertices);
+	sceGumDrawArray(GU_LINES, GU_COLOR_8888|GU_VERTEX_32BITF|GU_TRANSFORM_3D, HGEPRIM_LINES, 0, vertices);
 	sceGuEnable(GU_TEXTURE_2D);
-#endif // __PSP
-
+#elif defined __IPHONE
+	
+	glDisable(GL_TEXTURE_2D);
+	if (CurBlendMode != BLEND_DEFAULT)
+	{
+		_SetBlendMode(BLEND_DEFAULT);
+	}
+	
+	hgeVertex vertices[HGEPRIM_LINES];
+	
+	vertices[0].x = x1;
+	vertices[0].y = y1;
+	vertices[0].z = z;
+	vertices[0].col = _ARGBtoABGR(color);
+	
+	vertices[1].x = x2;
+	vertices[1].y = y2;
+	vertices[1].z = z;
+	vertices[1].col = _ARGBtoABGR(color);
+	
+	glEnableClientState(GL_COLOR_ARRAY);
+	glColorPointer(HGEPRIM_LINES, GL_UNSIGNED_BYTE, sizeof(hgeVertex), &(vertices[0].col));
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glVertexPointer(3, GL_FLOAT, sizeof(hgeVertex), &(vertices[0].x));
+	
+	glDrawArrays(GL_LINES, 0, HGEPRIM_LINES);
+	glEnable(GL_TEXTURE_2D);
+	
 #endif // __WIN32
 }
 
@@ -505,7 +566,7 @@ void CALL HGE_Impl::Gfx_3DRenderEnd()
 
 void CALL HGE_Impl::Gfx_RenderTriple(const hgeTriple *triple)
 {
-#ifdef __WIN32
+#if defined __WIN32
 	if(VertArray)
 	{
 		HTEXTURE tex = triple->tex;
@@ -517,11 +578,6 @@ void CALL HGE_Impl::Gfx_RenderTriple(const hgeTriple *triple)
 	
 			CurPrimType=HGEPRIM_TRIPLES;
 			if(CurBlendMode != triple->blend) _SetBlendMode(triple->blend);
-/*
-			if (!ttex)
-			{
-				return;
-			}*/
 
 			if(ttex != CurTexture) {
 				pD3DDevice->SetTexture( 0, (LPDIRECT3DTEXTURE9)ttex );
@@ -537,7 +593,10 @@ void CALL HGE_Impl::Gfx_RenderTriple(const hgeTriple *triple)
 
 void CALL HGE_Impl::Gfx_RenderQuad(const hgeQuad *quad)
 {
-#ifdef __WIN32
+	if (quad->v[0].col == 0 && quad->v[1].col == 0 && quad->v[2].col == 0 && quad->v[3].col == 0 && !((quad->blend)&BLEND_COLORMUL)) {
+		return;
+	}
+#if defined __WIN32
 	if(VertArray)
 	{
 		HTEXTURE tex = quad->tex;
@@ -565,9 +624,7 @@ void CALL HGE_Impl::Gfx_RenderQuad(const hgeQuad *quad)
 		memcpy(&VertArray[nPrim*HGEPRIM_QUADS], quad->v, sizeof(hgeVertex)*HGEPRIM_QUADS);
 		nPrim++;
 	}
-#else
-
-#ifdef __PSP
+#elif defined __PSP
 	struct pspVertexUV *vertices;
 	int i;
 
@@ -586,18 +643,17 @@ void CALL HGE_Impl::Gfx_RenderQuad(const hgeQuad *quad)
 		sceGuTexImage(0, pTex->textureWidth, pTex->textureHeight, pTex->textureWidth, pTex->data);
 		sceKernelDcacheWritebackAll();
 	}
-//	sceKernelDcacheWritebackAll();
 	if (CurBlendMode != quad->blend)
 	{
 		_SetBlendMode(quad->blend);
 	}
 
-	vertices = (struct pspVertexUV*)sceGuGetMemory(4 * sizeof(struct pspVertexUV));
+	vertices = (struct pspVertexUV*)sceGuGetMemory(HGEPRIM_QUADS * sizeof(struct pspVertexUV));
 	if (!vertices)
 	{
 		return;
 	}
-	for (i=0; i<4; i++)
+	for (i=0; i<HGEPRIM_QUADS; i++)
 	{
 		int j = i;
 		if (i > 1)
@@ -611,15 +667,60 @@ void CALL HGE_Impl::Gfx_RenderQuad(const hgeQuad *quad)
 		vertices[i].z = quad->v[j].z;
 		vertices[i].color = _ARGBtoABGR(quad->v[j].col);
 	}
-	sceGumDrawArray(GU_TRIANGLE_STRIP,GU_TEXTURE_32BITF|GU_COLOR_8888|GU_VERTEX_32BITF|GU_TRANSFORM_3D, 4, 0, vertices);
-#endif // __PSP
-
+	sceGumDrawArray(GU_TRIANGLE_STRIP,GU_TEXTURE_32BITF|GU_COLOR_8888|GU_VERTEX_32BITF|GU_TRANSFORM_3D, HGEPRIM_QUADS, 0, vertices);
+#elif defined __IPHONE
+	
+	HTEXTURE tex = quad->tex;
+	Texture_LoadTextureWhenNeeded(&tex);
+	Image * pTex = (Image *)Texture_GetTexture(tex);
+	if(pTex == 0 || pTex->textureWidth == 0 || pTex->textureHeight ==0 || !pTex->data)
+	{
+		return;
+	}
+	
+	glEnable(GL_TEXTURE_2D);
+	if((DWORD)pTex != CurTexture)
+	{
+		CurTexture = (DWORD)pTex;
+		glBindTexture(GL_TEXTURE_2D, pTex->texid);
+	}
+	if (CurBlendMode != quad->blend)
+	{
+		_SetBlendMode(quad->blend);
+	}
+	
+	hgeVertex vertices[HGEPRIM_QUADS];
+		
+	for (int i=0; i<HGEPRIM_QUADS; i++) {
+		int j=i;
+		if (i > 1)
+		{
+			j = 5-i;
+		}
+		vertices[i].tx = quad->v[j].tx;
+		vertices[i].ty = quad->v[j].ty;
+		vertices[i].x = quad->v[j].x;
+		vertices[i].y = quad->v[j].y;
+		vertices[i].z = quad->v[j].z;
+		vertices[i].col = _ARGBtoABGR(quad->v[j].col);		
+	}
+	
+	glEnableClientState(GL_COLOR_ARRAY);
+	glColorPointer(HGEPRIM_QUADS, GL_UNSIGNED_BYTE, sizeof(hgeVertex), &(vertices[0].col));
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+	glTexCoordPointer(2, GL_FLOAT, sizeof(hgeVertex), &(vertices[0].tx));
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glVertexPointer(3, GL_FLOAT, sizeof(hgeVertex), &(vertices[0].x));
+	
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, HGEPRIM_QUADS);
+	glDisable(GL_TEXTURE_2D);
+	
 #endif
 }
 
 hgeVertex* CALL HGE_Impl::Gfx_StartBatch(int prim_type, HTEXTURE tex, int blend, int *max_prim)
 {
-#ifdef __WIN32
+#if defined __WIN32
 	if(VertArray)
 	{
 		_render_batch();
@@ -650,7 +751,7 @@ void CALL HGE_Impl::Gfx_FinishBatch(int nprim)
 
 HTARGET CALL HGE_Impl::Target_Create(int width, int height, bool zbuffer)
 {
-#ifdef __WIN32
+#if defined __WIN32
 	CRenderTargetList *pTarget;
 	D3DSURFACE_DESC TDesc;
 
@@ -698,7 +799,7 @@ HTARGET CALL HGE_Impl::Target_Create(int width, int height, bool zbuffer)
 
 void CALL HGE_Impl::Target_Free(HTARGET target)
 {
-#ifdef __WIN32
+#if defined __WIN32
 	CRenderTargetList *pTarget=pTargets, *pPrevTarget=NULL;
 
 	while(pTarget)
@@ -725,7 +826,7 @@ void CALL HGE_Impl::Target_Free(HTARGET target)
 
 HTEXTURE CALL HGE_Impl::Target_GetTexture(HTARGET target)
 {
-#ifdef __WIN32
+#if defined __WIN32
 	CRenderTargetList *targ=(CRenderTargetList *)target;
 	if(target) return (HTEXTURE)((DWORD)targ->pTex);
 	else return NULL;
@@ -736,7 +837,7 @@ HTEXTURE CALL HGE_Impl::Target_GetTexture(HTARGET target)
 
 HTEXTURE CALL HGE_Impl::Texture_Create(int width, int height)
 {
-#ifdef __WIN32
+#if defined __WIN32
 	LPDIRECT3DTEXTURE9 pTex;
 
 	if( FAILED( D3DXCreateTexture( pD3DDevice, width, height,
@@ -764,11 +865,13 @@ HTEXTURE CALL HGE_Impl::Texture_Load(const char *filename, DWORD size, bool bMip
 {
 	void *data;
 	DWORD _size;
-#ifdef __WIN32
+	
+#if defined __WIN32
 	D3DFORMAT fmt1, fmt2;
 	LPDIRECT3DTEXTURE9 pTex;
 	D3DXIMAGE_INFO info;
 #endif
+	
 	CTextureList *texItem;
 
 	if(size) { data=(void *)filename; _size=size; }
@@ -777,7 +880,8 @@ HTEXTURE CALL HGE_Impl::Texture_Load(const char *filename, DWORD size, bool bMip
 		data=pHGE->Resource_Load(filename, &_size);
 		if(!data) return NULL;
 	}
-#ifdef __WIN32
+	
+#if defined __WIN32
 	if(*(DWORD*)data == 0x20534444) // Compressed DDS format magic number
 	{
 		fmt1=D3DFMT_UNKNOWN;
@@ -819,11 +923,21 @@ HTEXTURE CALL HGE_Impl::Texture_Load(const char *filename, DWORD size, bool bMip
 		if(!size) Resource_Free(data);
 		return NULL;
 	}
-#else
-	/************************************************************************/
-	/* TODO                                                                 */
-	/************************************************************************/
+#elif defined __PSP || defined __IPHONE
 	Image * pTex = loadImageFromMemory((BYTE *)data, _size);
+	
+#if defined __IPHONE
+	glGenTextures(1, &pTex->texid);
+	if (pTex->texid) {
+		glBindTexture(GL_TEXTURE_2D, pTex->texid);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, pTex->textureWidth, pTex->textureHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, pTex->data);
+	}
+#endif
+	
 #endif
 
 	if(!size) Resource_Free(data);
@@ -834,30 +948,29 @@ HTEXTURE CALL HGE_Impl::Texture_Load(const char *filename, DWORD size, bool bMip
 	
 	texItem=new CTextureList;
 	texItem->tex=(HTEXTURE)((DWORD)pTex);
-#ifdef __WIN32
+#if defined __WIN32
 	texItem->width=info.Width;
 	texItem->height=info.Height;
-#else
+#elif defined __PSP || defined __IPHONE
 	texItem->width=pTex->textureWidth;
 	texItem->height=pTex->textureHeight;
+//#elif defined __IPHONE
+//	texItem->width=pTex->texw;
+//	texItem->height=pTex->texh;
 #endif
 	texItem->next=textures;
 	textures=texItem;
-
 	return (HTEXTURE)((DWORD)pTex);
 }
 
 void CALL HGE_Impl::Texture_Free(HTEXTURE tex)
 {
 	DWORD ttex = Texture_GetTexture(tex);
-#ifdef __WIN32
+#if defined __WIN32
 	LPDIRECT3DTEXTURE9 pTex=(LPDIRECT3DTEXTURE9)ttex;
-#else
-
-#ifdef __PSP
+#elif defined __PSP
 	Image * pTex = (Image *)ttex;
-#endif // __PSP
-
+#elif defined __IPHONE
 #endif
 	CTextureList *texItem=textures, *texPrev=0;
 
@@ -873,17 +986,14 @@ void CALL HGE_Impl::Texture_Free(HTEXTURE tex)
 		texPrev=texItem;
 		texItem=texItem->next;
 	}
-#ifdef __WIN32
+#if defined __WIN32
 	if(pTex != NULL) pTex->Release();
-#else
-
-#ifdef __PSP
+#elif defined __PSP
 	if (pTex)
 	{
 		freeImage(pTex);
 	}
-#endif // __PSP
-
+#elif defined __IPHONE
 #endif
 }
 
@@ -914,15 +1024,18 @@ int CALL HGE_Impl::Texture_GetWidth(HTEXTURE tex, bool bOriginal)
 		}
 		return 0;
 	}
-#ifdef __WIN32
+#if defined __WIN32
 	else
 	{
 		if(FAILED(pTex->GetLevelDesc(0, &TDesc))) return 0;
 		else return TDesc.Width;
 	}
-#else
+#elif defined __PSP || defined __IPHONE
 	Image * pTex = (Image *)ttex;
 	return pTex->textureWidth;
+//#elif defined __IPHONE
+//	image_p pTex = (image_p)ttex;
+//	return pTex->texw;
 #endif
 }
 
@@ -949,22 +1062,25 @@ int CALL HGE_Impl::Texture_GetHeight(HTEXTURE tex, bool bOriginal)
 		}
 		return 0;
 	}
-#ifdef __WIN32
+#if defined __WIN32
 	else
 	{
 		if(FAILED(pTex->GetLevelDesc(0, &TDesc))) return 0;
 		else return TDesc.Height;
 	}
-#else
+#elif defined __PSP || defined __IPHONE
 	Image * pTex = (Image *)ttex;
 	return pTex->textureHeight;
+//#elif defined __IPHONE
+//	image_p pTex = (image_p)ttex;
+//	return pTex->texh;
 #endif
 }
 
 
 DWORD * CALL HGE_Impl::Texture_Lock(HTEXTURE tex, bool bReadOnly, int left, int top, int width, int height)
 {
-#ifdef __WIN32
+#if defined __WIN32
 	Texture_LoadTextureWhenNeeded(&tex);
 	DWORD ttex = Texture_GetTexture(tex);
 	LPDIRECT3DTEXTURE9 pTex=(LPDIRECT3DTEXTURE9)ttex;
@@ -991,7 +1107,8 @@ DWORD * CALL HGE_Impl::Texture_Lock(HTEXTURE tex, bool bReadOnly, int left, int 
 
 	if(FAILED(pTex->LockRect(0, &TRect, prec, flags)))
 	{
-		_PostError("Can't lock texture");
+		_
+		PostError("Can't lock texture");
 		return NULL;
 	}
 
@@ -1004,7 +1121,7 @@ DWORD * CALL HGE_Impl::Texture_Lock(HTEXTURE tex, bool bReadOnly, int left, int 
 
 void CALL HGE_Impl::Texture_Unlock(HTEXTURE tex)
 {
-#ifdef __WIN32
+#if defined __WIN32
 	DWORD ttex = Texture_GetTexture(tex);
 	LPDIRECT3DTEXTURE9 pTex=(LPDIRECT3DTEXTURE9)ttex;
 	pTex->UnlockRect(0);
@@ -1013,7 +1130,7 @@ void CALL HGE_Impl::Texture_Unlock(HTEXTURE tex)
 
 bool CALL HGE_Impl::Texture_Save(HTEXTURE tex, const char * filename, DWORD filetype)
 {
-#ifdef __WIN32
+#if defined __WIN32
 	DWORD ttex = Texture_GetTexture(tex);
 	LPDIRECT3DTEXTURE9 pTex=(LPDIRECT3DTEXTURE9)ttex;
 	if (!pTex)
@@ -1055,7 +1172,7 @@ HTEXTURE * CALL HGE_Impl::Texture_GetTextureToLoad()
 
 void HGE_Impl::_render_batch(bool bEndScene)
 {
-#ifdef __WIN32
+#if defined __WIN32
 	if(VertArray)
 	{
 		pVB->Unlock();
@@ -1093,7 +1210,7 @@ void HGE_Impl::_render_batch(bool bEndScene)
 
 void HGE_Impl::_SetBlendMode(int blend)
 {
-#ifdef __WIN32
+#if defined __WIN32
 	if((blend & BLEND_ALPHABLEND) != (CurBlendMode & BLEND_ALPHABLEND))
 	{
 		if(blend & BLEND_ALPHABLEND) pD3DDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
@@ -1112,9 +1229,7 @@ void HGE_Impl::_SetBlendMode(int blend)
 		else pD3DDevice->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_MODULATE);
 	}
 
-#else
-
-#ifdef __PSP
+#elif defined __PSP
 	int toblend;
 	switch (blend)
 	{
@@ -1125,8 +1240,41 @@ void HGE_Impl::_SetBlendMode(int blend)
 		break;
 	}	
 	sceGuTexFunc(toblend, GU_TCC_RGBA); 
-#endif // __PSP
 
+#elif defined __IPHONE
+	
+	glDisable(GL_ALPHA_TEST);
+	glEnable(GL_BLEND); // Enable Blending
+	
+	
+	if((blend & BLEND_ALPHABLEND) != (CurBlendMode & BLEND_ALPHABLEND))
+	{
+		if(blend & BLEND_ALPHABLEND) 
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);	//Alpha blending
+		else 
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE); //Addictive	
+	}
+	
+    if((blend & BLEND_ZWRITE) != (CurBlendMode & BLEND_ZWRITE))
+	{
+		if(blend & BLEND_ZWRITE)
+		{
+			glEnable(GL_DEPTH_TEST);
+			glDepthMask(GL_TRUE);
+		}
+		else
+		{
+			glDisable(GL_DEPTH_TEST);
+			glDepthMask(GL_FALSE);
+		}
+	}	
+	
+	if((blend & BLEND_COLORADD) != (CurBlendMode & BLEND_COLORADD))
+	{
+		if(blend & BLEND_COLORADD) glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_ADD); 
+		else glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE); 
+	}
+		
 #endif
 
 	CurBlendMode = blend;
@@ -1188,7 +1336,7 @@ void* getStaticVramTexture(unsigned int width, unsigned int height, unsigned int
 
 bool HGE_Impl::_GfxInit()
 {
-#ifdef __WIN32
+#if defined __WIN32
 	static const char *szFormats[]={"UNKNOWN", "R5G6B5", "X1R5G5B5", "A1R5G5B5", "X8R8G8B8", "A8R8G8B8"};
 	D3DADAPTER_IDENTIFIER9 AdID;
 	D3DDISPLAYMODE Mode;
@@ -1345,9 +1493,7 @@ bool HGE_Impl::_GfxInit()
 	}
 
 	Gfx_SetTextureInfo(0);
-#endif
-
-#ifdef __PSP
+#elif defined __PSP
 	#define BUF_WIDTH (512)
 	// Setup GU
  	//pspDebugScreenInit();
@@ -1430,10 +1576,69 @@ bool HGE_Impl::_GfxInit()
 
 	sceDisplayWaitVblankStart();
 	sceGuDisplay(1);
-#endif // __PSP
+#elif defined __IPHONE
+	
+	glViewport(2048, 2048, SCREEN_WIDTH, SCREEN_HEIGHT);
+	// Scissoring
+	glEnable(GL_SCISSOR_TEST);
+	glScissor(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+	// Backface culling
+	glFrontFace(GL_CCW);
+	glDisable(GL_CULL_FACE);		// no culling in 2D
+	// Depth test
+	glDisable(GL_DEPTH_TEST);
+	glDepthMask(GL_TRUE);		// disable z-writes
+	// Color keying
+	glDisable(GL_ALPHA_TEST);
+	// Texturing
+	glEnable(GL_TEXTURE_2D);
+	glShadeModel(GL_SMOOTH);
+	glTexEnvi(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexEnvi(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexEnvi(GL_TEXTURE_2D, GL_TEXTURE_FILTER_CONTROL_EXT, GL_LINEAR);
+	//sceGuTexFunc(GU_TFX_REPLACE, GU_TCC_RGBA);
+	// Blending
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glDisable(GL_DITHER);
+	
+	// Projection
+	
+	matProj.m[0][0] = SCREEN_HEIGHT/SCREEN_WIDTH;
+	matProj.m[0][1] = 0.0f;
+	matProj.m[0][2] = 0.0f;
+	matProj.m[0][3] = 0.0f;
+	matProj.m[1][0] = 0.0f;
+	matProj.m[1][1] = -1.0f;
+	matProj.m[1][2] = 0.0f;
+	matProj.m[1][3] = 0.0f;
+	matProj.m[2][0] = 0.0f;
+	matProj.m[2][1] = 0.0f;
+	matProj.m[2][2] = -1.0f;
+	matProj.m[2][3] = -1.0f;
+	matProj.m[3][0] = -SCREEN_HEIGHT/2;
+	matProj.m[3][1] = SCREEN_HEIGHT/2;
+	matProj.m[3][2] = SCREEN_HEIGHT/2;
+	matProj.m[3][3] = SCREEN_HEIGHT/2;
+	
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	glMultMatrixf((GLfloat*)&matProj);
+	
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	/*
+	glClearColor( 0, 0, 0, 0 );
+	glClear(GL_COLOR_BUFFER_BIT);
+	glFinish();
+	 */
+#endif
 
 	_AdjustWindow();
-#ifdef __WIN32
+#if defined __WIN32
 	System_Log("Mode: %d x %d x %s\n",nScreenWidth,nScreenHeight,szFormats[_format_id(Format)]);
 #endif
 // Create vertex batch buffer
@@ -1452,7 +1657,7 @@ bool HGE_Impl::_GfxInit()
 
 	return true;
 }
-#ifdef __WIN32
+#if defined __WIN32
 int HGE_Impl::_format_id(D3DFORMAT fmt)
 {
 	switch(fmt) {
@@ -1468,7 +1673,7 @@ int HGE_Impl::_format_id(D3DFORMAT fmt)
 
 void HGE_Impl::_AdjustWindow()
 {
-#ifdef __WIN32
+#if defined __WIN32
 	RECT *rc;
 	LONG style;
 
@@ -1495,7 +1700,7 @@ void HGE_Impl::_Resize(int width, int height)
 	if(hwndParent)
 	{
 		//if(procFocusLostFunc) procFocusLostFunc();
-#ifdef __WIN32
+#if defined __WIN32
 		d3dppW.BackBufferWidth=width;
 		d3dppW.BackBufferHeight=height;
 #endif
@@ -1514,14 +1719,14 @@ void HGE_Impl::_GfxDone()
 	CRenderTargetList *target=pTargets, *next_target;
 	
 	while(textures)	Texture_Free(textures->tex);
-#ifdef __WIN32
+#if defined __WIN32
 	if(pScreenSurf) { pScreenSurf->Release(); pScreenSurf=0; }
 	if(pScreenDepth) { pScreenDepth->Release(); pScreenDepth=0; }
 #endif
 
 	while(target)
 	{
-#ifdef __WIN32
+#if defined __WIN32
 		if(target->pTex) target->pTex->Release();
 		if(target->pDepth) target->pDepth->Release();
 #endif
@@ -1530,7 +1735,7 @@ void HGE_Impl::_GfxDone()
 		target=next_target;
 	}
 	pTargets=0;
-#ifdef __WIN32
+#if defined __WIN32
 	if(pIB)
 	{
 		//-2nd
@@ -1548,11 +1753,9 @@ void HGE_Impl::_GfxDone()
 	}
 	if(pD3DDevice) { pD3DDevice->Release(); pD3DDevice=0; }
 	if(pD3D) { pD3D->Release(); pD3D=0; }
-#else
-
-#ifdef __PSP
+#elif defined __PSP
 	sceGuTerm();
-#endif // __PSP
+#elif defined __IPHONE
 
 #endif
 }
@@ -1560,7 +1763,7 @@ void HGE_Impl::_GfxDone()
 
 bool HGE_Impl::_GfxRestore()
 {
-#ifdef __WIN32
+#if defined __WIN32
 	CRenderTargetList *target=pTargets;
 
 	//if(!pD3DDevice) return false;
@@ -1630,7 +1833,7 @@ bool HGE_Impl::_GfxRestore()
 
 bool HGE_Impl::_init_lost()
 {
-#ifdef __WIN32
+#if defined __WIN32
 	CRenderTargetList *target=pTargets;
 
 // Store render target

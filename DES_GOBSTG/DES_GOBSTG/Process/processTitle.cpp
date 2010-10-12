@@ -1,7 +1,6 @@
 #include "../Header/Process.h"
 #include "../Header/Scripter.h"
 #include "../Header/SelectSystem.h"
-#include "../Header/SE.h"
 
 int Process::processTitle()
 {
@@ -19,4 +18,5 @@ int Process::processTitle()
 	int tselsys = Scripter::scr.GetIntValue(SCR_RESERVEBEGIN);
 	titleselect = SelectSystem::selsys[tselsys].select;
 	return retvalue;
+	
 }

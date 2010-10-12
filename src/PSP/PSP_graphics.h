@@ -1,12 +1,18 @@
-#ifdef __PSP
+#if defined __PSP || defined __IPHONE
 #ifndef GRAPHICS_H
 #define GRAPHICS_H
 
+#if defined __PSP
+
 #include <psptypes.h>
 
-#define	PSP_LINE_SIZE 512
-#define SCREEN_WIDTH 480.0f
-#define SCREEN_HEIGHT 272.0f
+#elif defined __IPHONE
+
+#ifndef u32
+typedef unsigned int u32;
+#endif
+
+#endif
 
 typedef u32 Color;
 #define A(color) ((u8)(color >> 24 & 0xFF))
@@ -20,6 +26,7 @@ typedef struct
 	int textureHeight;  // the real height of data, 2^n with n>=0
 	int imageWidth;  // the image width
 	int imageHeight;
+	unsigned int texid;
 	Color* data;
 } Image;
 

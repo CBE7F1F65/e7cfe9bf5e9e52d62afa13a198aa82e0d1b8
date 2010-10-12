@@ -99,7 +99,13 @@ extern "C" {
     #endif
 
     #ifndef DWORD
-      typedef unsigned long DWORD;
+
+#if defined __IPHONE
+    typedef unsigned int DWORD;
+#else
+    typedef unsigned long DWORD;
+#endif
+
     #endif
 
     #ifndef BYTE

@@ -331,7 +331,7 @@ bool CALL HGE_Impl::Input_GetDIJoy(int joy, BYTE stateType /* = DIKEY_PRESSED */
 
 void HGE_Impl::_UpdateMouse()
 {
-#ifdef __WIN32
+#if defined __WIN32
 	POINT	pt;
 	RECT	rc;
 
@@ -343,6 +343,7 @@ void HGE_Impl::_UpdateMouse()
 		bMouseOver=true;
 	else
 		bMouseOver=false;
+#elif defined __IPHONE
 #endif
 }
 
@@ -495,7 +496,7 @@ int HGE_Impl::_DIInit()
 
 	bool keyable = true;
 	bool nojoy = true;
-#ifdef __WIN32
+#if defined __WIN32
 	lpDIKDevice = NULL;
 
 	if (FAILED (DirectInput8Create (hInstance, DIRECTINPUT_VERSION, IID_IDirectInput8, (void**) &lpDInput, NULL)))
@@ -625,12 +626,12 @@ int HGE_Impl::_DIInit()
 			}
 		}
 	}
-#endif
-
-#ifdef __PSP
+#elif defined __PSP
 	sceCtrlSetSamplingCycle(0);
 	sceCtrlSetSamplingMode(PSP_CTRL_MODE_ANALOG);
-#endif // __PSP
+#elif defined __IPHONE
+	
+#endif
 
 	return ((!nojoy)?0:ERROR_NOJOYSTICK) | (keyable?0:ERROR_NOKEYBOARD);
 }
@@ -708,7 +709,7 @@ int HGE_Impl::_DIUpdate()
 		/************************************************************************/
 		ZeroMemory(&keyState, sizeof(keyState));
 
-#ifdef __PSP
+#if defined __PSP
 		SceCtrlData pad;
 		sceCtrlPeekBufferPositive(&pad, 1);
 		//Analog pad.Lx, Pad.Ly
@@ -719,6 +720,7 @@ int HGE_Impl::_DIUpdate()
 				keyState[i] = 1<<7;
 			}
 		}
+#elif defined __IPHONE
 #endif // __PSP
 
 #endif // __WIN32

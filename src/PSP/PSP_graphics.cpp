@@ -1,14 +1,42 @@
-#ifdef __PSP
+#if defined __PSP || defined __IPHONE
+
 #include <stdlib.h>
-#include <malloc.h>
+#include <stdio.h>
+#include <png.h>
+
+#if defined __PSP
 #include <pspdisplay.h>
 #include <psputils.h>
-#include <png.h>
 #include <pspgu.h>
 
+#ifndef PSP_LINE_SIZE
+#define	PSP_LINE_SIZE 512
+#endif
+
+#ifndef SCREEN_WIDTH
+#define SCREEN_WIDTH 480.0f
+#endif
+
+#ifndef SCREEN_HEIGHT
+#define SCREEN_HEIGHT 272.0f
+#endif
+
+#elif defined __IPHONE
+#include <cstring>
+
+#ifndef SCREEN_WIDTH
+#define SCREEN_WIDTH 320.0f
+#endif
+
+#ifndef SCREEN_HEIGHT
+#define SCREEN_HEIGHT 480.0f
+#endif
+
+#endif
+
 extern "C" {
-#include <jpeglib.h>
-#include <jerror.h>
+#include "include/jpeglib.h"
+#include "include/jerror.h"
 }
 
 #include "PSP_graphics.h"
@@ -17,6 +45,14 @@ extern "C" {
 #define IS_ALPHA(color) (((color)&0xff000000)==0xff000000?0:1)
 #define FRAMEBUFFER_SIZE (PSP_LINE_SIZE*SCREEN_HEIGHT*4)
 #define MAX(X, Y) ((X) > (Y) ? (X) : (Y))
+
+#ifndef memalign
+#define memalign(X, SIZE)	malloc(SIZE)
+#endif
+
+#ifndef stricmp
+#define stricmp	strcasecmp
+#endif
 
 /*
 typedef struct
@@ -106,6 +142,7 @@ void swizzle_fast(unsigned char* out, const unsigned char* in, unsigned int widt
 
 void swizzle_swap(Image * pimage)
 {
+#if defined __PSP
 	int bsize = pimage->textureWidth * pimage->textureHeight * 4/*pimage->bpb*/;
 	unsigned char * buffer = (unsigned char *)malloc(bsize);
 	if (!buffer)
@@ -119,6 +156,7 @@ void swizzle_swap(Image * pimage)
 		free(pimage->data);
 	}
 	pimage->data = (Color *)buffer;
+#endif
 
 }
 Image* loadImage(const char* filename)

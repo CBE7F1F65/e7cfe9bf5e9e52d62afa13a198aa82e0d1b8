@@ -111,7 +111,7 @@ void Process::_RenderTar()
 
 int Process::render()
 {
-#ifdef __PSP
+#ifndef __WIN32
 	hge->Gfx_BeginScene();
 	hge->Gfx_Clear(0x00000000);
 #endif
@@ -119,25 +119,25 @@ int Process::render()
 	bool isingame = IsInGame();
 	if (isingame)
 	{
-#ifdef __WIN32
+#if defined __WIN32
 		hge->Gfx_BeginScene(rendertar[0]);
 		hge->Gfx_Clear(0x00000000);
-#else
-#ifdef __PSP
+#elif defined __PSP
 		hge->Gfx_SetClipping(M_SIDE_EDGE, 0, SCREEN_WIDTH/2-M_SIDE_EDGE, SCREEN_HEIGHT);
-#endif // __PSP
+#elif defined __IPHONE
+		hge->Gfx_SetClipping(SCREEN_WIDTH*(1-screenscale), SCREEN_HEIGHT/2, SCREEN_WIDTH*screenscale, (SCREEN_HEIGHT/2-M_SIDE_EDGE)*screenscale);
 #endif // __WIN32
 		_Render(M_RENDER_LEFT);
 #ifdef __WIN32
 		hge->Gfx_EndScene();
 #endif // __WIN32
-#ifdef __WIN32
+#if defined __WIN32
 		hge->Gfx_BeginScene(rendertar[1]);
 		hge->Gfx_Clear(0x00000000);
-#else
-#ifdef __PSP
+#elif defined __PSP
 		hge->Gfx_SetClipping(SCREEN_WIDTH/2, 0, SCREEN_WIDTH/2-M_SIDE_EDGE, SCREEN_HEIGHT);
-#endif // __PSP
+#elif defined __IPHONE
+		hge->Gfx_SetClipping(SCREEN_WIDTH*(1-screenscale), SCREEN_HEIGHT/2-(SCREEN_HEIGHT/2-M_SIDE_EDGE)*screenscale, SCREEN_WIDTH*screenscale, (SCREEN_HEIGHT/2-M_SIDE_EDGE)*screenscale);
 #endif // __WIN32
 		_Render(M_RENDER_RIGHT);
 #ifdef __WIN32
@@ -149,9 +149,7 @@ int Process::render()
 	hge->Gfx_BeginScene();
 	hge->Gfx_Clear(0x00000000);
 #else
-#ifdef __PSP
 	hge->Gfx_SetClipping(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-#endif // __PSP
 #endif // __WIN32
 	Export::clientSetMatrix();
 	if (state == STATE_INIT)
@@ -183,6 +181,12 @@ int Process::render()
 	}
 	BGLayer::RenderFGPause();
 	SelectSystem::RenderAll();
+	
+#if defined __IPHONE
+	Export::clientSetMatrix(0, 0, 0, M_RENDER_SUPER);
+	SpriteItemManager::RenderFrontTouchButton();
+#endif
+	
 	hge->Gfx_EndScene();
 	return PGO;
 }

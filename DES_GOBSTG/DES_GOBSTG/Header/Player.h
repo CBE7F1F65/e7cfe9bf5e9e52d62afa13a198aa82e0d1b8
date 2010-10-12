@@ -69,6 +69,8 @@
 
 #define PL_SHOOTINGCHARGE_STOPTIME	32
 
+#define PLAYER_SHOOTPUSHOVER	9
+
 class Player : public BObject
 {
 public:

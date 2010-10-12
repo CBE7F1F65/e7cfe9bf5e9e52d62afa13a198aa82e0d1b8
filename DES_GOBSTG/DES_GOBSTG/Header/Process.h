@@ -6,6 +6,24 @@
 #include "Const.h"
 #include "ProcessDefine.h"
 
+#if defined __IPHONE
+struct TouchInfo {
+	float initx;
+	float inity;
+	float lastx;
+	float lasty;
+	float x;
+	float y;
+	bool toupdate;
+	bool touched;
+};
+
+struct TouchDirectMove {
+	float x;
+	float y;
+};
+#endif
+
 class Process
 {
 public:
@@ -75,6 +93,7 @@ public:
 	DWORD	GetStopFlag(int index=-1);
 
 	void	ClearAll();
+	
 
 public:
 	union{
@@ -110,6 +129,8 @@ public:
 	//read ini
 	char	username[M_PL_MATCHMAXPLAYER][RPYINFO_USERNAMEMAX];
 	int		screenmode;
+	float	screenscale;
+	float	infodisplayscale;
 	int		bgmvol;
 	int		sevol;
 	int		lastmatchchara[M_PL_MATCHMAXPLAYER][M_PL_ONESETPLAYER];
@@ -172,6 +193,22 @@ public:
 	//
 	HTARGET	rendertar[M_PL_MATCHMAXPLAYER];
 	hgeSprite * sprendertar[M_PL_MATCHMAXPLAYER];
+	
+#if defined __IPHONE
+public:
+	void TouchCallback_ButtonDown(float x, float y, int ID);
+	void TouchCallback_ButtonUp(float x, float y, int ID);
+	void TouchCallback_Move(float x, float y, int ID);
+	
+	TouchInfo touchinfo[TOUCHPOINT_MAX];
+	BYTE touchMoveID[M_PL_MATCHMAXPLAYER];
+	TouchDirectMove touchdirectmove[M_PL_MATCHMAXPLAYER];
+	
+	bool shootTriger[M_PL_MATCHMAXPLAYER];
+	bool drainTriger[M_PL_MATCHMAXPLAYER];
+	int tapTimer[M_PL_MATCHMAXPLAYER];
+	
+#endif
 
 	static Process mp;
 };

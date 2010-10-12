@@ -68,6 +68,12 @@
 #define CALL
 #endif // __PSP
 
+#ifdef __IPHONE
+#define CALL
+#include <ctype.h>
+#include <wchar.h>
+#endif // __IPHONE
+
 #endif // __WIN32
 
 #ifdef __BORLANDC__
@@ -96,39 +102,32 @@
 typedef void *	LPDIRECTINPUT8;
 #endif
 
-#ifndef _MAX_PATH
-#define _MAX_PATH   260
-#endif
-
 /*
 ** Common data types
 */
 #ifndef DWORD
-typedef unsigned long       DWORD;
+typedef unsigned int       DWORD;
 typedef unsigned short      WORD;
 typedef unsigned char       BYTE;
 #endif
 
 #ifndef QWORD
-#ifdef __WIN32
+#if defined __WIN32
 typedef unsigned __int64	QWORD;
-#else
-
-#ifdef __PSP
+#elif defined __PSP
 typedef u64	QWORD;
-#endif // __PSP
-
+#elif defined __IPHONE
+typedef uint64_t QWORD;
 #endif // __WIN32
 #endif
 
 #ifndef LONGLONG
-#ifdef __WIN32
+#if defined __WIN32
 typedef __int64			LONGLONG;
-#else
-
-#ifdef __PSP
+#elif __PSP
 typedef s64	LONGLONG;
-#endif // __PSP
+#elif __IPHONE
+typedef int64_t LONGLONG;
 
 #endif // __WIN32
 typedef QWORD ULONGLONG;
@@ -339,6 +338,8 @@ enum hgeBoolState
 	HGE_HIDEMOUSE		= 0x0106,	// bool		hide system cursor?	(default: true)
 	
 	HGE_2DMODE			= 0x0107,	// bool		2d mode? (default: true)
+	
+	HGE_MANAGELOOP		= 0x0108,	// bool		manage loop? (default: true)
 	
 	HGEBOOLSTATE_FORCE_DWORD = 0x7FFFFFFF
 };

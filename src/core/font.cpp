@@ -15,7 +15,7 @@ Yuki Izayoi 2007.2.16
 
 HD3DFONT CALL HGE_Impl::Font_Load(const char * fontStyle,int height)
 {
-#ifdef __WIN32
+#if defined __WIN32
 	/*
 	LOGFONT lf;
 	memset(&lf,0,sizeof(lf));
@@ -56,7 +56,7 @@ HD3DFONT CALL HGE_Impl::Font_Load(const char * fontStyle,int height)
 }
 void CALL HGE_Impl::Font_Free(HD3DFONT font)
 {
-#ifdef __WIN32
+#if defined __WIN32
 	ID3DXFont * pFont = (ID3DXFont * )font;
 	CFontList * listIterator = fontList;
 	CFontList * listPrevIterator = NULL;
@@ -89,7 +89,7 @@ void CALL HGE_Impl::Font_Free(HD3DFONT font)
 
 int CALL HGE_Impl::Gfx_RenderTextToTarget(HTEXTURE * tex, HTARGET tar, HD3DFONT font, const char * text, float x, float y, float w, float h, DWORD color /* = 0xffffffff */)
 {
-#ifdef __WIN32
+#if defined __WIN32
 	Gfx_BeginScene(tar);
 	Gfx_Clear(0x00000000);
 	int height = Gfx_RenderText(font, text, x, y, w, h, color);
@@ -107,7 +107,7 @@ int CALL HGE_Impl::Gfx_RenderTextToTarget(HTEXTURE * tex, HTARGET tar, HD3DFONT 
 
 int CALL HGE_Impl::Gfx_RenderText(HD3DFONT font, const char * text, float x, float y, float w, float h, DWORD color)
 {
-#ifdef __WIN32
+#if defined __WIN32
 	/*
 	if(shadow)
 		Gfx_RenderText(font, text, x+1, y+1, w, h, 0xff000000, false);

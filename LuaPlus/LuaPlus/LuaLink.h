@@ -62,7 +62,9 @@
 #endif // _MSC_VER
 
 #if defined(__APPLE__)  ||  defined(macintosh)
+#ifndef __IPHONE
 #define LUA_USE_MACOSX
+#endif
 #endif
 
 #if defined(LUAPLUS_ALL)  &&  !defined(LUAPLUS_USE_NAMESPACES)

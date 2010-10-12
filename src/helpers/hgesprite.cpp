@@ -7,7 +7,7 @@
 */
 
 
-#include "..\..\include\hgesprite.h"
+#include "../../include/hgesprite.h"
 
 
 HGE *hgeSprite::hge=0;

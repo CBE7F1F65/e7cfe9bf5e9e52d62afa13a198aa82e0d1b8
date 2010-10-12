@@ -3,7 +3,7 @@
 int Process::processPreInitial()
 {
 	bool rebuilddone = false;
-	if(!hge->Resource_AccessFile(CONFIG_STR_FILENAME))
+	if(!hge->Resource_AccessFile(hge->System_GetState(HGE_INIFILE)))
 	{
 rebuild:
 		if (rebuilddone)
@@ -11,7 +11,7 @@ rebuild:
 			errorcode = PROC_ERROR_INIFILE;
 			return PQUIT;
 		}
-		hge->Resource_DeleteFile(CONFIG_STR_FILENAME);
+		hge->Resource_DeleteFile(hge->System_GetState(HGE_INIFILE));
 
 		hge->	Ini_SetInt(Data::data.translateSection(Data::data.sLinkType(DATAS_HEADER)), Data::data.translateName(Data::data.nLinkType(DATAN_GAMEVERSION)), GAME_VERSION);
 		hge->	Ini_SetString(Data::data.translateSection(Data::data.sLinkType(DATAS_HEADER)), Data::data.translateName(Data::data.nLinkType(DATAN_SIGNATURE)), GAME_SIGNATURE);
@@ -68,6 +68,10 @@ rebuild:
 		hge->	Ini_SetInt(RESCONFIGS_VOLUME, RESCONFIGN_VOLSE, RESCONFIGDEFAULT_VOLSE);
 
 		hge->	Ini_SetInt(RESCONFIGS_CUSTOM, RESCONFIGN_SCREENMODE, RESCONFIGDEFAULT_SCREENMODE);
+#if defined __IPHONE
+		hge->	Ini_SetFloat(RESCONFIGS_CUSTOM, RESCONFIGN_SCREENSCALE, RESCONFIGDEFAULT_SCREENSCALE);
+		hge->	Ini_SetFloat(RESCONFIGS_CUSTOM, RESCONFIGN_INFODISPLAYSCALE, RESCONFIGDEFAULT_INFODISPLAYSCALE);
+#endif
 		hge->	Ini_SetString(RESCONFIGS_CUSTOM, RESCONFIGN_USERNAME, RESCONFIGDEFAULT_USERNAME);
 		hge->	Ini_SetInt(RESCONFIGS_CUSTOM, RESCONFIGN_RENDERSKIP, RESCONFIGDEFAULT_RENDERSKIP);
 		hge->	Ini_SetInt(RESCONFIGS_CUSTOM, RESCONFIGN_LASTMATCHCHARA_1_1, RESCONFIGDEFAULT_LASTMATCHCHARA_1_1);
@@ -85,10 +89,10 @@ rebuild:
 		hge->	Ini_SetInt(RESCONFIGS_CUSTOMWINDOW, RESCONFIGN_WINDOWTOPMOST, RESCONFIGDEFAULT_WINDOWTOPMOST);
 #ifdef __DEBUG
 		hge->	Ini_SetInt(RESCONFIGS_KEYSETTING_1, RESCONFIGN_DEBUG_JOYSPEEDUP, RESCONFIGDEFAULT_DEBUG_JOYSPEEDUP);
+#endif
 		HGELOG("Succeeded in rebuilding Config File.");
 
 		rebuilddone = true;
-#endif
 	}
 
 	if (!GameInput::InitInput(hge))
@@ -100,6 +104,8 @@ rebuild:
 	sevol			= hge->Ini_GetInt(RESCONFIGS_VOLUME, RESCONFIGN_VOLSE, RESCONFIGDEFAULT_VOLSE);
 
 	screenmode		= hge->Ini_GetInt(RESCONFIGS_CUSTOM, RESCONFIGN_SCREENMODE, RESCONFIGDEFAULT_SCREENMODE);
+	screenscale		= hge->Ini_GetFloat(RESCONFIGS_CUSTOM, RESCONFIGN_SCREENSCALE, RESCONFIGDEFAULT_SCREENSCALE);
+	infodisplayscale= hge->Ini_GetFloat(RESCONFIGS_CUSTOM, RESCONFIGN_INFODISPLAYSCALE, RESCONFIGDEFAULT_INFODISPLAYSCALE);
 	strcpy(username[0], hge->Ini_GetString(RESCONFIGS_CUSTOM, RESCONFIGN_USERNAME, RESCONFIGDEFAULT_USERNAME));
 	strcpy(username[1], username[0]);
 	renderskip		= hge->Ini_GetInt(RESCONFIGS_CUSTOM, RESCONFIGN_RENDERSKIP, RESCONFIGDEFAULT_RENDERSKIP);
@@ -118,6 +124,16 @@ rebuild:
 	
 	if(screenmode < 0 || screenmode > 1)
 		goto rebuild;
+	if (screenscale <= 0 || screenscale > 1) {
+		goto rebuild;
+	}
+	else {
+		Export::clientResetMatrix(screenscale);
+	}
+
+	if (infodisplayscale <= 0 || infodisplayscale > 1.5f) {
+		goto rebuild;
+	}
 	if(bgmvol < 0 || bgmvol > 100)
 		goto rebuild;
 	if(sevol < 0 || sevol > 100)

@@ -20,6 +20,37 @@ struct FrontSprite
 	int fadeouttimer;
 };
 
+#if defined __IPHONE
+
+#define FRONTTOUCH_HIDDEN	0x00
+#define FRONTTOUCH_NORMAL	0x01
+#define FRONTTOUCH_TOUCHED	0x02
+
+#define FTBUTTON_LEFT	0
+#define FTBUTTON_RIGHT	1
+#define FTBUTTON_UP		2
+#define FTBUTTON_DOWN	3
+#define FTBUTTON_OK		4
+#define FTBUTTON_CANCEL	5
+#define FTBUTTON_PAUSE	6
+#define FTBUTTON_SHOOT	7
+#define FTBUTTON_CHARGE	8
+#define FTBUTTON_DRAIN	9
+#define FTBUTTON_QUICK	10
+
+#define FTBUTTON_MAX	11
+
+struct FrontTouchButton {
+	hgeSprite * sprite;
+	float x;
+	float y;
+	float xrange;
+	float yrange;
+	BYTE flag;
+};
+
+#endif
+
 class SpriteItemManager
 {
 public:
@@ -82,6 +113,16 @@ public:
 	static int nullIndex;
 
 	static FrontSprite frontsprite[FRONTSPRITEMAX];
+	
+#if defined __IPHONE
+public:
+	static void InitFrontTouchButton();
+	static void ReleaseFrontTouchButton();
+	static void RenderFrontTouchButton();
+	static FrontTouchButton * GetFrontTouchButton(BYTE playerindex, BYTE buttontype);
+	static void FrontTouchButtonHide();
+	static FrontTouchButton ftbutton[M_PL_MATCHMAXPLAYER][FTBUTTON_MAX];
+#endif
 };
 
 #endif

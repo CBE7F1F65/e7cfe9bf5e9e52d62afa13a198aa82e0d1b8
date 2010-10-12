@@ -19,6 +19,10 @@
 #include <unistd.h>
 #endif // __PSP
 
+#ifdef __IPHONE
+#include <mach/mach_time.h>
+#endif
+
 #define LOWORDINT(n) ((int)((signed short)(LOWORD(n))))
 #define HIWORDINT(n) ((int)((signed short)(HIWORD(n))))
 
@@ -71,22 +75,21 @@ void CALL HGE_Impl::Release()
 		delete pHGE;
 		pHGE=0;
 
-#ifdef __WIN32
-#ifdef WIN32
-#ifdef _DEBUG
-		m_dumpMemoryReport();
-#endif // _DEBUG
-#endif // WIN32
-#endif // __WIN32
-
-#ifdef __PSP
-		sceKernelDelayThread(500000);
-		sceKernelExitGame();
-#endif // __PSP
+#if defined __WIN32
+	#ifdef WIN32
+		#ifdef _DEBUG
+			m_dumpMemoryReport();
+		#endif // _DEBUG
+	#endif // WIN32
+#elif defined __PSP
+	sceKernelDelayThread(500000);
+	sceKernelExitGame();
+#elif defined __IPHONE
+#endif
 	}
 }
 
-#ifdef __PSP
+#if defined __PSP
 /* Exit callback */
 int exit_callback(int arg1, int arg2, void *common) {
 	sceKernelDelayThread(500000);
@@ -110,6 +113,10 @@ int CallbackThread(SceSize args, void *argp) {
 
 bool CALL HGE_Impl::System_Initiate()
 {
+	System_Log("HGE Started..\n");
+	
+	System_Log("HGE version: %X.%X", HGE_VERSION>>8, HGE_VERSION & 0xFF);
+	
 #ifdef __WIN32
 	OSVERSIONINFO	os_ver;
 	SYSTEMTIME		tm;
@@ -119,9 +126,6 @@ bool CALL HGE_Impl::System_Initiate()
 
 	// Log system info
 
-	System_Log("HGE Started..\n");
-
-	System_Log("HGE version: %X.%X", HGE_VERSION>>8, HGE_VERSION & 0xFF);
 	GetLocalTime(&tm);
 	System_Log("Date: %02d.%02d.%d, %02d:%02d:%02d\n", tm.wDay, tm.wMonth, tm.wYear, tm.wHour, tm.wMinute, tm.wSecond);
 
@@ -207,7 +211,7 @@ bool CALL HGE_Impl::System_Initiate()
 #else
 	hwnd = 1;
 
-#ifdef __PSP
+#if defined __PSP
 	pspDebugScreenInit();
 	int thid = 0;
 	thid = sceKernelCreateThread("update_thread", CallbackThread, 0x11, 0xFA0, 0, 0);
@@ -215,6 +219,7 @@ bool CALL HGE_Impl::System_Initiate()
 	{
 		sceKernelStartThread(thid, 0, 0);
 	}
+#elif defined __IPHONE
 #endif // __PSP
 
 #endif //__WIN32
@@ -263,6 +268,10 @@ bool CALL HGE_Impl::System_Initiate()
 
 void CALL HGE_Impl::System_Shutdown()
 {
+	if (bManageLoop) {
+		_System_StartPost();
+	}
+	
 	System_Log("\nFinishing..");
 #ifdef __WIN32
 	timeEndPeriod(1);
@@ -306,227 +315,36 @@ void CALL HGE_Impl::System_Shutdown()
 
 bool CALL HGE_Impl::System_Start()
 {
-#ifdef __WIN32
-	MSG		msg;
-
-	/************************************************************************/
-	/* These parameters are added by h5nc (h5nc@yahoo.com.cn)               */
-	/************************************************************************/
-	POINT	pt;
-	RECT	rc;
-#endif
-
-	if(!hwnd)
+	static bool _bFirstSystemStart = true;
+	if (bManageLoop)
 	{
-		_PostError("System_Start: System_Initiate wasn't called");
-		return false;
+		if (!_System_StartPre())
+		{
+			return false;
+		}
+		for (; ; ) 
+		{
+			if (!_System_StartLoop())
+			{
+				return false;
+			}
+		}
+		_System_StartPost();
 	}
-
-	if(!procFrameFunc) {
-		_PostError("System_Start: No frame function defined");
-		return false;
-	}
-
-	bActive=true;
-
-	// MAIN LOOP
-
-	for(;;)
+	else
 	{
-		
-		// Process window messages if not in "child mode"
-		// (if in "child mode" the parent application will do this for us)
-
-#ifdef __WIN32
-		if(!hwndParent)
-		{
-			if (PeekMessage(&msg,NULL,0,0,PM_REMOVE))
-			{ 
-				if (msg.message == WM_QUIT)	break;
-				// TranslateMessage(&msg);
-				DispatchMessage(&msg);
-				continue;
+		if (_bFirstSystemStart) {
+			if (!_System_StartPre())
+			{
+				return false;
 			}
+			_bFirstSystemStart = false;
 		}
-
-		if(IsIconic(hwnd))
-			continue;
-#endif
-
-		// Check if mouse is over HGE window for Input_IsMouseOver
-
-		_UpdateMouse();
-
-		// If HGE window is focused or we have the "don't suspend" state - process the main loop
-
-
-		/************************************************************************/
-		/* These lines are changed by h5nc (h5nc@yahoo.com.cn)                  */
-		/* The core algorithm is based on LOVEHINA-AVC's code                   */
-		/* h5nc copied his codes with his permission                            */
-		/************************************************************************/
-		// begin
-#ifdef __WIN32
-		GetCursorPos(&pt);
-		GetClientRect(hwnd, &rc);
-		MapWindowPoints(hwnd, NULL, (LPPOINT)&rc, 2);
-		if(bCaptured || (PtInRect(&rc, pt) && WindowFromPoint(pt)==hwnd)) bMouseOver=true;
-		else bMouseOver=false;
-#else
-		bMouseOver = true;
-#endif
-
-		if(bActive || bDontSuspend) {
-			int DI_retv = 0;
-			if(nFrameSkip < 0)
-			{
-				for(int i=0;i<-nFrameSkip;i++)
-				{
-					DI_retv = _DIUpdate();
-					if(DI_retv & ERROR_NOJOYSTICK)
-					{
-						if(DI_retv & ERROR_NOKEYBOARD)
-						{
-							break;
-						}
-					}
-					if(procFrameFunc())
-					{
-						_ClearQueue();
-						break;
-					}
-				}
-			}
-			else if(nFrameSkip < 2 || !(nFrameCounter % nFrameSkip))
-			{
-				DI_retv = _DIUpdate();
-				if(procFrameFunc())
-				{
-					_ClearQueue();
-					break;
-				}
-			}
-			if(DI_retv == (ERROR_NOJOYSTICK | ERROR_NOKEYBOARD))
-				continue;
-			if(nRenderSkip < 2 || !(nFrameCounter % nRenderSkip))
-			{
-				if(procRenderFunc) procRenderFunc();
-			}
-			if(hwndParent) break;
-
-				// Clean up input events that were generated by
-				// WindowProc and weren't handled by user's code
-
-			int bPriorityRaised = 0;
-		    LONGLONG TimeInterval, TimePrecision, NowTime;
-			static LONGLONG lastTime = Timer_GetCurrentSystemTime();
-			TimePrecision = Timer_GetPerformanceFrequency();
-
-			if (nHGEFPS > 0)
-			{
-				TimeInterval = TimePrecision / nHGEFPS;
-			}
-			else
-			{
-				TimeInterval = 0;
-			}
-   
-#ifdef __WIN32
-			if (false)
-#else
-
-#ifdef __PSP
-			if (nHGEFPS == 60)
-#endif // __PSP
-
-#endif // __WIN32
-			{
-#ifdef __PSP
-				sceDisplayWaitVblankStart();
-#endif // __PSP
-			}
-			else
-			{
-				if (Timer_GetCurrentSystemTime() - lastTime >= TimeInterval)
-			    {
-#ifdef __WIN32
-					if (GetThreadPriority(GetCurrentThread()) > THREAD_PRIORITY_NORMAL)
-						SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_NORMAL);
-#endif // __WIN32
-				}
-				else
-				{
-					for (;;)
-					{
-						if (Timer_GetCurrentSystemTime() - lastTime >= (TimeInterval - (TimePrecision / (1000 * 2))))
-						{
-#ifdef __WIN32
-							if (!bPriorityRaised && GetThreadPriority(GetCurrentThread()) > THREAD_PRIORITY_NORMAL)
-								SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_NORMAL);
-#endif
-							for (;;)
-							{
-								if (Timer_GetCurrentSystemTime() - lastTime >= TimeInterval)
-									break;
-							}
-							break;
-						}
-						else
-						{
-#ifdef __WIN32
-							if (!bPriorityRaised)
-							{
-								if (GetThreadPriority(GetCurrentThread()) < THREAD_PRIORITY_HIGHEST)
-									SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_HIGHEST);
-								bPriorityRaised = 1;
-							}
-							Sleep(1);
-#endif
-						}
-					}
-				}
-			}
-
-			NowTime = Timer_GetCurrentSystemTime();
-
-		    if (lastTime <= (NowTime - TimeInterval) && lastTime >= (NowTime - (TimeInterval * 2)))
-			{
-				fDeltaTime = (float)((double)(TimeInterval) / (double)(TimePrecision));
-		        lastTime += TimeInterval;
-			}
-		    else
-			{
-				fDeltaTime = (float)((double)(NowTime - lastTime) / (double)(TimePrecision));
-		        lastTime = NowTime;
-			}
-
-			nFrameCounter++;
-			fTime += fDeltaTime;
-			fFPS = 1.0f / fDeltaTime;
-		}
-		// end
-
-		// If main loop is suspended - just sleep a bit
-		// (though not too much to allow instant window
-		// redraw if requested by OS)
-
-		else
+		if (!_System_StartLoop())
 		{
-#ifdef __WIN32
-			Sleep(1);
-#else
-
-#ifdef __PSP
-			sceKernelDelayThread(1000);
-#endif // __PSP
-
-#endif
+			return false;
 		}
 	}
-
-	_ClearQueue();
-
-	bActive=false;
 
 	return true;
 }
@@ -608,6 +426,7 @@ void CALL HGE_Impl::System_SetStateBool(hgeBoolState state, bool value)
 		case HGE_DONTSUSPEND:	bDontSuspend=value; break;
 			
 		case HGE_2DMODE:		b2DMode=value; break;
+		case HGE_MANAGELOOP:	bManageLoop=value; break;
 
 			/************************************************************************/
 			/* HGE_SHOWSPLASH case is deleted by h5nc (h5nc@yahoo.com.cn)           */
@@ -771,6 +590,7 @@ bool CALL HGE_Impl::System_GetStateBool(hgeBoolState state)
 		case HGE_DONTSUSPEND:	return bDontSuspend;
 		case HGE_HIDEMOUSE:		return bHideMouse;
 		case HGE_2DMODE:		return b2DMode;
+		case HGE_MANAGELOOP:	return bManageLoop;
 
 			/************************************************************************/
 			/* HGE_SHOWSPLASH case is deleted by h5nc (h5nc@yahoo.com.cn)           */
@@ -854,17 +674,24 @@ void CALL HGE_Impl::System_Log(const char *szFormat, ...)
 	va_list ap;
 	
 	if(!szLogFile[0]) return;
-
 	hf = fopen(szLogFile, "a");
 	if(!hf) return;
 
 	va_start(ap, szFormat);
 	vfprintf(hf, szFormat, ap);
+#if defined __IPHONE
+	char buffer[_MAX_PATH];
+	vsprintf(buffer, szFormat, ap);
+#endif
 	va_end(ap);
-
+	
 	fprintf(hf, "\n");
-
 	fclose(hf);
+#if defined __IPHONE
+	printf(buffer);
+	printf("\n");
+#endif
+
 }
 
 bool CALL HGE_Impl::System_Launch(const char *url)
@@ -909,15 +736,13 @@ void CALL HGE_Impl::System_Snapshot(const char *filename)
 
 int CALL HGE_Impl::System_MessageBox(const char * text, const char * title, DWORD type)
 {
-#ifdef __WIN32
+#if defined __WIN32
 	return MessageBox(hwnd, text, title, type);
-#else
-
-#ifdef __PSP
+#elif defined __PSP
 	pspDebugScreenPrintf("%s\n%s", title, text);
 	return IDOK;
-#endif // __PSP
-
+#elif defined __IPHONE
+	return IDOK;
 #endif // __WIN32
 }
 
@@ -981,6 +806,7 @@ HGE_Impl::HGE_Impl()
 	/* This parameter is added by h5nc (h5nc@yahoo.com.cn)                  */
 	/************************************************************************/
 	b2DMode = true;
+	bManageLoop = true;
 	
 	procFrameFunc=NULL;
 	procRenderFunc=NULL;
@@ -1023,7 +849,7 @@ HGE_Impl::HGE_Impl()
 #endif
 	
 	int i;
-	for(i=strlen(szAppPath)-1; i>0; i--) if(szAppPath[i]=='\\') break;
+	for(i=strlen(szAppPath)-1; i>0; i--) if(szAppPath[i]==M_FOLDER_SLASH) break;
 	szAppPath[i+1]=0;
 	/************************************************************************/
 	/* This parameter is added by h5nc (h5nc@yahoo.com.cn)                  */
@@ -1062,6 +888,227 @@ void HGE_Impl::_FocusChange(bool bAct)
 		_DIRelease();
 	}
 }
+
+bool HGE_Impl::_System_StartPre()
+{
+	if(!hwnd)
+	{
+		_PostError("System_Start: System_Initiate wasn't called");
+		return false;
+	}
+	
+	if(!procFrameFunc) {
+		_PostError("System_Start: No frame function defined");
+		return false;
+	}
+	
+	bActive=true;
+	
+	return true;
+}
+
+bool HGE_Impl::_System_StartLoop()
+{
+	// Process window messages if not in "child mode"
+	// (if in "child mode" the parent application will do this for us)
+	
+#ifdef __WIN32
+	if(!hwndParent)
+	{
+		if (PeekMessage(&msg,NULL,0,0,PM_REMOVE))
+		{ 
+			if (msg.message == WM_QUIT)	break;
+			// TranslateMessage(&msg);
+			DispatchMessage(&msg);
+			continue;
+		}
+	}
+	
+	if(IsIconic(hwnd))
+		continue;
+#endif
+	
+	// Check if mouse is over HGE window for Input_IsMouseOver
+	
+	_UpdateMouse();
+	
+	// If HGE window is focused or we have the "don't suspend" state - process the main loop
+	
+	
+	/************************************************************************/
+	/* These lines are changed by h5nc (h5nc@yahoo.com.cn)                  */
+	/* The core algorithm is based on LOVEHINA-AVC's code                   */
+	/* h5nc copied his codes with his permission                            */
+	/************************************************************************/
+	// begin
+#ifdef __WIN32
+	MSG		msg;
+	
+	/************************************************************************/
+	/* These parameters are added by h5nc (h5nc@yahoo.com.cn)               */
+	/************************************************************************/
+	POINT	pt;
+	RECT	rc;
+	
+	GetCursorPos(&pt);
+	GetClientRect(hwnd, &rc);
+	MapWindowPoints(hwnd, NULL, (LPPOINT)&rc, 2);
+	if(bCaptured || (PtInRect(&rc, pt) && WindowFromPoint(pt)==hwnd)) bMouseOver=true;
+	else bMouseOver=false;
+#else
+	bMouseOver = true;
+#endif
+	
+	if(bActive || bDontSuspend) {
+		int DI_retv = 0;
+		if(nFrameSkip < 0)
+		{
+			for(int i=0;i<-nFrameSkip;i++)
+			{
+				DI_retv = _DIUpdate();
+				if(DI_retv & ERROR_NOJOYSTICK)
+				{
+					if(DI_retv & ERROR_NOKEYBOARD)
+					{
+						break;
+					}
+				}
+				if(procFrameFunc())
+				{
+					_ClearQueue();
+					return false;
+				}
+			}
+		}
+		else if(nFrameSkip < 2 || !(nFrameCounter % nFrameSkip))
+		{
+			DI_retv = _DIUpdate();
+			if(procFrameFunc())
+			{
+				_ClearQueue();
+				return false;
+			}
+		}
+		if(DI_retv == (ERROR_NOJOYSTICK | ERROR_NOKEYBOARD))
+			return true;
+		if(nRenderSkip < 2 || !(nFrameCounter % nRenderSkip))
+		{
+			if(procRenderFunc) procRenderFunc();
+		}
+		if(hwndParent) return false;
+		
+		// Clean up input events that were generated by
+		// WindowProc and weren't handled by user's code
+		
+		int bPriorityRaised = 0;
+		LONGLONG TimeInterval, TimePrecision, NowTime;
+		static LONGLONG lastTime = Timer_GetCurrentSystemTime();
+		TimePrecision = Timer_GetPerformanceFrequency();
+		
+		if (nHGEFPS > 0)
+		{
+			TimeInterval = TimePrecision / nHGEFPS;
+		}
+		else
+		{
+			TimeInterval = 0;
+		}
+		
+#if defined __PSP
+		if (nHGEFPS == 60)
+		{
+			sceDisplayWaitVblankStart();
+		}
+		else
+#endif
+		{
+			if (Timer_GetCurrentSystemTime() - lastTime >= TimeInterval)
+			{
+#ifdef __WIN32
+				if (GetThreadPriority(GetCurrentThread()) > THREAD_PRIORITY_NORMAL)
+					SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_NORMAL);
+#endif // __WIN32
+			}
+			else
+			{
+#ifndef __IPHONE
+				for (;;)
+				{
+					if (Timer_GetCurrentSystemTime() - lastTime >= (TimeInterval - (TimePrecision / (1000 * 2))))
+					{
+#ifdef __WIN32
+						if (!bPriorityRaised && GetThreadPriority(GetCurrentThread()) > THREAD_PRIORITY_NORMAL)
+							SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_NORMAL);
+#endif
+						for (;;)
+						{
+							if (Timer_GetCurrentSystemTime() - lastTime >= TimeInterval)
+								break;
+						}
+						break;
+					}
+					else
+					{
+#ifdef __WIN32
+						if (!bPriorityRaised)
+						{
+							if (GetThreadPriority(GetCurrentThread()) < THREAD_PRIORITY_HIGHEST)
+								SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_HIGHEST);
+							bPriorityRaised = 1;
+						}
+						Sleep(1);
+#endif
+					}
+				}
+#endif
+			}
+		}
+		
+		NowTime = Timer_GetCurrentSystemTime();
+		
+		if (lastTime <= (NowTime - TimeInterval) && lastTime >= (NowTime - (TimeInterval * 2)))
+		{
+			fDeltaTime = (float)((double)(TimeInterval) / (double)(TimePrecision));
+			lastTime += TimeInterval;
+		}
+		else
+		{
+			fDeltaTime = (float)((double)(NowTime - lastTime) / (double)(TimePrecision));
+			lastTime = NowTime;
+		}
+		
+		nFrameCounter++;
+		fTime += fDeltaTime;
+		fFPS = 1.0f / fDeltaTime;
+	}
+	
+	
+	// If main loop is suspended - just sleep a bit
+	// (though not too much to allow instant window
+	// redraw if requested by OS)
+	
+	else
+	{
+#if defined __WIN32
+		Sleep(1);
+#elif defined __PSP
+		sceKernelDelayThread(1000);
+#elif defined __IPHONE
+		mach_wait_until(mach_absolute_time()+1000);		
+#endif
+	}
+	return true;
+}
+
+bool HGE_Impl::_System_StartPost()
+{
+	_ClearQueue();
+	
+	bActive=false;
+	
+	return true;
+}
+
 #ifdef __WIN32
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 {

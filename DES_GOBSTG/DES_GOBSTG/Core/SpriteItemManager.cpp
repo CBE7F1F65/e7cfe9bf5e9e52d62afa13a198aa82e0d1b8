@@ -10,9 +10,16 @@ int SpriteItemManager::confirmIndex = 0;
 
 FrontSprite SpriteItemManager::frontsprite[FRONTSPRITEMAX];
 
+#if defined __IPHONE
+FrontTouchButton SpriteItemManager::ftbutton[M_PL_MATCHMAXPLAYER][FTBUTTON_MAX];
+#endif
+
 SpriteItemManager::SpriteItemManager()
 {
 	ZeroMemory(frontsprite, sizeof(FrontSprite) * FRONTSPRITEMAX);
+#if defined __IPHONE
+	ZeroMemory(ftbutton, sizeof(FrontTouchButton)*M_PL_MATCHMAXPLAYER*FTBUTTON_MAX);
+#endif
 }
 
 SpriteItemManager::~SpriteItemManager()
@@ -29,12 +36,83 @@ void SpriteItemManager::Init()
 {
 	hge->System_SetState(HGE_LOADTEXTUREFUNC, SpriteItemManager::LoadTextureWhenNeededCallBack);
 	FreeFrontSprite();
+#if defined __IPHONE
+	InitFrontTouchButton();
+#endif
 }
 
 void SpriteItemManager::Release()
 {
 	FreeFrontSprite();
+#if defined __IPHONE
+	ReleaseFrontTouchButton();
+#endif
 }
+
+#if defined __IPHONE
+void SpriteItemManager::InitFrontTouchButton()
+{
+	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++) {
+		ftbutton[i][FTBUTTON_LEFT].sprite = CreateSpriteByName(SI_IPHONE_LEFT);
+		ftbutton[i][FTBUTTON_RIGHT].sprite = CreateSpriteByName(SI_IPHONE_RIGHT);
+		ftbutton[i][FTBUTTON_UP].sprite = CreateSpriteByName(SI_IPHONE_UP);
+		ftbutton[i][FTBUTTON_DOWN].sprite = CreateSpriteByName(SI_IPHONE_DOWN);
+		ftbutton[i][FTBUTTON_OK].sprite = CreateSpriteByName(SI_IPHONE_OK);
+		ftbutton[i][FTBUTTON_CANCEL].sprite = CreateSpriteByName(SI_IPHONE_CANCEL);
+		ftbutton[i][FTBUTTON_PAUSE].sprite = CreateSpriteByName(SI_IPHONE_PAUSE);
+		ftbutton[i][FTBUTTON_SHOOT].sprite = CreateSpriteByName(SI_IPHONE_SHOOT);
+		ftbutton[i][FTBUTTON_CHARGE].sprite = CreateSpriteByName(SI_IPHONE_CHARGE);
+		ftbutton[i][FTBUTTON_DRAIN].sprite = CreateSpriteByName(SI_IPHONE_DRAIN);
+		ftbutton[i][FTBUTTON_QUICK].sprite = CreateSpriteByName(SI_IPHONE_QUICK);
+	}
+}
+
+void SpriteItemManager::ReleaseFrontTouchButton()
+{
+	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++) {
+		for (int j=0; j<FTBUTTON_MAX; j++) {
+			FreeSprite(&(ftbutton[i][j].sprite));
+		}
+	}
+}
+
+FrontTouchButton * SpriteItemManager::GetFrontTouchButton(BYTE playerindex, BYTE buttontype)
+{
+	if (playerindex < M_PL_MATCHMAXPLAYER && buttontype < FTBUTTON_MAX) {
+		return &(ftbutton[playerindex][buttontype]);
+	}
+	return NULL;
+}
+
+void SpriteItemManager::FrontTouchButtonHide()
+{
+	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++) {
+		for (int j=0; j<FTBUTTON_MAX; j++) {
+			ftbutton[i][j].flag = FRONTTOUCH_HIDDEN;
+		}
+	}
+}
+
+void SpriteItemManager::RenderFrontTouchButton()
+{
+	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++) {
+		for (int j=0; j<FTBUTTON_MAX; j++) {
+			if (ftbutton[i][j].flag) {
+				switch (ftbutton[i][j].flag) {
+					case FRONTTOUCH_TOUCHED:
+						ftbutton[i][j].sprite->SetColor(0xffff0000);
+						break;
+					default:
+						ftbutton[i][j].sprite->SetColor(0xffffffff);
+						break;
+				}
+				RenderSprite(ftbutton[i][j].sprite, ftbutton[i][j].x, ftbutton[i][j].y);
+			}
+		}
+	}
+}
+
+#endif
 
 HTEXTURE SpriteItemManager::GetTexture(int index)
 {

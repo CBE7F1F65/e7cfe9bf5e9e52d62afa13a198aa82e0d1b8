@@ -7,7 +7,7 @@
 */
 
 
-#include "..\..\include\hgerect.h"
+#include "../../include/hgerect.h"
 
 /************************************************************************/
 /* This header is modified by h5nc (h5nc@yahoo.com.cn)                  */
