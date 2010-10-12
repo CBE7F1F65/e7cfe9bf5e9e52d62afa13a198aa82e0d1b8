@@ -334,10 +334,10 @@
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>716795F31262D43B004A3E70</string>
+										<string>71D6884512642B7B0015D1F4</string>
 										<key>history</key>
 										<array>
-											<string>716795E41262D07B004A3E70</string>
+											<string>716795F31262D43B004A3E70</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -349,14 +349,14 @@
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 0}, {1712, 825}}</string>
+								<string>{{0, 0}, {1712, 821}}</string>
 								<key>RubberWindowFrame</key>
 								<string>0 118 1920 1060 0 0 1920 1178 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXNavigatorGroup</string>
 							<key>Proportion</key>
-							<string>825pt</string>
+							<string>821pt</string>
 						</dict>
 						<dict>
 							<key>ContentConfiguration</key>
@@ -369,14 +369,14 @@
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 830}, {1712, 189}}</string>
+								<string>{{0, 826}, {1712, 193}}</string>
 								<key>RubberWindowFrame</key>
 								<string>0 118 1920 1060 0 0 1920 1178 </string>
 							</dict>
 							<key>Module</key>
 							<string>XCDetailModule</string>
 							<key>Proportion</key>
-							<string>189pt</string>
+							<string>193pt</string>
 						</dict>
 					</array>
 					<key>Proportion</key>
@@ -395,9 +395,9 @@
 			</array>
 			<key>TableOfContents</key>
 			<array>
-				<string>7167906712627FEB004A3E70</string>
+				<string>71D687E1126427E40015D1F4</string>
 				<string>1CE0B1FE06471DED0097A5F4</string>
-				<string>7167906812627FEB004A3E70</string>
+				<string>71D687E2126427E40015D1F4</string>
 				<string>1CE0B20306471E060097A5F4</string>
 				<string>1CE0B20506471E060097A5F4</string>
 			</array>
@@ -536,7 +536,7 @@
 	<key>WindowOrderList</key>
 	<array>
 		<string>7167905D12627F9F004A3E70</string>
-		<string>/Users/h5nc/Documents/hge/svn/src/core/hge.xcodeproj</string>
+		<string>/Users/h5nc/Documents/hge/src/core/hge.xcodeproj</string>
 	</array>
 	<key>WindowString</key>
 	<string>0 118 1920 1060 0 0 1920 1178 </string>
@@ -616,7 +616,7 @@
 			<key>TableOfContents</key>
 			<array>
 				<string>7167905D12627F9F004A3E70</string>
-				<string>7167906912627FEB004A3E70</string>
+				<string>71D687E3126427E40015D1F4</string>
 				<string>1CD0528F0623707200166675</string>
 				<string>XCMainBuildResultsModuleGUID</string>
 			</array>
