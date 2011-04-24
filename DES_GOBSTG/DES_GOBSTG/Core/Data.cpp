@@ -484,7 +484,7 @@ bool Data::Init(BYTE type)
 		iWrite(type, sLinkType(DATAS_HEADER), nLinkType(DATAN_FILETYPE), type);
 		lWrite(DATA_BINFILE, sLinkType(DATAS_TOTAL), nLinkType(DATAN_FIRSTRUNTIME), tnowtime);
 	}
-#ifdef __DEBUG
+#ifdef __DEBUG_LOG
 	HGELOG("Succeeded in rebuilding Data File %s.", nowfilename);
 #endif
 	return true;
@@ -523,7 +523,7 @@ bool Data::SetFile(const char * _filename, BYTE type)
 		else
 		{
 failed:
-#ifdef __DEBUG
+#ifdef __DEBUG_LOG
 				HGELOG("%s\nFailed in Getting Data File %s.", HGELOG_ERRSTR, nowfilename);
 #endif
 				strcpy(nowfilename, "");
@@ -558,7 +558,7 @@ bool Data::GetAllTable()
 	//data
 	if (!GetTableFile(DATA_DATATABLEDEFINE))
 	{
-#ifdef __DEBUG
+#ifdef __DEBUG_LOG
 		HGELOG("%s\nFailed in loading DataDefineFile %s.", HGELOG_ERRSTR, datadefinefilename);
 #endif // __DEBUG
 		return false;
@@ -566,7 +566,7 @@ bool Data::GetAllTable()
 	//package
 	if (!GetTableFile(DATA_PACKAGETABLEDEFINE))
 	{
-#ifdef __DEBUG
+#ifdef __DEBUG_LOG
 		HGELOG("%s\nFailed in loading PackageDefineFile %s.", HGELOG_ERRSTR, packagedefinefilename);
 #endif // __DEBUG
 		return false;
@@ -574,7 +574,7 @@ bool Data::GetAllTable()
 	//texture
 	if (!GetTableFile(DATA_TEXTURETABLEDEFINE))
 	{
-#ifdef __DEBUG
+#ifdef __DEBUG_LOG
 		HGELOG("%s\nFailed in loading TextureDefineFile %s.", HGELOG_ERRSTR, texturedefinefilename);
 #endif // __DEBUG
 		return false;
@@ -582,7 +582,7 @@ bool Data::GetAllTable()
 	//effect
 	if (!GetTableFile(DATA_EFFECTTABLEDEFINE))
 	{
-#ifdef __DEBUG
+#ifdef __DEBUG_LOG
 		HGELOG("%s\nFailed in loading EffectDefineFile %s.", HGELOG_ERRSTR, effectdefinefilename);
 #endif // __DEBUG
 		return false;
@@ -590,7 +590,7 @@ bool Data::GetAllTable()
 	//se
 	if (!GetTableFile(DATA_SETABLEDEFINE))
 	{
-#ifdef __DEBUG
+#ifdef __DEBUG_LOG
 		HGELOG("%s\nFailed in loading SEDefineFile %s.", HGELOG_ERRSTR, sedefinefilename);
 #endif // __DEBUG
 		return false;
@@ -599,7 +599,7 @@ bool Data::GetAllTable()
 	//music
 	if (!GetTableFile(DATA_MUSICDEFINEFILE))
 	{
-#ifdef __DEBUG
+#ifdef __DEBUG_LOG
 		HGELOG("%s\nFailed in loading MusicDefineFile %s.", HGELOG_ERRSTR, musicdefinefilename);
 #endif // __DEBUG
 		return false;
@@ -608,7 +608,7 @@ bool Data::GetAllTable()
 	//sprite
 	if (!GetTableFile(DATA_SPRITEDEFINEFILE))
 	{
-#ifdef __DEBUG
+#ifdef __DEBUG_LOG
 		HGELOG("%s\nFailed in loading SpriteDefineFile %s.", HGELOG_ERRSTR, spritedefinefilename);
 #endif // __DEBUG
 		return false;
@@ -624,7 +624,7 @@ bool Data::GetAllTable()
 */
 	if (!GetTableFile(DATA_BULLETDEFINEFILE))
 	{
-#ifdef __DEBUG
+#ifdef __DEBUG_LOG
 		HGELOG("%s\nFailed in loading BulletDefineFile %s.", HGELOG_ERRSTR, bulletdefinefilename);
 #endif // __DEBUG
 		return false;
@@ -633,7 +633,7 @@ bool Data::GetAllTable()
 	//boss
 	if (!GetTableFile(DATA_ENEMYDEFINEFILE))
 	{
-#ifdef __DEBUG
+#ifdef __DEBUG_LOG
 		HGELOG("%s\nFailed in loading EnemyDefineFile %s.", HGELOG_ERRSTR, enemydefinefilename);
 #endif // __DEBUG
 		return false;
@@ -642,7 +642,7 @@ bool Data::GetAllTable()
 	//player
 	if (!GetTableFile(DATA_PLAYERDEFINEFILE))
 	{
-#ifdef __DEBUG
+#ifdef __DEBUG_LOG
 		HGELOG("%s\nFailed in loading PlayerDefineFile %s.", HGELOG_ERRSTR, playerdefinefilename);
 #endif // __DEBUG
 		return false;
@@ -651,7 +651,7 @@ bool Data::GetAllTable()
 	//playershoot
 	if (!GetTableFile(DATA_PLAYERSHOOTDEFINE))
 	{
-#ifdef __DEBUG
+#ifdef __DEBUG_LOG
 		HGELOG("%s\nFailed in loading PlayerShootDefineFile %s.", HGELOG_ERRSTR, playershootdefinefilename);
 #endif // __DEBUG
 		return false;
@@ -660,7 +660,7 @@ bool Data::GetAllTable()
 	//playerghost
 	if (!GetTableFile(DATA_PLAYERGHOSTDEFINE))
 	{
-#ifdef __DEBUG
+#ifdef __DEBUG_LOG
 		HGELOG("%s\nFailed in loading PlayerGhostDefineFile %s.", HGELOG_ERRSTR, playerghostdefinefilename);
 #endif // __DEBUG
 		return false;

@@ -284,7 +284,7 @@ bool Scripter::Execute(vector<File> * ptype, DWORD name, DWORD con)
 				{
 					if(!(rv = Parse(j->varcount)))
 					{
-#ifdef __DEBUG
+#ifdef __DEBUG_LOG
 						HGELOG("%s\nError in parsing script. At Block %d of File %d.", HGELOG_ERRSTR, j->con, i->name);
 #endif
 						break;

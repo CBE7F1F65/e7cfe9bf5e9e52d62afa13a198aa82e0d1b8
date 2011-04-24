@@ -267,13 +267,18 @@
 							<array>
 								<string>0867D691FE84028FC02AAC07</string>
 								<string>32C88DFF0371C24200C91783</string>
+								<string>7186CF0412529070007DF003</string>
+								<string>0867D69AFE84028FC02AAC07</string>
+								<string>034768DFFF38A50411DB9C8B</string>
 								<string>1C37FBAC04509CD000000102</string>
 								<string>1C37FABC05509CD000000102</string>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>5</integer>
+									<integer>24</integer>
+									<integer>3</integer>
+									<integer>2</integer>
 									<integer>0</integer>
 								</array>
 							</array>
@@ -313,7 +318,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>1CE0B20306471E060097A5F4</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>LuaState_DumpObject.cpp</string>
+								<string>LuaStackObject.h</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -321,10 +326,17 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>1CE0B20406471E060097A5F4</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>LuaState_DumpObject.cpp</string>
+										<string>LuaStackObject.h</string>
+										<key>_historyCapacity</key>
+										<integer>0</integer>
+										<key>bookmark</key>
+										<string>710A977F13627D9D00F689D9</string>
 										<key>history</key>
 										<array>
-											<string>71905C491253E52200E5E788</string>
+											<string>71A2BC4F1361E29500945F33</string>
+											<string>71A2BC511361E29500945F33</string>
+											<string>710A977E13627D9D00F689D9</string>
+											<string>71A2BC501361E29500945F33</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -336,14 +348,14 @@
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 0}, {1712, 785}}</string>
+								<string>{{0, 0}, {1712, 765}}</string>
 								<key>RubberWindowFrame</key>
 								<string>0 118 1920 1060 0 0 1920 1178 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXNavigatorGroup</string>
 							<key>Proportion</key>
-							<string>785pt</string>
+							<string>765pt</string>
 						</dict>
 						<dict>
 							<key>ContentConfiguration</key>
@@ -356,14 +368,14 @@
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 790}, {1712, 229}}</string>
+								<string>{{0, 770}, {1712, 249}}</string>
 								<key>RubberWindowFrame</key>
 								<string>0 118 1920 1060 0 0 1920 1178 </string>
 							</dict>
 							<key>Module</key>
 							<string>XCDetailModule</string>
 							<key>Proportion</key>
-							<string>229pt</string>
+							<string>249pt</string>
 						</dict>
 					</array>
 					<key>Proportion</key>
@@ -382,9 +394,9 @@
 			</array>
 			<key>TableOfContents</key>
 			<array>
-				<string>71D687D3126427BC0015D1F4</string>
+				<string>710A978013627D9D00F689D9</string>
 				<string>1CE0B1FE06471DED0097A5F4</string>
-				<string>71D687D4126427BC0015D1F4</string>
+				<string>710A978113627D9D00F689D9</string>
 				<string>1CE0B20306471E060097A5F4</string>
 				<string>1CE0B20506471E060097A5F4</string>
 			</array>
@@ -603,7 +615,7 @@
 			<key>TableOfContents</key>
 			<array>
 				<string>7186CF0012529061007DF003</string>
-				<string>71D687D5126427BC0015D1F4</string>
+				<string>710A978213627D9D00F689D9</string>
 				<string>1CD0528F0623707200166675</string>
 				<string>XCMainBuildResultsModuleGUID</string>
 			</array>
@@ -736,14 +748,12 @@
 							<key>Dock</key>
 							<array>
 								<dict>
-									<key>BecomeActive</key>
-									<true/>
 									<key>ContentConfiguration</key>
 									<dict>
 										<key>PBXProjectModuleGUID</key>
 										<string>1CDD528C0622207200134675</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>LuaObject.cpp</string>
+										<string>LuaPlusInternal.h</string>
 										<key>StatusBarVisibility</key>
 										<true/>
 									</dict>
@@ -764,6 +774,8 @@
 							<string>510pt</string>
 						</dict>
 						<dict>
+							<key>BecomeActive</key>
+							<true/>
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXProjectModuleGUID</key>
@@ -799,8 +811,8 @@
 			<key>TableOfContents</key>
 			<array>
 				<string>1C530D57069F1CE1000CFCEE</string>
-				<string>719268B912581B8800285835</string>
-				<string>719268BA12581B8800285835</string>
+				<string>71A2BC4D1361E28900945F33</string>
+				<string>71A2BC4E1361E28900945F33</string>
 				<string>1CDD528C0622207200134675</string>
 				<string>1CD0528E0623707200166675</string>
 			</array>
@@ -809,7 +821,7 @@
 			<key>WindowToolGUID</key>
 			<string>1C530D57069F1CE1000CFCEE</string>
 			<key>WindowToolIsVisible</key>
-			<true/>
+			<false/>
 		</dict>
 		<dict>
 			<key>Identifier</key>

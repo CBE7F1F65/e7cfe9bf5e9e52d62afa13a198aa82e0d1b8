@@ -131,6 +131,8 @@ public:
 	static hgeSprite * sprite[BULLETTYPECOLORMAX];
 	static WORD index;
 	static VectorList<Bullet>bu[M_PL_MATCHMAXPLAYER];
+	
+	static int bulletcount[M_PL_MATCHMAXPLAYER];
 };
 
 #endif

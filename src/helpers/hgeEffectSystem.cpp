@@ -119,13 +119,19 @@ int hgeEffectSystem::Load(const char * filename, HTEXTURE tex /* = 0 */, HTEXTUR
 		memcpy(&_ID, _content + _offset, sizeof(WORD));
 		_offset += sizeof(WORD);
 		if((_ID & 0xff) == 0)
-		{
-			AddEmitter(_ID>>8, (hgeEffectEmitterInfo *)(_content + _offset));
+		{			
+			hgeEffectEmitterInfo emitterInfo;
+			memcpy(&emitterInfo, (hgeEffectEmitterInfo *)(_content + _offset), sizeof(hgeEffectEmitterInfo));
+
+			AddEmitter(_ID>>8, &emitterInfo);
 			_offset += sizeof(hgeEffectEmitterInfo);
 		}
 		else
 		{
-			AddAffector(_ID>>8, _ID & 0xff, (hgeEffectAffectorInfo *)(_content + _offset));
+			hgeEffectAffectorInfo affectorInfo;
+			memcpy(&affectorInfo, (hgeEffectAffectorInfo *)(_content + _offset), sizeof(hgeEffectAffectorInfo));
+			
+			AddAffector(_ID>>8, _ID & 0xff, &affectorInfo);
 			_offset += sizeof(hgeEffectAffectorInfo);
 		}
 	}

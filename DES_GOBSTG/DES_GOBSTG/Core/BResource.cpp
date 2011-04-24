@@ -225,7 +225,7 @@ bool BResource::Fill()
 	strcpy(buffer, Data::data.sRead(DATA_RESOURCEFILE, Data::data.sLinkType(RESDATAS_EXTENSION), Data::data.nLinkType(RESDATAN_SCRIPTEXT7), RESDEFAULT_SCRIPTEXT7));
 	if(strlen(buffer) > 8)
 	{
-#ifdef __DEBUG
+#ifdef __DEBUG_LOG
 		HGELOG("%s\nExtension %s for Script File is too long.(Required to be less than 8).", HGELOG_ERRSTR, buffer);
 #endif
 		return false;
@@ -235,7 +235,7 @@ bool BResource::Fill()
 	strcpy(buffer, Data::data.sRead(DATA_RESOURCEFILE, Data::data.sLinkType(RESDATAS_EXTENSION), Data::data.nLinkType(RESDATAN_REPLAYEXT7), RESDEFAULT_REPLAYEXT7));
 	if(strlen(buffer) > 8)
 	{
-#ifdef __DEBUG
+#ifdef __DEBUG_LOG
 		HGELOG("%s\nExtension %s for Replay File is too long.(Required to be less than 8).", HGELOG_ERRSTR, buffer);
 #endif
 		return false;
@@ -245,7 +245,7 @@ bool BResource::Fill()
 	strcpy(buffer, Data::data.sRead(DATA_RESOURCEFILE, Data::data.sLinkType(RESDATAS_REPLAYHEADER), Data::data.nLinkType(RESDATAN_RPYSIGNATURE11), RESDEFAULT_RPYSIGNATURE11));
 	if(strlen(buffer) > 12)
 	{
-#ifdef __DEBUG
+#ifdef __DEBUG_LOG
 		HGELOG("%s\nReplay File Header Signature %s is too long.(Required to be less than 12.)", HGELOG_ERRSTR, buffer);
 #endif
 		return false;
@@ -255,7 +255,7 @@ bool BResource::Fill()
 	strcpy(buffer, Data::data.sRead(DATA_RESOURCEFILE, Data::data.sLinkType(RESDATAS_REPLAYHEADER), Data::data.nLinkType(RESDATAN_RPYTEMPSIGN3), RESDEFAULT_RPYTEMPSIGN3));
 	if(strlen(buffer) > 4)
 	{
-#ifdef __DEBUG
+#ifdef __DEBUG_LOG
 		HGELOG("%s\nReplay File Header Temp Sign %s is too long.(Required to be less than 4).", HGELOG_ERRSTR, buffer);
 #endif
 		return false;
@@ -265,7 +265,7 @@ bool BResource::Fill()
 	strcpy(buffer, Data::data.sRead(DATA_RESOURCEFILE, Data::data.sLinkType(RESDATAS_REPLAYHEADER), Data::data.nLinkType(RESDATAN_RPYCOMPLETESIGN3), RESDEFAULT_RPYCOMPLETESIGN3));
 	if(strlen(buffer) > 4)
 	{
-#ifdef __DEBUG
+#ifdef __DEBUG_LOG
 		HGELOG("%s\nReplay File Header Complete Sign %s is too long.(Required to be less than 4).", HGELOG_ERRSTR, buffer);
 #endif
 		return false;
@@ -275,7 +275,7 @@ bool BResource::Fill()
 	strcpy(buffer, Data::data.sRead(DATA_RESOURCEFILE, Data::data.sLinkType(RESDATAS_REPLAYHEADER), Data::data.nLinkType(RESDATAN_RPYTAG3), RESDEFAULT_RPYTAG3));
 	if(strlen(buffer) > 4)
 	{
-#ifdef __DEBUG
+#ifdef __DEBUG_LOG
 		HGELOG("%s\nReplay File Header Tag %s is too long.(Required to be less than 4).", HGELOG_ERRSTR, buffer);
 #endif
 		return false;
@@ -487,7 +487,7 @@ bool BResource::LoadPackage(int packindex)
 {
 	if(strlen(resdata.packagefilename[packindex]) && !hge->Resource_AttachPack(resdata.packagefilename[packindex], Data::data.password))
 	{
-#ifdef __DEBUG
+#ifdef __DEBUG_LOG
 		HGELOG("%s\nFailed in Loading Package File %s.", HGELOG_ERRSTR, resdata.packagefilename[packindex]);
 #endif
 		return false;
@@ -548,14 +548,14 @@ bool BResource::LoadTexture( int texindex/*=-1*/ )
 
 	if(tex[texindex].tex == NULL)
 	{
-#ifdef __DEBUG
+#ifdef __DEBUG_LOG
 		HGELOG("%s\nFailed in loading Texture File %s.(To be assigned to Index %d).", HGELOG_ERRSTR, tnbuffer, texindex);
 #endif
 //		tex[i] = tex[TEX_WHITE];
 		tex[texindex] = hge->Texture_Create(0, 0);
 		return false;
 	}
-#ifdef __DEBUG
+#ifdef __DEBUG_LOG
 	else
 	{
 		HGELOG("Succeeded in loading Texture File %s.(Assigned to Index %d).", tnbuffer, texindex);

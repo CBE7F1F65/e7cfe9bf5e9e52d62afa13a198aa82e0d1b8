@@ -10,6 +10,9 @@
  * optimizations.  Most users will not need to touch this file.
  */
 
+#ifdef _MSC_VER 
+#pragma warning (disable : 4142)	/* benign redefinition of type */
+#endif
 
 /*
  * Define BITS_IN_JSAMPLE as either
@@ -97,6 +100,21 @@ typedef short JSAMPLE;
  */
 
 typedef short JCOEF;
+
+/* Defines for MMX/SSE2 support.  */
+/* Disabled for AT&T and VC++ 6.0 */
+#if defined(_M_IX86) && !defined(__GNUC__)	&& !(defined(_MSC_VER) && (_MSC_VER<1300)) 
+#define HAVE_MMX_INTEL_MNEMONICS 
+
+/* SSE2 code appears broken for some cpus (bug 247437)
+	my comment: I read the discussion about that bug and it was disabled
+	because one guy sent a bugreport - incorrectly decoded jpeg.
+	No one else seems to have this problem = probably a hardware problem.
+	(He had a P4 Celeron)
+	PS: This code comes from Mozilla/Firefox.			-= BiShop =-
+*/
+#define HAVE_SSE2_INTEL_MNEMONICS
+#endif
 
 
 /* Compressed datastreams are represented as arrays of JOCTET.
@@ -225,8 +243,6 @@ typedef unsigned int JDIMENSION;
 
 #ifndef HAVE_BOOLEAN
 typedef int boolean;
-#elif defined __IPHONE
-typedef unsigned char boolean;
 #endif
 #ifndef FALSE			/* in case these macros already exist */
 #define FALSE	0		/* values of boolean */
@@ -264,7 +280,7 @@ typedef unsigned char boolean;
 
 #define DCT_ISLOW_SUPPORTED	/* slow but accurate integer algorithm */
 #define DCT_IFAST_SUPPORTED	/* faster, less accurate integer method */
-#define DCT_FLOAT_SUPPORTED	/* floating-point: accurate, fast on fast HW */
+#undef DCT_FLOAT_SUPPORTED	/* floating-point: accurate, fast on fast HW */
 
 /* Encoder capability options: */
 
@@ -289,11 +305,11 @@ typedef unsigned char boolean;
 #define D_PROGRESSIVE_SUPPORTED	    /* Progressive JPEG? (Requires MULTISCAN)*/
 #define SAVE_MARKERS_SUPPORTED	    /* jpeg_save_markers() needed? */
 #define BLOCK_SMOOTHING_SUPPORTED   /* Block smoothing? (Progressive only) */
-#define IDCT_SCALING_SUPPORTED	    /* Output rescaling via IDCT? */
-#undef  UPSAMPLE_SCALING_SUPPORTED  /* Output rescaling at upsample stage? */
+#undef IDCT_SCALING_SUPPORTED	    /* Output rescaling via IDCT? */
+#undef UPSAMPLE_SCALING_SUPPORTED  /* Output rescaling at upsample stage? */
 #define UPSAMPLE_MERGING_SUPPORTED  /* Fast path for sloppy upsampling? */
-#define QUANT_1PASS_SUPPORTED	    /* 1-pass color quantization? */
-#define QUANT_2PASS_SUPPORTED	    /* 2-pass color quantization? */
+#undef QUANT_1PASS_SUPPORTED	    /* 1-pass color quantization? */
+#undef QUANT_2PASS_SUPPORTED	    /* 2-pass color quantization? */
 
 /* more capability options later, no doubt */
 
@@ -341,8 +357,10 @@ typedef unsigned char boolean;
  * as short on such a machine.  MULTIPLIER must be at least 16 bits wide.
  */
 
+#define int16 short
+
 #ifndef MULTIPLIER
-#define MULTIPLIER  int		/* type for fastest integer multiply */
+#define MULTIPLIER  int16		/* type for fastest integer multiply */
 #endif
 
 

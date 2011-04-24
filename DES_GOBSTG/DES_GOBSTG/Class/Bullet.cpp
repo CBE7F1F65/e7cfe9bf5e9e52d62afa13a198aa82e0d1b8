@@ -25,6 +25,8 @@ hgeSprite * Bullet::sprite[BULLETTYPECOLORMAX];
 
 VectorList<Bullet> Bullet::bu[M_PL_MATCHMAXPLAYER];
 
+int Bullet::bulletcount[M_PL_MATCHMAXPLAYER];
+
 WORD Bullet::index;
 
 Bullet::Bullet()
@@ -115,6 +117,10 @@ int Bullet::Build(BYTE playerindex, float x, float y, int angle, float speed, BY
 	{
 		return -1;
 	}
+	if (bulletcount[playerindex] >= Process::mp.bulletcountmax)
+	{
+		return -1;
+	}
 	Bullet * _tbu = NULL;
 	_tbu = bu[playerindex].push_back();
 	int _index = bu[playerindex].getEndIndex();
@@ -123,6 +129,7 @@ int Bullet::Build(BYTE playerindex, float x, float y, int angle, float speed, BY
 		bu[playerindex].pop(_index);
 		return -1;
 	}
+	bulletcount[playerindex]++;
 	memcpy(_tbu->actionList, _actionList[playerindex], BULLETACTIONMAX*sizeof(int));
 	return _index;
 }
@@ -153,6 +160,7 @@ void Bullet::Action()
 {
 	for (int j=0; j<M_PL_MATCHMAXPLAYER; j++)
 	{
+		bulletcount[j] = 0;
 		if (bu[j].getSize())
 		{
 			ZeroMemory(Bullet::renderDepth[j], sizeof(RenderDepth) * BULLETTYPEMAX);
@@ -179,6 +187,7 @@ void Bullet::Action()
 					}
 					bu[j].toIndex(_index);
 					GameAI::ai[j].CheckBulletCollision(&(*bu[j]));
+					bulletcount[j]++;
 				}
 				else
 				{

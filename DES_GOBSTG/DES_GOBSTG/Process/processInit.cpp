@@ -80,6 +80,8 @@ rebuild:
 		hge->	Ini_SetInt(RESCONFIGS_CUSTOM, RESCONFIGN_LASTMATCHCHARA_2_1, RESCONFIGDEFAULT_LASTMATCHCHARA_2_1);
 		hge->	Ini_SetInt(RESCONFIGS_CUSTOM, RESCONFIGN_LASTMATCHCHARA_2_2, RESCONFIGDEFAULT_LASTMATCHCHARA_2_2);
 		hge->	Ini_SetInt(RESCONFIGS_CUSTOM, RESCONFIGN_LASTMATCHCHARA_2_3, RESCONFIGDEFAULT_LASTMATCHCHARA_2_3);
+		
+		hge->	Ini_SetInt(RESCONFIGS_CUSTOM, RESCONFIGN_BULLETCOUNTMAX, RESCONFIGDEFAULT_BULLETCOUNTMAX);
 
 		hge->	Ini_SetInt(RESCONFIGS_CUSTOMWINDOW, RESCONFIGN_DEFAULTWINDOW, RESCONFIGDEFAULT_DEFAULTWINDOW);
 		hge->	Ini_SetInt(RESCONFIGS_CUSTOMWINDOW, RESCONFIGN_WINDOWLEFT, RESCONFIGDEFAULT_WINDOWLEFT);
@@ -90,7 +92,9 @@ rebuild:
 #ifdef __DEBUG
 		hge->	Ini_SetInt(RESCONFIGS_KEYSETTING_1, RESCONFIGN_DEBUG_JOYSPEEDUP, RESCONFIGDEFAULT_DEBUG_JOYSPEEDUP);
 #endif
+#ifdef __DEBUG_LOG
 		HGELOG("Succeeded in rebuilding Config File.");
+#endif
 
 		rebuilddone = true;
 	}
@@ -116,6 +120,8 @@ rebuild:
 	lastmatchchara[1][0]	= hge->Ini_GetInt(RESCONFIGS_CUSTOM, RESCONFIGN_LASTMATCHCHARA_2_1, RESCONFIGDEFAULT_LASTMATCHCHARA_2_1);
 	lastmatchchara[1][1]	= hge->Ini_GetInt(RESCONFIGS_CUSTOM, RESCONFIGN_LASTMATCHCHARA_2_2, RESCONFIGDEFAULT_LASTMATCHCHARA_2_2);
 	lastmatchchara[1][2]	= hge->Ini_GetInt(RESCONFIGS_CUSTOM, RESCONFIGN_LASTMATCHCHARA_2_3, RESCONFIGDEFAULT_LASTMATCHCHARA_2_3);
+	
+	bulletcountmax		= hge->Ini_GetInt(RESCONFIGS_CUSTOM, RESCONFIGN_BULLETCOUNTMAX, RESCONFIGDEFAULT_BULLETCOUNTMAX);
 
 	//
 
@@ -127,7 +133,8 @@ rebuild:
 	if (screenscale <= 0 || screenscale > 1) {
 		goto rebuild;
 	}
-	else {
+	else
+	{
 #if defined __IPHONE
 		Export::clientResetMatrix(screenscale);
 #endif
@@ -153,7 +160,7 @@ rebuild:
 		hge->System_SetState(HGE_RENDERSKIP, renderskip * M_DEFAULT_RENDERSKIP);
 	}
 
-#ifdef __DEBUG
+#ifdef __DEBUG_LOG
 	HGELOG("Succeeded in gaining data from Config File.");
 #endif
 	hge->Resource_AttachPack(RESLOADING_PCK, Export::GetPassword());
@@ -196,7 +203,7 @@ int Process::processInit()
 	{
 		if(!BResource::bres.Fill())
 		{
-#ifdef __DEBUG
+#ifdef __DEBUG_LOG
 			HGELOG("Error in Filling Resource Data.");
 #endif
 			errorcode = PROC_ERROR_RESOURCE;
@@ -209,7 +216,7 @@ int Process::processInit()
 		}
 		if(!BResource::bres.Pack(Scripter::strdesc, BResource::bres.customconstdata))
 		{
-#ifdef __DEBUG
+#ifdef __DEBUG_LOG
 			HGELOG("Error in Packing Resource Data.");
 #endif
 			errorcode = PROC_ERROR_TRANSLATE;
@@ -227,12 +234,18 @@ int Process::processInit()
 	}
 	if(!BResource::bres.Gain(Scripter::strdesc, /*binmode?*/BResource::bres.customconstdata/*:NULL*/))
 	{
-#ifdef __DEBUG
+#ifdef __DEBUG_LOG
 		HGELOG("Error in Gaining Resource Data.");
 #endif
 		errorcode = PROC_ERROR_DATA;
 		return PQUIT;
 	}
+#ifdef __DEBUG_LOG
+	else
+	{
+		HGELOG("Succeeded in Gaining Resource Data.");
+	}
+#endif
 
 	BResource::bres.InitTexinfo();
 
@@ -243,7 +256,7 @@ int Process::processInit()
 	}
 	if(!Data::data.SetFile(Export::resourcefilename, DATA_RESOURCEFILE))
 	{
-#ifdef __DEBUG
+#ifdef __DEBUG_LOG
 		HGELOG("Error in Setting Resource File");
 #endif
 		errorcode = PROC_ERROR_DATA;
@@ -254,8 +267,8 @@ int Process::processInit()
 	{
 		if(!BResource::bres.LoadPackage(i))
 		{
-			errorcode = PROC_ERROR_PACKAGE;
-			return PQUIT;
+//			errorcode = PROC_ERROR_PACKAGE;
+//			return PQUIT;
 		}
 	}
 
@@ -277,13 +290,13 @@ int Process::processInit()
 	Fontsys::Init(FrontDisplay::fdisp.info.normalfont);
 	if(!Effectsys::Init(BResource::bres.tex, BResource::bres.resdata.effectsysfoldername, BResource::bres.resdata.effectsysfilename))
 	{
-#ifdef __DEBUG
+#ifdef __DEBUG_LOG
 		HGELOG("%s\nFailed in Initializing Effectsys.", HGELOG_ERRSTR);
 #endif
 		return false;
 	}
 
-#ifdef __DEBUG
+#ifdef __DEBUG_LOG
 	HGELOG("Succeeded in loading all resources.\n");
 #endif
 

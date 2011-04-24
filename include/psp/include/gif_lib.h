@@ -16,6 +16,30 @@
 #ifndef _GIF_LIB_H_
 #define _GIF_LIB_H_ 1
 
+#ifndef __GNUC__
+# define __DLL_IMPORT__ __declspec(dllimport)
+# define __DLL_EXPORT__ __declspec(dllexport)
+#else
+# define __DLL_IMPORT__ __attribute__((dllimport)) extern
+# define __DLL_EXPORT__ __attribute__((dllexport)) extern
+#endif 
+
+#if (defined __WIN32__) || (defined _WIN32)
+# ifdef BUILD_LIBUNGIF_DLL
+#  define LIBUNGIF_DLL_IMPEXP __DLL_EXPORT__
+# elif defined(LIBUNGIF_STATIC)
+#  define LIBUNGIF_DLL_IMPEXP  
+# elif defined (USE_LIBUNGIF_DLL)
+#  define LIBUNGIF_DLL_IMPEXP __DLL_IMPORT__
+# elif defined (USE_LIBUNGIF_STATIC)
+#  define LIBUNGIF_DLL_IMPEXP   
+# else /* assume USE_LIBUNGIF_DLL */
+#  define LIBUNGIF_DLL_IMPEXP __DLL_IMPORT__
+# endif
+#else /* __WIN32__ */
+# define LIBUNGIF_DLL_IMPEXP  
+#endif
+
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
@@ -133,37 +157,37 @@ typedef int (*OutputFunc) (GifFileType *, const GifByteType *, int);
  * (GIF_LIB file EGIF_LIB.C).                              
 ******************************************************************************/
 
-GifFileType *EGifOpenFileName(const char *GifFileName,
+LIBUNGIF_DLL_IMPEXP GifFileType *EGifOpenFileName(const char *GifFileName,
                               int GifTestExistance);
-GifFileType *EGifOpenFileHandle(int GifFileHandle);
-GifFileType *EGifOpen(void *userPtr, OutputFunc writeFunc);
+LIBUNGIF_DLL_IMPEXP GifFileType *EGifOpenFileHandle(int GifFileHandle);
+LIBUNGIF_DLL_IMPEXP GifFileType *EGifOpen(void *userPtr, OutputFunc writeFunc);
 
-int EGifSpew(GifFileType * GifFile);
-void EGifSetGifVersion(const char *Version);
-int EGifPutScreenDesc(GifFileType * GifFile,
+LIBUNGIF_DLL_IMPEXP int EGifSpew(GifFileType * GifFile);
+LIBUNGIF_DLL_IMPEXP void EGifSetGifVersion(const char *Version);
+LIBUNGIF_DLL_IMPEXP int EGifPutScreenDesc(GifFileType * GifFile,
                       int GifWidth, int GifHeight, int GifColorRes,
                       int GifBackGround,
                       const ColorMapObject * GifColorMap);
-int EGifPutImageDesc(GifFileType * GifFile, int GifLeft, int GifTop,
+LIBUNGIF_DLL_IMPEXP int EGifPutImageDesc(GifFileType * GifFile, int GifLeft, int GifTop,
                      int Width, int GifHeight, int GifInterlace,
                      const ColorMapObject * GifColorMap);
-int EGifPutLine(GifFileType * GifFile, GifPixelType * GifLine,
+LIBUNGIF_DLL_IMPEXP int EGifPutLine(GifFileType * GifFile, GifPixelType * GifLine,
                 int GifLineLen);
-int EGifPutPixel(GifFileType * GifFile, GifPixelType GifPixel);
-int EGifPutComment(GifFileType * GifFile, const char *GifComment);
-int EGifPutExtensionFirst(GifFileType * GifFile, int GifExtCode,
+LIBUNGIF_DLL_IMPEXP int EGifPutPixel(GifFileType * GifFile, GifPixelType GifPixel);
+LIBUNGIF_DLL_IMPEXP int EGifPutComment(GifFileType * GifFile, const char *GifComment);
+LIBUNGIF_DLL_IMPEXP int EGifPutExtensionFirst(GifFileType * GifFile, int GifExtCode,
                           int GifExtLen, const VoidPtr GifExtension);
-int EGifPutExtensionNext(GifFileType * GifFile, int GifExtCode,
+LIBUNGIF_DLL_IMPEXP int EGifPutExtensionNext(GifFileType * GifFile, int GifExtCode,
                          int GifExtLen, const VoidPtr GifExtension);
-int EGifPutExtensionLast(GifFileType * GifFile, int GifExtCode,
+LIBUNGIF_DLL_IMPEXP int EGifPutExtensionLast(GifFileType * GifFile, int GifExtCode,
                          int GifExtLen, const VoidPtr GifExtension);
-int EGifPutExtension(GifFileType * GifFile, int GifExtCode, int GifExtLen,
+LIBUNGIF_DLL_IMPEXP int EGifPutExtension(GifFileType * GifFile, int GifExtCode, int GifExtLen,
                      const VoidPtr GifExtension);
-int EGifPutCode(GifFileType * GifFile, int GifCodeSize,
+LIBUNGIF_DLL_IMPEXP int EGifPutCode(GifFileType * GifFile, int GifCodeSize,
                 const GifByteType * GifCodeBlock);
-int EGifPutCodeNext(GifFileType * GifFile,
+LIBUNGIF_DLL_IMPEXP int EGifPutCodeNext(GifFileType * GifFile,
                     const GifByteType * GifCodeBlock);
-int EGifCloseFile(GifFileType * GifFile);
+LIBUNGIF_DLL_IMPEXP int EGifCloseFile(GifFileType * GifFile);
 
 #define E_GIF_ERR_OPEN_FAILED    1    /* And EGif possible errors. */
 #define E_GIF_ERR_WRITE_FAILED   2
@@ -181,26 +205,26 @@ int EGifCloseFile(GifFileType * GifFile);
  * (GIF_LIB file DGIF_LIB.C).                              
  *****************************************************************************/
 #ifndef _GBA_NO_FILEIO
-GifFileType *DGifOpenFileName(const char *GifFileName);
-GifFileType *DGifOpenFileHandle(int GifFileHandle);
-int DGifSlurp(GifFileType * GifFile);
+LIBUNGIF_DLL_IMPEXP GifFileType *DGifOpenFileName(const char *GifFileName);
+LIBUNGIF_DLL_IMPEXP GifFileType *DGifOpenFileHandle(int GifFileHandle);
+LIBUNGIF_DLL_IMPEXP int DGifSlurp(GifFileType * GifFile);
 #endif /* _GBA_NO_FILEIO */
-GifFileType *DGifOpen(void *userPtr, InputFunc readFunc);    /* new one
+LIBUNGIF_DLL_IMPEXP GifFileType *DGifOpen(void *userPtr, InputFunc readFunc);    /* new one
                                                              * (TVT) */
-int DGifGetScreenDesc(GifFileType * GifFile);
-int DGifGetRecordType(GifFileType * GifFile, GifRecordType * GifType);
-int DGifGetImageDesc(GifFileType * GifFile);
-int DGifGetLine(GifFileType * GifFile, GifPixelType * GifLine, int GifLineLen);
-int DGifGetPixel(GifFileType * GifFile, GifPixelType GifPixel);
-int DGifGetComment(GifFileType * GifFile, char *GifComment);
-int DGifGetExtension(GifFileType * GifFile, int *GifExtCode,
+LIBUNGIF_DLL_IMPEXP int DGifGetScreenDesc(GifFileType * GifFile);
+LIBUNGIF_DLL_IMPEXP int DGifGetRecordType(GifFileType * GifFile, GifRecordType * GifType);
+LIBUNGIF_DLL_IMPEXP int DGifGetImageDesc(GifFileType * GifFile);
+LIBUNGIF_DLL_IMPEXP int DGifGetLine(GifFileType * GifFile, GifPixelType * GifLine, int GifLineLen);
+LIBUNGIF_DLL_IMPEXP int DGifGetPixel(GifFileType * GifFile, GifPixelType GifPixel);
+LIBUNGIF_DLL_IMPEXP int DGifGetComment(GifFileType * GifFile, char *GifComment);
+LIBUNGIF_DLL_IMPEXP int DGifGetExtension(GifFileType * GifFile, int *GifExtCode,
                      GifByteType ** GifExtension);
-int DGifGetExtensionNext(GifFileType * GifFile, GifByteType ** GifExtension);
-int DGifGetCode(GifFileType * GifFile, int *GifCodeSize,
+LIBUNGIF_DLL_IMPEXP int DGifGetExtensionNext(GifFileType * GifFile, GifByteType ** GifExtension);
+LIBUNGIF_DLL_IMPEXP int DGifGetCode(GifFileType * GifFile, int *GifCodeSize,
                 GifByteType ** GifCodeBlock);
-int DGifGetCodeNext(GifFileType * GifFile, GifByteType ** GifCodeBlock);
-int DGifGetLZCodes(GifFileType * GifFile, int *GifCode);
-int DGifCloseFile(GifFileType * GifFile);
+LIBUNGIF_DLL_IMPEXP int DGifGetCodeNext(GifFileType * GifFile, GifByteType ** GifCodeBlock);
+LIBUNGIF_DLL_IMPEXP int DGifGetLZCodes(GifFileType * GifFile, int *GifCode);
+LIBUNGIF_DLL_IMPEXP int DGifCloseFile(GifFileType * GifFile);
 
 #define D_GIF_ERR_OPEN_FAILED    101    /* And DGif possible errors. */
 #define D_GIF_ERR_READ_FAILED    102
@@ -219,7 +243,7 @@ int DGifCloseFile(GifFileType * GifFile);
 /******************************************************************************
  * O.K., here are the routines from GIF_LIB file QUANTIZE.C.              
 ******************************************************************************/
-int QuantizeBuffer(unsigned int Width, unsigned int Height,
+LIBUNGIF_DLL_IMPEXP int QuantizeBuffer(unsigned int Width, unsigned int Height,
                    int *ColorMapSize, GifByteType * RedInput,
                    GifByteType * GreenInput, GifByteType * BlueInput,
                    GifByteType * OutputBuffer,
@@ -228,26 +252,26 @@ int QuantizeBuffer(unsigned int Width, unsigned int Height,
 /******************************************************************************
  * O.K., here are the routines from GIF_LIB file QPRINTF.C.              
 ******************************************************************************/
-extern int GifQuietPrint;
+LIBUNGIF_DLL_IMPEXP  int GifQuietPrint;
 
 #ifdef HAVE_STDARG_H
-    extern void GifQprintf(char *Format, ...);
+    LIBUNGIF_DLL_IMPEXP  void GifQprintf(char *Format, ...);
 #elif defined (HAVE_VARARGS_H)
-    extern void GifQprintf();
+    LIBUNGIF_DLL_IMPEXP  void GifQprintf();
 #endif /* HAVE_STDARG_H */
 
 /******************************************************************************
  * O.K., here are the routines from GIF_LIB file GIF_ERR.C.              
 ******************************************************************************/
 #ifndef _GBA_NO_FILEIO
-extern void PrintGifError(void);
+LIBUNGIF_DLL_IMPEXP  void PrintGifError(void);
 #endif /* _GBA_NO_FILEIO */
-extern int GifLastError(void);
+LIBUNGIF_DLL_IMPEXP  int GifLastError(void);
 
 /******************************************************************************
  * O.K., here are the routines from GIF_LIB file DEV2GIF.C.              
 ******************************************************************************/
-extern int DumpScreen2Gif(const char *FileName,
+LIBUNGIF_DLL_IMPEXP  int DumpScreen2Gif(const char *FileName,
                           int ReqGraphDriver,
                           long ReqGraphMode1,
                           long ReqGraphMode2,
@@ -264,13 +288,13 @@ extern int DumpScreen2Gif(const char *FileName,
  * Color Map handling from ALLOCGIF.C                          
  *****************************************************************************/
 
-extern ColorMapObject *MakeMapObject(int ColorCount,
+LIBUNGIF_DLL_IMPEXP  ColorMapObject *MakeMapObject(int ColorCount,
                                      const GifColorType * ColorMap);
-extern void FreeMapObject(ColorMapObject * Object);
-extern ColorMapObject *UnionColorMap(const ColorMapObject * ColorIn1,
+LIBUNGIF_DLL_IMPEXP  void FreeMapObject(ColorMapObject * Object);
+LIBUNGIF_DLL_IMPEXP  ColorMapObject *UnionColorMap(const ColorMapObject * ColorIn1,
                                      const ColorMapObject * ColorIn2,
                                      GifPixelType ColorTransIn2[]);
-extern int BitSize(int n);
+LIBUNGIF_DLL_IMPEXP  int BitSize(int n);
 
 /******************************************************************************
  * Support for the in-core structures allocation (slurp mode).              
@@ -292,14 +316,14 @@ typedef struct SavedImage {
     ExtensionBlock *ExtensionBlocks;    /* on malloc(3) heap */
 } SavedImage;
 
-extern void ApplyTranslation(SavedImage * Image, GifPixelType Translation[]);
-extern void MakeExtension(SavedImage * New, int Function);
-extern int AddExtensionBlock(SavedImage * New, int Len,
+LIBUNGIF_DLL_IMPEXP  void ApplyTranslation(SavedImage * Image, GifPixelType Translation[]);
+LIBUNGIF_DLL_IMPEXP  void MakeExtension(SavedImage * New, int Function);
+LIBUNGIF_DLL_IMPEXP  int AddExtensionBlock(SavedImage * New, int Len,
                              unsigned char ExtData[]);
-extern void FreeExtension(SavedImage * Image);
-extern SavedImage *MakeSavedImage(GifFileType * GifFile,
+LIBUNGIF_DLL_IMPEXP  void FreeExtension(SavedImage * Image);
+LIBUNGIF_DLL_IMPEXP  SavedImage *MakeSavedImage(GifFileType * GifFile,
                                   const SavedImage * CopyFrom);
-extern void FreeSavedImages(GifFileType * GifFile);
+LIBUNGIF_DLL_IMPEXP  void FreeSavedImages(GifFileType * GifFile);
 
 /******************************************************************************
  * The library's internal utility font                          
@@ -307,25 +331,25 @@ extern void FreeSavedImages(GifFileType * GifFile);
 
 #define GIF_FONT_WIDTH  8
 #define GIF_FONT_HEIGHT 8
-extern unsigned char AsciiTable[][GIF_FONT_WIDTH];
+LIBUNGIF_DLL_IMPEXP  unsigned char AsciiTable[][GIF_FONT_WIDTH];
 
 #ifdef _WIN32
-    extern void DrawGifText(SavedImage * Image,
+    LIBUNGIF_DLL_IMPEXP  void DrawGifText(SavedImage * Image,
 #else
-    extern void DrawText(SavedImage * Image,
+    LIBUNGIF_DLL_IMPEXP  void DrawText(SavedImage * Image,
 #endif
                      const int x, const int y,
                      const char *legend, const int color);
 
-extern void DrawBox(SavedImage * Image,
+LIBUNGIF_DLL_IMPEXP  void DrawBox(SavedImage * Image,
                     const int x, const int y,
                     const int w, const int d, const int color);
 
-void DrawRectangle(SavedImage * Image,
+LIBUNGIF_DLL_IMPEXP  void DrawRectangle(SavedImage * Image,
                    const int x, const int y,
                    const int w, const int d, const int color);
 
-extern void DrawBoxedText(SavedImage * Image,
+LIBUNGIF_DLL_IMPEXP  void DrawBoxedText(SavedImage * Image,
                           const int x, const int y,
                           const char *legend,
                           const int border, const int bg, const int fg);

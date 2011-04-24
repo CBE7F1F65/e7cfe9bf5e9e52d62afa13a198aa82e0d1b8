@@ -37,6 +37,12 @@
 #define ROTATION1(F1, F2, A)	((F1) * cost(A) - (F2) * sint(A))
 #define ROTATION2(F1, F2, A)	((F1) * sint(A) + (F2) * cost(A))
 
+#ifdef __DEBUG
+#ifndef __DEBUG_LOG
+#define __DEBUG_LOG
+#endif
+#endif
+
 #define HGELOG			hge->System_Log
 #define HGELOG_ERRSTR	"**********ERROR**********"
 

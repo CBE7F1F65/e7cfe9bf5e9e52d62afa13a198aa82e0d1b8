@@ -134,6 +134,7 @@ public:
 	int		bgmvol;
 	int		sevol;
 	int		lastmatchchara[M_PL_MATCHMAXPLAYER][M_PL_ONESETPLAYER];
+	int		bulletcountmax;
 
 	//replay
 	char	rpyfilename[M_PATHMAX];

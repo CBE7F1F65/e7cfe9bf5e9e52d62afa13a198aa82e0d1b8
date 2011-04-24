@@ -13,7 +13,9 @@
 #ifndef JPEGLIB_H
 #define JPEGLIB_H
 
-/*
+#include <stdio.h>
+
+ /*
  * First we include the configuration files that record how this
  * installation of the JPEG library is set up.  jconfig.h can be
  * generated automatically for many systems.  jmorecfg.h contains
@@ -24,6 +26,11 @@
 #include "jconfig.h"		/* widely used configuration options */
 #endif
 #include "jmorecfg.h"		/* seldom changed options */
+
+
+#ifdef HAVE_MMX_INTEL_MNEMONICS
+	extern int MMXAvailable;
+#endif
 
 
 /* Version ID for the JPEG library.

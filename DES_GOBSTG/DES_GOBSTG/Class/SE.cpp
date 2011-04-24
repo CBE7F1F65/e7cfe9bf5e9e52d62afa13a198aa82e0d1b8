@@ -28,12 +28,12 @@ bool SE::Initial()
 		se[i].eff = hge->Effect_Load(buffer);
 		if(se[i].eff == NULL)
 		{
-#ifdef __DEBUG
+#ifdef __DEBUG_LOG
 			HGELOG("%s\nFailed in loading SE File %s.(To be assigned to Index %d).", HGELOG_ERRSTR, buffer, i);
 #endif
 //			return false;
 		}
-#ifdef __DEBUG
+#ifdef __DEBUG_LOG
 		else
 		{
 			HGELOG("Succeeded in loading SE File %s.(Assigned to Index %d).", buffer, i);
@@ -43,6 +43,9 @@ bool SE::Initial()
 		se[i].counter = 0;
 		se[i].sum = 0;
 	}
+#ifdef __DEBUG_LOG
+	HGELOG("Succeeded in loading all SE files.");
+#endif
 	return true;
 }
 

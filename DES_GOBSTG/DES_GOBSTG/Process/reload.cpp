@@ -60,7 +60,7 @@ bool Process::reload()
 
 	GameInput::SwapInput(false);
 
-#ifdef __DEBUG
+#ifdef __DEBUG_LOG
 	HGELOG("\nCleared up.\n");
 #endif
 

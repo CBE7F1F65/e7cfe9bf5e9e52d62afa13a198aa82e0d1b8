@@ -219,8 +219,9 @@ bool Scripter::Resize()
 			}
 		}
 	}
-
+#ifdef __DEBUG_LOG
 	HGELOG("Script count as %u.", __size);
+#endif
 #endif
 
 	return true;
@@ -560,13 +561,17 @@ addblock:
 					if(tk.type == SCR_TOKEN_ERROR)
 					{
 #ifdef __DEBUG
+#ifdef __DEBUG_LOG
 						HGELOG("%s\nError in getting token at Block %d in File %d with Error-Code %d.", HGELOG_ERRSTR, j->con, i->name, tk.value);
+#endif
 
 						if(!binmode && file)
 						{
 							char tbuff[M_STRITOAMAX];
 							sprintf(tbuff, "%x", ftell(file));
+#ifdef __DEBUG_LOG
 							HGELOG("Point to 0x%s.", tbuff);
+#endif
 						}
 #endif
 						return false;

@@ -101,14 +101,23 @@ bool Effectsys::Init(HTEXTURE * tex, const char * foldername, char name[][M_PATH
 		}
 		strcpy(buffer, foldername);
 		strcat(buffer, name[i]);
-
+		
 		if(Export::effLoad(buffer, &efftype[i], tex) < 0)
 		{
-			HGELOG("%Failed in loading Effect System File %s.", HGELOG_ERRSTR, buffer);
+#ifdef __DEBUG_LOG
+			HGELOG("%s\nFailed in loading Effect System File %s.", HGELOG_ERRSTR, buffer);
+#endif
 			hgeEffectBasicInfo ebi;
 			ZeroMemory(&ebi, sizeof(hgeEffectBasicInfo));
 			efftype[i].SetBasicInfo(&ebi);
 		}
+		else 
+		{
+#ifdef __DEBUG_LOG
+			HGELOG("Succeeded in loading Effect System file %s", buffer);
+#endif
+		}
+
 	}
 	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
 	{

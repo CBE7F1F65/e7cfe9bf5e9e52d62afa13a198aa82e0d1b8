@@ -18,13 +18,14 @@ Process::Process()
 	screenmode = RESCONFIGDEFAULT_SCREENMODE;
 	screenscale = RESCONFIGDEFAULT_SCREENSCALE;
 	infodisplayscale = RESCONFIGDEFAULT_INFODISPLAYSCALE;
+	bulletcountmax = RESCONFIGDEFAULT_BULLETCOUNTMAX;
 
 	for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
 	{
 		rendertar[i] = NULL;
 		sprendertar[i] = NULL;
 		SetShake(i, 0, true);
-		
+				
 #if defined __IPHONE
 		touchMoveID[i] = 0xff;
 		shootTriger[i] = false;
