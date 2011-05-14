@@ -236,6 +236,17 @@
 	#define DEFAULT_RESOURCEPATH	"../../Resource"
 #endif
 
+#if defined __RELEASE || defined __IPHONE
+	#define DEFAULT_RESOURCEPATH_BASE	"Resource"
+#else
+	#define DEFAULT_RESOURCEPATH_BASE	"../../Resource_Base"
+#endif
+
+#if defined _WIN32 && defined __RESOURCE_BASE
+	#undef DEFAULT_RESOURCEPATH
+	#define DEFAULT_RESOURCEPATH DEFAULT_RESOURCEPATH_BASE
+#endif
+
 #ifdef __RELEASE
 	#define DEFAULT_HGEDLLPATH		"Resource/hge.dll"
 #else

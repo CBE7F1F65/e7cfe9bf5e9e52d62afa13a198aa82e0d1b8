@@ -1,6 +1,9 @@
 #ifndef __NOTUSELUA
 #ifndef __NOTUSEHDSS
 
+#ifndef _EXPORT_LUA_HDSS_H
+#define _EXPORT_LUA_HDSS_H
+
 #include "Export_Lua.h"
 
 class Export_Lua_HDSS : public Export_Lua
@@ -25,5 +28,6 @@ public:
 	static LuaFunction<bool> * eventExecute;
 };
 
+#endif
 #endif
 #endif

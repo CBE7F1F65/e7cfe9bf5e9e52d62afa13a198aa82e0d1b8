@@ -164,13 +164,14 @@ bool CALL HGE_Impl::Resource_CreatePack(const char * filename, int password, hge
 {
 	Resource_RemovePack(filename);
 
-	va_list ap;
-	va_start(ap, first);
 
 	zipFile zip = zipOpen(Resource_MakePath(filename), APPEND_STATUS_CREATE);
 
 	if(!zip)
 		return false;
+
+	va_list ap;
+	va_start(ap, first);
 
 	hgeMemoryFile * vai = first;
 
@@ -186,12 +187,14 @@ bool CALL HGE_Impl::Resource_CreatePack(const char * filename, int password, hge
 			))
 		{
 			zipClose(zip, NULL);
+			va_end(ap);
 			return false;
 		}
 		if(Z_OK != zipWriteInFileInZip(zip, vai->data, vai->size))
 		{
 			zipCloseFileInZip(zip);
 			zipClose(zip, NULL);
+			va_end(ap);
 			return false;
 		}
 		zipCloseFileInZip(zip);
@@ -199,9 +202,9 @@ bool CALL HGE_Impl::Resource_CreatePack(const char * filename, int password, hge
 		vai = (hgeMemoryFile *)va_arg(ap, hgeMemoryFile *);
 	}
 
+	va_end(ap);
 	zipClose(zip, NULL);
 
-	va_end(ap);
 
 	bool bret = Resource_AttachPack(filename, password);
 	Resource_RemovePack(filename);
@@ -674,8 +677,8 @@ bool CALL HGE_Impl::Resource_CreateDirectory(const char *filename)
 #if defined __WIN32
 	return CreateDirectory(Resource_MakePath(filename), NULL);
 #elif defined __PSP
-	sceIoMkdir(Resource_MakePath(filename), 0777);
+	return !sceIoMkdir(Resource_MakePath(filename), 0777);
 #elif defined __IPHONE
-
+	return false;
 #endif // __WIN32
 }

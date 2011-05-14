@@ -1,5 +1,8 @@
 #ifndef __NOTUSELUA
 
+#ifndef _EXPORT_LUA_HGE_H
+#define _EXPORT_LUA_HGE_H
+
 #include "Export_Lua.h"
 
 class Export_Lua_HGE : public Export_Lua
@@ -128,4 +131,5 @@ public:
 	static hgeChannelSyncInfo channelsyncinfo;
 };
 
+#endif
 #endif

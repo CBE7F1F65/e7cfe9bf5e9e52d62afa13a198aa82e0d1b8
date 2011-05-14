@@ -1,6 +1,9 @@
 #ifndef __NOTUSELUA
 #ifndef __NOTINTHISGAME
 
+#ifndef _EXPORT_LUA_GAME_H
+#define _EXPORT_LUA_GAME_H
+
 #include "Export_Lua.h"
 
 class Export_Lua_Game : Export_Lua
@@ -43,4 +46,6 @@ public:
 };
 
 #endif
+#endif
+
 #endif

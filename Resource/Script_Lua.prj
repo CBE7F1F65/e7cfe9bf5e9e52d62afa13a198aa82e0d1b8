@@ -14,7 +14,7 @@ Relative to Project File=1
 Save Account=0
 Use Relative Directory=1
 Using VCS=0
-Working Time=1634429
+Working Time=1637393
 [Folders]
 HDSS=1
 HDSS - Control=1
@@ -27,6 +27,8 @@ HDSS - Scene=1
 .\ - HDSS - Control=1
 .\ - HDSS - Scene=1
 .\ - HDSS - Scene - Scene=1
+.\ - Script_Lua=1
+.\ - Script_Lua - HDSS=1
 [uemakeXp]
 ReleaseMode=0
 [Debug Settings]
@@ -36,25 +38,9 @@ Source Paths=
 Symbol Paths=
 Working Directory=
 [Open Files]
-Active File Display Mode=3
-Active File Index=0
-Open File Line0=4782
-Open File Line1=9493
-Open File Line2=0
-Open File Line3=979
-Open File Pos0=5440
-Open File Pos1=9794
-Open File Pos2=209
-Open File Pos3=1297
-Open File Window Pos0=2,3,-1,-1,-8,-30,50,50,1062,416
-Open File Window Pos1=0,1,-1,-1,-8,-30,75,75,1091,427
-Open File Window Pos2=0,1,-1,-1,-8,-30,100,100,1116,452
-Open File Window Pos3=0,1,-1,-1,-8,-30,125,125,1141,477
-Open File0=E:\hge[th09x]\Resource\Script_Lua\HDSS\Control\cPlayerSelect.lua
-Open File1=E:\hge[th09x]\Resource\Script_Lua\HDSS\Helper_HDSS.lua
-Open File2=E:\hge[th09x]\Resource\Script_Lua\HDSS\Control\cOver.lua
-Open File3=E:\hge[th09x]\Resource\Script_Lua\HDSS\Control\cPause.lua
-Open File4=
+Active File Display Mode=-1
+Open File0=
+
 [Group Filter]
 .\=*.lua
 [Files]

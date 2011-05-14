@@ -1,5 +1,8 @@
 #ifndef __NOTUSELUA
 
+#ifndef _EXPORT_LUA_HGEHELP_H
+#define _EXPORT_LUA_HGEHELP_H
+
 #include "Export_Lua.h"
 
 class Export_Lua_HGEHelp : public Export_Lua
@@ -107,4 +110,5 @@ public:
 	static list<hgeEffectSystem *>esList;
 };
 
+#endif
 #endif

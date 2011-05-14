@@ -32,7 +32,20 @@ void Export::Release()
 
 bool Export::clientInitial(bool usesound /* = false */, bool extuse /* = false */)
 {
-	hge->Resource_SetPath(DEFAULT_RESOURCEPATH);
+#if defined __IPHONE
+	hge->Resource_SetPath(ResourceGetBaseDirectory());
+#endif
+	if (hge->Resource_AccessFile(DEFAULT_RESOURCEPATH))
+	{
+		hge->Resource_SetPath(DEFAULT_RESOURCEPATH);
+	}
+	else
+	{
+#if defined __IPHONE
+		hge->Resource_SetPath(ResourceAppDirectory());
+#endif
+		hge->Resource_SetPath(DEFAULT_RESOURCEPATH_BASE);
+	}
 	char respath[_MAX_PATH];
 	strcpy(respath, hge->Resource_MakePath(""));
 	if(!hge->Resource_AccessFile(respath))
