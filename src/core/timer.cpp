@@ -53,7 +53,7 @@ LONGLONG CALL HGE_Impl::Timer_GetPerformanceFrequency()
 #ifdef __IPHONE
 	mach_timebase_info_data_t info;
 	mach_timebase_info(&info);
-	return info.numer*1000000000/info.denom;
+	return info.denom*1000000000/info.numer;
 #endif;
 
 #endif // __WIN32
