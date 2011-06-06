@@ -43,20 +43,9 @@ function LGlobal_CallMessageBoxOnce(content, title, indi)
 	return LGlobal_CallMessageBox(content, title);
 end
 
-function LGlobal_TranslateStringType(str)
-	if str == nil then
-		str = "nil";
-	elseif str == true then
-		str = "true";
-	elseif str == false then
-		str = "false";
-	end
-	return str;
-end
-
 function LGlobal_CallMessageBox(content, title)
-	content = LGlobal_TranslateStringType(content);
-	title = LGlobal_TranslateStringType(title);
+	content = tostring(content);
+	title = tostring(title);
 	return global.MessageBox(content, title);
 end
 
