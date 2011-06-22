@@ -295,7 +295,7 @@ int Export_Lua::LuaFn_Global_Calculate(LuaState * ls)
 
 	_LuaHelper_GetCalculateValue(&_obj, calstr[0], buseq, &l1);
 	_obj = args[3];
-	_LuaHelper_GetCalculateValue(&_obj, calstr[0], buseq, &l2);
+	_LuaHelper_GetCalculateValue(&_obj, calstr[2], buseq, &l2);
 
 	if (buseq)
 	{
