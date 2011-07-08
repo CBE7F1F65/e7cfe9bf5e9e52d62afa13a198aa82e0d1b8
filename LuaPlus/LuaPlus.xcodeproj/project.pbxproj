@@ -76,7 +76,6 @@
 		7186CFB812529070007DF003 /* ltablib.c in Sources */ = {isa = PBXBuildFile; fileRef = 7186CF5812529070007DF003 /* ltablib.c */; };
 		7186CFB912529070007DF003 /* ltm.c in Sources */ = {isa = PBXBuildFile; fileRef = 7186CF5912529070007DF003 /* ltm.c */; };
 		7186CFBA12529070007DF003 /* ltm.h in Headers */ = {isa = PBXBuildFile; fileRef = 7186CF5A12529070007DF003 /* ltm.h */; };
-		7186CFBB12529070007DF003 /* lua.c in Sources */ = {isa = PBXBuildFile; fileRef = 7186CF5B12529070007DF003 /* lua.c */; };
 		7186CFBC12529070007DF003 /* lua.h in Headers */ = {isa = PBXBuildFile; fileRef = 7186CF5C12529070007DF003 /* lua.h */; };
 		7186CFBE12529070007DF003 /* luaconf.h in Headers */ = {isa = PBXBuildFile; fileRef = 7186CF5E12529070007DF003 /* luaconf.h */; };
 		7186CFBF12529070007DF003 /* lualib.h in Headers */ = {isa = PBXBuildFile; fileRef = 7186CF5F12529070007DF003 /* lualib.h */; };
@@ -172,7 +171,6 @@
 		7186CF5812529070007DF003 /* ltablib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ltablib.c; sourceTree = "<group>"; };
 		7186CF5912529070007DF003 /* ltm.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ltm.c; sourceTree = "<group>"; };
 		7186CF5A12529070007DF003 /* ltm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ltm.h; sourceTree = "<group>"; };
-		7186CF5B12529070007DF003 /* lua.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = lua.c; sourceTree = "<group>"; };
 		7186CF5C12529070007DF003 /* lua.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lua.h; sourceTree = "<group>"; };
 		7186CF5E12529070007DF003 /* luaconf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = luaconf.h; sourceTree = "<group>"; };
 		7186CF5F12529070007DF003 /* lualib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lualib.h; sourceTree = "<group>"; };
@@ -342,7 +340,6 @@
 				7186CF5812529070007DF003 /* ltablib.c */,
 				7186CF5912529070007DF003 /* ltm.c */,
 				7186CF5A12529070007DF003 /* ltm.h */,
-				7186CF5B12529070007DF003 /* lua.c */,
 				7186CF5C12529070007DF003 /* lua.h */,
 				7186CF5E12529070007DF003 /* luaconf.h */,
 				7186CF5F12529070007DF003 /* lualib.h */,
@@ -494,7 +491,6 @@
 				7186CFB612529070007DF003 /* ltable.c in Sources */,
 				7186CFB812529070007DF003 /* ltablib.c in Sources */,
 				7186CFB912529070007DF003 /* ltm.c in Sources */,
-				7186CFBB12529070007DF003 /* lua.c in Sources */,
 				7186CFC012529070007DF003 /* lundump.c in Sources */,
 				7186CFC212529070007DF003 /* lvm.c in Sources */,
 				7186CFC412529070007DF003 /* lzio.c in Sources */,

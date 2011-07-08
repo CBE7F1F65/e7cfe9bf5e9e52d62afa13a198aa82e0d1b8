@@ -1,6 +1,10 @@
 #include "../Header/Export.h"
 #include "../Header/ConstResource.h"
 
+#ifdef __IPHONE
+#include "MainApplicationFunctions.h"
+#endif
+
 char Export::resourcefilename[M_PATHMAX];
 char Export::resbinname[M_PATHMAX];
 partInfo Export::partinfo[RPYPARTMAX];
@@ -42,7 +46,7 @@ bool Export::clientInitial(bool usesound /* = false */, bool extuse /* = false *
 	else
 	{
 #if defined __IPHONE
-		hge->Resource_SetPath(ResourceAppDirectory());
+		hge->Resource_SetPath(ResourceGetAppDirectory());
 #endif
 		hge->Resource_SetPath(DEFAULT_RESOURCEPATH_BASE);
 	}
