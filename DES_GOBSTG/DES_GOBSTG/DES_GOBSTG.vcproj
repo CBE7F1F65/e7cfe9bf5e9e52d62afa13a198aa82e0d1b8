@@ -45,7 +45,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				PreprocessorDefinitions="WIN32;_DEBUG;__DEBUG;__RESOURCE_BASE"
+				PreprocessorDefinitions="WIN32;_DEBUG;__DEBUG"
 				StringPooling="false"
 				MinimalRebuild="false"
 				ExceptionHandling="1"

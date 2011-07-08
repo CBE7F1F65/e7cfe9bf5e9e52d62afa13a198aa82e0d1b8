@@ -104,7 +104,7 @@ function CEPlayerSelect_SetSelect(bleft, x)
 		hdss.Call(
 			HDSS_SELBUILD,
 			{
-				selsysplayerid, i, siid, x + i * TotalW / 4, TotalCenterY, 1.5
+				selsysplayerid, i, siid, x + i * TotalW / 4, TotalCenterY, 0.75
 			},
 			{
 				0, 0,
@@ -169,7 +169,7 @@ function CEPlayerSelect_DispatchSelect(bleft, x, bothercomplete)
 	if complete then
 		
 		local siid = game.GetPlayerContentTable(select);
-		hdssBGVALUE(0, uibgid, siid, x, TotalCenterY, -1.5, -1.5, global.ARGB(0xff, 0));
+		hdssBGVALUE(0, uibgid, siid, x, TotalCenterY, -0.75, -0.75, global.ARGB(0xff, 0));
 		local pindex = _CEPlayerSelect_GetPIndex(bleft);
 		hdssSETCHARA(pindex, select);		
 		ret = 1;
