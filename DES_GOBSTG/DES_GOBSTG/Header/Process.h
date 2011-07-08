@@ -130,6 +130,7 @@ public:
 	char	username[M_PL_MATCHMAXPLAYER][RPYINFO_USERNAMEMAX];
 	int		screenmode;
 	float	screenscale;
+	float	touchmovescale;
 	float	infodisplayscale;
 	int		bgmvol;
 	int		sevol;

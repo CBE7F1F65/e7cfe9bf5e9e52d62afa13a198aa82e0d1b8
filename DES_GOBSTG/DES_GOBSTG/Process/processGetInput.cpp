@@ -292,7 +292,7 @@ int Process::getInput()
 							
 						}
 						if (i == touchMoveID[k]) {
-							float scaleval = M_CLIENT_HEIGHT / (SCREEN_WIDTH*screenscale);
+							float scaleval = M_CLIENT_HEIGHT / (SCREEN_WIDTH*screenscale)*touchmovescale;
 							touchdirectmove[k].x = (touchinfo[i].x-touchinfo[i].lastx) * scaleval;
 							touchdirectmove[k].y = (touchinfo[i].y-touchinfo[i].lasty) * scaleval;
 							break;
