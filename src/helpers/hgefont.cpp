@@ -775,21 +775,40 @@ char *hgeFont::_get_line(char *file, char *line)
 }
 
 #ifdef __WIN32
-bool hgeFont::CreateFontFileByInfo( int * charcode, int num, const char * fontfilename, HD3DFONT d3dfont )
+bool hgeFont::CreateFontFileByInfo( int * charcode, int num, const char * fontfilename, HD3DFONT d3dfont, int fontscale /*=1*/ )
 {
 	if (num < 1 || !charcode || !fontfilename)
 	{
 		return false;
 	}
 
-	int fonttexnum = (num-1) / 256 + 1 + 1;
+	if (fontscale < 1)
+	{
+		fontscale = 1;
+	}
+
+	int fontw = 16*fontscale;
+	int fonth = 16*fontscale;
+
+	int texw = 256;
+	int texh = 256;
+
+	int nrow = texw/fontw;
+	int ncol = texh/fonth;
+
+	if (!nrow || !ncol)
+	{
+		return false;
+	}
+
+	int fonttexnum = (num-1) / (nrow*ncol) + 1 + 1;
 	FILE * fontfile = fopen(hge->Resource_MakePath(fontfilename), "w");
 	if (!fontfile)
 	{
 		return false;
 	}
 
-	HTARGET tar = hge->Target_Create(256, 256, false);
+	HTARGET tar = hge->Target_Create(texw, texh, false);
 	if (!hge->Gfx_BeginScene(tar))
 	{
 		hge->Target_Free(tar);
@@ -831,12 +850,12 @@ bool hgeFont::CreateFontFileByInfo( int * charcode, int num, const char * fontfi
 	int i=0x10;
 	for (; i<0x80; i++)
 	{
-		int x = i % 0x20 * 0x08;
-		int y = i / 0x20 * 0x10;
-		sprintf(buffer, "Char=\"%c\", %d, %d, %d, %d, 0, 0\n", i, x, y, 8, 16);
+		int x = i % (nrow*2) * (fontw/2);
+		int y = i / (nrow*2) * fonth;
+		sprintf(buffer, "Char=\"%c\", %d, %d, %d, %d, 0, 0\n", i, x, y, fontw/2, fonth);
 		fwrite(buffer, strlen(buffer), 1, fontfile);
 		sprintf(textbuffer, "%c", i);
-		hge->Gfx_RenderText(d3dfont, textbuffer, x, y, 8, 16);
+		hge->Gfx_RenderText(d3dfont, textbuffer, x, y, fontw/2, fonth);
 	}
 
 	int nowtexnum = 0;
@@ -844,9 +863,9 @@ bool hgeFont::CreateFontFileByInfo( int * charcode, int num, const char * fontfi
 	i = 0x100;
 	for (int j=0; j<num; j++, i++)
 	{
-		int texnum = (i) / 0x100;
-		int x = (i) % 0x10 * 0x10;
-		int y = ((i) / 0x10) % 0x10 * 0x10;
+		int texnum = (i-0x100) / (nrow*ncol)+1;
+		int x = (i) % nrow * fontw;
+		int y = ((i) / nrow) % nrow * fonth;
 		if (nowtexnum != texnum)
 		{
 			hge->Gfx_EndScene();
@@ -862,13 +881,13 @@ bool hgeFont::CreateFontFileByInfo( int * charcode, int num, const char * fontfi
 			hge->Gfx_Clear(0x00000000);
 			nowtexnum = texnum;
 		}
-		sprintf(buffer, "WChar=%x, %d, %d, %d, %d, 0, 0, %x, %d\n", i, x, y, 16, 16, charcode[j], texnum);
+		sprintf(buffer, "WChar=%x, %d, %d, %d, %d, 0, 0, %x, %d\n", i, x, y, fontw, fonth, charcode[j], texnum);
 		fwrite(buffer, strlen(buffer), 1, fontfile);
 
 		textbuffer[0] = (charcode[j] & 0xff00) >> 8;
 		textbuffer[1] = charcode[j] & 0xff;
 		textbuffer[2] = 0;
-		hge->Gfx_RenderText(d3dfont, textbuffer, x, y, 8, 16);
+		hge->Gfx_RenderText(d3dfont, textbuffer, x, y, fontw/2, fonth);
 	}
 
 	hge->Gfx_EndScene();

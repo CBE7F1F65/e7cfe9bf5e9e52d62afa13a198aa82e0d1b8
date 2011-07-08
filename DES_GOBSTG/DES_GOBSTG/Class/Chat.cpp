@@ -150,7 +150,7 @@ bool Chat::chat(BYTE ID, BYTE chatsprite, const char * _text)
 			}
 			text[i+line] = _text[i];
 		}
-		fschat.SignUp(text, 1.25f);
+		fschat.SignUp(text, 0.625f);
 		if(chatsprite & CHATSPRITE_LEFT)
 		{
 			col = 0xff6699ff;
@@ -196,7 +196,7 @@ bool Chat::chatOn(BYTE leftID, BYTE rightID, BYTE chatsprite)
 		pushtimer = 0xff;
 
 		strcpy(text, "");
-		fschat.SignUp(text, 1.25f);
+		fschat.SignUp(text, 0.625f);
 		
 		for (int i=0; i<M_PL_MATCHMAXPLAYER; i++)
 		{

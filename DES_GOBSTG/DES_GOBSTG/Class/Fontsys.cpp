@@ -115,7 +115,7 @@ void Fontsys::HeatUp(bool rebuildfont)
 		{
 			charcodes[i] = *it;
 		}
-		if (hgeFont::CreateFontFileByInfo(charcodes, i, BResource::bres.resdata.fontfilename, d3dfont))
+		if (hgeFont::CreateFontFileByInfo(charcodes, i, BResource::bres.resdata.fontfilename, d3dfont, 2))
 		{
 		}
 		free(charcodes);

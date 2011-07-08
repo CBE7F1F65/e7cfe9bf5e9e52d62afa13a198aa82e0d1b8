@@ -117,7 +117,7 @@ function CEPlayerSelect_SetSelect(bleft, x)
 			}
 --			,
 --			{
---				strname, ucol, dcol, LConst_selsys_shadow, (TotalCenterX-x)/2, -80, 1.2
+--				strname, ucol, dcol, LConst_selsys_shadow, (TotalCenterX-x)/2, -80, 0.6
 --			}
 		)
 	end

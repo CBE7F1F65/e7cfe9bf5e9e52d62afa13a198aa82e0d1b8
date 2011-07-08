@@ -130,7 +130,7 @@ void FrontDisplay::SignUpSpell()
 	{
 		for (int i=0; i<3; i++)
 		{
-			gameinfodisplay.fsSpell[j][i].SignUp(BResource::bres.playerdata[Player::p[j].nowID].spellname[i]);
+			gameinfodisplay.fsSpell[j][i].SignUp(BResource::bres.playerdata[Player::p[j].nowID].spellname[i], 0.5f);
 		}
 	}
 }
@@ -157,7 +157,7 @@ void FrontDisplay::OnShootCharge(BYTE playerindex, BYTE nowshootingcharge)
 void FrontDisplay::OnChangeMusic(int musicID)
 {
 	SetState(FDISP_MUSICNAME, FDISPSTATE_ON);
-	gameinfodisplay.fsMusic.SignUp(BResource::bres.musdata[musicID].musicname, 0.75f);
+	gameinfodisplay.fsMusic.SignUp(BResource::bres.musdata[musicID].musicname, 0.375f);
 }
 
 void FrontDisplay::action()
@@ -563,7 +563,7 @@ bool FrontDisplay::Init()
 {
 	Release();
 
-	info.normalfont = hge->Font_Load(BResource::bres.resdata.widefontname, 16);
+	info.normalfont = hge->Font_Load(BResource::bres.resdata.widefontname, 32);
 
 	int idx = 0;
 

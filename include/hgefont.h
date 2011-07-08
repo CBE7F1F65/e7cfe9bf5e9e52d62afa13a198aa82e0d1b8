@@ -38,7 +38,7 @@ public:
 	hgeFont(const char *filename, bool bMipmap=false);
 	~hgeFont();
 #ifdef __WIN32
-	static bool CreateFontFileByInfo(int * charcode, int num, const char * fontfilename, HD3DFONT d3dfont);
+	static bool CreateFontFileByInfo(int * charcode, int num, const char * fontfilename, HD3DFONT d3dfont, int fontscale=1);
 #endif
 
 	/************************************************************************/
