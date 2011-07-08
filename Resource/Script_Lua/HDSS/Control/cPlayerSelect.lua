@@ -100,20 +100,17 @@ function CEPlayerSelect_SetSelect(bleft, x)
 		
 		local siid, name = game.GetPlayerContentTable(i);
 		local strname = _CEPlayerSelect_TranslateName(name);
-		
+	
 		hdss.Call(
 			HDSS_SELBUILD,
 			{
-				selsysplayerid, i, siid, x + i * TotalW / 4, TotalCenterY, 0.75
+				selsysplayerid, i, siid, x + i * TotalW / 4, TotalCenterY+40, 1
 			},
 			{
 				0, 0,
-				-4, -4,
+				0, 0,
 				0, 0,
 				8, 8
-
-
-
 			}
 --			,
 --			{
@@ -169,7 +166,7 @@ function CEPlayerSelect_DispatchSelect(bleft, x, bothercomplete)
 	if complete then
 		
 		local siid = game.GetPlayerContentTable(select);
-		hdssBGVALUE(0, uibgid, siid, x, TotalCenterY, -0.75, -0.75, global.ARGB(0xff, 0));
+		hdssBGVALUE(0, uibgid, siid, x, TotalCenterY+40, -1, -1, global.ARGB(0xff, 0));
 		local pindex = _CEPlayerSelect_GetPIndex(bleft);
 		hdssSETCHARA(pindex, select);		
 		ret = 1;
@@ -283,10 +280,10 @@ function ControlExecute_cPlayerSelect(timer)
 	_CEPlayerSelect_SyncInput(_sel1complete == 3, _sel2complete == 3);
 	
 	if _sel1complete == 0 then
-		CEPlayerSelect_SetSelect(true, TotalW / 5);
+		CEPlayerSelect_SetSelect(true, TotalW / 4);
 		_sel1complete = 1;
 	elseif _sel1complete == 1 then
-		local ret = CEPlayerSelect_DispatchSelect(true, TotalW / 5, _sel2complete==3);
+		local ret = CEPlayerSelect_DispatchSelect(true, TotalW / 4, _sel2complete==3);
 		if ret > 0 then
 			_sel1complete = 2;
 		end
@@ -299,10 +296,10 @@ function ControlExecute_cPlayerSelect(timer)
 		end
 	end
 	if _sel2complete == 0 then
-		CEPlayerSelect_SetSelect(false, TotalW / 5 * 4);
+		CEPlayerSelect_SetSelect(false, TotalW / 4 * 3);
 		_sel2complete = 1;
 	elseif _sel2complete == 1 then
-		local ret = CEPlayerSelect_DispatchSelect(false, TotalW / 5 * 4, _sel1complete==3);
+		local ret = CEPlayerSelect_DispatchSelect(false, TotalW / 4 * 3, _sel1complete==3);
 		if ret > 0 then
 			_sel2complete = 2;
 		end
