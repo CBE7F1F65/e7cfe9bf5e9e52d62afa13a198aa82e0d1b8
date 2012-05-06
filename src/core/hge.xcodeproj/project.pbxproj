@@ -950,7 +950,6 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = hge_Prefix.pch;
 				INSTALL_PATH = /usr/local/lib;
-				PRODUCT_NAME = hge;
 				VALID_ARCHS = "armv6 armv7";
 			};
 			name = Debug;
@@ -986,7 +985,6 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				OTHER_LDFLAGS = "";
 				PREBINDING = NO;
-				PRODUCT_NAME = hge;
 				SDKROOT = iphoneos;
 				VALID_ARCHS = "armv6 armv7";
 			};
