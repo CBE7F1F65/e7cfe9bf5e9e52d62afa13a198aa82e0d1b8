@@ -10,6 +10,7 @@ Selector::Selector()
 	sprite = NULL;
 	flag	= SEL_NONE;
 	sub = false;
+	infosync = false;
 }
 
 Selector::~Selector()
