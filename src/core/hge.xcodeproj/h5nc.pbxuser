@@ -3,7 +3,7 @@
 	0867D690FE84028FC02AAC07 /* Project object */ = {
 		activeArchitecturePreference = armv6;
 		activeBuildConfigurationName = Release;
-		activeSDKPreference = iphonesimulator4.3;
+		activeSDKPreference = iphoneos4.3;
 		activeTarget = D2AAC07D0554694100DB518D /* hge */;
 		addToTargets = (
 		);
@@ -53,8 +53,8 @@
 					PBXFileDataSource_Warnings_ColumnID,
 				);
 			};
-			PBXPerProjectTemplateStateSaveDate = 358022451;
-			PBXWorkspaceStateSaveDate = 358022451;
+			PBXPerProjectTemplateStateSaveDate = 358026418;
+			PBXWorkspaceStateSaveDate = 358026418;
 		};
 		perUserProjectItems = {
 			710A978F13627EBE00F689D9 /* PBXTextBookmark */ = 710A978F13627EBE00F689D9 /* PBXTextBookmark */;
@@ -70,8 +70,8 @@
 			71A4EDBC1364C27D0059DA3E /* PBXTextBookmark */ = 71A4EDBC1364C27D0059DA3E /* PBXTextBookmark */;
 			71A4EE471364DD2F0059DA3E /* PBXTextBookmark */ = 71A4EE471364DD2F0059DA3E /* PBXTextBookmark */;
 			71A4EEF5136525DA0059DA3E /* PBXTextBookmark */ = 71A4EEF5136525DA0059DA3E /* PBXTextBookmark */;
-			71BD9B8713C7821D00B3B2E5 /* PBXTextBookmark */ = 71BD9B8713C7821D00B3B2E5 /* PBXTextBookmark */;
 			71EF5B091383790D00B242B4 /* PBXTextBookmark */ = 71EF5B091383790D00B242B4 /* PBXTextBookmark */;
+			71F308A915570CCB001DEDB7 /* PBXTextBookmark */ = 71F308A915570CCB001DEDB7 /* PBXTextBookmark */;
 		};
 		sourceControlManager = 7167905F12627F9F004A3E70 /* Source Control */;
 		userBuildSettings = {
@@ -455,16 +455,6 @@
 		vrLen = 1819;
 		vrLoc = 18580;
 	};
-	71BD9B8713C7821D00B3B2E5 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 7167911E12628049004A3E70 /* resource.cpp */;
-		name = "resource.cpp: 44";
-		rLen = 28;
-		rLoc = 855;
-		rType = 0;
-		vrLen = 1068;
-		vrLoc = 157;
-	};
 	71EF5B091383790D00B242B4 /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
 		fRef = 7167907112628049004A3E70 /* hge.h */;
@@ -474,6 +464,16 @@
 		rType = 0;
 		vrLen = 2049;
 		vrLoc = 9710;
+	};
+	71F308A915570CCB001DEDB7 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 7167911E12628049004A3E70 /* resource.cpp */;
+		name = "resource.cpp: 44";
+		rLen = 28;
+		rLoc = 855;
+		rType = 0;
+		vrLen = 1061;
+		vrLoc = 157;
 	};
 	D2AAC07D0554694100DB518D /* hge */ = {
 		activeExec = 0;

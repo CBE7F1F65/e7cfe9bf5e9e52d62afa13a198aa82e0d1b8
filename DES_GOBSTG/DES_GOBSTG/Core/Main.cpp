@@ -25,6 +25,9 @@ HGE *hge = NULL;
 
 int gametime = 0;
 
+bool application_lastactive = true;
+bool application_active = false;
+
 bool RenderFunc()
 {
 
@@ -33,10 +36,21 @@ bool RenderFunc()
 	return false;
 }
 
+#include "../Header/GameInput.h"
+
 bool FrameFunc()
 {
 #ifdef __IPHONE
 #endif
+	
+	if (!application_lastactive) {
+		application_lastactive = true;
+		if (Process::mp.state == STATE_START) {
+			hge->Input_SetDIKey(GameInput::KS_PAUSE_(0));
+//			GameInput::SetKey(0, KSI_PAUSE);
+		}
+	}
+	
 	Process::mp.SyncInput();
 	if (GameInput::GetKey(0, KSI_ESCAPE))
 	{
@@ -121,7 +135,9 @@ int GameEnd()
 #if defined __IPHONE
 int Application_Loop()
 {
-	hge->System_Start();
+	if (application_active) {
+		hge->System_Start();
+	}
 	return 0;
 }
 
@@ -129,6 +145,14 @@ int Application_Quit()
 {
 	GameEnd();
 	return 1;
+}
+
+void Application_SetActive(bool toactive)
+{
+	if (application_active != toactive) {
+		application_lastactive = application_active;
+		application_active = toactive;
+	}
 }
 #endif
 

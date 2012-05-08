@@ -19,18 +19,31 @@
 	[[NSFileManager defaultManager] changeCurrentDirectoryPath: [[NSBundle mainBundle] resourcePath]];
 	Application_Init();
 	glView.loopInterval = 0;
+	Application_SetActive(true);
 	[glView startLoop];
 	
 }
 
 
 - (void)applicationWillResignActive:(UIApplication *)application {
-	glView.loopInterval = 0;
+	glView.loopInterval = -1;
+	Application_SetActive(false);
 }
+
+- (void)applicationDidEnterBackground:(UIApplication *)application {
+	glView.loopInterval = -1;
+	Application_SetActive(false);
+}
+
 
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
 	glView.loopInterval = 0;
+	Application_SetActive(true);
+}
+- (void)applicationWillEnterForeground:(UIApplication *)application {
+	glView.loopInterval = 0;
+	Application_SetActive(true);
 }
 
 

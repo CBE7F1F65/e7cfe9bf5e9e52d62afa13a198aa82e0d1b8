@@ -11,6 +11,7 @@ hgeFont * Fontsys::font = NULL;
 
 Fontsys::Fontsys()
 {
+	strcpy(text, "");
 }
 
 Fontsys::~Fontsys()
@@ -266,7 +267,7 @@ void Fontsys::SetColor(DWORD col, int i)
 
 void Fontsys::Render(float x, float y, float shadow, BYTE alignflag)
 {
-	if (!font)
+	if (!font || !strlen(text))
 	{
 		return;
 	}
