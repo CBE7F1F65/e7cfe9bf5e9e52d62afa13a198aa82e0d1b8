@@ -543,7 +543,7 @@ bool BResource::LoadTexture( int texindex/*=-1*/ )
 	if(strlen(tnbuffer))
 	{
 		tex[texindex] = hge->Texture_Load(tnbuffer);
-//		strcpy(tnbuffer, BResource::bres.resdata.texfilename[TEX_WHITE]);
+//		strcpy(tnbuffer, pbres->resdata.texfilename[TEX_WHITE]);
 	}
 
 	if(tex[texindex].tex == NULL)

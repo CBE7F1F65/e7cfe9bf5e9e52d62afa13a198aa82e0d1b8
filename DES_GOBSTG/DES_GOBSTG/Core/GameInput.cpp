@@ -104,14 +104,14 @@ bool GameInput::InitInput(HGE * _hge)
 #endif
 	for (int j=0; j<M_PL_MATCHMAXPLAYER; j++)
 	{
-		for (int i=0; i<13; i++)
+		for (int i=0; i<GAMEINPUTKEYMAX; i++)
 		{
 			if (gameinput[j].keyKey[i] < 0 || gameinput[j].keyKey[i] >= M_KEYKEYMAX)
 			{
 				return false;
 			}
 		}
-		for (int i=0; i<5; i++)
+		for (int i=0; i<GAMEINPUTJOYMAX; i++)
 		{
 			if(gameinput[j].joyKey[i] < 0 || gameinput[j].joyKey[i] >= M_JOYKEYMAX)
 			{
