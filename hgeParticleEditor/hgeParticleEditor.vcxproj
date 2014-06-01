@@ -82,7 +82,6 @@
     </ClCompile>
     <Link>
       <AdditionalOptions>/NODEFAULTLIB:LIBCMT.LIB %(AdditionalOptions)</AdditionalOptions>
-      <OutputFile>$(OutDir)EffectEditor.exe</OutputFile>
       <AdditionalLibraryDirectories>../lib/vc;../../lib/vc;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <DelayLoadDLLs>hge_d.dll;%(DelayLoadDLLs)</DelayLoadDLLs>

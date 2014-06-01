@@ -38,7 +38,8 @@ function CEMatchSelect_SetSelect_Match(selsysmatchid)
 --		SI_MatchSelect_N2N,
 		SI_MatchSelect_P2P,
 		SI_MatchSelect_P2C,
-		SI_MatchSelect_C2P
+		SI_MatchSelect_C2P,
+		SI_MatchSelect_N2N
 	}
 	for j, it in pairs(_siusetable) do
 		local i = j-1;
@@ -60,7 +61,7 @@ function CEMatchSelect_SetSelect_Match(selsysmatchid)
 	hdss.Call(
 		HDSS_SELSETUP,
 		{
-			selsysmatchid, 3, 0, 0, KSI_UP, KSI_DOWN, KSI_FIRE
+			selsysmatchid, 4, 0, 0, KSI_UP, KSI_DOWN, KSI_FIRE
 		}
 	)
 end
@@ -86,6 +87,9 @@ function CEMatchSelect_DispatchSelect_Match(selsysmatchid)
 			else
 				game.SetMatchMode(MatchMode_C2P);
 			end
+		else
+			hdssBGVALUE(0, LConst_uibg_bottomid, SI_MatchSelect_N2N, TotalCenterX, 440);
+			game.SetMatchMode(MatchMode_C2C);
 		end
 		CEMatchSelect_ExitState(STATE_PLAYER_SELECT, false);
 	elseif hdss.Get(HDSS_CHECKKEY, 0, KSI_QUICK, DIKEY_DOWN) then

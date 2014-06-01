@@ -50,8 +50,12 @@ bool EditorRes::Load()
 	BResource::bres.LoadAllPackage();
 	font = new hgeFont("EditorFont\\font.fnt");
 //	BResource::bres.SetDataFile();
-
+	BResource::bres.InitTexinfo();
 	BResource::bres.LoadTexture();
+	for (int i=0; i<TEXMAX; i++)
+	{
+		tex[i] = BResource::bres.tex[i];
+	}
 
 	bg = new hgeSprite(tex[TEX_WHITE], 0, 0, 1, 1);
 	bg->SetColor(0x60ffffff);
