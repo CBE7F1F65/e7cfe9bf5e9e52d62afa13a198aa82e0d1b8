@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -21,11 +21,13 @@
     <CharacterSet>MultiByte</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <InterproceduralOptimization>true</InterproceduralOptimization>
+    <PlatformToolset>v120</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseOfMfc>false</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v120</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -223,7 +225,10 @@
     <ClCompile Include="Zlib\compress.c" />
     <ClCompile Include="Zlib\crc32.c" />
     <ClCompile Include="Zlib\deflate.c" />
-    <ClCompile Include="Zlib\gzio.c" />
+    <ClCompile Include="ZLIB\gzclose.c" />
+    <ClCompile Include="ZLIB\gzlib.c" />
+    <ClCompile Include="ZLIB\gzread.c" />
+    <ClCompile Include="ZLIB\gzwrite.c" />
     <ClCompile Include="Zlib\infback.c" />
     <ClCompile Include="Zlib\inffast.c" />
     <ClCompile Include="Zlib\inflate.c" />
@@ -253,6 +258,24 @@
     <ClInclude Include="..\..\include\hge.h" />
     <ClInclude Include="..\..\include\hge_defines.h" />
     <ClInclude Include="hge_impl.h" />
+    <ClInclude Include="ZLIB\crc32.h" />
+    <ClInclude Include="ZLIB\crypt.h" />
+    <ClInclude Include="ZLIB\deflate.h" />
+    <ClInclude Include="ZLIB\gzguts.h" />
+    <ClInclude Include="ZLIB\inffast.h" />
+    <ClInclude Include="ZLIB\inffixed.h" />
+    <ClInclude Include="ZLIB\inflate.h" />
+    <ClInclude Include="ZLIB\inftrees.h" />
+    <ClInclude Include="ZLIB\ioapi.h" />
+    <ClInclude Include="ZLIB\iowin32.h" />
+    <ClInclude Include="ZLIB\mztools.h" />
+    <ClInclude Include="ZLIB\trees.h" />
+    <ClInclude Include="ZLIB\unzip.h" />
+    <ClInclude Include="ZLIB\zconf.h" />
+    <ClInclude Include="ZLIB\zconf.in.h" />
+    <ClInclude Include="ZLIB\zip.h" />
+    <ClInclude Include="ZLIB\zlib.h" />
+    <ClInclude Include="ZLIB\zutil.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

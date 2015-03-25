@@ -1,4 +1,5 @@
 *.sdf
+*.opensdf
 Resource_IPhone/
 Custom/Debug/
 Custom/Release/
