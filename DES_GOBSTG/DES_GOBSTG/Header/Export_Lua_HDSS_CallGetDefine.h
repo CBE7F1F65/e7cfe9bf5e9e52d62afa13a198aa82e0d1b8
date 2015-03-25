@@ -58,6 +58,8 @@
 #define _PB_HDSS_LUA(X)	(ls->PushBoolean(X))
 #define _PS_HDSS_LUA(X)	(Export_Lua::_LuaHelper_PushString(ls, X))
 #define _PD_HDSS_LUA(X)	(Export_Lua::_LuaHelper_PushDWORD(ls, X))
+#define _PQ_HDSS_LUA(X)	(Export_Lua::_LuaHelper_PushQWORD(ls, X))
+#define _PP_HDSS_LUA(X)	(Export_Lua::_LuaHelper_PushPOINTER(ls, X))
 
 #endif
 

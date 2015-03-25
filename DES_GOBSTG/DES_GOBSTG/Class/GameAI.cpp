@@ -495,7 +495,7 @@ bool GameAI::SetMove()
 	{
 		GameInput::SetKey(playerindex, KSI_FIRE, true);
 	}
-	if (inrisk && nChargeMax && !nCharge || nChargeMax == 4 && nCharge < 2)
+	if ((inrisk && nChargeMax && !nCharge) || (nChargeMax == 4 && nCharge < 2))
 	{
 		GameInput::SetKey(playerindex, KSI_FIRE, true);
 //		GameInput::SetKey(playerindex, KSI_DRAIN, true);
@@ -630,8 +630,8 @@ void GameAI::AnalyzeCheckOrder(float tox, float toy, float neutral, float randxp
 
 void GameAI::AnalyzeCheckOrderFinal(float tox, float toy, int xtend, int ytend)
 {
-	int absxtend = xtend > 0 ? xtend : -xtend;
-	int absytend = ytend > 0 ? ytend : -ytend;
+//	int absxtend = xtend > 0 ? xtend : -xtend;
+//	int absytend = ytend > 0 ? ytend : -ytend;
 
 	if (xtend == ytend)
 	{

@@ -94,7 +94,6 @@
 		71905BC01253E17700E5E788 /* ldump.c in Sources */ = {isa = PBXBuildFile; fileRef = 71905BBF1253E17700E5E788 /* ldump.c */; };
 		71905C621253E5E900E5E788 /* linit.c in Sources */ = {isa = PBXBuildFile; fileRef = 71905C611253E5E900E5E788 /* linit.c */; };
 		71905C641253E5F700E5E788 /* loadlib.c in Sources */ = {isa = PBXBuildFile; fileRef = 71905C631253E5F700E5E788 /* loadlib.c */; };
-		AA747D9F0F9514B9006C5449 /* LuaPlus_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = AA747D9E0F9514B9006C5449 /* LuaPlus_Prefix.pch */; };
 		AACBBE4A0F95108600F1A2B1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AACBBE490F95108600F1A2B1 /* Foundation.framework */; };
 /* End PBXBuildFile section */
 
@@ -189,7 +188,6 @@
 		71905BBF1253E17700E5E788 /* ldump.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; path = ldump.c; sourceTree = "<group>"; };
 		71905C611253E5E900E5E788 /* linit.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = linit.c; sourceTree = "<group>"; };
 		71905C631253E5F700E5E788 /* loadlib.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = loadlib.c; sourceTree = "<group>"; };
-		AA747D9E0F9514B9006C5449 /* LuaPlus_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LuaPlus_Prefix.pch; sourceTree = SOURCE_ROOT; };
 		AACBBE490F95108600F1A2B1 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		D2AAC07E0554694100DB518D /* libLuaPlus.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libLuaPlus.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -244,7 +242,6 @@
 			isa = PBXGroup;
 			children = (
 				7186CF0412529070007DF003 /* LuaPlus */,
-				AA747D9E0F9514B9006C5449 /* LuaPlus_Prefix.pch */,
 			);
 			name = "Other Sources";
 			sourceTree = "<group>";
@@ -361,7 +358,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AA747D9F0F9514B9006C5449 /* LuaPlus_Prefix.pch in Headers */,
 				7186CF6A12529070007DF003 /* auxiliar.h in Headers */,
 				7186CF6B12529070007DF003 /* LuaAutoBlock.h in Headers */,
 				7186CF6D12529070007DF003 /* LuaCall.h in Headers */,
@@ -433,6 +429,8 @@
 /* Begin PBXProject section */
 		0867D690FE84028FC02AAC07 /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+			};
 			buildConfigurationList = 1DEB922208733DC00010E9CD /* Build configuration list for PBXProject "LuaPlus" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
@@ -512,17 +510,18 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				ARCHS = "$(ARCHS_STANDARD)";
 				COPY_PHASE_STRIP = NO;
 				DSTROOT = /tmp/LuaPlus.dst;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_MODEL_TUNING = G5;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = LuaPlus_Prefix.pch;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				INSTALL_PATH = /usr/local/lib;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1.1;
 				PRODUCT_NAME = LuaPlus;
+				VALID_ARCHS = "arm64 armv7 armv7s armv6";
 			};
 			name = Debug;
 		};
@@ -530,13 +529,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				ARCHS = "$(ARCHS_STANDARD)";
 				DSTROOT = /tmp/LuaPlus.dst;
 				GCC_MODEL_TUNING = G5;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = LuaPlus_Prefix.pch;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				INSTALL_PATH = /usr/local/lib;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1.1;
 				PRODUCT_NAME = LuaPlus;
+				VALID_ARCHS = "arm64 armv7 armv7s armv6";
 			};
 			name = Release;
 		};

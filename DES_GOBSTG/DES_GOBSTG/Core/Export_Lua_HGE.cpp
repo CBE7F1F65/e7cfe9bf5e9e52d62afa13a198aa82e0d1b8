@@ -608,12 +608,12 @@ int Export_Lua_HGE::LuaFn_hge_System_Transform3DPoint(LuaState * ls)
 int Export_Lua_HGE::LuaFn_hge_Resource_Load(LuaState * ls)
 {
 	LuaStack args(ls);
-	DWORD dret;
+	POINTER ptrret;
 	DWORD size;
 
-	dret = (DWORD)(hge->Resource_Load(args[1].GetString(), &size));
+	ptrret = (POINTER)(hge->Resource_Load(args[1].GetString(), &size));
 
-	_LuaHelper_PushDWORD(ls, dret);
+	_LuaHelper_PushPOINTER(ls, ptrret);
 	_LuaHelper_PushDWORD(ls, size);
 
 	return 2;
@@ -624,8 +624,8 @@ int Export_Lua_HGE::LuaFn_hge_Resource_Free(LuaState * ls)
 	LuaStack args(ls);
 
 	LuaObject _obj = args[1];
-	DWORD _dword = _LuaHelper_GetDWORD(&_obj);
-	hge->Resource_Free((void *)(_dword));
+	POINTER _ptr = _LuaHelper_GetPOINTER(&_obj);
+	hge->Resource_Free((void *)(_ptr));
 
 	return 0;
 }
@@ -716,7 +716,7 @@ int Export_Lua_HGE::LuaFn_hge_Resource_CreatePack(LuaState * ls)
 	hgeMemoryFile memfile;
 
 	LuaObject _obj = args[3].GetByName("data");
-	DWORD _data = _LuaHelper_GetDWORD(&_obj);
+	POINTER _data = _LuaHelper_GetPOINTER(&_obj);
 	memfile.data = (BYTE *)(_data);
 	memfile.filename = (char *)(args[3].GetByName("filename").GetString());
 	_obj = args[3].GetByName("size");
@@ -736,7 +736,7 @@ int Export_Lua_HGE::LuaFn_hge_Resource_AddFileInPack(LuaState * ls)
 	hgeMemoryFile memfile;
 
 	LuaObject _obj = args[3].GetByName("data");
-	DWORD _data = _LuaHelper_GetDWORD(&_obj);
+	POINTER _data = _LuaHelper_GetPOINTER(&_obj);
 	memfile.data = (BYTE *)(_data);
 	memfile.filename = (char *)(args[3].GetByName("filename").GetString());
 	_obj = args[3].GetByName("size");
@@ -762,7 +762,7 @@ int Export_Lua_HGE::LuaFn_hge_Resource_GetCRC(LuaState * ls)
 	else
 	{
 		LuaObject _obj = args[1];
-		DWORD _content = _LuaHelper_GetDWORD(&_obj);
+		POINTER _content = _LuaHelper_GetPOINTER(&_obj);
 		_obj = args[2];
 		DWORD _size = _LuaHelper_GetDWORD(&_obj); 
 		iret = hge->Resource_GetCRC((BYTE *)(_content), _size);
@@ -1275,7 +1275,7 @@ int Export_Lua_HGE::LuaFn_hge_Channel_SetLoop(LuaState * ls)
 		if (args.Count() > 4)
 		{
 			_obj = args[5];
-			channelsyncinfo.sync = _LuaHelper_GetQWORD(&_obj);
+			channelsyncinfo.sync = _LuaHelper_GetDWORD(&_obj);
 		}
 	}
 
@@ -1569,15 +1569,15 @@ int Export_Lua_HGE::LuaFn_hge_Gfx_RenderQuad(LuaState * ls)
 int Export_Lua_HGE::LuaFn_hge_Gfx_StartBatch(LuaState * ls)
 {
 	LuaStack args(ls);
-	DWORD dret;
+	POINTER ptrret;
 
 	LuaObject _obj = args[1];
 	HTEXTURE _htexture = (HTEXTURE)_LuaHelper_GetDWORD(&_obj);
 	_obj = args[4];
-	int * _max_prim = (int *)_LuaHelper_GetDWORD(&_obj);
-	dret = (DWORD)(hge->Gfx_StartBatch(args[1].GetInteger(), _htexture, args[3].GetInteger(), _max_prim));
+	POINTER _max_prim = (POINTER)_LuaHelper_GetDWORD(&_obj);
+	ptrret = (POINTER)(hge->Gfx_StartBatch(args[1].GetInteger(), _htexture, args[3].GetInteger(), _max_prim));
 
-	_LuaHelper_PushDWORD(ls, dret);
+	_LuaHelper_PushPOINTER(ls, ptrret);
 	return 1;
 }
 
@@ -1704,17 +1704,17 @@ int Export_Lua_HGE::LuaFn_hge_Target_GetTexture(LuaState * ls)
 {
 	LuaStack args(ls);
 	int iret;
-	DWORD dret;
+	POINTER ptrret;
 
 	LuaObject _obj = args[1];
 	HTARGET _htarget = (HTARGET)_LuaHelper_GetDWORD(&_obj);
 
 	HTEXTURE _tex = hge->Target_GetTexture(_htarget);
 	iret = _tex.texindex;
-	dret = hge->Texture_GetTexture(_tex);
+	ptrret = hge->Texture_GetTexture(_tex);
 
 	ls->PushInteger(iret);
-	_LuaHelper_PushDWORD(ls, dret);
+	_LuaHelper_PushPOINTER(ls, ptrret);
 	return 2;
 }
 
@@ -1722,14 +1722,14 @@ int Export_Lua_HGE::LuaFn_hge_Texture_Create(LuaState * ls)
 {
 	LuaStack args(ls);
 	int iret;
-	DWORD dret;
+	POINTER ptrret;
 
 	HTEXTURE _tex = hge->Texture_Create(args[1].GetInteger(), args[2].GetInteger());
 	iret = _tex.texindex;
-	dret = hge->Texture_GetTexture(_tex);
+	ptrret = hge->Texture_GetTexture(_tex);
 
 	ls->PushInteger(iret);
-	_LuaHelper_PushDWORD(ls, dret);
+	_LuaHelper_PushPOINTER(ls, ptrret);
 	return 2;
 }
 
@@ -1737,7 +1737,7 @@ int Export_Lua_HGE::LuaFn_hge_Texture_Load(LuaState * ls)
 {
 	LuaStack args(ls);
 	int iret;
-	DWORD dret;
+	POINTER ptrret;
 	DWORD size = 0;
 	bool bMipmap = false;
 
@@ -1754,10 +1754,10 @@ int Export_Lua_HGE::LuaFn_hge_Texture_Load(LuaState * ls)
 	
 	HTEXTURE _tex = hge->Texture_Load(args[1].GetString(), size, bMipmap);
 	iret = _tex.texindex;
-	dret = hge->Texture_GetTexture(_tex);
+	ptrret = hge->Texture_GetTexture(_tex);
 
 	ls->PushInteger(iret);
-	_LuaHelper_PushDWORD(ls, dret);
+	_LuaHelper_PushPOINTER(ls, ptrret);
 	return 2;
 }
 
@@ -1797,7 +1797,7 @@ int Export_Lua_HGE::LuaFn_hge_Texture_GetWH(LuaState * ls)
 int Export_Lua_HGE::LuaFn_hge_Texture_Lock(LuaState * ls)
 {
 	LuaStack args(ls);
-	DWORD dret;
+	POINTER ptrret;
 	bool bReadOnly = true;
 	int left = 0;
 	int top = 0;
@@ -1827,9 +1827,9 @@ int Export_Lua_HGE::LuaFn_hge_Texture_Lock(LuaState * ls)
 	}
 	LuaObject _obj = args[1];
 	HTEXTURE _htexture = (HTEXTURE)_LuaHelper_GetDWORD(&_obj);
-	dret = (DWORD)(hge->Texture_Lock(_htexture, bReadOnly, left, top, width, height));
+	ptrret = (POINTER)(hge->Texture_Lock(_htexture, bReadOnly, left, top, width, height));
 
-	_LuaHelper_PushDWORD(ls, dret);
+	_LuaHelper_PushPOINTER(ls, ptrret);
 	return 1;
 }
 
@@ -1901,7 +1901,7 @@ int Export_Lua_HGE::LuaFn_hge_Gfx_RenderTextToTarget(LuaState * ls)
 	int height = hge->Gfx_RenderTextToTarget(&tex, _htarget, _hd3dfont, args[3].GetString(), args[4].GetFloat(), args[5].GetFloat(), args[6].GetFloat(), args[7].GetFloat(), col);
 
 	ls->PushInteger(tex.texindex);
-	_LuaHelper_PushDWORD(ls, tex.tex);
+	_LuaHelper_PushPOINTER(ls, tex.tex);
 	ls->PushInteger(height);
 	return 2;
 }

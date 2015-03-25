@@ -11,6 +11,9 @@
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
 		28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow.xib */; };
+		3E2266B01AC256D3009C267C /* libhge.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E2266A71AC250A9009C267C /* libhge.a */; };
+		3E2266B11AC256D7009C267C /* libLuaPlus.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E2266981AC2505C009C267C /* libLuaPlus.a */; };
+		3EB865E11AC28D240095FA4F /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EB865E01AC28D240095FA4F /* Accelerate.framework */; };
 		7167938412628496004A3E70 /* DES_GOBSTGAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7167938112628496004A3E70 /* DES_GOBSTGAppDelegate.m */; };
 		7167938512628496004A3E70 /* HGEGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7167938212628496004A3E70 /* HGEGLView.m */; };
 		7167938612628496004A3E70 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 7167938312628496004A3E70 /* main.m */; };
@@ -93,8 +96,6 @@
 		71679462126284D8004A3E70 /* reload.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 71679414126284D8004A3E70 /* reload.cpp */; };
 		71679463126284D8004A3E70 /* render.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 71679415126284D8004A3E70 /* render.cpp */; };
 		7167948012628593004A3E70 /* Resource in Resources */ = {isa = PBXBuildFile; fileRef = 7167947012628593004A3E70 /* Resource */; };
-		716794B0126286F3004A3E70 /* libhge_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 716794AF126286F3004A3E70 /* libhge_ios.a */; };
-		716794B612628722004A3E70 /* libLuaPlus_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 716794B512628722004A3E70 /* libLuaPlus_ios.a */; };
 		716794BD12628774004A3E70 /* libbass_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 716794BB12628774004A3E70 /* libbass_ios.a */; };
 		716794BE12628774004A3E70 /* libbass_sim.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 716794BC12628774004A3E70 /* libbass_sim.a */; };
 		716794C3126287B5004A3E70 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 716794C2126287B5004A3E70 /* OpenGLES.framework */; };
@@ -105,9 +106,39 @@
 		716794DB12628931004A3E70 /* libpng_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 716794D712628931004A3E70 /* libpng_ios.a */; };
 		716794DC12628931004A3E70 /* libpng_sim.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 716794D812628931004A3E70 /* libpng_sim.a */; };
 		716794E0126289B1004A3E70 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 716794DF126289B1004A3E70 /* QuartzCore.framework */; };
-		7189BB0A1361DE3300152FF1 /* libLuaPlus_sim.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7189BB091361DE3300152FF1 /* libLuaPlus_sim.a */; };
-		7189BB0C1361DE4000152FF1 /* libhge_sim.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7189BB0B1361DE4000152FF1 /* libhge_sim.a */; };
+		800A13AA1A6651DA0024009D /* Entitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = 800A13A91A6651DA0024009D /* Entitlements.plist */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		3E2266971AC2505C009C267C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3E2266931AC2505C009C267C /* LuaPlus.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D2AAC07E0554694100DB518D;
+			remoteInfo = LuaPlus;
+		};
+		3E2266A61AC250A9009C267C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3E2266A21AC250A9009C267C /* hge.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D2AAC07E0554694100DB518D;
+			remoteInfo = hge;
+		};
+		3E2266AA1AC25575009C267C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3E2266A21AC250A9009C267C /* hge.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = D2AAC07D0554694100DB518D;
+			remoteInfo = hge;
+		};
+		3E2266AE1AC25579009C267C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3E2266931AC2505C009C267C /* LuaPlus.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = D2AAC07D0554694100DB518D;
+			remoteInfo = LuaPlus;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -115,7 +146,9 @@
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		288765FC0DF74451002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		28AD733E0D9D9553002E5188 /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainWindow.xib; sourceTree = "<group>"; };
-		32CA4F630368D1EE00C91783 /* DES_GOBSTG_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DES_GOBSTG_Prefix.pch; sourceTree = "<group>"; };
+		3E2266931AC2505C009C267C /* LuaPlus.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LuaPlus.xcodeproj; path = ../LuaPlus/LuaPlus.xcodeproj; sourceTree = "<group>"; };
+		3E2266A21AC250A9009C267C /* hge.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = hge.xcodeproj; path = ../src/core/hge.xcodeproj; sourceTree = "<group>"; };
+		3EB865E01AC28D240095FA4F /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		7167937E12628496004A3E70 /* DES_GOBSTGAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DES_GOBSTGAppDelegate.h; path = DES_GOBSTG/IPhone/DES_GOBSTGAppDelegate.h; sourceTree = "<group>"; };
 		7167937F12628496004A3E70 /* HGEGLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HGEGLView.h; path = DES_GOBSTG/IPhone/HGEGLView.h; sourceTree = "<group>"; };
 		7167938012628496004A3E70 /* MainApplicationFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MainApplicationFunctions.h; path = DES_GOBSTG/IPhone/MainApplicationFunctions.h; sourceTree = "<group>"; };
@@ -258,8 +291,6 @@
 		71679414126284D8004A3E70 /* reload.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = reload.cpp; sourceTree = "<group>"; };
 		71679415126284D8004A3E70 /* render.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = render.cpp; sourceTree = "<group>"; };
 		7167947012628593004A3E70 /* Resource */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Resource; path = ../Resource_IPhone/Resource; sourceTree = SOURCE_ROOT; };
-		716794AF126286F3004A3E70 /* libhge_ios.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libhge_ios.a; path = "../src/core/build/Release-iphoneos/libhge_ios.a"; sourceTree = SOURCE_ROOT; };
-		716794B512628722004A3E70 /* libLuaPlus_ios.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libLuaPlus_ios.a; path = "../LuaPlus/build/Release-iphoneos/libLuaPlus_ios.a"; sourceTree = SOURCE_ROOT; };
 		716794BB12628774004A3E70 /* libbass_ios.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libbass_ios.a; path = ../src/core/BASS/libbass_ios.a; sourceTree = SOURCE_ROOT; };
 		716794BC12628774004A3E70 /* libbass_sim.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libbass_sim.a; path = ../src/core/BASS/libbass_sim.a; sourceTree = SOURCE_ROOT; };
 		716794C2126287B5004A3E70 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
@@ -270,8 +301,7 @@
 		716794D712628931004A3E70 /* libpng_ios.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpng_ios.a; path = ../src/IPhone/libpng_ios.a; sourceTree = SOURCE_ROOT; };
 		716794D812628931004A3E70 /* libpng_sim.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpng_sim.a; path = ../src/IPhone/libpng_sim.a; sourceTree = SOURCE_ROOT; };
 		716794DF126289B1004A3E70 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
-		7189BB091361DE3300152FF1 /* libLuaPlus_sim.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libLuaPlus_sim.a; path = "../LuaPlus/build/Release-iphonesimulator/libLuaPlus_sim.a"; sourceTree = SOURCE_ROOT; };
-		7189BB0B1361DE4000152FF1 /* libhge_sim.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libhge_sim.a; path = "../src/core/build/Release-iphonesimulator/libhge_sim.a"; sourceTree = SOURCE_ROOT; };
+		800A13A91A6651DA0024009D /* Entitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Entitlements.plist; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* DES_GOBSTG-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "DES_GOBSTG-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -280,11 +310,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3EB865E11AC28D240095FA4F /* Accelerate.framework in Frameworks */,
+				3E2266B11AC256D7009C267C /* libLuaPlus.a in Frameworks */,
+				3E2266B01AC256D3009C267C /* libhge.a in Frameworks */,
 				1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */,
 				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
 				288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */,
-				716794B0126286F3004A3E70 /* libhge_ios.a in Frameworks */,
-				716794B612628722004A3E70 /* libLuaPlus_ios.a in Frameworks */,
 				716794BD12628774004A3E70 /* libbass_ios.a in Frameworks */,
 				716794BE12628774004A3E70 /* libbass_sim.a in Frameworks */,
 				716794C3126287B5004A3E70 /* OpenGLES.framework in Frameworks */,
@@ -295,8 +326,6 @@
 				716794DB12628931004A3E70 /* libpng_ios.a in Frameworks */,
 				716794DC12628931004A3E70 /* libpng_sim.a in Frameworks */,
 				716794E0126289B1004A3E70 /* QuartzCore.framework in Frameworks */,
-				7189BB0A1361DE3300152FF1 /* libLuaPlus_sim.a in Frameworks */,
-				7189BB0C1361DE4000152FF1 /* libhge_sim.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -314,6 +343,9 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
+				3E2266A21AC250A9009C267C /* hge.xcodeproj */,
+				3E2266931AC2505C009C267C /* LuaPlus.xcodeproj */,
+				800A13A91A6651DA0024009D /* Entitlements.plist */,
 				716794A6126286E4004A3E70 /* Libs */,
 				716794A5126286D5004A3E70 /* Classes */,
 				29B97315FDCFA39411CA2CEA /* Source */,
@@ -333,7 +365,6 @@
 				716793A6126284D8004A3E70 /* Core */,
 				716793C4126284D8004A3E70 /* Header */,
 				716793FE126284D8004A3E70 /* Process */,
-				32CA4F630368D1EE00C91783 /* DES_GOBSTG_Prefix.pch */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -351,6 +382,7 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				3EB865E01AC28D240095FA4F /* Accelerate.framework */,
 				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
 				1D30AB110D05D00D00671497 /* Foundation.framework */,
 				288765FC0DF74451002DB57D /* CoreGraphics.framework */,
@@ -358,6 +390,22 @@
 				716794DF126289B1004A3E70 /* QuartzCore.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		3E2266941AC2505C009C267C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				3E2266981AC2505C009C267C /* libLuaPlus.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		3E2266A31AC250A9009C267C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				3E2266A71AC250A9009C267C /* libhge.a */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		7167938B126284D8004A3E70 /* Class */ = {
@@ -543,10 +591,6 @@
 		716794A6126286E4004A3E70 /* Libs */ = {
 			isa = PBXGroup;
 			children = (
-				716794AF126286F3004A3E70 /* libhge_ios.a */,
-				7189BB0B1361DE4000152FF1 /* libhge_sim.a */,
-				716794B512628722004A3E70 /* libLuaPlus_ios.a */,
-				7189BB091361DE3300152FF1 /* libLuaPlus_sim.a */,
 				716794BB12628774004A3E70 /* libbass_ios.a */,
 				716794BC12628774004A3E70 /* libbass_sim.a */,
 				716794D512628931004A3E70 /* libjpeg_ios.a */,
@@ -571,6 +615,8 @@
 			buildRules = (
 			);
 			dependencies = (
+				3E2266AF1AC25579009C267C /* PBXTargetDependency */,
+				3E2266AB1AC25575009C267C /* PBXTargetDependency */,
 			);
 			name = DES_GOBSTG;
 			productName = DES_GOBSTG;
@@ -582,6 +628,8 @@
 /* Begin PBXProject section */
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+			};
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "DES_GOBSTG" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
@@ -594,6 +642,16 @@
 			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 3E2266A31AC250A9009C267C /* Products */;
+					ProjectRef = 3E2266A21AC250A9009C267C /* hge.xcodeproj */;
+				},
+				{
+					ProductGroup = 3E2266941AC2505C009C267C /* Products */;
+					ProjectRef = 3E2266931AC2505C009C267C /* LuaPlus.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				1D6058900D05DD3D006BFB54 /* DES_GOBSTG */,
@@ -601,11 +659,29 @@
 		};
 /* End PBXProject section */
 
+/* Begin PBXReferenceProxy section */
+		3E2266981AC2505C009C267C /* libLuaPlus.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libLuaPlus.a;
+			remoteRef = 3E2266971AC2505C009C267C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		3E2266A71AC250A9009C267C /* libhge.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libhge.a;
+			remoteRef = 3E2266A61AC250A9009C267C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
 /* Begin PBXResourcesBuildPhase section */
 		1D60588D0D05DD3D006BFB54 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				800A13AA1A6651DA0024009D /* Entitlements.plist in Resources */,
 				28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */,
 				7167948012628593004A3E70 /* Resource in Resources */,
 			);
@@ -704,17 +780,33 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		3E2266AB1AC25575009C267C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = hge;
+			targetProxy = 3E2266AA1AC25575009C267C /* PBXContainerItemProxy */;
+		};
+		3E2266AF1AC25579009C267C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = LuaPlus;
+			targetProxy = 3E2266AE1AC25579009C267C /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
 		1D6058940D05DD3E006BFB54 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD)";
+				CODE_SIGN_ENTITLEMENTS = Entitlements.plist;
+				CODE_SIGN_IDENTITY = "-";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = DES_GOBSTG_Prefix.pch;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				INFOPLIST_FILE = "DES_GOBSTG-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../src/core/build/Release-iphoneos\"",
@@ -725,6 +817,7 @@
 					"\"$(SRCROOT)/../src/IPhone\"",
 				);
 				PRODUCT_NAME = DES_GOBSTG;
+				VALID_ARCHS = "armv7 armv7s armv6";
 			};
 			name = Debug;
 		};
@@ -732,10 +825,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD)";
+				CODE_SIGN_ENTITLEMENTS = Entitlements.plist;
+				CODE_SIGN_IDENTITY = "-";
 				COPY_PHASE_STRIP = YES;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = DES_GOBSTG_Prefix.pch;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				INFOPLIST_FILE = "DES_GOBSTG-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../src/core/build/Release-iphoneos\"",
@@ -746,6 +842,7 @@
 					"\"$(SRCROOT)/../src/IPhone\"",
 				);
 				PRODUCT_NAME = DES_GOBSTG;
+				VALID_ARCHS = "armv7 armv7s armv6";
 			};
 			name = Release;
 		};

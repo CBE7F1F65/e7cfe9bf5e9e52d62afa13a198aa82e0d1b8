@@ -180,7 +180,7 @@ void Export_Lua_HGEHelp::_LuaHelper_hgeFont_DeleteAllFont()
 int Export_Lua_HGEHelp::LuaFn_hgeFont_NewFont(LuaState * ls)
 {
 	LuaStack args(ls);
-	DWORD dret = 0;
+	POINTER ptrret = 0;
 	char * filename = 0;
 	bool bMipmap = false;
 
@@ -199,9 +199,9 @@ int Export_Lua_HGEHelp::LuaFn_hgeFont_NewFont(LuaState * ls)
 	{
 		_font = _Helper_New_hgeFont();
 	}
-	dret = (DWORD)_font;
+	ptrret = (POINTER)_font;
 
-	_LuaHelper_PushDWORD(ls, dret);
+	_LuaHelper_PushPOINTER(ls, ptrret);
 	return 1;
 }
 
@@ -494,7 +494,7 @@ int Export_Lua_HGEHelp::LuaFn_hgeFont_ChangeSprite(LuaState * ls)
 	else
 	{
 		_obj = args[3];
-		hgeSprite * _hgesprite = (hgeSprite *)(_LuaHelper_GetDWORD(&_obj));
+		hgeSprite * _hgesprite = (hgeSprite *)(_LuaHelper_GetPOINTER(&_obj));
 		if (argscount > 3)
 		{
 			pre_a = args[4].GetFloat();
@@ -513,11 +513,11 @@ int Export_Lua_HGEHelp::LuaFn_hgeFont_GetSprite(LuaState * ls)
 {
 	LuaStack args(ls);
 	hgeFont * _font = _LuaHelper_hgeFont_Get(&args);
-	DWORD dret;
+	POINTER ptrret;
 
-	dret = (DWORD)(_font->GetSprite(args[2].GetInteger()));
+	ptrret = (POINTER)(_font->GetSprite(args[2].GetInteger()));
 
-	_LuaHelper_PushDWORD(ls, dret);
+	_LuaHelper_PushPOINTER(ls, ptrret);
 	return 1;
 }
 
@@ -651,7 +651,7 @@ void Export_Lua_HGEHelp::_LuaHelper_hgeES_DeleteAllES()
 int Export_Lua_HGEHelp::LuaFn_hgeES_NewES(LuaState * ls)
 {
 	LuaStack args(ls);
-	DWORD dret = 0;
+	POINTER ptrret = 0;
 	hgeEffectSystem * _es = NULL;
 
 	int argscount = args.Count();
@@ -672,7 +672,7 @@ int Export_Lua_HGEHelp::LuaFn_hgeES_NewES(LuaState * ls)
 		else
 		{
 			_obj = args[1];
-			hgeEffectSystem * __es = (hgeEffectSystem *)(_LuaHelper_GetDWORD(&_obj));
+			hgeEffectSystem * __es = (hgeEffectSystem *)(_LuaHelper_GetPOINTER(&_obj));
 			_es = _Helper_New_hgeES(*__es);
 		}
 	}
@@ -680,9 +680,9 @@ int Export_Lua_HGEHelp::LuaFn_hgeES_NewES(LuaState * ls)
 	{
 		_es = _Helper_New_hgeES();
 	}
-	dret = (DWORD)_es;
+	ptrret = (POINTER)_es;
 
-	_LuaHelper_PushDWORD(ls, dret);
+	_LuaHelper_PushPOINTER(ls, ptrret);
 	return 1;
 }
 
@@ -903,7 +903,7 @@ void Export_Lua_HGEHelp::_LuaHelper_hgeSprite_DeleteAllSprite()
 int Export_Lua_HGEHelp::LuaFn_hgeSprite_NewSprite(LuaState * ls)
 {
 	LuaStack args(ls);
-	DWORD dret = 0;
+	POINTER ptrret = 0;
 	hgeSprite * _sprite = NULL;
 
 	int argscount = args.Count();
@@ -923,7 +923,7 @@ int Export_Lua_HGEHelp::LuaFn_hgeSprite_NewSprite(LuaState * ls)
 		else
 		{
 			_obj = args[1];
-			hgeSprite * __sprite = (hgeSprite *)(_LuaHelper_GetDWORD(&_obj));
+            hgeSprite * __sprite = (hgeSprite *)(_LuaHelper_GetPOINTER(&_obj));
 			_sprite = _Helper_New_hgeSprite(*__sprite);
 		}
 	}
@@ -931,9 +931,9 @@ int Export_Lua_HGEHelp::LuaFn_hgeSprite_NewSprite(LuaState * ls)
 	{
 		_sprite = _Helper_New_hgeSprite();
 	}
-	dret = (DWORD)_sprite;
+	ptrret = (POINTER)_sprite;
 
-	_LuaHelper_PushDWORD(ls, dret);
+	_LuaHelper_PushDWORD(ls, ptrret);
 	return 1;
 }
 

@@ -62,9 +62,11 @@ public:
 	static void _LuaHelper_PushDWORD(LuaState * ls, DWORD dval);
 	static DWORD _LuaHelper_GetDWORD(LuaObject * obj);
 	static void _LuaHelper_PushLONGLONG(LuaState * ls, LONGLONG llval);
-	static LONGLONG _LuaHelper_GetLONGLONG(LuaObject * obj);
-	static void _LuaHelper_PushQWORD(LuaState * ls, QWORD qval);
-	static QWORD _LuaHelper_GetQWORD(LuaObject * obj);
+    static LONGLONG _LuaHelper_GetLONGLONG(LuaObject * obj);
+    static void _LuaHelper_PushQWORD(LuaState * ls, QWORD qval);
+    static QWORD _LuaHelper_GetQWORD(LuaObject * obj);
+    static void _LuaHelper_PushPOINTER(LuaState * ls, POINTER ptr);
+    static POINTER _LuaHelper_GetPOINTER(LuaObject * obj);
 	static void _LuaHelper_PushString(LuaState * ls, const char * sval);
 
 	static void _LuaHelper_GetCalculateValue(LuaObject * obj, char calchar, bool buseq, void * val);

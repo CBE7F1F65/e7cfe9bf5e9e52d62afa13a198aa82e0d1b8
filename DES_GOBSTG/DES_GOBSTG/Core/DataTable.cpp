@@ -244,8 +244,8 @@ bool _DataTable::MusicDefineFile()
 		fscanf(file, "\t%[^\t]%s%d%d%d", 
 			item->musicname, 
 			item->musicfilename, 
-			&(item->startpos), 
-			&(item->introlength), 
+			&(item->startpos),
+			&(item->introlength),
 			&(item->alllength));
 
 		_DOSWAPTINT;

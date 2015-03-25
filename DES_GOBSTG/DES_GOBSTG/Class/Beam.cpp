@@ -387,8 +387,8 @@ bool Beam::isInRect(float aimx, float aimy, float r, int nextstep)
 //		nowrl += 4;
 	}
 
-	float cx = _x;
-	float cy = _y;
+//	float cx = _x;
+//	float cy = _y;
 
 //	nowlength *= 0.3125f;
 

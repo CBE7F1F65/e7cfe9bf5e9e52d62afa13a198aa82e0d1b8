@@ -390,7 +390,7 @@ void Data::getFile(BYTE type)
 
 bool Data::Init(BYTE type)
 {
-	if(binmode && (type & DATA_TABLEHEADER) ||
+	if((binmode && (type & DATA_TABLEHEADER)) ||
 		(type == DATA_RESOURCEFILE))
 	{
 		return true;
@@ -406,7 +406,7 @@ bool Data::Init(BYTE type)
 		bin.clear();
 
 	if((type & DATA_MEMORYHEADER) ||
-		(type == DATA_RESOURCEFILE) && binmode)
+		((type == DATA_RESOURCEFILE) && binmode))
 	{
 		char * fname;
 		char * bname;

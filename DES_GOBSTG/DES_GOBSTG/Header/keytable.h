@@ -445,7 +445,7 @@ enum {
 struct scrKeyWord
 {
 	char*	word;
-	DWORD	code;
+	POINTER	code;
 };
 
 extern scrKeyWord scrKeyTable[];

@@ -32,7 +32,7 @@
 /***********************************************************************
  * Return the next byte in the pseudo-random sequence
  */
-static int decrypt_byte(unsigned long* pkeys, const unsigned long* pcrc_32_tab)
+static int decrypt_byte(unsigned long* pkeys, const z_crc_t* pcrc_32_tab)
 {
     unsigned temp;  /* POTENTIAL BUG:  temp*(temp^1) may overflow in an
                      * unpredictable manner on 16-bit systems; not a problem
@@ -45,9 +45,9 @@ static int decrypt_byte(unsigned long* pkeys, const unsigned long* pcrc_32_tab)
 /***********************************************************************
  * Update the encryption keys with the next byte of plain text
  */
-static int update_keys(unsigned long* pkeys,const unsigned long* pcrc_32_tab,int c)
+static int update_keys(unsigned long* pkeys,const z_crc_t* pcrc_32_tab,int c)
 {
-//	c = ((c&0xf0)>>4) | ((c&0x0f)<<4);
+    //	c = ((c&0xf0)>>4) | ((c&0x0f)<<4);
     (*(pkeys+0)) = CRC32((*(pkeys+0)), c);
     (*(pkeys+1)) += (*(pkeys+0)) & 0xff;
     (*(pkeys+1)) = (*(pkeys+1)) * 134775813L + 1;
@@ -71,11 +71,11 @@ static void init_keys(int passwd,unsigned long* pkeys,const unsigned long* pcrc_
     update_keys(pkeys,pcrc_32_tab,(passwd&0xff0000)>>16);
     update_keys(pkeys,pcrc_32_tab,(passwd&0x00ff00)>>8);
     update_keys(pkeys,pcrc_32_tab,(passwd&0x0000ff));
-	passwd = ZLIBpswConvert(passwd);
+    passwd = ZLIBpswConvert(passwd);
     update_keys(pkeys,pcrc_32_tab,(passwd&0xff0000)>>16);
     update_keys(pkeys,pcrc_32_tab,(passwd&0x00ff00)>>8);
     update_keys(pkeys,pcrc_32_tab,(passwd&0x0000ff));
-	passwd = ZLIBpswReconvert(passwd);
+    passwd = ZLIBpswReconvert(passwd);
     update_keys(pkeys,pcrc_32_tab,(passwd&0xff0000)>>16);
     update_keys(pkeys,pcrc_32_tab,(passwd&0x00ff00)>>8);
     update_keys(pkeys,pcrc_32_tab,(passwd&0x0000ff));
@@ -95,13 +95,12 @@ static void init_keys(int passwd,unsigned long* pkeys,const unsigned long* pcrc_
 #    define ZCR_SEED2 3141592654UL     /* use PI as default pattern */
 #  endif
 
-static int crypthead(passwd, buf, bufSize, pkeys, pcrc_32_tab, crcForCrypting)
-    int passwd;         /* password string */
-    unsigned char *buf;         /* where to write header */
-    int bufSize;
-    unsigned long* pkeys;
-    const unsigned long* pcrc_32_tab;
-    unsigned long crcForCrypting;
+static int crypthead(int passwd,      /* password string */
+                     unsigned char* buf,      /* where to write header */
+                     int bufSize,
+                     unsigned long* pkeys,
+                     const z_crc_t* pcrc_32_tab,
+                     unsigned long crcForCrypting)
 {
     int n;                       /* index in random header */
     int t;                       /* temporary */
@@ -132,8 +131,8 @@ static int crypthead(passwd, buf, bufSize, pkeys, pcrc_32_tab, crcForCrypting)
     {
         buf[n] = (unsigned char)zencode(pkeys, pcrc_32_tab, header[n], t);
     }
-    buf[n++] = zencode(pkeys, pcrc_32_tab, (int)(crcForCrypting >> 16) & 0xff, t);
-    buf[n++] = zencode(pkeys, pcrc_32_tab, (int)(crcForCrypting >> 24) & 0xff, t);
+    buf[n++] = (unsigned char)zencode(pkeys, pcrc_32_tab, (int)(crcForCrypting >> 16) & 0xff, t);
+    buf[n++] = (unsigned char)zencode(pkeys, pcrc_32_tab, (int)(crcForCrypting >> 24) & 0xff, t);
     return n;
 }
 

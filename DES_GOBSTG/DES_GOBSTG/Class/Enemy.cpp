@@ -853,8 +853,8 @@ BYTE Enemy::getFrameIndex(BYTE frameenum)
 {
 	flipx = false;
 	enemyData * pdata = &(BResource::bres.enemydata[type]);
-	if ((frameenum == ENEMY_FRAME_RIGHTPRE || frameenum == ENEMY_FRAME_RIGHT) && (!pdata->rightPreFrame) ||
-		(frameenum == ENEMY_FRAME_LEFTPRE || frameenum == ENEMY_FRAME_LEFT) && (!pdata->leftPreFrame))
+	if (((frameenum == ENEMY_FRAME_RIGHTPRE || frameenum == ENEMY_FRAME_RIGHT) && (!pdata->rightPreFrame)) ||
+		((frameenum == ENEMY_FRAME_LEFTPRE || frameenum == ENEMY_FRAME_LEFT) && (!pdata->leftPreFrame)))
 	{
 		flipx = true;
 	}
@@ -1114,7 +1114,7 @@ bool Enemy::CheckENAZ(BYTE playerindex, float x, float y, float rori)
 		switch ((it->flag) & ENAZOPMASK)
 		{
 		case ENAZOP_AND:
-			if (!checkret || haveor && !orcheck)
+			if (!checkret || (haveor && !orcheck))
 			{
 				return false;
 			}
@@ -1128,7 +1128,7 @@ bool Enemy::CheckENAZ(BYTE playerindex, float x, float y, float rori)
 			haveor = true;
 			break;
 		case ENAZOP_NOTAND:
-			if (checkret || haveor && !orcheck)
+			if (checkret || (haveor && !orcheck))
 			{
 				return false;
 			}
@@ -1443,8 +1443,8 @@ void Enemy::giveItem(BYTE playerindex)
 		return;
 	}
 //	bool first = true;
-	float aimx;
-	float aimy;
+//	float aimx;
+//	float aimy;
 
 	float tempx = x;
 	float tempy = y;

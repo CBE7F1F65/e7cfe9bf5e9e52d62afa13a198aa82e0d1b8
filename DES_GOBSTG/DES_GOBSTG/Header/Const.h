@@ -291,10 +291,12 @@ enum{
 #define CLONGLONG(p)	(*(LONGLONG *)(p))
 #define CULONGLONG(p)	(*(QWORD *)(p))
 #define CDOUBLE(p)		(*(double *)(p))
+#define CPOINTER(p)     (*(POINTER *)(p))
 
 #define CINTN(p)		(*(int *)(&(p)))
 #define CUINTN(p)		(*(DWORD *)(&(p)))
 #define CLONGLONGN(p)	(*(LONGLONG *)(&(p)))
+#define CPOINTERN(p)	(*(POINTER *)(&(p)))
 #define CULONGLONGN(p)	(*(QWORD *)(&(p)))
 #define CFLOATN(p)		(*(float *)(&(p)))
 #define CDOUBLEN(p)		(*(double *)(&(p)))

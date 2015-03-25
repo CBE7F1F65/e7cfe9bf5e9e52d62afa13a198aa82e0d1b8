@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3E3872741AC16BA4003E5694 /* pnglibconf.h in Headers */ = {isa = PBXBuildFile; fileRef = 3E3872731AC16BA4003E5694 /* pnglibconf.h */; };
 		716791C812628049004A3E70 /* exception.h in Headers */ = {isa = PBXBuildFile; fileRef = 7167907012628049004A3E70 /* exception.h */; };
 		716791C912628049004A3E70 /* hge.h in Headers */ = {isa = PBXBuildFile; fileRef = 7167907112628049004A3E70 /* hge.h */; };
 		716791CA12628049004A3E70 /* hge_defines.h in Headers */ = {isa = PBXBuildFile; fileRef = 7167907212628049004A3E70 /* hge_defines.h */; };
@@ -42,7 +43,6 @@
 		7167925912628049004A3E70 /* crypt.h in Headers */ = {isa = PBXBuildFile; fileRef = 7167912712628049004A3E70 /* crypt.h */; };
 		7167925A12628049004A3E70 /* deflate.c in Sources */ = {isa = PBXBuildFile; fileRef = 7167912812628049004A3E70 /* deflate.c */; };
 		7167925B12628049004A3E70 /* deflate.h in Headers */ = {isa = PBXBuildFile; fileRef = 7167912912628049004A3E70 /* deflate.h */; };
-		7167925C12628049004A3E70 /* gzio.c in Sources */ = {isa = PBXBuildFile; fileRef = 7167912A12628049004A3E70 /* gzio.c */; };
 		7167925D12628049004A3E70 /* infback.c in Sources */ = {isa = PBXBuildFile; fileRef = 7167912B12628049004A3E70 /* infback.c */; };
 		7167925E12628049004A3E70 /* inffast.c in Sources */ = {isa = PBXBuildFile; fileRef = 7167912C12628049004A3E70 /* inffast.c */; };
 		7167925F12628049004A3E70 /* inffast.h in Headers */ = {isa = PBXBuildFile; fileRef = 7167912D12628049004A3E70 /* inffast.h */; };
@@ -182,11 +182,11 @@
 		716792E912628049004A3E70 /* PSP_framebuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = 716791C512628049004A3E70 /* PSP_framebuffer.h */; };
 		716792EA12628049004A3E70 /* PSP_graphics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 716791C612628049004A3E70 /* PSP_graphics.cpp */; };
 		716792EB12628049004A3E70 /* PSP_graphics.h in Headers */ = {isa = PBXBuildFile; fileRef = 716791C712628049004A3E70 /* PSP_graphics.h */; };
-		AA747D9F0F9514B9006C5449 /* hge_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = AA747D9E0F9514B9006C5449 /* hge_Prefix.pch */; };
 		AACBBE4A0F95108600F1A2B1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AACBBE490F95108600F1A2B1 /* Foundation.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3E3872731AC16BA4003E5694 /* pnglibconf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pnglibconf.h; sourceTree = "<group>"; };
 		7167907012628049004A3E70 /* exception.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = exception.h; sourceTree = "<group>"; };
 		7167907112628049004A3E70 /* hge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = hge.h; sourceTree = "<group>"; };
 		7167907212628049004A3E70 /* hge_defines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = hge_defines.h; sourceTree = "<group>"; };
@@ -222,7 +222,6 @@
 		7167912712628049004A3E70 /* crypt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = crypt.h; sourceTree = "<group>"; };
 		7167912812628049004A3E70 /* deflate.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = deflate.c; sourceTree = "<group>"; };
 		7167912912628049004A3E70 /* deflate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = deflate.h; sourceTree = "<group>"; };
-		7167912A12628049004A3E70 /* gzio.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = gzio.c; sourceTree = "<group>"; };
 		7167912B12628049004A3E70 /* infback.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = infback.c; sourceTree = "<group>"; };
 		7167912C12628049004A3E70 /* inffast.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = inffast.c; sourceTree = "<group>"; };
 		7167912D12628049004A3E70 /* inffast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = inffast.h; sourceTree = "<group>"; };
@@ -362,7 +361,6 @@
 		716791C512628049004A3E70 /* PSP_framebuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PSP_framebuffer.h; sourceTree = "<group>"; };
 		716791C612628049004A3E70 /* PSP_graphics.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PSP_graphics.cpp; sourceTree = "<group>"; };
 		716791C712628049004A3E70 /* PSP_graphics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PSP_graphics.h; sourceTree = "<group>"; };
-		AA747D9E0F9514B9006C5449 /* hge_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = hge_Prefix.pch; sourceTree = SOURCE_ROOT; };
 		AACBBE490F95108600F1A2B1 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		D2AAC07E0554694100DB518D /* libhge.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libhge.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -418,7 +416,6 @@
 		32C88DFF0371C24200C91783 /* Other Sources */ = {
 			isa = PBXGroup;
 			children = (
-				AA747D9E0F9514B9006C5449 /* hge_Prefix.pch */,
 			);
 			name = "Other Sources";
 			sourceTree = "<group>";
@@ -496,7 +493,6 @@
 				7167912712628049004A3E70 /* crypt.h */,
 				7167912812628049004A3E70 /* deflate.c */,
 				7167912912628049004A3E70 /* deflate.h */,
-				7167912A12628049004A3E70 /* gzio.c */,
 				7167912B12628049004A3E70 /* infback.c */,
 				7167912C12628049004A3E70 /* inffast.c */,
 				7167912D12628049004A3E70 /* inffast.h */,
@@ -565,6 +561,7 @@
 		7167916212628049004A3E70 /* include */ = {
 			isa = PBXGroup;
 			children = (
+				3E3872731AC16BA4003E5694 /* pnglibconf.h */,
 				7167916312628049004A3E70 /* freetype */,
 				716791B812628049004A3E70 /* ft2build.h */,
 				716791B912628049004A3E70 /* gif_lib.h */,
@@ -701,7 +698,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AA747D9F0F9514B9006C5449 /* hge_Prefix.pch in Headers */,
 				716791C812628049004A3E70 /* exception.h in Headers */,
 				716791C912628049004A3E70 /* hge.h in Headers */,
 				716791CA12628049004A3E70 /* hge_defines.h in Headers */,
@@ -802,6 +798,7 @@
 				716792C812628049004A3E70 /* sfnt.h in Headers */,
 				716792C912628049004A3E70 /* svbdf.h in Headers */,
 				716792CA12628049004A3E70 /* svgldict.h in Headers */,
+				3E3872741AC16BA4003E5694 /* pnglibconf.h in Headers */,
 				716792CB12628049004A3E70 /* svmm.h in Headers */,
 				716792CC12628049004A3E70 /* svotval.h in Headers */,
 				716792CD12628049004A3E70 /* svpfr.h in Headers */,
@@ -861,6 +858,9 @@
 /* Begin PBXProject section */
 		0867D690FE84028FC02AAC07 /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0600;
+			};
 			buildConfigurationList = 1DEB922208733DC00010E9CD /* Build configuration list for PBXProject "hge" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
@@ -900,7 +900,6 @@
 				7167925612628049004A3E70 /* compress.c in Sources */,
 				7167925712628049004A3E70 /* crc32.c in Sources */,
 				7167925A12628049004A3E70 /* deflate.c in Sources */,
-				7167925C12628049004A3E70 /* gzio.c in Sources */,
 				7167925D12628049004A3E70 /* infback.c in Sources */,
 				7167925E12628049004A3E70 /* inffast.c in Sources */,
 				7167926112628049004A3E70 /* inflate.c in Sources */,
@@ -940,17 +939,19 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				COPY_PHASE_STRIP = NO;
 				DSTROOT = /tmp/hge.dst;
+				EXECUTABLE_EXTENSION = a;
+				EXECUTABLE_PREFIX = lib;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_MODEL_TUNING = G5;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = hge_Prefix.pch;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				INSTALL_PATH = /usr/local/lib;
-				VALID_ARCHS = "armv6 armv7";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				ONLY_ACTIVE_ARCH = NO;
+				VALID_ARCHS = "arm64 armv7 armv7s armv6";
 			};
 			name = Debug;
 		};
@@ -958,21 +959,22 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				DSTROOT = /tmp/hge.dst;
+				EXECUTABLE_EXTENSION = a;
+				EXECUTABLE_PREFIX = lib;
 				GCC_MODEL_TUNING = G5;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = hge_Prefix.pch;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				INSTALL_PATH = /usr/local/lib;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = hge;
-				VALID_ARCHS = "armv6 armv7";
+				VALID_ARCHS = "arm64 armv7 armv7s armv6";
 			};
 			name = Release;
 		};
 		1DEB922308733DC00010E9CD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				COMPRESS_PNG_FILES = NO;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -983,17 +985,18 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "";
 				PREBINDING = NO;
+				PRODUCT_NAME = hge;
 				SDKROOT = iphoneos;
-				VALID_ARCHS = "armv6 armv7";
+				VALID_ARCHS = "armv6 armv7 arm64 armv7s";
 			};
 			name = Debug;
 		};
 		1DEB922408733DC00010E9CD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				COMPRESS_PNG_FILES = NO;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -1007,7 +1010,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = hge;
 				SDKROOT = iphoneos;
-				VALID_ARCHS = "armv6 armv7";
+				VALID_ARCHS = "armv6 armv7 arm64 armv7s";
 			};
 			name = Release;
 		};

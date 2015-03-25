@@ -38,19 +38,19 @@ bool Export_Lua_HDSS::_LuaRegistConst(LuaObject * obj)
 	{
 		sprintf(str, "%s%s", HDSS_PREFIX, scrKeyTable[i].word);
 		_ChangeSpecialChar(str);
-		obj->SetInteger(str, scrKeyTable[i].code);
+		obj->SetNumber(str, scrKeyTable[i].code);
 	}
 	i++;
 	i++;	//true
 	i++;	//false
 	for (; scrKeyTable[i].code != SCR_KEYSTATE || strcmp(scrKeyTable[i].word, SCR_KEYSTATE_STR); i++)
 	{
-		obj->SetInteger(scrKeyTable[i].word, scrKeyTable[i].code);
+		obj->SetNumber(scrKeyTable[i].word, scrKeyTable[i].code);
 	}
 	i++;
 	for (; scrKeyTable[i].code != SCR_NULL || strcmp(scrKeyTable[i].word, SCR_NULL_STR); i++)
 	{
-		obj->SetNumber(scrKeyTable[i].word, CUINT(scrKeyTable[i].code));
+		obj->SetNumber(scrKeyTable[i].word, CPOINTER(scrKeyTable[i].code));
 	}
 
 	//SI

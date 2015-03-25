@@ -47,7 +47,10 @@ void hgeGUIText::SetText(const char *_text)
 
 void hgeGUIText::printf(const char *format, ...)
 {
-	vsprintf(text, format, (char *)&format+sizeof(format));
+    va_list va_args;
+    va_start( va_args, format );
+    vsprintf(text, format, va_args);
+    va_end( va_args );
 }
 
 void hgeGUIText::Render()

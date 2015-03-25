@@ -501,12 +501,12 @@ int _HDSSCallGet::Call_FRONTSPRITE(LuaState * ls)
 
 	if (true)
 	{
-		DWORD dret;
+		POINTER ptrret;
 		int _ID = _INEXT_HDSS_LUAPARA;
 		int _index = _INEXT_HDSS_LUAPARA;
 		if (SpriteItemManager::HaveFrontSprite(_ID))
 		{
-			dret = (DWORD)SpriteItemManager::ChangeFrontSprite(_ID, _index);
+			ptrret = (POINTER)SpriteItemManager::ChangeFrontSprite(_ID, _index);
 			if (argscount > 2)
 			{
 				SpriteItemManager::ClearFrontSpriteVale(_ID);
@@ -514,7 +514,7 @@ int _HDSSCallGet::Call_FRONTSPRITE(LuaState * ls)
 		}
 		else
 		{
-			dret = (DWORD)SpriteItemManager::BuildFrontSprite(_ID, _index);
+			ptrret = (POINTER)SpriteItemManager::BuildFrontSprite(_ID, _index);
 		}
 		
 		if (argscount > 2)
@@ -556,7 +556,7 @@ int _HDSSCallGet::Call_FRONTSPRITE(LuaState * ls)
 			SpriteItemManager::SetFrontSpriteValue(_ID, _x, _y, _angle, _hscale, _vscale, _col, _blend);
 		}
 
-		_PD_HDSS_LUA(dret);
+		_PP_HDSS_LUA(ptrret);
 		return 1;
 	}
 	return 0;

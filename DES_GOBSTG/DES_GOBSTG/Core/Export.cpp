@@ -98,8 +98,10 @@ bool Export::clientInitial(bool usesound /* = false */, bool extuse /* = false *
 
 bool Export::clientResetMatrix(float screenscale)
 {
-	memcpy(&matView2DMode ,&(hge->Gfx_GetTransform(D3DTS_VIEW)), sizeof(D3DXMATRIX));
-	memcpy(&matProj2DMode ,&(hge->Gfx_GetTransform(D3DTS_PROJECTION)), sizeof(D3DXMATRIX));
+    D3DMATRIX transformView = hge->Gfx_GetTransform(D3DTS_VIEW);
+    D3DMATRIX transformProj = hge->Gfx_GetTransform(D3DTS_PROJECTION);
+	memcpy(&matView2DMode ,&transformView, sizeof(D3DXMATRIX));
+	memcpy(&matProj2DMode ,&transformProj, sizeof(D3DXMATRIX));
 	
 	
 #if defined __IPHONE

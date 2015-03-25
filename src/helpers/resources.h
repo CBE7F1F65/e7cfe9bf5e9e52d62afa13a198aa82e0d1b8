@@ -41,7 +41,7 @@ ResDesc*	FindRes(hgeResourceManager *rm, int type, const char *name);
 struct RScript : public ResDesc
 {
 	static  void  Parse(hgeResourceManager *rm, RScriptParser *sp, const char *name, const char *basename);
-	virtual DWORD Get(hgeResourceManager *rm) {return 0;}
+	virtual POINTER Get(hgeResourceManager *rm) {return 0;}
 	virtual void  Free() {}
 };
 
@@ -50,7 +50,7 @@ struct RResource : public ResDesc
 	char		  filename[MAXRESCHARS];
 
 	static  void  Parse(hgeResourceManager *rm, RScriptParser *sp, const char *name, const char *basename);
-	virtual DWORD Get(hgeResourceManager *rm);
+	virtual POINTER Get(hgeResourceManager *rm);
 	virtual void  Free();
 };
 
@@ -60,7 +60,7 @@ struct RTexture : public ResDesc
 	bool		  mipmap;
 
 	static  void  Parse(hgeResourceManager *rm, RScriptParser *sp, const char *name, const char *basename);
-	virtual DWORD Get(hgeResourceManager *rm);
+	virtual POINTER Get(hgeResourceManager *rm);
 	virtual void  Free();
 };
 
@@ -69,7 +69,7 @@ struct REffect : public ResDesc
 	char		  filename[MAXRESCHARS];
 
 	static  void  Parse(hgeResourceManager *rm, RScriptParser *sp, const char *name, const char *basename);
-	virtual DWORD Get(hgeResourceManager *rm);
+	virtual POINTER Get(hgeResourceManager *rm);
 	virtual void  Free();
 };
 
@@ -92,7 +92,7 @@ struct RStream : public ResDesc
 	char		  filename[MAXRESCHARS];
 
 	static  void  Parse(hgeResourceManager *rm, RScriptParser *sp, const char *name, const char *basename);
-	virtual DWORD Get(hgeResourceManager *rm);
+	virtual POINTER Get(hgeResourceManager *rm);
 	virtual void  Free();
 };
 
@@ -103,7 +103,7 @@ struct RTarget : public ResDesc
 	bool		zbuffer;
 
 	static  void  Parse(hgeResourceManager *rm, RScriptParser *sp, const char *name, const char *basename);
-	virtual DWORD Get(hgeResourceManager *rm);
+	virtual POINTER Get(hgeResourceManager *rm);
 	virtual void  Free();
 };
 
@@ -122,7 +122,7 @@ struct RSprite : public ResDesc
 //	int			collision;
 
 	static  void  Parse(hgeResourceManager *rm, RScriptParser *sp, const char *name, const char *basename);
-	virtual DWORD Get(hgeResourceManager *rm);
+	virtual POINTER Get(hgeResourceManager *rm);
 	virtual void  Free();
 };
 
@@ -133,7 +133,7 @@ struct RAnimation : public RSprite
 	int			mode;
 
 	static  void  Parse(hgeResourceManager *rm, RScriptParser *sp, const char *name, const char *basename);
-	virtual DWORD Get(hgeResourceManager *rm);
+	virtual POINTER Get(hgeResourceManager *rm);
 	virtual void  Free();
 };
 
@@ -151,7 +151,7 @@ struct RFont : public ResDesc
 	float		rotation;
 
 	static  void  Parse(hgeResourceManager *rm, RScriptParser *sp, const char *name, const char *basename);
-	virtual DWORD Get(hgeResourceManager *rm);
+	virtual POINTER Get(hgeResourceManager *rm);
 	virtual void  Free();
 };
 
@@ -161,7 +161,7 @@ struct RParticle : public ResDesc
 	char		spritename[MAXRESCHARS];
 
 	static  void  Parse(hgeResourceManager *rm, RScriptParser *sp, const char *name, const char *basename);
-	virtual DWORD Get(hgeResourceManager *rm);
+	virtual POINTER Get(hgeResourceManager *rm);
 	virtual void  Free();
 };
 
@@ -175,7 +175,7 @@ struct RDistort : public ResDesc
 	float		z;
 
 	static  void  Parse(hgeResourceManager *rm, RScriptParser *sp, const char *name, const char *basename);
-	virtual DWORD Get(hgeResourceManager *rm);
+	virtual POINTER Get(hgeResourceManager *rm);
 	virtual void  Free();
 };
 
@@ -185,7 +185,7 @@ struct RStringTable : public ResDesc
 	char		  filename[MAXRESCHARS];
 
 	static  void  Parse(hgeResourceManager *rm, RScriptParser *sp, const char *name, const char *basename);
-	virtual DWORD Get(hgeResourceManager *rm);
+	virtual POINTER Get(hgeResourceManager *rm);
 	virtual void  Free();
 };
 

@@ -164,8 +164,8 @@ BYTE Player::getFrameIndex(BYTE frameenum)
 {
 	flipx = false;
 	playerData * pdata = &(BResource::bres.playerdata[nowID]);
-	if ((frameenum == PLAYER_FRAME_RIGHTPRE || frameenum == PLAYER_FRAME_RIGHT) && (!pdata->rightPreFrame) ||
-		(frameenum == PLAYER_FRAME_LEFTPRE || frameenum == PLAYER_FRAME_LEFT) && (!pdata->leftPreFrame))
+	if (((frameenum == PLAYER_FRAME_RIGHTPRE || frameenum == PLAYER_FRAME_RIGHT) && (!pdata->rightPreFrame)) ||
+		((frameenum == PLAYER_FRAME_LEFTPRE || frameenum == PLAYER_FRAME_LEFT) && (!pdata->leftPreFrame)))
 	{
 		flipx = true;
 	}

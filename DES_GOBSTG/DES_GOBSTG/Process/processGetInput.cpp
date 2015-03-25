@@ -284,7 +284,7 @@ int Process::getInput()
 							}
 							if (!used) {
 								if (touchinfo[i].x>=M_PADSQUARE_LEFT_(j) && touchinfo[i].x<=M_PADSQUARE_RIGHT_(j) || matchmode == M_MATCHMODE_P2C || matchmode == M_MATCHMODE_C2P){
-									if (!(matchmode == M_MATCHMODE_P2C && k != 0 || matchmode == M_MATCHMODE_C2P && k != 1)) {
+									if (!((matchmode == M_MATCHMODE_P2C && k != 0) || (matchmode == M_MATCHMODE_C2P && k != 1))) {
 										touchMoveID[k] = i;
 									}
 								}

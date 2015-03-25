@@ -245,7 +245,7 @@ public:
 	virtual void		CALL	Gfx_RenderLine(float x1, float y1, float x2, float y2, DWORD color=0xFFFFFFFF, float z=0);
 	virtual void		CALL	Gfx_RenderTriple(const hgeTriple *triple);
 	virtual void		CALL	Gfx_RenderQuad(const hgeQuad *quad);
-	virtual hgeVertex*	CALL	Gfx_StartBatch(int prim_type, HTEXTURE tex, int blend, int *max_prim);
+	virtual hgeVertex*	CALL	Gfx_StartBatch(int prim_type, HTEXTURE tex, int blend, POINTER max_prim);
 	virtual void		CALL	Gfx_FinishBatch(int nprim);
 	virtual void		CALL	Gfx_SetClipping(int x=0, int y=0, int w=0, int h=0);
 	virtual void		CALL	Gfx_SetTransform(float x=0, float y=0, float dx=0, float dy=0, float rot=0, float hscale=0, float vscale=0); 
@@ -260,7 +260,7 @@ public:
 	virtual HTEXTURE	CALL	Texture_Create(int width, int height);
 	virtual HTEXTURE	CALL	Texture_Load(const char *filename, DWORD size=0, bool bMipmap=false);
 	virtual void		CALL	Texture_Free(HTEXTURE tex);
-	virtual DWORD		CALL	Texture_GetTexture(HTEXTURE tex);
+	virtual POINTER		CALL	Texture_GetTexture(HTEXTURE tex);
 	virtual int			CALL	Texture_GetWidth(HTEXTURE tex, bool bOriginal=false);
 	virtual int			CALL	Texture_GetHeight(HTEXTURE tex, bool bOriginal=false);
 	virtual DWORD*		CALL	Texture_Lock(HTEXTURE tex, bool bReadOnly=true, int left=0, int top=0, int width=0, int height=0);
@@ -380,7 +380,7 @@ public:
 	int					nPrim;
 	int					CurPrimType;
 	int					CurBlendMode;
-	DWORD				CurTexture;
+	POINTER				CurTexture;
 
 	int					nTexInfo;
 	hgeTextureInfo	*	texInfo;

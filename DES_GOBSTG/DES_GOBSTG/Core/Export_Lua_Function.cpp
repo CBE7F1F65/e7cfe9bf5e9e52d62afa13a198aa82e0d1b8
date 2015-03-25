@@ -115,23 +115,48 @@ bool Export_Lua::LuaRegistConst()
 
 DWORD Export_Lua::_LuaHelper_GetDWORD(LuaObject * obj)
 {
-	DWORD dret;
-	if (obj->IsString())
-	{
-		sscanf(obj->GetString(), "%d", &dret);
-	}
-	else
-	{
-		lua_Number lnval = obj->GetNumber();
-		dret = CUINTN(lnval);
-	}
-	return dret;
+    DWORD dret;
+    if (obj->IsString())
+    {
+        sscanf(obj->GetString(), "%d", &dret);
+    }
+    else
+    {
+        lua_Number lnval = obj->GetNumber();
+        dret = CUINTN(lnval);
+    }
+    return dret;
 }
 
 void Export_Lua::_LuaHelper_PushDWORD(LuaState * ls, DWORD dval)
 {
-	lua_Number lnval = CDOUBLEN(dval);
-	ls->PushNumber(lnval);
+    lua_Number lnval = CDOUBLEN(dval);
+    ls->PushNumber(lnval);
+}
+
+POINTER Export_Lua::_LuaHelper_GetPOINTER(LuaObject * obj)
+{
+    POINTER ptrret;
+    if (obj->IsString())
+    {
+#if defined __USE_64_BIT
+        sscanf(obj->GetString(), "%I64u", &ptrret);
+#else
+        sscanf(obj->GetString(), "%d", &ptrret);
+#endif
+    }
+    else
+    {
+        lua_Number lnval = obj->GetNumber();
+        ptrret = CPOINTERN(lnval);
+    }
+    return ptrret;
+}
+
+void Export_Lua::_LuaHelper_PushPOINTER(LuaState * ls, POINTER ptrval)
+{
+    lua_Number lnval = CDOUBLEN(ptrval);
+    ls->PushNumber(lnval);
 }
 
 LONGLONG Export_Lua::_LuaHelper_GetLONGLONG(LuaObject * obj)
@@ -717,20 +742,20 @@ int Export_Lua::LuaFn_LuaState_GetConst(LuaState * ls)
 int Export_Lua::LuaFn_LuaState_GetPointer(LuaState * ls)
 {
 	LuaStack args(ls);
-	DWORD dret = 0;
+	POINTER ptrret = 0;
 
 	if (args[1].IsString())
 	{
-		dret = (DWORD)(args[1].GetString());
+		ptrret = (POINTER)(args[1].GetString());
 	}
 	else if (args[1].IsNumber())
 	{
 		static lua_Number _number;
 		_number = args[1].GetNumber();
-		dret = (DWORD)(&_number);
+		ptrret = (POINTER)(&_number);
 	}
 
-	_LuaHelper_PushDWORD(ls, dret);
+	_LuaHelper_PushPOINTER(ls, ptrret);
 	return 1;
 }
 

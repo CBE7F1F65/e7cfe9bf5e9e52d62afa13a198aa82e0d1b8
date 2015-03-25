@@ -101,7 +101,7 @@ char * Scripter::GetStringSp(int descindex)
 {
 	if (d[descindex].bfloat)
 	{
-		return (char *)(CUINT(d[descindex].value));
+		return (char *)(CPOINTER(d[descindex].value));
 	}
 	return GetString(CAST(d[descindex]));
 }
@@ -834,7 +834,7 @@ Token Scripter::GetToken()
 		}
 		buffer[i] = 0;
 	}
-	if((buffer[0] == '_' && (iswdigit(buffer[1]) || iswlower(buffer[1])) || iswlower(buffer[0])) && strcmp(buffer, "false") && strcmp(buffer, "true"))
+	if(((buffer[0] == '_' && (iswdigit(buffer[1]) || iswlower(buffer[1]))) || iswlower(buffer[0])) && strcmp(buffer, "false") && strcmp(buffer, "true"))
 	{
 		if(buffer[0] == '_' && iswdigit(buffer[1]))
 		{
@@ -970,7 +970,7 @@ Token Scripter::GetToken()
 		{
 			if (!strcmp(buffer, scrKeyTable[kti].word))
 			{
-				ret.value |= *(DWORD *)scrKeyTable[kti].code;
+				ret.value |= *(POINTER *)scrKeyTable[kti].code;
 				ret.type |= SCR_TOKEN_VALUE;
 				bFound = true;
 				break;

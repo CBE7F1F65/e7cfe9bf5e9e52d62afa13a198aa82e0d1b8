@@ -1039,7 +1039,7 @@ namespace LPCD
 
 			Object* obj = (Object*)LPCD::GetObjectUserData(L);
 
-			LPCD::Push(L, *(VarType*)((unsigned char*)obj + (unsigned int)offset));
+			LPCD::Push(L, *(VarType*)((unsigned char*)obj + (unsigned int)(size_t)offset));
 
 			return 1;
 		}
@@ -1053,7 +1053,7 @@ namespace LPCD
 			if (!Match(TypeWrapper<VarType>(), L, 2))
 				luaL_argerror(L, 2, "bad argument");
 
-			*(VarType*)((unsigned char*)obj + (unsigned int)offset) = Get(TypeWrapper<VarType>(), L, 2);
+			*(VarType*)((unsigned char*)obj + (unsigned int)(size_t)offset) = Get(TypeWrapper<VarType>(), L, 2);
 
 			return 1;
 		}

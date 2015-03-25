@@ -680,9 +680,9 @@ void CALL HGE_Impl::Gfx_RenderQuad(const hgeQuad *quad)
 	}
 	
 	glEnable(GL_TEXTURE_2D);
-	if((DWORD)pTex != CurTexture)
+	if((POINTER)pTex != CurTexture)
 	{
-		CurTexture = (DWORD)pTex;
+		CurTexture = (POINTER)pTex;
 		glBindTexture(GL_TEXTURE_2D, pTex->texid);
 	}
 	if (CurBlendMode != quad->blend)
@@ -719,7 +719,7 @@ void CALL HGE_Impl::Gfx_RenderQuad(const hgeQuad *quad)
 #endif
 }
 
-hgeVertex* CALL HGE_Impl::Gfx_StartBatch(int prim_type, HTEXTURE tex, int blend, int *max_prim)
+hgeVertex* CALL HGE_Impl::Gfx_StartBatch(int prim_type, HTEXTURE tex, int blend, POINTER max_prim)
 {
 #if defined __WIN32
 	if(VertArray)
@@ -948,7 +948,7 @@ HTEXTURE CALL HGE_Impl::Texture_Load(const char *filename, DWORD size, bool bMip
 	}
 	
 	texItem=new CTextureList;
-	texItem->tex=(HTEXTURE)((DWORD)pTex);
+	texItem->tex=(HTEXTURE)((POINTER)pTex);
 #if defined __WIN32
 	texItem->width=info.Width;
 	texItem->height=info.Height;
@@ -961,7 +961,7 @@ HTEXTURE CALL HGE_Impl::Texture_Load(const char *filename, DWORD size, bool bMip
 #endif
 	texItem->next=textures;
 	textures=texItem;
-	return (HTEXTURE)((DWORD)pTex);
+	return (HTEXTURE)((QWORD)pTex);
 }
 
 void CALL HGE_Impl::Texture_Free(HTEXTURE tex)
@@ -998,14 +998,14 @@ void CALL HGE_Impl::Texture_Free(HTEXTURE tex)
 #endif
 }
 
-DWORD CALL HGE_Impl::Texture_GetTexture(HTEXTURE tex)
+POINTER CALL HGE_Impl::Texture_GetTexture(HTEXTURE tex)
 {
 	return tex.GetTexture(nTexInfo, texInfo);
 }
 
 int CALL HGE_Impl::Texture_GetWidth(HTEXTURE tex, bool bOriginal)
 {
-	DWORD ttex = Texture_GetTexture(tex);
+	POINTER ttex = Texture_GetTexture(tex);
 	if (!ttex)
 	{
 		return tex.GetTextureWidthByInfo(nTexInfo, texInfo);
@@ -1043,7 +1043,7 @@ int CALL HGE_Impl::Texture_GetWidth(HTEXTURE tex, bool bOriginal)
 
 int CALL HGE_Impl::Texture_GetHeight(HTEXTURE tex, bool bOriginal)
 {
-	DWORD ttex = Texture_GetTexture(tex);
+	POINTER ttex = Texture_GetTexture(tex);
 	if (!ttex)
 	{
 		return tex.GetTextureHeightByInfo(nTexInfo, texInfo);
