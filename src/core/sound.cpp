@@ -264,7 +264,7 @@ HSTREAM CALL HGE_Impl::Stream_Load(const char *filename, DWORD size, bool bLoad)
 {
 	void *data=NULL;
 	DWORD _size;
-	HSTREAM hs;
+	HSTREAM hs = NULL;
 	CStreamList *stmItem;
 
 	if(hBass)

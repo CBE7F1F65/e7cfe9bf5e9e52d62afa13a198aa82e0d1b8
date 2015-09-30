@@ -287,5 +287,6 @@ uLong* bytesRecovered;
   } else {
     err = Z_STREAM_ERROR;
   }
+  fclose(fpOutCD);
   return err;
 }

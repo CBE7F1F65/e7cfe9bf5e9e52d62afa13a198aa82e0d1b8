@@ -300,7 +300,7 @@ void Export::clientSetMatrix(float _worldx, float _worldy, float _worldz, BYTE r
 		return;
 	}
 
-	BYTE index;
+	BYTE index = 0;
 	if (renderflag == M_RENDER_LEFT)
 	{
 		index = 0;

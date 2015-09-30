@@ -169,7 +169,7 @@ void EffectSp::chaseSet(BYTE _chaseflag, float _aimx, float _aimy, int _chasetim
 	{
 		chasetimer = _chasetimer;
 	}
-	if (chaseflag != chaseflag || _chaseaim != 0xff)
+	if (chaseflag != _chaseflag || _chaseaim != 0xff)
 	{
 		chaseaim = _chaseaim;
 	}

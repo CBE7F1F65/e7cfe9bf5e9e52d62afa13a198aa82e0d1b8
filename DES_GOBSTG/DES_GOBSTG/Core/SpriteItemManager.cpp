@@ -210,7 +210,6 @@ int SpriteItemManager::GetIndexByName(const char * spritename)
 		if (!strcmp(spritename, BResource::bres.spritedata[i].spritename))
 		{
 			return i;
-			break;
 		}
 	}
 	return -1;

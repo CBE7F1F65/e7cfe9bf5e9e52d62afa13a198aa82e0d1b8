@@ -262,10 +262,12 @@ Image* loadJpegImageImpl(struct jpeg_decompress_struct dinfo)
 	Image* image = (Image*) malloc(sizeof(Image));
 	if (!image) {
 		jpeg_destroy_decompress(&dinfo);
+		free(image);
 		return NULL;
 	}
 	if (width > 512 || height > 512) {
 		jpeg_destroy_decompress(&dinfo);
+		free(image);
 		return NULL;
 	}
 	image->imageWidth = width;
@@ -276,6 +278,8 @@ Image* loadJpegImageImpl(struct jpeg_decompress_struct dinfo)
 	u8* line = (u8*) malloc(width * 3);
 	if (!line) {
 		jpeg_destroy_decompress(&dinfo);
+		free(image->data);
+		free(image);
 		return NULL;
 	}
 	if (dinfo.jpeg_color_space == JCS_GRAYSCALE) {
@@ -600,7 +604,11 @@ Image* createImage(int width, int height)
 	image->textureWidth = getNextPower2(width);
 	image->textureHeight = getNextPower2(height);
 	image->data = (Color*) memalign(16, image->textureWidth * image->textureHeight * sizeof(Color));
-	if (!image->data) return NULL;
+	if (!image->data)
+	{
+		free(image);
+		return NULL;
+	}
 	memset(image->data, 0, image->textureWidth * image->textureHeight * sizeof(Color));
 	return image;
 }

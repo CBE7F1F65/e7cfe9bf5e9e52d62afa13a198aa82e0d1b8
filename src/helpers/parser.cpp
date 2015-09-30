@@ -197,7 +197,7 @@ DWORD RScriptParser::tkn_hex()
 		if(chr >= 'A') chr-='A'-':';
 		chr-='0';
 		if(chr>0xF) chr=0xF;
-		dw=(dw << 4) | chr;
+		dw=(dw << 4) | (chr&0xff);
 	}
 	return dw;
 }

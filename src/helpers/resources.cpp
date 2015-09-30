@@ -53,7 +53,7 @@ bool ScriptSkipToNextParameter(RScriptParser *sp, bool bIgnore)
 			sp->ScriptPostError("'}' missed, "," encountered.");
 			return false;
 		}
-		if((sp->tokentype <= TTPAR__FIRST && sp->tokentype >= TTPAR__LAST) || bToBeIgnored)
+		if((sp->tokentype <= TTPAR__FIRST || sp->tokentype >= TTPAR__LAST) || bToBeIgnored)
 		{
 			bToBeIgnored=false;
 			sp->ScriptPostError("Unsupported resource parameter ",".");

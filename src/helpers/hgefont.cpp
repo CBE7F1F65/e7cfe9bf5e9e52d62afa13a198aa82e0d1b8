@@ -205,7 +205,7 @@ void hgeFont::NewFont(const char *szFont, bool bMipmap/* =false */)
 	{
 		_wCh = -1;
 		_nTex = 0;
-		BYTE command;
+		BYTE command = 0x0;
 		if (!strncmp(linebuf, FNTBITMAPNUMTAG, sizeof(FNTBITMAPNUMTAG)-1 ))
 		{
 			command = _FNTCOMMAND_BITMAPNUM;
@@ -296,7 +296,7 @@ void hgeFont::NewFont(const char *szFont, bool bMipmap/* =false */)
 					if(chr >= 'A') chr-='A'-':';
 					chr-='0';
 					if(chr>0xF) chr=0xF;
-					i=(i << 4) | chr;
+					i=(i << 4) | (chr&0xff);
 					pbuf++;
 				}
 				if(i<0 || i>=size) continue;
@@ -812,6 +812,7 @@ bool hgeFont::CreateFontFileByInfo( int * charcode, int num, const char * fontfi
 	if (!hge->Gfx_BeginScene(tar))
 	{
 		hge->Target_Free(tar);
+		fclose(fontfile);
 		return false;
 	}
 	hge->Gfx_Clear(0x00000000);
@@ -876,6 +877,7 @@ bool hgeFont::CreateFontFileByInfo( int * charcode, int num, const char * fontfi
 			if (!hge->Gfx_BeginScene(tar))
 			{
 				hge->Target_Free(tar);
+				fclose(fontfile);
 				return false;
 			}
 			hge->Gfx_Clear(0x00000000);

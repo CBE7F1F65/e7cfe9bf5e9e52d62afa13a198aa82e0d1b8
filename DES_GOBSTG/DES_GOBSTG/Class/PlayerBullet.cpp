@@ -607,7 +607,7 @@ void PlayerBullet::action()
 				else
 				{
 					basex = Player::p[playerindex].x;
-					basex = Player::p[playerindex].y;
+					basey = Player::p[playerindex].y;
 				}
 				x = basex + xplus*timer;
 				y = basey + yplus*timer;

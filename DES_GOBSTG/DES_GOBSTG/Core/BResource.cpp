@@ -344,8 +344,11 @@ bool BResource::Pack(void * pStrdesc, void * pCustomConstData)
 	DWORD offset;
 
 	BYTE * _header = Data::data.CreateMemHeader(DATA_RESOURCEFILE);
-	if(!_header)
+	if (!_header)
+	{
+		free(content);
 		return false;
+	}
 	memcpy(content, _header, M_BINHEADER_OFFSET);
 	offset = M_BINHEADER_OFFSET;
 	free(_header);

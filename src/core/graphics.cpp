@@ -1235,6 +1235,7 @@ void HGE_Impl::_SetBlendMode(int blend)
 	{
 	case BLEND_ALPHAADD:
 		toblend = GU_TFX_ADD;
+		break;
 	default:
 		toblend = GU_TFX_MODULATE;
 		break;

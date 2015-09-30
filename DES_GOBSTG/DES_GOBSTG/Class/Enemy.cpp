@@ -905,7 +905,7 @@ bool Enemy::isInRect(float aimx, float aimy, float r, float w, float h, int next
 		BYTE nmaxset = BResource::bres.enemydata[type].nmaxset;
 		for (int i=0; i<4; i++)
 		{
-			infinmaxset>>(i*4);
+			infinmaxset = infinmaxset>>(i*4);
 			if (!infinmaxset)
 			{
 				break;
