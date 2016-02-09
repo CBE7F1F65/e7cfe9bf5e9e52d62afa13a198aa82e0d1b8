@@ -14,6 +14,7 @@
 		3E2266B01AC256D3009C267C /* libhge.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E2266A71AC250A9009C267C /* libhge.a */; };
 		3E2266B11AC256D7009C267C /* libLuaPlus.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E2266981AC2505C009C267C /* libLuaPlus.a */; };
 		3EB865E11AC28D240095FA4F /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EB865E01AC28D240095FA4F /* Accelerate.framework */; };
+		3EBD4DAA1C6465DA00F0BEE2 /* RootViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3EBD4DA91C6465DA00F0BEE2 /* RootViewController.mm */; };
 		7167938412628496004A3E70 /* DES_GOBSTGAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7167938112628496004A3E70 /* DES_GOBSTGAppDelegate.m */; };
 		7167938512628496004A3E70 /* HGEGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7167938212628496004A3E70 /* HGEGLView.m */; };
 		7167938612628496004A3E70 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 7167938312628496004A3E70 /* main.m */; };
@@ -149,6 +150,8 @@
 		3E2266931AC2505C009C267C /* LuaPlus.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LuaPlus.xcodeproj; path = ../LuaPlus/LuaPlus.xcodeproj; sourceTree = "<group>"; };
 		3E2266A21AC250A9009C267C /* hge.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = hge.xcodeproj; path = ../src/core/hge.xcodeproj; sourceTree = "<group>"; };
 		3EB865E01AC28D240095FA4F /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
+		3EBD4DA81C6465DA00F0BEE2 /* RootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RootViewController.h; path = DES_GOBSTG/IPhone/RootViewController.h; sourceTree = "<group>"; };
+		3EBD4DA91C6465DA00F0BEE2 /* RootViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = RootViewController.mm; path = DES_GOBSTG/IPhone/RootViewController.mm; sourceTree = "<group>"; };
 		7167937E12628496004A3E70 /* DES_GOBSTGAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DES_GOBSTGAppDelegate.h; path = DES_GOBSTG/IPhone/DES_GOBSTGAppDelegate.h; sourceTree = "<group>"; };
 		7167937F12628496004A3E70 /* HGEGLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HGEGLView.h; path = DES_GOBSTG/IPhone/HGEGLView.h; sourceTree = "<group>"; };
 		7167938012628496004A3E70 /* MainApplicationFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MainApplicationFunctions.h; path = DES_GOBSTG/IPhone/MainApplicationFunctions.h; sourceTree = "<group>"; };
@@ -583,6 +586,8 @@
 				7167938012628496004A3E70 /* MainApplicationFunctions.h */,
 				7167938112628496004A3E70 /* DES_GOBSTGAppDelegate.m */,
 				7167938212628496004A3E70 /* HGEGLView.m */,
+				3EBD4DA81C6465DA00F0BEE2 /* RootViewController.h */,
+				3EBD4DA91C6465DA00F0BEE2 /* RootViewController.mm */,
 				7167938312628496004A3E70 /* main.m */,
 			);
 			name = Classes;
@@ -629,6 +634,11 @@
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				TargetAttributes = {
+					1D6058900D05DD3D006BFB54 = {
+						DevelopmentTeam = QNLEV4UFFG;
+					};
+				};
 			};
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "DES_GOBSTG" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -756,6 +766,7 @@
 				7167944E126284D8004A3E70 /* frameEnd.cpp in Sources */,
 				7167944F126284D8004A3E70 /* frameStart.cpp in Sources */,
 				71679450126284D8004A3E70 /* processClear.cpp in Sources */,
+				3EBD4DAA1C6465DA00F0BEE2 /* RootViewController.mm in Sources */,
 				71679451126284D8004A3E70 /* processContinue.cpp in Sources */,
 				71679452126284D8004A3E70 /* processEnding.cpp in Sources */,
 				71679453126284D8004A3E70 /* processGetInput.cpp in Sources */,
@@ -800,8 +811,9 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD)";
 				CODE_SIGN_ENTITLEMENTS = Entitlements.plist;
-				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				ENABLE_BITCODE = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
@@ -817,6 +829,7 @@
 					"\"$(SRCROOT)/../src/IPhone\"",
 				);
 				PRODUCT_NAME = DES_GOBSTG;
+				PROVISIONING_PROFILE = "";
 				VALID_ARCHS = "armv7 armv7s armv6";
 			};
 			name = Debug;
@@ -827,8 +840,9 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD)";
 				CODE_SIGN_ENTITLEMENTS = Entitlements.plist;
-				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
+				ENABLE_BITCODE = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				INFOPLIST_FILE = "DES_GOBSTG-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1.1;
@@ -842,6 +856,7 @@
 					"\"$(SRCROOT)/../src/IPhone\"",
 				);
 				PRODUCT_NAME = DES_GOBSTG;
+				PROVISIONING_PROFILE = "";
 				VALID_ARCHS = "armv7 armv7s armv6";
 			};
 			name = Release;

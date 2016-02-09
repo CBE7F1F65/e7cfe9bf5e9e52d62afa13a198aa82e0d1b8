@@ -6,11 +6,14 @@ Custom/Debug/
 Custom/Release/
 DES_GOBSTG/DES_GOBSTG/Debug/
 DES_GOBSTG/DES_GOBSTG/Release/
+DES_GOBSTG/build
+DES_GOBSTG/infer-out
 hgeParticleEditor/Debug/
 hgeParticleEditor/Release/
 lib/vc/
 LuaPlus/Debug/
 LuaPlus/Release/
+LuaPlus/build
 ReplayView/Debug/
 ReplayView/Release/
 Resource/Data/*.databin
@@ -26,5 +29,6 @@ ResourceUnpack/Debug/
 ResourceUnpack/Release/
 src/core/Debug/
 src/core/Release/
+src/core/build
 src/helpers/Debug/
 src/helpers/Release/

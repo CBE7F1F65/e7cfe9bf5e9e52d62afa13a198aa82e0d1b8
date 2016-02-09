@@ -9,6 +9,7 @@
 #import "DES_GOBSTGAppDelegate.h"
 #import "HGEGLView.h"
 #include "MainApplicationFunctions.h"
+#include "RootViewController.h"
 
 @implementation DES_GOBSTGAppDelegate
 
@@ -17,6 +18,11 @@
 
 - (void)applicationDidFinishLaunching:(UIApplication *)application {
 	[[NSFileManager defaultManager] changeCurrentDirectoryPath: [[NSBundle mainBundle] resourcePath]];
+    
+    self.window.rootViewController = [RootViewController new];
+    self.window.rootViewController.view = glView;
+    [self.window makeKeyAndVisible];
+
 	Application_Init();
 	glView.loopInterval = 0;
 	Application_SetActive(true);

@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "55289F6C8D0ED92E5C9DEC081E3C378B0F1D776A",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "55289F6C8D0ED92E5C9DEC081E3C378B0F1D776A" : 0,
+    "2c9a46f2-7c1c-11de-a624-ab7c8f4ec817" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "F3D70CCB-7380-45C2-8271-8ABDBDE9B587",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "55289F6C8D0ED92E5C9DEC081E3C378B0F1D776A" : "e7cfe9bf5e9e52d62afa13a198aa82e0d1b8",
+    "2c9a46f2-7c1c-11de-a624-ab7c8f4ec817" : "svn"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "DES_GOBSTG",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "DES_GOBSTG\/DES_GOBSTG.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "http:\/\/e7cfe9bf5e9e52d62afa13a198aa82e0d1b8.googlecode.com\/svn",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Subversion",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "2c9a46f2-7c1c-11de-a624-ab7c8f4ec817"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:CBE7F1F65\/e7cfe9bf5e9e52d62afa13a198aa82e0d1b8.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "55289F6C8D0ED92E5C9DEC081E3C378B0F1D776A"
+    }
+  ]
+}
