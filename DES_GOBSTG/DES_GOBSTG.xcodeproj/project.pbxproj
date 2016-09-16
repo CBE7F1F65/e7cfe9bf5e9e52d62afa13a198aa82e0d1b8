@@ -11,6 +11,7 @@
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
 		28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow.xib */; };
+		3E1F34E21D8BCF0300367DA6 /* libstdc++.6.0.9.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E1F34E11D8BCF0300367DA6 /* libstdc++.6.0.9.tbd */; };
 		3E2266B01AC256D3009C267C /* libhge.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E2266A71AC250A9009C267C /* libhge.a */; };
 		3E2266B11AC256D7009C267C /* libLuaPlus.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E2266981AC2505C009C267C /* libLuaPlus.a */; };
 		3EB865E11AC28D240095FA4F /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EB865E01AC28D240095FA4F /* Accelerate.framework */; };
@@ -147,6 +148,7 @@
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		288765FC0DF74451002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		28AD733E0D9D9553002E5188 /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainWindow.xib; sourceTree = "<group>"; };
+		3E1F34E11D8BCF0300367DA6 /* libstdc++.6.0.9.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libstdc++.6.0.9.tbd"; path = "usr/lib/libstdc++.6.0.9.tbd"; sourceTree = SDKROOT; };
 		3E2266931AC2505C009C267C /* LuaPlus.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LuaPlus.xcodeproj; path = ../LuaPlus/LuaPlus.xcodeproj; sourceTree = "<group>"; };
 		3E2266A21AC250A9009C267C /* hge.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = hge.xcodeproj; path = ../src/core/hge.xcodeproj; sourceTree = "<group>"; };
 		3EB865E01AC28D240095FA4F /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
@@ -313,6 +315,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3E1F34E21D8BCF0300367DA6 /* libstdc++.6.0.9.tbd in Frameworks */,
 				3EB865E11AC28D240095FA4F /* Accelerate.framework in Frameworks */,
 				3E2266B11AC256D7009C267C /* libLuaPlus.a in Frameworks */,
 				3E2266B01AC256D3009C267C /* libhge.a in Frameworks */,
@@ -385,6 +388,7 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				3E1F34E11D8BCF0300367DA6 /* libstdc++.6.0.9.tbd */,
 				3EB865E01AC28D240095FA4F /* Accelerate.framework */,
 				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
 				1D30AB110D05D00D00671497 /* Foundation.framework */,
@@ -818,7 +822,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				INFOPLIST_FILE = "DES_GOBSTG-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../src/core/build/Release-iphoneos\"",
@@ -845,7 +849,7 @@
 				ENABLE_BITCODE = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				INFOPLIST_FILE = "DES_GOBSTG-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../src/core/build/Release-iphoneos\"",

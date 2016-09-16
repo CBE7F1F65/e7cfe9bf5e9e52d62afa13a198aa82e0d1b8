@@ -16,6 +16,8 @@
 #include "lstate.h"
 #include "lundump.h"
 
+#include <string.h>
+
 NAMESPACE_LUA_BEGIN
 
 typedef struct {
